@@ -10,6 +10,8 @@
 #include <string.h>
 #include <algorithm>
 #include <errno.h>
+#include <stdexcept>
+#include <iostream>
 
 #define MAX_EVENTS 10
 #define PORT 8080

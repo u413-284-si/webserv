@@ -1,5 +1,3 @@
-#include <iostream>
-#include <stdexcept>
 #include "Server.hpp"
 
 int main(int argc, char** argv)

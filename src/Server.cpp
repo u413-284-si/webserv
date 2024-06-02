@@ -4,12 +4,10 @@ static void set_nonblocking(int sock)
 {
 	int flags = fcntl(sock, F_GETFL, 0);
 	if (flags == -1) {
-		perror("fcntl(F_GETFL)");
-		exit(EXIT_FAILURE);
+		throw std::runtime_error("fcntl(F_GETFL)");
 	}
 	if (fcntl(sock, F_SETFL, flags | O_NONBLOCK) == -1) {
-		perror("fcntl(F_SETFL)");
-		exit(EXIT_FAILURE);
+		throw std::runtime_error("fcntl(F_SETFL)");
 	}
 }
 
@@ -17,8 +15,7 @@ Server::Server(){
     // Create server socket
 	server_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (server_sock < 0) {
-		perror("socket");
-		exit(EXIT_FAILURE);
+		throw std::runtime_error("socket");
 	}
 
 	// Set server socket to non-blocking
@@ -31,34 +28,30 @@ Server::Server(){
 	server_addr.sin_port = htons(PORT);
 	if (bind(server_sock, (struct sockaddr*)&server_addr, sizeof(server_addr))
 		< 0) {
-		perror("bind");
-		close(server_sock);
-		exit(EXIT_FAILURE);
+  		close(server_sock);
+		throw std::runtime_error("bind");
 	}
 
 	// Listen on server socket
 	if (listen(server_sock, 10) < 0) {
-		perror("listen");
-		close(server_sock);
-		exit(EXIT_FAILURE);
+        close(server_sock);
+		throw std::runtime_error("listen");
 	}
 
 	// Create epoll instance
 	epfd = epoll_create1(0);
 	if (epfd < 0) {
-		perror("epoll_create1");
-		close(server_sock);
-		exit(EXIT_FAILURE);
+        close(server_sock);
+		throw std::runtime_error("epoll_create1");
 	}
 
 	// Add server socket to epoll instance
 	ev.events = EPOLLIN | EPOLLET; // Edge-triggered mode
 	ev.data.fd = server_sock;
 	if (epoll_ctl(epfd, EPOLL_CTL_ADD, server_sock, &ev) < 0) {
-		perror("epoll_ctl");
-		close(server_sock);
+        close(server_sock);
 		close(epfd);
-		exit(EXIT_FAILURE);
+		throw std::runtime_error("epoll_ctl");
 	}
 }
 
@@ -72,10 +65,9 @@ void    Server::run(){
         // Blocking call to epoll_wait
         nfds = epoll_wait(epfd, events, MAX_EVENTS, -1);
         if (nfds < 0) {
-            perror("epoll_wait");
             close(server_sock);
             close(epfd);
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("epoll_wait");
         }
 
         for (int n = 0; n < nfds; ++n) {
@@ -97,7 +89,7 @@ void    Server::acceptConnection(){
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 break; // No more pending connections
             } else {
-                perror("accept");
+                std::cerr << "error: accept\n";
                 break;
             }
         }
@@ -109,7 +101,7 @@ void    Server::acceptConnection(){
         ev.events = EPOLLIN | EPOLLET;
         ev.data.fd = client_sock;
         if (epoll_ctl(epfd, EPOLL_CTL_ADD, client_sock, &ev) < 0) {
-            perror("epoll_ctl: client_sock");
+            std::cerr << "error: epoll_ctl: client_sock\n";
             close(client_sock);
         }
     }
@@ -125,7 +117,7 @@ void    Server::handleConnections(int index){
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 break; // No more data to read
             } else {
-                perror("read");
+                std::cerr << "error: read\n";
                 close(client_sock);
                 break;
             }
