@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 		webserv.run();
 	}
 	catch (std::exception& e){
-		std::cerr << "error" << e.what() << std::endl;
+		std::cerr << "error: " << e.what() << std::endl;
 		return 1;
 	}
 	return 0;
