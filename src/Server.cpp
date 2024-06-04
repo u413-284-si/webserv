@@ -60,7 +60,7 @@ Server::Server()
 	if (epoll_ctl(_epfd, EPOLL_CTL_ADD, _serverSock, &_ev) < 0) {
         close(_serverSock);
 		close(_epfd);
-		throw std::runtime_error("epoll_ctl");
+		throw std::runtime_error("epoll_ctl: _serverSock");
 	}
 }
 
@@ -73,14 +73,14 @@ Server::~Server()
 void    Server::run(){
     while (1) {
         // Blocking call to epoll_wait
-        _nfds = epoll_wait(_epfd, _events, MAX_EVENTS, -1);
-        if (_nfds < 0) {
+        int	nfds = epoll_wait(_epfd, _events, MAX_EVENTS, -1);
+        if (nfds < 0) {
             close(_serverSock);
             close(_epfd);
             throw std::runtime_error("epoll_wait");
         }
 
-        for (int n = 0; n < _nfds; ++n) {
+        for (int n = 0; n < nfds; ++n) {
             if (_events[n].data.fd == _serverSock)
                 acceptConnection();
             else
@@ -89,13 +89,24 @@ void    Server::run(){
     }
 }
 
+/**
+ * @brief Accept new connections
+ * 
+ * A new connection is accepted, its address saved in _cliendAddr and a 
+ * file descriptor for the new client socket is saved in clientSock. The 
+ * clientSock is added to the list of fds watched by epoll.
+ * 
+ * The while-loop allows for multiple connections to be accepted in one call
+ * of this function. It is broken when accept sets errno to EAGAIN or 
+ * EWOULDBLOCK (equivalent error codes indicating that a non-blocking operation 
+ * would normally block), meaning that no more connections are pending.
+ */
 void    Server::acceptConnection(){
-    // Accept new connections
     while (1) {
         socklen_t	addr_len = sizeof(_clientAddr);
-        _clientSock = accept(
+        int	clientSock = accept(
             _serverSock, (struct sockaddr*)&_clientAddr, &addr_len);
-        if (_clientSock < 0) {
+        if (clientSock < 0) {
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 break; // No more pending connections
             } else {
@@ -105,39 +116,40 @@ void    Server::acceptConnection(){
         }
 
         // Set client socket to non-blocking
-        setNonblocking(_clientSock);
+        setNonblocking(clientSock);
 
         // Add client socket to epoll instance
         _ev.events = EPOLLIN | EPOLLET;
-        _ev.data.fd = _clientSock;
-        if (epoll_ctl(_epfd, EPOLL_CTL_ADD, _clientSock, &_ev) < 0) {
-            std::cerr << "error: failed to add _clientSock to epoll\n";
-            close(_clientSock);
+        _ev.data.fd = clientSock;
+        if (epoll_ctl(_epfd, EPOLL_CTL_ADD, clientSock, &_ev) < 0) {
+            std::cerr << "error: epoll_ctl: clientSock\n";
+            close(clientSock);
         }
     }
 }
 
 void    Server::handleConnections(int index){
      // Handle client data
-    int _clientSock = _events[index].data.fd;
+    int clientSock = _events[index].data.fd;
     while (1) {
-        char	buffer[1024];
-        int		bytesRead = read(_clientSock, buffer, sizeof(buffer));
+        char	buffer[BUFFER_SIZE];
+        int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
         if (bytesRead < 0) {
-            if (errno == EAGAIN || errno == EWOULDBLOCK) {
-                break; // No more data to read
-            } else {
-                std::cerr << "error: read\n";
-                close(_clientSock);
-                break;
-            }
-        } else if (bytesRead == 0) {
+			if (errno == EAGAIN || errno == EWOULDBLOCK)
+				break; 
+			else{
+				std::cerr << "error: read\n";
+				close(clientSock);
+				break;
+			}
+        }
+        else if (bytesRead == 0) {
             // Connection closed by client
-            close(_clientSock);
+            close(clientSock);
             break;
         } else {
             // Echo data back to client
-            write(_clientSock, buffer, bytesRead);
+            write(clientSock, buffer, bytesRead);
         }
     }
 }
