@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <netinet/in.h>
-#include <string.h>
 #include <algorithm>
 #include <errno.h>
 #include <stdexcept>
@@ -18,9 +17,13 @@
 
 class Server{
     private:
-                int server_sock, client_sock, epfd, nfds;
-	            struct sockaddr_in client_addr;
-	            struct epoll_event ev, events[MAX_EVENTS];
+                int					_serverSock;
+				int					_clientSock;
+				int					_epfd;
+				int					_nfds;
+	            struct sockaddr_in	_clientAddr;
+	            struct epoll_event	_ev;
+				struct epoll_event	_events[MAX_EVENTS];
 
     public:
                 Server();
