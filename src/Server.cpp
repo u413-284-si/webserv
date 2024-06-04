@@ -135,13 +135,8 @@ void    Server::handleConnections(int index){
         char	buffer[BUFFER_SIZE];
         int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
         if (bytesRead < 0) {
-			if (errno == EAGAIN || errno == EWOULDBLOCK)
-				break; 
-			else{
-				std::cerr << "error: read\n";
-				close(clientSock);
-				break;
-			}
+			// No more data to be read or error with read
+			break;
         }
         else if (bytesRead == 0) {
             // Connection closed by client
