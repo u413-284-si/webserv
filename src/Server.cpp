@@ -1,5 +1,7 @@
 #include "../inc/Server.hpp"
 
+/* ====== HELPER FUNCTIONS ====== */
+
 /**
  * @brief Set the socket to nonblocking mode
  * 
@@ -18,6 +20,7 @@ static void setNonblocking(int sock)
 		throw std::runtime_error("fcntl(F_SETFL)");
 	}
 }
+/* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 Server::Server()
 {
@@ -69,6 +72,8 @@ Server::~Server()
     close(_serverSock);
     close(_epfd);
 }
+
+/* ====== MEMBER FUNCTIONS ====== */
 
 void    Server::run(){
     while (1) {
