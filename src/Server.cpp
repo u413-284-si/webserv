@@ -22,9 +22,21 @@ static void setNonblocking(int sock)
 }
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
+/**
+ * @brief Constructor for the Server class.
+ * 
+ * This constructor initializes a server instance by creating a server socket,
+ * setting it to non-blocking mode, binding it to a specific address and port,
+ * listening on the server socket, creating an epoll instance for event handling,
+ * and adding the server socket to the epoll instance.
+ * 
+ * @throws std::runtime_error if any of the socket creation, binding, listening,
+ *         epoll creation, or epoll control operations fail.
+ * 
+ */
 Server::Server()
 {
-    // Create server socket
+    // Create server socket using TCP protocol SOCK_STREAM
 	_serverSock = socket(AF_INET, SOCK_STREAM, 0);
 	if (_serverSock < 0) {
 		throw std::runtime_error("socket");
@@ -35,9 +47,9 @@ Server::Server()
 
 	// Bind server socket
     struct sockaddr_in	server_addr = {};
-	server_addr.sin_family = AF_INET;
-	server_addr.sin_addr.s_addr = INADDR_ANY;
-	server_addr.sin_port = htons(PORT);
+	server_addr.sin_family = AF_INET; // Communicates with IPv4
+	server_addr.sin_addr.s_addr = INADDR_ANY; // Accept any arriving ip addresses
+	server_addr.sin_port = htons(PORT); // Listen on specified port
 	if (bind(_serverSock, (struct sockaddr*)&server_addr, sizeof(server_addr))
 		< 0) {
   		close(_serverSock);
@@ -67,6 +79,19 @@ Server::Server()
 	}
 }
 
+/**
+ * @brief Destructor for the Server class.
+ * 
+ * This destructor cleans up resources associated with the server instance by
+ * closing the server socket and the epoll instance.
+ * 
+ * @details The destructor performs the following cleanup actions:
+ * 
+ * 1. Closes the server socket to release the bound port and stop accepting
+ * new connections.
+ * 2. Closes the epoll instance to release associated resources and stop
+ * monitoring events.
+ */
 Server::~Server()
 {
     close(_serverSock);
@@ -75,6 +100,16 @@ Server::~Server()
 
 /* ====== MEMBER FUNCTIONS ====== */
 
+/**
+ * @brief Run the server event loop.
+ * 
+ * This method enters a continuous loop to handle incoming events using epoll.
+ * It waits for events using epoll_wait, processes the events, and dispatches
+ * them to appropriate handler functions.
+ * 
+ * @throws std::runtime_error if epoll_wait encounters an error.
+ * 
+ */
 void    Server::run(){
     while (1) {
         // Blocking call to epoll_wait
@@ -133,6 +168,27 @@ void    Server::acceptConnection(){
     }
 }
 
+/**
+ * @brief Handle data from a client connection.
+ * 
+ * This method is responsible for reading data from a client socket
+ * and processing it.
+ * 
+ * @param index The index of the event in the epoll events array.
+ * 
+ * @details The method performs the following steps:
+ * 
+ * 1. Retrieves the file descriptor of the client socket from the epoll events array.
+ * 2. Enters a loop to continuously read data from the client socket.
+ * 3. Reads data from the client socket using the read function into a buffer.
+ *    - If bytesRead is less than 0, it indicates that there is no more data to be read
+ *      or an error occurred with the read operation, and the loop breaks.
+ *    - If bytesRead is 0, it indicates that the connection has been closed by the client,
+ *      so the method closes the client socket and exits the loop.
+ *    - Otherwise, the method echoes the received data back to the client by writing it
+ *      to the client socket using the write function.
+ *  
+ */
 void    Server::handleConnections(int index){
      // Handle client data
     int clientSock = _events[index].data.fd;
