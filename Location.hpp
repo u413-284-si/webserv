@@ -14,6 +14,8 @@ private:
     std::string m_path;
     std::string m_root;
     std::string m_index;
+    std::string m_cgi_ext;
+    std::string m_cgi_path;
     bool m_autoindex;
     std::vector<std::string> m_allowed_methods;
     std::map<unsigned short, std::string> m_return;
