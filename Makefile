@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/03/15 13:34:53 by sqiu             ###   ########.fr        #
+#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -195,7 +195,6 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@printf "$(RED)removed dir $(OBJ_DIR)$(RESET)\n"
 
-# Remove all object, dependency, binaries and log files
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
 fclean: clean
