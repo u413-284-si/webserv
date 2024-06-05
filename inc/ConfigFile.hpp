@@ -1,5 +1,4 @@
-#ifndef CONFIGFILE_HPP
-#define CONFIGFILE_HPP
+#pragma once
 
 #include "ServerConfig.hpp"
 
