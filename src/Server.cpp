@@ -70,9 +70,10 @@ Server::Server()
 	}
 
 	// Add server socket to epoll instance
-	_ev.events = EPOLLIN | EPOLLET; // Edge-triggered mode
-	_ev.data.fd = _serverSock;
-	if (epoll_ctl(_epfd, EPOLL_CTL_ADD, _serverSock, &_ev) < 0) {
+	struct epoll_event	ev;
+	ev.events = EPOLLIN | EPOLLET; // Edge-triggered mode
+	ev.data.fd = _serverSock;
+	if (epoll_ctl(_epfd, EPOLL_CTL_ADD, _serverSock, &ev) < 0) {
         close(_serverSock);
 		close(_epfd);
 		throw std::runtime_error("epoll_ctl: _serverSock");
@@ -112,8 +113,9 @@ Server::~Server()
  */
 void    Server::run(){
     while (1) {
+		struct epoll_event	events[MAX_EVENTS];
         // Blocking call to epoll_wait
-        int	nfds = epoll_wait(_epfd, _events, MAX_EVENTS, -1);
+        int	nfds = epoll_wait(_epfd, events, MAX_EVENTS, -1);
         if (nfds < 0) {
             close(_serverSock);
             close(_epfd);
@@ -121,10 +123,10 @@ void    Server::run(){
         }
 
         for (int n = 0; n < nfds; ++n) {
-            if (_events[n].data.fd == _serverSock)
+            if (events[n].data.fd == _serverSock)
                 acceptConnection();
             else
-                handleConnections(n);
+                handleConnections(events[n].data.fd);
         }
     }
 }
@@ -132,8 +134,9 @@ void    Server::run(){
 /**
  * @brief Accept new connections
  * 
- * A new connection is accepted, its address saved in _cliendAddr and a 
- * file descriptor for the new client socket is saved in clientSock. The 
+ * A new connection is accepted, its address and port saved in _cliendAddr and a 
+ * file descriptor for the new client socket is saved in clientSock. This 
+ * information is updated each time a new connection is accepted. The 
  * clientSock is added to the list of fds watched by epoll.
  * 
  * The while-loop allows for multiple connections to be accepted in one call
@@ -143,9 +146,10 @@ void    Server::run(){
  */
 void    Server::acceptConnection(){
     while (1) {
-        socklen_t	addr_len = sizeof(_clientAddr);
+		struct sockaddr_in	clientAddr;
+        socklen_t			addr_len = sizeof(clientAddr);
         int	clientSock = accept(
-            _serverSock, (struct sockaddr*)&_clientAddr, &addr_len);
+            _serverSock, (struct sockaddr*)&clientAddr, &addr_len);
         if (clientSock < 0) {
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 break; // No more pending connections
@@ -159,9 +163,10 @@ void    Server::acceptConnection(){
         setNonblocking(clientSock);
 
         // Add client socket to epoll instance
-        _ev.events = EPOLLIN | EPOLLET;
-        _ev.data.fd = clientSock;
-        if (epoll_ctl(_epfd, EPOLL_CTL_ADD, clientSock, &_ev) < 0) {
+		struct epoll_event	ev;
+        ev.events = EPOLLIN | EPOLLET;
+        ev.data.fd = clientSock;
+        if (epoll_ctl(_epfd, EPOLL_CTL_ADD, clientSock, &ev) < 0) {
             std::cerr << "error: epoll_ctl: clientSock\n";
             close(clientSock);
         }
@@ -174,7 +179,7 @@ void    Server::acceptConnection(){
  * This method is responsible for reading data from a client socket
  * and processing it.
  * 
- * @param index The index of the event in the epoll events array.
+ * @param clientSock The file descriptor of the event in the epoll events array.
  * 
  * @details The method performs the following steps:
  * 
@@ -189,9 +194,8 @@ void    Server::acceptConnection(){
  *      to the client socket using the write function.
  *  
  */
-void    Server::handleConnections(int index){
+void    Server::handleConnections(int clientSock){
      // Handle client data
-    int clientSock = _events[index].data.fd;
     while (1) {
         char	buffer[BUFFER_SIZE];
         int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);

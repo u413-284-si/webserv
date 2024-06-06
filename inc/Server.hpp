@@ -26,9 +26,6 @@ class Server{
     private:
                 int					_serverSock;
 				int					_epfd;
-	            struct sockaddr_in	_clientAddr;
-	            struct epoll_event	_ev;
-				struct epoll_event	_events[MAX_EVENTS];
 
     public:
                 Server();
@@ -36,7 +33,7 @@ class Server{
 
                 void    run();
                 void    acceptConnection();
-                void    handleConnections(int index);
+                void    handleConnections(int clientSock);
 };
 
 #endif
