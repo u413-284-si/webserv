@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/08 21:39:09 by sqiu             ###   ########.fr        #
+#    Updated: 2024/06/08 21:40:00 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,8 @@ NAME := webserv
 # ******************************
 
 SRC:= 	main.cpp \
-		RequestParser.cpp
+		RequestParser.cpp \
+		Server.cpp
 
 # ******************************
 # *     Object files           *
