@@ -1,5 +1,4 @@
-#ifndef SERVER_HPP
-# define SERVER_HPP
+#pragma once
 
 /* ====== LIBRARIES ====== */
 
@@ -38,5 +37,3 @@ class Server{
                 void    acceptConnection();
                 void    handleConnections(int clientSock);
 };
-
-#endif
