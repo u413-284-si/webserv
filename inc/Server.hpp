@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <errno.h>
 #include <string.h>
+#include <map>
 
 /* ====== DEFINITIONS ====== */
 
@@ -25,9 +26,9 @@
 
 class Server{
     private:
-                int				m_serverSock;
-				int				m_epfd;
-				std::string		m_requestString;
+                int							m_serverSock;
+				int							m_epfd;
+				std::map<int,std::string>	m_requestStrings;
 
     public:
                 Server();

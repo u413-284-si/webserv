@@ -209,9 +209,9 @@ void    Server::handleConnections(int clientSock){
 			// 	RequestParser	parseSoGood; 
 
 			// 	parseSoGood.parse();
-			// 	m_requestString.clear();
+			// 	m_requestString[clientSock].clear();
 			// } else
-			// 		m_requestString.append(buffer);
+			// 		m_requestStrings[clientSock] += buffer;
 			// 
         }
 }
