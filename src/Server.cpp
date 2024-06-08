@@ -37,46 +37,46 @@ static void setNonblocking(int sock)
 Server::Server()
 {
     // Create server socket using TCP protocol SOCK_STREAM
-	_serverSock = socket(AF_INET, SOCK_STREAM, 0);
-	if (_serverSock < 0) {
+	m_serverSock = socket(AF_INET, SOCK_STREAM, 0);
+	if (m_serverSock < 0) {
 		throw std::runtime_error("socket");
 	}
 
 	// Set server socket to non-blocking
-	setNonblocking(_serverSock);
+	setNonblocking(m_serverSock);
 
 	// Bind server socket
     struct sockaddr_in	server_addr = {};
 	server_addr.sin_family = AF_INET; // Communicates with IPv4
 	server_addr.sin_addr.s_addr = INADDR_ANY; // Accept any arriving ip addresses
 	server_addr.sin_port = htons(PORT); // Listen on specified port
-	if (bind(_serverSock, (struct sockaddr*)&server_addr, sizeof(server_addr))
+	if (bind(m_serverSock, (struct sockaddr*)&server_addr, sizeof(server_addr))
 		< 0) {
-  		close(_serverSock);
+  		close(m_serverSock);
 		throw std::runtime_error("bind");
 	}
 
 	// Listen on server socket
-	if (listen(_serverSock, 10) < 0) {
-        close(_serverSock);
+	if (listen(m_serverSock, 10) < 0) {
+        close(m_serverSock);
 		throw std::runtime_error("listen");
 	}
 
 	// Create epoll instance
-	_epfd = epoll_create1(0);
-	if (_epfd < 0) {
-        close(_serverSock);
+	m_epfd = epoll_create1(0);
+	if (m_epfd < 0) {
+        close(m_serverSock);
 		throw std::runtime_error("epoll_create1");
 	}
 
 	// Add server socket to epoll instance
 	struct epoll_event	ev;
 	ev.events = EPOLLIN | EPOLLET; // Edge-triggered mode
-	ev.data.fd = _serverSock;
-	if (epoll_ctl(_epfd, EPOLL_CTL_ADD, _serverSock, &ev) < 0) {
-        close(_serverSock);
-		close(_epfd);
-		throw std::runtime_error("epoll_ctl: _serverSock");
+	ev.data.fd = m_serverSock;
+	if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, m_serverSock, &ev) < 0) {
+        close(m_serverSock);
+		close(m_epfd);
+		throw std::runtime_error("epoll_ctl: m_serverSock");
 	}
 }
 
@@ -95,8 +95,8 @@ Server::Server()
  */
 Server::~Server()
 {
-    close(_serverSock);
-    close(_epfd);
+    close(m_serverSock);
+    close(m_epfd);
 }
 
 /* ====== MEMBER FUNCTIONS ====== */
@@ -115,12 +115,12 @@ void    Server::run(){
     while (1) {
 		struct epoll_event	events[MAX_EVENTS];
         // Blocking call to epoll_wait
-        int	nfds = epoll_wait(_epfd, events, MAX_EVENTS, -1);
+        int	nfds = epoll_wait(m_epfd, events, MAX_EVENTS, -1);
         if (nfds < 0)
             throw std::runtime_error("epoll_wait");
 
         for (int n = 0; n < nfds; ++n) {
-            if (events[n].data.fd == _serverSock)
+            if (events[n].data.fd == m_serverSock)
                 acceptConnection();
             else
                 handleConnections(events[n].data.fd);
@@ -146,7 +146,7 @@ void    Server::acceptConnection(){
 		struct sockaddr_in	clientAddr;
         socklen_t			addr_len = sizeof(clientAddr);
         int	clientSock = accept(
-            _serverSock, (struct sockaddr*)&clientAddr, &addr_len);
+            m_serverSock, (struct sockaddr*)&clientAddr, &addr_len);
         if (clientSock < 0) {
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 break; // No more pending connections
@@ -156,14 +156,11 @@ void    Server::acceptConnection(){
             }
         }
 
-        // Set client socket to non-blocking
-        setNonblocking(clientSock);
-
         // Add client socket to epoll instance
 		struct epoll_event	ev;
-        ev.events = EPOLLIN | EPOLLET;
+        ev.events = EPOLLIN;
         ev.data.fd = clientSock;
-        if (epoll_ctl(_epfd, EPOLL_CTL_ADD, clientSock, &ev) < 0) {
+        if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, clientSock, &ev) < 0) {
             std::cerr << "error: epoll_ctl: clientSock: " << strerror(errno) << "\n";
             close(clientSock);
         }
@@ -193,20 +190,28 @@ void    Server::acceptConnection(){
  */
 void    Server::handleConnections(int clientSock){
      // Handle client data
-    while (1) {
         char	buffer[BUFFER_SIZE];
         int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
         if (bytesRead < 0) {
-			// No more data to be read or error with read
-			break;
-        }
+			std::cerr << "error: read\n";
+			close(clientSock);
+		}
         else if (bytesRead == 0) {
             // Connection closed by client
             close(clientSock);
-            break;
         } else {
             // Echo data back to client
             write(clientSock, buffer, bytesRead);
+			// FIXME: check requestString for complete HTTP request.
+			// If yes, hand over to request parser and then clear the requestString.
+			// If no, concatenate to requestString and exit, only to come back for remainder. 
+			// if (checkRequestString()) {
+			// 	RequestParser	parseSoGood; 
+
+			// 	parseSoGood.parse();
+			// 	m_requestString.clear();
+			// } else
+			// 		m_requestString.append(buffer);
+			// 
         }
-    }
 }

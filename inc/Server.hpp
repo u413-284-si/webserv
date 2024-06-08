@@ -25,8 +25,9 @@
 
 class Server{
     private:
-                int					_serverSock;
-				int					_epfd;
+                int				m_serverSock;
+				int				m_epfd;
+				std::string		m_requestString;
 
     public:
                 Server();
