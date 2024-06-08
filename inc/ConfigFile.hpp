@@ -16,7 +16,7 @@ struct Location {
     std::string index;
     std::string cgiExt;
     std::string cgiPath;
-    bool autoindex;
+    bool isAutoindex;
     bool allowed_methods[MethodCount];
     std::map<unsigned short, std::string> returns;
 };
