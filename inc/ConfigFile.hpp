@@ -6,7 +6,6 @@
 
 enum Method { MethodGet,
     MethodPost,
-    MethodPut,
     MethodDelete,
     MethodCount };
 
