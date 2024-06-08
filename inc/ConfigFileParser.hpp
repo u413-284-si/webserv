@@ -4,7 +4,7 @@
 
 class ConfigFileParser {
 public:
-    ConfigFileParser(std::string config_file);
+    ConfigFileParser(std::string configFile);
     ~ConfigFileParser();
 
 private:
