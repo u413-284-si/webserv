@@ -13,6 +13,7 @@
 #include <netinet/in.h>
 #include <algorithm>
 #include <errno.h>
+#include <string.h>
 
 /* ====== DEFINITIONS ====== */
 

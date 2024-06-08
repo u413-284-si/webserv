@@ -3,7 +3,8 @@
 int main(int argc, char** argv)
 {
 	if (argc != 2) {
-		std::cerr << "error: arguments invalid\n";
+		std::cerr << "error: arguments invalid\nexpected: ";
+		std::cerr << argv[0] << " <config file>\n";
 		return 1;
 	}
 	(void)argv;

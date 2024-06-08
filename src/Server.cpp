@@ -116,11 +116,8 @@ void    Server::run(){
 		struct epoll_event	events[MAX_EVENTS];
         // Blocking call to epoll_wait
         int	nfds = epoll_wait(_epfd, events, MAX_EVENTS, -1);
-        if (nfds < 0) {
-            close(_serverSock);
-            close(_epfd);
+        if (nfds < 0)
             throw std::runtime_error("epoll_wait");
-        }
 
         for (int n = 0; n < nfds; ++n) {
             if (events[n].data.fd == _serverSock)
@@ -154,7 +151,7 @@ void    Server::acceptConnection(){
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 break; // No more pending connections
             } else {
-                std::cerr << "error: accept\n";
+                std::cerr << "error: accept: " << strerror(errno) << "\n";
                 break;
             }
         }
@@ -167,7 +164,7 @@ void    Server::acceptConnection(){
         ev.events = EPOLLIN | EPOLLET;
         ev.data.fd = clientSock;
         if (epoll_ctl(_epfd, EPOLL_CTL_ADD, clientSock, &ev) < 0) {
-            std::cerr << "error: epoll_ctl: clientSock\n";
+            std::cerr << "error: epoll_ctl: clientSock: " << strerror(errno) << "\n";
             close(clientSock);
         }
     }
