@@ -7,7 +7,14 @@
 enum Method { MethodGet,
     MethodPost,
     MethodDelete,
-    MethodCount };
+    MethodCount
+};
+
+struct LimitExcept {
+    bool allowedMethods[MethodCount];
+	std::string allow;
+	std::string deny;
+};
 
 struct Location {
     std::string path;
@@ -16,7 +23,7 @@ struct Location {
     std::string cgiExt;
     std::string cgiPath;
     bool isAutoindex;
-    bool allowed_methods[MethodCount];
+	LimitExcept limitExcept;
     std::map<unsigned short, std::string> returns;
 };
 
