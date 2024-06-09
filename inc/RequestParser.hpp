@@ -9,13 +9,6 @@
 
 /* ====== DEFINITIONS ====== */
 
-enum Method {
-    Get,
-    Post,
-    Delete,
-    MethodCount
-};
-
 struct HTTPRequest {
 	std::string										method;
 	std::string										uri;
@@ -28,16 +21,17 @@ struct HTTPRequest {
 
 class RequestParser {
 	public:
+				HTTPRequest	m_request;
+				int			m_requestMethod = 0;
+
 				RequestParser();
 				~RequestParser();
 
 				HTTPRequest	parseHttpRequest(const std::string& request);
-				void		parseMethod() const;
+				void		parseMethod();
 				void		parseUri() const;
 				void		parseVersion() const;
 
 	private:
-				HTTPRequest	m_request;
-				int			m_requestMethod = 0;
-
+				
 };

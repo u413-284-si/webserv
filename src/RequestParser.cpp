@@ -48,6 +48,17 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
     return httpRequest;
 }
 
-void	RequestParser::parseMethod() const {
+void	RequestParser::parseMethod() {
 	if (m_request.method == "GET")
+		m_requestMethod = 1 << 0;
+	else if (m_request.method == "POST")
+		m_requestMethod = 1 << 1;
+	else if (m_request.method == "DELETE")
+		m_requestMethod = 1 << 2;
+	else
+		throw std::runtime_error("Invalid HTTP request: unknown method");
+}
+
+void	RequestParser::parseUri() {
+	
 }
