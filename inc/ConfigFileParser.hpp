@@ -8,5 +8,5 @@ public:
     ~ConfigFileParser();
 
 private:
-    struct ConfigFile m_configFile;
+    ConfigFile m_configFile;
 };
