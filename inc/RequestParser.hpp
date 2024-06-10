@@ -28,7 +28,10 @@ class RequestParser {
 				std::string	parseMethod(const std::string& requestLine);
 				std::string	parseUri(const std::string& requestLine);
 				std::string	parseVersion(const std::string& requestLine);
+
+				// Helper functions
 				std::string	checkForSpace(const std::string&);
+				bool		isValidURIChar(uint8_t c) const;
 
 	private:
 				int			m_errorCode;

@@ -11,6 +11,37 @@ std::string	RequestParser::checkForSpace(const std::string& str) {
 	}
 }
 
+bool	RequestParser::isValidURIChar(uint8_t c) const {
+	// Check for unreserved chars
+	if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~')
+        return true;
+	
+	// Check for reserved characters
+    switch (c) {
+	case ':':
+	case '/':
+	case '?':
+	case '#':
+	case '[':
+	case ']':
+	case '@':
+	case '!':
+	case '$':
+	case '&':
+	case '\'':
+	case '(':
+	case ')':
+	case '*':
+	case '+':
+	case ',':
+	case ';':
+	case '=':
+		return true;
+	default:
+		return false;
+    }
+}
+
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 RequestParser::RequestParser() {}
@@ -76,7 +107,19 @@ std::string	RequestParser::parseMethod(const std::string& requestLine) {
 	}
 	return (requestLine.substr(i));
 }
-
+/**
+ * @brief Parse URI for origin server
+ * 
+ * used to identify a resource on an origin server or gateway.
+ * 
+ * @param requestLine 
+ * @return std::string 
+ */
 std::string	RequestParser::parseUri(const std::string& requestLine) {
+	int	i = 0;
+	if (requestLine[i] != '/') {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: missing slash in URI");
+	}
 
 }
