@@ -21,17 +21,17 @@ struct HTTPRequest {
 
 class RequestParser {
 	public:
-				HTTPRequest	m_request;
-				int			m_requestMethod = 0;
-
 				RequestParser();
 				~RequestParser();
 
 				HTTPRequest	parseHttpRequest(const std::string& request);
-				void		parseMethod();
-				void		parseUri() const;
-				void		parseVersion() const;
+				std::string	parseMethod(const std::string& requestLine);
+				std::string	parseUri(const std::string& requestLine);
+				std::string	parseVersion(const std::string& requestLine);
+				std::string	checkForSpace(const std::string&);
 
 	private:
-				
+				int			m_errorCode;
+				int			m_requestMethod = 0;
+				HTTPRequest	m_request;
 };

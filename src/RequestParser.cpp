@@ -1,5 +1,16 @@
 #include "RequestParser.hpp"
 
+/* ====== HELPER FUNCTIONS ====== */
+
+std::string	RequestParser::checkForSpace(const std::string& str) {
+	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
+		return (str.substr(1));
+	else {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: missing single space");
+	}
+}
+
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 RequestParser::RequestParser() {}
@@ -14,15 +25,15 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 	
 	// Step 1: Parse the request-line
 	std::string			requestLine;
-	if (!std::getline(requestStream, requestLine) || requestLine.empty())
+	if (!std::getline(requestStream, requestLine) || requestLine.empty()) {
+		m_errorCode = 400;
 		throw std::runtime_error("Invalid HTTP request: missing request line");
-	
-	std::istringstream	requestLineStream(requestLine);
-    if (!(requestLineStream >> m_request.method >> m_request.uri >> m_request.version))
-        throw std::runtime_error("Invalid HTTP request: malformed request line");
-	parseMethod();
-	parseUri();
-	parseVersion();
+	}
+	requestLine = parseMethod(requestLine);
+	requestLine = checkForSpace(requestLine);
+	requestLine = parseUri(requestLine);
+	requestLine = checkForSpace(requestLine);
+	requestLine = parseVersion(requestLine);
 
     // Step 2: Parse headers
     std::string headerLine;
@@ -48,17 +59,24 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
     return httpRequest;
 }
 
-void	RequestParser::parseMethod() {
+std::string	RequestParser::parseMethod(const std::string& requestLine) {
+	int	i = -1;
+	while (isalpha(requestLine[++i]))
+		m_request.method.push_back(requestLine[i]);
+
 	if (m_request.method == "GET")
 		m_requestMethod = 1 << 0;
 	else if (m_request.method == "POST")
 		m_requestMethod = 1 << 1;
 	else if (m_request.method == "DELETE")
 		m_requestMethod = 1 << 2;
-	else
-		throw std::runtime_error("Invalid HTTP request: unknown method");
+	else {
+		m_errorCode = 501;
+		throw std::runtime_error("Invalid HTTP request: method not implemented");
+	}
+	return (requestLine.substr(i));
 }
 
-void	RequestParser::parseUri() {
-	
+std::string	RequestParser::parseUri(const std::string& requestLine) {
+
 }
