@@ -11,10 +11,16 @@
 
 struct HTTPRequest {
 	std::string										method;
-	std::string										uri;
+	URI												uri;
 	std::string										version;
 	std::unordered_map<std::string, std::string>	headers;
 	std::string										body;
+};
+
+struct URI {
+	std::string		path;
+	std::string		query;
+	std::string		fragment;
 };
 
 /* ====== CLASS DECLARATION ====== */
@@ -27,6 +33,8 @@ class RequestParser {
 				HTTPRequest	parseHttpRequest(const std::string& request);
 				std::string	parseMethod(const std::string& requestLine);
 				std::string	parseUri(const std::string& requestLine);
+				void		parseQuery(const std::string& requestLine, int& index);
+				void		parseFragment(const std::string& requestLine, int& index);
 				std::string	parseVersion(const std::string& requestLine);
 
 				// Helper functions
@@ -35,6 +43,6 @@ class RequestParser {
 
 	private:
 				int			m_errorCode;
-				int			m_requestMethod = 0;
+				int			m_requestMethod;
 				HTTPRequest	m_request;
 };

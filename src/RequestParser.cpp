@@ -121,5 +121,50 @@ std::string	RequestParser::parseUri(const std::string& requestLine) {
 		m_errorCode = 400;
 		throw std::runtime_error("Invalid HTTP request: missing slash in URI");
 	}
+	while (requestLine[++i]) {
+		if (requestLine[i] == ' ')
+			break;
+		else if (!isValidURIChar(requestLine[i])) {
+			m_errorCode = 400;
+			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
+		}
+		else if (requestLine[i] == '?')
+			parseQuery(requestLine, i);
+		else if (requestLine[i] == '#')
+			parseFragment(requestLine, i);
+		else
+			m_request.uri.path.push_back(requestLine[i]);
+		// FIXME: setup max. URI length?
+	}
+	return (requestLine.substr(i));
+}
 
+void	RequestParser::parseQuery(const std::string& requestLine, int& index) {
+	while (requestLine[++index]) {
+		if (requestLine[index] == ' ' || requestLine[index] == '#') {
+			index--;
+			break;
+		}
+		else if (!isValidURIChar(requestLine[index])) {
+			m_errorCode = 400;
+			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
+		}
+		else
+			m_request.uri.query.push_back(requestLine[index]);
+	}
+}
+
+void	RequestParser::parseFragment(const std::string& requestLine, int& index) {
+	while (requestLine[++index]) {
+		if (requestLine[index] == ' ') {
+			index--;
+			break;
+		}
+		else if (!isValidURIChar(requestLine[index])) {
+			m_errorCode = 400;
+			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
+		}
+		else
+			m_request.uri.fragment.push_back(requestLine[index]);
+	}
 }
