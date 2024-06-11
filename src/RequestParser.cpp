@@ -11,6 +11,13 @@ std::string	RequestParser::checkForSpace(const std::string& str) {
 	}
 }
 
+void	RequestParser::checkForCRLF(const std::string& str) {
+	if (str.length() != 2 || str[0] != '\r' || str[1] != '\n') {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: missing CRLF");
+	}
+}
+
 bool	RequestParser::isValidURIChar(uint8_t c) const {
 	// Check for unreserved chars
 	if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~')
@@ -65,6 +72,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 	requestLine = parseUri(requestLine);
 	requestLine = checkForSpace(requestLine);
 	requestLine = parseVersion(requestLine);
+	checkForCRLF(requestLine);
 
     // Step 2: Parse headers
     std::string headerLine;
@@ -107,6 +115,7 @@ std::string	RequestParser::parseMethod(const std::string& requestLine) {
 	}
 	return (requestLine.substr(i));
 }
+
 /**
  * @brief Parse URI for origin server
  * 
@@ -121,6 +130,7 @@ std::string	RequestParser::parseUri(const std::string& requestLine) {
 		m_errorCode = 400;
 		throw std::runtime_error("Invalid HTTP request: missing slash in URI");
 	}
+	m_request.uri.path.push_back(requestLine[i]);
 	while (requestLine[++i]) {
 		if (requestLine[i] == ' ')
 			break;
@@ -129,9 +139,9 @@ std::string	RequestParser::parseUri(const std::string& requestLine) {
 			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
 		}
 		else if (requestLine[i] == '?')
-			parseQuery(requestLine, i);
+			parseUriQuery(requestLine, i);
 		else if (requestLine[i] == '#')
-			parseFragment(requestLine, i);
+			parseUriFragment(requestLine, i);
 		else
 			m_request.uri.path.push_back(requestLine[i]);
 		// FIXME: setup max. URI length?
@@ -139,7 +149,7 @@ std::string	RequestParser::parseUri(const std::string& requestLine) {
 	return (requestLine.substr(i));
 }
 
-void	RequestParser::parseQuery(const std::string& requestLine, int& index) {
+void	RequestParser::parseUriQuery(const std::string& requestLine, int& index) {
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ' || requestLine[index] == '#') {
 			index--;
@@ -154,7 +164,7 @@ void	RequestParser::parseQuery(const std::string& requestLine, int& index) {
 	}
 }
 
-void	RequestParser::parseFragment(const std::string& requestLine, int& index) {
+void	RequestParser::parseUriFragment(const std::string& requestLine, int& index) {
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ') {
 			index--;
@@ -167,4 +177,28 @@ void	RequestParser::parseFragment(const std::string& requestLine, int& index) {
 		else
 			m_request.uri.fragment.push_back(requestLine[index]);
 	}
+}
+
+std::string	RequestParser::parseVersion(const std::string& requestLine) {
+	if (requestLine.substr(0, 5) != "HTTP/") {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: invalid format of version");
+	}
+	int	i = 5;
+	if (!isdigit(requestLine[i])) {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: invalid version major");
+	}
+	m_request.version.push_back(requestLine[i]);
+	if (requestLine[++i] != '.') {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: invalid version delimiter");
+	}
+	m_request.version.push_back(requestLine[i]);
+	if (!isdigit(requestLine[++i])) {
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: invalid version minor");
+	}
+	m_request.version.push_back(requestLine[i]);
+	return (requestLine.substr(++i));
 }

@@ -33,12 +33,13 @@ class RequestParser {
 				HTTPRequest	parseHttpRequest(const std::string& request);
 				std::string	parseMethod(const std::string& requestLine);
 				std::string	parseUri(const std::string& requestLine);
-				void		parseQuery(const std::string& requestLine, int& index);
-				void		parseFragment(const std::string& requestLine, int& index);
+				void		parseUriQuery(const std::string& requestLine, int& index);
+				void		parseUriFragment(const std::string& requestLine, int& index);
 				std::string	parseVersion(const std::string& requestLine);
 
 				// Helper functions
 				std::string	checkForSpace(const std::string&);
+				void		checkForCRLF(const std::string&);
 				bool		isValidURIChar(uint8_t c) const;
 
 	private:
