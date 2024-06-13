@@ -11,8 +11,15 @@ std::string	RequestParser::checkForSpace(const std::string& str) {
 	}
 }
 
+/**
+ * @brief Check for CRLF at the end of the request line.
+ * 
+ * Only checks for the carriage return \r, as the newline \n is discarded
+ * by std::getline
+ * @param str	String containing remainder of request line after HTTP version
+ */
 void	RequestParser::checkForCRLF(const std::string& str) {
-	if (str.length() != 2 || str[0] != '\r' || str[1] != '\n') {
+	if (str.length() != 1 || str[0] != '\r') {
 		m_errorCode = 400;
 		throw std::runtime_error("Invalid HTTP request: missing CRLF");
 	}
