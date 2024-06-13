@@ -82,20 +82,19 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
             std::getline(headerStream >> std::ws, headerValue);
-            httpRequest.headers[headerName] = headerValue;
+            m_request.headers[headerName] = headerValue;
         }
     }
 
-    // Parse body (if any)
+    // Step 3: Parse body (if any)
     std::string body;
     while (std::getline(requestStream, body)) {
-        httpRequest.body += body + "\n";
+        m_request.body += body + "\n";
     }
-    if (!httpRequest.body.empty() && httpRequest.body.back() == '\n') {
-        httpRequest.body.pop_back(); // Remove the last newline character
+    if (!m_request.body.empty() && m_request.body.back() == '\n') {
+        m_request.body.pop_back(); // Remove the last newline character
     }
-
-    return httpRequest;
+    return m_request;
 }
 
 std::string	RequestParser::parseMethod(const std::string& requestLine) {
