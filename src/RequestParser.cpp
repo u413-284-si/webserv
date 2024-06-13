@@ -160,7 +160,7 @@ void	RequestParser::parseUriQuery(const std::string& requestLine, int& index) {
 			index--;
 			break;
 		}
-		else if (!isValidURIChar(requestLine[index])) {
+		else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '?') {
 			m_errorCode = 400;
 			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
 		}
@@ -175,7 +175,7 @@ void	RequestParser::parseUriFragment(const std::string& requestLine, int& index)
 			index--;
 			break;
 		}
-		else if (!isValidURIChar(requestLine[index])) {
+		else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '#') {
 			m_errorCode = 400;
 			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
 		}
