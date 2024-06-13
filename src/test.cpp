@@ -76,6 +76,42 @@ void	testValidRequestLine() {
 			, "DELETE\n/index.html\n\n\n1.1"),
 		std::make_pair("POST /abracadabra/ipsum?user=aziz&key=password HTTP/2.0\r\n"
 			, "POST\n/abracadabra/ipsum\nuser=aziz&key=password\n\n2.0"),
+		std::make_pair("GET /search? HTTP/1.1\r\n"
+			, "GET\n/search\n\n\n1.1"),
+		std::make_pair("GET /search?# HTTP/1.1\r\n"
+			, "GET\n/search\n\n\n1.1"),
+	};
+	runTests("VALID REQUEST LINES", sizeof(tests) / sizeof(tests[0]), tests);
+}
+
+void	testInvalidRequestLine() {
+	std::pair<std::string, std::string>	tests[] = {
+		std::make_pair("PUT /search?query=openai&year=2024#conclusion HTTP/1.1\r\n"
+			, "PUT\n/search\nquery=openai&year=2024\nconclusion\n1.1"),
+		std::make_pair("get /search?query=openai&year=2024#conclusion HTTP/1.1\r\n"
+			, "GET\n/search\nquery=openai&year=2024\nconclusion\n1.1"),
+		std::make_pair("GET/search?query=openai&year=2024#conclusion HTTP/1.1\r\n"
+			, "GET\n/search\nquery=openai&year=2024\nconclusion\n1.1"),
+		std::make_pair("GET search?query=openai&year=2024#conclusion HTTP/1.1\r\n"
+			, "GET\n/search\nquery=openai&year=2024\nconclusion\n1.1"),
+		std::make_pair("GET /search?? HTTP/1.1\r\n"
+			, "GET\n/search\n\n\n1.1"),
+		std::make_pair("GET /search?## HTTP/1.1\r\n"
+			, "GET\n/search\n\n\n1.1"),
+		std::make_pair("GET /search§blabla/index.html HTTP/1.1\r\n"
+			, "GET\n/search\n\n\n1.1"),	
+		std::make_pair("GET /searchHTTP/1.1\r\n"
+			, "GET\n/search\n\n\n1.1"),
+		std::make_pair("GET /search.html TTP/1.1\r\n"
+			, "GET\n/search.html\n\n\n1.1"),
+		std::make_pair("GET /search.html HTTP1.1\r\n"
+			, "GET\n/search.html\n\n\n1.1"),
+		std::make_pair("GET /search.html HTTP/x.1\r\n"
+			, "GET\n/search.html\n\n\n1.1"),
+		std::make_pair("GET /search.html HTTP/11\r\n"
+			, "GET\n/search.html\n\n\n1.1"),
+		std::make_pair("GET /search.html HTTP/1.x\r\n"
+			, "GET\n/search.html\n\n\n1.1"),
 	};
 	runTests("VALID REQUEST LINES", sizeof(tests) / sizeof(tests[0]), tests);
 }
@@ -83,5 +119,6 @@ void	testValidRequestLine() {
 int	main()
 {
 	testValidRequestLine();
+	testInvalidRequestLine();
 	return 0;
 }
