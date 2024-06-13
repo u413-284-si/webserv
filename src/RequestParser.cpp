@@ -89,6 +89,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
             std::getline(headerStream >> std::ws, headerValue);
+			headerValue = trimTrailingWhiteSpaces(headerValue);
             m_request.headers[headerName] = headerValue;
         }
     }

@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "utilities.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <map>
