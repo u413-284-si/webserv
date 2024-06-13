@@ -89,10 +89,9 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
     // Step 3: Parse body (if any)
     std::string body;
     while (std::getline(requestStream, body)) {
-        m_request.body += body + "\n";
-    }
-    if (!m_request.body.empty() && m_request.body.back() == '\n') {
-        m_request.body.pop_back(); // Remove the last newline character
+        if (!m_request.body.empty())
+			body += "\n";
+		m_request.body += body;
     }
     return m_request;
 }
