@@ -26,3 +26,14 @@ void ConfigFileParser::checkBrackets(const std::string &configFileLine)
 	}
 
 }
+
+std::string ConfigFileParser::removeLeadingAndTrailingSpaces(const std::string &str)
+{
+	std::string result;
+	
+	result = str;
+	result.erase(0, str.find_first_not_of(' '));
+	result.erase(result.find_last_not_of(' ') + 1);
+
+	return (result);
+}
