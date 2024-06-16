@@ -16,6 +16,21 @@ ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
 	if (removeLeadingAndTrailingSpaces(configFileLine) != "http {")
 		throw std::runtime_error("Error: Config file does not start with 'http {'");
 	checkBrackets(configFileLine);
+
+	while (getline(inputConfigFile, configFileLine))
+	{
+		checkBrackets(configFileLine);
+		configFileLine = removeLeadingAndTrailingSpaces(configFileLine);
+		if (configFileLine == "server {")
+		{
+			getline(inputConfigFile, configFileLine);
+			configFileLine = removeLeadingAndTrailingSpaces(configFileLine);	
+			readServerConfig(configFileLine);
+		}
+	}
+
+	if (m_brackets.size() != 0)
+		throw std::runtime_error("Error: Missing bracket(s) in config file");
 }
 
 ConfigFileParser::~ConfigFileParser(){}
