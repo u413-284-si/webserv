@@ -11,6 +11,11 @@ ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
 		throw std::runtime_error("Error: Failed to open config file");
 	else if (inputConfigFile.peek() == std::ifstream::traits_type::eof())
 		throw std::runtime_error("Error: Config file is empty");
+
+	getline(inputConfigFile, configFileLine);
+	if (removeLeadingAndTrailingSpaces(configFileLine) != "http {")
+		throw std::runtime_error("Error: Config file does not start with 'http {'");
+	checkBrackets(configFileLine);
 }
 
 ConfigFileParser::~ConfigFileParser(){}
