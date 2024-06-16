@@ -13,7 +13,16 @@ ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
 		throw std::runtime_error("Error: Config file is empty");
 }
 
-ConfigFileParser::~ConfigFileParser()
+ConfigFileParser::~ConfigFileParser(){}
+
+void ConfigFileParser::checkBrackets(const std::string &configFileLine)
 {
+	for (std::string::const_iterator it = configFileLine.begin(); it != configFileLine.end(); it++)
+	{
+		if (*it == '{')
+			m_brackets.push('{');
+		else if (*it == '}')
+			m_brackets.pop();
+	}
 
 }
