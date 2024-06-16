@@ -37,3 +37,19 @@ std::string ConfigFileParser::removeLeadingAndTrailingSpaces(const std::string &
 
 	return (result);
 }
+
+void ConfigFileParser::readServerConfig(const std::string &configFileLine)
+{
+	ServerConfig serverConfig;
+	std::string directive;
+	const char* validServerDirectives[] = {"server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root", "location"};
+	const int validServerDirectivesSize = sizeof(validServerDirectives) / sizeof(validServerDirectives[0]);
+	
+	std::set<std::string> validServerDirectivesSet(validServerDirectives, validServerDirectives + validServerDirectivesSize);
+
+	directive = configFileLine.substr(0, configFileLine.find(' '));
+	if (std::find(validServerDirectivesSet.begin(), validServerDirectivesSet.end(), directive) == validServerDirectivesSet.end())
+		throw std::runtime_error("Error: Invalid server directive");
+
+	m_configFile.serverConfigs.push_back(serverConfig);
+}
