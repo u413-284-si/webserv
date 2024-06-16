@@ -6,7 +6,7 @@
 #    By: chasling <chasling@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/16 14:01:15 by chasling         ###   ########.fr        #
+#    Updated: 2024/06/16 14:15:25 by chasling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,6 @@ TEST := test
 
 SRC:= 	main.cpp \
 		ConfigFileParser.cpp \
-		ConfigFile.cpp
 
 # ******************************
 # *     Object files           *
