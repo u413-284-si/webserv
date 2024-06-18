@@ -83,6 +83,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 
     // Step 2: Parse headers
     std::string headerLine;
+	// The end of the headers section is marked by an empty line (\r\n\r\n).
     while (std::getline(requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			m_errorCode = 400;
