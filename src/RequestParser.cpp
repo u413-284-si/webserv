@@ -123,12 +123,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerName;
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
-			if (isspace(headerName[headerName.size() - 1])){
-				m_errorCode = 400;
-				throw std::runtime_error("Invalid HTTP request: Whitespace between header field-name and colon detected");
-			}
 			parseHeaderName(headerName);
-			
 			// getline() removes trailing \r\n
             std::getline(headerStream >> std::ws, headerValue);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
@@ -258,6 +253,10 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 
 void		RequestParser::parseHeaderName(const std::string& headerName)
 {
+	if (isspace(headerName[headerName.size() - 1])){
+		m_errorCode = 400;
+		throw std::runtime_error("Invalid HTTP request: Whitespace between header field-name and colon detected");
+	}
 	for (size_t i = 0; i < headerName.size(); i++) {
 		if (!isValidHeaderFieldNameToken(headerName[i])) {
 			m_errorCode = 400;
