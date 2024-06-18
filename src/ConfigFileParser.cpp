@@ -85,7 +85,7 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
     m_configFile.currentLine.erase(m_configFile.currentLine.find_last_not_of(' ') + 1);
 }
 
-void ConfigFileParser::readServerConfig(const std::string& configFileLine)
+void ConfigFileParser::readServerConfig(size_t index)
 {
     Server server;
     std::string directive;
@@ -94,8 +94,8 @@ void ConfigFileParser::readServerConfig(const std::string& configFileLine)
 
     std::set<std::string> validServerDirectivesSet(validServerDirectives, validServerDirectives + validServerDirectivesSize);
 
-    directive = configFileLine.substr(0, configFileLine.find(' '));
-    if (std::find(validServerDirectivesSet.begin(), validServerDirectivesSet.end(), directive) == validServerDirectivesSet.end())
+    directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
+    if (std::find(validServerDirectivesSet.begin(), validServerDirectivesSet.end(), directive) == validServerDirectivesSet.end() && !directive.empty())	
         throw std::runtime_error("Error: Invalid server directive");
 
     m_configFile.servers.push_back(server);
