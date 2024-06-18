@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/13 15:36:18 by sqiu             ###   ########.fr        #
+#    Updated: 2024/06/18 18:15:58 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,6 +80,7 @@ SRC:= 	main.cpp \
 		utilities.cpp
 
 TEST_SRC:=	test.cpp \
+			testRequestLine.cpp \
 			RequestParser.cpp \
 			Server.cpp \
 			utilities.cpp
