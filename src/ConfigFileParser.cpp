@@ -62,20 +62,27 @@ void ConfigFileParser::checkBrackets(const std::string& configFilePath)
 }
 
 /**
- * @brief Removes leading and trailing spaces from a string
+ * @brief Reads the current line of the config file and removes leading and trailing spaces
  * 
- * @param str string with potential leading and trailing spaces
- * @return std::string string without leading and trailing spaces
+ * @return true if the line was read successfully
+ * @return false otherwise
  */
-std::string ConfigFileParser::removeLeadingAndTrailingSpaces(const std::string& str)
+bool ConfigFileParser::readAndTrimLine(void)
 {
-    std::string result;
+	if (!getline(m_configFile.stream, m_configFile.currentLine))
+		return false;
+	removeLeadingAndTrailingSpaces();
+	return true;
+}
 
-    result = str;
-    result.erase(0, str.find_first_not_of(' '));
-    result.erase(result.find_last_not_of(' ') + 1);
-
-    return (result);
+/**
+ * @brief Removes leading and trailing spaces
+ * 		  from the current line of the config file
+ */
+void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
+{
+    m_configFile.currentLine.erase(0, m_configFile.currentLine.find_first_not_of(' '));
+    m_configFile.currentLine.erase(m_configFile.currentLine.find_last_not_of(' ') + 1);
 }
 
 void ConfigFileParser::readServerConfig(const std::string& configFileLine)
