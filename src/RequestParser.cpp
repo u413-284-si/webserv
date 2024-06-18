@@ -59,35 +59,57 @@ bool	RequestParser::isValidURIChar(uint8_t c) const
     }
 }
 
+bool	RequestParser::isValidHeaderFieldValueDelimiter(uint8_t c) const
+{
+	switch (c) {
+	case '(':
+	case ')':
+	case '<':
+	case '>':
+	case '@':
+	case ',':
+	case ';':
+	case ':':
+	case '\\':
+	case '"':
+	case '/':
+	case '[':
+	case ']':
+	case '?':
+	case '=':
+	case '{':
+	case '}':
+		return true;
+	default:
+		return false;
+	}
+}
+
 bool	RequestParser::isValidHeaderFieldValueToken(uint8_t c) const
 {
-	// Check if the character is a control character (0-31 and 127)
-    if (c <= 31 || c == 127)
-        return false;
+	if (std::isalnum(c))
+    	return true;
 
-    // Check for delimiters (US-ASCII visual characters not allowed in a token)
-    switch (c) {
-        case '(':
-        case ')':
-        case '<':
-        case '>':
-        case '@':
-        case ',':
-        case ';':
-        case ':':
-        case '\\':
-        case '"':
-        case '/':
-        case '[':
-        case ']':
-        case '?':
-        case '=':
-        case '{':
-        case '}':
-            return false;
-        default:
-            return true;
-    }
+	switch (c) {
+	case '!':
+	case '#':
+	case '$':
+	case '%':
+	case '&':
+	case '\'':
+	case '*':
+	case '+':
+	case '-':
+	case '.':
+	case '^':
+	case '_':
+	case '`':
+	case '|':
+	case '~':
+		return true;
+	default:
+		return false;
+	}
 }
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -262,9 +284,11 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 void		RequestParser::parseHeaderValue(const std::string& headerValue)
 {
 	for (size_t i = 0; i < headerValue.size(); i++) {
-		if (!isValidHeaderFieldValueToken(headerValue[i])) {
+		if (!isValidHeaderFieldValueToken(headerValue[i])
+			&& !isValidHeaderFieldValueDelimiter(headerValue[i])
+			&& !isspace(headerValue[i])) {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: Invalid header field value token");
+			throw std::runtime_error("Invalid HTTP request: Invalid header field value");
 	 	}
 	}
 }
