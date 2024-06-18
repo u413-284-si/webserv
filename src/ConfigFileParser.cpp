@@ -99,4 +99,26 @@ void ConfigFileParser::readServerConfig(size_t index)
         throw std::runtime_error("Error: Invalid server directive");
 
     m_configFile.servers.push_back(server);
+
+	if (directive == "location")
+	{
+		while (readAndTrimLine() && m_configFile.currentLine != "}")
+			readLocationConfig(index);
+	}
+}
+
+void ConfigFileParser::readLocationConfig(size_t index)
+{
+    Location location;
+    std::string directive;
+    const char* validLocationDirectives[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return"};
+    const int validLocationDirectivesSize = sizeof(validLocationDirectives) / sizeof(validLocationDirectives[0]);
+
+    std::set<std::string> validLocationDirectivesSet(validLocationDirectives, validLocationDirectives + validLocationDirectivesSize);
+
+    directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
+    if (std::find(validLocationDirectivesSet.begin(), validLocationDirectivesSet.end(), directive) == validLocationDirectivesSet.end())
+        throw std::runtime_error("Error: Invalid location directive");
+
+    m_configFile.servers[index].locations.push_back(location);
 }
