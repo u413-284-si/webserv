@@ -49,6 +49,8 @@ void	testInvalidHeader()
 	std::pair<std::string, std::string>	tests[] = {
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost :       www.example.com       \r\n"
 			, "Host\nwww.example.com"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n Host:       www.example.com       \r\n"
+			, "Host\nwww.example.com"),
 	};
 	runHeaderTests("INVALID HEADER", sizeof(tests) / sizeof(tests[0]), tests);
 }
