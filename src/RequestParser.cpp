@@ -84,6 +84,10 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
     // Step 2: Parse headers
     std::string headerLine;
     while (std::getline(requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
+		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
+			m_errorCode = 400;
+			throw std::runtime_error("Invalid HTTP request: Obsolete line folding detected");
+		}
         std::istringstream headerStream(headerLine);
         std::string headerName;
         std::string headerValue;
