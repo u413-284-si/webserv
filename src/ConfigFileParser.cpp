@@ -32,6 +32,14 @@ ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
 
 ConfigFileParser::~ConfigFileParser() { }
 
+/**
+ * @brief Checks if there are no open brackets 
+ * 
+ * If a opening bracket is found, it is pushed onto the m_brackets stack
+ * If a closing bracket is found, it is popped from the m_brackets stack
+ * 
+ * @param configFileLine current line in the config file which
+ */
 void ConfigFileParser::checkBrackets(const std::string& configFileLine)
 {
     for (std::string::const_iterator it = configFileLine.begin(); it != configFileLine.end(); it++) {
@@ -42,6 +50,12 @@ void ConfigFileParser::checkBrackets(const std::string& configFileLine)
     }
 }
 
+/**
+ * @brief Removes leading and trailing spaces from a string
+ * 
+ * @param str string with potential leading and trailing spaces
+ * @return std::string string without leading and trailing spaces
+ */
 std::string ConfigFileParser::removeLeadingAndTrailingSpaces(const std::string& str)
 {
     std::string result;
