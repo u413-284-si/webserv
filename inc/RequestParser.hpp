@@ -38,14 +38,13 @@ class RequestParser {
 				void		parseUriQuery(const std::string& requestLine, int& index);
 				void		parseUriFragment(const std::string& requestLine, int& index);
 				std::string	parseVersion(const std::string& requestLine);
-				void		parseHeaderValue(const std::string& headerValue);
+				void		parseHeaderName(const std::string& headerName);
 
 				// Helper functions
 				std::string	checkForSpace(const std::string&);
 				void		checkForCRLF(const std::string&);
 				bool		isValidURIChar(uint8_t c) const;
-				bool		isValidHeaderFieldValueDelimiter(uint8_t c) const;
-				bool		isValidHeaderFieldValueToken(uint8_t c) const; 
+				bool		isValidHeaderFieldNameToken(uint8_t c) const; 
 
 	private:
 				int			m_errorCode;

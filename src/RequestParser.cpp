@@ -59,33 +59,7 @@ bool	RequestParser::isValidURIChar(uint8_t c) const
     }
 }
 
-bool	RequestParser::isValidHeaderFieldValueDelimiter(uint8_t c) const
-{
-	switch (c) {
-	case '(':
-	case ')':
-	case '<':
-	case '>':
-	case '@':
-	case ',':
-	case ';':
-	case ':':
-	case '\\':
-	case '"':
-	case '/':
-	case '[':
-	case ']':
-	case '?':
-	case '=':
-	case '{':
-	case '}':
-		return true;
-	default:
-		return false;
-	}
-}
-
-bool	RequestParser::isValidHeaderFieldValueToken(uint8_t c) const
+bool	RequestParser::isValidHeaderFieldNameToken(uint8_t c) const
 {
 	if (std::isalnum(c))
     	return true;
@@ -153,10 +127,11 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 				m_errorCode = 400;
 				throw std::runtime_error("Invalid HTTP request: Whitespace between header field-name and colon detected");
 			}
+			parseHeaderName(headerName);
+			
 			// getline() removes trailing \r\n
             std::getline(headerStream >> std::ws, headerValue);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
-			parseHeaderValue(headerValue);
             m_request.headers[headerName] = headerValue;
         }
     }
@@ -281,14 +256,12 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 	return (requestLine.substr(++i));
 }
 
-void		RequestParser::parseHeaderValue(const std::string& headerValue)
+void		RequestParser::parseHeaderName(const std::string& headerName)
 {
-	for (size_t i = 0; i < headerValue.size(); i++) {
-		if (!isValidHeaderFieldValueToken(headerValue[i])
-			&& !isValidHeaderFieldValueDelimiter(headerValue[i])
-			&& !isspace(headerValue[i])) {
+	for (size_t i = 0; i < headerName.size(); i++) {
+		if (!isValidHeaderFieldNameToken(headerName[i])) {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: Invalid header field value");
+			throw std::runtime_error("Invalid HTTP request: Invalid header field name");
 	 	}
 	}
 }
