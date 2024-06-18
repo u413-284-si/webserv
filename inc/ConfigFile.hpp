@@ -1,9 +1,9 @@
 #pragma once
 
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <vector>
-#include <fstream>
 
 enum Method { MethodGet,
     MethodPost,
@@ -42,7 +42,7 @@ struct Server {
 };
 
 struct ConfigFile {
-	std::ifstream stream;
-	std::string currentLine;
+    std::ifstream stream;
+    std::string currentLine;
     std::vector<Server> servers;
 };
