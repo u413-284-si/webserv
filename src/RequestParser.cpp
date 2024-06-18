@@ -88,7 +88,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerName;
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
-			if (isspace(headerName.back())){
+			if (isspace(headerName[headerName.size() - 1])){
 				m_errorCode = 400;
 				throw std::runtime_error("Invalid HTTP request: Whitespace between header field-name and colon detected");
 			}
