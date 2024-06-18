@@ -1,28 +1,30 @@
 #include "ConfigFileParser.hpp"
 
+/**
+ * @brief Reads and parses the config file to the m_configFile struct
+ * 
+ * @param configFilePath path to the config file
+ */
 ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
 {
-    std::ifstream inputConfigFile;
-    std::string configFileLine;
+    m_configFile.stream.open(configFilePath.c_str());
+    if (!m_configFile.stream)
+		throw std::runtime_error("Error: Failed to open config file");
+	else if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
+		throw std::runtime_error("Error: Config file is empty");
+	
+	checkBrackets(configFilePath);
 
-    inputConfigFile.open(configFilePath.c_str());
-    if (!inputConfigFile)
-        throw std::runtime_error("Error: Failed to open config file");
-    else if (inputConfigFile.peek() == std::ifstream::traits_type::eof())
-        throw std::runtime_error("Error: Config file is empty");
+	readAndTrimLine();
+	if (m_configFile.currentLine != "http {")
+		throw std::runtime_error("Error: Config file does not start with 'http {'");
 
-    getline(inputConfigFile, configFileLine);
-    if (removeLeadingAndTrailingSpaces(configFileLine) != "http {")
-        throw std::runtime_error("Error: Config file does not start with 'http {'");
-    checkBrackets(configFileLine);
-
-    while (getline(inputConfigFile, configFileLine)) {
-        checkBrackets(configFileLine);
-        configFileLine = removeLeadingAndTrailingSpaces(configFileLine);
-        if (configFileLine == "server {") {
-            getline(inputConfigFile, configFileLine);
-            configFileLine = removeLeadingAndTrailingSpaces(configFileLine);
-            readServerConfig(configFileLine);
+	size_t index = 0;
+    while (readAndTrimLine() && m_configFile.currentLine != "}") {
+        if (m_configFile.currentLine == "server {") {
+			while (readAndTrimLine() && m_configFile.currentLine != "}")
+				readServerConfig(index);
+			index++;
         }
     }
 
@@ -38,16 +40,25 @@ ConfigFileParser::~ConfigFileParser() { }
  * If a opening bracket is found, it is pushed onto the m_brackets stack
  * If a closing bracket is found, it is popped from the m_brackets stack
  * 
- * @param configFileLine current line in the config file which
+ * @param configFilePath path to the config file
  */
-void ConfigFileParser::checkBrackets(const std::string& configFileLine)
+void ConfigFileParser::checkBrackets(const std::string& configFilePath)
 {
-    for (std::string::const_iterator it = configFileLine.begin(); it != configFileLine.end(); it++) {
-        if (*it == '{')
-            m_brackets.push('{');
-        else if (*it == '}')
-            m_brackets.pop();
-    }
+	std::ifstream tmpStream;
+	std::string tmpLine;
+
+	tmpStream.open(configFilePath.c_str());
+
+    while (getline(tmpStream, tmpLine))
+	{
+		for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it)
+		{
+			if (*it == '{')
+				m_brackets.push('{');
+			else if (*it == '}')
+				m_brackets.pop();
+		}
+	}
 }
 
 /**

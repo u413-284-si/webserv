@@ -14,7 +14,9 @@ public:
 private:
     ConfigFile m_configFile;
     std::stack<char> m_brackets;
-    void checkBrackets(const std::string& configFileLine);
-    void readServerConfig(const std::string& configFileLine);
-    std::string removeLeadingAndTrailingSpaces(const std::string& str);
+	bool readAndTrimLine(void);
+    void checkBrackets(const std::string& configFilePath);
+    void readServerConfig(size_t index);
+    void readLocationConfig(size_t index);
+    void removeLeadingAndTrailingSpaces();
 };
