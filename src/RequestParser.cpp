@@ -2,7 +2,8 @@
 
 /* ====== HELPER FUNCTIONS ====== */
 
-std::string	RequestParser::checkForSpace(const std::string& str) {
+std::string	RequestParser::checkForSpace(const std::string& str)
+{
 	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
 		return (str.substr(1));
 	else {
@@ -18,14 +19,16 @@ std::string	RequestParser::checkForSpace(const std::string& str) {
  * by std::getline
  * @param str	String containing remainder of request line after HTTP version
  */
-void	RequestParser::checkForCRLF(const std::string& str) {
+void	RequestParser::checkForCRLF(const std::string& str)
+{
 	if (str.length() != 1 || str[0] != '\r') {
 		m_errorCode = 400;
 		throw std::runtime_error("Invalid HTTP request: missing CRLF");
 	}
 }
 
-bool	RequestParser::isValidURIChar(uint8_t c) const {
+bool	RequestParser::isValidURIChar(uint8_t c) const
+{
 	// Check for unreserved chars
 	if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~')
         return true;
@@ -53,6 +56,37 @@ bool	RequestParser::isValidURIChar(uint8_t c) const {
 		return true;
 	default:
 		return false;
+    }
+}
+
+bool	RequestParser::isValidHeaderFieldValueToken(uint8_t c) const
+{
+	// Check if the character is a control character (0-31 and 127)
+    if (c <= 31 || c == 127)
+        return false;
+
+    // Check for delimiters (US-ASCII visual characters not allowed in a token)
+    switch (c) {
+        case '(':
+        case ')':
+        case '<':
+        case '>':
+        case '@':
+        case ',':
+        case ';':
+        case ':':
+        case '\\':
+        case '"':
+        case '/':
+        case '[':
+        case ']':
+        case '?':
+        case '=':
+        case '{':
+        case '}':
+            return false;
+        default:
+            return true;
     }
 }
 
@@ -100,6 +134,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 			// getline() removes trailing \r\n
             std::getline(headerStream >> std::ws, headerValue);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
+			parseHeaderValue(headerValue);
             m_request.headers[headerName] = headerValue;
         }
     }
@@ -114,7 +149,8 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
     return m_request;
 }
 
-std::string	RequestParser::parseMethod(const std::string& requestLine) {
+std::string	RequestParser::parseMethod(const std::string& requestLine)
+{
 	int	i = -1;
 	while (isalpha(requestLine[++i]))
 		m_request.method.push_back(requestLine[i]);
@@ -140,7 +176,8 @@ std::string	RequestParser::parseMethod(const std::string& requestLine) {
  * @param requestLine 
  * @return std::string 
  */
-std::string	RequestParser::parseUri(const std::string& requestLine) {
+std::string	RequestParser::parseUri(const std::string& requestLine)
+{
 	int	i = 0;
 	if (requestLine[i] != '/') {
 		m_errorCode = 400;
@@ -165,7 +202,8 @@ std::string	RequestParser::parseUri(const std::string& requestLine) {
 	return (requestLine.substr(i));
 }
 
-void	RequestParser::parseUriQuery(const std::string& requestLine, int& index) {
+void	RequestParser::parseUriQuery(const std::string& requestLine, int& index)
+{
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ' || requestLine[index] == '#') {
 			index--;
@@ -180,7 +218,8 @@ void	RequestParser::parseUriQuery(const std::string& requestLine, int& index) {
 	}
 }
 
-void	RequestParser::parseUriFragment(const std::string& requestLine, int& index) {
+void	RequestParser::parseUriFragment(const std::string& requestLine, int& index)
+{
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ') {
 			index--;
@@ -195,7 +234,8 @@ void	RequestParser::parseUriFragment(const std::string& requestLine, int& index)
 	}
 }
 
-std::string	RequestParser::parseVersion(const std::string& requestLine) {
+std::string	RequestParser::parseVersion(const std::string& requestLine)
+{
 	if (requestLine.substr(0, 5) != "HTTP/") {
 		m_errorCode = 400;
 		throw std::runtime_error("Invalid HTTP request: invalid format of version");
@@ -217,4 +257,14 @@ std::string	RequestParser::parseVersion(const std::string& requestLine) {
 	}
 	m_request.version.push_back(requestLine[i]);
 	return (requestLine.substr(++i));
+}
+
+void		RequestParser::parseHeaderValue(const std::string& headerValue)
+{
+	for (size_t i = 0; i < headerValue.size(); i++) {
+		if (!isValidHeaderFieldValueToken(headerValue[i])) {
+			m_errorCode = 400;
+			throw std::runtime_error("Invalid HTTP request: Invalid header field value token");
+	 	}
+	}
 }
