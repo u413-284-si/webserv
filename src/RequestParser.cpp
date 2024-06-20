@@ -131,7 +131,11 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
             m_request.headers[headerName] = headerValue;
         }
     }
-
+	if (headerLine != "\r") {
+		m_errorCode = 400;
+		throw std::runtime_error(ERR_MISS_CRLF);
+	}
+	
     // Step 3: Parse body (if any)
     std::string body;
     while (std::getline(requestStream, body)) {
