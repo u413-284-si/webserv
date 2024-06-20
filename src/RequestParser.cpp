@@ -1,4 +1,5 @@
 #include "RequestParser.hpp"
+#include "error.hpp"
 
 /* ====== HELPER FUNCTIONS ====== */
 
@@ -8,7 +9,7 @@ std::string	RequestParser::checkForSpace(const std::string& str)
 		return (str.substr(1));
 	else {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: missing single space");
+		throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
 	}
 }
 
