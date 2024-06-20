@@ -3,7 +3,7 @@
 int	main()
 {
 	// testValidRequestLine();
-	// testInvalidRequestLine();
+	testInvalidRequestLine();
 	testValidHeader();
 	testInvalidHeader();
 	return 0;
