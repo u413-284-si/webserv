@@ -22,6 +22,7 @@ struct HTTPRequest {
 	URI									uri;
 	std::string							version;
 	std::map<std::string, std::string>	headers;
+	bool								hasBody;
 	std::string							body;
 };
 
@@ -38,7 +39,8 @@ class RequestParser {
 				void		parseUriQuery(const std::string& requestLine, int& index);
 				void		parseUriFragment(const std::string& requestLine, int& index);
 				std::string	parseVersion(const std::string& requestLine);
-				void		parseHeaderName(const std::string& headerName);
+				void		checkHeaderName(const std::string& headerName);
+				void		checkForBody();
 
 				// Helper functions
 				std::string	checkForSpace(const std::string&);

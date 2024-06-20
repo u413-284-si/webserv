@@ -124,7 +124,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerName;
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
-			parseHeaderName(headerName);
+			checkHeaderName(headerName);
 			// getline() removes trailing \r\n
             std::getline(headerStream >> std::ws, headerValue);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
@@ -135,14 +135,17 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_CRLF);
 	}
-	
+	checkForBody();
+
     // Step 3: Parse body (if any)
-    std::string body;
-    while (std::getline(requestStream, body)) {
-        if (!m_request.body.empty())
-			body += "\n";
-		m_request.body += body;
-    }
+	if (m_request.hasBody) {
+		std::string body;
+		while (std::getline(requestStream, body)) {
+			if (!m_request.body.empty())
+				body += "\n";
+			m_request.body += body;
+		}
+	}
     return m_request;
 }
 
@@ -256,7 +259,7 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 	return (requestLine.substr(++i));
 }
 
-void		RequestParser::parseHeaderName(const std::string& headerName)
+void	RequestParser::checkHeaderName(const std::string& headerName)
 {
 	if (isspace(headerName[headerName.size() - 1])){
 		m_errorCode = 400;
@@ -268,4 +271,13 @@ void		RequestParser::parseHeaderName(const std::string& headerName)
 			throw std::runtime_error(ERR_HEADER_NAME_INVALID_CHAR);
 	 	}
 	}
+}
+
+void	RequestParser::checkForBody()
+{
+	std::map<std::string, std::string>::iterator it = m_request.headers.find("Content-Length");
+	std::map<std::string, std::string>::iterator it2 = m_request.headers.find("Transfer-Encoding");
+
+	if (it != m_request.headers.end() || it2 != m_request.headers.end())
+			m_request.hasBody = true;
 }
