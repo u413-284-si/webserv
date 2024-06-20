@@ -24,7 +24,7 @@ void	RequestParser::checkForCRLF(const std::string& str)
 {
 	if (str.length() != 1 || str[0] != '\r') {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: missing CRLF");
+		throw std::runtime_error(ERR_MISS_CRLF);
 	}
 }
 
@@ -60,7 +60,7 @@ bool	RequestParser::isValidURIChar(uint8_t c) const
     }
 }
 
-bool	RequestParser::isValidHeaderFieldNameToken(uint8_t c) const
+bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 {
 	if (std::isalnum(c))
     	return true;
@@ -103,7 +103,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 	std::string			requestLine;
 	if (!std::getline(requestStream, requestLine) || requestLine.empty()) {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: missing request line");
+		throw std::runtime_error(ERR_MISS_REQUEST_LINE);
 	}
 	requestLine = parseMethod(requestLine);
 	requestLine = checkForSpace(requestLine);
@@ -118,7 +118,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
     while (std::getline(requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: Obsolete line folding detected");
+			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
 		}
         std::istringstream headerStream(headerLine);
         std::string headerName;
@@ -156,7 +156,7 @@ std::string	RequestParser::parseMethod(const std::string& requestLine)
 		m_requestMethod = 1 << 2;
 	else {
 		m_errorCode = 501;
-		throw std::runtime_error("Invalid HTTP request: method not implemented");
+		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);
 	}
 	return (requestLine.substr(i));
 }
@@ -174,7 +174,7 @@ std::string	RequestParser::parseUri(const std::string& requestLine)
 	int	i = 0;
 	if (requestLine[i] != '/') {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: missing slash in URI");
+		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
 	m_request.uri.path.push_back(requestLine[i]);
 	while (requestLine[++i]) {
@@ -182,7 +182,7 @@ std::string	RequestParser::parseUri(const std::string& requestLine)
 			break;
 		else if (!isValidURIChar(requestLine[i])) {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
+			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
 		else if (requestLine[i] == '?')
 			parseUriQuery(requestLine, i);
@@ -204,7 +204,7 @@ void	RequestParser::parseUriQuery(const std::string& requestLine, int& index)
 		}
 		else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '?') {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
+			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
 		else
 			m_request.uri.query.push_back(requestLine[index]);
@@ -220,7 +220,7 @@ void	RequestParser::parseUriFragment(const std::string& requestLine, int& index)
 		}
 		else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '#') {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: invalid char in URI");
+			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
 		else
 			m_request.uri.fragment.push_back(requestLine[index]);
@@ -231,22 +231,22 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 {
 	if (requestLine.substr(0, 5) != "HTTP/") {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: invalid format of version");
+		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
 	}
 	int	i = 5;
 	if (!isdigit(requestLine[i])) {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: invalid version major");
+		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
 	}
 	m_request.version.push_back(requestLine[i]);
 	if (requestLine[++i] != '.') {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: invalid version delimiter");
+		throw std::runtime_error(ERR_INVALID_VERSION_DELIM);
 	}
 	m_request.version.push_back(requestLine[i]);
 	if (!isdigit(requestLine[++i])) {
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: invalid version minor");
+		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
 	}
 	m_request.version.push_back(requestLine[i]);
 	return (requestLine.substr(++i));
@@ -256,12 +256,12 @@ void		RequestParser::parseHeaderName(const std::string& headerName)
 {
 	if (isspace(headerName[headerName.size() - 1])){
 		m_errorCode = 400;
-		throw std::runtime_error("Invalid HTTP request: Whitespace between header field-name and colon detected");
+		throw std::runtime_error(ERR_HEADER_COLON_WHITESPACE);
 	}
 	for (size_t i = 0; i < headerName.size(); i++) {
-		if (!isValidHeaderFieldNameToken(headerName[i])) {
+		if (!isValidHeaderFieldNameChar(headerName[i])) {
 			m_errorCode = 400;
-			throw std::runtime_error("Invalid HTTP request: Invalid header field name");
+			throw std::runtime_error(ERR_HEADER_NAME_INVALID_CHAR);
 	 	}
 	}
 }

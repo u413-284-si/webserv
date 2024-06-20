@@ -44,7 +44,7 @@ class RequestParser {
 				std::string	checkForSpace(const std::string&);
 				void		checkForCRLF(const std::string&);
 				bool		isValidURIChar(uint8_t c) const;
-				bool		isValidHeaderFieldNameToken(uint8_t c) const; 
+				bool		isValidHeaderFieldNameChar(uint8_t c) const; 
 
 	private:
 				int			m_errorCode;
