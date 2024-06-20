@@ -135,10 +135,9 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_CRLF);
 	}
-	checkForBody();
 
     // Step 3: Parse body (if any)
-	if (m_request.hasBody) {
+	if (hasBody()) {
 		std::string body;
 		while (std::getline(requestStream, body)) {
 			if (!m_request.body.empty())
@@ -273,11 +272,11 @@ void	RequestParser::checkHeaderName(const std::string& headerName)
 	}
 }
 
-void	RequestParser::checkForBody()
+bool	RequestParser::hasBody()
 {
-	std::map<std::string, std::string>::iterator it = m_request.headers.find("Content-Length");
-	std::map<std::string, std::string>::iterator it2 = m_request.headers.find("Transfer-Encoding");
-
-	if (it != m_request.headers.end() || it2 != m_request.headers.end())
-			m_request.hasBody = true;
+	if (m_request.headers.find("Content-Length") != m_request.headers.end())
+		return std::stoi(m_request.headers.at("Content-Length")) > 0;
+	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end())
+		return m_request.headers.at("Transfer-Encoding") == "chunked";
+	return false;
 }
