@@ -113,5 +113,5 @@ void	testInvalidRequestLine()
 		std::make_pair("GET /search.html HTTP/1.x\r\n"
 			, "GET\n/search.html\n\n\n1.1"),
 	};
-	runRequestLineTests("VALID REQUEST LINES", sizeof(tests) / sizeof(tests[0]), tests);
+	runRequestLineTests("INVALID REQUEST LINES", sizeof(tests) / sizeof(tests[0]), tests);
 }
