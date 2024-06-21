@@ -128,6 +128,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 			// getline() removes trailing \r\n
             std::getline(headerStream >> std::ws, headerValue);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
+			checkContentLength(headerName, headerValue);
             m_request.headers[headerName] = headerValue;
         }
     }
@@ -275,8 +276,24 @@ void	RequestParser::checkHeaderName(const std::string& headerName)
 bool	RequestParser::hasBody()
 {
 	if (m_request.headers.find("Content-Length") != m_request.headers.end())
-		return std::stoi(m_request.headers.at("Content-Length")) > 0;
+		return atoi(m_request.headers.at("Content-Length").c_str()) > 0;
 	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end())
 		return m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos;
 	return false;
+}
+
+void	RequestParser::checkContentLength(const std::string& headerName, const std::string& headerValue)
+{
+	if (headerName == "Content-Length") {
+		if (m_request.headers.find("Content-Length") != m_request.headers.end()
+			&& m_request.headers["Content-Length"] != headerValue) {
+				m_errorCode = 400;
+				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
+		}
+		char *endptr;
+		if (!strtod(headerValue.c_str(), &endptr) || *endptr != '\0') {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
+		}
+	}
 }

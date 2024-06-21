@@ -40,6 +40,7 @@ class RequestParser {
 				std::string	parseVersion(const std::string& requestLine);
 				void		checkHeaderName(const std::string& headerName);
 				bool		hasBody();
+				void		checkContentLength(const std::string& headerName, const std::string& headerValue);
 
 				// Helper functions
 				std::string	checkForSpace(const std::string&);
