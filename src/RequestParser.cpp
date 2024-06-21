@@ -277,6 +277,6 @@ bool	RequestParser::hasBody()
 	if (m_request.headers.find("Content-Length") != m_request.headers.end())
 		return std::stoi(m_request.headers.at("Content-Length")) > 0;
 	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end())
-		return m_request.headers.at("Transfer-Encoding") == "chunked";
+		return m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos;
 	return false;
 }
