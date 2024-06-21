@@ -40,6 +40,8 @@ void	testValidHeader()
 			, "Host\nwww.example.com\nUser-Agent\ncurl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3\nAccept-Language\nen, mi"),
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:       www.example.com       \r\n\r\n"
 			, "Host\nwww.example.com"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\n\r\n"
+			, "Host\nwww.example.com\nContent-Length\n23"),
 	};
 	runHeaderTests("VALID HEADER", sizeof(tests) / sizeof(tests[0]), tests);
 }
@@ -55,6 +57,14 @@ void	testInvalidHeader()
 			, "Host\nwww.example.com"),
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n"
 			, "Host\nwww.example.com"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: \r\n\r\n"
+			, "Host\nwww.example.com\nContent-Length\n0"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: ur\r\n\r\n"
+			, "Host\nwww.example.com\nContent-Length\n0"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 23\r\n\r\n"
+			, "Host\nwww.example.com\nContent-Length\n0"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n"
+			, "Host\nwww.example.com\nContent-Length\n23"),
 	};
 	runHeaderTests("INVALID HEADER", sizeof(tests) / sizeof(tests[0]), tests);
 }
