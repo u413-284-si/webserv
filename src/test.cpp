@@ -2,7 +2,7 @@
 
 int	main()
 {
-	// testValidRequestLine();
+	testValidRequestLine();
 	testInvalidRequestLine();
 	testValidHeader();
 	testInvalidHeader();

@@ -69,15 +69,15 @@ void	runRequestLineTests(const std::string& name
 void	testValidRequestLine()
 {
 	std::pair<std::string, std::string>	tests[] = {
-		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n"
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n"
 			, "GET\n/search\nquery=openai&year=2024\nconclusion\n1.1"),
-		std::make_pair("DELETE /index.html HTTP/1.1\r\n"
+		std::make_pair("DELETE /index.html HTTP/1.1\r\n\r\n"
 			, "DELETE\n/index.html\n\n\n1.1"),
-		std::make_pair("POST /abracadabra/ipsum?user=aziz&key=password HTTP/2.0\r\n"
+		std::make_pair("POST /abracadabra/ipsum?user=aziz&key=password HTTP/2.0\r\n\r\n"
 			, "POST\n/abracadabra/ipsum\nuser=aziz&key=password\n\n2.0"),
-		std::make_pair("GET /search? HTTP/1.1\r\n"
+		std::make_pair("GET /search? HTTP/1.1\r\n\r\n"
 			, "GET\n/search\n\n\n1.1"),
-		std::make_pair("GET /search?# HTTP/1.1\r\n"
+		std::make_pair("GET /search?# HTTP/1.1\r\n\r\n"
 			, "GET\n/search\n\n\n1.1"),
 	};
 	runRequestLineTests("VALID REQUEST LINES", sizeof(tests) / sizeof(tests[0]), tests);
