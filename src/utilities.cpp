@@ -10,3 +10,16 @@ std::string trimTrailingWhiteSpaces(const std::string &str)
     );
     return s;
 }
+
+std::vector<std::string>	split(const std::string &str, char delimiter)
+{
+    std::vector<std::string>	tokens;
+    std::stringstream			ss(str);
+    std::string					token;
+
+    while (std::getline(ss >> std::ws, token, delimiter)) {
+		token = trimTrailingWhiteSpaces(token);
+        tokens.push_back(token);
+    }
+    return tokens;
+}
