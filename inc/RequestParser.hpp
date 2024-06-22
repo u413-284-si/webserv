@@ -8,6 +8,7 @@
 #include <map>
 #include <sstream>
 #include <stdint.h>
+#include <vector>
 
 /* ====== DEFINITIONS ====== */
 
@@ -23,6 +24,7 @@ struct HTTPRequest {
 	std::string							version;
 	std::map<std::string, std::string>	headers;
 	std::string							body;
+	bool								hasBody;
 };
 
 /* ====== CLASS DECLARATION ====== */
@@ -39,8 +41,8 @@ class RequestParser {
 				void		parseUriFragment(const std::string& requestLine, int& index);
 				std::string	parseVersion(const std::string& requestLine);
 				void		checkHeaderName(const std::string& headerName);
-				bool		hasBody();
 				void		checkContentLength(const std::string& headerName, const std::string& headerValue);
+				void		checkTransferEncoding();
 
 				// Helper functions
 				std::string	checkForSpace(const std::string&);

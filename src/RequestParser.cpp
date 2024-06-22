@@ -132,13 +132,14 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
             m_request.headers[headerName] = headerValue;
         }
     }
+	checkTransferEncoding();
 	if (headerLine != "\r") {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_CRLF);
 	}
 
     // Step 3: Parse body (if any)
-	if (hasBody()) {
+	if (m_request.hasBody) {
 		std::string body;
 		while (std::getline(requestStream, body)) {
 			if (!m_request.body.empty())
@@ -273,15 +274,6 @@ void	RequestParser::checkHeaderName(const std::string& headerName)
 	}
 }
 
-bool	RequestParser::hasBody()
-{
-	if (m_request.headers.find("Content-Length") != m_request.headers.end())
-		return atoi(m_request.headers.at("Content-Length").c_str()) > 0;
-	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end())
-		return m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos;
-	return false;
-}
-
 void	RequestParser::checkContentLength(const std::string& headerName, const std::string& headerValue)
 {
 	if (headerName == "Content-Length") {
@@ -290,10 +282,30 @@ void	RequestParser::checkContentLength(const std::string& headerName, const std:
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
-		char *endptr;
-		if (!strtod(headerValue.c_str(), &endptr) || *endptr != '\0') {
+
+		char 	*endptr;
+		double	contentLength = strtod(headerValue.c_str(), &endptr);
+		if (!contentLength || *endptr != '\0') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 		}
+		m_request.hasBody = true;
+	}
+}
+
+void	RequestParser::checkTransferEncoding()
+{
+	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end()) {
+		if (m_request.headers["Transfer-Encoding"].empty()) {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_NON_EXISTENT_CHUNKED_ENCODING);
+		}
+
+		std::vector<std::string>	encodings = split(m_request.headers["Transfer-Encoding"], ',');
+		if (encodings[encodings.size() - 1] != "chunked") {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
+		}
+		m_request.hasBody = true;
 	}
 }
