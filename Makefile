@@ -74,6 +74,7 @@ NAME := webserv
 # ******************************
 
 SRC:= 	main.cpp \
+		ConfigFileParser.cpp \
 		Server.cpp
 
 # ******************************
