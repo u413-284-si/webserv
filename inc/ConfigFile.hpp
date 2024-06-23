@@ -44,5 +44,5 @@ struct ConfigServer {
 struct ConfigFile {
     std::ifstream stream;
     std::string currentLine;
-    std::vector<Server> servers;
+    std::vector<ConfigServer> servers;
 };
