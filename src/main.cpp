@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "ConfigFileParser.hpp"
 
 int main(int argc, char** argv)
 {
@@ -10,6 +11,8 @@ int main(int argc, char** argv)
 	(void)argv;
 	try{
 		Server	webserv;
+		ConfigFileParser configFileParser(argv[1]);
+
 		webserv.run();
 	}
 	catch (std::exception& e){
