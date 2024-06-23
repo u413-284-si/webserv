@@ -30,7 +30,7 @@ struct Location {
     std::map<unsigned short, std::string> returns;
 };
 
-struct Server {
+struct ConfigServer {
     std::vector<std::string> validServerDirectives;
     std::string serverName;
     std::string host;

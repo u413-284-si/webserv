@@ -85,7 +85,7 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
 
 void ConfigFileParser::readServerConfig(size_t index)
 {
-    Server server;
+    ConfigServer server;
     std::string directive;
     const char* validServerDirectives[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root", "location" };
     const int validServerDirectivesSize = sizeof(validServerDirectives) / sizeof(validServerDirectives[0]);
