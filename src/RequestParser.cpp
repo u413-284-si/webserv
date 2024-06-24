@@ -514,7 +514,6 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 			}
-			
 		}
 		m_request.hasBody = true;
 		headerValue = values[0];
