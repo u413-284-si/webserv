@@ -13,12 +13,13 @@ ConfigFileParser::~ConfigFileParser() { }
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
 	 m_configFile.stream.open(configFilePath.c_str());
-    if (!m_configFile.stream)
-        throw std::runtime_error("Failed to open config file");
-    else if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
-        throw std::runtime_error("Config file is empty");
+	if (!m_configFile.stream)
+		throw std::runtime_error("Failed to open config file");
+	else if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
+		throw std::runtime_error("Config file is empty");
 
-    checkBrackets(configFilePath);
+    if (isBracketOpen(configFilePath))
+		throw std::runtime_error("Open bracket(s) in config file");
 
     readAndTrimLine();
     if (m_configFile.currentLine != "http {")
@@ -33,8 +34,6 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
         }
     }
 
-	if (m_brackets.size() != 0)
-		throw std::runtime_error("Missing bracket(s) in config file");
 	
 	return m_configFile;
 }
@@ -47,7 +46,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
  *
  * @param configFilePath path to the config file
  */
-void ConfigFileParser::checkBrackets(const std::string& configFilePath)
+bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 {
     std::ifstream tmpStream;
     std::string tmpLine;
@@ -62,6 +61,7 @@ void ConfigFileParser::checkBrackets(const std::string& configFilePath)
                 m_brackets.pop();
         }
     }
+	return !m_brackets.empty();
 }
 
 /**
