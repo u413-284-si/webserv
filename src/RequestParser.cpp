@@ -487,22 +487,37 @@ void	RequestParser::checkHeaderName(const std::string& headerName)
  *         headers or if the Content-Length value is invalid, an error is thrown
  *         and the error code is set to 400.
  */
-void	RequestParser::checkContentLength(const std::string& headerName, const std::string& headerValue)
+void	RequestParser::checkContentLength(const std::string& headerName, std::string& headerValue)
 {
 	if (headerName == "Content-Length") {
+		if (headerValue.empty()) {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
+		}
 		if (m_request.headers.find("Content-Length") != m_request.headers.end()
 			&& m_request.headers["Content-Length"] != headerValue) {
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
 
-		char 	*endptr;
-		double	contentLength = strtod(headerValue.c_str(), &endptr);
-		if (!contentLength || *endptr != '\0') {
-			m_errorCode = 400;
-			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
+		std::vector<std::string> values = split(headerValue, ',');
+		std::vector<double>	numValues;
+		for (size_t i = 0; i < values.size(); i++) {
+			char 	*endptr;
+			double	contentLength = strtod(values[i].c_str(), &endptr);
+			if (!contentLength || *endptr != '\0') {
+				m_errorCode = 400;
+				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
+			}
+			numValues.push_back(contentLength);
+			if (i != 0 && contentLength != numValues[i - 1]) {
+				m_errorCode = 400;
+				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
+			}
+			
 		}
 		m_request.hasBody = true;
+		headerValue = values[0];
 	}
 }
 

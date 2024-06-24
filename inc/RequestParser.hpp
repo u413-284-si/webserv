@@ -41,7 +41,7 @@ class RequestParser {
 				void		parseUriFragment(const std::string& requestLine, int& index);
 				std::string	parseVersion(const std::string& requestLine);
 				void		checkHeaderName(const std::string& headerName);
-				void		checkContentLength(const std::string& headerName, const std::string& headerValue);
+				void		checkContentLength(const std::string& headerName, std::string& headerValue);
 				void		checkTransferEncoding();
 
 				// Helper functions
