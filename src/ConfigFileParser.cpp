@@ -1,14 +1,15 @@
 #include "ConfigFileParser.hpp"
 
-/**
- * @brief Reads and parses the config file to the m_configFile struct
- *
- * @param configFilePath path to the config file
- */
 ConfigFileParser::ConfigFileParser(void){}
 
 ConfigFileParser::~ConfigFileParser() { }
 
+/**
+ * @brief Parses the config file into a ConfigFile object and returns this object
+ * 
+ * @param configFilePath Path to the config file 
+ * @return const ConfigFile& Created ConfigFile object
+ */
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
 	 m_configFile.stream.open(configFilePath.c_str());
