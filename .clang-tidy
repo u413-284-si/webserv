@@ -1,0 +1,65 @@
+---
+Checks: "*,
+        -abseil-*,
+        -altera-*,
+        -android-*,
+        -fuchsia-*,
+        -google-*,
+        -llvm*,
+        -zircon-*,
+        -modernize-*,
+        -concurrency-mt-unsafe
+        -cppcoreguidelines-avoid-c-arrays,
+        -cppcoreguidelines-explicit-virtual-functions,
+        -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+        -hicpp-use-nullptr,
+        -hicpp-avoid-c-arrays,
+        -hicpp-use-auto,
+        -hicpp-braces-around-statements,
+        -hicpp-special-member-functions,
+        -hicpp-use-override,
+        -hicpp-use-equals-default,
+        -hicpp-no-array-decay,
+        -misc-include-cleaner,
+        -readability-braces-around-statements,
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle:     file
+CheckOptions:
+- { key: readability-identifier-naming.ClassCase,     value: CamelCase }
+- { key: readability-identifier-naming.MemberPrefix,  value: m_ }
+- { key: readability-identifier-naming.VariableCase,  value: camelBack }
+- { key: readability-identifier-naming.FunctionCase,  value: camelBack }
+- { key: readability-identifier-naming.ParameterCase, value: camelBack }
+- { key: readability-identifier-naming.NamespaceCase, value: lower_case }
+- { key: readability-identifier-naming.StructCase,    value: CamelCase  }
+- { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true }
+- { key: cppcoreguidelines-macro-usage.CheckCapsOnly, value: true }
+...
+
+# Inline comments don't seem to be supported well in clang-tidy-14.
+# Comments after the dots are ok
+# All checks are enabled with *, then specific checks are disabled with -
+# -abseil-* : abseil specific
+# -altera-* : altera specific
+# -android-* : android specific
+# -fuchsia-* : fuchsia specific
+# -google-* : google specific
+# -llvm* : llvm specific
+# -zircon-* : zircon specific
+# -modernize-* : in general modernize checks can not be followed, since std=C++98 does not allow it
+# -concurrency-mt-unsafe : mulithreading is not allowed
+# -cppcoreguidelines-avoid-c-arrays : std:array is a C11 feature
+# -cppcoreguidelines-explicit-virtual-functions : override is a C11 feature
+# -cppcoreguidelines-pro-bounds-array-to-pointer-decay : std::span is a C20 feature. Maybe use support class
+# -hicpp-use-nullptr : nullptr is a C11 feature
+# -hicpp-avoid-c-arrays : std:array is a C11 feature
+# -hicpp-use-auto : auto keyword as placeholder is a C11 feature
+# -hicpp-braces-around-statements : webkit style does not use braces around single line statements
+# -hicpp-special-member-functions : alias for cppcoreguidelines-special-member-functions
+# -hicpp-use-override : override is a C11 feature
+# -hicpp-use-equals-default : =default is a C11 feature
+# -hicpp-no-array-decay: alias for cppcoreguidelines-pro-bounds-array-to-pointer-decay
+# -misc-include-cleaner : seems to overly aggressive check for includes
+# -readability-braces-around-statements : webkit style does not use braces around single line statements
