@@ -38,14 +38,16 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	return m_configFile;
 }
 
-/**
- * @brief Checks if there are no open brackets
- *
- * If a opening bracket is found, it is pushed onto the m_brackets stack
- * If a closing bracket is found, it is popped from the m_brackets stack
- *
- * @param configFilePath path to the config file
- */
+ /**
+  * @brief Checks if there are no open brackets
+  *
+  * If a opening bracket is found, it is pushed onto the m_brackets stack
+  * If a closing bracket is found, it is popped from the m_brackets stack
+  *
+  * @param configFilePath Path from the config file
+  * @return true If there is minimum one open bracket
+  * @return false If there no open bracket
+  */
 bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 {
     std::ifstream tmpStream;
