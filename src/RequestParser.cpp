@@ -500,11 +500,11 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
 
-		std::vector<std::string> values = split(headerValue, ',');
+		std::vector<std::string> strValues = split(headerValue, ',');
 		std::vector<double>	numValues;
-		for (size_t i = 0; i < values.size(); i++) {
+		for (size_t i = 0; i < strValues.size(); i++) {
 			char 	*endptr;
-			double	contentLength = strtod(values[i].c_str(), &endptr);
+			double	contentLength = strtod(strValues[i].c_str(), &endptr);
 			if (!contentLength || *endptr != '\0') {
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
@@ -516,7 +516,7 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
 			}
 		}
 		m_request.hasBody = true;
-		headerValue = values[0];
+		headerValue = strValues[0];
 	}
 }
 
