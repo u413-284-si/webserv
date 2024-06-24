@@ -88,6 +88,16 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
     m_configFile.currentLine.erase(m_configFile.currentLine.find_last_not_of(' ') + 1);
 }
 
+size_t ConfigFileParser::countChars(const std::string& line, char c)
+{
+	size_t count = 0;
+	for (std::string::const_iterator it = line.begin(); it != line.end(); ++it) {
+		if (*it == c)
+			count++;
+	}
+	return count;
+}
+
 void ConfigFileParser::readServerConfig(size_t index)
 {
     ConfigServer server;

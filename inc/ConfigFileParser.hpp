@@ -21,4 +21,5 @@ private:
     void readServerConfig(size_t index);
     void readLocationConfig(size_t index);
     void removeLeadingAndTrailingSpaces();
+	size_t countChars(const std::string& line, char c);
 };
