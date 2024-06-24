@@ -57,9 +57,11 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 
     while (getline(tmpStream, tmpLine)) {
         for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it) {
-            if (*it == '{')
-                m_brackets.push('{');
-            else if (*it == '}')
+			if (*it == '{')
+				m_brackets.push('{');
+			else if (*it == '}' && m_brackets.empty())
+				return true;
+			else if (*it == '}')
                 m_brackets.pop();
         }
     }
