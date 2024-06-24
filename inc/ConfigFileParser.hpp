@@ -8,8 +8,10 @@
 
 class ConfigFileParser {
 public:
-    ConfigFileParser(const std::string& configFilePath);
+    ConfigFileParser(void);
     ~ConfigFileParser();
+
+	const ConfigFile& parseConfigFile(const std::string& configFilePath);
 
 private:
     ConfigFile m_configFile;

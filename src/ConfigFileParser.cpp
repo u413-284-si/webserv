@@ -5,9 +5,13 @@
  *
  * @param configFilePath path to the config file
  */
-ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
+ConfigFileParser::ConfigFileParser(void){}
+
+ConfigFileParser::~ConfigFileParser() { }
+
+const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
-    m_configFile.stream.open(configFilePath.c_str());
+	 m_configFile.stream.open(configFilePath.c_str());
     if (!m_configFile.stream)
         throw std::runtime_error("Error: Failed to open config file");
     else if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
@@ -28,11 +32,11 @@ ConfigFileParser::ConfigFileParser(const std::string& configFilePath)
         }
     }
 
-    if (m_brackets.size() != 0)
-        throw std::runtime_error("Error: Missing bracket(s) in config file");
+	if (m_brackets.size() != 0)
+		throw std::runtime_error("Error: Missing bracket(s) in config file");
+	
+	return m_configFile;
 }
-
-ConfigFileParser::~ConfigFileParser() { }
 
 /**
  * @brief Checks if there are no open brackets
