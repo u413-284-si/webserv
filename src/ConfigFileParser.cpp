@@ -108,8 +108,13 @@ void ConfigFileParser::readServerConfig(size_t index)
     std::set<std::string> validServerDirectivesSet(validServerDirectives, validServerDirectives + validServerDirectivesSize);
 
     directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
-    if (std::find(validServerDirectivesSet.begin(), validServerDirectivesSet.end(), directive) == validServerDirectivesSet.end() && !directive.empty())
-        throw std::runtime_error("Error: Invalid server directive");
+	if (std::find(validServerDirectivesSet.begin(), validServerDirectivesSet.end(), directive) == validServerDirectivesSet.end() && !directive.empty())
+		throw std::runtime_error("Invalid server directive");
+	
+	if (m_configFile.currentLine.find_last_of(';') == std::string::npos)
+        throw std::runtime_error("Missing semicolon(s)");
+	else if (countChars(m_configFile.currentLine, ';') > 1)
+        throw std::runtime_error("Too many semicolons in line");
 
     m_configFile.servers.push_back(server);
 
