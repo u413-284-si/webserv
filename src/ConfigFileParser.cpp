@@ -14,15 +14,15 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 {
 	 m_configFile.stream.open(configFilePath.c_str());
     if (!m_configFile.stream)
-        throw std::runtime_error("Error: Failed to open config file");
+        throw std::runtime_error("Failed to open config file");
     else if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
-        throw std::runtime_error("Error: Config file is empty");
+        throw std::runtime_error("Config file is empty");
 
     checkBrackets(configFilePath);
 
     readAndTrimLine();
     if (m_configFile.currentLine != "http {")
-        throw std::runtime_error("Error: Config file does not start with 'http {'");
+        throw std::runtime_error("Config file does not start with 'http {'");
 
     size_t index = 0;
     while (readAndTrimLine() && m_configFile.currentLine != "}") {
@@ -34,7 +34,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
     }
 
 	if (m_brackets.size() != 0)
-		throw std::runtime_error("Error: Missing bracket(s) in config file");
+		throw std::runtime_error("Missing bracket(s) in config file");
 	
 	return m_configFile;
 }
@@ -130,7 +130,7 @@ void ConfigFileParser::readLocationConfig(size_t index)
 
     directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
     if (std::find(validLocationDirectivesSet.begin(), validLocationDirectivesSet.end(), directive) == validLocationDirectivesSet.end())
-        throw std::runtime_error("Error: Invalid location directive");
+        throw std::runtime_error("Invalid location directive");
 
     m_configFile.servers[index].locations.push_back(location);
 }
