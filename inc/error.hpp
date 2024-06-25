@@ -22,3 +22,8 @@
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
 #define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
+
+// HTTP REQUEST BODY ERRORS
+#define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"
+#define ERR_INVALID_HEX_CHAR "Invalid HTTP request: Invalid hex character detected"
+#define ERR_CONVERSION_HEX "Hex conversion error"

@@ -163,6 +163,25 @@ bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 	}
 }
 
+int	RequestParser::convertHex(const std::string& chunkSize) const
+{
+	if (chunkSize.empty())
+        throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
+
+    for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
+        if (!std::isxdigit(*it))
+            throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
+    }
+
+    std::istringstream	iss(chunkSize);
+    int value = 0;
+
+    iss >> std::hex >> value;
+    if (iss.fail())
+        throw std::runtime_error(ERR_CONVERSION_HEX);
+    return value;
+}
+
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 RequestParser::RequestParser()
@@ -251,7 +270,9 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
 			checkHeaderName(headerName);
-            std::getline(headerStream >> std::ws, headerValue, '\r');
+            std::getline(headerStream >> std::ws, headerValue);
+			if (headerValue[headerValue.size() - 1] == '\r')
+				headerValue.erase(headerValue.size() - 1);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue);
             m_request.headers[headerName] = headerValue;
@@ -265,12 +286,10 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 
     // Step 3: Parse body (if any)
 	if (m_request.hasBody) {
-		std::string body;
-		while (std::getline(requestStream, body)) {
-			if (!m_request.body.empty())
-				body += "\n";
-			m_request.body += body;
-		}
+		if (m_request.chunked)
+			parseChunkedBody(requestStream);
+		else
+			parseNonChunkedBody(requestStream);
 	}
     return m_request;
 }
@@ -448,6 +467,35 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 	}
 	m_request.version.push_back(requestLine[i]);
 	return (requestLine.substr(++i));
+}
+
+
+void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
+{
+	int			length = 0;
+	std::string	strChunkSize;
+	std::getline(requestStream, strChunkSize);
+	if (strChunkSize[strChunkSize.size() - 1] == '\r')
+		strChunkSize.erase(strChunkSize.size() - 1);
+	int numChunkSize = convertHex(strChunkSize);
+	while (numChunkSize > 0) {
+		std::string	chunkData;
+		std::getline(requestStream, chunkData);
+		m_request.body += chunkData;
+		length += numChunkSize;
+		std::getline(requestStream, strChunkSize);
+		numChunkSize = convertHex(strChunkSize);
+	}
+}
+
+void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
+{
+	std::string body;
+	while (std::getline(requestStream, body)) {
+		if (!m_request.body.empty())
+			body += "\n";
+		m_request.body += body;
+	}
 }
 
 /**

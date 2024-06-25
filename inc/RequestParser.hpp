@@ -44,12 +44,15 @@ class RequestParser {
 				void		checkHeaderName(const std::string& headerName);
 				void		checkContentLength(const std::string& headerName, std::string& headerValue);
 				void		checkTransferEncoding();
+				void		parseChunkedBody(std::istringstream& requestStream);
+				void		parseNonChunkedBody(std::istringstream& requestStream);
 
 				// Helper functions
 				std::string	checkForSpace(const std::string&);
 				void		checkForCRLF(const std::string&);
 				bool		isValidURIChar(uint8_t c) const;
 				bool		isValidHeaderFieldNameChar(uint8_t c) const;
+				int			convertHex(const std::string& chunkSize) const;
 
 				// Getter functions
 				int			getErrorCode() const;
