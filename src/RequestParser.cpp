@@ -481,9 +481,13 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 	while (numChunkSize > 0) {
 		std::string	chunkData;
 		std::getline(requestStream, chunkData);
+		if (chunkData[chunkData.size() - 1] == '\r')
+			chunkData.erase(chunkData.size() - 1);
 		m_request.body += chunkData;
 		length += numChunkSize;
 		std::getline(requestStream, strChunkSize);
+		if (strChunkSize[strChunkSize.size() - 1] == '\r')
+			strChunkSize.erase(strChunkSize.size() - 1);
 		numChunkSize = convertHex(strChunkSize);
 	}
 }
