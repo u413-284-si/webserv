@@ -33,6 +33,8 @@ void	testValidBody()
 	std::pair<std::string, std::string>	tests[] = {
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n"
 			, "hello world!"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n"
+			, "hello \nworld!"),
 
 	};
 	runBodyTests("VALID BODY", sizeof(tests) / sizeof(tests[0]), tests);
