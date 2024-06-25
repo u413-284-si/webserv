@@ -500,8 +500,10 @@ void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 {
 	std::string body;
 	while (std::getline(requestStream, body)) {
+		if (body[body.size() - 1] == '\r')
+			body.erase(body.size() - 1);
 		if (!m_request.body.empty())
-			body += "\n";
+			m_request.body += '\n';
 		m_request.body += body;
 	}
 }
