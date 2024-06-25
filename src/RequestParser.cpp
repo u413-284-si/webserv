@@ -245,8 +245,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
 			checkHeaderName(headerName);
-			// getline() removes trailing \r\n
-            std::getline(headerStream >> std::ws, headerValue);
+            std::getline(headerStream >> std::ws, headerValue, '\r');
 			headerValue = trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue);
             m_request.headers[headerName] = headerValue;
