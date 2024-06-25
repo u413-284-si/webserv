@@ -611,7 +611,8 @@ void	RequestParser::checkTransferEncoding()
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
 			}
 			m_request.chunked = true;
+			m_request.hasBody = true;
 		}
-		m_request.hasBody = true;
+		
 	}
 }
