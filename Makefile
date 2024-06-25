@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
+#    Updated: 2024/06/18 18:46:23 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,25 +68,37 @@ POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 
 # Target
 NAME := webserv
+TEST := test
 
 # ******************************
 # *     Source files           *
 # ******************************
 
 SRC:= 	main.cpp \
-		Server.cpp
+		RequestParser.cpp \
+		Server.cpp \
+		utilities.cpp
+
+TEST_SRC:=	test.cpp \
+			testRequestLine.cpp \
+			testHeader.cpp \
+			RequestParser.cpp \
+			Server.cpp \
+			utilities.cpp
 
 # ******************************
 # *     Object files           *
 # ******************************
 
-OBJS = 	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
+OBJS = 			$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
+TEST_OBJS = 	$(addprefix $(OBJ_DIR)/, $(TEST_SRC:.cpp=.o))
 
 # ******************************
 # *     Dependency files       *
 # ******************************
 
 DEPFILES =	$(SRC:%.cpp=$(DEP_DIR)/%.d)
+TEST_DEPFILES =	$(TEST_SRC:%.cpp=$(DEP_DIR)/%.d)
 
 # ******************************
 # *     Log files              *
@@ -112,7 +124,13 @@ $(NAME): $(OBJS)
 	@printf "$(YELLOW)$(BOLD)link binary$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)$(CXX) $(OBJS) -o $@
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
-	@printf "$(BOLD)$(GREEN)$(NAME) created!$(RESET)\n"
+	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
+
+$(TEST): $(TEST_OBJS)
+	@printf "$(YELLOW)$(BOLD)link test binary$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)$(CXX) $(TEST_OBJS) -o $@
+	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
 
 # ******************************
 # *     Special targets        *
@@ -183,6 +201,7 @@ $(DEP_DIR) $(LOG_DIR):
 
 # Mention each dependency file as a target, so that make won’t fail if the file doesn’t exist.
 $(DEPFILES):
+$(TEST_DEPFILES):
 
 # ******************************
 # *     Cleanup                *
@@ -204,6 +223,15 @@ fclean: clean
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@echo
 
+# Remove all object, dependency, test binaries and log files
+.PHONY: tclean
+tclean: clean
+	@rm -rf $(TEST)*
+	@printf "$(RED)removed binaries $(TEST)*$(RESET)\n"
+	@rm -rf $(LOG_DIR)
+	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
+	@echo
+
 # ******************************
 # *     Recompilation          *
 # ******************************
@@ -218,6 +246,7 @@ re: fclean all
 # Include the dependency files that exist. Use wildcard to avoid failing on non-existent files.
 # Needs to be last target
 include $(wildcard $(DEPFILES))
+include $(wildcard $(TEST_DEPFILES))
 
 # ******************************
 # *     Help Target            *
@@ -231,12 +260,13 @@ help:
 	@echo "Below are the available targets and variables you can use."
 	@echo ""
 	@echo "$(YELLOW)Targets:$(RESET)"
-	@echo "  all         - Compiles the default version of the miniRT program."
+	@echo "  all         - Compiles the default version of the $@ program."
 	@echo "  clean       - Removes object files and dependency files."
 	@echo "  fclean      - Performs 'clean' and also removes binaries and log files."
 	@echo "  re          - Performs 'fclean' and then 'all'."
 	@echo "  valgr       - Runs the program with Valgrind to check for memory leaks."
 	@echo "  profile     - Profiles the program using 'perf'."
+	@echo "  test        - Compiles a test binary to run various tests."
 	@echo ""
 	@echo "$(YELLOW)Variables:$(RESET)"
 	@echo "  VERBOSE=1   - Echoes all commands if set to 1."
