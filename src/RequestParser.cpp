@@ -163,7 +163,7 @@ bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 	}
 }
 
-int	RequestParser::convertHex(const std::string& chunkSize) const
+size_t	RequestParser::convertHex(const std::string& chunkSize) const
 {
 	if (chunkSize.empty())
         throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
@@ -174,7 +174,7 @@ int	RequestParser::convertHex(const std::string& chunkSize) const
     }
 
     std::istringstream	iss(chunkSize);
-    int value = 0;
+    size_t	value = 0;
 
     iss >> std::hex >> value;
     if (iss.fail())
@@ -477,12 +477,16 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 	std::getline(requestStream, strChunkSize);
 	if (strChunkSize[strChunkSize.size() - 1] == '\r')
 		strChunkSize.erase(strChunkSize.size() - 1);
-	int numChunkSize = convertHex(strChunkSize);
+	size_t numChunkSize = convertHex(strChunkSize);
 	while (numChunkSize > 0) {
 		std::string	chunkData;
 		std::getline(requestStream, chunkData);
 		if (chunkData[chunkData.size() - 1] == '\r')
 			chunkData.erase(chunkData.size() - 1);
+		if (chunkData.size() != numChunkSize) {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_CHUNK_SIZE);
+		}
 		m_request.body += chunkData;
 		length += numChunkSize;
 		std::getline(requestStream, strChunkSize);

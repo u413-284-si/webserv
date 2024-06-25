@@ -52,7 +52,7 @@ class RequestParser {
 				void		checkForCRLF(const std::string&);
 				bool		isValidURIChar(uint8_t c) const;
 				bool		isValidHeaderFieldNameChar(uint8_t c) const;
-				int			convertHex(const std::string& chunkSize) const;
+				size_t		convertHex(const std::string& chunkSize) const;
 
 				// Getter functions
 				int			getErrorCode() const;
