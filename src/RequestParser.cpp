@@ -543,13 +543,16 @@ void	RequestParser::checkTransferEncoding()
 	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end()) {
 		if (m_request.headers["Transfer-Encoding"].empty()) {
 			m_errorCode = 400;
-			throw std::runtime_error(ERR_NON_EXISTENT_CHUNKED_ENCODING);
+			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
 
-		std::vector<std::string>	encodings = split(m_request.headers["Transfer-Encoding"], ',');
-		if (encodings[encodings.size() - 1] != "chunked") {
-			m_errorCode = 400;
-			throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
+		if (m_request.headers["Transfer-Encoding"].find("chunked") != std::string::npos) {
+			std::vector<std::string>	encodings = split(m_request.headers["Transfer-Encoding"], ',');
+			if (encodings[encodings.size() - 1] != "chunked") {
+				m_errorCode = 400;
+				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
+			}
+			m_request.chunked = true;
 		}
 		m_request.hasBody = true;
 	}
