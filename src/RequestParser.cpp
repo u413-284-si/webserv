@@ -178,7 +178,7 @@ size_t	RequestParser::convertHex(const std::string& chunkSize) const
 
     iss >> std::hex >> value;
     if (iss.fail())
-        throw std::runtime_error(ERR_CONVERSION_HEX);
+        throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
     return value;
 }
 
@@ -499,12 +499,24 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 {
 	std::string body;
+	size_t		length = 0;
+
 	while (std::getline(requestStream, body)) {
+		length += body.size() + 1;
 		if (body[body.size() - 1] == '\r')
 			body.erase(body.size() - 1);
 		if (!m_request.body.empty())
 			m_request.body += '\n';
 		m_request.body += body;
+	}
+	size_t	contentLength = 0;
+	std::istringstream	iss(m_request.headers["Content-Length"]);
+	iss >> contentLength;
+	if (iss.fail())
+		throw std::runtime_error(ERR_CONVERSION_STRING_TO_SIZE_T);
+	if (contentLength != length) {
+		m_errorCode = 400;
+		throw std::runtime_error(ERR_CONTENT_LENGTH);
 	}
 }
 
