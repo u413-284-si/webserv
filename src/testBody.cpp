@@ -41,8 +41,8 @@ void	testValidBody()
 void	testInvalidBody()
 {
 	std::pair<std::string, std::string>	tests[] = {
-		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost :       www.example.com       \r\n\r\n"
-			, "Host\nwww.example.com"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n"
+			, "hello world!"),
 	};
 	runBodyTests("INVALID BODY", sizeof(tests) / sizeof(tests[0]), tests);
 }

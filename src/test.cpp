@@ -7,5 +7,6 @@ int	main()
 	// testValidHeader();
 	// testInvalidHeader();
 	testValidBody();
+	testInvalidBody();
 	return 0;
 }
