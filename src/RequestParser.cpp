@@ -165,7 +165,13 @@ bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
-RequestParser::RequestParser() {}
+RequestParser::RequestParser()
+	: m_errorCode(0)
+	, m_requestMethod(0)
+{
+	m_request.hasBody = false;
+	m_request.chunked = false;
+}
 
 RequestParser::~RequestParser() {}
 
