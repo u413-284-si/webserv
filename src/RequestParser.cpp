@@ -477,12 +477,20 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 	std::getline(requestStream, strChunkSize);
 	if (strChunkSize[strChunkSize.size() - 1] == '\r')
 		strChunkSize.erase(strChunkSize.size() - 1);
+	else {
+		m_errorCode = 400;
+		throw std::runtime_error(ERR_MISS_CRLF);
+	}
 	size_t numChunkSize = convertHex(strChunkSize);
 	while (numChunkSize > 0) {
 		std::string	chunkData;
 		std::getline(requestStream, chunkData);
 		if (chunkData[chunkData.size() - 1] == '\r')
 			chunkData.erase(chunkData.size() - 1);
+		else {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_MISS_CRLF);
+		}
 		if (chunkData.size() != numChunkSize) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_CHUNK_SIZE);
@@ -492,6 +500,10 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 		std::getline(requestStream, strChunkSize);
 		if (strChunkSize[strChunkSize.size() - 1] == '\r')
 			strChunkSize.erase(strChunkSize.size() - 1);
+		else {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_MISS_CRLF);
+		}
 		numChunkSize = convertHex(strChunkSize);
 	}
 }
