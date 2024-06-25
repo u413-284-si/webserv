@@ -44,7 +44,7 @@ void	testValidHeader()
 			, "Host\nwww.example.com\nContent-Length\n23"),
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 23\r\n\r\n"
 			, "Host\nwww.example.com\nContent-Length\n23"),
-		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n"
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n0\r\n\r\n"
 			, "Host\nwww.example.com\nTransfer-Encoding\ngzip, chunked"),
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\n"
 			, "Host\nwww.example.com\nTransfer-Encoding\ngzip"),
