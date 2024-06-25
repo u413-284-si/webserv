@@ -25,6 +25,7 @@ struct HTTPRequest {
 	std::map<std::string, std::string>	headers;
 	std::string							body;
 	bool								hasBody;
+	bool								chunked;
 };
 
 /* ====== CLASS DECLARATION ====== */
