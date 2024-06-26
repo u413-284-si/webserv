@@ -1,13 +1,19 @@
 #pragma once
 
+/* ====== LIBRARIES ====== */
+
 #include "ConfigFile.hpp"
 #include <algorithm>
 #include <fstream>
 #include <set>
 #include <stack>
 
+/* ====== DEFINITIONS ====== */
+
 #define SERVER 1
 #define LOCATION 2
+
+/* ====== CLASS DECLARATION ====== */
 
 class ConfigFileParser {
 public:
@@ -19,11 +25,15 @@ public:
 private:
     ConfigFile m_configFile;
     std::stack<char> m_brackets;
-    bool readAndTrimLine(void);
-    bool isBracketOpen(const std::string& configFilePath);
+
+	
     void readServerConfig(size_t index);
     void readLocationConfig(size_t index);
-    void removeLeadingAndTrailingSpaces();
 	static bool isDirectiveValid(const std::string& directive, int block);
+    bool isBracketOpen(const std::string& configFilePath);
+
+	// Helper functions
+    bool readAndTrimLine(void);
 	static size_t countChars(const std::string& line, char character);
+    void removeLeadingAndTrailingSpaces();
 };
