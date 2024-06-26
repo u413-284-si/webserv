@@ -120,22 +120,22 @@ size_t ConfigFileParser::countChars(const std::string& line, char character)
 
 bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
 {
-	const char* validServerDirectives[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
-    const int validServerDirectivesSize = sizeof(validServerDirectives) / sizeof(validServerDirectives[0]);
-    std::set<std::string> validServerDirectivesSet(validServerDirectives, validServerDirectives + validServerDirectivesSize);
+	const char* validServerDirectiveNames[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
+    const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
+	std::vector<std::string> validServerDirectives(validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize); 
 
-	const char* validLocationDirectives[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
-    const int validLocationDirectivesSize = sizeof(validLocationDirectives) / sizeof(validLocationDirectives[0]);
-    std::set<std::string> validLocationDirectivesSet(validLocationDirectives, validLocationDirectives + validLocationDirectivesSize);
+	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
+    const int validLocationDirectiveNamesSize = sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
+    std::vector<std::string> validLocationDirectives(validLocationDirectiveNames, validLocationDirectiveNames + validLocationDirectiveNamesSize);
 
 	if (block == SERVER)
 	{
-		if (validServerDirectivesSet.find(directive) == validServerDirectivesSet.end() && !directive.empty())
+		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive) == validServerDirectives.end())
 			return false;
 	}
 	else if (block == LOCATION)
 	{
-		if (validLocationDirectivesSet.find(directive) == validLocationDirectivesSet.end())
+		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive) == validLocationDirectives.end())
 			return false;
 	}
 	return true;
