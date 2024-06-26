@@ -1,9 +1,13 @@
 #pragma once
 
+/* ====== LIBRARIES ====== */
+
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <vector>
+
+/* ====== DEFINITIONS ====== */
 
 enum Method { MethodGet,
     MethodPost,
