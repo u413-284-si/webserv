@@ -130,12 +130,12 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
 
 	if (block == SERVER)
 	{
-		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive) == validServerDirectives.end())
+		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive) == validServerDirectives.end() && !directive.empty())
 			return false;
 	}
 	else if (block == LOCATION)
 	{
-		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive) == validLocationDirectives.end())
+		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive) == validLocationDirectives.end() && !directive.empty())
 			return false;
 	}
 	return true;
