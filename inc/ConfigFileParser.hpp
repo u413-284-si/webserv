@@ -6,6 +6,9 @@
 #include <set>
 #include <stack>
 
+#define SERVER 1
+#define LOCATION 2
+
 class ConfigFileParser {
 public:
     ConfigFileParser(void);
