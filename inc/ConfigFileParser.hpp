@@ -34,6 +34,5 @@ private:
 
 	// Helper functions
     bool readAndTrimLine(void);
-	static size_t countChars(const std::string& line, char character);
     void removeLeadingAndTrailingSpaces();
 };

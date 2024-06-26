@@ -92,22 +92,6 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
     m_configFile.currentLine.erase(m_configFile.currentLine.find_last_not_of(' ') + 1);
 }
 
-/**
- * @brief Counts the number of times a character appears in a string 
- * 
- * @param line The string which contains the character to count
- * @param character The character to count within the string
- * @return size_t The number of times the character appears in the string
- */
-size_t ConfigFileParser::countChars(const std::string& line, char character)
-{
-	size_t count = 0;
-	for (std::string::const_iterator it = line.begin(); it != line.end(); ++it) {
-		if (*it == character)
-			count++;
-	}
-	return count;
-}
 
 /**
  * @brief Checks if the directive is valid for the given block
