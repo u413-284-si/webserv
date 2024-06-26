@@ -92,27 +92,62 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
     m_configFile.currentLine.erase(m_configFile.currentLine.find_last_not_of(' ') + 1);
 }
 
-size_t ConfigFileParser::countChars(const std::string& line, char c)
+/**
+ * @brief Counts the number of times a character appears in a string 
+ * 
+ * @param line The string which contains the character to count
+ * @param character The character to count within the string
+ * @return size_t The number of times the character appears in the string
+ */
+size_t ConfigFileParser::countChars(const std::string& line, char character)
 {
 	size_t count = 0;
 	for (std::string::const_iterator it = line.begin(); it != line.end(); ++it) {
-		if (*it == c)
+		if (*it == character)
 			count++;
 	}
 	return count;
+}
+
+/**
+ * @brief Checks if the directive is valid for the given block
+ * 
+ * @param directive The directive to check
+ * @param block The block which surounds the directive
+ * @return true When the directive is valid
+ * @return false When the directive is invalid
+ */
+
+bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
+{
+	const char* validServerDirectives[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
+    const int validServerDirectivesSize = sizeof(validServerDirectives) / sizeof(validServerDirectives[0]);
+    std::set<std::string> validServerDirectivesSet(validServerDirectives, validServerDirectives + validServerDirectivesSize);
+
+	const char* validLocationDirectives[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
+    const int validLocationDirectivesSize = sizeof(validLocationDirectives) / sizeof(validLocationDirectives[0]);
+    std::set<std::string> validLocationDirectivesSet(validLocationDirectives, validLocationDirectives + validLocationDirectivesSize);
+
+	if (block == SERVER)
+	{
+		if (validServerDirectivesSet.find(directive) == validServerDirectivesSet.end() && !directive.empty())
+			return false;
+	}
+	else if (block == LOCATION)
+	{
+		if (validLocationDirectivesSet.find(directive) == validLocationDirectivesSet.end())
+			return false;
+	}
+	return true;
 }
 
 void ConfigFileParser::readServerConfig(size_t index)
 {
     ConfigServer server;
     std::string directive;
-    const char* validServerDirectives[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root", "location" };
-    const int validServerDirectivesSize = sizeof(validServerDirectives) / sizeof(validServerDirectives[0]);
-
-    std::set<std::string> validServerDirectivesSet(validServerDirectives, validServerDirectives + validServerDirectivesSize);
 
     directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
-	if (std::find(validServerDirectivesSet.begin(), validServerDirectivesSet.end(), directive) == validServerDirectivesSet.end() && !directive.empty())
+	if (!isDirectiveValid(directive, SERVER))
 		throw std::runtime_error("Invalid server directive");
 	
 	if (m_configFile.currentLine.find_last_of(';') == std::string::npos)
@@ -132,13 +167,9 @@ void ConfigFileParser::readLocationConfig(size_t index)
 {
     Location location;
     std::string directive;
-    const char* validLocationDirectives[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
-    const int validLocationDirectivesSize = sizeof(validLocationDirectives) / sizeof(validLocationDirectives[0]);
-
-    std::set<std::string> validLocationDirectivesSet(validLocationDirectives, validLocationDirectives + validLocationDirectivesSize);
 
     directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
-    if (std::find(validLocationDirectivesSet.begin(), validLocationDirectivesSet.end(), directive) == validLocationDirectivesSet.end())
+    if (!isDirectiveValid(directive, LOCATION))
         throw std::runtime_error("Invalid location directive");
 
     m_configFile.servers[index].locations.push_back(location);

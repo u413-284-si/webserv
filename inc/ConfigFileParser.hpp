@@ -24,5 +24,6 @@ private:
     void readServerConfig(size_t index);
     void readLocationConfig(size_t index);
     void removeLeadingAndTrailingSpaces();
-	size_t countChars(const std::string& line, char c);
+	static bool isDirectiveValid(const std::string& directive, int block);
+	static size_t countChars(const std::string& line, char character);
 };
