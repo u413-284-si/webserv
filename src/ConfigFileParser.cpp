@@ -149,18 +149,18 @@ void ConfigFileParser::readServerConfig(size_t index)
     directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
 	if (!isDirectiveValid(directive, SERVER))
 		throw std::runtime_error("Invalid server directive");
-	
-	if (m_configFile.currentLine.find_last_of(';') == std::string::npos)
+
+	if (directive == "location") {
+        while (readAndTrimLine() && m_configFile.currentLine != "}")
+            readLocationConfig(index);
+		return;
+    }
+	if (m_configFile.currentLine.find_last_of(';') == std::string::npos && !m_configFile.currentLine.empty())
         throw std::runtime_error("Missing semicolon(s)");
-	else if (countChars(m_configFile.currentLine, ';') > 1)
+	else if (std::count(m_configFile.currentLine.begin(), m_configFile.currentLine.end(), ';') > 1)
         throw std::runtime_error("Too many semicolons in line");
 
     m_configFile.servers.push_back(server);
-
-    if (directive == "location") {
-        while (readAndTrimLine() && m_configFile.currentLine != "}")
-            readLocationConfig(index);
-    }
 }
 
 void ConfigFileParser::readLocationConfig(size_t index)
