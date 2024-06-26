@@ -1,13 +1,20 @@
-#include "Log.hpp"
+#include "Server.hpp"
 
-int main()
+int main(int argc, char** argv)
 {
-	static LogOutputterConsole console;
-	static LogOutputterFile file("test.txt");
-	Logger::getInstance().addLogOutputter(&console);
-	Logger::getInstance().addLogOutputter(&file);
-	LOG_DEBUG << "This is a debug message";
-	LOG_INFO << "This is a Info message";
-	LOG_WARN << "This is warn message";
-	LOG_ERROR << "This is error message";
+	if (argc != 2) {
+		std::cerr << "error: arguments invalid\nexpected: ";
+		std::cerr << argv[0] << " <config file>\n";
+		return 1;
+	}
+	(void)argv;
+	try{
+		Server	webserv;
+		webserv.run();
+	}
+	catch (std::exception& e){
+		std::cerr << "error: " << e.what() << std::endl;
+		return 1;
+	}
+	return 0;
 }

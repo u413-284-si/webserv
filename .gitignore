@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+webserv
+
+# Editor settings
+.vscode/
+
+# clangd
+.cache/
+compile_commands.json
