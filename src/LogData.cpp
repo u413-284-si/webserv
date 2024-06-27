@@ -36,4 +36,41 @@ void LogData::formatTime()
 	m_formattedTime = (char*)buffer;
 }
 
+LogData& LogData::operator<<(const ConfigFile& configFile)
+{
+	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin(); it != configFile.serverConfigs.end(); ++it) {
+		m_stream << "Server: " << it->serverName << '\n';
+		m_stream << "Host: " << it->host << '\n';
+		m_stream << "Port: " << it->port << '\n';
+		m_stream << "Max body size: " << it->maxBodySize << '\n';
+		m_stream << "Error pages:\n";
+		for (std::map<unsigned short, std::string>::const_iterator it2 = it->errorPage.begin(); it2 != it->errorPage.end(); ++it2) {
+			m_stream << "  " << it2->first << ": " << it2->second << '\n';
+		}
+		m_stream << "Locations:\n";
+		for (std::vector<Location>::const_iterator it2 = it->locations.begin(); it2 != it->locations.end(); ++it2) {
+			m_stream << "  Path: " << it2->path << '\n';
+			m_stream << "  Root: " << it2->root << '\n';
+			m_stream << "  Index: " << it2->index << '\n';
+			m_stream << "  CGI extension: " << it2->cgiExt << '\n';
+			m_stream << "  CGI path: " << it2->cgiPath << '\n';
+			m_stream << "  Autoindex: " << it2->isAutoindex << '\n';
+			m_stream << "  LimitExcept:\n";
+			m_stream << "    Allow: " << it2->limitExcept.allow << '\n';
+			m_stream << "    Deny: " << it2->limitExcept.deny << '\n';
+			m_stream << "    Allowed methods:\n";
+			for (int i = 0; i < MethodCount; ++i) {
+				m_stream << "      " << i << ": " << it2->limitExcept.allowedMethods[i] << '\n';
+			}
+			m_stream << "  Returns:\n";
+			for (std::map<unsigned short, std::string>::const_iterator it3 = it2->returns.begin(); it3 != it2->returns.end(); ++it3) {
+				m_stream << "    " << it3->first << ": " << it3->second << '\n';
+			}
+		}
+		m_stream << '\n';
+	}
+	m_message = m_stream.str();
+	return *this;
+}
+
 } // weblog

@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 
+#include "ConfigFile.hpp"
+
 namespace weblog {
 
 enum LogLevel { LevelDebug = 0, LevelInfo = 1, LevelWarn = 2, LevelError = 3 };
@@ -25,6 +27,7 @@ public:
 		m_message = m_stream.str();
 		return *this;
 	}
+	LogData& operator<<(const ConfigFile& configFile);
 
 private:
 	// Function to format the timestamp (C++98)
