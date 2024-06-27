@@ -2,8 +2,7 @@
 
 #include "LogData.hpp"
 
-namespace weblog
-{
+namespace weblog {
 
 class ILogOutputter {
 public:
@@ -14,9 +13,15 @@ public:
 
 private:
 	ILogOutputter(const ILogOutputter& ref) { (void)ref; };
-	ILogOutputter& operator=(const ILogOutputter& rhs) { if (this == &rhs) return *this; (void)rhs; return *this; };
+	ILogOutputter& operator=(const ILogOutputter& rhs)
+	{
+		if (this == &rhs)
+			return *this;
+		(void)rhs;
+		return *this;
+	};
 
-	virtual std::string getFormattedMessage(const LogData& logData) = 0;
+	virtual std::string getFormattedMessage(const LogData& logData) const = 0;
 };
 
 } // weblog

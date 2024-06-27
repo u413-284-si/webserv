@@ -11,6 +11,7 @@ namespace weblog {
 enum LogLevel { LevelDebug = 0, LevelInfo = 1, LevelWarn = 2, LevelError = 3 };
 
 class LogData {
+
 public:
 	LogData(LogLevel level, const char* function, size_t line, const char* file);
 
@@ -34,7 +35,6 @@ private:
 	void formatTime();
 
 	std::ostringstream m_stream;
-
 	std::string m_formattedTime;
 	std::string m_message;
 	LogLevel m_level;

@@ -1,16 +1,10 @@
 #include "Logger.hpp"
 
-namespace weblog
-{
+namespace weblog {
 
-Logger::Logger() : m_logLevel(LevelInfo)
+Logger::Logger()
+	: m_logLevel(LevelInfo)
 {
-}
-
-Logger& Logger::addLogOutputter(ILogOutputter* outputter)
-{
-	m_outputters.push_back(outputter);
-	return *this;
 }
 
 Logger::Logger(const Logger& ref)
@@ -32,6 +26,12 @@ Logger& Logger::getInstance()
 {
 	static Logger instance;
 	return instance;
+}
+
+Logger& Logger::addLogOutputter(ILogOutputter* outputter)
+{
+	m_outputters.push_back(outputter);
+	return *this;
 }
 
 Logger& Logger::init(LogLevel level, ILogOutputter* outputter)

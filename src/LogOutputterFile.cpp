@@ -1,10 +1,10 @@
 #include "LogOutputterFile.hpp"
 
-namespace weblog
-{
+namespace weblog {
 
 LogOutputterFile::LogOutputterFile(const char* filename)
-	: m_filename(filename), m_isOpen(false)
+	: m_filename(filename)
+	, m_isOpen(false)
 {
 }
 
@@ -23,7 +23,7 @@ void LogOutputterFile::log(const LogData& logData)
 	m_logfile.flush();
 }
 
-std::string LogOutputterFile::getFormattedMessage(const LogData& logData)
+std::string LogOutputterFile::getFormattedMessage(const LogData& logData) const
 {
 	std::stringstream message;
 

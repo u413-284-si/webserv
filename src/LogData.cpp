@@ -1,7 +1,6 @@
 #include "LogData.hpp"
 
-namespace weblog
-{
+namespace weblog {
 
 LogData::LogData(LogLevel level, const char* function, size_t line, const char* file)
 	: m_level(level)
@@ -38,13 +37,15 @@ void LogData::formatTime()
 
 LogData& LogData::operator<<(const ConfigFile& configFile)
 {
-	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin(); it != configFile.serverConfigs.end(); ++it) {
+	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin();
+		 it != configFile.serverConfigs.end(); ++it) {
 		m_stream << "Server: " << it->serverName << '\n';
 		m_stream << "Host: " << it->host << '\n';
 		m_stream << "Port: " << it->port << '\n';
 		m_stream << "Max body size: " << it->maxBodySize << '\n';
 		m_stream << "Error pages:\n";
-		for (std::map<unsigned short, std::string>::const_iterator it2 = it->errorPage.begin(); it2 != it->errorPage.end(); ++it2) {
+		for (std::map<unsigned short, std::string>::const_iterator it2 = it->errorPage.begin();
+			 it2 != it->errorPage.end(); ++it2) {
 			m_stream << "  " << it2->first << ": " << it2->second << '\n';
 		}
 		m_stream << "Locations:\n";
@@ -63,7 +64,8 @@ LogData& LogData::operator<<(const ConfigFile& configFile)
 				m_stream << "      " << i << ": " << it2->limitExcept.allowedMethods[i] << '\n';
 			}
 			m_stream << "  Returns:\n";
-			for (std::map<unsigned short, std::string>::const_iterator it3 = it2->returns.begin(); it3 != it2->returns.end(); ++it3) {
+			for (std::map<unsigned short, std::string>::const_iterator it3 = it2->returns.begin();
+				 it3 != it2->returns.end(); ++it3) {
 				m_stream << "    " << it3->first << ": " << it3->second << '\n';
 			}
 		}

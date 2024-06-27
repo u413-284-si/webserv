@@ -1,9 +1,8 @@
 #include "Log.hpp"
 
-namespace weblog
-{
+namespace weblog {
 
-Logger& initFile(LogLevel level, const char * filename)
+Logger& initFile(LogLevel level, const char* filename)
 {
 	static LogOutputterFile outputter(filename);
 	return Logger::init(level, &outputter);

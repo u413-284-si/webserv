@@ -10,8 +10,9 @@
 #define LOG_WARN LOG_(weblog::LevelWarn)
 #define LOG_ERROR LOG_(weblog::LevelError)
 
-namespace weblog
-{
-	Logger& initFile(LogLevel level, const char * filename);
-	Logger& initConsole(LogLevel level);
+namespace weblog {
+
+Logger& initFile(LogLevel level, const char* filename);
+Logger& initConsole(LogLevel level);
+
 } // weblog

@@ -6,15 +6,15 @@
 #include "ILogOutputter.hpp"
 #include "LogData.hpp"
 
-namespace weblog
-{
+namespace weblog {
 
 class Logger {
+
 public:
 	static Logger& getInstance();
 	Logger& addLogOutputter(ILogOutputter* outputter);
 
-	void operator+=(const LogData& logData);
+	void operator+=(const LogData& logData) const;
 
 	static Logger& init(LogLevel level = LevelInfo, ILogOutputter* outputter = NULL);
 	LogLevel getLevel() const;

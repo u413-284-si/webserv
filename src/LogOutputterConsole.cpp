@@ -17,16 +17,16 @@ void LogOutputterConsole::log(const LogData& logData)
 		std::clog << message;
 }
 
-std::string LogOutputterConsole::getFormattedMessage(const LogData& logData)
+std::string LogOutputterConsole::getFormattedMessage(const LogData& logData) const
 {
 	std::stringstream message;
 
 	switch (logData.getLevel()) {
 		case LevelWarn:
-			message << m_colors[YELLOW];
+			message << m_colors.at(YELLOW);
 			break;
 		case LevelError:
-			message << m_colors[RED];
+			message << m_colors.at(RED);
 			break;
 		default:
 			break;
@@ -53,7 +53,7 @@ std::string LogOutputterConsole::getFormattedMessage(const LogData& logData)
 		message << "<" << logData.getFunction() << ">(" << logData.getFile() << ":" << logData.getLine() << "): ";
 	}
 
-	message << logData.getMessage() << m_colors[NONE] << '\n';
+	message << logData.getMessage() << m_colors.at(NONE) << '\n';
 
 	return message.str();
 }
