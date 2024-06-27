@@ -13,7 +13,7 @@ public:
 
 	void operator+=(const LogData& logData);
 
-	Logger& init(LogLevel level = LevelInfo, ILogOutputter* outputter = NULL);
+	static Logger& init(LogLevel level = LevelInfo, ILogOutputter* outputter = NULL);
 	LogLevel getLevel() const;
 	Logger& setLevel(LogLevel level);
 
