@@ -2,6 +2,13 @@
 
 #include "ConfigFile.hpp"
 
+/**
+ * @brief Overload << operator to append a Location.
+ *
+ * @param ostream The output stream.
+ * @param location The Location object.
+ * @return std::ostream& The output stream.
+ */
 std::ostream& operator<<(std::ostream& ostream, const Location& location)
 {
 	ostream << "Path: " << location.path << '\n';
@@ -22,6 +29,13 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	return ostream;
 }
 
+/**
+ * @brief Overload << operator to append a ServerConfig.
+ *
+ * @param ostream The output stream.
+ * @param serverConfig The ServerConfig object.
+ * @return std::ostream& The output stream.
+ */
 std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig)
 {
 	ostream << "Server: " << serverConfig.serverName << '\n';
@@ -44,7 +58,9 @@ std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig
 /**
  * @brief Overload << operator to append a ConfigFile.
  *
- * @return LogData& The LogData object.
+ * @param ostream The output stream.
+ * @param configFile The ConfigFile object.
+ * @return std::ostream& The output stream.
  */
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 {
