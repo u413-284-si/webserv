@@ -50,7 +50,7 @@ std::string LogOutputterConsole::getFormattedMessage(const LogData& logData)
 		message << "<" << logData.getFunction() << ">(" << logData.getFile() << ":" << logData.getLine() << "): ";
 	}
 
-	message << logData.getMessage() << '\n';
+	message << logData.getMessage() << m_colors[NONE] << '\n';
 
 	return message.str();
 }
