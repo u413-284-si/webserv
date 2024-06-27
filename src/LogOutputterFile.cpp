@@ -57,20 +57,7 @@ std::string LogOutputterFile::getFormattedMessage(const LogData& logData) const
 
 	message << logData.getFormattedTime();
 
-	switch (logData.getLevel()) {
-	case LevelDebug:
-		message << "[DEBUG] ";
-		break;
-	case LevelInfo:
-		message << "[INFO] ";
-		break;
-	case LevelWarn:
-		message << "[WARN] ";
-		break;
-	case LevelError:
-		message << "[ERROR] ";
-		break;
-	}
+	message << " [" << LogData::levelToString(logData.getLevel()) << "] ";
 
 	if (logData.getLevel() == LevelDebug) {
 		message << "<" << logData.getFunction() << ">(" << logData.getFile() << ":" << logData.getLine() << "): ";

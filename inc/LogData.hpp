@@ -22,6 +22,8 @@ public:
 	const char* getFunction() const;
 	const char* getFile() const;
 
+	static const char * levelToString(LogLevel level);
+
 	template <typename T> LogData& operator<<(const T& value)
 	{
 		m_stream << value;

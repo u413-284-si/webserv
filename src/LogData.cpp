@@ -35,6 +35,22 @@ const std::string& LogData::getMessage() const { return m_message; }
  */
 const LogLevel& LogData::getLevel() const { return m_level; }
 
+const char * LogData::levelToString(LogLevel level)
+{
+	switch (level) {
+	case LevelDebug:
+		return "DEBUG";
+	case LevelInfo:
+		return "INFO";
+	case LevelWarn:
+		return "WARN";
+	case LevelError:
+		return "ERROR";
+	default:
+		return "UNKNOWN";
+	}
+}
+
 /**
  * @brief Get the formatted time.
  *
