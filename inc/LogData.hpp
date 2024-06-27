@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 
+namespace weblog {
+
 enum LogLevel { LevelDebug = 0, LevelInfo = 1, LevelWarn = 2, LevelError = 3 };
 
 class LogData {
@@ -37,3 +39,5 @@ private:
 	size_t m_line;
 	const char* m_file;
 };
+
+} // weblog

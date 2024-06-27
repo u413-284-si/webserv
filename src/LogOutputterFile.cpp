@@ -1,5 +1,8 @@
 #include "LogOutputterFile.hpp"
 
+namespace weblog
+{
+
 LogOutputterFile::LogOutputterFile(const char* filename)
 	: m_filename(filename), m_isOpen(false)
 {
@@ -49,3 +52,5 @@ std::string LogOutputterFile::getFormattedMessage(const LogData& logData)
 
 	return message.str();
 }
+
+} // weblog

@@ -1,5 +1,8 @@
 #include "LogOutputterConsole.hpp"
 
+namespace weblog
+{
+
 LogOutputterConsole::LogOutputterConsole()
 {
 	initColorMap();
@@ -62,3 +65,5 @@ void LogOutputterConsole::initColorMap()
 	m_colors[YELLOW] = "\033[33m";
 	m_colors[GREEN] = "\033[32m";
 }
+
+} // weblog

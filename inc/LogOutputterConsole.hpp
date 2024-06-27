@@ -5,6 +5,9 @@
 
 #include "ILogOutputter.hpp"
 
+namespace weblog
+{
+
 class LogOutputterConsole : public ILogOutputter {
 public:
 	LogOutputterConsole();
@@ -17,3 +20,5 @@ private:
 
 	std::map<TermColors, const char *> m_colors;
 };
+
+} // weblog

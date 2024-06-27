@@ -1,5 +1,8 @@
 #include "Logger.hpp"
 
+namespace weblog
+{
+
 Logger::Logger() : m_logLevel(LevelInfo)
 {
 }
@@ -57,3 +60,5 @@ void Logger::operator+=(const LogData& logData)
 		}
 	}
 }
+
+} // weblog

@@ -6,6 +6,9 @@
 #include "ILogOutputter.hpp"
 #include "LogData.hpp"
 
+namespace weblog
+{
+
 class Logger {
 public:
 	static Logger& getInstance();
@@ -29,3 +32,5 @@ private:
 	LogLevel m_logLevel;
 	std::vector<ILogOutputter*> m_outputters;
 };
+
+} // weblog

@@ -5,6 +5,9 @@
 
 #include "ILogOutputter.hpp"
 
+namespace weblog
+{
+
 class LogOutputterFile : public ILogOutputter {
 public:
 	explicit LogOutputterFile(const char* filename = "log.txt");
@@ -17,3 +20,5 @@ private:
 	const char* const m_filename;
 	bool m_isOpen;
 };
+
+} // weblog

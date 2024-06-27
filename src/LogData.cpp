@@ -1,5 +1,8 @@
 #include "LogData.hpp"
 
+namespace weblog
+{
+
 LogData::LogData(LogLevel level, const char* function, size_t line, const char* file)
 	: m_level(level)
 	, m_function(function)
@@ -32,3 +35,5 @@ void LogData::formatTime()
 	(void)strftime((char*)buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S ", localtime(&now));
 	m_formattedTime = (char*)buffer;
 }
+
+} // weblog
