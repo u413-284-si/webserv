@@ -1,7 +1,6 @@
 #include "Logger.hpp"
 
-Logger::Logger()
-	: m_logLevel(LevelDebug)
+Logger::Logger() : m_logLevel(LevelInfo)
 {
 }
 
@@ -30,6 +29,16 @@ Logger& Logger::getInstance()
 {
 	static Logger instance;
 	return instance;
+}
+
+Logger& Logger::init(LogLevel level, ILogOutputter* outputter)
+{
+	Logger& logger = Logger::getInstance();
+	logger.setLevel(level);
+	if (outputter != NULL) {
+		logger.addLogOutputter(outputter);
+	}
+	return logger;
 }
 
 LogLevel Logger::getLevel() const { return m_logLevel; }
