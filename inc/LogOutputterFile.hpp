@@ -7,9 +7,10 @@
 
 class LogOutputterFile : public ILogOutputter {
 public:
-	explicit LogOutputterFile(const char* const filename = "log.txt");
+	explicit LogOutputterFile(const char* filename = "log.txt");
 
-	virtual void log(const LogLevel level, const std::string& message);
+	virtual void log(const LogData& logData);
+	virtual std::string getFormattedMessage(const LogData& logData);
 
 private:
 	std::ofstream m_logfile;

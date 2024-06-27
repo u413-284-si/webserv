@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-#include "LogLevel.hpp"
+enum LogLevel { LevelDebug = 0, LevelInfo = 1, LevelWarn = 2, LevelError = 3 };
 
 class LogData {
 public:

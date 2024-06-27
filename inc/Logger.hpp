@@ -5,14 +5,13 @@
 
 #include "ILogOutputter.hpp"
 #include "LogData.hpp"
-#include "LogLevel.hpp"
 
 class Logger {
 public:
 	static Logger& getInstance();
 	Logger& addLogOutputter(ILogOutputter* outputter);
 
-	void operator+=(const LogData& record);
+	void operator+=(const LogData& logData);
 
 	LogLevel getLevel() const;
 	Logger& setLevel(LogLevel level);
@@ -24,8 +23,7 @@ private:
 	// disallow copying the instance
 	Logger(const Logger& ref);
 	Logger& operator=(const Logger& ref);
-
-	static std::string getFormattedMessage(const LogData& record);
+	~Logger() {};
 
 	LogLevel m_logLevel;
 	std::vector<ILogOutputter*> m_outputters;
