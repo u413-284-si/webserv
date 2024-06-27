@@ -151,6 +151,19 @@ valgr: $(NAME) | $(LOG_DIR)
 						./$(NAME)
 	$(SILENT)ls -dt1 $(LOG_DIR)/* | head -n 1 | xargs less
 
+# This target creates compile_commands.json for clangd.
+.PHONY: comp
+comp: check_bear_installed clean
+	@printf "$(YELLOW)$(BOLD)Creating compile_commands.json$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)bear -- make --no-print-directory
+
+# Check if bear is installed. If not exit with error.
+.PHONY: check_bear_installed
+check_bear_installed:
+	@command -v bear >/dev/null 2>&1 || { \
+		echo >&2 "perf is not installed. Please install perf to continue."; exit 1; \
+	}
+
 # ******************************
 # *     Object compiling and   *
 # *     dependecy creation     *
@@ -242,6 +255,7 @@ help:
 	@echo "  re          - Performs 'fclean' and then 'all'."
 	@echo "  valgr       - Runs the program with Valgrind to check for memory leaks."
 	@echo "  profile     - Profiles the program using 'perf'."
+	@echo "  comp        - Creates compile_commands.json for clangd."
 	@echo ""
 	@echo "$(YELLOW)Variables:$(RESET)"
 	@echo "  VERBOSE=1   - Echoes all commands if set to 1."
