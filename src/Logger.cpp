@@ -52,10 +52,10 @@ Logger& Logger::setLevel(LogLevel level)
 	return *this;
 }
 
-void Logger::operator+=(const LogData& logData)
+void Logger::operator+=(const LogData& logData) const
 {
 	if (logData.getLevel() >= getLevel()) {
-		for (std::vector<ILogOutputter*>::iterator it = m_outputters.begin(); it != m_outputters.end(); ++it) {
+		for (std::vector<ILogOutputter*>::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it) {
 			(*it)->log(logData);
 		}
 	}
