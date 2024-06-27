@@ -40,51 +40,11 @@ Logger& Logger::setLevel(LogLevel level)
 	return *this;
 }
 
-void Logger::operator+=(const LogData& record)
+void Logger::operator+=(const LogData& logData)
 {
-	std::string message = getFormattedMessage(record);
-
-	if (record.getLevel() >= getLevel()) {
+	if (logData.getLevel() >= getLevel()) {
 		for (std::vector<ILogOutputter*>::iterator it = m_outputters.begin(); it != m_outputters.end(); ++it) {
-			(*it)->log(getLevel(), message);
+			(*it)->log(logData);
 		}
 	}
-}
-
-std::string Logger::getFormattedMessage(const LogData& record)
-{
-	// Create a string stream for formatting
-	std::stringstream message;
-
-	// Add timestamp
-	message << record.getFormattedTime();
-
-	// Add log level prefix
-	switch (record.getLevel()) {
-	case LevelDebug:
-		message << "[DEBUG] ";
-		break;
-	case LevelInfo:
-		message << "[INFO] ";
-		break;
-	case LevelWarn:
-		message << "[WARN] ";
-		break;
-	case LevelError:
-		message << "[ERROR] ";
-		break;
-	}
-
-	// Append function name, file name and line number if LogLevel is Debug
-	if (record.getLevel() == LevelDebug) {
-		message << "<" << record.getFunction() << ">(" << record.getFile() << ":" << record.getLine() << "): ";
-	}
-
-	// Append the actual message
-	message << record.getMessage();
-
-	// Append a newline
-	message << '\n';
-
-	return message.str();
 }
