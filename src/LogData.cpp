@@ -35,6 +35,12 @@ const std::string& LogData::getMessage() const { return m_message; }
  */
 const LogLevel& LogData::getLevel() const { return m_level; }
 
+/**
+ * @brief Convert the log level to a string.
+ *
+ * @param level The log level.
+ * @return const char* The log level as a string.
+ */
 const char * LogData::levelToString(LogLevel level)
 {
 	switch (level) {
