@@ -1,17 +1,23 @@
 #include "LogOutputterFile.hpp"
 
-LogOutputterFile::LogOutputterFile(const char* const filename)
-	: m_filename(filename)
+LogOutputterFile::LogOutputterFile(const char* filename)
+	: m_filename(filename), m_isOpen(false)
 {
-	m_logfile.open(m_filename, std::ios_base::app);
-	if (!m_logfile.is_open())
-		std::cerr << "Error: Could not open file: " << m_filename << '\n';
 }
 
 void LogOutputterFile::log(const LogData& logData)
 {
+	if (!m_isOpen) {
+		m_logfile.open(m_filename, std::ios::out | std::ios::app);
+		if (!m_logfile.is_open()) {
+			std::cerr << "error: could not open file " << m_filename << '\n';
+			return;
+		}
+		m_isOpen = true;
+	}
 	const std::string message = getFormattedMessage(logData);
 	m_logfile << message;
+	m_logfile.flush();
 }
 
 std::string LogOutputterFile::getFormattedMessage(const LogData& logData)

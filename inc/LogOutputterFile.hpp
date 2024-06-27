@@ -15,4 +15,5 @@ public:
 private:
 	std::ofstream m_logfile;
 	const char* const m_filename;
+	bool m_isOpen;
 };
