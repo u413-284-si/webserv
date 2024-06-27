@@ -79,7 +79,8 @@ SRC:= 	main.cpp \
 		Logger.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
-		LogInit.cpp
+		LogInit.cpp \
+		LogConfigFile.cpp
 
 # ******************************
 # *     Object files           *

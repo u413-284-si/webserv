@@ -28,7 +28,6 @@ public:
 		m_message = m_stream.str();
 		return *this;
 	}
-	LogData& operator<<(const ConfigFile& configFile);
 
 private:
 	// Function to format the timestamp (C++98)
