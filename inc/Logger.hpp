@@ -8,6 +8,16 @@
 
 namespace weblog {
 
+/**
+ * @brief Logger class to log messages.
+ *
+ * Implements the Singleton pattern to log messages to different outputters.
+ * The Logger class is a Singleton class, so it can be accessed from anywhere in the code.
+ * The Logger class can log messages to different outputters, which implement the ILogOutputter interface.
+ * The Logger class can log messages with different log levels, which are defined in the LogLevel enum.
+ * The Logger class can be initialized with a log level and an outputter.
+ *
+ */
 class Logger {
 
 public:
