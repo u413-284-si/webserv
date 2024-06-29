@@ -102,7 +102,7 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
  * @return false When the directive is invalid
  */
 
-bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
+bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block) const
 {
 	const char* validServerDirectiveNames[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
     const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
