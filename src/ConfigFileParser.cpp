@@ -125,6 +125,31 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
 	return true;
 }
 
+
+/**
+ * @brief Checks if the current line of the config file contains a semicolon
+ * 
+ * @return true If the line contains a semicolon a the end
+ * @return false If the line does not contain a semicolon
+ */
+bool ConfigFileParser::isSemicolonAtEnd(void) const
+{
+	return m_configFile.currentLine.find_last_of(';') != std::string::npos || m_configFile.currentLine.empty();
+}
+
+/**
+ * @brief Checks if the current line of the config file contains only one semicolon
+ * 
+ * @return true If the line contains only one semicolon or the line is empty
+ * @return false If the line contains more than one semicolon 
+ */
+bool ConfigFileParser::isSemicolonCountOne(void) const
+{
+	ssize_t semicolonCount = std::count(m_configFile.currentLine.begin(), m_configFile.currentLine.end(), ';');
+
+	return semicolonCount == 1 || m_configFile.currentLine.empty();
+}
+
 void ConfigFileParser::readServerConfig(size_t index)
 {
     ConfigServer server;
@@ -139,10 +164,11 @@ void ConfigFileParser::readServerConfig(size_t index)
             readLocationConfig(index);
 		return;
     }
-	if (m_configFile.currentLine.find_last_of(';') == std::string::npos && !m_configFile.currentLine.empty())
-        throw std::runtime_error("Missing semicolon(s)");
-	else if (std::count(m_configFile.currentLine.begin(), m_configFile.currentLine.end(), ';') > 1)
-        throw std::runtime_error("Too many semicolons in line");
+
+	if (!isSemicolonAtEnd())
+		throw std::runtime_error("Semicolon missing");
+	if (!isSemicolonCountOne())
+		throw std::runtime_error("Too many semicolons");
 
     m_configFile.servers.push_back(server);
 }
@@ -152,9 +178,15 @@ void ConfigFileParser::readLocationConfig(size_t index)
     Location location;
     std::string directive;
 
+	
     directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
     if (!isDirectiveValid(directive, LOCATION))
-        throw std::runtime_error("Invalid location directive");
+		throw std::runtime_error("Invalid location directive");
+
+	if (!isSemicolonAtEnd())
+		throw std::runtime_error("Semicolon missing");
+	if (!isSemicolonCountOne())
+		throw std::runtime_error("Too many semicolons");
 
     m_configFile.servers[index].locations.push_back(location);
 }

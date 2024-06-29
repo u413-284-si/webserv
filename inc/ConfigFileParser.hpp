@@ -31,6 +31,8 @@ private:
     void readLocationConfig(size_t index);
 	static bool isDirectiveValid(const std::string& directive, int block);
     bool isBracketOpen(const std::string& configFilePath);
+	bool isSemicolonAtEnd(void) const;
+	bool isSemicolonCountOne(void) const;
 
 	// Helper functions
     bool readAndTrimLine(void);
