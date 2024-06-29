@@ -150,6 +150,16 @@ bool ConfigFileParser::isSemicolonCountOne(void) const
 	return semicolonCount == 1 || m_configFile.currentLine.empty();
 }
 
+/**
+ * @brief Checks if the value of the listen directive is valid
+ *
+ * @details The value of the listen directive must not contain a character other than '0'-'9'.
+ *          The value of the listen directive must be between 1-65535.
+ *
+ * @param directive 
+ * @return true 
+ * @return false 
+ */
 bool ConfigFileParser::isListenValueValid(const std::string& directive) const
 {
 	size_t directiveLen = directive.length();
@@ -170,6 +180,15 @@ bool ConfigFileParser::isListenValueValid(const std::string& directive) const
 	return true;
 }
 
+/**
+ * @brief Reads and checks the value of the directive in the current line of the config file
+ * 
+ * @details This function is called when the directive is valid.
+ *          It calls the appropriate function to read the value of the directive.
+ *          It throws an exception if the value is invalid. 
+
+ * @param directive Is the the directive which value is being read and checked
+ */
 void ConfigFileParser::readDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
