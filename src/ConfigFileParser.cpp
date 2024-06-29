@@ -150,6 +150,33 @@ bool ConfigFileParser::isSemicolonCountOne(void) const
 	return semicolonCount == 1 || m_configFile.currentLine.empty();
 }
 
+bool ConfigFileParser::isListenValueValid(const std::string& directive) const
+{
+	size_t directiveLen = directive.length();
+	size_t semicolonIndex = m_configFile.currentLine.find(';');
+	std::string valueStr = m_configFile.currentLine.substr(directiveLen + 1, semicolonIndex - directiveLen - 1);
+
+	if (valueStr.find_first_not_of("0123456789") != std::string::npos)
+		return false;
+
+	const int base = 10;
+	const int maxPort = 65535;
+	const int minPort = 1;
+
+	int long value = std::strtol(valueStr.c_str(), NULL, base);
+	if (value <= minPort || value > maxPort) 
+		return false;
+	
+	return true;
+}
+
+void ConfigFileParser::readDirectiveValue(const std::string& directive)
+{
+	if (directive == "listen")
+		if (!isListenValueValid(directive))
+			throw std::runtime_error("Invalid listen value");
+}
+
 void ConfigFileParser::readServerConfigLine(size_t index)
 {
     ConfigServer server;
@@ -169,6 +196,8 @@ void ConfigFileParser::readServerConfigLine(size_t index)
 		throw std::runtime_error("Semicolon missing");
 	if (!isSemicolonCountOne())
 		throw std::runtime_error("Too many semicolons");
+
+	readDirectiveValue(directive);
 
     m_configFile.servers.push_back(server);
 }
