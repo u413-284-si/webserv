@@ -29,7 +29,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
     while (readAndTrimLine() && m_configFile.currentLine != "}") {
         if (m_configFile.currentLine == "server {") {
             while (readAndTrimLine() && m_configFile.currentLine != "}")
-                readServerConfig(index);
+                readServerConfigLine(index);
             index++;
         }
     }
@@ -150,7 +150,7 @@ bool ConfigFileParser::isSemicolonCountOne(void) const
 	return semicolonCount == 1 || m_configFile.currentLine.empty();
 }
 
-void ConfigFileParser::readServerConfig(size_t index)
+void ConfigFileParser::readServerConfigLine(size_t index)
 {
     ConfigServer server;
     std::string directive;
@@ -161,7 +161,7 @@ void ConfigFileParser::readServerConfig(size_t index)
 
 	if (directive == "location") {
         while (readAndTrimLine() && m_configFile.currentLine != "}")
-            readLocationConfig(index);
+            readLocationConfigLine(index);
 		return;
     }
 
@@ -173,7 +173,7 @@ void ConfigFileParser::readServerConfig(size_t index)
     m_configFile.servers.push_back(server);
 }
 
-void ConfigFileParser::readLocationConfig(size_t index)
+void ConfigFileParser::readLocationConfigLine(size_t index)
 {
     Location location;
     std::string directive;

@@ -27,8 +27,8 @@ private:
     std::stack<char> m_brackets;
 
 	
-    void readServerConfig(size_t index);
-    void readLocationConfig(size_t index);
+    void readServerConfigLine(size_t index);
+    void readLocationConfigLine(size_t index);
 	static bool isDirectiveValid(const std::string& directive, int block);
     bool isBracketOpen(const std::string& configFilePath);
 	bool isSemicolonAtEnd(void) const;
