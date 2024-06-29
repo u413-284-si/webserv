@@ -29,6 +29,8 @@ private:
 	
     void readServerConfigLine(size_t index);
     void readLocationConfigLine(size_t index);
+
+	// Checker functions
     bool isBracketOpen(const std::string& configFilePath);
 	bool isDirectiveValid(const std::string& directive, int block) const;
 	bool isSemicolonAtEnd(void) const;
