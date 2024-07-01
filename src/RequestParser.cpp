@@ -469,7 +469,28 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 	return (requestLine.substr(++i));
 }
 
-
+/**
+ * @brief Parses a chunked body from the provided input stream.
+ *
+ * This function reads and processes the chunked transfer encoding format from the input stream.
+ * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
+ * request body, and handles any formatting errors.
+ *
+ * @param requestStream The input stream containing the chunked body.
+ *
+ * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
+ *
+ * Error codes:
+ * - ERR_MISS_CRLF: Thrown when a line does not end with a CRLF.
+ * - ERR_CHUNK_SIZE: Thrown when the chunk size does not match the specified size.
+ *
+ * Example usage:
+ * @code
+ * std::istringstream requestStream("4\r\nWiki\r\n5\r\npedia\r\n0\r\n\r\n");
+ * RequestParser parser;
+ * parser.parseChunkedBody(requestStream);
+ * @endcode
+ */
 void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 {
 	int			length = 0;
@@ -508,6 +529,30 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 	}
 }
 
+/**
+ * @brief Parses a non-chunked body from the provided input stream.
+ *
+ * This function reads the entire body from the input stream, ensuring that the
+ * total length of the body matches the "Content-Length" header specified in the request.
+ * It processes each line, removing trailing carriage returns and concatenates
+ * the lines to form the complete body.
+ *
+ * @param requestStream The input stream containing the non-chunked body.
+ *
+ * @throws std::runtime_error If there is an error converting the "Content-Length" header
+ *                            to a size_t or if the body length does not match the "Content-Length" value.
+ *
+ * Error codes:
+ * - ERR_CONVERSION_STRING_TO_SIZE_T: Thrown when the conversion of "Content-Length" header to size_t fails.
+ * - ERR_CONTENT_LENGTH: Thrown when the length of the parsed body does not match the "Content-Length" value.
+ *
+ * Example usage:
+ * @code
+ * std::istringstream requestStream("This is the body of the request.\r\n");
+ * RequestParser parser;
+ * parser.parseNonChunkedBody(requestStream);
+ * @endcode
+ */
 void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 {
 	std::string body;
