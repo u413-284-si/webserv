@@ -8,7 +8,7 @@ Checks: "*,
         -llvm*,
         -zircon-*,
         -modernize-*,
-        -concurrency-mt-unsafe
+        -concurrency-mt-unsafe,
         -cppcoreguidelines-avoid-c-arrays,
         -cppcoreguidelines-explicit-virtual-functions,
         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
@@ -21,7 +21,7 @@ Checks: "*,
         -hicpp-use-equals-default,
         -hicpp-no-array-decay,
         -misc-include-cleaner,
-        -readability-braces-around-statements,
+        -readability-braces-around-statements
 "
 WarningsAsErrors: ''
 HeaderFilterRegex: '.*'
@@ -33,7 +33,8 @@ CheckOptions:
 - { key: readability-identifier-naming.FunctionCase,  value: camelBack }
 - { key: readability-identifier-naming.ParameterCase, value: camelBack }
 - { key: readability-identifier-naming.NamespaceCase, value: lower_case }
-- { key: readability-identifier-naming.StructCase,    value: CamelCase  }
+- { key: readability-identifier-naming.StructCase,    value: CamelCase }
+- { key: readability-identifier-naming.EnumConstantCase, value: CamelCase }
 - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true }
 - { key: cppcoreguidelines-macro-usage.CheckCapsOnly, value: true }
 ...
@@ -63,3 +64,15 @@ CheckOptions:
 # -hicpp-no-array-decay: alias for cppcoreguidelines-pro-bounds-array-to-pointer-decay
 # -misc-include-cleaner : seems to overly aggressive check for includes
 # -readability-braces-around-statements : webkit style does not use braces around single line statements
+
+# Check options:
+# - { key: readability-identifier-naming.ClassCase,     value: CamelCase } : class names are CamelCase
+# - { key: readability-identifier-naming.MemberPrefix,  value: m_ } : member variables are prefixed with m_}
+# - { key: readability-identifier-naming.VariableCase,  value: camelBack } : variable names are camelBack
+# - readability-identifier-naming.FunctionCase,  value: camelBack } : function names are camelBack
+# - readability-identifier-naming.ParameterCase, value: camelBack } : parameter names are camelBack
+# - readability-identifier-naming.NamespaceCase, value: lower_case } : namespace names are lower_case
+# - readability-identifier-naming.StructCase,    value: CamelCase } : struct names are CamelCase
+# - readability-identifier-naming.EnumConstantCase, value: CamelCase } : enum constant names are CamelCase
+# - cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true } : allow missing move functions
+# - cppcoreguidelines-macro-usage.CheckCapsOnly, value: true } : check that macros are all caps only
