@@ -150,6 +150,45 @@ bool ConfigFileParser::isSemicolonCountOne(void) const
 	return semicolonCount == 1 || m_configFile.currentLine.empty();
 }
 
+bool ConfigFileParser::isListenIpValid(size_t directiveLen)
+{
+	size_t colonIndex = m_configFile.currentLine.find(':');
+	std::string ip = m_configFile.currentLine.substr(directiveLen + 1, colonIndex - directiveLen - 1);
+
+	if (ip.find_first_not_of("0123456789.") != std::string::npos)
+		return false;
+
+	size_t firstDotIndex = ip.find('.');
+	if (firstDotIndex == std::string::npos)
+		return false;
+	size_t secondDotIndex = ip.find('.', firstDotIndex + 1);
+	if (secondDotIndex == std::string::npos)
+		return false;
+	size_t thirdDotIndex = ip.find('.', secondDotIndex + 1);
+	if (thirdDotIndex == std::string::npos)
+		return false;
+
+	std::string firstOctetStr = m_configFile.currentLine.substr(ip[0], firstDotIndex);
+	std::string secondOctetStr = m_configFile.currentLine.substr( firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
+	std::string thirdOctetStr = m_configFile.currentLine.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
+	std::string fourthOctetStr = m_configFile.currentLine.substr(thirdDotIndex + 1, ip.length() - thirdDotIndex - 1);
+
+	const int base = 10;
+	long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
+	long secondOcetet = std::strtol(secondOctetStr.c_str(), NULL, base);
+	long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
+	long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
+
+	const short maxIpValue = 255;
+	const short minIpValue = 0;
+	if (firstOctet > maxIpValue || secondOcetet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
+		return false;
+	if (firstOctet < minIpValue || secondOcetet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
+		return false;
+	
+	return true;
+}
+
 /**
  * @brief Checks if the value of the listen directive is valid
  *
@@ -194,8 +233,10 @@ bool ConfigFileParser::isListenValueValid(const std::string& directive)
 void ConfigFileParser::readDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
+	{
 		if (!isListenValueValid(directive))
 			throw std::runtime_error("Invalid listen value");
+	}
 }
 
 void ConfigFileParser::readServerConfigLine(void)
