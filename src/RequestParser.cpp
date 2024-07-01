@@ -163,6 +163,18 @@ bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 	}
 }
 
+/**
+ * @brief Converts a hexadecimal string to a size_t value.
+ * 
+ * This function takes a string representing a hexadecimal number,
+ * validates it, and converts it to a size_t value.
+ * 
+ * @param chunkSize The string containing the hexadecimal number.
+ * @return The converted size_t value.
+ * 
+ * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
+ * @throws std::runtime_error if the conversion from string to size_t fails.
+ */
 size_t	RequestParser::convertHex(const std::string& chunkSize) const
 {
 	if (chunkSize.empty())
@@ -495,16 +507,18 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 {
 	int			length = 0;
 	std::string	strChunkSize;
-	std::getline(requestStream, strChunkSize);
-	if (strChunkSize[strChunkSize.size() - 1] == '\r')
-		strChunkSize.erase(strChunkSize.size() - 1);
-	else {
-		m_errorCode = 400;
-		throw std::runtime_error(ERR_MISS_CRLF);
-	}
-	size_t numChunkSize = convertHex(strChunkSize);
-	while (numChunkSize > 0) {
-		std::string	chunkData;
+	std::string	chunkData;
+	size_t 		numChunkSize = 0;
+
+	do {
+		std::getline(requestStream, strChunkSize);
+		if (strChunkSize[strChunkSize.size() - 1] == '\r')
+			strChunkSize.erase(strChunkSize.size() - 1);
+		else {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_MISS_CRLF);
+		}
+		numChunkSize = convertHex(strChunkSize);
 		std::getline(requestStream, chunkData);
 		if (chunkData[chunkData.size() - 1] == '\r')
 			chunkData.erase(chunkData.size() - 1);
@@ -518,15 +532,8 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 		}
 		m_request.body += chunkData;
 		length += numChunkSize;
-		std::getline(requestStream, strChunkSize);
-		if (strChunkSize[strChunkSize.size() - 1] == '\r')
-			strChunkSize.erase(strChunkSize.size() - 1);
-		else {
-			m_errorCode = 400;
-			throw std::runtime_error(ERR_MISS_CRLF);
-		}
-		numChunkSize = convertHex(strChunkSize);
-	}
+	}	
+	while (numChunkSize > 0);
 }
 
 /**
@@ -568,11 +575,7 @@ void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 		length += body.size();
 		m_request.body += body;
 	}
-	size_t	contentLength = 0;
-	std::istringstream	iss(m_request.headers["Content-Length"]);
-	iss >> contentLength;
-	if (iss.fail())
-		throw std::runtime_error(ERR_CONVERSION_STRING_TO_SIZE_T);
+	size_t	contentLength = std::atol(m_request.headers.at("Content-Length").c_str());
 	if (contentLength != length) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
