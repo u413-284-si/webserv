@@ -17,10 +17,10 @@ LogOutputterConsole::LogOutputterConsole() { initColorMap(); }
  */
 void LogOutputterConsole::initColorMap()
 {
-	m_colors[NONE] = "\033[0m";
-	m_colors[RED] = "\033[31m";
-	m_colors[YELLOW] = "\033[33m";
-	m_colors[GREEN] = "\033[32m";
+	m_colors[None] = "\033[0m";
+	m_colors[Red] = "\033[31m";
+	m_colors[Yellow] = "\033[33m";
+	m_colors[Green] = "\033[32m";
 }
 
 /**
@@ -62,10 +62,10 @@ std::string LogOutputterConsole::getFormattedMessage(const LogData& logData) con
 
 	switch (logData.getLevel()) {
 	case LevelWarn:
-		message << m_colors.at(YELLOW);
+		message << m_colors.at(Yellow);
 		break;
 	case LevelError:
-		message << m_colors.at(RED);
+		message << m_colors.at(Red);
 		break;
 	default:
 		break;
@@ -79,7 +79,7 @@ std::string LogOutputterConsole::getFormattedMessage(const LogData& logData) con
 		message << "<" << logData.getFunction() << ">(" << logData.getFile() << ":" << logData.getLine() << "): ";
 	}
 
-	message << logData.getMessage() << m_colors.at(NONE) << '\n';
+	message << logData.getMessage() << m_colors.at(None) << '\n';
 
 	return message.str();
 }

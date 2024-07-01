@@ -16,7 +16,7 @@ public:
 private:
 	virtual std::string getFormattedMessage(const LogData& logData) const;
 
-	enum TermColors { NONE = 0, RED = 1, YELLOW = 2, GREEN = 3, COUNT = 4 };
+	enum TermColors { None = 0, Red = 1, Yellow = 2, Green = 3, Count = 4 };
 
 	void initColorMap();
 
