@@ -37,9 +37,8 @@ struct Location {
 struct ConfigServer {
     std::vector<std::string> validServerDirectives;
     std::string serverName;
-    std::string host;
     std::string root;
-    unsigned short port;
+	std::map<std::string, unsigned short> listen;
     unsigned long maxBodySize;
     std::map<unsigned short, std::string> errorPage;
     std::vector<Location> locations;
