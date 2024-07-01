@@ -162,7 +162,7 @@ comp: check_bear_installed clean
 .PHONY: check_bear_installed
 check_bear_installed:
 	@command -v bear >/dev/null 2>&1 || { \
-		echo >&2 "perf is not installed. Please install perf to continue."; exit 1; \
+		echo >&2 "bear is not installed. Please install bear to continue."; exit 1; \
 	}
 
 # ******************************
