@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "ILogOutputter.hpp"
+#include "ALogOutputter.hpp"
 #include "LogData.hpp"
 
 namespace weblog {
@@ -22,11 +22,11 @@ class Logger {
 
 public:
 	static Logger& getInstance();
-	Logger& addLogOutputter(ILogOutputter* outputter);
+	Logger& addLogOutputter(ALogOutputter* outputter);
 
 	void operator+=(const LogData& logData) const;
 
-	static Logger& init(LogLevel level = LevelInfo, ILogOutputter* outputter = NULL);
+	static Logger& init(LogLevel level = LevelInfo, ALogOutputter* outputter = NULL);
 	LogLevel getLevel() const;
 	Logger& setLevel(LogLevel level);
 
@@ -40,7 +40,7 @@ private:
 	~Logger() {};
 
 	LogLevel m_logLevel;
-	std::vector<ILogOutputter*> m_outputters;
+	std::vector<ALogOutputter*> m_outputters;
 };
 
 } // weblog

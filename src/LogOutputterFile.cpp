@@ -34,38 +34,8 @@ void LogOutputterFile::log(const LogData& logData)
 		}
 		m_isOpen = true;
 	}
-	const std::string message = getFormattedMessage(logData);
-	m_logfile << message;
+	m_logfile << getFormattedMessage(logData) << '\n';
 	m_logfile.flush();
-}
-
-/**
- * @brief Get the formatted message.
- *
- * The getFormattedMessage function formats the log message.
- * The message is formatted with
- * - the time,
- * - the loglevel,
- * - (if LevelDebug: the function, the file and the line number)
- * - the message.
- * @param logData The log data to format.
- * @return std::string The formatted message.
- */
-std::string LogOutputterFile::getFormattedMessage(const LogData& logData) const
-{
-	std::stringstream message;
-
-	message << logData.getFormattedTime();
-
-	message << " [" << LogData::levelToString(logData.getLevel()) << "] ";
-
-	if (logData.getLevel() == LevelDebug) {
-		message << "<" << logData.getFunction() << ">(" << logData.getFile() << ":" << logData.getLine() << "): ";
-	}
-
-	message << logData.getMessage() << '\n';
-
-	return message.str();
 }
 
 } // weblog

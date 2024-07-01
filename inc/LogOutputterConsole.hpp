@@ -3,20 +3,18 @@
 #include <iostream>
 #include <map>
 
-#include "ILogOutputter.hpp"
+#include "ALogOutputter.hpp"
 
 namespace weblog {
 
-class LogOutputterConsole : public ILogOutputter {
+class LogOutputterConsole : public ALogOutputter {
 
 public:
 	LogOutputterConsole();
 	virtual void log(const LogData& logData);
 
 private:
-	virtual std::string getFormattedMessage(const LogData& logData) const;
-
-	enum TermColors { None = 0, Red = 1, Yellow = 2, Green = 3, Count = 4 };
+	enum TermColors { None = 0, Green = 1, Yellow = 2, Red = 3, Count = 4 };
 
 	void initColorMap();
 

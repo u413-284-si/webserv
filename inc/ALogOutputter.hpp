@@ -12,25 +12,18 @@ namespace weblog {
  * getFormattedMessage to format the message.
  * The copy ctor and copy assignment operator are implemented to silence clang-tidy warnings.
  */
-class ILogOutputter {
+class ALogOutputter {
 
 public:
-	ILogOutputter() {};
-	virtual ~ILogOutputter() {};
+	ALogOutputter();
+	virtual ~ALogOutputter();
 
+	static std::string getFormattedMessage(const LogData& logData);
 	virtual void log(const LogData& logData) = 0;
 
 private:
-	ILogOutputter(const ILogOutputter& ref) { (void)ref; };
-	ILogOutputter& operator=(const ILogOutputter& rhs)
-	{
-		if (this == &rhs)
-			return *this;
-		(void)rhs;
-		return *this;
-	};
-
-	virtual std::string getFormattedMessage(const LogData& logData) const = 0;
+	ALogOutputter(const ALogOutputter& ref);
+	ALogOutputter& operator=(const ALogOutputter& rhs);
 };
 
 } // weblog

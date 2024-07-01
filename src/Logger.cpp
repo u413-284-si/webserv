@@ -61,7 +61,7 @@ Logger& Logger::getInstance()
  * @param outputter The ILogOutputter object to add.
  * @return Logger& The Logger object.
  */
-Logger& Logger::addLogOutputter(ILogOutputter* outputter)
+Logger& Logger::addLogOutputter(ALogOutputter* outputter)
 {
 	m_outputters.push_back(outputter);
 	return *this;
@@ -74,7 +74,7 @@ Logger& Logger::addLogOutputter(ILogOutputter* outputter)
  * @param outputter The ILogOutputter object to add.
  * @return Logger& The Logger object.
  */
-Logger& Logger::init(LogLevel level, ILogOutputter* outputter)
+Logger& Logger::init(LogLevel level, ALogOutputter* outputter)
 {
 	Logger& logger = Logger::getInstance();
 	logger.setLevel(level);
@@ -114,7 +114,7 @@ Logger& Logger::setLevel(LogLevel level)
 void Logger::operator+=(const LogData& logData) const
 {
 	if (logData.getLevel() >= getLevel()) {
-		for (std::vector<ILogOutputter*>::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it) {
+		for (std::vector<ALogOutputter*>::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it) {
 			(*it)->log(logData);
 		}
 	}

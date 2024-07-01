@@ -3,16 +3,15 @@
 #include <fstream>
 #include <iostream>
 
-#include "ILogOutputter.hpp"
+#include "ALogOutputter.hpp"
 
 namespace weblog {
 
-class LogOutputterFile : public ILogOutputter {
+class LogOutputterFile : public ALogOutputter {
 public:
 	explicit LogOutputterFile(const char* filename = "log.txt");
 
 	virtual void log(const LogData& logData);
-	virtual std::string getFormattedMessage(const LogData& logData) const;
 
 private:
 	std::ofstream m_logfile;

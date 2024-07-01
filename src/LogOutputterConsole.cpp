@@ -18,9 +18,9 @@ LogOutputterConsole::LogOutputterConsole() { initColorMap(); }
 void LogOutputterConsole::initColorMap()
 {
 	m_colors[None] = "\033[0m";
-	m_colors[Red] = "\033[31m";
-	m_colors[Yellow] = "\033[33m";
 	m_colors[Green] = "\033[32m";
+	m_colors[Yellow] = "\033[33m";
+	m_colors[Red] = "\033[31m";
 }
 
 /**
@@ -29,59 +29,21 @@ void LogOutputterConsole::initColorMap()
  * The log function logs the message to the console.
  * The message is formatted with the getFormattedMessage function.
  * The message is logged to std::clog for LevelDebug and LevelInfo messages.
- * The message is logged to std::cerr for LevelWarn and LevelError messages.
+ * The message is logged to std::cerr for LevelWarn (yellow) and LevelError (red) messages.
  * @param logData The log data to log.
  */
 void LogOutputterConsole::log(const LogData& logData)
 {
-	const std::string message = getFormattedMessage(logData);
-	if (logData.getLevel() >= LevelWarn)
-		std::cerr << message;
-	else
-		std::clog << message;
-}
-
-/**
- * @brief Get the formatted message.
- *
- * The getFormattedMessage function formats the log message.
- * The message is formatted with
- * - the time,
- * - the loglevel,
- * - (if LevelDebug: the function, the file and the line number)
- * - the message.
- * The message is colored
- * - yellow for LevelWarn messages.
- * - red for LevelError messages.
- * @param logData The log data to format.
- * @return std::string The formatted message.
- */
-std::string LogOutputterConsole::getFormattedMessage(const LogData& logData) const
-{
-	std::stringstream message;
-
 	switch (logData.getLevel()) {
 	case LevelWarn:
-		message << m_colors.at(Yellow);
+		std::cerr << m_colors.at(Yellow) << getFormattedMessage(logData) << m_colors.at(None) << '\n';
 		break;
 	case LevelError:
-		message << m_colors.at(Red);
+		std::cerr << m_colors.at(Red) << getFormattedMessage(logData) << m_colors.at(None) << '\n';
 		break;
 	default:
-		break;
+		std::clog << getFormattedMessage(logData) << '\n';
 	}
-
-	message << logData.getFormattedTime();
-
-	message << " [" << LogData::levelToString(logData.getLevel()) << "] ";
-
-	if (logData.getLevel() == LevelDebug) {
-		message << "<" << logData.getFunction() << ">(" << logData.getFile() << ":" << logData.getLine() << "): ";
-	}
-
-	message << logData.getMessage() << m_colors.at(None) << '\n';
-
-	return message.str();
 }
 
 } // weblog
