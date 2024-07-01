@@ -41,7 +41,7 @@ const LogLevel& LogData::getLevel() const { return m_level; }
  * @param level The log level.
  * @return const char* The log level as a string.
  */
-const char * LogData::levelToString(LogLevel level)
+const char* LogData::levelToString(LogLevel level)
 {
 	switch (level) {
 	case LevelDebug:
@@ -98,8 +98,8 @@ void LogData::formatTime()
 	// Use ctime to convert time_t to a human-readable string (not thread-safe)
 	const int maxTimeString = 80;
 	char buffer[maxTimeString];
-	(void)strftime((char*)buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S ", localtime(&now));
-	m_formattedTime = (char*)buffer;
+	(void)strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S ", localtime(&now));
+	m_formattedTime = buffer;
 }
 
 } // weblog
