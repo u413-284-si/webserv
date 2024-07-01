@@ -205,22 +205,27 @@ bool ConfigFileParser::isListenIpValid(size_t directiveLen)
  */
 bool ConfigFileParser::isListenPortValid(const std::string& directive)
 {
+	if (m_configFile.currentLine.find(':') == std::string::npos)
+		return true;
+
 	size_t directiveLen = directive.length();
 	size_t semicolonIndex = m_configFile.currentLine.find(';');
-	std::string valueStr = m_configFile.currentLine.substr(directiveLen + 1, semicolonIndex - directiveLen - 1);
+	std::string portStr = m_configFile.currentLine.substr(directiveLen + 1, semicolonIndex - directiveLen - 1);
 
-	if (valueStr.find_first_not_of("0123456789") != std::string::npos)
+	if (portStr.find_first_not_of("0123456789") != std::string::npos)
 		return false;
 
 	const int base = 10;
 	const int maxPort = 65535;
 	const int minPort = 1;
 
-	int long value = std::strtol(valueStr.c_str(), NULL, base);
-	if (value <= minPort || value > maxPort) 
+	int long port = std::strtol(portStr.c_str(), NULL, base);
+	if (port <= minPort || port > maxPort) 
 		return false;
 
-	m_configFile.servers[m_configFile.index].port = value;
+	for (std::map<std::string, unsigned short>::iterator it = m_configFile.servers[m_configFile.index].listen.begin(); it != m_configFile.servers[m_configFile.index].listen.end(); it++)
+		if (it->second == 0)
+			it->second = port;
 	
 	return true;
 }
@@ -238,8 +243,10 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
 	{
+		if (!isListenIpValid(directive.length()))
+			throw std::runtime_error("Invalid ip address");
 		if (!isListenPortValid(directive))
-			throw std::runtime_error("Invalid listen value");
+			throw std::runtime_error("Invalid port");
 	}
 }
 
