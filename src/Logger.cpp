@@ -14,7 +14,7 @@ Logger::Logger()
 }
 
 /**
- * @brief PRIVATE Construct a new Logger:: Logger object.
+ * @brief PRIVATE Construct a new Logger:: Logger object with copy.
  *
  * The copy constructor is private to prevent copying the instance.
  * @param ref The Logger object to copy.
