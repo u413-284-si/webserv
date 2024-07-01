@@ -74,13 +74,13 @@ NAME := webserv
 # ******************************
 
 SRC:= 	main.cpp \
-		Server.cpp \
+		LogConfigFile.cpp
 		LogData.cpp \
 		Logger.cpp \
+		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
-		LogInit.cpp \
-		LogConfigFile.cpp
+		Server.cpp \
 
 # ******************************
 # *     Object files           *
