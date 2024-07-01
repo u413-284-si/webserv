@@ -1,41 +1,50 @@
 #include "ResponseBuilder.hpp"
 
-std::string ResponseBuilder::createStatusLine(const int code)
+ResponseBuilder::ResponseBuilder()
 {
-	std::stringstream stream;
-	stream << "HTTP/1.1 " << code << " OK"
+	m_mimeTypes["html"] = "text/html";
+	m_mimeTypes["htm"] = "text/html";
+	m_mimeTypes["jpg"] = "image/jpeg";
+	m_mimeTypes["jpeg"] = "image/jpeg";
+	m_mimeTypes["png"] = "image/png";
+	m_mimeTypes["gif"] = "image/gif";
+	m_mimeTypes["css"] = "text/css";
+	m_mimeTypes["js"] = "application/javascript";
+	m_mimeTypes["pdf"] = "application/pdf";
+	m_mimeTypes["txt"] = "text/plain";
+	m_mimeTypes["default"] = "application/octet-stream";
+}
+
+std::string ResponseBuilder::getMIMEType(const std::string& extension)
+{
+	if (m_mimeTypes.find(extension) != m_mimeTypes.end())
+	{
+		return m_mimeTypes.at(extension);
+	}
+	return m_mimeTypes.at("default");
+}
+
+void ResponseBuilder::appendStatusLine(const int code)
+{
+	m_response << "HTTP/1.1 " << code << " OK"
 		   << "\r\n";
-	return stream.str();
 }
 
-std::string ResponseBuilder::createHeaderContentType()
+void ResponseBuilder::appendHeaders(const std::size_t length, const std::string& extension)
 {
-	std::stringstream stream;
-	stream << "Content-Type: "
-		   << "text/html"
-		   << "\r\n";
-	return stream.str();
-}
-
-std::string ResponseBuilder::createHeaderContentLength(const std::size_t length)
-{
-	std::stringstream stream;
-	stream << "Content-Length: " << length << "\r\n";
-	return stream.str();
-}
-
-void ResponseBuilder::appendHeaders(const std::size_t length)
-{
-	m_response += createHeaderContentType();
-	m_response += createHeaderContentLength(length);
-	m_response += "\r\n";
+	// Content-Type
+	m_response << "Content-Type: " << getMIMEType(extension) << "\r\n";
+	// Content-Length
+	m_response << "Content-Length: " << length << "\r\n";
+	// Delimiter
+	m_response << "\r\n";
 }
 
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
-	m_response += createStatusLine(200);
-	appendHeaders(request.body.length());
-	m_response += request.body + "\r\n";
+	appendStatusLine(200);
+	appendHeaders(request.body.length(), "txt");
+	m_response << request.body + "\r\n";
 }
 
-const std::string& ResponseBuilder::getResponse() const { return m_response; }
+std::string ResponseBuilder::getResponse() const { return m_response.str(); }

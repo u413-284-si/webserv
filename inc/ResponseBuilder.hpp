@@ -1,17 +1,20 @@
 #pragma once
 
 #include "RequestParser.hpp"
+#include <string>
 
 class ResponseBuilder {
 public:
+	ResponseBuilder();
+
 	void buildResponse(const HTTPRequest& request);
-	const std::string& getResponse() const;
+	std::string getResponse() const;
 
 private:
-	static std::string createStatusLine(int code);
-	void appendHeaders(std::size_t length);
-	static std::string createHeaderContentType();
-	static std::string createHeaderContentLength(std::size_t length);
+	void appendStatusLine(int code);
+	void appendHeaders(std::size_t length, const std::string& extension);
+	std::string getMIMEType(const std::string& extension);
 
-	std::string m_response;
+	std::stringstream m_response;
+	std::map<std::string, std::string> m_mimeTypes;
 };
