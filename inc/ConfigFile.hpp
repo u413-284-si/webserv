@@ -48,5 +48,6 @@ struct ConfigServer {
 struct ConfigFile {
     std::ifstream stream;
     std::string currentLine;
+	size_t index;
     std::vector<ConfigServer> servers;
 };

@@ -25,12 +25,12 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
     if (m_configFile.currentLine != "http {")
         throw std::runtime_error("Config file does not start with 'http {'");
 
-    size_t index = 0;
+    m_configFile.index = 0;
     while (readAndTrimLine() && m_configFile.currentLine != "}") {
         if (m_configFile.currentLine == "server {") {
             while (readAndTrimLine() && m_configFile.currentLine != "}")
-                readServerConfigLine(index);
-            index++;
+                readServerConfigLine();
+            m_configFile.index++;
         }
     }
 
@@ -160,7 +160,7 @@ bool ConfigFileParser::isSemicolonCountOne(void) const
  * @return true 
  * @return false 
  */
-bool ConfigFileParser::isListenValueValid(const std::string& directive) const
+bool ConfigFileParser::isListenValueValid(const std::string& directive)
 {
 	size_t directiveLen = directive.length();
 	size_t semicolonIndex = m_configFile.currentLine.find(';');
@@ -176,6 +176,8 @@ bool ConfigFileParser::isListenValueValid(const std::string& directive) const
 	int long value = std::strtol(valueStr.c_str(), NULL, base);
 	if (value <= minPort || value > maxPort) 
 		return false;
+
+	m_configFile.servers[m_configFile.index].port = value;
 	
 	return true;
 }
@@ -196,7 +198,7 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 			throw std::runtime_error("Invalid listen value");
 }
 
-void ConfigFileParser::readServerConfigLine(size_t index)
+void ConfigFileParser::readServerConfigLine(void)
 {
     ConfigServer server;
     std::string directive;
@@ -207,7 +209,7 @@ void ConfigFileParser::readServerConfigLine(size_t index)
 
 	if (directive == "location") {
         while (readAndTrimLine() && m_configFile.currentLine != "}")
-            readLocationConfigLine(index);
+            readLocationConfigLine();
 		return;
     }
 
@@ -216,12 +218,12 @@ void ConfigFileParser::readServerConfigLine(size_t index)
 	if (!isSemicolonCountOne())
 		throw std::runtime_error("Too many semicolons");
 
-	readDirectiveValue(directive);
-
     m_configFile.servers.push_back(server);
+
+	readDirectiveValue(directive);
 }
 
-void ConfigFileParser::readLocationConfigLine(size_t index)
+void ConfigFileParser::readLocationConfigLine(void)
 {
     Location location;
     std::string directive;
@@ -236,5 +238,5 @@ void ConfigFileParser::readLocationConfigLine(size_t index)
 	if (!isSemicolonCountOne())
 		throw std::runtime_error("Too many semicolons");
 
-    m_configFile.servers[index].locations.push_back(location);
+    m_configFile.servers[m_configFile.index].locations.push_back(location);
 }

@@ -27,8 +27,8 @@ private:
     std::stack<char> m_brackets;
 
 	
-    void readServerConfigLine(size_t index);
-    void readLocationConfigLine(size_t index);
+    void readServerConfigLine(void);
+    void readLocationConfigLine(void);
 	void readDirectiveValue(const std::string& directive);
 
 	// Checker functions
@@ -37,7 +37,7 @@ private:
 	bool isSemicolonAtEnd(void) const;
 	bool isSemicolonCountOne(void) const;
 
-	bool isListenValueValid(const std::string& directive) const;
+	bool isListenValueValid(const std::string& directive);
 
 	// Helper functions
     bool readAndTrimLine(void);
