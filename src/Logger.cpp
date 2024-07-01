@@ -78,9 +78,8 @@ Logger& Logger::init(LogLevel level, ALogOutputter* outputter)
 {
 	Logger& logger = Logger::getInstance();
 	logger.setLevel(level);
-	if (outputter != NULL) {
+	if (outputter != NULL)
 		logger.addLogOutputter(outputter);
-	}
 	return logger;
 }
 
@@ -114,9 +113,8 @@ Logger& Logger::setLevel(LogLevel level)
 void Logger::operator+=(const LogData& logData) const
 {
 	if (logData.getLevel() >= getLevel()) {
-		for (std::vector<ALogOutputter*>::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it) {
+		for (std::vector<ALogOutputter*>::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it)
 			(*it)->log(logData);
-		}
 	}
 }
 
