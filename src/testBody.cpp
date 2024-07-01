@@ -35,8 +35,10 @@ void	testValidBody()
 			, "hello world!"),
 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n"
 			, ""),
-		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n"
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello \r\nworld!"
 			, "hello \nworld!"),
+		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n"
+			, "hello \nworld!\n"),
 
 	};
 	runBodyTests("VALID BODY", sizeof(tests) / sizeof(tests[0]), tests);
