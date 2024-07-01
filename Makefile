@@ -74,6 +74,7 @@ NAME := webserv
 # ******************************
 
 SRC:= 	main.cpp \
+		ResponseBuilder.cpp \
 		Server.cpp
 
 # ******************************
