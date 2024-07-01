@@ -44,14 +44,12 @@ std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig
 	ostream << "Max body size: " << serverConfig.maxBodySize << '\n';
 	ostream << "Error pages:\n";
 	for (std::map<unsigned short, std::string>::const_iterator it = serverConfig.errorPage.begin();
-		 it != serverConfig.errorPage.end(); ++it) {
+		 it != serverConfig.errorPage.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
-	}
 	ostream << "Locations:\n";
 	for (std::vector<Location>::const_iterator it = serverConfig.locations.begin(); it != serverConfig.locations.end();
-		 ++it) {
+		 ++it)
 		ostream << *it;
-	}
 	return ostream;
 }
 
@@ -66,8 +64,7 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 {
 	ostream << "Config file:\n";
 	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin();
-		 it != configFile.serverConfigs.end(); ++it) {
+		 it != configFile.serverConfigs.end(); ++it)
 		ostream << *it;
-	}
 	return ostream;
 }
