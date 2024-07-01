@@ -559,11 +559,13 @@ void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 	size_t		length = 0;
 
 	while (std::getline(requestStream, body)) {
-		length += body.size() + 1;
-		if (body[body.size() - 1] == '\r')
+		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
-		if (!m_request.body.empty())
-			m_request.body += '\n';
+			length += 1;
+		}
+		if (!requestStream.eof())
+			body += '\n';
+		length += body.size();
 		m_request.body += body;
 	}
 	size_t	contentLength = 0;
