@@ -38,6 +38,51 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	return m_configFile;
 }
 
+/**
+ * @brief Initializes the ConfigServer object with default values
+ * 
+ * @param configServer The ConfigServer object to initialize 
+ */
+void ConfigFileParser::initializeConfigServer(ConfigServer &configServer)
+{
+	const char* validServerDirectiveNames[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
+    const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
+
+	configServer.validServerDirectives = std::vector<std::string>(validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize); 
+	configServer.serverName = "";
+	configServer.root = "html";
+	configServer.listen.insert(std::make_pair("127.0.0.1", 80));
+	configServer.locationIndex = 0;
+	configServer.maxBodySize = 1;
+	configServer.errorPage = std::map<unsigned short, std::string>();
+	configServer.locationIndex = 0;
+	configServer.locations = std::vector<Location>();
+
+    m_configFile.servers.push_back(configServer);
+}
+
+/**
+ * @brief Initializes the Location object with default values
+ * 
+ * @param location The Location object to initialize
+ */
+void ConfigFileParser::initializeLocation(Location &location)
+{
+	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
+    const int validLocationDirectiveNamesSize = sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
+
+	location.path = "";
+	location.root = "html";
+	location.index = "index.html";
+	location.cgiExt = "";
+	location.cgiPath = "";
+	location.isAutoindex = false;
+	location.limitExcept = LimitExcept();
+	location.returns = std::map<unsigned short, std::string>();
+    location.validLocationDirectives = std::vector<std::string>(validLocationDirectiveNames, validLocationDirectiveNames + validLocationDirectiveNamesSize);
+	m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
+}
+
  /**
   * @brief Checks if there are no open brackets
   *
@@ -250,40 +295,7 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 	}
 }
 
-void ConfigFileParser::initializeConfigServer(ConfigServer &configServer)
-{
-	const char* validServerDirectiveNames[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
-    const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
-	configServer.validServerDirectives = std::vector<std::string>(validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize); 
-	configServer.serverName = "";
-	configServer.root = "html";
-	configServer.listen.insert(std::make_pair("127.0.0.1", 80));
-	configServer.locationIndex = 0;
-	configServer.maxBodySize = 1;
-	configServer.errorPage = std::map<unsigned short, std::string>();
-	configServer.locationIndex = 0;
-	configServer.locations = std::vector<Location>();
-
-    m_configFile.servers.push_back(configServer);
-}
-
-void ConfigFileParser::initializeLocation(Location &location)
-{
-	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
-    const int validLocationDirectiveNamesSize = sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
-
-	location.path = "";
-	location.root = "html";
-	location.index = "index.html";
-	location.cgiExt = "";
-	location.cgiPath = "";
-	location.isAutoindex = false;
-	location.limitExcept = LimitExcept();
-	location.returns = std::map<unsigned short, std::string>();
-    location.validLocationDirectives = std::vector<std::string>(validLocationDirectiveNames, validLocationDirectiveNames + validLocationDirectiveNamesSize);
-	m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
-}
 
 void ConfigFileParser::readServerConfigLine(void)
 {

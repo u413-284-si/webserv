@@ -26,10 +26,11 @@ private:
     ConfigFile m_configFile;
     std::stack<char> m_brackets;
 
+	// Initializer functions
 	void initializeConfigServer(ConfigServer &configServer);
 	void initializeLocation(Location &location);
 
-	
+	// Reader functions	
     void readServerConfigLine(void);
     void readLocationConfigLine(void);
 	void readDirectiveValue(const std::string& directive);
@@ -39,7 +40,6 @@ private:
 	bool isDirectiveValid(const std::string& directive, int block) const;
 	bool isSemicolonAtEnd(void) const;
 	bool isSemicolonCountOne(void) const;
-
 	bool isListenIpValid(void);
 	bool isListenPortValid(void);
 
