@@ -272,6 +272,15 @@ void ConfigFileParser::initializeLocation(Location &location)
 {
 	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
     const int validLocationDirectiveNamesSize = sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
+
+	location.path = "";
+	location.root = "html";
+	location.index = "index.html";
+	location.cgiExt = "";
+	location.cgiPath = "";
+	location.isAutoindex = false;
+	location.limitExcept = LimitExcept();
+	location.returns = std::map<unsigned short, std::string>();
     location.validLocationDirectives = std::vector<std::string>(validLocationDirectiveNames, validLocationDirectiveNames + validLocationDirectiveNamesSize);
 	m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
