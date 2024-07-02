@@ -121,7 +121,13 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
  */
 bool ConfigFileParser::readAndTrimLine(void)
 {
-    if (!getline(m_configFile.stream, m_configFile.currentLine))
+	if (m_configFile.currentLine.find(';') != std::string::npos)
+	{
+		if (!getline(m_configFile.stream, m_configFile.currentLine, ';'))
+			return false;
+		m_configFile.currentLine += ';';
+	}
+	else if (!getline(m_configFile.stream, m_configFile.currentLine))
         return false;
     removeLeadingAndTrailingSpaces();
     return true;
