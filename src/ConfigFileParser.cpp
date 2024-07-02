@@ -158,13 +158,15 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
 	if (block == SERVER)
 	{
 		std::vector<std::string> validServerDirectives = m_configFile.servers[m_configFile.serverIndex].validServerDirectives;
-		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive) == validServerDirectives.end() && !directive.empty())
+		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive) == validServerDirectives.end()
+			&& directive.find_first_not_of(" \t\n\v\f\r") != std::string::npos)
 			return false;
 	}
 	else if (block == LOCATION)
 	{
 		std::vector<std::string> validLocationDirectives = m_configFile.servers[m_configFile.serverIndex].locations[m_configFile.servers[m_configFile.serverIndex].locationIndex].validLocationDirectives;
-		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive) == validLocationDirectives.end() && !directive.empty())
+		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive) == validLocationDirectives.end()
+			&& directive.find_first_not_of(" \t\n\v\f\r") != std::string::npos)
 			return false;
 	}
 	return true;
