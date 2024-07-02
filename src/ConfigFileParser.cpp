@@ -144,12 +144,18 @@ bool ConfigFileParser::isSemicolonCountOne(void) const
 	return semicolonCount == 1 || m_configFile.currentLine.empty();
 }
 
-bool ConfigFileParser::isListenIpValid(size_t directiveLen)
+bool ConfigFileParser::isListenIpValid(void)
 {
 	size_t colonIndex = m_configFile.currentLine.find(':');
 	if (colonIndex == std::string::npos)
+	{
+		if (isListenPortValid())
+			return true;
 		colonIndex = m_configFile.currentLine.find(';');
-	std::string ip = m_configFile.currentLine.substr(directiveLen + 1, colonIndex - directiveLen - 1);
+	}
+
+	size_t numIndex = m_configFile.currentLine.find_first_of("0123456789");
+	std::string ip = m_configFile.currentLine.substr(numIndex, colonIndex - numIndex - 1);
 
 	if (ip.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
@@ -197,13 +203,14 @@ bool ConfigFileParser::isListenIpValid(size_t directiveLen)
  * @return true 
  * @return false 
  */
-bool ConfigFileParser::isListenPortValid(size_t directiveLen)
+bool ConfigFileParser::isListenPortValid(void)
 {
 	if (m_configFile.currentLine.find(':') == std::string::npos)
 		return true;
 
+	size_t colonIndex = m_configFile.currentLine.find(':');
 	size_t semicolonIndex = m_configFile.currentLine.find(';');
-	std::string portStr = m_configFile.currentLine.substr(directiveLen + 1, semicolonIndex - directiveLen - 1);
+	std::string portStr = m_configFile.currentLine.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
 
 	if (portStr.find_first_not_of("0123456789") != std::string::npos)
 		return false;
@@ -236,9 +243,9 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
 	{
-		if (!isListenIpValid(directive.length()))
+		if (!isListenIpValid())
 			throw std::runtime_error("Invalid ip address");
-		if (!isListenPortValid(directive.length()))
+		if (!isListenPortValid())
 			throw std::runtime_error("Invalid port");
 	}
 }

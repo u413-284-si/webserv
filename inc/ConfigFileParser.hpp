@@ -40,8 +40,8 @@ private:
 	bool isSemicolonAtEnd(void) const;
 	bool isSemicolonCountOne(void) const;
 
-	bool isListenIpValid(size_t directiveLen);
-	bool isListenPortValid(size_t directiveLen);
+	bool isListenIpValid(void);
+	bool isListenPortValid(void);
 
 	// Helper functions
     bool readAndTrimLine(void);
