@@ -197,12 +197,11 @@ bool ConfigFileParser::isListenIpValid(size_t directiveLen)
  * @return true 
  * @return false 
  */
-bool ConfigFileParser::isListenPortValid(const std::string& directive)
+bool ConfigFileParser::isListenPortValid(size_t directiveLen)
 {
 	if (m_configFile.currentLine.find(':') == std::string::npos)
 		return true;
 
-	size_t directiveLen = directive.length();
 	size_t semicolonIndex = m_configFile.currentLine.find(';');
 	std::string portStr = m_configFile.currentLine.substr(directiveLen + 1, semicolonIndex - directiveLen - 1);
 
@@ -239,7 +238,7 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 	{
 		if (!isListenIpValid(directive.length()))
 			throw std::runtime_error("Invalid ip address");
-		if (!isListenPortValid(directive))
+		if (!isListenPortValid(directive.length()))
 			throw std::runtime_error("Invalid port");
 	}
 }

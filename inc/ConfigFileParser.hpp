@@ -41,7 +41,7 @@ private:
 	bool isSemicolonCountOne(void) const;
 
 	bool isListenIpValid(size_t directiveLen);
-	bool isListenPortValid(const std::string& directive);
+	bool isListenPortValid(size_t directiveLen);
 
 	// Helper functions
     bool readAndTrimLine(void);
