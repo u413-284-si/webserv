@@ -254,8 +254,17 @@ void ConfigFileParser::initializeConfigServer(ConfigServer &configServer)
 {
 	const char* validServerDirectiveNames[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root"};
     const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
+
 	configServer.validServerDirectives = std::vector<std::string>(validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize); 
+	configServer.serverName = "";
+	configServer.root = "html";
+	configServer.listen.insert(std::make_pair("127.0.0.1", 80));
 	configServer.locationIndex = 0;
+	configServer.maxBodySize = 1;
+	configServer.errorPage = std::map<unsigned short, std::string>();
+	configServer.locationIndex = 0;
+	configServer.locations = std::vector<Location>();
+
     m_configFile.servers.push_back(configServer);
 }
 
