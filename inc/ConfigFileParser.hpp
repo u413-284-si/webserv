@@ -26,6 +26,9 @@ private:
     ConfigFile m_configFile;
     std::stack<char> m_brackets;
 
+	void initializeConfigServer(ConfigServer &configServer);
+	void initializeLocation(Location &location);
+
 	
     void readServerConfigLine(void);
     void readLocationConfigLine(void);

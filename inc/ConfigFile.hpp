@@ -41,12 +41,13 @@ struct ConfigServer {
 	std::map<std::string, unsigned short> listen;
     unsigned long maxBodySize;
     std::map<unsigned short, std::string> errorPage;
+	size_t locationIndex;
     std::vector<Location> locations;
 };
 
 struct ConfigFile {
     std::ifstream stream;
     std::string currentLine;
-	size_t index;
+	size_t serverIndex;
     std::vector<ConfigServer> servers;
 };
