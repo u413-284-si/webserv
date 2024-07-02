@@ -673,12 +673,12 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
 void	RequestParser::checkTransferEncoding()
 {
 	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end()) {
-		if (m_request.headers["Transfer-Encoding"].empty()) {
+		if (m_request.headers.at("Transfer-Encoding").empty()) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
 
-		if (m_request.headers["Transfer-Encoding"].find("chunked") != std::string::npos) {
+		if (m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string>	encodings = split(m_request.headers["Transfer-Encoding"], ',');
 			if (encodings[encodings.size() - 1] != "chunked") {
 				m_errorCode = 400;
