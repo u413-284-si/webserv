@@ -201,9 +201,18 @@ void Server::handleConnections(int clientSock)
 		// Connection closed by client
 		close(clientSock);
 	} else {
+		Location location;
+		location.path = "/";
+		location.root = "/workspaces/webserv";
+		location.index = "index.html";
+		ServerConfig serverConfig;
+		serverConfig.locations.push_back(location);
+		ConfigFile configFile;
+		configFile.serverConfigs.push_back(serverConfig);
 		HTTPRequest request;
 		request.body = buffer;
-		ResponseBuilder responseBuilder;
+		request.uri.path = "/";
+		ResponseBuilder responseBuilder(configFile);
 		responseBuilder.buildResponse(request);
 		write(clientSock, responseBuilder.getResponse().c_str(), responseBuilder.getResponse().size());
 		// FIXME: check requestString for complete HTTP request.

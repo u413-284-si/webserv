@@ -1,9 +1,16 @@
 #include "ResponseBuilder.hpp"
 
-ResponseBuilder::ResponseBuilder()
+ResponseBuilder::ResponseBuilder(const ConfigFile& configFile)
 	: m_statusCode(StatusOK)
+	, m_configFile(configFile)
+	, m_activeServer(configFile.serverConfigs.begin())
 {
 	initMIMETypes();
+}
+
+void ResponseBuilder::setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer)
+{
+	m_activeServer = activeServer;
 }
 
 void ResponseBuilder::initMIMETypes()
@@ -53,8 +60,24 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	m_response << "Date: " << date << "\r\n";
 }
 
+void ResponseBuilder::locateTargetResource(const std::string& path)
+{
+	m_targetResource = m_activeServer->locations[0].root + path;
+	struct stat buffer = {};
+	errno = 0;
+	if (stat(m_targetResource.c_str(), &buffer) == -1)
+		std::cerr << "error: stat: " << strerror(errno) << "\n";
+	if (S_ISDIR(static_cast<unsigned int>(buffer.st_mode)))
+		m_targetResource += m_activeServer->locations[0].index;
+	if (access(m_targetResource.c_str(), R_OK) == -1)
+		std::cout << "Target resource: " << m_targetResource << "does not exist\n";
+	else
+		std::cout << "Target resource: " + m_targetResource + " exists\n";
+}
+
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
+	locateTargetResource(request.uri.path);
 	appendStatusLine();
 	appendHeaders(request.body.length(), "txt");
 	m_response << request.body + "\r\n";
