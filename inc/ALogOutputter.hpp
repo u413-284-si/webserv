@@ -5,12 +5,11 @@
 namespace weblog {
 
 /**
- * @brief Interface for log outputters.
+ * @brief Abstract base class for log outputters.
  *
- * The ILogOutputter interface is used to implement different log outputters.
- * The log outputters must implement the log function to log messages and the
- * getFormattedMessage to format the message.
- * The copy ctor and copy assignment operator are implemented to silence clang-tidy warnings.
+ * The ALogOutputter base class is used to implement different log outputters.
+ * The log outputters must implement the log function to log messages to its respective output.
+ * The copy ctor and copy assignment operator are private to prevent copying of the object.
  */
 class ALogOutputter {
 
