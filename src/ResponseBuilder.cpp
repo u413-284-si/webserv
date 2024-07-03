@@ -1,6 +1,11 @@
 #include "ResponseBuilder.hpp"
 
-ResponseBuilder::ResponseBuilder()
+ResponseBuilder::ResponseBuilder() : m_statusCode(StatusOK)
+{
+	initMIMETypes();
+}
+
+void ResponseBuilder::initMIMETypes()
 {
 	m_mimeTypes["html"] = "text/html";
 	m_mimeTypes["htm"] = "text/html";
@@ -17,8 +22,7 @@ ResponseBuilder::ResponseBuilder()
 
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-	if (m_mimeTypes.find(extension) != m_mimeTypes.end())
-	{
+	if (m_mimeTypes.find(extension) != m_mimeTypes.end()) {
 		return m_mimeTypes.at(extension);
 	}
 	return m_mimeTypes.at("default");
@@ -27,7 +31,7 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 void ResponseBuilder::appendStatusLine(const int code)
 {
 	m_response << "HTTP/1.1 " << code << " OK"
-		   << "\r\n";
+			   << "\r\n";
 }
 
 void ResponseBuilder::appendHeaders(const std::size_t length, const std::string& extension)
@@ -38,11 +42,19 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	m_response << "Content-Length: " << length << "\r\n";
 	// Delimiter
 	m_response << "\r\n";
+	// Server
+	m_response << "Server: SGC-Node\r\n";
+	// Date
+	char date[80];
+	time_t now = time(0);
+	struct tm time = *gmtime(&now);
+	(void)strftime(date, sizeof(date), "%a, %d %b %Y %H:%M:%S %Z", &time);
+	m_response << "Date: " << date << "\r\n";
 }
 
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
-	appendStatusLine(200);
+	appendStatusLine(m_statusCode);
 	appendHeaders(request.body.length(), "txt");
 	m_response << request.body + "\r\n";
 }
