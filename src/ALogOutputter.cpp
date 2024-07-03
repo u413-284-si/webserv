@@ -21,7 +21,7 @@ ALogOutputter::~ALogOutputter() { }
 /**
  * @brief PRIVATE copy constructor.
  *
- * This constructor is implemented to silence clang-tidy warnings.
+ * Prevts copying.
  *
  * @param ref The reference object to copy.
  */
@@ -30,15 +30,14 @@ ALogOutputter::ALogOutputter(const ALogOutputter& ref) { (void)ref; }
 /**
  * @brief PRIVATE copy assignment operator.
  *
- * This operator is implemented to silence clang-tidy warnings.
+ * Prevents copying.
+ * NOLINT to prevent clang-tidy warning about self-assignment (cert-oop54-cpp).
  *
  * @param rhs The right-hand side object to copy.
  * @return ALogOutputter& The copied object.
  */
-ALogOutputter& ALogOutputter::operator=(const ALogOutputter& rhs)
+ALogOutputter& ALogOutputter::operator=(const ALogOutputter& rhs) //NOLINT
 {
-	if (this == &rhs)
-		return *this;
 	(void)rhs;
 	return *this;
 }
