@@ -19,7 +19,7 @@ public:
 	};
 
 private:
-	void appendStatusLine(int code);
+	void appendStatusLine();
 	void appendHeaders(std::size_t length, const std::string& extension);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();

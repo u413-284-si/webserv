@@ -1,6 +1,7 @@
 #include "ResponseBuilder.hpp"
 
-ResponseBuilder::ResponseBuilder() : m_statusCode(StatusOK)
+ResponseBuilder::ResponseBuilder()
+	: m_statusCode(StatusOK)
 {
 	initMIMETypes();
 }
@@ -28,9 +29,9 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 	return m_mimeTypes.at("default");
 }
 
-void ResponseBuilder::appendStatusLine(const int code)
+void ResponseBuilder::appendStatusLine()
 {
-	m_response << "HTTP/1.1 " << code << " OK"
+	m_response << "HTTP/1.1 " << m_statusCode << " OK"
 			   << "\r\n";
 }
 
@@ -54,7 +55,7 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
-	appendStatusLine(m_statusCode);
+	appendStatusLine();
 	appendHeaders(request.body.length(), "txt");
 	m_response << request.body + "\r\n";
 }
