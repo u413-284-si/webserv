@@ -1,6 +1,4 @@
 #include "ResponseBuilder.hpp"
-#include "utils.hpp"
-#include <cstddef>
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile)
 	: m_statusCode(StatusOK)
@@ -50,8 +48,6 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	m_response << "Content-Type: " << getMIMEType(extension) << "\r\n";
 	// Content-Length
 	m_response << "Content-Length: " << length << "\r\n";
-	// Delimiter
-	m_response << "\r\n";
 	// Server
 	m_response << "Server: SGC-Node\r\n";
 	// Date
@@ -60,6 +56,13 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	struct tm time = *gmtime(&now);
 	(void)strftime(date, sizeof(date), "%a, %d %b %Y %H:%M:%S %Z", &time);
 	m_response << "Date: " << date << "\r\n";
+	// Location
+	if (m_statusCode == StatusMovedPermanently)
+	{
+		m_response << "Location: " << m_location << "\r\n";
+	}
+	// Delimiter
+	m_response << "\r\n";
 }
 
 std::vector<Location>::const_iterator ResponseBuilder::matchLocation(const std::string& path)
@@ -98,12 +101,16 @@ void ResponseBuilder::locateTargetResource(const std::string& path)
 	{
 		if (m_targetResource.at(m_targetResource.length() - 1) != '/')
 		{
-			m_targetResource += "/";
+			m_location = path + "/";
 			m_statusCode = StatusMovedPermanently;
 			return;
 		}
 		m_targetResource += locationMatch->index;
-
+		if (!utils::isExistingFile(m_targetResource))
+		{
+			m_statusCode = StatusForbidden;
+			return;
+		}
 	}
 
 }
@@ -111,9 +118,16 @@ void ResponseBuilder::locateTargetResource(const std::string& path)
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
 	locateTargetResource(request.uri.path);
+	if (m_statusCode != StatusOK)
+	{
+		appendStatusLine();
+		appendHeaders(0, "txt");
+		return;
+	}
+	const std::string fileContent = utils::getFileContents(m_targetResource.c_str());
 	appendStatusLine();
-	appendHeaders(request.body.length(), "txt");
-	m_response << request.body + "\r\n";
+	appendHeaders(fileContent.length(), "txt");
+	m_response << fileContent << "\r\n";
 }
 
 std::string ResponseBuilder::getResponse() const { return m_response.str(); }

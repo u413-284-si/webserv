@@ -38,4 +38,5 @@ private:
 	const ConfigFile& m_configFile;
 	std::vector<ServerConfig>::const_iterator m_activeServer;
 	std::string m_targetResource;
+	std::string m_location;
 };
