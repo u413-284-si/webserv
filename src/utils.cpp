@@ -19,4 +19,14 @@ fileType checkFileType(const std::string& path)
 	return Other;
 }
 
+bool isDirectory(const std::string& path)
+{
+	return checkFileType(path) == Directory;
+}
+
+bool isExistingFile(const std::string& path)
+{
+	return checkFileType(path) != NotExist;
+}
+
 } // namespace utils

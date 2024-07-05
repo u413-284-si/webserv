@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include "utils.hpp"
 #include <cstddef>
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile)
@@ -83,7 +84,27 @@ std::vector<Location>::const_iterator ResponseBuilder::matchLocation(const std::
 
 void ResponseBuilder::locateTargetResource(const std::string& path)
 {
-	m_targetResource = m_activeServer->locations[0].root + path;
+	// Check which location block matches the path
+	std::vector<Location>::const_iterator locationMatch = matchLocation(path);
+
+	// No location found > do we also set a default location to not make extra check?
+	if (locationMatch == m_activeServer->locations.end())
+	{
+		m_statusCode = StatusNotFound;
+		return;
+	}
+	m_targetResource = locationMatch->root + path;
+	if (utils::isDirectory(m_targetResource))
+	{
+		if (m_targetResource.at(m_targetResource.length() - 1) != '/')
+		{
+			m_targetResource += "/";
+			m_statusCode = StatusMovedPermanently;
+			return;
+		}
+		m_targetResource += locationMatch->index;
+
+	}
 
 }
 
