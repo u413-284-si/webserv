@@ -1,14 +1,12 @@
 #include "utils.hpp"
 
-namespace utils
-{
+namespace utils {
 
 fileType checkFileType(const std::string& path)
 {
 	struct stat fileStat = {};
 	errno = 0;
-	if (stat(path.c_str(), &fileStat) == -1)
-	{
+	if (stat(path.c_str(), &fileStat) == -1) {
 		std::cerr << "error: stat: " << strerror(errno) << "\n";
 		return NotExist;
 	}
@@ -19,14 +17,23 @@ fileType checkFileType(const std::string& path)
 	return Other;
 }
 
-bool isDirectory(const std::string& path)
-{
-	return checkFileType(path) == Directory;
-}
+bool isDirectory(const std::string& path) { return checkFileType(path) == Directory; }
 
-bool isExistingFile(const std::string& path)
+bool isExistingFile(const std::string& path) { return checkFileType(path) != NotExist; }
+
+std::string getFileContents(const char* filename)
 {
-	return checkFileType(path) != NotExist;
+	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
+	if (fileStream != 0) {
+		std::string contents;
+		fileStream.seekg(0, std::ios::end);
+		contents.resize(fileStream.tellg());
+		fileStream.seekg(0, std::ios::beg);
+		fileStream.read(&contents[0], static_cast<std::streamsize>(contents.size()));
+		fileStream.close();
+		return contents;
+	}
+	throw std::runtime_error(strerror(errno));
 }
 
 } // namespace utils
