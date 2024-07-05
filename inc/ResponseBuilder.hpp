@@ -3,10 +3,6 @@
 #include "ConfigFile.hpp"
 #include "RequestParser.hpp"
 #include <string>
-#include "sys/stat.h"
-#include <cerrno>
-#include <cstring>
-#include <unistd.h>
 
 class ResponseBuilder {
 public:
@@ -29,6 +25,7 @@ private:
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void locateTargetResource(const std::string& path);
+	std::vector<Location>::const_iterator matchLocation(const std::string& path);
 
 	void setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer);
 

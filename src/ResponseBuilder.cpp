@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include <cstddef>
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile)
 	: m_statusCode(StatusOK)
@@ -60,19 +61,30 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	m_response << "Date: " << date << "\r\n";
 }
 
+std::vector<Location>::const_iterator ResponseBuilder::matchLocation(const std::string& path)
+{
+	std::size_t longestMatch = 0;
+	std::vector<Location>::const_iterator locationMatch = m_activeServer->locations.end();
+
+	for (std::vector<Location>::const_iterator it = m_activeServer->locations.begin();
+		 it != m_activeServer->locations.end(); ++it)
+	{
+		if (path.find(it->path) == 0)
+		{
+			if (it->path.length() > longestMatch)
+			{
+				longestMatch = it->path.length();
+				locationMatch = it;
+			}
+		}
+	}
+	return locationMatch;
+}
+
 void ResponseBuilder::locateTargetResource(const std::string& path)
 {
 	m_targetResource = m_activeServer->locations[0].root + path;
-	struct stat buffer = {};
-	errno = 0;
-	if (stat(m_targetResource.c_str(), &buffer) == -1)
-		std::cerr << "error: stat: " << strerror(errno) << "\n";
-	if (S_ISDIR(static_cast<unsigned int>(buffer.st_mode)))
-		m_targetResource += m_activeServer->locations[0].index;
-	if (access(m_targetResource.c_str(), R_OK) == -1)
-		std::cout << "Target resource: " << m_targetResource << "does not exist\n";
-	else
-		std::cout << "Target resource: " + m_targetResource + " exists\n";
+
 }
 
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
