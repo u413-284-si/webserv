@@ -97,7 +97,7 @@ void ResponseBuilder::locateTargetResource(const std::string& path)
 		return;
 	}
 	m_targetResource = locationMatch->root + path;
-	if (utils::isDirectory(m_targetResource))
+	if (FileHandler::isDirectory(m_targetResource))
 	{
 		if (m_targetResource.at(m_targetResource.length() - 1) != '/')
 		{
@@ -106,7 +106,7 @@ void ResponseBuilder::locateTargetResource(const std::string& path)
 			return;
 		}
 		m_targetResource += locationMatch->index;
-		if (!utils::isExistingFile(m_targetResource))
+		if (!FileHandler::isExistingFile(m_targetResource))
 		{
 			m_statusCode = StatusForbidden;
 			return;
@@ -124,7 +124,7 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 		appendHeaders(0, "txt");
 		return;
 	}
-	const std::string fileContent = utils::getFileContents(m_targetResource.c_str());
+	const std::string fileContent = FileHandler::getFileContents(m_targetResource.c_str());
 	appendStatusLine();
 	appendHeaders(fileContent.length(), "txt");
 	m_response << fileContent << "\r\n";

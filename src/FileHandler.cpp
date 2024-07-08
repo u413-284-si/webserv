@@ -1,8 +1,6 @@
-#include "utils.hpp"
+#include "FileHandler.hpp"
 
-namespace utils {
-
-fileType checkFileType(const std::string& path)
+FileHandler::fileType FileHandler::checkFileType(const std::string& path)
 {
 	struct stat fileStat = {};
 	errno = 0;
@@ -17,11 +15,11 @@ fileType checkFileType(const std::string& path)
 	return Other;
 }
 
-bool isDirectory(const std::string& path) { return checkFileType(path) == Directory; }
+bool FileHandler::isDirectory(const std::string& path) { return checkFileType(path) == Directory; }
 
-bool isExistingFile(const std::string& path) { return checkFileType(path) != NotExist; }
+bool FileHandler::isExistingFile(const std::string& path) { return checkFileType(path) != NotExist; }
 
-std::string getFileContents(const char* filename)
+std::string FileHandler::getFileContents(const char* filename)
 {
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
 	if (fileStream != 0) {
@@ -35,5 +33,3 @@ std::string getFileContents(const char* filename)
 	}
 	throw std::runtime_error(strerror(errno));
 }
-
-} // namespace utils
