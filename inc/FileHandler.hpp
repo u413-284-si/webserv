@@ -11,9 +11,9 @@
 class FileHandler {
 
 public:
-	bool isDirectory(const std::string& path) const;
-	bool isExistingFile(const std::string& path) const;
-	std::string getFileContents(const char* filename) const;
+	virtual bool isDirectory(const std::string& path) const;
+	virtual bool isExistingFile(const std::string& path) const;
+	virtual std::string getFileContents(const char* filename) const;
 
 private:
 	enum fileType { NotExist = 0, Directory = 1, RegularFile = 2, Other = 3 };
