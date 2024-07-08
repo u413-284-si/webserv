@@ -163,9 +163,46 @@ bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 	}
 }
 
+/**
+ * @brief Converts a hexadecimal string to a size_t value.
+ * 
+ * This function takes a string representing a hexadecimal number,
+ * validates it, and converts it to a size_t value.
+ * 
+ * @param chunkSize The string containing the hexadecimal number.
+ * @return The converted size_t value.
+ * 
+ * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
+ * @throws std::runtime_error if the conversion from string to size_t fails.
+ */
+size_t	RequestParser::convertHex(const std::string& chunkSize) const
+{
+	if (chunkSize.empty())
+        throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
+
+    for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
+        if (!std::isxdigit(*it))
+            throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
+    }
+
+    std::istringstream	iss(chunkSize);
+    size_t	value = 0;
+
+    iss >> std::hex >> value;
+    if (iss.fail())
+        throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+    return value;
+}
+
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
-RequestParser::RequestParser() {}
+RequestParser::RequestParser()
+	: m_errorCode(0)
+	, m_requestMethod(0)
+{
+	m_request.hasBody = false;
+	m_request.chunked = false;
+}
 
 RequestParser::~RequestParser() {}
 
@@ -245,8 +282,9 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
         std::string headerValue;
         if (std::getline(headerStream, headerName, ':')) {
 			checkHeaderName(headerName);
-			// getline() removes trailing \r\n
             std::getline(headerStream >> std::ws, headerValue);
+			if (headerValue[headerValue.size() - 1] == '\r')
+				headerValue.erase(headerValue.size() - 1);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue);
             m_request.headers[headerName] = headerValue;
@@ -260,12 +298,10 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 
     // Step 3: Parse body (if any)
 	if (m_request.hasBody) {
-		std::string body;
-		while (std::getline(requestStream, body)) {
-			if (!m_request.body.empty())
-				body += "\n";
-			m_request.body += body;
-		}
+		if (m_request.chunked)
+			parseChunkedBody(requestStream);
+		else
+			parseNonChunkedBody(requestStream);
 	}
     return m_request;
 }
@@ -446,6 +482,107 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
 }
 
 /**
+ * @brief Parses a chunked body from the provided input stream.
+ *
+ * This function reads and processes the chunked transfer encoding format from the input stream.
+ * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
+ * request body, and handles any formatting errors.
+ *
+ * @param requestStream The input stream containing the chunked body.
+ *
+ * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
+ *
+ * Error codes:
+ * - ERR_MISS_CRLF: Thrown when a line does not end with a CRLF.
+ * - ERR_CHUNK_SIZE: Thrown when the chunk size does not match the specified size.
+ *
+ * Example usage:
+ * @code
+ * std::istringstream requestStream("4\r\nWiki\r\n5\r\npedia\r\n0\r\n\r\n");
+ * RequestParser parser;
+ * parser.parseChunkedBody(requestStream);
+ * @endcode
+ */
+void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
+{
+	int			length = 0;
+	std::string	strChunkSize;
+	std::string	chunkData;
+	size_t 		numChunkSize = 0;
+
+	do {
+		std::getline(requestStream, strChunkSize);
+		if (strChunkSize[strChunkSize.size() - 1] == '\r')
+			strChunkSize.erase(strChunkSize.size() - 1);
+		else {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_MISS_CRLF);
+		}
+		numChunkSize = convertHex(strChunkSize);
+		std::getline(requestStream, chunkData);
+		if (chunkData[chunkData.size() - 1] == '\r')
+			chunkData.erase(chunkData.size() - 1);
+		else {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_MISS_CRLF);
+		}
+		if (chunkData.size() != numChunkSize) {
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_CHUNK_SIZE);
+		}
+		m_request.body += chunkData;
+		length += numChunkSize;
+	}	
+	while (numChunkSize > 0);
+}
+
+/**
+ * @brief Parses a non-chunked body from the provided input stream.
+ *
+ * This function reads the entire body from the input stream, ensuring that the
+ * total length of the body matches the "Content-Length" header specified in the request.
+ * It processes each line, removing trailing carriage returns and concatenates
+ * the lines to form the complete body.
+ *
+ * @param requestStream The input stream containing the non-chunked body.
+ *
+ * @throws std::runtime_error If there is an error converting the "Content-Length" header
+ *                            to a size_t or if the body length does not match the "Content-Length" value.
+ *
+ * Error codes:
+ * - ERR_CONVERSION_STRING_TO_SIZE_T: Thrown when the conversion of "Content-Length" header to size_t fails.
+ * - ERR_CONTENT_LENGTH: Thrown when the length of the parsed body does not match the "Content-Length" value.
+ *
+ * Example usage:
+ * @code
+ * std::istringstream requestStream("This is the body of the request.\r\n");
+ * RequestParser parser;
+ * parser.parseNonChunkedBody(requestStream);
+ * @endcode
+ */
+void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
+{
+	std::string body;
+	size_t		length = 0;
+
+	while (std::getline(requestStream, body)) {
+		if (body[body.size() - 1] == '\r') {
+			body.erase(body.size() - 1);
+			length += 1;
+		}
+		if (!requestStream.eof())
+			body += '\n';
+		length += body.size();
+		m_request.body += body;
+	}
+	size_t	contentLength = std::atol(m_request.headers.at("Content-Length").c_str());
+	if (contentLength != length) {
+		m_errorCode = 400;
+		throw std::runtime_error(ERR_CONTENT_LENGTH);
+	}
+}
+
+/**
  * @brief Checks the validity of an HTTP header field name.
  *
  * This function verifies if the provided HTTP header field name is valid
@@ -536,16 +673,20 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
 void	RequestParser::checkTransferEncoding()
 {
 	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end()) {
-		if (m_request.headers["Transfer-Encoding"].empty()) {
+		if (m_request.headers.at("Transfer-Encoding").empty()) {
 			m_errorCode = 400;
-			throw std::runtime_error(ERR_NON_EXISTENT_CHUNKED_ENCODING);
+			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
 
-		std::vector<std::string>	encodings = split(m_request.headers["Transfer-Encoding"], ',');
-		if (encodings[encodings.size() - 1] != "chunked") {
-			m_errorCode = 400;
-			throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
+		if (m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
+			std::vector<std::string>	encodings = split(m_request.headers.at("Transfer-Encoding"), ',');
+			if (encodings[encodings.size() - 1] != "chunked") {
+				m_errorCode = 400;
+				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
+			}
+			m_request.chunked = true;
+			m_request.hasBody = true;
 		}
-		m_request.hasBody = true;
+		
 	}
 }

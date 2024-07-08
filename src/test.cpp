@@ -2,9 +2,11 @@
 
 int	main()
 {
-	testValidRequestLine();
-	testInvalidRequestLine();
-	testValidHeader();
-	testInvalidHeader();
+	// testValidRequestLine();
+	// testInvalidRequestLine();
+	// testValidHeader();
+	// testInvalidHeader();
+	testValidBody();
+	testInvalidBody();
 	return 0;
 }

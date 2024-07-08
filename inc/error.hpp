@@ -21,4 +21,12 @@
 #define ERR_MULTIPLE_CONTENT_LENGTH_VALUES "Invalid HTTP request: Multiple differing content-length values"
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
-#define ERR_NON_EXISTENT_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not detected"
+#define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
+
+// HTTP REQUEST BODY ERRORS
+#define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"
+#define ERR_INVALID_HEX_CHAR "Invalid HTTP request: Invalid hex character detected"
+#define ERR_CONVERSION_STRING_TO_HEX "String to hex conversion error"
+#define ERR_CHUNK_SIZE "Invalid HTTP request: Indicated chunk size different than actual chunk size"
+#define ERR_CONVERSION_STRING_TO_SIZE_T "String to size_t conversion error"
+#define ERR_CONTENT_LENGTH "Invalid HTTP request: Indicated content length different than actual body size"

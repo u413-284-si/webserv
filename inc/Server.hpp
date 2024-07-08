@@ -29,11 +29,13 @@ class Server{
 				int							m_epfd;
 				std::map<int,std::string>	m_requestStrings;
 
+				void    acceptConnection();
+                void    handleConnections(int clientSock);
+				bool	checkForCompleteRequest(int clientSock);
+
     public:
                 Server();
                 ~Server();
 
                 void    run();
-                void    acceptConnection();
-                void    handleConnections(int clientSock);
 };
