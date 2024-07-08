@@ -7,7 +7,7 @@
 
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const ConfigFile& configFile);
+	explicit ResponseBuilder(const ConfigFile& configFile, const FileHandler& fileHandler);
 
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse() const;
@@ -39,4 +39,5 @@ private:
 	std::vector<ServerConfig>::const_iterator m_activeServer;
 	std::string m_targetResource;
 	std::string m_location;
+	const FileHandler& m_fileHandler;
 };

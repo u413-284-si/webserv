@@ -1,9 +1,10 @@
 #include "ResponseBuilder.hpp"
 
-ResponseBuilder::ResponseBuilder(const ConfigFile& configFile)
+ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileHandler& fileHandler)
 	: m_statusCode(StatusOK)
 	, m_configFile(configFile)
 	, m_activeServer(configFile.serverConfigs.begin())
+	, m_fileHandler(fileHandler)
 {
 	initMIMETypes();
 }
@@ -97,7 +98,7 @@ void ResponseBuilder::locateTargetResource(const std::string& path)
 		return;
 	}
 	m_targetResource = locationMatch->root + path;
-	if (FileHandler::isDirectory(m_targetResource))
+	if (m_fileHandler.isDirectory(m_targetResource))
 	{
 		if (m_targetResource.at(m_targetResource.length() - 1) != '/')
 		{
@@ -106,7 +107,7 @@ void ResponseBuilder::locateTargetResource(const std::string& path)
 			return;
 		}
 		m_targetResource += locationMatch->index;
-		if (!FileHandler::isExistingFile(m_targetResource))
+		if (!m_fileHandler.isExistingFile(m_targetResource))
 		{
 			m_statusCode = StatusForbidden;
 			return;
@@ -124,7 +125,7 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 		appendHeaders(0, "txt");
 		return;
 	}
-	const std::string fileContent = FileHandler::getFileContents(m_targetResource.c_str());
+	const std::string fileContent = m_fileHandler.getFileContents(m_targetResource.c_str());
 	appendStatusLine();
 	appendHeaders(fileContent.length(), "txt");
 	m_response << fileContent << "\r\n";

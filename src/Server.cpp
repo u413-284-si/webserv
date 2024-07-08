@@ -212,7 +212,7 @@ void Server::handleConnections(int clientSock)
 		HTTPRequest request;
 		request.body = buffer;
 		request.uri.path = "/";
-		ResponseBuilder responseBuilder(configFile);
+		ResponseBuilder responseBuilder(configFile, FileHandler());
 		responseBuilder.buildResponse(request);
 		write(clientSock, responseBuilder.getResponse().c_str(), responseBuilder.getResponse().size());
 		// FIXME: check requestString for complete HTTP request.
