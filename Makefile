@@ -39,6 +39,8 @@ BLUE := \033[34m
 
 SRC_DIR := src
 
+TEST_DIR := test
+
 # Base directory for object files
 OBJ_DIR := obj
 
@@ -68,22 +70,31 @@ POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 
 # Target
 NAME := webserv
+TEST := unittest
 
 # ******************************
 # *     Source files           *
 # ******************************
 
-SRC:= 	main.cpp \
+SRC:=	main.cpp \
 		FileHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
 		TargetResourceHandler.cpp
 
 # ******************************
+# *     Test source files      *
+# ******************************
+
+TEST_SRC := test_TargetResourceHandler.cpp
+
+# ******************************
 # *     Object files           *
 # ******************************
 
 OBJS = 	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
+TEST_OBJS = $(addprefix $(TEST_DIR)/, $(TEST_SRC:.cpp=.o))
+TEST_OBJS += $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 
 # ******************************
 # *     Dependency files       *
@@ -149,6 +160,14 @@ valgr: $(NAME) | $(LOG_DIR)
 						./$(NAME)
 	$(SILENT)ls -dt1 $(LOG_DIR)/* | head -n 1 | xargs less
 
+.PHONY: test
+test: CXXFLAGS = -Wall -Werror
+test: $(TEST_OBJS)
+	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgmock_main -o $(TEST)
+	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
+
 # ******************************
 # *     Object compiling and   *
 # *     dependecy creation     *
@@ -187,6 +206,16 @@ $(DEP_DIR) $(LOG_DIR):
 # Mention each dependency file as a target, so that make won’t fail if the file doesn’t exist.
 $(DEPFILES):
 
+$(TEST_DIR)/%.o: $(TEST_DIR)/%.cpp test_message
+	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
+	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
+	$(SILENT)$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+# Print message only if there are objects to compile
+.INTERMEDIATE: test_message
+test_message:
+	@printf "$(YELLOW)$(BOLD)compile test objects$(RESET) [$(BLUE)$@$(RESET)]\n"
+
 # ******************************
 # *     Cleanup                *
 # ******************************
@@ -195,8 +224,9 @@ $(DEPFILES):
 .PHONY: clean
 clean:
 	@printf "$(YELLOW)$(BOLD)clean$(RESET) [$(BLUE)$@$(RESET)]\n"
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR) $(TEST_DIR)/*.o
 	@printf "$(RED)removed dir $(OBJ_DIR)$(RESET)\n"
+	@printf "$(RED)removed *.o in dir $(TEST_DIR)$(RESET)\n"
 
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
