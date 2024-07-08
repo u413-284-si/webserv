@@ -37,3 +37,23 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 	}
 	return m_response;
 }
+
+std::vector<Location>::const_iterator TargetResourceHandler::matchLocation(const std::string& path)
+{
+	std::size_t longestMatch = 0;
+	std::vector<Location>::const_iterator locationMatch = m_locations.end();
+
+	for (std::vector<Location>::const_iterator it = m_locations.begin();
+		 it != m_locations.end(); ++it)
+	{
+		if (path.find(it->path) == 0)
+		{
+			if (it->path.length() > longestMatch)
+			{
+				longestMatch = it->path.length();
+				locationMatch = it;
+			}
+		}
+	}
+	return locationMatch;
+}

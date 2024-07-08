@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include "TargetResourceHandler.hpp"
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileHandler& fileHandler)
 	: m_statusCode(StatusOK)
@@ -66,66 +67,18 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	m_response << "\r\n";
 }
 
-std::vector<Location>::const_iterator ResponseBuilder::matchLocation(const std::string& path)
-{
-	std::size_t longestMatch = 0;
-	std::vector<Location>::const_iterator locationMatch = m_activeServer->locations.end();
-
-	for (std::vector<Location>::const_iterator it = m_activeServer->locations.begin();
-		 it != m_activeServer->locations.end(); ++it)
-	{
-		if (path.find(it->path) == 0)
-		{
-			if (it->path.length() > longestMatch)
-			{
-				longestMatch = it->path.length();
-				locationMatch = it;
-			}
-		}
-	}
-	return locationMatch;
-}
-
-void ResponseBuilder::locateTargetResource(const std::string& path)
-{
-	// Check which location block matches the path
-	std::vector<Location>::const_iterator locationMatch = matchLocation(path);
-
-	// No location found > do we also set a default location to not make extra check?
-	if (locationMatch == m_activeServer->locations.end())
-	{
-		m_statusCode = StatusNotFound;
-		return;
-	}
-	m_targetResource = locationMatch->root + path;
-	if (m_fileHandler.isDirectory(m_targetResource))
-	{
-		if (m_targetResource.at(m_targetResource.length() - 1) != '/')
-		{
-			m_location = path + "/";
-			m_statusCode = StatusMovedPermanently;
-			return;
-		}
-		m_targetResource += locationMatch->index;
-		if (!m_fileHandler.isExistingFile(m_targetResource))
-		{
-			m_statusCode = StatusForbidden;
-			return;
-		}
-	}
-
-}
-
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
-	locateTargetResource(request.uri.path);
-	if (m_statusCode != StatusOK)
+	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileHandler);
+	m_httpResponse = targetResourceHandler.execute(request);
+	if (m_httpResponse.status != StatusOK)
 	{
+		m_statusCode = m_httpResponse.status;
 		appendStatusLine();
 		appendHeaders(0, "txt");
 		return;
 	}
-	const std::string fileContent = m_fileHandler.getFileContents(m_targetResource.c_str());
+	const std::string fileContent = m_fileHandler.getFileContents(m_httpResponse.targetResource.c_str());
 	appendStatusLine();
 	appendHeaders(fileContent.length(), "txt");
 	m_response << fileContent << "\r\n";

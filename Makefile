@@ -76,7 +76,8 @@ NAME := webserv
 SRC:= 	main.cpp \
 		FileHandler.cpp \
 		ResponseBuilder.cpp \
-		Server.cpp
+		Server.cpp \
+		TargetResourceHandler.cpp
 
 # ******************************
 # *     Object files           *
