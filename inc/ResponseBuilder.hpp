@@ -3,6 +3,7 @@
 #include "ConfigFile.hpp"
 #include "RequestParser.hpp"
 #include "FileHandler.hpp"
+#include "StatusCode.hpp"
 #include <string>
 
 class ResponseBuilder {
@@ -11,16 +12,6 @@ public:
 
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse() const;
-
-	enum statusCode {
-		StatusOK = 200,
-		StatusMovedPermanently = 301,
-		StatusBadRequest = 400,
-		StatusForbidden = 403,
-		StatusNotFound = 404,
-		StatusMethodNotAllowed = 405,
-		StatusInternalServerError = 500
-	};
 
 private:
 	void appendStatusLine();
