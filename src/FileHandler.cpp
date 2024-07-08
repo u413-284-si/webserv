@@ -1,6 +1,6 @@
 #include "FileHandler.hpp"
 
-FileHandler::fileType FileHandler::checkFileType(const std::string& path) const 
+FileHandler::fileType FileHandler::checkFileType(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;
@@ -22,7 +22,7 @@ bool FileHandler::isExistingFile(const std::string& path) const { return checkFi
 std::string FileHandler::getFileContents(const char* filename) const
 {
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
-	if (fileStream != 0) {
+	if (!fileStream.good()) {
 		std::string contents;
 		fileStream.seekg(0, std::ios::end);
 		contents.resize(fileStream.tellg());
