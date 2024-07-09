@@ -117,15 +117,16 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 /**
  * @brief Reads the current line of the config file and removes leading and trailing spaces
  *
- * @details If the line contains a semicolon, the string will be read until the semicolon.
- *          After that, the semicolon gets added to the string again. 
+ * @details The current line of the config file is read.
+ * 
+ *          If the line contains a semicolon:
+ *          1. Get substring from the current line to the semicolon
+ *          2. Semicolon gets removed from the string because it used as a delimiter for getline
+ *          4. Leading and trailing spaces get removed
+ *          5. Semicolon is added to the end of the string. 
  *          This allows to handle directives on the same line separated by semicolons.
- *          At the end the leading and trailing spaces are removed.
  *
- *          If the line does not contain a semicolon, it throws an exception
- *          
- * @return true if the line was read successfully
- * @return false otherwise
+ *          If the line does NOT contain a semicolon, it is normally read and trimmed.
  */
 void ConfigFileParser::readAndTrimLine(void)
 {
