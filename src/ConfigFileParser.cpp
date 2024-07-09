@@ -191,7 +191,7 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
  */
 bool ConfigFileParser::isSemicolonAtEnd(void) const
 {
-	return m_configFile.currentLine.find_last_of(';') != std::string::npos || m_configFile.currentLine.empty();
+	return m_configFile.currentLine.find_last_of(';') != std::string::npos;
 }
 
 /**
@@ -352,7 +352,7 @@ void ConfigFileParser::readLocationConfigLine(void)
     if (!isDirectiveValid(directive, LOCATION))
 		throw std::runtime_error("Invalid location directive");
 
-	if (!isSemicolonAtEnd())
+	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
 		throw std::runtime_error("Semicolon missing");
 	if (!isSemicolonCountOne())
 		throw std::runtime_error("Too many semicolons");
