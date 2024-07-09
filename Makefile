@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/25 18:06:22 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/10 00:16:08 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -261,7 +261,7 @@ help:
 	@echo "Below are the available targets and variables you can use."
 	@echo ""
 	@echo "$(YELLOW)Targets:$(RESET)"
-	@echo "  all         - Compiles the default version of the $@ program."
+	@echo "  all         - Compiles the default version of the $(NAME) program."
 	@echo "  clean       - Removes object files and dependency files."
 	@echo "  fclean      - Performs 'clean' and also removes binaries and log files."
 	@echo "  re          - Performs 'fclean' and then 'all'."
