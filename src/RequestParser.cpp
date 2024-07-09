@@ -204,8 +204,6 @@ RequestParser::RequestParser()
 	m_request.chunked = false;
 }
 
-RequestParser::~RequestParser() {}
-
 /* ====== GETTER FUNCTIONS ====== */
 
 /**

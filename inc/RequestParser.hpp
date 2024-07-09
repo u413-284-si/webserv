@@ -25,7 +25,6 @@ enum Method {
 class RequestParser {
 	public:
 				RequestParser();
-				~RequestParser();
 
 				HTTPRequest	parseHttpRequest(const std::string& request);
 			
