@@ -21,6 +21,16 @@ class RequestParser {
 				~RequestParser();
 
 				HTTPRequest	parseHttpRequest(const std::string& request);
+			
+				// Getter functions
+				int			getErrorCode() const;
+				int			getRequestMethod() const;
+
+	private:
+				int			m_errorCode;
+				int			m_requestMethod;
+				HTTPRequest	m_request;
+
 				std::string	parseMethod(const std::string& requestLine);
 				std::string	parseUri(const std::string& requestLine);
 				void		parseUriQuery(const std::string& requestLine, int& index);
@@ -38,13 +48,4 @@ class RequestParser {
 				bool		isValidURIChar(uint8_t c) const;
 				bool		isValidHeaderFieldNameChar(uint8_t c) const;
 				size_t		convertHex(const std::string& chunkSize) const;
-
-				// Getter functions
-				int			getErrorCode() const;
-				int			getRequestMethod() const;
-
-	private:
-				int			m_errorCode;
-				int			m_requestMethod;
-				HTTPRequest	m_request;
 };
