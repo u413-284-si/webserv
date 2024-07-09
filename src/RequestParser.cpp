@@ -30,7 +30,7 @@ std::string	RequestParser::checkForSpace(const std::string& str)
 /**
  * @brief Checks if a given string starts with CRLF. 
  * 
- * Only checks for the carriage return \r, as the newline \\n is discarded
+ * Only checks for the carriage return \r, as the linefeed \\n is discarded
  * by std::getline
  * @param str	Input string to be checked.
  * @throws std::runtime_error If the input string does not contain a single
