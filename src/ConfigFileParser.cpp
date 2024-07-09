@@ -195,18 +195,6 @@ bool ConfigFileParser::isSemicolonAtEnd(void) const
 	return m_configFile.currentLine.find_last_of(';') != std::string::npos;
 }
 
-/**
- * @brief Checks if the current line of the config file contains only one semicolon
- * 
- * @return true If the line contains only one semicolon or the line is empty
- * @return false If the line contains more than one semicolon 
- */
-bool ConfigFileParser::isSemicolonCountOne(void) const
-{
-	ssize_t semicolonCount = std::count(m_configFile.currentLine.begin(), m_configFile.currentLine.end(), ';');
-
-	return semicolonCount == 1 || m_configFile.currentLine.empty();
-}
 
 bool ConfigFileParser::isListenIpValid(void)
 {
@@ -336,8 +324,6 @@ void ConfigFileParser::readServerConfigLine(void)
 
 	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
 		throw std::runtime_error("Semicolon missing");
-	if (!isSemicolonCountOne())
-		throw std::runtime_error("Too many semicolons");
 
 	readDirectiveValue(directive);
 }
@@ -355,8 +341,6 @@ void ConfigFileParser::readLocationConfigLine(void)
 
 	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
 		throw std::runtime_error("Semicolon missing");
-	if (!isSemicolonCountOne())
-		throw std::runtime_error("Too many semicolons");
 
     m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
