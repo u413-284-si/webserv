@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include "RequestParser.hpp"
 
 /* ====== HELPER FUNCTIONS ====== */
 

@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "RequestParser.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <sys/epoll.h>
