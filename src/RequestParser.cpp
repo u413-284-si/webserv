@@ -198,7 +198,7 @@ size_t	RequestParser::convertHex(const std::string& chunkSize) const
 
 RequestParser::RequestParser()
 	: m_errorCode(0)
-	, m_requestMethod(0)
+	, m_requestMethod(MethodCount)
 {
 	m_request.hasBody = false;
 	m_request.chunked = false;
@@ -224,12 +224,12 @@ int	RequestParser::getErrorCode() const
 /**
  * @brief Retrieves the bit flag representing the HTTP request method.
  *
- * This function returns the bit flag stored in the `RequestParser` object that represents the HTTP request method.
- * The bit flag is set during the parsing process based on the method type (e.g., GET, POST, DELETE).
+ * This function returns the Method stored in the `RequestParser` object that represents the HTTP request method.
+ * The Method is set during the parsing process based on the method type (e.g., GET, POST, DELETE).
  *
- * @return The bit flag corresponding to the HTTP request method as an integer.
+ * @return The Method corresponding to the HTTP request method.
  */
-int	RequestParser::getRequestMethod() const
+Method	RequestParser::getRequestMethod() const
 {
 	return m_requestMethod;
 }
@@ -311,7 +311,7 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
  *
  * This function extracts the HTTP method from the beginning of the provided request line.
  * It supports the "GET", "POST", and "DELETE" methods. The method is stored in `m_request.method`,
- * and a corresponding bit flag is set in `m_requestMethod`. If the method is not recognized,
+ * and a corresponding Method is set in `m_requestMethod`. If the method is not recognized,
  * an error code is set to 501 and a `std::runtime_error` is thrown.
  *
  * @param requestLine The request line string from which the method is to be parsed.
@@ -325,11 +325,11 @@ std::string	RequestParser::parseMethod(const std::string& requestLine)
 		m_request.method.push_back(requestLine[i]);
 
 	if (m_request.method == "GET")
-		m_requestMethod = 1 << 0;
+		m_requestMethod = MethodGet;
 	else if (m_request.method == "POST")
-		m_requestMethod = 1 << 1;
+		m_requestMethod = MethodPost;
 	else if (m_request.method == "DELETE")
-		m_requestMethod = 1 << 2;
+		m_requestMethod = MethodDelete;
 	else {
 		m_errorCode = 501;
 		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);

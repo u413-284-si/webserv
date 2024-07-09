@@ -13,6 +13,13 @@
 
 /* ====== DEFINITIONS ====== */
 
+enum Method {
+	MethodGet,
+    MethodPost,
+    MethodDelete,
+    MethodCount
+};
+
 /* ====== CLASS DECLARATION ====== */
 
 class RequestParser {
@@ -24,11 +31,11 @@ class RequestParser {
 			
 				// Getter functions
 				int			getErrorCode() const;
-				int			getRequestMethod() const;
+				Method		getRequestMethod() const;
 
 	private:
 				int			m_errorCode;
-				int			m_requestMethod;
+				Method		m_requestMethod;
 				HTTPRequest	m_request;
 
 				std::string	parseMethod(const std::string& requestLine);
