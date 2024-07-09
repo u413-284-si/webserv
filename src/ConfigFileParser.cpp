@@ -26,14 +26,15 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
         throw std::runtime_error("Config file does not start with 'http {'");
 
     m_configFile.serverIndex = 0;
-    while (readAndTrimLine() && m_configFile.currentLine != "}") {
-        if (m_configFile.currentLine == "server {") {
-            while (readAndTrimLine() && m_configFile.currentLine != "}")
-                readServerConfigLine();
-            m_configFile.serverIndex++;
-        }
-    }
-
+	for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+	{
+		if (m_configFile.currentLine == "server {")
+		{
+		 for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+				readServerConfigLine();
+			m_configFile.serverIndex++;
+		}
+	}
 	
 	return m_configFile;
 }
@@ -116,21 +117,30 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 /**
  * @brief Reads the current line of the config file and removes leading and trailing spaces
  *
+ * @details If the line contains a semicolon, the string will be read until the semicolon.
+ *          After that, the semicolon gets added to the string again. 
+ *          This allows to handle directives on the same line separated by semicolons.
+ *          At the end the leading and trailing spaces are removed.
+ *
+ *          If the line does not contain a semicolon, it throws an exception
+ *          
  * @return true if the line was read successfully
  * @return false otherwise
  */
-bool ConfigFileParser::readAndTrimLine(void)
+void ConfigFileParser::readAndTrimLine(void)
 {
-	if (m_configFile.currentLine.find(';') != std::string::npos)
+	getline(m_configFile.stream, m_configFile.currentLine);
+	if (!m_configFile.currentLine.empty() && isSemicolonAtEnd())
 	{
-		if (!getline(m_configFile.stream, m_configFile.currentLine, ';'))
-			return false;
+		size_t semicolonIndex = m_configFile.currentLine.find(';');
+
+		m_configFile.currentLine = m_configFile.currentLine.substr(0, semicolonIndex);
+		removeLeadingAndTrailingSpaces();
 		m_configFile.currentLine += ';';
 	}
-	else if (!getline(m_configFile.stream, m_configFile.currentLine))
-        return false;
-    removeLeadingAndTrailingSpaces();
-    return true;
+	else {
+		removeLeadingAndTrailingSpaces();
+	}
 }
 
 /**
@@ -317,13 +327,13 @@ void ConfigFileParser::readServerConfigLine(void)
 		throw std::runtime_error("Invalid server directive");
 
 	if (directive == "location") {
-        while (readAndTrimLine() && m_configFile.currentLine != "}")
-            readLocationConfigLine();
+		for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+			readLocationConfigLine();
 		m_configFile.servers[m_configFile.serverIndex].locationIndex++;
 		return;
     }
 
-	if (!isSemicolonAtEnd())
+	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
 		throw std::runtime_error("Semicolon missing");
 	if (!isSemicolonCountOne())
 		throw std::runtime_error("Too many semicolons");

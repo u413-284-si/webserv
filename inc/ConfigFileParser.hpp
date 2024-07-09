@@ -44,6 +44,6 @@ private:
 	bool isListenPortValid(void);
 
 	// Helper functions
-    bool readAndTrimLine(void);
+    void readAndTrimLine(void);
     void removeLeadingAndTrailingSpaces();
 };
