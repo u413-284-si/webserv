@@ -17,6 +17,8 @@ std::string statusCodeToReasonPhrase(statusCode status)
 		return "Method Not Allowed";
 	case StatusInternalServerError:
 		return "Internal Server Error";
+	default:
+		return "Unknown";
 	}
 }
 
@@ -85,5 +87,7 @@ std::string getDefaultErrorPage(statusCode status)
 		return (error405Page);
 	case StatusInternalServerError:
 		return (error500page);
+	default:
+		return ("");
 	}
 }

@@ -13,3 +13,4 @@ enum statusCode {
 };
 
 std::string statusCodeToReasonPhrase(statusCode status);
+std::string getDefaultErrorPage(statusCode status);
