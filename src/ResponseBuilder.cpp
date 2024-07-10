@@ -33,8 +33,9 @@ void ResponseBuilder::initMIMETypes()
 
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-	if (m_mimeTypes.find(extension) != m_mimeTypes.end()) {
-		return m_mimeTypes.at(extension);
+	std::map<std::basic_string<char>, std::basic_string<char> >::const_iterator it = m_mimeTypes.find(extension);
+	if (it != m_mimeTypes.end()) {
+		return it->second;
 	}
 	return m_mimeTypes.at("default");
 }
