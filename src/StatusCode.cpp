@@ -17,8 +17,6 @@ std::string statusCodeToReasonPhrase(statusCode status)
 		return "Method Not Allowed";
 	case StatusInternalServerError:
 		return "Internal Server Error";
-	default:
-		return "Unknown";
 	}
 }
 
@@ -64,6 +62,14 @@ std::string getDefaultErrorPage(statusCode status)
 								 "</body>\r\n"
 								 "</html>\r\n";
 
+	static char error500page[] = "<html>\r\n"
+								 "<head><title>500 Internal server error</title></head>\r\n"
+								 "<body>\r\n"
+								 "<center><h1>500 Internal server error</h1></center>\r\n"
+								 "<hr><center>SGC-Node</center>\r\n"
+								 "</body>\r\n"
+								 "</html>\r\n";
+
 	switch (status) {
 	case StatusOK:
 		return ("");
@@ -77,7 +83,7 @@ std::string getDefaultErrorPage(statusCode status)
 		return (error404Page);
 	case StatusMethodNotAllowed:
 		return (error405Page);
-	default:
-		return ("");
+	case StatusInternalServerError:
+		return (error500page);
 	}
 }

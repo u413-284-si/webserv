@@ -12,4 +12,4 @@ enum statusCode {
 		StatusInternalServerError = 500
 };
 
-std::string statusCodeToString(statusCode status);
+std::string statusCodeToReasonPhrase(statusCode status);
