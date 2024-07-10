@@ -25,11 +25,8 @@ private:
 
 	std::stringstream m_response;
 	std::map<std::string, std::string> m_mimeTypes;
-	statusCode m_statusCode;
 	const ConfigFile& m_configFile;
 	std::vector<ServerConfig>::const_iterator m_activeServer;
-	std::string m_targetResource;
-	std::string m_location;
 	const FileHandler& m_fileHandler;
 	HTTPResponse m_httpResponse;
 };

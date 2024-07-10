@@ -3,8 +3,7 @@
 #include "TargetResourceHandler.hpp"
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileHandler& fileHandler)
-	: m_statusCode(StatusOK)
-	, m_configFile(configFile)
+	: m_configFile(configFile)
 	, m_activeServer(configFile.serverConfigs.begin())
 	, m_fileHandler(fileHandler)
 {
@@ -42,7 +41,7 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 
 void ResponseBuilder::appendStatusLine()
 {
-	m_response << "HTTP/1.1 " << m_statusCode << ' ' << statusCodeToString(m_statusCode) << "\r\n";
+	m_response << "HTTP/1.1 " << m_httpResponse.status << ' ' << statusCodeToReasonPhrase(m_httpResponse.status) << "\r\n";
 }
 
 void ResponseBuilder::appendHeaders(const std::size_t length, const std::string& extension)
@@ -60,8 +59,8 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	(void)strftime(date, sizeof(date), "%a, %d %b %Y %H:%M:%S %Z", &time);
 	m_response << "Date: " << date << "\r\n";
 	// Location
-	if (m_statusCode == StatusMovedPermanently) {
-		m_response << "Location: " << m_location << "\r\n";
+	if (m_httpResponse.status == StatusMovedPermanently) {
+		m_response << "Location: " << m_httpResponse.status << "\r\n";
 	}
 	// Delimiter
 	m_response << "\r\n";
@@ -69,10 +68,10 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
+	// m_httpResponse = request.status;
 	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileHandler);
 	m_httpResponse = targetResourceHandler.execute(request);
 	if (m_httpResponse.status != StatusOK) {
-		m_statusCode = m_httpResponse.status;
 		appendStatusLine();
 		appendHeaders(0, "txt");
 		return;
