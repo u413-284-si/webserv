@@ -80,6 +80,7 @@ SRC:=	main.cpp \
 		FileHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
+		StatusCode.cpp \
 		TargetResourceHandler.cpp
 
 # ******************************
