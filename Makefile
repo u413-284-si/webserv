@@ -78,6 +78,7 @@ TEST := unittest
 
 SRC:=	main.cpp \
 		FileHandler.cpp \
+		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
 		StatusCode.cpp \

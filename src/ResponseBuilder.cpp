@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include "ResponseBodyHandler.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
 
@@ -71,15 +72,13 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 	// m_httpResponse = request.status;
 	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileHandler);
 	m_httpResponse = targetResourceHandler.execute(request);
-	if (m_httpResponse.status != StatusOK) {
-		appendStatusLine();
-		appendHeaders(0, "txt");
-		return;
-	}
-	const std::string fileContent = m_fileHandler.getFileContents(m_httpResponse.targetResource.c_str());
+
+	ResponseBodyHandler responseBodyHandler(m_fileHandler);
+	m_httpResponse = responseBodyHandler.execute(m_httpResponse);
+	
 	appendStatusLine();
-	appendHeaders(fileContent.length(), "txt");
-	m_response << fileContent << "\r\n";
+	appendHeaders(m_httpResponse.body.length(), "txt");
+	m_response << m_httpResponse.body << "\r\n";
 }
 
 std::string ResponseBuilder::getResponse() const { return m_response.str(); }

@@ -7,6 +7,7 @@
 struct HTTPResponse {
 	statusCode status;
 	std::string	targetResource;
-	std::string response;
+	std::string body;
 	std::vector<Location>::const_iterator location;
+	std::string method;
 };
