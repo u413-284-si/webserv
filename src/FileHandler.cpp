@@ -1,23 +1,27 @@
 #include "FileHandler.hpp"
 
+FileHandler::~FileHandler() {}
+
 FileHandler::fileType FileHandler::checkFileType(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;
 	if (stat(path.c_str(), &fileStat) == -1) {
+		if (errno == ENOENT)
+			return FileNotExist;
 		std::cerr << "error: stat: " << strerror(errno) << "\n";
-		return NotExist;
+		return StatError;
 	}
 	if (S_ISREG(fileStat.st_mode))
-		return RegularFile;
+		return FileRegular;
 	if (S_ISDIR(fileStat.st_mode))
-		return Directory;
-	return Other;
+		return FileDirectory;
+	return FileOther;
 }
 
-bool FileHandler::isDirectory(const std::string& path) const { return checkFileType(path) == Directory; }
+bool FileHandler::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
 
-bool FileHandler::isExistingFile(const std::string& path) const { return checkFileType(path) != NotExist; }
+bool FileHandler::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotExist; }
 
 std::string FileHandler::getFileContents(const char* filename) const
 {
