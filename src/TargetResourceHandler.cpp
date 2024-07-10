@@ -16,17 +16,17 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 
 	do {
 		// Check which location block matches the path
-		std::vector<Location>::const_iterator locationMatch = matchLocation(request.uri.path);
+		m_response.location = matchLocation(request.uri.path);
 
 		// No location found > do we also set a default location to not make extra check?
-		if (locationMatch == m_locations.end()) {
+		if (m_response.location == m_locations.end()) {
 			m_response.status = StatusNotFound;
 			break;
 		}
 
 		// construct target resource
 		if (!internalRedirect)
-			m_response.targetResource = locationMatch->root + request.uri.path;
+			m_response.targetResource = m_response.location->root + request.uri.path;
 		internalRedirect = false;
 
 		// what type is it
@@ -41,7 +41,7 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 				m_response.targetResource += "/";
 				m_response.status = StatusMovedPermanently;
 			} else {
-				m_response.targetResource += locationMatch->index;
+				m_response.targetResource += m_response.location->index;
 				internalRedirect = true;
 			}
 			break;
