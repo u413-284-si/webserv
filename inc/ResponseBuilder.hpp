@@ -7,6 +7,7 @@
 #include "StatusCode.hpp"
 #include <string>
 #include "TargetResourceHandler.hpp"
+#include "utils.hpp"
 
 class ResponseBuilder {
 public:

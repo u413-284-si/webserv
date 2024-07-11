@@ -33,16 +33,17 @@ void ResponseBuilder::initMIMETypes()
 
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-	std::map<std::basic_string<char>, std::basic_string<char> >::const_iterator it = m_mimeTypes.find(extension);
-	if (it != m_mimeTypes.end()) {
-		return it->second;
+	std::map<std::basic_string<char>, std::basic_string<char> >::const_iterator iter = m_mimeTypes.find(extension);
+	if (iter != m_mimeTypes.end()) {
+		return iter->second;
 	}
 	return m_mimeTypes.at("default");
 }
 
 void ResponseBuilder::appendStatusLine()
 {
-	m_response << "HTTP/1.1 " << m_httpResponse.status << ' ' << statusCodeToReasonPhrase(m_httpResponse.status) << "\r\n";
+	m_response << "HTTP/1.1 " << m_httpResponse.status << ' ' << statusCodeToReasonPhrase(m_httpResponse.status)
+			   << "\r\n";
 }
 
 void ResponseBuilder::appendHeaders(const std::size_t length, const std::string& extension)
@@ -72,12 +73,12 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 	// m_httpResponse = request.status;
 	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileHandler);
 	m_httpResponse = targetResourceHandler.execute(request);
-
+	m_httpResponse.method = "GET";
 	ResponseBodyHandler responseBodyHandler(m_fileHandler);
-	m_httpResponse = responseBodyHandler.execute(m_httpResponse);
-	
+	responseBodyHandler.execute(m_httpResponse);
+
 	appendStatusLine();
-	appendHeaders(m_httpResponse.body.length(), "txt");
+	appendHeaders(m_httpResponse.body.length(), utils::getFileExtension(m_httpResponse.targetResource));
 	m_response << m_httpResponse.body << "\r\n";
 }
 
