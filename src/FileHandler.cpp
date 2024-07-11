@@ -37,3 +37,23 @@ std::string FileHandler::getFileContents(const char* filename) const
 	fileStream.read(&contents[0], static_cast<std::streamsize>(contents.size()));
 	return contents;
 }
+
+DIR* FileHandler::openDirectory(const std::string& path) const
+{
+	errno = 0;
+	DIR *dir = opendir(path.c_str());
+	if (dir == NULL) {
+		throw std::runtime_error(strerror(errno));
+	}
+	return dir;
+}
+
+struct dirent* FileHandler::readDirectory(DIR* dir) const
+{
+	errno = 0;
+	struct dirent *entry = readdir(dir);
+	if (entry == NULL && errno != 0) {
+		throw std::runtime_error(strerror(errno));
+	}
+	return entry;
+}

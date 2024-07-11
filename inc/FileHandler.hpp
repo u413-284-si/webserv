@@ -7,6 +7,8 @@
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
+#include <sys/types.h>
+#include <dirent.h>
 
 class FileHandler {
 
@@ -18,4 +20,6 @@ public:
 	virtual bool isDirectory(const std::string& path) const;
 	virtual bool isExistingFile(const std::string& path) const;
 	virtual std::string getFileContents(const char* filename) const;
+	virtual DIR* openDirectory(const std::string& path) const;
+	virtual struct dirent* readDirectory(DIR* dir) const;
 };
