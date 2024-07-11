@@ -82,13 +82,15 @@ SRC:=	main.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
 		StatusCode.cpp \
-		TargetResourceHandler.cpp
+		TargetResourceHandler.cpp \
+		utils.cpp
 
 # ******************************
 # *     Test source files      *
 # ******************************
 
-TEST_SRC := test_TargetResourceHandler.cpp
+TEST_SRC := test_TargetResourceHandler.cpp \
+			test_utils.cpp
 
 # ******************************
 # *     Object files           *
