@@ -68,8 +68,8 @@ POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 # *     Targets                *
 # ******************************
 
-# Target
 NAME := webserv
+
 TEST := unittest
 
 # ******************************
@@ -97,7 +97,9 @@ TEST_SRC := test_TargetResourceHandler.cpp \
 # ******************************
 
 OBJS = 	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
-TEST_OBJS = $(addprefix $(TEST_DIR)/, $(TEST_SRC:.cpp=.o))
+
+TEST_OBJS = $(addprefix $(OBJ_DIR)/, $(TEST_SRC:.cpp=.o))
+# Remove main.o from test objects to link with special gtest main
 TEST_OBJS += $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 
 # ******************************
@@ -105,6 +107,8 @@ TEST_OBJS += $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
 # ******************************
 
 DEPFILES =	$(SRC:%.cpp=$(DEP_DIR)/%.d)
+
+DEPFILES +=	$(TEST_SRC:%.cpp=$(DEP_DIR)/%.d)
 
 # ******************************
 # *     Log files              *
@@ -115,7 +119,7 @@ LOG_VALGRIND = $(LOG_FILE)_valgrind.log
 LOG_PERF = $(LOG_FILE)_perf.data
 
 # ******************************
-# *     Default target         *
+# *     Default target        *
 # ******************************
 
 .PHONY: all
@@ -135,6 +139,20 @@ $(NAME): $(OBJS)
 # ******************************
 # *     Special targets        *
 # ******************************
+
+# Alias for creating unittests
+.PHONY: test
+test: $(TEST)
+
+# Reconfigure flags for linking with gtest and gmock
+$(TEST): CXXFLAGS = -Wall -Werror -pthread
+# Set file counter to number of test files + object files
+$(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
+$(TEST): $(TEST_OBJS)
+	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgmock_main -o $(TEST)
+	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -164,14 +182,6 @@ valgr: $(NAME) | $(LOG_DIR)
 						./$(NAME)
 	$(SILENT)ls -dt1 $(LOG_DIR)/* | head -n 1 | xargs less
 
-.PHONY: test
-test: CXXFLAGS = -Wall -Werror
-test: $(TEST_OBJS)
-	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgmock_main -o $(TEST)
-	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
-	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
-
 # ******************************
 # *     Object compiling and   *
 # *     dependecy creation     *
@@ -187,10 +197,16 @@ CURRENT_FILE := 0
 # | $(DEPDIR) = 	Declare the dependency directory as an order-only prerequisite of the target,
 # 					so that it will be created when needed.
 # $(eval ...) =		Increment file counter.
-# $(eval ...) =		Increment file counter.
 # $(POSTCOMPILE) =	Move temp dependency file and touch object to ensure right timestamps.
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR)
+	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
+	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
+	$(SILENT)$(COMPILE) $< -o $@
+	$(SILENT)$(POSTCOMPILE)
+
+# Similar target for testfiles
+$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE) $< -o $@
@@ -209,16 +225,6 @@ $(DEP_DIR) $(LOG_DIR):
 
 # Mention each dependency file as a target, so that make won’t fail if the file doesn’t exist.
 $(DEPFILES):
-
-$(TEST_DIR)/%.o: $(TEST_DIR)/%.cpp test_message
-	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
-	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
-	$(SILENT)$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
-
-# Print message only if there are objects to compile
-.INTERMEDIATE: test_message
-test_message:
-	@printf "$(YELLOW)$(BOLD)compile test objects$(RESET) [$(BLUE)$@$(RESET)]\n"
 
 # ******************************
 # *     Cleanup                *
@@ -268,7 +274,8 @@ help:
 	@echo "Below are the available targets and variables you can use."
 	@echo ""
 	@echo "$(YELLOW)Targets:$(RESET)"
-	@echo "  all         - Compiles the default version of the miniRT program."
+	@echo "  all         - Compiles the default version of the $(NAME) program."
+	@echo "  test        - Compiles the unit tests linking with gtest and gmock."
 	@echo "  clean       - Removes object files and dependency files."
 	@echo "  fclean      - Performs 'clean' and also removes binaries and log files."
 	@echo "  re          - Performs 'fclean' and then 'all'."
