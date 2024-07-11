@@ -77,6 +77,7 @@ TEST := unittest
 # ******************************
 
 SRC:=	main.cpp \
+		AutoindexHandler.cpp \
 		FileHandler.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
@@ -89,7 +90,8 @@ SRC:=	main.cpp \
 # *     Test source files      *
 # ******************************
 
-TEST_SRC := test_TargetResourceHandler.cpp \
+TEST_SRC :=	test_AutoindexHandler.cpp \
+			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
 # ******************************
