@@ -57,3 +57,13 @@ struct dirent* FileHandler::readDirectory(DIR* dir) const
 	}
 	return entry;
 }
+
+struct stat FileHandler::getFileStat(const std::string& path) const
+{
+	struct stat fileStat = {};
+	errno = 0;
+	if (stat(path.c_str(), &fileStat) == -1) {
+		throw std::runtime_error(strerror(errno));
+	}
+	return fileStat;
+}
