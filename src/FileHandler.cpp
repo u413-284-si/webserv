@@ -25,15 +25,15 @@ bool FileHandler::isExistingFile(const std::string& path) const { return checkFi
 
 std::string FileHandler::getFileContents(const char* filename) const
 {
+	errno = 0;
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
 	if (!fileStream.good()) {
-		std::string contents;
-		fileStream.seekg(0, std::ios::end);
-		contents.resize(fileStream.tellg());
-		fileStream.seekg(0, std::ios::beg);
-		fileStream.read(&contents[0], static_cast<std::streamsize>(contents.size()));
-		fileStream.close();
-		return contents;
+		throw std::runtime_error(strerror(errno));
 	}
-	throw std::runtime_error(strerror(errno));
+	std::string contents;
+	fileStream.seekg(0, std::ios::end);
+	contents.resize(fileStream.tellg());
+	fileStream.seekg(0, std::ios::beg);
+	fileStream.read(&contents[0], static_cast<std::streamsize>(contents.size()));
+	return contents;
 }
