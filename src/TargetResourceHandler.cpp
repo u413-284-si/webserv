@@ -1,11 +1,11 @@
 #include "TargetResourceHandler.hpp"
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
 #include "RequestParser.hpp"
 
-TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locations, const FileHandler& fileHandler)
+TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locations, const FileSystemPolicy& fileSystemPolicy)
 	: m_locations(locations)
-	, m_fileHandler(fileHandler)
+	, m_fileSystemPolicy(fileSystemPolicy)
 {
 	m_response.status = StatusOK;
 }
@@ -30,13 +30,13 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 		internalRedirect = false;
 
 		// what type is it
-		FileHandler::fileType fileType = m_fileHandler.checkFileType(m_response.targetResource);
+		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(m_response.targetResource);
 		switch (fileType) {
 
-		case FileHandler::FileRegular:
+		case FileSystemPolicy::FileRegular:
 			break;
 
-		case FileHandler::FileDirectory:
+		case FileSystemPolicy::FileDirectory:
 			if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
 				m_response.targetResource += "/";
 				m_response.status = StatusMovedPermanently;
@@ -46,15 +46,15 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 			}
 			break;
 
-		case FileHandler::FileNotExist:
+		case FileSystemPolicy::FileNotExist:
 			m_response.status = StatusNotFound;
 			break;
 
-		case FileHandler::FileOther:
+		case FileSystemPolicy::FileOther:
 			m_response.status = StatusForbidden;
 			break;
 
-		case FileHandler::StatError:
+		case FileSystemPolicy::StatError:
 			m_response.status = StatusInternalServerError;
 			break;
 		}

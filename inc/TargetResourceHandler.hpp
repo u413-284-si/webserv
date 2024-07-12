@@ -6,20 +6,20 @@
 #include "ConfigFile.hpp"
 #include "RequestParser.hpp"
 #include "StatusCode.hpp"
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
 
 class TargetResourceHandler {
 
 public:
-	TargetResourceHandler(const std::vector<Location>& locations, const FileHandler& fileHandler);
+	TargetResourceHandler(const std::vector<Location>& locations, const FileSystemPolicy& fileSystemPolicy);
 	HTTPResponse execute(const HTTPRequest& request);
 
 private:
 	std::vector<Location>::const_iterator matchLocation(const std::string& path);
 
 	std::vector<Location> m_locations;
-	const FileHandler& m_fileHandler;
+	const FileSystemPolicy& m_fileSystemPolicy;
 	HTTPResponse m_response;
 };
 

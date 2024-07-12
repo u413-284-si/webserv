@@ -2,18 +2,18 @@
 #include <dirent.h>
 #include <stdexcept>
 
-AutoindexHandler::AutoindexHandler(const FileHandler& fileHandler)
-	: m_fileHandler(fileHandler)
+AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
 std::vector<std::string> AutoindexHandler::getFiles(DIR* directory)
 {
 	std::vector<std::string> files;
-	struct dirent* entry = m_fileHandler.readDirectory(directory);
+	struct dirent* entry = m_fileSystemPolicy.readDirectory(directory);
 	while (entry != NULL) {
 		files.push_back(entry->d_name);
-		entry = m_fileHandler.readDirectory(directory);
+		entry = m_fileSystemPolicy.readDirectory(directory);
 	}
 	return files;
 }
@@ -35,7 +35,7 @@ long getFileSize(const struct stat& fileStat)
 std::string AutoindexHandler::execute(const std::string& path)
 {
 	try {
-		DIR* directory = m_fileHandler.openDirectory(path);
+		DIR* directory = m_fileSystemPolicy.openDirectory(path);
 		m_response
 			<< "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n"
 			<< "<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
@@ -55,7 +55,7 @@ std::string AutoindexHandler::execute(const std::string& path)
 		for (std::vector<std::string>::iterator iter = files.begin(); iter != files.end(); ++iter) {
 			if (*iter == "." || *iter == "..")
 				continue;
-			struct stat fileStat = m_fileHandler.getFileStat(path + *iter);
+			struct stat fileStat = m_fileSystemPolicy.getFileStat(path + *iter);
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
 			m_response

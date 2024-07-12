@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "FileHandlerMock.hpp"
+#include "MockFileSystemPolicy.hpp"
 
 #include "ConfigFile.hpp"
 #include "HTTPResponse.hpp"
@@ -30,20 +30,20 @@ class TargetResourceHandlerTest : public ::testing::Test {
 			.path = "/test"
 		}
 	};
-	FileHandlerMock m_fileHandler;
+	MockFileSystemPolicy m_fileSystemPolicy;
 
 };
 
 TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 {
-	EXPECT_CALL(m_fileHandler, checkFileType)
-	.WillRepeatedly(testing::Return(FileHandler::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillRepeatedly(testing::Return(FileSystemPolicy::FileRegular));
 
 	m_locations.push_back(m_location3);
 	m_locations.push_back(m_location2);
 	m_locations.push_back(m_location1);
 
-	TargetResourceHandler targetResourceHandler(m_locations, m_fileHandler);
+	TargetResourceHandler targetResourceHandler(m_locations, m_fileSystemPolicy);
 
 	EXPECT_EQ(targetResourceHandler.execute(m_request).targetResource, "/second/location/test");
 
@@ -65,7 +65,7 @@ TEST_F(TargetResourceHandlerTest, LocationNotFound)
 	m_locations.push_back(m_location2);
 	m_locations.push_back(m_location3);
 
-	TargetResourceHandler targetResourceHandler(m_locations, m_fileHandler);
+	TargetResourceHandler targetResourceHandler(m_locations, m_fileSystemPolicy);
 
 	m_request.uri.path = "/something";
 
@@ -74,14 +74,14 @@ TEST_F(TargetResourceHandlerTest, LocationNotFound)
 
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
-	EXPECT_CALL(m_fileHandler, checkFileType)
-	.WillOnce(testing::Return(FileHandler::FileNotExist));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
 
 	m_locations.push_back(m_location1);
 	m_locations.push_back(m_location2);
 	m_locations.push_back(m_location3);
 
-	TargetResourceHandler targetResourceHandler(m_locations, m_fileHandler);
+	TargetResourceHandler targetResourceHandler(m_locations, m_fileSystemPolicy);
 
 	m_request.uri.path = "/test";
 
@@ -90,14 +90,14 @@ TEST_F(TargetResourceHandlerTest, FileNotFound)
 
 TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 {
-	EXPECT_CALL(m_fileHandler, checkFileType)
-	.WillOnce(testing::Return(FileHandler::FileDirectory));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
 	m_locations.push_back(m_location1);
 	m_locations.push_back(m_location2);
 	m_locations.push_back(m_location3);
 
-	TargetResourceHandler targetResourceHandler(m_locations, m_fileHandler);
+	TargetResourceHandler targetResourceHandler(m_locations, m_fileSystemPolicy);
 
 	m_request.uri.path = "/test";
 
@@ -109,15 +109,15 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 
 TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 {
-	EXPECT_CALL(m_fileHandler, checkFileType)
-	.WillOnce(testing::Return(FileHandler::FileDirectory))
-	.WillOnce(testing::Return(FileHandler::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
+	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
 
 	m_locations.push_back(m_location1);
 	m_locations.push_back(m_location2);
 	m_locations.push_back(m_location3);
 
-	TargetResourceHandler targetResourceHandler(m_locations, m_fileHandler);
+	TargetResourceHandler targetResourceHandler(m_locations, m_fileSystemPolicy);
 
 	m_request.uri.path = "/test/secret/";
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 #include <string>
 #include <vector>
 #include <sstream>
@@ -8,12 +8,12 @@
 class AutoindexHandler {
 
 public:
-	explicit AutoindexHandler(const FileHandler& fileHandler);
+	explicit AutoindexHandler(const FileSystemPolicy& fileSystemPolicy);
 	std::string execute(const std::string& path);
 
 private:
 	std::vector<std::string> getFiles(DIR* directory);
 
-	const FileHandler& m_fileHandler;
+	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_response;
 };

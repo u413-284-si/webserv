@@ -3,7 +3,7 @@
 #include "ConfigFile.hpp"
 #include "HTTPResponse.hpp"
 #include "RequestParser.hpp"
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 #include "StatusCode.hpp"
 #include <string>
 #include "TargetResourceHandler.hpp"
@@ -11,7 +11,7 @@
 
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const ConfigFile& configFile, const FileHandler& fileHandler);
+	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy);
 
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse() const;
@@ -28,6 +28,6 @@ private:
 	std::map<std::string, std::string> m_mimeTypes;
 	const ConfigFile& m_configFile;
 	std::vector<ServerConfig>::const_iterator m_activeServer;
-	const FileHandler& m_fileHandler;
+	const FileSystemPolicy& m_fileSystemPolicy;
 	HTTPResponse m_httpResponse;
 };

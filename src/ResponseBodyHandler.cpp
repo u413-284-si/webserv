@@ -1,10 +1,10 @@
 #include "ResponseBodyHandler.hpp"
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 #include "StatusCode.hpp"
 #include <exception>
 
-ResponseBodyHandler::ResponseBodyHandler(const FileHandler& fileHandler)
-	: m_fileHandler(fileHandler)
+ResponseBodyHandler::ResponseBodyHandler(const FileSystemPolicy& fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
@@ -21,7 +21,7 @@ HTTPResponse ResponseBodyHandler::execute(HTTPResponse& response)
 	}
 	if (response.method == "GET") {
 		try {
-			response.body = m_fileHandler.getFileContents(response.targetResource.c_str());
+			response.body = m_fileSystemPolicy.getFileContents(response.targetResource.c_str());
 		} catch (std::exception& e) {
 			response.status = StatusInternalServerError;
 			handleErrorBody(response);

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
 
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(const FileHandler& fileHandler);
+	explicit ResponseBodyHandler(const FileSystemPolicy& fileSystemPolicy);
 	HTTPResponse execute(HTTPResponse& response);
 
 private:
 	void handleErrorBody(HTTPResponse& response);
 
-	const FileHandler& m_fileHandler;
+	const FileSystemPolicy& m_fileSystemPolicy;
 };

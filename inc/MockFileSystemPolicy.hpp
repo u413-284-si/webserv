@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 
-class FileHandlerMock : public FileHandler {
+class MockFileSystemPolicy : public FileSystemPolicy {
 public:
 	MOCK_METHOD(bool, isDirectory, (const std::string&), (const, override));
 	MOCK_METHOD(bool, isExistingFile, (const std::string&), (const, override));

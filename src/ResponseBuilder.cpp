@@ -3,10 +3,10 @@
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
 
-ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileHandler& fileHandler)
+ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
 	: m_configFile(configFile)
 	, m_activeServer(configFile.serverConfigs.begin())
-	, m_fileHandler(fileHandler)
+	, m_fileSystemPolicy(fileSystemPolicy)
 {
 	initMIMETypes();
 }
@@ -71,10 +71,10 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
 	// m_httpResponse = request.status;
-	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileHandler);
+	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileSystemPolicy);
 	m_httpResponse = targetResourceHandler.execute(request);
 	m_httpResponse.method = "GET";
-	ResponseBodyHandler responseBodyHandler(m_fileHandler);
+	ResponseBodyHandler responseBodyHandler(m_fileSystemPolicy);
 	responseBodyHandler.execute(m_httpResponse);
 
 	appendStatusLine();

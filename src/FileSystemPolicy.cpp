@@ -1,8 +1,8 @@
-#include "FileHandler.hpp"
+#include "FileSystemPolicy.hpp"
 
-FileHandler::~FileHandler() {}
+FileSystemPolicy::~FileSystemPolicy() {}
 
-FileHandler::fileType FileHandler::checkFileType(const std::string& path) const
+FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;
@@ -19,11 +19,11 @@ FileHandler::fileType FileHandler::checkFileType(const std::string& path) const
 	return FileOther;
 }
 
-bool FileHandler::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
+bool FileSystemPolicy::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
 
-bool FileHandler::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotExist; }
+bool FileSystemPolicy::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotExist; }
 
-std::string FileHandler::getFileContents(const char* filename) const
+std::string FileSystemPolicy::getFileContents(const char* filename) const
 {
 	errno = 0;
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
@@ -38,7 +38,7 @@ std::string FileHandler::getFileContents(const char* filename) const
 	return contents;
 }
 
-DIR* FileHandler::openDirectory(const std::string& path) const
+DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 {
 	errno = 0;
 	DIR *dir = opendir(path.c_str());
@@ -48,7 +48,7 @@ DIR* FileHandler::openDirectory(const std::string& path) const
 	return dir;
 }
 
-struct dirent* FileHandler::readDirectory(DIR* dir) const
+struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 {
 	errno = 0;
 	struct dirent *entry = readdir(dir);
@@ -58,7 +58,7 @@ struct dirent* FileHandler::readDirectory(DIR* dir) const
 	return entry;
 }
 
-struct stat FileHandler::getFileStat(const std::string& path) const
+struct stat FileSystemPolicy::getFileStat(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;

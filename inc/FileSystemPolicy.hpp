@@ -10,10 +10,10 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-class FileHandler {
+class FileSystemPolicy {
 
 public:
-	virtual ~FileHandler();
+	virtual ~FileSystemPolicy();
 
 	enum fileType { StatError = -1, FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
 	virtual fileType checkFileType(const std::string& path) const;
