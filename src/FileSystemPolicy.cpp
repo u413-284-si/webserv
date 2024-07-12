@@ -58,12 +58,13 @@ struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 	return entry;
 }
 
-void FileSystemPolicy::closeDirectory(DIR* dir) const
+int FileSystemPolicy::closeDirectory(DIR* dir) const
 {
 	errno = 0;
 	if (closedir(dir) == -1) {
-		throw std::runtime_error(strerror(errno));
+		return (errno);
 	}
+	return 0;
 }
 
 struct stat FileSystemPolicy::getFileStat(const std::string& path) const

@@ -22,6 +22,6 @@ public:
 	virtual std::string getFileContents(const char* filename) const;
 	virtual DIR* openDirectory(const std::string& path) const;
 	virtual struct dirent* readDirectory(DIR* dir) const;
-	virtual void closeDirectory(DIR* dir) const;
+	virtual int closeDirectory(DIR* dir) const;
 	virtual struct stat getFileStat(const std::string& path) const;
 };
