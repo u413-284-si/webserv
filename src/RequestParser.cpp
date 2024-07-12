@@ -7,36 +7,34 @@
  * @brief Checks if a given string starts with a single space followed by a non-space character.
  *
  * This function checks if the provided string `str` starts with exactly one space character followed
- * by a non-space character. If this condition is met, it returns a substring of `str` starting from 
- * the second character. If the condition is not met, it sets the error code to 400 and throws a 
+ * by a non-space character. If this condition is met, it returns a substring of `str` starting from
+ * the second character. If the condition is not met, it sets the error code to 400 and throws a
  * `std::runtime_error` with an appropriate error message.
  *
  * @param str The input string to be checked.
  * @return A substring of `str` starting from the second character if the input string starts with
  *         a single space followed by a non-space character.
- * @throws std::runtime_error If the input string does not start with a single space followed by a 
+ * @throws std::runtime_error If the input string does not start with a single space followed by a
  *         non-space character, an error is thrown and the error code is set to 400.
  */
-std::string	RequestParser::checkForSpace(const std::string& str)
+std::string RequestParser::checkForSpace(const std::string& str)
 {
 	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
 		return (str.substr(1));
-	else {
-		m_errorCode = 400;
-		throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
-	}
+	m_errorCode = 400;
+	throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
 }
 
 /**
- * @brief Checks if a given string starts with CRLF. 
- * 
+ * @brief Checks if a given string starts with CRLF.
+ *
  * Only checks for the carriage return \r, as the linefeed \\n is discarded
  * by std::getline
  * @param str	Input string to be checked.
  * @throws std::runtime_error If the input string does not contain a single
  *         carriage return, an error is thrown and the error code is set to 400.
  */
-void	RequestParser::checkForCRLF(const std::string& str)
+void RequestParser::checkForCRLF(const std::string& str)
 {
 	if (str.length() != 1 || str[0] != '\r') {
 		m_errorCode = 400;
@@ -78,14 +76,14 @@ void	RequestParser::checkForCRLF(const std::string& str)
  * @param c The character to be checked.
  * @return `true` if the character is a valid URI character, `false` otherwise.
  */
-bool	RequestParser::isValidURIChar(uint8_t c) const
+bool RequestParser::isValidURIChar(uint8_t c) const
 {
 	// Check for unreserved chars
 	if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~')
-        return true;
-	
+		return true;
+
 	// Check for reserved characters
-    switch (c) {
+	switch (c) {
 	case ':':
 	case '/':
 	case '?':
@@ -107,7 +105,7 @@ bool	RequestParser::isValidURIChar(uint8_t c) const
 		return true;
 	default:
 		return false;
-    }
+	}
 }
 
 /**
@@ -136,10 +134,10 @@ bool	RequestParser::isValidURIChar(uint8_t c) const
  * @param c The character to be checked.
  * @return `true` if the character is valid for an HTTP header field name, `false` otherwise.
  */
-bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
+bool RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 {
 	if (std::isalnum(c))
-    	return true;
+		return true;
 
 	switch (c) {
 	case '!':
@@ -165,33 +163,46 @@ bool	RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
 
 /**
  * @brief Converts a hexadecimal string to a size_t value.
- * 
+ *
  * This function takes a string representing a hexadecimal number,
  * validates it, and converts it to a size_t value.
- * 
+ *
  * @param chunkSize The string containing the hexadecimal number.
  * @return The converted size_t value.
- * 
+ *
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-size_t	RequestParser::convertHex(const std::string& chunkSize) const
+size_t RequestParser::convertHex(const std::string& chunkSize) const
 {
 	if (chunkSize.empty())
-        throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
+		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
 
-    for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
-        if (!std::isxdigit(*it))
-            throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
-    }
+	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
+		if (!std::isxdigit(*it))
+			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
+	}
 
-    std::istringstream	iss(chunkSize);
-    size_t	value = 0;
+	std::istringstream iss(chunkSize);
+	size_t value = 0;
 
-    iss >> std::hex >> value;
-    if (iss.fail())
-        throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
-    return value;
+	iss >> std::hex >> value;
+	if (iss.fail())
+		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+	return value;
+}
+
+void RequestParser::clearRequest()
+{
+	m_request.body = "";
+	m_request.chunked = false;
+	m_request.hasBody = false;
+	m_request.method = "";
+	m_request.uri.fragment = "";
+	m_request.uri.path = "";
+	m_request.uri.query = "";
+	m_request.version = "";
+	m_request.headers.clear();
 }
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -209,15 +220,12 @@ RequestParser::RequestParser()
 /**
  * @brief Retrieves the current error code.
  *
- * This function returns the current error code stored in the `RequestParser` object. 
+ * This function returns the current error code stored in the `RequestParser` object.
  * The error code indicates the type of error that occurred during the parsing process.
  *
  * @return The current error code as an integer.
  */
-int	RequestParser::getErrorCode() const
-{
-	return m_errorCode;
-}
+int RequestParser::getErrorCode() const { return m_errorCode; }
 
 /**
  * @brief Retrieves the bit flag representing the HTTP request method.
@@ -227,10 +235,7 @@ int	RequestParser::getErrorCode() const
  *
  * @return The Method corresponding to the HTTP request method.
  */
-Method	RequestParser::getRequestMethod() const
-{
-	return m_requestMethod;
-}
+Method RequestParser::getRequestMethod() const { return m_requestMethod; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -250,12 +255,12 @@ Method	RequestParser::getRequestMethod() const
  * @return An `HTTPRequest` object representing the parsed HTTP request.
  * @throws std::runtime_error If there is any error during parsing.
  */
-HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
+HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 {
-	std::istringstream	requestStream(request);
-	
+	std::istringstream requestStream(request);
+
 	// Step 1: Parse the request-line
-	std::string			requestLine;
+	std::string requestLine;
 	if (!std::getline(requestStream, requestLine) || requestLine.empty()) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_REQUEST_LINE);
@@ -267,41 +272,41 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
 	requestLine = parseVersion(requestLine);
 	checkForCRLF(requestLine);
 
-    // Step 2: Parse headers
-    std::string headerLine;
+	// Step 2: Parse headers
+	std::string headerLine;
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
-    while (std::getline(requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
+	while (std::getline(requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
 		}
-        std::istringstream headerStream(headerLine);
-        std::string headerName;
-        std::string headerValue;
-        if (std::getline(headerStream, headerName, ':')) {
+		std::istringstream headerStream(headerLine);
+		std::string headerName;
+		std::string headerValue;
+		if (std::getline(headerStream, headerName, ':')) {
 			checkHeaderName(headerName);
-            std::getline(headerStream >> std::ws, headerValue);
+			std::getline(headerStream >> std::ws, headerValue);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue);
-            m_request.headers[headerName] = headerValue;
-        }
-    }
+			m_request.headers[headerName] = headerValue;
+		}
+	}
 	checkTransferEncoding();
 	if (headerLine != "\r") {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_CRLF);
 	}
 
-    // Step 3: Parse body (if any)
+	// Step 3: Parse body (if any)
 	if (m_request.hasBody) {
 		if (m_request.chunked)
 			parseChunkedBody(requestStream);
 		else
 			parseNonChunkedBody(requestStream);
 	}
-    return m_request;
+	return m_request;
 }
 
 /**
@@ -316,9 +321,9 @@ HTTPRequest	RequestParser::parseHttpRequest(const std::string& request)
  * @return A substring of `requestLine` starting from the character after the parsed method.
  * @throws std::runtime_error If the method is not implemented, an error is thrown and the error code is set to 501.
  */
-std::string	RequestParser::parseMethod(const std::string& requestLine)
+std::string RequestParser::parseMethod(const std::string& requestLine)
 {
-	int	i = -1;
+	int i = -1;
 	while (isalpha(requestLine[++i]))
 		m_request.method.push_back(requestLine[i]);
 
@@ -351,9 +356,9 @@ std::string	RequestParser::parseMethod(const std::string& requestLine)
  * @throws std::runtime_error If the URI is missing the initial slash,
  *         contains invalid characters, or any other URI-related errors occur.
  */
-std::string	RequestParser::parseUri(const std::string& requestLine)
+std::string RequestParser::parseUri(const std::string& requestLine)
 {
-	int	i = 0;
+	int i = 0;
 	if (requestLine[i] != '/') {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
@@ -365,8 +370,7 @@ std::string	RequestParser::parseUri(const std::string& requestLine)
 		else if (!isValidURIChar(requestLine[i])) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		}
-		else if (requestLine[i] == '?')
+		} else if (requestLine[i] == '?')
 			parseUriQuery(requestLine, i);
 		else if (requestLine[i] == '#')
 			parseUriFragment(requestLine, i);
@@ -393,18 +397,16 @@ std::string	RequestParser::parseUri(const std::string& requestLine)
  * @throws std::runtime_error If an invalid character is encountered in the query,
  *         or if another '?' is found, an error is thrown and the error code is set to 400.
  */
-void	RequestParser::parseUriQuery(const std::string& requestLine, int& index)
+void RequestParser::parseUriQuery(const std::string& requestLine, int& index)
 {
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ' || requestLine[index] == '#') {
 			index--;
 			break;
-		}
-		else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '?') {
+		} else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '?') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		}
-		else
+		} else
 			m_request.uri.query.push_back(requestLine[index]);
 	}
 }
@@ -424,18 +426,16 @@ void	RequestParser::parseUriQuery(const std::string& requestLine, int& index)
  * @throws std::runtime_error If an invalid character is encountered in the fragment,
  *         or if another '#' is found, an error is thrown and the error code is set to 400.
  */
-void	RequestParser::parseUriFragment(const std::string& requestLine, int& index)
+void RequestParser::parseUriFragment(const std::string& requestLine, int& index)
 {
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ') {
 			index--;
 			break;
-		}
-		else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '#') {
+		} else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '#') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		}
-		else
+		} else
 			m_request.uri.fragment.push_back(requestLine[index]);
 	}
 }
@@ -454,13 +454,13 @@ void	RequestParser::parseUriFragment(const std::string& requestLine, int& index)
  * @throws std::runtime_error If the HTTP version format is invalid,
  *         an error is thrown and the error code is set to 400.
  */
-std::string	RequestParser::parseVersion(const std::string& requestLine)
+std::string RequestParser::parseVersion(const std::string& requestLine)
 {
 	if (requestLine.substr(0, 5) != "HTTP/") {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
 	}
-	int	i = 5;
+	int i = 5;
 	if (!isdigit(requestLine[i])) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
@@ -501,12 +501,12 @@ std::string	RequestParser::parseVersion(const std::string& requestLine)
  * parser.parseChunkedBody(requestStream);
  * @endcode
  */
-void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
+void RequestParser::parseChunkedBody(std::istringstream& requestStream)
 {
-	int			length = 0;
-	std::string	strChunkSize;
-	std::string	chunkData;
-	size_t 		numChunkSize = 0;
+	int length = 0;
+	std::string strChunkSize;
+	std::string chunkData;
+	size_t numChunkSize = 0;
 
 	do {
 		std::getline(requestStream, strChunkSize);
@@ -530,8 +530,7 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
 		}
 		m_request.body += chunkData;
 		length += numChunkSize;
-	}	
-	while (numChunkSize > 0);
+	} while (numChunkSize > 0);
 }
 
 /**
@@ -558,10 +557,10 @@ void	RequestParser::parseChunkedBody(std::istringstream& requestStream)
  * parser.parseNonChunkedBody(requestStream);
  * @endcode
  */
-void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
+void RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 {
 	std::string body;
-	size_t		length = 0;
+	size_t length = 0;
 
 	while (std::getline(requestStream, body)) {
 		if (body[body.size() - 1] == '\r') {
@@ -573,7 +572,7 @@ void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
 		length += body.size();
 		m_request.body += body;
 	}
-	size_t	contentLength = std::atol(m_request.headers.at("Content-Length").c_str());
+	size_t contentLength = std::atol(m_request.headers.at("Content-Length").c_str());
 	if (contentLength != length) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
@@ -592,9 +591,9 @@ void	RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
  * @throws std::runtime_error If the header name contains invalid characters or
  *         ends with whitespace, an error is thrown and the error code is set to 400.
  */
-void	RequestParser::checkHeaderName(const std::string& headerName)
+void RequestParser::checkHeaderName(const std::string& headerName)
 {
-	if (isspace(headerName[headerName.size() - 1])){
+	if (isspace(headerName[headerName.size() - 1])) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_HEADER_COLON_WHITESPACE);
 	}
@@ -602,7 +601,7 @@ void	RequestParser::checkHeaderName(const std::string& headerName)
 		if (!isValidHeaderFieldNameChar(headerName[i])) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_HEADER_NAME_INVALID_CHAR);
-	 	}
+		}
 	}
 }
 
@@ -622,7 +621,7 @@ void	RequestParser::checkHeaderName(const std::string& headerName)
  *         headers or if the Content-Length value is invalid, an error is thrown
  *         and the error code is set to 400.
  */
-void	RequestParser::checkContentLength(const std::string& headerName, std::string& headerValue)
+void RequestParser::checkContentLength(const std::string& headerName, std::string& headerValue)
 {
 	if (headerName == "Content-Length") {
 		if (headerValue.empty()) {
@@ -631,15 +630,15 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
 		}
 		if (m_request.headers.find("Content-Length") != m_request.headers.end()
 			&& m_request.headers["Content-Length"] != headerValue) {
-				m_errorCode = 400;
-				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
+			m_errorCode = 400;
+			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
 
 		std::vector<std::string> strValues = split(headerValue, ',');
-		std::vector<double>	numValues;
+		std::vector<double> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
-			char 	*endptr;
-			double	contentLength = strtod(strValues[i].c_str(), &endptr);
+			char* endptr;
+			double contentLength = strtod(strValues[i].c_str(), &endptr);
 			if (!contentLength || *endptr != '\0') {
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
@@ -668,7 +667,7 @@ void	RequestParser::checkContentLength(const std::string& headerName, std::strin
  * @throws std::runtime_error If the Transfer-Encoding header is missing or empty,
  *         or if the last encoding is not "chunked", an error is thrown and the error code is set to 400.
  */
-void	RequestParser::checkTransferEncoding()
+void RequestParser::checkTransferEncoding()
 {
 	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end()) {
 		if (m_request.headers.at("Transfer-Encoding").empty()) {
@@ -677,7 +676,7 @@ void	RequestParser::checkTransferEncoding()
 		}
 
 		if (m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
-			std::vector<std::string>	encodings = split(m_request.headers.at("Transfer-Encoding"), ',');
+			std::vector<std::string> encodings = split(m_request.headers.at("Transfer-Encoding"), ',');
 			if (encodings[encodings.size() - 1] != "chunked") {
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
@@ -685,6 +684,5 @@ void	RequestParser::checkTransferEncoding()
 			m_request.chunked = true;
 			m_request.hasBody = true;
 		}
-		
 	}
 }
