@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/12 17:35:02 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,10 +85,7 @@ SRC:= 	main.cpp \
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	test_AutoindexHandler.cpp \
-			test_ResponseBodyHandler.cpp \
-			test_TargetResourceHandler.cpp \
-			test_utils.cpp
+TEST_SRC :=	testBody.cpp
 
 # ******************************
 # *     Object files           *
@@ -148,7 +145,7 @@ $(TEST): CXXFLAGS = -Wall -Werror -pthread
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgmock_main -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
