@@ -19,6 +19,11 @@ HTTPResponse ResponseBodyHandler::execute(HTTPResponse& response)
 	if (response.autoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		response.body = autoindexHandler.execute(response.targetResource);
+		if (response.body.empty()) {
+			response.status = StatusInternalServerError;
+			handleErrorBody(response);
+			return response;
+		}
 		response.status = StatusOK;
 		response.targetResource += "autoindex.html";
 		return response;
