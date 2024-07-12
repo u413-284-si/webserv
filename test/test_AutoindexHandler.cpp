@@ -7,7 +7,19 @@
 
 #include "AutoindexHandler.hpp"
 
-TEST(AutoindexHandler, DirectoryThrow)
+TEST(AutoindexHandler, OpenDirectoyThrow)
+{
+	MockFileSystemPolicy fileSystemPolicy;
+	AutoindexHandler autoindexHandler(fileSystemPolicy);
+
+	EXPECT_CALL(fileSystemPolicy, openDirectory)
+	.WillOnce(testing::Throw(std::runtime_error("openDirectory failed")));
+
+	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/");
+	EXPECT_EQ(autoindex, "");
+}
+
+TEST(AutoindexHandler, ReadDirectoryThrow)
 {
 	MockFileSystemPolicy fileSystemPolicy;
 	AutoindexHandler autoindexHandler(fileSystemPolicy);

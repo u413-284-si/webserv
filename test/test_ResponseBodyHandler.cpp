@@ -37,7 +37,9 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 {
 	EXPECT_CALL(m_fileSystemPolicy, openDirectory)
-	.Times(1);
+	.Times(2)
+	.WillOnce(testing::Throw(std::runtime_error("openDirectory failed")))
+	.WillOnce(testing::Return(nullptr));
 	EXPECT_CALL(m_fileSystemPolicy, readDirectory)
 	.WillOnce(testing::Throw(std::runtime_error("readDirectory failed")));
 	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
@@ -47,6 +49,10 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 
 	m_response.targetResource = "/proc/self/";
 	m_response.autoindex = true;
+
+	m_response = responseBodyHandler.execute(m_response);
+	EXPECT_EQ(m_response.status, StatusInternalServerError);
+
 	m_response = responseBodyHandler.execute(m_response);
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 }
