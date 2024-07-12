@@ -92,6 +92,7 @@ SRC:=	main.cpp \
 # ******************************
 
 TEST_SRC :=	test_AutoindexHandler.cpp \
+			test_ResponseBodyHandler.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
