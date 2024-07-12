@@ -1,20 +1,9 @@
 #include "AutoindexHandler.hpp"
+#include "Directory.hpp"
 
 AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
 {
-}
-
-std::vector<std::string> AutoindexHandler::getFiles(DIR* directory)
-{
-	std::vector<std::string> files;
-	struct dirent* entry = m_fileSystemPolicy.readDirectory(directory);
-	while (entry != NULL) {
-		files.push_back(entry->d_name);
-		entry = m_fileSystemPolicy.readDirectory(directory);
-	}
-	std::sort(files.begin(), files.end());
-	return files;
 }
 
 std::string getLastModifiedTime(const struct stat& fileStat)
@@ -48,9 +37,8 @@ std::string AutoindexHandler::execute(const std::string& path)
 			<< "<table>\n"
 			<< "<tr><th>File Name</th><th>Last Modified</th><th>Size (Bytes)</th></tr>\n";
 
-		DIR* directory = m_fileSystemPolicy.openDirectory(path);
-		std::vector<std::string> files = getFiles(directory);
-		m_fileSystemPolicy.closeDirectory(directory);
+		Directory directory(m_fileSystemPolicy, path);
+		std::vector<std::string> files = directory.getEntries();
 
 		for (std::vector<std::string>::iterator iter = files.begin(); iter != files.end(); ++iter) {
 			if (*iter == "." || *iter == "..")

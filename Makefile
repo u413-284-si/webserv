@@ -78,6 +78,7 @@ TEST := unittest
 
 SRC:=	main.cpp \
 		AutoindexHandler.cpp \
+		Directory.cpp \
 		FileSystemPolicy.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
