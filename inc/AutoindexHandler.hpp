@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+#include <dirent.h>
+#include <stdexcept>
 
 class AutoindexHandler {
 

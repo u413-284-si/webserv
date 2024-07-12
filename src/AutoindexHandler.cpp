@@ -1,6 +1,4 @@
 #include "AutoindexHandler.hpp"
-#include <dirent.h>
-#include <stdexcept>
 
 AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
@@ -15,6 +13,7 @@ std::vector<std::string> AutoindexHandler::getFiles(DIR* directory)
 		files.push_back(entry->d_name);
 		entry = m_fileSystemPolicy.readDirectory(directory);
 	}
+	std::sort(files.begin(), files.end());
 	return files;
 }
 
@@ -35,7 +34,6 @@ long getFileSize(const struct stat& fileStat)
 std::string AutoindexHandler::execute(const std::string& path)
 {
 	try {
-		DIR* directory = m_fileSystemPolicy.openDirectory(path);
 		m_response
 			<< "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n"
 			<< "<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
@@ -50,7 +48,9 @@ std::string AutoindexHandler::execute(const std::string& path)
 			<< "<table>\n"
 			<< "<tr><th>File Name</th><th>Last Modified</th><th>Size (Bytes)</th></tr>\n";
 
+		DIR* directory = m_fileSystemPolicy.openDirectory(path);
 		std::vector<std::string> files = getFiles(directory);
+		m_fileSystemPolicy.closeDirectory(directory);
 
 		for (std::vector<std::string>::iterator iter = files.begin(); iter != files.end(); ++iter) {
 			if (*iter == "." || *iter == "..")
@@ -58,10 +58,9 @@ std::string AutoindexHandler::execute(const std::string& path)
 			struct stat fileStat = m_fileSystemPolicy.getFileStat(path + *iter);
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
-			m_response
-				<< "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
-				<< "<td>" << getLastModifiedTime(fileStat) << "</td>"
-				<< "<td>" << getFileSize(fileStat) << "</td></tr>\n";
+			m_response << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
+					   << "<td>" << getLastModifiedTime(fileStat) << "</td>"
+					   << "<td>" << getFileSize(fileStat) << "</td></tr>\n";
 		}
 		m_response << "</table>\n</body>\n</html>";
 		return m_response.str();
