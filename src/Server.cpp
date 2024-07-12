@@ -37,7 +37,7 @@ static void setNonblocking(int sock)
 Server::Server()
 {
     // Create server socket using TCP protocol SOCK_STREAM
-	m_serverSock = socket(AF_INET, SOCK_STREAM, 0);
+	m_serverSock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 	if (m_serverSock < 0) {
 		throw std::runtime_error("socket");
 	}
