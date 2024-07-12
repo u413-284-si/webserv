@@ -1,4 +1,5 @@
 #include "ResponseBodyHandler.hpp"
+#include "AutoindexHandler.hpp"
 #include "FileSystemPolicy.hpp"
 #include "StatusCode.hpp"
 #include <exception>
@@ -15,6 +16,13 @@ void ResponseBodyHandler::handleErrorBody(HTTPResponse& response)
 
 HTTPResponse ResponseBodyHandler::execute(HTTPResponse& response)
 {
+	if (response.autoindex) {
+		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
+		response.body = autoindexHandler.execute(response.targetResource);
+		response.status = StatusOK;
+		response.targetResource += "autoindex.html";
+		return response;
+	}
 	if (response.status != StatusOK) {
 		handleErrorBody(response);
 		return response;

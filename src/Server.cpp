@@ -204,7 +204,7 @@ void Server::handleConnections(int clientSock)
 		Location location;
 		location.path = "/";
 		location.root = "/workspaces/webserv";
-		location.index = "index.html";
+		location.isAutoindex = true;
 		ServerConfig serverConfig;
 		serverConfig.locations.push_back(location);
 		ConfigFile configFile;

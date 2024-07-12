@@ -40,10 +40,16 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 			if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
 				m_response.targetResource += "/";
 				m_response.status = StatusMovedPermanently;
-			} else {
+			}
+			else if (!m_response.location->index.empty()) {
 				m_response.targetResource += m_response.location->index;
 				internalRedirect = true;
 			}
+			else if (m_response.location->isAutoindex) {
+				m_response.autoindex = true;
+			}
+			else
+				m_response.status = StatusForbidden;
 			break;
 
 		case FileSystemPolicy::FileNotExist:
