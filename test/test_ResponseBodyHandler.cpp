@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <stdexcept>
 
 #include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
@@ -10,11 +11,12 @@
 
 class ResponseBodyHandlerTest : public ::testing::Test {
 	protected:
-	ResponseBodyHandlerTest() { }
+	ResponseBodyHandlerTest() : m_responseBodyHandler(m_response, m_fileSystemPolicy) { }
 	~ResponseBodyHandlerTest() override { }
 
 	HTTPResponse m_response;
 	MockFileSystemPolicy m_fileSystemPolicy;
+	ResponseBodyHandler m_responseBodyHandler;
 };
 
 TEST_F(ResponseBodyHandlerTest, IndexCreated)
@@ -25,11 +27,9 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
 	.Times(1);
 
-	ResponseBodyHandler responseBodyHandler(m_fileSystemPolicy);
-
 	m_response.targetResource = "/proc/self/";
 	m_response.autoindex = true;
-	m_response = responseBodyHandler.execute(m_response);
+	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusOK);
 	EXPECT_EQ(m_response.targetResource, "/proc/self/autoindex.html");
 }
@@ -45,14 +45,52 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
 	.Times(1);
 
-	ResponseBodyHandler responseBodyHandler(m_fileSystemPolicy);
-
 	m_response.targetResource = "/proc/self/";
 	m_response.autoindex = true;
 
-	m_response = responseBodyHandler.execute(m_response);
+	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 
-	m_response = responseBodyHandler.execute(m_response);
+	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
+}
+
+TEST_F(ResponseBodyHandlerTest, ErrorPage)
+{
+	m_response.targetResource = "/proc/self/";
+	m_response.status = StatusForbidden;
+	m_response.autoindex = false;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_response.body, getDefaultErrorPage(m_response.status));
+}
+
+TEST_F(ResponseBodyHandlerTest, FileNotOpened)
+{
+	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
+	.WillOnce(testing::Throw(std::runtime_error("openFile failed")));
+
+	m_response.autoindex = false;
+	m_response.status = StatusOK;
+	m_response.method = "GET";
+	m_response.targetResource = "/proc/self/cmdline";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_response.status, StatusInternalServerError);
+	EXPECT_EQ(m_response.body, getDefaultErrorPage(m_response.status));
+}
+
+TEST_F(ResponseBodyHandlerTest, FileFound)
+{
+	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
+	.WillOnce(testing::Return("Hello World"));
+
+	m_response.autoindex = false;
+	m_response.status = StatusOK;
+	m_response.method = "GET";
+	m_response.targetResource = "/proc/self/cmdline";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_response.status, StatusOK);
+	EXPECT_EQ(m_response.body, "Hello World");
 }
