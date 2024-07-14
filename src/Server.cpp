@@ -204,6 +204,7 @@ void Server::handleConnections(int clientSock)
 		Location location;
 		location.path = "/";
 		location.root = "/workspaces/webserv";
+		location.index = "index.html";
 		location.isAutoindex = true;
 		ServerConfig serverConfig;
 		serverConfig.locations.push_back(location);
@@ -212,6 +213,7 @@ void Server::handleConnections(int clientSock)
 		HTTPRequest request;
 		request.body = buffer;
 		request.uri.path = "/";
+		request.method = "GET";
 		ResponseBuilder responseBuilder(configFile, FileSystemPolicy());
 		responseBuilder.buildResponse(request);
 		write(clientSock, responseBuilder.getResponse().c_str(), responseBuilder.getResponse().size());
