@@ -1,14 +1,10 @@
 #include "ResponseBuilder.hpp"
-#include "HTTPResponse.hpp"
-#include "ResponseBodyHandler.hpp"
-#include "StatusCode.hpp"
-#include "TargetResourceHandler.hpp"
-#include "utils.hpp"
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
 	: m_configFile(configFile)
 	, m_activeServer(configFile.serverConfigs.begin())
 	, m_fileSystemPolicy(fileSystemPolicy)
+	, m_isFirstTime(true)
 {
 	initMIMETypes();
 }
@@ -16,6 +12,14 @@ ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemP
 void ResponseBuilder::setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer)
 {
 	m_activeServer = activeServer;
+}
+
+void ResponseBuilder::resetStream()
+{
+	if (!m_isFirstTime)
+		m_response.seekp(std::ios::beg);
+
+	m_isFirstTime = false;
 }
 
 void ResponseBuilder::initMIMETypes()
@@ -78,6 +82,8 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
 
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
+	resetStream();
+	
 	HTTPResponse response = initHTTPResponse(request);
 
 	TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
@@ -91,4 +97,4 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 	m_response << response.body << "\r\n";
 }
 
-std::string ResponseBuilder::getResponse() const { return m_response.str(); }
+std::string ResponseBuilder::getResponse() const { return m_response.str().c_str(); }
