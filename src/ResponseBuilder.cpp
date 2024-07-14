@@ -71,8 +71,8 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
 	// m_httpResponse = request.status;
-	TargetResourceHandler targetResourceHandler(m_activeServer->locations, m_fileSystemPolicy);
-	m_httpResponse = targetResourceHandler.execute(request);
+	TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, m_httpResponse, m_fileSystemPolicy);
+	targetResourceHandler.execute();
 	m_httpResponse.method = "GET";
 	ResponseBodyHandler responseBodyHandler(m_fileSystemPolicy);
 	responseBodyHandler.execute(m_httpResponse);

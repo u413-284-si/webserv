@@ -3,20 +3,22 @@
 #include "HTTPResponse.hpp"
 #include "RequestParser.hpp"
 
-TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locations, const FileSystemPolicy& fileSystemPolicy)
+TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locations, const HTTPRequest& request,
+	HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy)
 	: m_locations(locations)
+	, m_request(request)
+	, m_response(response)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
-	m_response.status = StatusOK;
 }
 
-HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
+void TargetResourceHandler::execute()
 {
 	bool internalRedirect = false;
 
 	do {
 		// Check which location block matches the path
-		m_response.location = matchLocation(request.uri.path);
+		m_response.location = matchLocation(m_request.uri.path);
 
 		// No location found > do we also set a default location to not make extra check?
 		if (m_response.location == m_locations.end()) {
@@ -26,7 +28,7 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 
 		// construct target resource
 		if (!internalRedirect)
-			m_response.targetResource = m_response.location->root + request.uri.path;
+			m_response.targetResource = m_response.location->root + m_request.uri.path;
 		internalRedirect = false;
 
 		// what type is it
@@ -40,15 +42,12 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 			if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
 				m_response.targetResource += "/";
 				m_response.status = StatusMovedPermanently;
-			}
-			else if (!m_response.location->index.empty()) {
+			} else if (!m_response.location->index.empty()) {
 				m_response.targetResource += m_response.location->index;
 				internalRedirect = true;
-			}
-			else if (m_response.location->isAutoindex) {
+			} else if (m_response.location->isAutoindex) {
 				m_response.autoindex = true;
-			}
-			else
+			} else
 				m_response.status = StatusForbidden;
 			break;
 
@@ -65,8 +64,6 @@ HTTPResponse TargetResourceHandler::execute(const HTTPRequest& request)
 			break;
 		}
 	} while (internalRedirect);
-
-	return m_response;
 }
 
 std::vector<Location>::const_iterator TargetResourceHandler::matchLocation(const std::string& path)
