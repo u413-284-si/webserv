@@ -194,7 +194,20 @@ bool ConfigFileParser::isSemicolonAtEnd(void) const
 	return m_configFile.currentLine.find_last_of(';') != std::string::npos;
 }
 
-
+/**
+ * @brief Checks if the provided ip address of the listen directive is valid
+ * 
+ * Because the listen directive can contain only an ip address, only a port or can contain both is must be validated if a colon is present.
+ * If no colon is present, the port or the ip address must be valid.
+ *
+ * The function makes sure that the ip address is valid in the following ways:
+ * 1. The ip address must not contain any character other than '0'-'9' or '.'
+ * 2. The number of dots must be 3
+ * 3. The numbers within the ip address can not be smaller than 0 or greater than 255
+ *
+ * @return true If the ip address is valid
+ * @return false If the ip address is not valid
+ */
 bool ConfigFileParser::isListenIpValid(void)
 {
 	size_t colonIndex = m_configFile.currentLine.find(':');
