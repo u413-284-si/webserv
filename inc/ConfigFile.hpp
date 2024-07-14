@@ -30,6 +30,8 @@ struct Location {
     std::string cgiExt;
     std::string cgiPath;
     bool isAutoindex;
+    unsigned long maxBodySize;
+    std::map<unsigned short, std::string> errorPage;
     LimitExcept limitExcept;
     std::map<unsigned short, std::string> returns;
 };
