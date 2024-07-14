@@ -2,38 +2,42 @@
 
 /* ====== LIBRARIES ====== */
 
+#include <algorithm>
+#include <cerrno>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
+#include <map>
+#include <netinet/in.h>
 #include <stdexcept>
 #include <sys/epoll.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <sys/socket.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <algorithm>
-#include <errno.h>
-#include <string.h>
-#include <map>
 
 /* ====== DEFINITIONS ====== */
 
 #define MAX_EVENTS 10
 #define PORT 8080
 #define BUFFER_SIZE 1024
+#define CONNECTION_QUEUE 10
 
 /* ====== CLASS DECLARATION ====== */
 
-class Server{
-    private:
-                int							m_serverSock;
-				int							m_epfd;
-				std::map<int,std::string>	m_requestStrings;
+class Server {
+private:
+	Server(const Server& ref);
+	Server& operator=(const Server& ref);
 
-    public:
-                Server();
-                ~Server();
+	int m_serverSock;
+	int m_epfd;
+	std::map<int, std::string> m_requestStrings;
 
-                void    run();
-                void    acceptConnection();
-                void    handleConnections(int clientSock);
+public:
+	Server();
+	~Server();
+
+	void run();
+	void acceptConnection();
+	void handleConnections(int clientSock);
 };
