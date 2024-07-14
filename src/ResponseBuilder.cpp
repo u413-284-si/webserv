@@ -168,7 +168,7 @@ void ResponseBuilder::initMIMETypes()
  */
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-	std::map<std::basic_string<char>, std::basic_string<char>>::const_iterator iter = m_mimeTypes.find(extension);
+	std::map<std::basic_string<char>, std::basic_string<char> >::const_iterator iter = m_mimeTypes.find(extension);
 	if (iter != m_mimeTypes.end()) {
 		return iter->second;
 	}
