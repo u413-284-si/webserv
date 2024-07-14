@@ -28,6 +28,7 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 	.Times(1);
 
 	m_response.targetResource = "/proc/self/";
+	m_response.status = StatusOK;
 	m_response.autoindex = true;
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusOK);
@@ -46,11 +47,14 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 	.Times(1);
 
 	m_response.targetResource = "/proc/self/";
+	m_response.status = StatusOK;
 	m_response.autoindex = true;
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 
+	m_response.status = StatusOK;
+	
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 }
