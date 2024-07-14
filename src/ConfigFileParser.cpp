@@ -320,8 +320,17 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 	}
 }
 
-
-
+/**
+ * @brief Reads the current line of the server config and does several checks
+ *
+ * The function checks following things:
+ * 1. That the directive is valid
+ * 2. That at the end of the directive there is a semicolon 
+ * 3. That the value of the directive is valid
+ *
+ * It also checks if the server block contains the location directive.
+ * If this is the case, it calls the function readLocationConfigLine() whithin a loop to read and check the location block.
+ */
 void ConfigFileParser::readServerConfigLine(void)
 {
     ConfigServer server;
@@ -346,6 +355,17 @@ void ConfigFileParser::readServerConfigLine(void)
 	readDirectiveValue(directive);
 }
 
+/**
+ * @brief Reads the current line of the location and does several checks
+ *
+ * The function checks following things:
+ * 1. That the directive is valid
+ * 2. That at the end of the directive there is a semicolon 
+ * 3. That the value of the directive is valid
+ *
+ * It also checks if the server block contains the location directive.
+ * If this is the case, it calls the function readLocationConfigLine() whithin a loop to read and check the location block.
+ */
 void ConfigFileParser::readLocationConfigLine(void)
 {
     Location location;
