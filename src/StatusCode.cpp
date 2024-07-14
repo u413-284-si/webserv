@@ -1,5 +1,11 @@
 #include "StatusCode.hpp"
 
+/**
+ * @brief Returns reason phrase for a given status code.
+ *
+ * @param status Status code.
+ * @return std::string Reason phrase.
+ */
 std::string statusCodeToReasonPhrase(statusCode status)
 {
 	switch (status) {
@@ -22,72 +28,80 @@ std::string statusCodeToReasonPhrase(statusCode status)
 	}
 }
 
+/**
+ * @brief Get Default Error Page for a given status code.
+ *
+ * @param status Status code.
+ * @return std::string Default error page.
+ */
 std::string getDefaultErrorPage(statusCode status)
 {
-	static char error301Page[] = "<html>\r\n"
-								 "<head><title>301 Moved permanently</title></head>\r\n"
-								 "<body>\r\n"
-								 "<center><h1>301 Moved permanently</h1></center>\r\n"
-								 "<hr><center>TriHard</center>\r\n"
-								 "</body>\r\n"
-								 "</html>\r\n";
+	static const char* error301Page =
+	"<html>\r\n"
+	"<head><title>301 Moved permanently</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>301 Moved permanently</h1></center>\r\n";
 
-	static char error400Page[] = "<html>\r\n"
-								 "<head><title>400 Bad request</title></head>\r\n"
-								 "<body>\r\n"
-								 "<center><h1>400 Bad request</h1></center>\r\n"
-								 "<hr><center>TriHard</center>\r\n"
-								 "</body>\r\n"
-								 "</html>\r\n";
+	static const char* error400Page =
+	"<html>\r\n"
+	"<head><title>400 Bad request</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>400 Bad request</h1></center>\r\n";
 
-	static char error403Page[] = "<html>\r\n"
-								 "<head><title>403 Forbidden</title></head>\r\n"
-								 "<body>\r\n"
-								 "<center><h1>403 Forbidden</h1></center>\r\n"
-								 "<hr><center>TriHard</center>\r\n"
-								 "</body>\r\n"
-								 "</html>\r\n";
+	static const char* error403Page =
+	"<html>\r\n"
+	"<head><title>403 Forbidden</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>403 Forbidden</h1></center>\r\n";
 
-	static char error404Page[] = "<html>\r\n"
-								 "<head><title>404 Not Found</title></head>\r\n"
-								 "<body>\r\n"
-								 "<center><h1>404 Not Found</h1></center>\r\n"
-								 "<hr><center>TriHard</center>\r\n"
-								 "</body>\r\n"
-								 "</html>\r\n";
+	static const char* error404Page =
+	"<html>\r\n"
+	"<head><title>404 Not Found</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>404 Not Found</h1></center>\r\n";
 
-	static char error405Page[] = "<html>\r\n"
-								 "<head><title>405 Method not allowed</title></head>\r\n"
-								 "<body>\r\n"
-								 "<center><h1>405 Method not allowed</h1></center>\r\n"
-								 "<hr><center>TriHard</center>\r\n"
-								 "</body>\r\n"
-								 "</html>\r\n";
+	static const char* error405Page =
+	"<html>\r\n"
+	"<head><title>405 Method not allowed</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>405 Method not allowed</h1></center>\r\n";
 
-	static char error500page[] = "<html>\r\n"
-								 "<head><title>500 Internal server error</title></head>\r\n"
-								 "<body>\r\n"
-								 "<center><h1>500 Internal server error</h1></center>\r\n"
-								 "<hr><center>TriHard</center>\r\n"
-								 "</body>\r\n"
-								 "</html>\r\n";
+	static const char* error500page =
+	"<html>\r\n"
+	"<head><title>500 Internal server error</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>500 Internal server error</h1></center>\r\n";
+
+	static const char* errorTail =
+	"<hr><center>TriHard</center>\r\n"
+	"</body>\r\n"
+	"</html>\r\n";
+
+	std::string ret;
 
 	switch (status) {
 	case StatusOK:
 		return ("");
 	case StatusMovedPermanently:
-		return (error301Page);
+		ret = error301Page;
+		break;
 	case StatusBadRequest:
-		return (error400Page);
+		ret = error400Page;
+		break;
 	case StatusForbidden:
-		return (error403Page);
+		ret = error403Page;
+		break;
 	case StatusNotFound:
-		return (error404Page);
+		ret = error404Page;
+		break;
 	case StatusMethodNotAllowed:
-		return (error405Page);
+		ret = error405Page;
+		break;
 	case StatusInternalServerError:
-		return (error500page);
-	default:
-		return ("");
+		ret = error500page;
+		break;
 	}
+
+	ret += errorTail;
+	return (ret);
 }
