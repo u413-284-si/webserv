@@ -3,6 +3,7 @@
 #include "ResponseBodyHandler.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
+#include "utils.hpp"
 
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
 	: m_configFile(configFile)
@@ -55,11 +56,7 @@ void ResponseBuilder::appendHeaders(const HTTPResponse& response)
 	// Server
 	m_response << "Server: TriHard\r\n";
 	// Date
-	char date[80];
-	time_t now = time(0);
-	struct tm time = *gmtime(&now);
-	(void)strftime(date, sizeof(date), "%a, %d %b %Y %H:%M:%S %Z", &time);
-	m_response << "Date: " << date << "\r\n";
+	m_response << "Date: " << utils::getGMTString("%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	if (response.status == StatusMovedPermanently) {
 		m_response << "Location: " << response.targetResource << "\r\n";
