@@ -1,11 +1,13 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <stdexcept>
 
 #include "MockFileSystemPolicy.hpp"
 
 #include "ConfigFile.hpp"
 #include "HTTPResponse.hpp"
 #include "RequestParser.hpp"
+#include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
 
 class TargetResourceHandlerTest : public ::testing::Test {
@@ -164,6 +166,21 @@ TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 	targetResourceHandler.execute();
 
 	EXPECT_EQ(m_response.status, StatusForbidden);
+	EXPECT_EQ(m_response.targetResource, "/second/location/test/");
+	EXPECT_FALSE(m_response.autoindex);
+}
+
+TEST_F(TargetResourceHandlerTest, ServerError)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Throw(std::runtime_error("Stat error")));
+
+	m_request.uri.path = "/test/";
+
+	TargetResourceHandler targetResourceHandler(m_locations, m_request, m_response, m_fileSystemPolicy);
+	targetResourceHandler.execute();
+
+	EXPECT_EQ(m_response.status, StatusInternalServerError);
 	EXPECT_EQ(m_response.targetResource, "/second/location/test/");
 	EXPECT_FALSE(m_response.autoindex);
 }
