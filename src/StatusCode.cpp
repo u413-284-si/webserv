@@ -28,7 +28,7 @@ std::string getDefaultErrorPage(statusCode status)
 								 "<head><title>301 Moved permanently</title></head>\r\n"
 								 "<body>\r\n"
 								 "<center><h1>301 Moved permanently</h1></center>\r\n"
-								 "<hr><center>SGC-Node</center>\r\n"
+								 "<hr><center>TriHard</center>\r\n"
 								 "</body>\r\n"
 								 "</html>\r\n";
 
@@ -36,7 +36,7 @@ std::string getDefaultErrorPage(statusCode status)
 								 "<head><title>400 Bad request</title></head>\r\n"
 								 "<body>\r\n"
 								 "<center><h1>400 Bad request</h1></center>\r\n"
-								 "<hr><center>SGC-Node</center>\r\n"
+								 "<hr><center>TriHard</center>\r\n"
 								 "</body>\r\n"
 								 "</html>\r\n";
 
@@ -44,7 +44,7 @@ std::string getDefaultErrorPage(statusCode status)
 								 "<head><title>403 Forbidden</title></head>\r\n"
 								 "<body>\r\n"
 								 "<center><h1>403 Forbidden</h1></center>\r\n"
-								 "<hr><center>SGC-Node</center>\r\n"
+								 "<hr><center>TriHard</center>\r\n"
 								 "</body>\r\n"
 								 "</html>\r\n";
 
@@ -52,7 +52,7 @@ std::string getDefaultErrorPage(statusCode status)
 								 "<head><title>404 Not Found</title></head>\r\n"
 								 "<body>\r\n"
 								 "<center><h1>404 Not Found</h1></center>\r\n"
-								 "<hr><center>SGC-Node</center>\r\n"
+								 "<hr><center>TriHard</center>\r\n"
 								 "</body>\r\n"
 								 "</html>\r\n";
 
@@ -60,7 +60,7 @@ std::string getDefaultErrorPage(statusCode status)
 								 "<head><title>405 Method not allowed</title></head>\r\n"
 								 "<body>\r\n"
 								 "<center><h1>405 Method not allowed</h1></center>\r\n"
-								 "<hr><center>SGC-Node</center>\r\n"
+								 "<hr><center>TriHard</center>\r\n"
 								 "</body>\r\n"
 								 "</html>\r\n";
 
@@ -68,7 +68,7 @@ std::string getDefaultErrorPage(statusCode status)
 								 "<head><title>500 Internal server error</title></head>\r\n"
 								 "<body>\r\n"
 								 "<center><h1>500 Internal server error</h1></center>\r\n"
-								 "<hr><center>SGC-Node</center>\r\n"
+								 "<hr><center>TriHard</center>\r\n"
 								 "</body>\r\n"
 								 "</html>\r\n";
 

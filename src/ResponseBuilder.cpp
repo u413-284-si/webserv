@@ -53,7 +53,7 @@ void ResponseBuilder::appendHeaders(const HTTPResponse& response)
 	// Content-Length
 	m_response << "Content-Length: " << response.body.length() << "\r\n";
 	// Server
-	m_response << "Server: SGC-Node\r\n";
+	m_response << "Server: TriHard\r\n";
 	// Date
 	char date[80];
 	time_t now = time(0);
