@@ -156,7 +156,10 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
 
 /**
  * @brief Checks if the directive is valid for the given block
- * 
+ *
+ * Does not check directive if it only contains whitespaces.
+ * This is for the case when there is an line in the config file which contains only whitespaces.
+ *
  * @param directive The directive to check
  * @param block The block which surounds the directive
  * @return true When the directive is valid
@@ -260,12 +263,15 @@ bool ConfigFileParser::isListenIpValid(void)
 /**
  * @brief Checks if the value of the listen directive is valid
  *
- * @details The value of the listen directive must not contain a character other than '0'-'9'.
- *          The value of the listen directive must be between 1-65535.
+ * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if a colon is present.
+ * If no colon is present, there is no need to validate the port.
  *
- * @param directive 
- * @return true 
- * @return false 
+ * The function makes sure that the port is valid in the following ways:
+ * 1. The port must not contain a character other than '0'-'9'
+ * 2. The value of the port must be between 1-65535
+ *
+ * @return true If the port is valid or there is no colon present
+ * @return false If the port is invalid
  */
 bool ConfigFileParser::isListenPortValid(void)
 {
