@@ -1,21 +1,27 @@
 #include "ResponseBodyHandler.hpp"
-#include "AutoindexHandler.hpp"
-#include "FileSystemPolicy.hpp"
-#include "HTTPResponse.hpp"
-#include "StatusCode.hpp"
-#include <exception>
 
+/**
+ * @brief Construct a new ResponseBodyHandler object
+ *
+ * @param response HTTP response.
+ * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ */
 ResponseBodyHandler::ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy)
 	: m_response(response)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
-void ResponseBodyHandler::handleErrorBody()
-{
-	m_response.body = getDefaultErrorPage(m_response.status);
-}
-
+/**
+ * @brief Create the response body.
+ *
+ * Depending on the HTTP Response object status, the body will be created.
+ * If the status is not OK, an error page will be created.
+ * If the status is OK, the body will be created based on the target resource.
+ * If the target resource is a directory, and autoindex is on an autoindex will be created.
+ * If the target resource is a file, the file contents will be read and set as the body.
+ * @todo FIXME: Implement other methods than GET.
+ */
 void ResponseBodyHandler::execute()
 {
 	if (m_response.status != StatusOK) {
@@ -42,4 +48,16 @@ void ResponseBodyHandler::execute()
 			handleErrorBody();
 		}
 	}
+}
+
+/**
+ * @brief Get the error page.
+ *
+ * @param status Status code.
+ * @return std::string Error page.
+ * @todo FIXME: Implement custom error pages.
+ */
+void ResponseBodyHandler::handleErrorBody()
+{
+	m_response.body = getDefaultErrorPage(m_response.status);
 }

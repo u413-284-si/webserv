@@ -2,6 +2,9 @@
 
 #include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
+#include "AutoindexHandler.hpp"
+#include "StatusCode.hpp"
+#include <exception>
 
 class ResponseBodyHandler {
 public:
