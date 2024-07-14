@@ -9,8 +9,7 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 	if (stat(path.c_str(), &fileStat) == -1) {
 		if (errno == ENOENT)
 			return FileNotExist;
-		std::cerr << "error: stat: " << strerror(errno) << "\n";
-		return StatError;
+		throw std::runtime_error(strerror(errno));
 	}
 	if (S_ISREG(fileStat.st_mode))
 		return FileRegular;

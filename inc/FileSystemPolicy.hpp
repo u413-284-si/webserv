@@ -15,7 +15,7 @@ class FileSystemPolicy {
 public:
 	virtual ~FileSystemPolicy();
 
-	enum fileType { StatError = -1, FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
 	virtual bool isExistingFile(const std::string& path) const;
