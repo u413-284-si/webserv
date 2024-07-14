@@ -15,13 +15,6 @@ enum Method { MethodGet,
     MethodCount
 };
 
-struct LimitExcept {
-    std::vector<std::string> validLimitExceptDirectives;
-    bool allowedMethods[MethodCount];
-    std::string allow;
-    std::string deny;
-};
-
 struct Location {
     std::vector<std::string> validLocationDirectives;
     std::string path;
@@ -32,7 +25,7 @@ struct Location {
     bool isAutoindex;
     unsigned long maxBodySize;
     std::map<unsigned short, std::string> errorPage;
-    LimitExcept limitExcept;
+    bool allowedMethods[MethodCount];
     std::map<unsigned short, std::string> returns;
 };
 
