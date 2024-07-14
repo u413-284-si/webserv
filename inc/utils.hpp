@@ -8,7 +8,7 @@ namespace utils {
 const int timeStringBuffer = 80;
 
 std::string getFileExtension(const std::string& path);
-std::string getGMTString(const char* format);
-std::string getLocaltimeString(const char* format);
+std::string getGMTString(time_t now, const char* format);
+std::string getLocaltimeString(time_t now, const char* format);
 
 } // namespace utils

@@ -29,13 +29,12 @@ std::string getFileExtension(const std::string& path)
  * @brief Returns greenwhich meantime string in provided format.
  *
  * Uses strftime() to format the string. Provided format string should adhere this required format.
+ * @param now Time for the string
  * @param format strftime format string
  * @return std::string Timestring in provided format
  */
-std::string getGMTString(const char* format)
+std::string getGMTString(const time_t now, const char* format)
 {
-	const time_t now = time(0);
-
 	char string[utils::timeStringBuffer];
 
 	static_cast<void>(strftime(string, sizeof(string), format, gmtime(&now)));
@@ -46,13 +45,12 @@ std::string getGMTString(const char* format)
  * @brief Returns localtime string in provided format.
  *
  * Uses strftime() to format the string. Provided format string should adhere this required format.
+* @param now Time for the string
  * @param format strftime format string
  * @return std::string Timestring in provided format
  */
-std::string getLocaltimeString(const char* format)
+std::string getLocaltimeString(const time_t now, const char* format)
 {
-	const time_t now = time(0);
-
 	char string[utils::timeStringBuffer];
 
 	static_cast<void>(strftime(string, sizeof(string), format, localtime(&now)));
