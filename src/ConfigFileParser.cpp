@@ -241,15 +241,15 @@ bool ConfigFileParser::isListenIpValid(void)
 
 	const int base = 10;
 	long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
-	long secondOcetet = std::strtol(secondOctetStr.c_str(), NULL, base);
+	long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
 	long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
 	long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
 
 	const short maxIpValue = 255;
 	const short minIpValue = 0;
-	if (firstOctet > maxIpValue || secondOcetet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
+	if (firstOctet > maxIpValue || secondOctet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
 		return false;
-	if (firstOctet < minIpValue || secondOcetet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
+	if (firstOctet < minIpValue || secondOctet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
 		return false;
 
 	m_configFile.servers[m_configFile.serverIndex].listen.insert(std::make_pair(ip, 0));
