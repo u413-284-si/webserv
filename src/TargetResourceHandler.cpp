@@ -1,8 +1,13 @@
 #include "TargetResourceHandler.hpp"
-#include "FileSystemPolicy.hpp"
-#include "HTTPResponse.hpp"
-#include "RequestParser.hpp"
 
+/**
+ * @brief Construct a new TargetResourceHandler object
+ *
+ * @param locations Vector of Location objects of current server block.
+ * @param request Request to handle.
+ * @param response Response to be filled.
+ * @param fileSystemPolicy File system policy to be used.
+ */
 TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locations, const HTTPRequest& request,
 	HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy)
 	: m_locations(locations)
@@ -12,6 +17,22 @@ TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locati
 {
 }
 
+/**
+ * @brief Determine target resource based on the request path and handle different file types and statuses accordingly.
+ *
+ * Finds a matching location block.
+ * If no match is found set Status to StatusNotFound.
+ * Set the targetResource as location.root + request.uri.path and check file type.
+ * RegularFile: break, nothing more to do.
+ * Directory: if no trailing slash, add it and set Status to StatusMovedPermanently.
+ *            if index file is set, add it to the path and set internalRedirect to true.
+ *            if autoindex is set, set autoindex to true.
+ *            else set Status to StatusForbidden.
+ * FileNotExist: set Status to StatusNotFound.
+ * FileOther: set Status to StatusForbidden.
+ * If internalRedirect is true, repeat the process.
+ * If stat fails, set Status to StatusInternalServerError.
+ */
 void TargetResourceHandler::execute()
 {
 	bool internalRedirect = false;
@@ -32,40 +53,51 @@ void TargetResourceHandler::execute()
 		internalRedirect = false;
 
 		// what type is it
-		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(m_response.targetResource);
-		switch (fileType) {
+		try {
+			FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(m_response.targetResource);
 
-		case FileSystemPolicy::FileRegular:
-			break;
+			switch (fileType) {
 
-		case FileSystemPolicy::FileDirectory:
-			if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
-				m_response.targetResource += "/";
-				m_response.status = StatusMovedPermanently;
-			} else if (!m_response.location->index.empty()) {
-				m_response.targetResource += m_response.location->index;
-				internalRedirect = true;
-			} else if (m_response.location->isAutoindex) {
-				m_response.autoindex = true;
-			} else
+			case FileSystemPolicy::FileRegular:
+				break;
+
+			case FileSystemPolicy::FileDirectory:
+				if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
+					m_response.targetResource += "/";
+					m_response.status = StatusMovedPermanently;
+				} else if (!m_response.location->index.empty()) {
+					m_response.targetResource += m_response.location->index;
+					internalRedirect = true;
+				} else if (m_response.location->isAutoindex) {
+					m_response.autoindex = true;
+				} else
+					m_response.status = StatusForbidden;
+				break;
+
+			case FileSystemPolicy::FileNotExist:
+				m_response.status = StatusNotFound;
+				break;
+
+			case FileSystemPolicy::FileOther:
 				m_response.status = StatusForbidden;
-			break;
-
-		case FileSystemPolicy::FileNotExist:
-			m_response.status = StatusNotFound;
-			break;
-
-		case FileSystemPolicy::FileOther:
-			m_response.status = StatusForbidden;
-			break;
-
-		case FileSystemPolicy::StatError:
+				break;
+			}
+		} catch (const std::runtime_error& e) {
+			std::cerr << "Stat error: " << e.what() << std::endl;
 			m_response.status = StatusInternalServerError;
 			break;
 		}
 	} while (internalRedirect);
 }
 
+/**
+ * @brief Iterate through Location objects to find longest matching path based on a given input path.
+ *
+ * The longest matching path is the one that has the most characters in common with the input path.
+ * If no match is found, the function returns an iterator pointing to the end of the vector.
+ * @param path String representing the path to be matched.
+ * @return Constant_iterator to the location that has the longest matching path with input.
+ */
 std::vector<Location>::const_iterator TargetResourceHandler::matchLocation(const std::string& path)
 {
 	std::size_t longestMatch = 0;
