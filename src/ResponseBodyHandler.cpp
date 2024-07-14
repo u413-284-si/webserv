@@ -1,44 +1,45 @@
 #include "ResponseBodyHandler.hpp"
 #include "AutoindexHandler.hpp"
 #include "FileSystemPolicy.hpp"
+#include "HTTPResponse.hpp"
 #include "StatusCode.hpp"
 #include <exception>
 
-ResponseBodyHandler::ResponseBodyHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+ResponseBodyHandler::ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy)
+	: m_response(response)
+	, m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
-void ResponseBodyHandler::handleErrorBody(HTTPResponse& response)
+void ResponseBodyHandler::handleErrorBody()
 {
-	response.body = getDefaultErrorPage(response.status);
+	m_response.body = getDefaultErrorPage(m_response.status);
 }
 
-HTTPResponse ResponseBodyHandler::execute(HTTPResponse& response)
+void ResponseBodyHandler::execute()
 {
-	if (response.autoindex) {
+	if (m_response.autoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
-		response.body = autoindexHandler.execute(response.targetResource);
-		if (response.body.empty()) {
-			response.status = StatusInternalServerError;
-			handleErrorBody(response);
-			return response;
+		m_response.body = autoindexHandler.execute(m_response.targetResource);
+		if (m_response.body.empty()) {
+			m_response.status = StatusInternalServerError;
+			handleErrorBody();
+			return ;
 		}
-		response.status = StatusOK;
-		response.targetResource += "autoindex.html";
-		return response;
+		m_response.status = StatusOK;
+		m_response.targetResource += "autoindex.html";
+		return ;
 	}
-	if (response.status != StatusOK) {
-		handleErrorBody(response);
-		return response;
+	if (m_response.status != StatusOK) {
+		handleErrorBody();
+		return ;
 	}
-	if (response.method == "GET") {
+	if (m_response.method == "GET") {
 		try {
-			response.body = m_fileSystemPolicy.getFileContents(response.targetResource.c_str());
+			m_response.body = m_fileSystemPolicy.getFileContents(m_response.targetResource.c_str());
 		} catch (std::exception& e) {
-			response.status = StatusInternalServerError;
-			handleErrorBody(response);
+			m_response.status = StatusInternalServerError;
+			handleErrorBody();
 		}
 	}
-	return response;
 }

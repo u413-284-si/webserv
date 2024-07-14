@@ -5,11 +5,12 @@
 
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(const FileSystemPolicy& fileSystemPolicy);
-	HTTPResponse execute(HTTPResponse& response);
+	explicit ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());
+	void execute();
 
 private:
-	void handleErrorBody(HTTPResponse& response);
+	void handleErrorBody();
 
+	HTTPResponse& m_response;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };

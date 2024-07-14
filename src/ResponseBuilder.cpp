@@ -74,8 +74,8 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 	TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, m_httpResponse, m_fileSystemPolicy);
 	targetResourceHandler.execute();
 	m_httpResponse.method = "GET";
-	ResponseBodyHandler responseBodyHandler(m_fileSystemPolicy);
-	responseBodyHandler.execute(m_httpResponse);
+	ResponseBodyHandler responseBodyHandler(m_httpResponse, m_fileSystemPolicy);
+	responseBodyHandler.execute();
 
 	appendStatusLine();
 	appendHeaders(m_httpResponse.body.length(), utils::getFileExtension(m_httpResponse.targetResource));
