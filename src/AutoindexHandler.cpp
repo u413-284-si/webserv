@@ -1,18 +1,35 @@
 #include "AutoindexHandler.hpp"
-#include "Directory.hpp"
 
+/**
+ * @brief Construct a new AutoindexHandler object
+ *
+ * @param fileSystemPolicy File system policy object. Can be mocked if needed.
+ */
 AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
+/**
+ * @brief Get the last modified time of a file.
+ *
+ * @param fileStat File stat object.
+ * @return std::string Last modified time.
+ */
 std::string getLastModifiedTime(const struct stat& fileStat)
 {
-	char timeStr[100];
+	const int timeStrSize = 100;
+	char timeStr[timeStrSize];
 	(void)strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", localtime(&fileStat.st_mtime));
 	return std::string(timeStr);
 }
 
+/**
+ * @brief Get the file size of a file.
+ *
+ * @param fileStat File stat object.
+ * @return long File size.
+ */
 long getFileSize(const struct stat& fileStat)
 {
 	if (S_ISDIR(fileStat.st_mode))
@@ -20,6 +37,16 @@ long getFileSize(const struct stat& fileStat)
 	return fileStat.st_size;
 }
 
+/**
+ * @brief Execute the autoindex handler.
+ *
+ * Generates an HTML response with the contents of a directory.
+ * The response contains a table with the file names, last modified time and file size.
+ * The file names are links to the files.
+ * If a function throws, retunes an empty string.
+ * @param path Path to directory.
+ * @return std::string HTML response.
+ */
 std::string AutoindexHandler::execute(const std::string& path)
 {
 	try {

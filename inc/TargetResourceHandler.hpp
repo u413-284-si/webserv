@@ -9,6 +9,10 @@
 #include "RequestParser.hpp"
 #include "StatusCode.hpp"
 
+/**
+ * @brief Class to handle the target resource of a HTTP Request.
+ *
+ */
 class TargetResourceHandler {
 
 public:

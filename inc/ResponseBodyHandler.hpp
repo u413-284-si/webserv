@@ -6,6 +6,10 @@
 #include "StatusCode.hpp"
 #include <exception>
 
+/**
+ * @brief Class to handle the body of a HTTP response.
+ *
+ */
 class ResponseBodyHandler {
 public:
 	explicit ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());

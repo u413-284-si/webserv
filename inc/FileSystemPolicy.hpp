@@ -10,6 +10,12 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+/**
+ * @brief Class for C functions on the file system.
+ *
+ * This class is a wrapper for C functions on the file system.
+ * It is used to make the code more testable.
+ */
 class FileSystemPolicy {
 
 public:

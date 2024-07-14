@@ -5,7 +5,7 @@
 #include "ConfigFile.hpp"
 
 struct HTTPResponse {
-	statusCode status;
+	statusCode status; 
 	std::string	targetResource;
 	std::string body;
 	std::vector<Location>::const_iterator location;

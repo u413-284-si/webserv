@@ -2,11 +2,17 @@
 
 #include "FileSystemPolicy.hpp"
 #include "Directory.hpp"
+#include "utils.hpp"
+
 #include <string>
 #include <vector>
 #include <sstream>
 #include <stdexcept>
 
+/**
+ * @brief Class to handle the autoindex feature.
+ *
+ */
 class AutoindexHandler {
 
 public:

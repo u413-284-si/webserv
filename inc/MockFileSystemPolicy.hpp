@@ -3,6 +3,10 @@
 
 #include "FileSystemPolicy.hpp"
 
+/**
+ * @brief Mock class for FileSystemPolicy.
+ *
+ */
 class MockFileSystemPolicy : public FileSystemPolicy {
 public:
 	MOCK_METHOD(bool, isDirectory, (const std::string&), (const, override));

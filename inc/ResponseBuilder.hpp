@@ -9,6 +9,10 @@
 #include "ResponseBodyHandler.hpp"
 #include "utils.hpp"
 
+/**
+ * @brief Class to build a HTTP response.
+ *
+ */
 class ResponseBuilder {
 public:
 	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());
