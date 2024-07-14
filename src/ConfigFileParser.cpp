@@ -197,7 +197,7 @@ bool ConfigFileParser::isSemicolonAtEnd(void) const
 /**
  * @brief Checks if the provided ip address of the listen directive is valid
  * 
- * Because the listen directive can contain only an ip address, only a port or can contain both is must be validated if a colon is present.
+ * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if a colon is present.
  * If no colon is present, the port or the ip address must be valid.
  *
  * The function makes sure that the ip address is valid in the following ways:
