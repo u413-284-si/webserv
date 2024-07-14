@@ -19,7 +19,7 @@ struct Location {
     std::vector<std::string> validLocationDirectives;
     std::string path;
     std::string root;
-    std::string index;
+	std::vector<std::string> indices;
     std::string cgiExt;
     std::string cgiPath;
     bool isAutoindex;
