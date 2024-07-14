@@ -2,6 +2,15 @@
 
 namespace utils {
 
+/**
+ * @brief Get file extension of file in provided path
+ *
+ * File is identified by last '/' delimiter in path.
+ * Extension is identified by last '.' in File.
+ * Extension is returned without '.'
+ * @param path Path to file
+ * @return std::string Extension without leading '.'
+ */
 std::string getFileExtension(const std::string& path)
 {
 	const std::size_t extPos = path.find_last_of('.');
@@ -16,6 +25,13 @@ std::string getFileExtension(const std::string& path)
 	return "";
 }
 
+/**
+ * @brief Returns greenwhich meantime string in provided format.
+ *
+ * Uses strftime() to format the string. Provided format string should adhere this required format.
+ * @param format strftime format string
+ * @return std::string Timestring in provided format
+ */
 std::string getGMTString(const char* format)
 {
 	const time_t now = time(0);
@@ -26,6 +42,13 @@ std::string getGMTString(const char* format)
 	return string;
 }
 
+/**
+ * @brief Returns localtime string in provided format.
+ *
+ * Uses strftime() to format the string. Provided format string should adhere this required format.
+ * @param format strftime format string
+ * @return std::string Timestring in provided format
+ */
 std::string getLocaltimeString(const char* format)
 {
 	const time_t now = time(0);
