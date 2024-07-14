@@ -129,7 +129,7 @@ void ResponseBuilder::appendHeaders(const HTTPResponse& response)
 	// Server
 	m_response << "Server: TriHard\r\n";
 	// Date
-	m_response << "Date: " << utils::getGMTString("%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	m_response << "Date: " << utils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	if (response.status == StatusMovedPermanently) {
 		m_response << "Location: " << response.targetResource << "\r\n";

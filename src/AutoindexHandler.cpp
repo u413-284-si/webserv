@@ -1,4 +1,5 @@
 #include "AutoindexHandler.hpp"
+#include "utils.hpp"
 
 /**
  * @brief Construct a new AutoindexHandler object
@@ -18,10 +19,7 @@ AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
  */
 std::string getLastModifiedTime(const struct stat& fileStat)
 {
-	const int timeStrSize = 100;
-	char timeStr[timeStrSize];
-	(void)strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", localtime(&fileStat.st_mtime));
-	return std::string(timeStr);
+	return utils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
 }
 
 /**
