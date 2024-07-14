@@ -59,5 +59,5 @@ void ResponseBodyHandler::execute()
  */
 void ResponseBodyHandler::handleErrorBody()
 {
-	m_response.body = getDefaultErrorPage(m_response.status);
+	m_response.body = utils::getDefaultErrorPage(m_response.status);
 }

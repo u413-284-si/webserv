@@ -105,7 +105,7 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
  */
 void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 {
-	m_response << "HTTP/1.1 " << response.status << ' ' << statusCodeToReasonPhrase(response.status) << "\r\n";
+	m_response << "HTTP/1.1 " << response.status << ' ' << utils::statusCodeToReasonPhrase(response.status) << "\r\n";
 }
 
 /**

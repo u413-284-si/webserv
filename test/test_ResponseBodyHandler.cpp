@@ -54,7 +54,7 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 
 	m_response.status = StatusOK;
-	
+
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 }
@@ -66,7 +66,7 @@ TEST_F(ResponseBodyHandlerTest, ErrorPage)
 	m_response.autoindex = false;
 
 	m_responseBodyHandler.execute();
-	EXPECT_EQ(m_response.body, getDefaultErrorPage(m_response.status));
+	EXPECT_EQ(m_response.body, utils::getDefaultErrorPage(m_response.status));
 }
 
 TEST_F(ResponseBodyHandlerTest, FileNotOpened)
@@ -81,7 +81,7 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
-	EXPECT_EQ(m_response.body, getDefaultErrorPage(m_response.status));
+	EXPECT_EQ(m_response.body, utils::getDefaultErrorPage(m_response.status));
 }
 
 TEST_F(ResponseBodyHandlerTest, FileFound)

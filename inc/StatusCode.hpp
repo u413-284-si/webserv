@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 enum statusCode {
 		StatusOK = 200,
 		StatusMovedPermanently = 301,
@@ -11,6 +9,3 @@ enum statusCode {
 		StatusMethodNotAllowed = 405,
 		StatusInternalServerError = 500
 };
-
-std::string statusCodeToReasonPhrase(statusCode status);
-std::string getDefaultErrorPage(statusCode status);
