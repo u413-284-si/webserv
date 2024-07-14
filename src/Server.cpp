@@ -201,6 +201,7 @@ void Server::handleConnections(int clientSock)
 		// Connection closed by client
 		close(clientSock);
 	} else {
+		// Temp for testing until other classes are implemented
 		Location location;
 		location.path = "/";
 		location.root = "/workspaces/webserv";
