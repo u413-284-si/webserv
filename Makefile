@@ -238,15 +238,14 @@ $(DEPFILES):
 .PHONY: clean
 clean:
 	@printf "$(YELLOW)$(BOLD)clean$(RESET) [$(BLUE)$@$(RESET)]\n"
-	@rm -rf $(OBJ_DIR) $(TEST_DIR)/*.o
+	@rm -rf $(OBJ_DIR)
 	@printf "$(RED)removed dir $(OBJ_DIR)$(RESET)\n"
-	@printf "$(RED)removed *.o in dir $(TEST_DIR)$(RESET)\n"
 
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
 fclean: clean
-	@rm -rf $(NAME)*
-	@printf "$(RED)removed binaries $(NAME)*$(RESET)\n"
+	@rm -rf $(NAME) $(TEST)
+	@printf "$(RED)removed binaries $(NAME) $(TEST) $(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@echo
