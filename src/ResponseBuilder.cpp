@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include "HTTPResponse.hpp"
 #include "ResponseBodyHandler.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
@@ -40,18 +41,17 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 	return m_mimeTypes.at("default");
 }
 
-void ResponseBuilder::appendStatusLine()
+void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 {
-	m_response << "HTTP/1.1 " << m_httpResponse.status << ' ' << statusCodeToReasonPhrase(m_httpResponse.status)
-			   << "\r\n";
+	m_response << "HTTP/1.1 " << response.status << ' ' << statusCodeToReasonPhrase(response.status) << "\r\n";
 }
 
-void ResponseBuilder::appendHeaders(const std::size_t length, const std::string& extension)
+void ResponseBuilder::appendHeaders(const HTTPResponse& response)
 {
 	// Content-Type
-	m_response << "Content-Type: " << getMIMEType(extension) << "\r\n";
+	m_response << "Content-Type: " << getMIMEType(utils::getFileExtension(response.targetResource)) << "\r\n";
 	// Content-Length
-	m_response << "Content-Length: " << length << "\r\n";
+	m_response << "Content-Length: " << response.body.length() << "\r\n";
 	// Server
 	m_response << "Server: SGC-Node\r\n";
 	// Date
@@ -61,25 +61,37 @@ void ResponseBuilder::appendHeaders(const std::size_t length, const std::string&
 	(void)strftime(date, sizeof(date), "%a, %d %b %Y %H:%M:%S %Z", &time);
 	m_response << "Date: " << date << "\r\n";
 	// Location
-	if (m_httpResponse.status == StatusMovedPermanently) {
-		m_response << "Location: " << m_httpResponse.status << "\r\n";
+	if (response.status == StatusMovedPermanently) {
+		m_response << "Location: " << response.targetResource << "\r\n";
 	}
 	// Delimiter
 	m_response << "\r\n";
 }
 
+HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
+{
+	HTTPResponse response;
+
+	response.status = StatusOK;
+	response.method = request.method;
+	response.autoindex = false;
+
+	return response;
+}
+
 void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
-	// m_httpResponse = request.status;
-	TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, m_httpResponse, m_fileSystemPolicy);
+	HTTPResponse response = initHTTPResponse(request);
+
+	TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
 	targetResourceHandler.execute();
-	m_httpResponse.method = "GET";
-	ResponseBodyHandler responseBodyHandler(m_httpResponse, m_fileSystemPolicy);
+
+	ResponseBodyHandler responseBodyHandler(response, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
-	appendStatusLine();
-	appendHeaders(m_httpResponse.body.length(), utils::getFileExtension(m_httpResponse.targetResource));
-	m_response << m_httpResponse.body << "\r\n";
+	appendStatusLine(response);
+	appendHeaders(response);
+	m_response << response.body << "\r\n";
 }
 
 std::string ResponseBuilder::getResponse() const { return m_response.str(); }

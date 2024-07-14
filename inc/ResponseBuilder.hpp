@@ -17,10 +17,11 @@ public:
 	std::string getResponse() const;
 
 private:
-	void appendStatusLine();
-	void appendHeaders(std::size_t length, const std::string& extension);
+	void appendStatusLine(const HTTPResponse& response);
+	void appendHeaders(const HTTPResponse& response);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
+	static HTTPResponse initHTTPResponse(const HTTPRequest& request);
 
 	void setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer);
 
@@ -29,5 +30,4 @@ private:
 	const ConfigFile& m_configFile;
 	std::vector<ServerConfig>::const_iterator m_activeServer;
 	const FileSystemPolicy& m_fileSystemPolicy;
-	HTTPResponse m_httpResponse;
 };
