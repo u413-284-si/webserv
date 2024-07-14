@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 		std::cerr << argv[0] << " <config file>\n";
 		return 1;
 	}
-	(void)argv;
+	static_cast<void>(argv);
 	weblog::initConsole(weblog::LevelDebug);
 	try{
 		Server	webserv;

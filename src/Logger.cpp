@@ -22,7 +22,7 @@ Logger::Logger()
 Logger::Logger(const Logger& ref)
 	: m_logLevel(ref.getLevel())
 {
-	(void)ref;
+	static_cast<void>(ref);
 }
 
 /**
