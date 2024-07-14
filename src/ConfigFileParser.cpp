@@ -7,6 +7,13 @@ ConfigFileParser::~ConfigFileParser() { }
 /**
  * @brief Parses the config file into a ConfigFile object and returns this object
  * 
+ * The function checks also if the config file:
+ * 1. Can be opened
+ * 2. Is not empty
+ * 3. Does not contain open brackets
+ * 4. Starts with 'http {'
+ * 5. Contains minimum one server
+ *
  * @param configFilePath Path to the config file 
  * @return const ConfigFile& Created ConfigFile object
  */
