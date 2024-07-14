@@ -18,6 +18,10 @@ void ResponseBodyHandler::handleErrorBody()
 
 void ResponseBodyHandler::execute()
 {
+	if (m_response.status != StatusOK) {
+		handleErrorBody();
+		return ;
+	}
 	if (m_response.autoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_response.body = autoindexHandler.execute(m_response.targetResource);
@@ -28,10 +32,6 @@ void ResponseBodyHandler::execute()
 		}
 		m_response.status = StatusOK;
 		m_response.targetResource += "autoindex.html";
-		return ;
-	}
-	if (m_response.status != StatusOK) {
-		handleErrorBody();
 		return ;
 	}
 	if (m_response.method == "GET") {
