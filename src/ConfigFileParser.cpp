@@ -74,7 +74,7 @@ void ConfigFileParser::initializeLocation(Location &location)
 
 	location.path = "";
 	location.root = "html";
-	location.index = "index.html";
+	location.indices = std::vector<std::string>();
 	location.cgiExt = "";
 	location.cgiPath = "";
 	location.isAutoindex = false;
