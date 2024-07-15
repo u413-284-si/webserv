@@ -1,14 +1,34 @@
 #include "gtest/gtest.h"
 #include "RequestParser.hpp"
 
-TEST(RequestParser, ValidBody) {
+TEST(RequestParser, ValidChunkedBody) {
 	RequestParser	p;
 	HTTPRequest		request;
 
 	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n");
-
 	EXPECT_EQ(request.body, "hello world!");
 }
+
+TEST(RequestParser, ValidBodyTrigger) {
+	RequestParser	p;
+	HTTPRequest		request;
+
+	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n");
+	EXPECT_EQ(request.body, "");
+}
+
+TEST(RequestParser, ValidNonChunkedBody) {
+	RequestParser	p;
+	HTTPRequest		request;
+
+	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello \r\nworld!");
+	EXPECT_EQ(request.body, "hello \nworld!");
+	p.clearRequest();
+	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n");
+	EXPECT_EQ(request.body, "hello \nworld!\n");
+}
+
+// PREVIOUS TEST CODE
 
 // void	runBodyTests(const std::string& name
 // 		, size_t total
