@@ -83,7 +83,6 @@ SRC:=	main.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
-		StatusCode.cpp \
 		TargetResourceHandler.cpp \
 		utils.cpp
 
