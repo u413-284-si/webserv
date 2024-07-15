@@ -52,7 +52,7 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 
 	HTTPResponse response = initHTTPResponse(request);
 
-	if (response.status != StatusOK) {
+	if (response.status == StatusOK) {
 		TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
 		targetResourceHandler.execute();
 	}
