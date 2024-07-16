@@ -1,5 +1,6 @@
 #include "RequestParser.hpp"
 #include "error.hpp"
+#include <stdexcept>
 
 /* ====== HELPER FUNCTIONS ====== */
 
@@ -464,7 +465,10 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
 	if (!isdigit(requestLine[i])) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
-	}
+	} else if (requestLine[i] != '1') {
+        m_errorCode = 505;
+        throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
+    }
 	m_request.version.push_back(requestLine[i]);
 	if (requestLine[++i] != '.') {
 		m_errorCode = 400;
@@ -474,7 +478,10 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
 	if (!isdigit(requestLine[++i])) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
-	}
+	} else if (requestLine[i] != '1') {
+        m_errorCode = 505;
+        throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
+    }
 	m_request.version.push_back(requestLine[i]);
 	return (requestLine.substr(++i));
 }

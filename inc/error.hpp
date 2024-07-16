@@ -14,6 +14,7 @@
 #define ERR_INVALID_VERSION_MAJOR "Invalid HTTP request: invalid version major"
 #define ERR_INVALID_VERSION_DELIM "Invalid HTTP request: invalid version delimiter"
 #define ERR_INVALID_VERSION_MINOR "Invalid HTTP request: invalid version minor"
+#define ERR_NONSUPPORTED_VERSION "Invalid HTTP request: version not supported"
 
 // HTTP REQUEST HEADER ERRORS
 #define ERR_HEADER_COLON_WHITESPACE "Invalid HTTP request: Whitespace between header field-name and colon detected"
