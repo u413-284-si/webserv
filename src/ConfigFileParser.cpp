@@ -43,7 +43,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		}
 	}
 	if (m_configFile.servers.empty())
-		throw std::runtime_error("No servers in config file");
+		throw std::runtime_error("No server(s) in config file");
 	
 	return m_configFile;
 }
