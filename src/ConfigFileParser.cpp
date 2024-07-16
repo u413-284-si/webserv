@@ -19,10 +19,10 @@ ConfigFileParser::~ConfigFileParser() { }
  */
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
-	 m_configFile.stream.open(configFilePath.c_str());
-	if (!m_configFile.stream)
+	m_configFile.stream.open(configFilePath.c_str());
+	if (!m_configFile.stream.is_open())
 		throw std::runtime_error("Failed to open config file");
-	else if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
+	if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
 		throw std::runtime_error("Config file is empty");
 
     if (isBracketOpen(configFilePath))
