@@ -1,7 +1,9 @@
 #include "gtest/gtest.h"
 #include "RequestParser.hpp"
 
-TEST(RequestParser, ValidChunkedBody) {
+// VALID BODY TEST SUITE
+
+TEST(RequestParser_ValidBody, ChunkedBody) {
 	RequestParser	p;
 	HTTPRequest		request;
 
@@ -9,7 +11,7 @@ TEST(RequestParser, ValidChunkedBody) {
 	EXPECT_EQ(request.body, "hello world!");
 }
 
-TEST(RequestParser, ValidBodyTrigger) {
+TEST(RequestParser_ValidBody, NoBodyTrigger) {
 	RequestParser	p;
 	HTTPRequest		request;
 
@@ -17,7 +19,7 @@ TEST(RequestParser, ValidBodyTrigger) {
 	EXPECT_EQ(request.body, "");
 }
 
-TEST(RequestParser, ValidNonChunkedBody) {
+TEST(RequestParser_ValidBody, NonChunkedBody) {
 	RequestParser	p;
 	HTTPRequest		request;
 
@@ -26,6 +28,60 @@ TEST(RequestParser, ValidNonChunkedBody) {
 	p.clearRequest();
 	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n");
 	EXPECT_EQ(request.body, "hello \nworld!\n");
+}
+
+// INVALID BODY TEST SUITE
+
+TEST(RequestParser_NonValidBody, DifferingChunkSize) {
+	RequestParser	p;
+
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n"), std::runtime_error);
+    p.clearRequest();
+    try{
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n");
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(RequestParser_NonValidBody, DifferingContentLength) {
+	RequestParser	p;
+
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n"), std::runtime_error);
+    p.clearRequest();
+    try{
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n");
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(RequestParser_NonValidBody, MissingCRLFInChunk) {
+	RequestParser	p;
+
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n"), std::runtime_error);
+    p.clearRequest();
+    try{
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n");
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(RequestParser_NonValidBody, MissingCRInChunk) {
+	RequestParser	p;
+
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n"), std::runtime_error);
+    p.clearRequest();
+    try{
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n");
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 // PREVIOUS TEST CODE
