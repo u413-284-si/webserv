@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/07/12 17:35:02 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/16 02:19:24 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,8 @@ SRC:= 	main.cpp \
 # ******************************
 
 TEST_SRC :=	testBody.cpp \
-			testHeader.cpp
+			testHeader.cpp \
+			testRequestLine.cpp
 
 # ******************************
 # *     Object files           *
