@@ -12,6 +12,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		cppcheck \
 		doxygen \
 		libgtest-dev \
+		libgmock-dev \
 		clangd \
 		bear
 
