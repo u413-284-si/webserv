@@ -31,12 +31,12 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_POST) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("POST /abracadabra/ipsum?user=aziz&key=password HTTP/2.0\r\n\r\n");
+	request = p.parseHttpRequest("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\n\r\n");
 	EXPECT_EQ(request.method, "POST");
     EXPECT_EQ(request.uri.path , "/abracadabra/ipsum");
     EXPECT_EQ(request.uri.query , "user=aziz&key=password");
     EXPECT_EQ(request.uri.fragment , "");
-    EXPECT_EQ(request.version , "2.0");
+    EXPECT_EQ(request.version , "1.1");
 }
 
 TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoQuery) {
@@ -63,7 +63,19 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoFragment) {
     EXPECT_EQ(request.version , "1.1");
 }
 
-// VALID REQUEST LINE TEST SUITE
+TEST(RequestParser_ValidRequestLine, Version1_0) {
+	RequestParser	p;
+	HTTPRequest		request;
+
+	request = p.parseHttpRequest("GET /search?# HTTP/1.0\r\n\r\n");
+	EXPECT_EQ(request.method, "GET");
+    EXPECT_EQ(request.uri.path , "/search");
+    EXPECT_EQ(request.uri.query , "");
+    EXPECT_EQ(request.uri.fragment , "");
+    EXPECT_EQ(request.version , "1.0");
+}
+
+// INVALID REQUEST LINE TEST SUITE
 
 TEST(RequestParser_NonValidRequestLine, NotImplementedMethod) {
 	RequestParser	p;
@@ -228,6 +240,32 @@ TEST(RequestParser_NonValidRequestLine, Version_InvalidMinor) {
     p.clearRequest();
     try{
         p.parseHttpRequest("GET /search.html HTTP/1.x\r\n");
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMajor) {
+	RequestParser	p;
+
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/2.0\r\n"), std::runtime_error);
+    p.clearRequest();
+    try{
+        p.parseHttpRequest("GET /search.html HTTP/2.0\r\n");
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMinor) {
+	RequestParser	p;
+
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/1.3\r\n"), std::runtime_error);
+    p.clearRequest();
+    try{
+        p.parseHttpRequest("GET /search.html HTTP/1.3\r\n");
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
