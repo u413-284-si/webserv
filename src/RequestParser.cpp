@@ -478,7 +478,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
 	if (!isdigit(requestLine[++i])) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
-	} else if (requestLine[i] != '1') {
+	} else if (requestLine[i] != '1' && requestLine[i] != '0') {
         m_errorCode = 505;
         throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
     }
