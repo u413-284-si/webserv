@@ -85,7 +85,8 @@ SRC:= 	main.cpp \
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	testBody.cpp
+TEST_SRC :=	testBody.cpp \
+			testHeader.cpp
 
 # ******************************
 # *     Object files           *
