@@ -8,13 +8,11 @@ int main(int argc, char** argv)
 		std::cerr << argv[0] << " <config file>\n";
 		return 1;
 	}
-	(void)argv;
 	try{
 		Server	webserv;
 		ConfigFileParser configFileParser;
 
 		configFileParser.parseConfigFile(argv[1]);
-
 		webserv.run();
 	}
 	catch (std::exception& e){
