@@ -8,11 +8,10 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	(void)argv;
-	try{
-		Server	webserv;
+	try {
+		Server webserv;
 		webserv.run();
-	}
-	catch (std::exception& e){
+	} catch (std::exception& e) {
 		std::cerr << "error: " << e.what() << std::endl;
 		return 1;
 	}

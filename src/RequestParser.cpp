@@ -203,17 +203,17 @@ void RequestParser::clearRequest(HTTPRequest& request)
 	request.uri.query = "";
 	request.version = "";
 	request.headers.clear();
-    request.body = "";
-    request.errorCode = 0;
-    request.shallCloseConnection = false;
+	request.body = "";
+	request.errorCode = 0;
+	request.shallCloseConnection = false;
 }
 
 void RequestParser::clearParser()
 {
-    m_hasBody = false;
-    m_chunked = false;
-    m_requestStream.clear();
-    m_requestStream.str("");
+	m_hasBody = false;
+	m_chunked = false;
+	m_requestStream.clear();
+	m_requestStream.str("");
 }
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -269,14 +269,15 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 		}
 		std::string headerName;
 		std::string headerValue;
-        std::size_t delimiterPos = headerLine.find_first_of(':');
+		std::size_t delimiterPos = headerLine.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
-            headerName = headerLine.substr(0, delimiterPos);
+			headerName = headerLine.substr(0, delimiterPos);
 			checkHeaderName(headerName, request);
-			headerValue = headerLine.substr(delimiterPos + 1);;
+			headerValue = headerLine.substr(delimiterPos + 1);
+			;
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
-            headerValue = webutils::trimLeadingWhitespaces(headerValue);
+			headerValue = webutils::trimLeadingWhitespaces(headerValue);
 			headerValue = webutils::trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
@@ -316,17 +317,14 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
 
 	if (requestLine.compare(0, 3, "GET") == 0) {
 		request.method = MethodGet;
-        i = 3;
-    }
-	else if (requestLine.compare(0, 4, "POST") == 0) {
+		i = 3;
+	} else if (requestLine.compare(0, 4, "POST") == 0) {
 		request.method = MethodPost;
-        i = 4;
-    }
-	else if (requestLine.compare(0, 6, "DELETE") == 0) {
+		i = 4;
+	} else if (requestLine.compare(0, 6, "DELETE") == 0) {
 		request.method = MethodDelete;
-        i = 6;
-    }
-	else {
+		i = 6;
+	} else {
 		request.errorCode = 501;
 		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);
 	}
@@ -358,12 +356,12 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
 
-    // Check URI string for invalid chars
-    std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
-    if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos) {
-        request.errorCode = 400;
-        throw std::runtime_error(ERR_URI_INVALID_CHAR);
-    }
+	// Check URI string for invalid chars
+	std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
+	if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos) {
+		request.errorCode = 400;
+		throw std::runtime_error(ERR_URI_INVALID_CHAR);
+	}
 
 	request.uri.path.push_back(requestLine[i]);
 	while (requestLine.at(++i)) {
@@ -467,9 +465,9 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		request.errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
 	} else if (requestLine[i] != '1') {
-        request.errorCode = 505;
-        throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
-    }
+		request.errorCode = 505;
+		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
+	}
 	request.version.push_back(requestLine[i]);
 	if (requestLine[++i] != '.') {
 		request.errorCode = 400;
@@ -480,9 +478,9 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		request.errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
 	} else if (requestLine[i] != '1' && requestLine[i] != '0') {
-        request.errorCode = 505;
-        throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
-    }
+		request.errorCode = 505;
+		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
+	}
 	request.version.push_back(requestLine[i]);
 	return (requestLine.substr(++i));
 }
@@ -688,7 +686,7 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 			std::vector<std::string> encodings = webutils::split(request.headers.at("Transfer-Encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
 				request.errorCode = 400;
-                request.shallCloseConnection = true;
+				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
 			}
 			m_chunked = true;
