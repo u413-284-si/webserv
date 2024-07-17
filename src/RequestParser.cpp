@@ -195,6 +195,17 @@ size_t RequestParser::convertHex(const std::string& chunkSize) const
 	return value;
 }
 
+/**
+ * @brief Clears the contents of the given HTTPRequest object.
+ *
+ * This function resets all the fields of the provided HTTPRequest object
+ * to their default states. It sets the HTTP method to `MethodCount`,
+ * clears the URI fragment, path, and query, sets the version to an
+ * empty string, clears the headers and body, sets the error code to 0,
+ * and indicates that the connection should not be closed.
+ *
+ * @param request The HTTPRequest object to be cleared.
+ */
 void RequestParser::clearRequest(HTTPRequest& request)
 {
 	request.method = MethodCount;
@@ -208,6 +219,13 @@ void RequestParser::clearRequest(HTTPRequest& request)
 	request.shallCloseConnection = false;
 }
 
+/**
+ * @brief Clears the internal state of the RequestParser object.
+ *
+ * This function resets the internal state of the RequestParser by
+ * setting the flags `m_hasBody` and `m_chunked` to `false`, and
+ * clearing the contents of the `m_requestStream` stringstream.
+ */
 void RequestParser::clearParser()
 {
 	m_hasBody = false;
