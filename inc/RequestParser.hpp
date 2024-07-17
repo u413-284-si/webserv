@@ -20,13 +20,13 @@ public:
 	RequestParser();
 
 	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
-    void clearRequest(HTTPRequest& request);
-    void clearParser();
+	void clearRequest(HTTPRequest& request);
+	void clearParser();
 
 private:
-    bool m_hasBody;
+	bool m_hasBody;
 	bool m_chunked;
-    std::istringstream m_requestStream;
+	std::istringstream m_requestStream;
 
 	std::string parseMethod(const std::string& requestLine, HTTPRequest& request);
 	std::string parseUri(const std::string& requestLine, HTTPRequest& request);

@@ -8,7 +8,7 @@
 
 /* ====== DEFINITIONS ====== */
 
-enum Method {MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3};
+enum Method { MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3 };
 
 struct URI {
 	std::string path;
@@ -22,6 +22,6 @@ struct HTTPRequest {
 	std::string version;
 	std::map<std::string, std::string> headers;
 	std::string body;
-    unsigned int    errorCode;
-    bool shallCloseConnection;
+	unsigned int errorCode;
+	bool shallCloseConnection;
 };
