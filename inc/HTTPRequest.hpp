@@ -20,6 +20,4 @@ struct HTTPRequest {
 	std::string version;
 	std::map<std::string, std::string> headers;
 	std::string body;
-	bool hasBody;
-	bool chunked;
 };

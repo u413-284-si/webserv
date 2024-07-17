@@ -13,7 +13,7 @@
 
 /* ====== DEFINITIONS ====== */
 
-enum Method { MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3};
+enum Method {MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3};
 
 /* ====== CLASS DECLARATION ====== */
 
@@ -32,6 +32,8 @@ private:
 	int m_errorCode;
 	Method m_requestMethod;
 	HTTPRequest m_request;
+    bool m_hasBody;
+	bool m_chunked;
 
 	std::string parseMethod(const std::string& requestLine);
 	std::string parseUri(const std::string& requestLine);

@@ -196,8 +196,6 @@ size_t RequestParser::convertHex(const std::string& chunkSize) const
 void RequestParser::clearRequest()
 {
 	m_request.body = "";
-	m_request.chunked = false;
-	m_request.hasBody = false;
 	m_request.method = "";
 	m_request.uri.fragment = "";
 	m_request.uri.path = "";
@@ -212,8 +210,8 @@ RequestParser::RequestParser()
 	: m_errorCode(0)
 	, m_requestMethod(MethodCount)
 {
-	m_request.hasBody = false;
-	m_request.chunked = false;
+	m_hasBody = false;
+	m_chunked = false;
 }
 
 /* ====== GETTER FUNCTIONS ====== */
@@ -301,8 +299,8 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 	}
 
 	// Step 3: Parse body (if any)
-	if (m_request.hasBody) {
-		if (m_request.chunked)
+	if (m_hasBody) {
+		if (m_chunked)
 			parseChunkedBody(requestStream);
 		else
 			parseNonChunkedBody(requestStream);
@@ -656,7 +654,7 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 			}
 		}
-		m_request.hasBody = true;
+		m_hasBody = true;
 		headerValue = strValues[0];
 	}
 }
@@ -688,8 +686,8 @@ void RequestParser::checkTransferEncoding()
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
 			}
-			m_request.chunked = true;
-			m_request.hasBody = true;
+			m_chunked = true;
+			m_hasBody = true;
 		}
 	}
 }
