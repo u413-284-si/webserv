@@ -217,6 +217,7 @@ bool ConfigFileParser::isSemicolonAtEnd(void) const
  * 2. The number of dots must be 3
  * 3. The numbers within the ip address can not be smaller than 0 or greater than 255
  *
+ * @param ip The ip address to check
  * @return true If the ip address is valid
  * @return false If the ip address is not valid
  */
@@ -294,6 +295,7 @@ void ConfigFileParser::readIpAddress(void)
  * 1. The port must not contain a character other than '0'-'9'
  * 2. The value of the port must be between 1-65535
  *
+ * @param port The port to be checked
  * @return true If the port is valid
  * @return false If the port is invalid
  */
