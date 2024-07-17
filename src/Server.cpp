@@ -194,6 +194,10 @@ void    Server::handleConnections(int clientSock, RequestParser& parser){
      // Handle client data
         char buffer[BUFFER_SIZE];
         HTTPRequest request;
+
+        request.method = MethodCount;
+        request.errorCode = 0;
+        request.shallCloseConnection = false;
         int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
         if (bytesRead < 0) {
 			std::cerr << "error: read\n";
