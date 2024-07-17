@@ -196,7 +196,7 @@ size_t RequestParser::convertHex(const std::string& chunkSize) const
 void RequestParser::clearRequest(HTTPRequest& request)
 {
 	request.body = "";
-	request.method = "";
+	request.method = MethodCount;
 	request.uri.fragment = "";
 	request.uri.path = "";
 	request.uri.query = "";
@@ -207,7 +207,6 @@ void RequestParser::clearRequest(HTTPRequest& request)
 void RequestParser::clearParser()
 {
     m_errorCode = 0;
-    m_requestMethod = MethodCount;
     m_hasBody = false;
     m_chunked = false;
     m_requestStream.clear();
@@ -218,7 +217,6 @@ void RequestParser::clearParser()
 
 RequestParser::RequestParser()
 	: m_errorCode(0)
-	, m_requestMethod(MethodCount)
 {
 	m_hasBody = false;
 	m_chunked = false;
@@ -235,16 +233,6 @@ RequestParser::RequestParser()
  * @return The current error code as an integer.
  */
 int RequestParser::getErrorCode() const { return m_errorCode; }
-
-/**
- * @brief Retrieves the bit flag representing the HTTP request method.
- *
- * This function returns the Method stored in the `RequestParser` object that represents the HTTP request method.
- * The Method is set during the parsing process based on the method type (e.g., GET, POST, DELETE).
- *
- * @return The Method corresponding to the HTTP request method.
- */
-Method RequestParser::getRequestMethod() const { return m_requestMethod; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -332,16 +320,20 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
  */
 std::string RequestParser::parseMethod(const std::string& requestLine, HTTPRequest& request)
 {
-	int i = -1;
-	while (isalpha(requestLine[++i]))
-		request.method.push_back(requestLine[i]);
+	int i = 0;
 
-	if (request.method == "GET")
-		m_requestMethod = MethodGet;
-	else if (request.method == "POST")
-		m_requestMethod = MethodPost;
-	else if (request.method == "DELETE")
-		m_requestMethod = MethodDelete;
+	if (requestLine.compare(0, 3, "GET") == 0) {
+		request.method = MethodGet;
+        i = 3;
+    }
+	else if (requestLine.compare(0, 4, "POST") == 0) {
+		request.method = MethodPost;
+        i = 4;
+    }
+	else if (requestLine.compare(0, 6, "DELETE") == 0) {
+		request.method = MethodDelete;
+        i = 6;
+    }
 	else {
 		m_errorCode = 501;
 		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);

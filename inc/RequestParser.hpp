@@ -13,8 +13,6 @@
 
 /* ====== DEFINITIONS ====== */
 
-enum Method {MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3};
-
 /* ====== CLASS DECLARATION ====== */
 
 class RequestParser {
@@ -27,11 +25,9 @@ public:
 
 	// Getter functions
 	int getErrorCode() const;
-	Method getRequestMethod() const;
 
 private:
 	int m_errorCode;
-	Method m_requestMethod;
     bool m_hasBody;
 	bool m_chunked;
     std::istringstream m_requestStream;
