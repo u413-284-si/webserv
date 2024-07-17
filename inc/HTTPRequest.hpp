@@ -8,6 +8,8 @@
 
 /* ====== DEFINITIONS ====== */
 
+enum Method {MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3};
+
 struct URI {
 	std::string path;
 	std::string query;
@@ -15,7 +17,7 @@ struct URI {
 };
 
 struct HTTPRequest {
-	std::string method;
+	Method method;
 	URI uri;
 	std::string version;
 	std::map<std::string, std::string> headers;
