@@ -358,10 +358,6 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 	{
 		readPort();
 		readIpAddress();
-		// if (!isIpValid())
-		// 	throw std::runtime_error("Invalid ip address");
-		// if (!isPortValid())
-		// 	throw std::runtime_error("Invalid port");
 	}
 }
 
