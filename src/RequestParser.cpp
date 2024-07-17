@@ -374,7 +374,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
         m_errorCode = 400;
         throw std::runtime_error(ERR_URI_INVALID_CHAR);
     }
-    
+
 	request.uri.path.push_back(requestLine[i]);
 	while (requestLine.at(++i)) {
 		if (requestLine.at(i) == ' ')
@@ -652,10 +652,10 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
 		}
 
 		std::vector<std::string> strValues = split(headerValue, ',');
-		std::vector<double> numValues;
+		std::vector<long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr;
-			double contentLength = strtod(strValues[i].c_str(), &endptr);
+			long contentLength = strtol(strValues[i].c_str(), &endptr, 10);
 			if (!contentLength || *endptr != '\0') {
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
