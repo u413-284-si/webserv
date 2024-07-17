@@ -1,6 +1,6 @@
 #include "utilities.hpp"
 
-std::string webutils::trimLeadingWhitespaces(const std::string& str) {
+std::string webutils::trimLeadingWhitespaces(const std::string &str) {
     std::string::const_iterator it = str.begin();
 
     // Find the first character that is not a whitespace
@@ -22,15 +22,18 @@ std::string webutils::trimTrailingWhiteSpaces(const std::string &str)
     return s;
 }
 
-std::vector<std::string>	webutils::split(const std::string &str, char delimiter)
+std::vector<std::string>	webutils::split(const std::string &str, const std::string &delimiter)
 {
-    std::vector<std::string>	tokens;
-    std::stringstream			ss(str);
-    std::string					token;
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::string token;
+    std::vector<std::string> res;
 
-    while (std::getline(ss >> std::ws, token, delimiter)) {
-		token = trimTrailingWhiteSpaces(token);
-        tokens.push_back(token);
+    while ((pos_end = str.find(delimiter, pos_start)) != std::string::npos) {
+        token = str.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back(token);
     }
-    return tokens;
+
+    res.push_back(str.substr(pos_start));
+    return res;
 }
