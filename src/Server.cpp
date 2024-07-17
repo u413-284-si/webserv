@@ -192,8 +192,9 @@ void    Server::acceptConnection(){
  */
 void    Server::handleConnections(int clientSock, RequestParser& parser){
      // Handle client data
-        char	buffer[BUFFER_SIZE];
-        int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+        char buffer[BUFFER_SIZE];
+        HTTPRequest request;
+        int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
         if (bytesRead < 0) {
 			std::cerr << "error: read\n";
 			close(clientSock);
@@ -205,7 +206,7 @@ void    Server::handleConnections(int clientSock, RequestParser& parser){
 			m_requestStrings[clientSock] += buffer;
 			if (checkForCompleteRequest(clientSock)) {
 				try{
-					parser.parseHttpRequest(m_requestStrings[clientSock]);
+					parser.parseHttpRequest(m_requestStrings[clientSock], request);
 				}
 				catch (std::exception& e){
 					std::cerr << "Error: " << e.what() << std::endl;

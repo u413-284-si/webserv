@@ -193,15 +193,15 @@ size_t RequestParser::convertHex(const std::string& chunkSize) const
 	return value;
 }
 
-void RequestParser::clearRequest()
+void RequestParser::clearRequest(HTTPRequest& request)
 {
-	m_request.body = "";
-	m_request.method = "";
-	m_request.uri.fragment = "";
-	m_request.uri.path = "";
-	m_request.uri.query = "";
-	m_request.version = "";
-	m_request.headers.clear();
+	request.body = "";
+	request.method = "";
+	request.uri.fragment = "";
+	request.uri.path = "";
+	request.uri.query = "";
+	request.version = "";
+	request.headers.clear();
 }
 
 void RequestParser::clearParser()
@@ -212,7 +212,6 @@ void RequestParser::clearParser()
     m_chunked = false;
     m_requestStream.clear();
     m_requestStream.str("");
-    clearRequest();
 }
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -261,13 +260,13 @@ Method RequestParser::getRequestMethod() const { return m_requestMethod; }
  * If any errors are encountered during parsing, an appropriate error code is
  * set, and a `std::runtime_error` is thrown.
  *
- * @param request The raw HTTP request string to be parsed.
- * @return An `HTTPRequest` object representing the parsed HTTP request.
+ * @param requestString The raw HTTP request string to be parsed.
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If there is any error during parsing.
  */
-HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
+void RequestParser::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
 {
-	m_requestStream.str(request);
+	m_requestStream.str(requestString);
 
 	// Step 1: Parse the request-line
 	std::string requestLine;
@@ -275,11 +274,11 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_REQUEST_LINE);
 	}
-	requestLine = parseMethod(requestLine);
+	requestLine = parseMethod(requestLine, request);
 	requestLine = checkForSpace(requestLine);
-	requestLine = parseUri(requestLine);
+	requestLine = parseUri(requestLine, request);
 	requestLine = checkForSpace(requestLine);
-	requestLine = parseVersion(requestLine);
+	requestLine = parseVersion(requestLine, request);
 	checkForCRLF(requestLine);
 
 	// Step 2: Parse headers
@@ -299,11 +298,11 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
-			checkContentLength(headerName, headerValue);
-			m_request.headers[headerName] = headerValue;
+			checkContentLength(headerName, headerValue, request);
+			request.headers[headerName] = headerValue;
 		}
 	}
-	checkTransferEncoding();
+	checkTransferEncoding(request);
 	if (headerLine != "\r") {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_CRLF);
@@ -312,11 +311,10 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 	// Step 3: Parse body (if any)
 	if (m_hasBody) {
 		if (m_chunked)
-			parseChunkedBody();
+			parseChunkedBody(request);
 		else
-			parseNonChunkedBody();
+			parseNonChunkedBody(request);
 	}
-	return m_request;
 }
 
 /**
@@ -328,20 +326,21 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
  * an error code is set to 501 and a `std::runtime_error` is thrown.
  *
  * @param requestLine The request line string from which the method is to be parsed.
+ * @param request The HTTP request object to be filled.
  * @return A substring of `requestLine` starting from the character after the parsed method.
  * @throws std::runtime_error If the method is not implemented, an error is thrown and the error code is set to 501.
  */
-std::string RequestParser::parseMethod(const std::string& requestLine)
+std::string RequestParser::parseMethod(const std::string& requestLine, HTTPRequest& request)
 {
 	int i = -1;
 	while (isalpha(requestLine[++i]))
-		m_request.method.push_back(requestLine[i]);
+		request.method.push_back(requestLine[i]);
 
-	if (m_request.method == "GET")
+	if (request.method == "GET")
 		m_requestMethod = MethodGet;
-	else if (m_request.method == "POST")
+	else if (request.method == "POST")
 		m_requestMethod = MethodPost;
-	else if (m_request.method == "DELETE")
+	else if (request.method == "DELETE")
 		m_requestMethod = MethodDelete;
 	else {
 		m_errorCode = 501;
@@ -362,18 +361,19 @@ std::string RequestParser::parseMethod(const std::string& requestLine)
  * a `std::runtime_error` is thrown.
  *
  * @param requestLine The request line string from which the URI is to be parsed.
+ * @param request The HTTP request object to be filled.
  * @return A substring of `requestLine` starting from the character after the parsed URI.
  * @throws std::runtime_error If the URI is missing the initial slash,
  *         contains invalid characters, or any other URI-related errors occur.
  */
-std::string RequestParser::parseUri(const std::string& requestLine)
+std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest& request)
 {
 	int i = 0;
 	if (requestLine[i] != '/') {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
-	m_request.uri.path.push_back(requestLine[i]);
+	request.uri.path.push_back(requestLine[i]);
 	while (requestLine[++i]) {
 		if (requestLine[i] == ' ')
 			break;
@@ -381,11 +381,11 @@ std::string RequestParser::parseUri(const std::string& requestLine)
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else if (requestLine[i] == '?')
-			parseUriQuery(requestLine, i);
+			parseUriQuery(requestLine, i, request);
 		else if (requestLine[i] == '#')
-			parseUriFragment(requestLine, i);
+			parseUriFragment(requestLine, i, request);
 		else
-			m_request.uri.path.push_back(requestLine[i]);
+			request.uri.path.push_back(requestLine[i]);
 		// FIXME: setup max. URI length?
 	}
 	return (requestLine.substr(i));
@@ -404,10 +404,11 @@ std::string RequestParser::parseUri(const std::string& requestLine)
  * @param requestLine The request line string from which the query component of the URI is to be parsed.
  * @param index The current index in the request line string where the query component starts.
  *              This index is updated as the query is parsed.
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If an invalid character is encountered in the query,
  *         or if another '?' is found, an error is thrown and the error code is set to 400.
  */
-void RequestParser::parseUriQuery(const std::string& requestLine, int& index)
+void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HTTPRequest& request)
 {
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ' || requestLine[index] == '#') {
@@ -417,7 +418,7 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index)
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else
-			m_request.uri.query.push_back(requestLine[index]);
+			request.uri.query.push_back(requestLine[index]);
 	}
 }
 
@@ -433,10 +434,11 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index)
  * @param requestLine The request line string from which the fragment component of the URI is to be parsed.
  * @param index The current index in the request line string where the fragment component starts.
  *              This index is updated as the fragment is parsed.
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If an invalid character is encountered in the fragment,
  *         or if another '#' is found, an error is thrown and the error code is set to 400.
  */
-void RequestParser::parseUriFragment(const std::string& requestLine, int& index)
+void RequestParser::parseUriFragment(const std::string& requestLine, int& index, HTTPRequest& request)
 {
 	while (requestLine[++index]) {
 		if (requestLine[index] == ' ') {
@@ -446,7 +448,7 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index)
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else
-			m_request.uri.fragment.push_back(requestLine[index]);
+			request.uri.fragment.push_back(requestLine[index]);
 	}
 }
 
@@ -460,11 +462,12 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index)
  * an appropriate error code is set, and a `std::runtime_error` is thrown.
  *
  * @param requestLine The request line string from which the HTTP version is to be parsed.
+ * @param request The HTTP request object to be filled.
  * @return A substring of `requestLine` starting from the character after the parsed version.
  * @throws std::runtime_error If the HTTP version format is invalid,
  *         an error is thrown and the error code is set to 400.
  */
-std::string RequestParser::parseVersion(const std::string& requestLine)
+std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequest& request)
 {
 	if (requestLine.substr(0, 5) != "HTTP/") {
 		m_errorCode = 400;
@@ -478,12 +481,12 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
         m_errorCode = 505;
         throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
     }
-	m_request.version.push_back(requestLine[i]);
+	request.version.push_back(requestLine[i]);
 	if (requestLine[++i] != '.') {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_DELIM);
 	}
-	m_request.version.push_back(requestLine[i]);
+	request.version.push_back(requestLine[i]);
 	if (!isdigit(requestLine[++i])) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
@@ -491,7 +494,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
         m_errorCode = 505;
         throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
     }
-	m_request.version.push_back(requestLine[i]);
+	request.version.push_back(requestLine[i]);
 	return (requestLine.substr(++i));
 }
 
@@ -502,6 +505,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
  * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
  * request body, and handles any formatting errors.
  *
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
  *
  * Error codes:
@@ -515,7 +519,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
  * parser.parseChunkedBody(requestStream);
  * @endcode
  */
-void RequestParser::parseChunkedBody()
+void RequestParser::parseChunkedBody(HTTPRequest& request)
 {
 	int length = 0;
 	std::string strChunkSize;
@@ -542,7 +546,7 @@ void RequestParser::parseChunkedBody()
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_CHUNK_SIZE);
 		}
-		m_request.body += chunkData;
+		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
 }
@@ -555,6 +559,7 @@ void RequestParser::parseChunkedBody()
  * It processes each line, removing trailing carriage returns and concatenates
  * the lines to form the complete body.
  *
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If there is an error converting the "Content-Length" header
  *                            to a size_t or if the body length does not match the "Content-Length" value.
  *
@@ -569,7 +574,7 @@ void RequestParser::parseChunkedBody()
  * parser.parseNonChunkedBody(requestStream);
  * @endcode
  */
-void RequestParser::parseNonChunkedBody()
+void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
 	std::string body;
 	size_t length = 0;
@@ -582,9 +587,9 @@ void RequestParser::parseNonChunkedBody()
 		if (!m_requestStream.eof())
 			body += '\n';
 		length += body.size();
-		m_request.body += body;
+		request.body += body;
 	}
-	size_t contentLength = std::atol(m_request.headers.at("Content-Length").c_str());
+	size_t contentLength = std::atol(request.headers.at("Content-Length").c_str());
 	if (contentLength != length) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
@@ -629,19 +634,20 @@ void RequestParser::checkHeaderName(const std::string& headerName)
  *
  * @param headerName The name of the HTTP header field.
  * @param headerValue The value associated with the HTTP header field.
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If there are multiple conflicting Content-Length
  *         headers or if the Content-Length value is invalid, an error is thrown
  *         and the error code is set to 400.
  */
-void RequestParser::checkContentLength(const std::string& headerName, std::string& headerValue)
+void RequestParser::checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request)
 {
 	if (headerName == "Content-Length") {
 		if (headerValue.empty()) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 		}
-		if (m_request.headers.find("Content-Length") != m_request.headers.end()
-			&& m_request.headers["Content-Length"] != headerValue) {
+		if (request.headers.find("Content-Length") != request.headers.end()
+			&& request.headers["Content-Length"] != headerValue) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
@@ -676,19 +682,20 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
  * If the header is invalid or the encoding is incorrect, an appropriate error code is set,
  * and a `std::runtime_error` is thrown.
  *
+ * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If the Transfer-Encoding header is missing or empty,
  *         or if the last encoding is not "chunked", an error is thrown and the error code is set to 400.
  */
-void RequestParser::checkTransferEncoding()
+void RequestParser::checkTransferEncoding(HTTPRequest& request)
 {
-	if (m_request.headers.find("Transfer-Encoding") != m_request.headers.end()) {
-		if (m_request.headers.at("Transfer-Encoding").empty()) {
+	if (request.headers.find("Transfer-Encoding") != request.headers.end()) {
+		if (request.headers.at("Transfer-Encoding").empty()) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
 
-		if (m_request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
-			std::vector<std::string> encodings = split(m_request.headers.at("Transfer-Encoding"), ',');
+		if (request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
+			std::vector<std::string> encodings = split(request.headers.at("Transfer-Encoding"), ',');
 			if (encodings[encodings.size() - 1] != "chunked") {
 				m_errorCode = 400;
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
