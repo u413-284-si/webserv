@@ -46,7 +46,7 @@ private:
 	// Helper functions
 	std::string checkForSpace(const std::string&);
 	void checkForCRLF(const std::string&);
-	bool isValidURIChar(uint8_t c) const;
+	static bool isNotValidURIChar(uint8_t c);
 	bool isValidHeaderFieldNameChar(uint8_t c) const;
 	size_t convertHex(const std::string& chunkSize) const;
 };

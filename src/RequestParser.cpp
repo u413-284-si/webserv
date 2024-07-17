@@ -75,13 +75,13 @@ void RequestParser::checkForCRLF(const std::string& str)
  * - Equals sign (`=`)
  *
  * @param c The character to be checked.
- * @return `true` if the character is a valid URI character, `false` otherwise.
+ * @return `true` if the character is not a valid URI character, `false` if valid.
  */
-bool RequestParser::isValidURIChar(uint8_t c) const
+bool RequestParser::isNotValidURIChar(uint8_t c)
 {
 	// Check for unreserved chars
 	if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~')
-		return true;
+		return false;
 
 	// Check for reserved characters
 	switch (c) {
@@ -103,9 +103,9 @@ bool RequestParser::isValidURIChar(uint8_t c) const
 	case ',':
 	case ';':
 	case '=':
-		return true;
-	default:
 		return false;
+	default:
+		return true;
 	}
 }
 
@@ -367,14 +367,19 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
+
+    // Check URI string for invalid chars
+    std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
+    if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos) {
+        m_errorCode = 400;
+        throw std::runtime_error(ERR_URI_INVALID_CHAR);
+    }
+    
 	request.uri.path.push_back(requestLine[i]);
 	while (requestLine.at(++i)) {
 		if (requestLine.at(i) == ' ')
 			break;
-		else if (!isValidURIChar(requestLine.at(i))) {
-			m_errorCode = 400;
-			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		} else if (requestLine.at(i) == '?')
+		else if (requestLine.at(i) == '?')
 			parseUriQuery(requestLine, i, request);
 		else if (requestLine.at(i) == '#')
 			parseUriFragment(requestLine, i, request);
@@ -408,7 +413,7 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
 		if (requestLine.at(index) == ' ' || requestLine.at(index) == '#') {
 			index--;
 			break;
-		} else if (!isValidURIChar(requestLine.at(index)) || requestLine.at(index) == '?') {
+		} else if (requestLine.at(index) == '?') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else
@@ -438,7 +443,7 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
 		if (requestLine.at(index) == ' ') {
 			index--;
 			break;
-		} else if (!isValidURIChar(requestLine.at(index)) || requestLine.at(index) == '#') {
+		} else if (requestLine.at(index) == '#') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else
