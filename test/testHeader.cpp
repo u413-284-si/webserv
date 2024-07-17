@@ -9,7 +9,7 @@ TEST(RequestParser_ValidHeaders, ValidHeaders) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nUser-Agent: curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3\r\nAccept-Language: en, mi\r\n\r\n");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nUser-Agent: curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3\r\nAccept-Language: en, mi\r\n\r\n", request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
     EXPECT_EQ(request.headers["User-Agent"], "curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3");
     EXPECT_EQ(request.headers["Accept-Language"], "en, mi");
@@ -19,7 +19,7 @@ TEST(RequestParser_ValidHeaders, TrimWhiteSpaces) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:       www.example.com       \r\n\r\n");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:       www.example.com       \r\n\r\n", request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
 }
 
@@ -27,7 +27,7 @@ TEST(RequestParser_ValidHeaders, ContentLength) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\n\r\n01234567890123456789012");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\n\r\n01234567890123456789012", request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
 	EXPECT_EQ(request.headers["Content-Length"], "23");
 }
@@ -36,7 +36,7 @@ TEST(RequestParser_ValidHeaders, RepeatedEqualContentLength) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 23\r\n\r\n01234567890123456789012");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 23\r\n\r\n01234567890123456789012", request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
 	EXPECT_EQ(request.headers["Content-Length"], "23");
 }
@@ -45,7 +45,7 @@ TEST(RequestParser_ValidHeaders, TransferEncodingChunked) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n0\r\n\r\n");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n0\r\n\r\n", request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
 	EXPECT_EQ(request.headers["Transfer-Encoding"], "gzip, chunked");
 }
@@ -54,7 +54,7 @@ TEST(RequestParser_ValidHeaders, TransferEncodingNonChunked) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\n");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\n", request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
 	EXPECT_EQ(request.headers["Transfer-Encoding"], "gzip");
 }
@@ -62,12 +62,14 @@ TEST(RequestParser_ValidHeaders, TransferEncodingNonChunked) {
 // NON-VALID HEADERS TEST SUITE
 
 TEST(RequestParser_NonValidHeaders, WhitespaceBetweenHeaderFieldNameAndColon) {
-	RequestParser	p;
+	RequestParser	p;\
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost :       www.example.com       \r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost :       www.example.com       \r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost :       www.example.com       \r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost :       www.example.com       \r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -76,11 +78,13 @@ TEST(RequestParser_NonValidHeaders, WhitespaceBetweenHeaderFieldNameAndColon) {
 
 TEST(RequestParser_NonValidHeaders, ObsoleteLineFolding) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n Host:       www.example.com       \r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n Host:       www.example.com       \r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n Host:       www.example.com       \r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n Host:       www.example.com       \r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -89,11 +93,13 @@ TEST(RequestParser_NonValidHeaders, ObsoleteLineFolding) {
 
 TEST(RequestParser_NonValidHeaders, InvalidFieldName) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nH<ost: www.example.com\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nH<ost: www.example.com\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nH<ost: www.example.com\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nH<ost: www.example.com\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -102,11 +108,13 @@ TEST(RequestParser_NonValidHeaders, InvalidFieldName) {
 
 TEST(RequestParser_NonValidHeaders, MissingCRLFAfterHeaderSection) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -115,11 +123,13 @@ TEST(RequestParser_NonValidHeaders, MissingCRLFAfterHeaderSection) {
 
 TEST(RequestParser_NonValidHeaders, EmptyContentLength) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: \r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: \r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: \r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: \r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -128,11 +138,13 @@ TEST(RequestParser_NonValidHeaders, EmptyContentLength) {
 
 TEST(RequestParser_NonValidHeaders, InvalidContentLength) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: ur\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: ur\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: ur\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: ur\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -141,11 +153,13 @@ TEST(RequestParser_NonValidHeaders, InvalidContentLength) {
 
 TEST(RequestParser_NonValidHeaders, RepeatedNonEqualContentLengths) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 1\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 1\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 1\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, 1\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -154,11 +168,13 @@ TEST(RequestParser_NonValidHeaders, RepeatedNonEqualContentLengths) {
 
 TEST(RequestParser_NonValidHeaders, InvalidInFirstRepeatedContentLength) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23s, 23\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23s, 23\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23s, 23\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23s, 23\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -167,11 +183,13 @@ TEST(RequestParser_NonValidHeaders, InvalidInFirstRepeatedContentLength) {
 
 TEST(RequestParser_NonValidHeaders, InvalidInLastRepeatedContentLength) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, e23\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, e23\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, e23\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23, e23\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -180,11 +198,13 @@ TEST(RequestParser_NonValidHeaders, InvalidInLastRepeatedContentLength) {
 
 TEST(RequestParser_NonValidHeaders, RepeatedContentLengthHeaders) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -193,11 +213,13 @@ TEST(RequestParser_NonValidHeaders, RepeatedContentLengthHeaders) {
 
 TEST(RequestParser_NonValidHeaders, EmptyTransferEncoding) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: \r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: \r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: \r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: \r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -206,11 +228,13 @@ TEST(RequestParser_NonValidHeaders, EmptyTransferEncoding) {
 
 TEST(RequestParser_NonValidHeaders, InvalidChunkedTransferEncodingPositioning) {
 	RequestParser	p;
+    HTTPRequest		request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: chunked, gzip\r\n\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: chunked, gzip\r\n\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: chunked, gzip\r\n\r\n");
+        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: chunked, gzip\r\n\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;

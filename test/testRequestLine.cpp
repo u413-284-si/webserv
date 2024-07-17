@@ -7,7 +7,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_GET) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n");
+	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
 	EXPECT_EQ(request.method, "GET");
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "query=openai&year=2024");
@@ -19,7 +19,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_DELETE) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("DELETE /index.html HTTP/1.1\r\n\r\n");
+	p.parseHttpRequest("DELETE /index.html HTTP/1.1\r\n\r\n", request);
 	EXPECT_EQ(request.method, "DELETE");
     EXPECT_EQ(request.uri.path , "/index.html");
     EXPECT_EQ(request.uri.query , "");
@@ -31,7 +31,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_POST) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\n\r\n");
+	p.parseHttpRequest("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\n\r\n", request);
 	EXPECT_EQ(request.method, "POST");
     EXPECT_EQ(request.uri.path , "/abracadabra/ipsum");
     EXPECT_EQ(request.uri.query , "user=aziz&key=password");
@@ -43,7 +43,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoQuery) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search? HTTP/1.1\r\n\r\n");
+	p.parseHttpRequest("GET /search? HTTP/1.1\r\n\r\n", request);
 	EXPECT_EQ(request.method, "GET");
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "");
@@ -55,7 +55,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoFragment) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?# HTTP/1.1\r\n\r\n");
+	p.parseHttpRequest("GET /search?# HTTP/1.1\r\n\r\n", request);
 	EXPECT_EQ(request.method, "GET");
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "");
@@ -67,7 +67,7 @@ TEST(RequestParser_ValidRequestLine, Version1_0) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	request = p.parseHttpRequest("GET /search?# HTTP/1.0\r\n\r\n");
+	p.parseHttpRequest("GET /search?# HTTP/1.0\r\n\r\n", request);
 	EXPECT_EQ(request.method, "GET");
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "");
@@ -79,11 +79,13 @@ TEST(RequestParser_ValidRequestLine, Version1_0) {
 
 TEST(RequestParser_NonValidRequestLine, NotImplementedMethod) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("PUT /search?query=openai&year=2024#conclusion HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("PUT /search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("PUT /search?query=openai&year=2024#conclusion HTTP/1.1\r\n");
+        p.parseHttpRequest("PUT /search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -92,11 +94,13 @@ TEST(RequestParser_NonValidRequestLine, NotImplementedMethod) {
 
 TEST(RequestParser_NonValidRequestLine, LowerCaseMethod) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("get /search?query=openai&year=2024#conclusion HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("get /search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("get /search?query=openai&year=2024#conclusion HTTP/1.1\r\n");
+        p.parseHttpRequest("get /search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -105,11 +109,13 @@ TEST(RequestParser_NonValidRequestLine, LowerCaseMethod) {
 
 TEST(RequestParser_NonValidRequestLine, MissingSpace) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET/search?query=openai&year=2024#conclusion HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET/search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET/search?query=openai&year=2024#conclusion HTTP/1.1\r\n");
+        p.parseHttpRequest("GET/search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -118,11 +124,13 @@ TEST(RequestParser_NonValidRequestLine, MissingSpace) {
 
 TEST(RequestParser_NonValidRequestLine, MissingSlash) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET search?query=openai&year=2024#conclusion HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET search?query=openai&year=2024#conclusion HTTP/1.1\r\n");
+        p.parseHttpRequest("GET search?query=openai&year=2024#conclusion HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -131,11 +139,13 @@ TEST(RequestParser_NonValidRequestLine, MissingSlash) {
 
 TEST(RequestParser_NonValidRequestLine, DoubleQuestionMark) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?? HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?? HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?? HTTP/1.1\r\n");
+        p.parseHttpRequest("GET /search?? HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -144,11 +154,13 @@ TEST(RequestParser_NonValidRequestLine, DoubleQuestionMark) {
 
 TEST(RequestParser_NonValidRequestLine, DoubleHash) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?## HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search?## HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search?## HTTP/1.1\r\n");
+        p.parseHttpRequest("GET /search?## HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -157,11 +169,13 @@ TEST(RequestParser_NonValidRequestLine, DoubleHash) {
 
 TEST(RequestParser_NonValidRequestLine, URI_InvalidChar) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search§blabla/index.html HTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search§blabla/index.html HTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search§blabla/index.html HTTP/1.1\r\n");
+        p.parseHttpRequest("GET /search§blabla/index.html HTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -170,11 +184,13 @@ TEST(RequestParser_NonValidRequestLine, URI_InvalidChar) {
 
 TEST(RequestParser_NonValidRequestLine, URI_MissingSpace) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /searchHTTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /searchHTTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /searchHTTP/1.1\r\n");
+        p.parseHttpRequest("GET /searchHTTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -183,11 +199,13 @@ TEST(RequestParser_NonValidRequestLine, URI_MissingSpace) {
 
 TEST(RequestParser_NonValidRequestLine, Version_MissingH) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html TTP/1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html TTP/1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html TTP/1.1\r\n");
+        p.parseHttpRequest("GET /search.html TTP/1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -196,11 +214,13 @@ TEST(RequestParser_NonValidRequestLine, Version_MissingH) {
 
 TEST(RequestParser_NonValidRequestLine, Version_MissingSlash) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP1.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP1.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html HTTP1.1\r\n");
+        p.parseHttpRequest("GET /search.html HTTP1.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -209,11 +229,13 @@ TEST(RequestParser_NonValidRequestLine, Version_MissingSlash) {
 
 TEST(RequestParser_NonValidRequestLine, Version_InvalidMajor) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/x.1\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/x.1\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html HTTP/x.1\r\n");
+        p.parseHttpRequest("GET /search.html HTTP/x.1\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -222,11 +244,13 @@ TEST(RequestParser_NonValidRequestLine, Version_InvalidMajor) {
 
 TEST(RequestParser_NonValidRequestLine, Version_MissingDot) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/11\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/11\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html HTTP/11\r\n");
+        p.parseHttpRequest("GET /search.html HTTP/11\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -235,11 +259,13 @@ TEST(RequestParser_NonValidRequestLine, Version_MissingDot) {
 
 TEST(RequestParser_NonValidRequestLine, Version_InvalidMinor) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/1.x\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/1.x\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html HTTP/1.x\r\n");
+        p.parseHttpRequest("GET /search.html HTTP/1.x\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -248,11 +274,13 @@ TEST(RequestParser_NonValidRequestLine, Version_InvalidMinor) {
 
 TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMajor) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/2.0\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/2.0\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html HTTP/2.0\r\n");
+        p.parseHttpRequest("GET /search.html HTTP/2.0\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
@@ -261,11 +289,13 @@ TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMajor) {
 
 TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMinor) {
 	RequestParser	p;
+    HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/1.3\r\n"), std::runtime_error);
+	EXPECT_THROW(p.parseHttpRequest("GET /search.html HTTP/1.3\r\n", request), std::runtime_error);
     p.clearParser();
+    p.clearRequest(request);
     try{
-        p.parseHttpRequest("GET /search.html HTTP/1.3\r\n");
+        p.parseHttpRequest("GET /search.html HTTP/1.3\r\n", request);
     }
     catch(const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
