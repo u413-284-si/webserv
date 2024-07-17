@@ -141,13 +141,13 @@ $(NAME): $(OBJS)
 .PHONY: test
 test: $(TEST)
 
-# Reconfigure flags for linking with gtest and gmock
+# Reconfigure flags for linking with gtest
 $(TEST): CXXFLAGS = -Wall -Werror -pthread
 # Set file counter to number of test files + object files
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgtest_main -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
@@ -271,7 +271,7 @@ help:
 	@echo ""
 	@echo "$(YELLOW)Targets:$(RESET)"
 	@echo "  all         - Compiles the default version of the $(NAME) program."
-	@echo "  test        - Compiles the unit tests linking with gtest and gmock."
+	@echo "  test        - Compiles the unit tests linking with gtest."
 	@echo "  clean       - Removes object files and dependency files."
 	@echo "  fclean      - Performs 'clean' and also removes binaries and log files."
 	@echo "  re          - Performs 'fclean' and then 'all'."
