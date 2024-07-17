@@ -368,18 +368,18 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
 	request.uri.path.push_back(requestLine[i]);
-	while (requestLine[++i]) {
-		if (requestLine[i] == ' ')
+	while (requestLine.at(++i)) {
+		if (requestLine.at(i) == ' ')
 			break;
-		else if (!isValidURIChar(requestLine[i])) {
+		else if (!isValidURIChar(requestLine.at(i))) {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		} else if (requestLine[i] == '?')
+		} else if (requestLine.at(i) == '?')
 			parseUriQuery(requestLine, i, request);
-		else if (requestLine[i] == '#')
+		else if (requestLine.at(i) == '#')
 			parseUriFragment(requestLine, i, request);
 		else
-			request.uri.path.push_back(requestLine[i]);
+			request.uri.path.push_back(requestLine.at(i));
 		// FIXME: setup max. URI length?
 	}
 	return (requestLine.substr(i));
@@ -404,15 +404,15 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
  */
 void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HTTPRequest& request)
 {
-	while (requestLine[++index]) {
-		if (requestLine[index] == ' ' || requestLine[index] == '#') {
+	while (requestLine.at(++index)) {
+		if (requestLine.at(index) == ' ' || requestLine.at(index) == '#') {
 			index--;
 			break;
-		} else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '?') {
+		} else if (!isValidURIChar(requestLine.at(index)) || requestLine.at(index) == '?') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else
-			request.uri.query.push_back(requestLine[index]);
+			request.uri.query.push_back(requestLine.at(index));
 	}
 }
 
@@ -434,15 +434,15 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
  */
 void RequestParser::parseUriFragment(const std::string& requestLine, int& index, HTTPRequest& request)
 {
-	while (requestLine[++index]) {
-		if (requestLine[index] == ' ') {
+	while (requestLine.at(++index)) {
+		if (requestLine.at(index) == ' ') {
 			index--;
 			break;
-		} else if (!isValidURIChar(requestLine[index]) || requestLine[index] == '#') {
+		} else if (!isValidURIChar(requestLine.at(index)) || requestLine.at(index) == '#') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		} else
-			request.uri.fragment.push_back(requestLine[index]);
+			request.uri.fragment.push_back(requestLine.at(index));
 	}
 }
 
