@@ -1,5 +1,16 @@
 #include "utilities.hpp"
 
+std::string trimLeadingWhitespaces(const std::string& str) {
+    std::string::const_iterator it = str.begin();
+
+    // Find the first character that is not a whitespace
+    while (it != str.end() && std::isspace(static_cast<unsigned char>(*it)))
+        ++it;
+
+    // Return the substring starting from the first non-whitespace character
+    return std::string(it, str.end());
+}
+
 std::string trimTrailingWhiteSpaces(const std::string &str)
 {
     std::string s(str);
