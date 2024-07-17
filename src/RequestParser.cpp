@@ -363,7 +363,7 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
 std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest& request)
 {
 	int i = 0;
-	if (requestLine[i] != '/') {
+	if (requestLine.at(i) != '/') {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
