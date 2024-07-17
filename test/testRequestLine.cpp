@@ -8,7 +8,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_GET) {
 	HTTPRequest		request;
 
 	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
-	EXPECT_EQ(request.method, "GET");
+	EXPECT_EQ(request.method, MethodGet);
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "query=openai&year=2024");
     EXPECT_EQ(request.uri.fragment , "conclusion");
@@ -20,7 +20,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_DELETE) {
 	HTTPRequest		request;
 
 	p.parseHttpRequest("DELETE /index.html HTTP/1.1\r\n\r\n", request);
-	EXPECT_EQ(request.method, "DELETE");
+	EXPECT_EQ(request.method, MethodDelete);
     EXPECT_EQ(request.uri.path , "/index.html");
     EXPECT_EQ(request.uri.query , "");
     EXPECT_EQ(request.uri.fragment , "");
@@ -32,7 +32,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_POST) {
 	HTTPRequest		request;
 
 	p.parseHttpRequest("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\n\r\n", request);
-	EXPECT_EQ(request.method, "POST");
+	EXPECT_EQ(request.method, MethodPost);
     EXPECT_EQ(request.uri.path , "/abracadabra/ipsum");
     EXPECT_EQ(request.uri.query , "user=aziz&key=password");
     EXPECT_EQ(request.uri.fragment , "");
@@ -44,7 +44,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoQuery) {
 	HTTPRequest		request;
 
 	p.parseHttpRequest("GET /search? HTTP/1.1\r\n\r\n", request);
-	EXPECT_EQ(request.method, "GET");
+	EXPECT_EQ(request.method, MethodGet);
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "");
     EXPECT_EQ(request.uri.fragment , "");
@@ -56,7 +56,7 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoFragment) {
 	HTTPRequest		request;
 
 	p.parseHttpRequest("GET /search?# HTTP/1.1\r\n\r\n", request);
-	EXPECT_EQ(request.method, "GET");
+	EXPECT_EQ(request.method, MethodGet);
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "");
     EXPECT_EQ(request.uri.fragment , "");
@@ -68,7 +68,7 @@ TEST(RequestParser_ValidRequestLine, Version1_0) {
 	HTTPRequest		request;
 
 	p.parseHttpRequest("GET /search?# HTTP/1.0\r\n\r\n", request);
-	EXPECT_EQ(request.method, "GET");
+	EXPECT_EQ(request.method, MethodGet);
     EXPECT_EQ(request.uri.path , "/search");
     EXPECT_EQ(request.uri.query , "");
     EXPECT_EQ(request.uri.fragment , "");
