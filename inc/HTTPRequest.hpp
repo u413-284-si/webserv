@@ -17,9 +17,11 @@ struct URI {
 };
 
 struct HTTPRequest {
-	Method method;
+	Method method = MethodCount;
 	URI uri;
 	std::string version;
 	std::map<std::string, std::string> headers;
 	std::string body;
+    unsigned int    errorCode = 0;
+    bool shallCloseConnection = false;
 };
