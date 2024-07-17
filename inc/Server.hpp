@@ -31,7 +31,7 @@ class Server{
 				std::map<int,std::string>	m_requestStrings;
 
 				void    acceptConnection();
-                void    handleConnections(int clientSock);
+                void    handleConnections(int clientSock, RequestParser& parser);
 				bool	checkForCompleteRequest(int clientSock);
 
     public:

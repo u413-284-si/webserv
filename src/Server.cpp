@@ -112,6 +112,8 @@ Server::~Server()
  * 
  */
 void    Server::run(){
+    RequestParser	parser;
+
     while (1) {
 		struct epoll_event	events[MAX_EVENTS];
         // Blocking call to epoll_wait
@@ -123,7 +125,7 @@ void    Server::run(){
             if (events[n].data.fd == m_serverSock)
                 acceptConnection();
             else
-                handleConnections(events[n].data.fd);
+                handleConnections(events[n].data.fd, parser);
         }
     }
 }
@@ -188,7 +190,7 @@ void    Server::acceptConnection(){
  *      to the client socket using the write function.
  *  
  */
-void    Server::handleConnections(int clientSock){
+void    Server::handleConnections(int clientSock, RequestParser& parser){
      // Handle client data
         char	buffer[BUFFER_SIZE];
         int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
@@ -203,7 +205,6 @@ void    Server::handleConnections(int clientSock){
 			m_requestStrings[clientSock] += buffer;
 			if (checkForCompleteRequest(clientSock)) {
 				try{
-					RequestParser	parser;
 					parser.parseHttpRequest(m_requestStrings[clientSock]);
 				}
 				catch (std::exception& e){
