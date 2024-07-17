@@ -277,6 +277,8 @@ void ConfigFileParser::readIpAddress(void)
 		std::string value = m_configFile.currentLine.substr(numIndex, semicolonIndex - numIndex);
 		if (isPortValid(value))
 			return ;
+		if (m_configFile.currentLine.find('.') == std::string::npos)
+			throw std::runtime_error("Invalid port");
 		ip = value;
 	}
 	else
@@ -327,11 +329,14 @@ void ConfigFileParser::readPort(void)
 	size_t semicolonIndex = m_configFile.currentLine.find(';');
 	std::string port;
 
+
 	if (colonIndex == std::string::npos)
 	{
 		std::string value = m_configFile.currentLine.substr(numIndex, semicolonIndex - numIndex);
 		if (isIpAddressValid(value))
 			return;
+		if (m_configFile.currentLine.find('.') != std::string::npos)
+			throw std::runtime_error("Invalid ip address");
 		port = value;
 	}
 	else
@@ -358,8 +363,8 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
 	{
-		readPort();
 		readIpAddress();
+		readPort();
 	}
 }
 
