@@ -204,6 +204,17 @@ void RequestParser::clearRequest()
 	m_request.headers.clear();
 }
 
+void RequestParser::clearParser()
+{
+    m_errorCode = 0;
+    m_requestMethod = MethodCount;
+    m_hasBody = false;
+    m_chunked = false;
+    m_requestStream.clear();
+    m_requestStream.str("");
+    clearRequest();
+}
+
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 RequestParser::RequestParser()
@@ -256,11 +267,11 @@ Method RequestParser::getRequestMethod() const { return m_requestMethod; }
  */
 HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 {
-	std::istringstream requestStream(request);
+	m_requestStream.str(request);
 
 	// Step 1: Parse the request-line
 	std::string requestLine;
-	if (!std::getline(requestStream, requestLine) || requestLine.empty()) {
+	if (!std::getline(m_requestStream, requestLine) || requestLine.empty()) {
 		m_errorCode = 400;
 		throw std::runtime_error(ERR_MISS_REQUEST_LINE);
 	}
@@ -274,7 +285,7 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 	// Step 2: Parse headers
 	std::string headerLine;
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
-	while (std::getline(requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
+	while (std::getline(m_requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
@@ -301,9 +312,9 @@ HTTPRequest RequestParser::parseHttpRequest(const std::string& request)
 	// Step 3: Parse body (if any)
 	if (m_hasBody) {
 		if (m_chunked)
-			parseChunkedBody(requestStream);
+			parseChunkedBody();
 		else
-			parseNonChunkedBody(requestStream);
+			parseNonChunkedBody();
 	}
 	return m_request;
 }
@@ -491,8 +502,6 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
  * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
  * request body, and handles any formatting errors.
  *
- * @param requestStream The input stream containing the chunked body.
- *
  * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
  *
  * Error codes:
@@ -506,7 +515,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine)
  * parser.parseChunkedBody(requestStream);
  * @endcode
  */
-void RequestParser::parseChunkedBody(std::istringstream& requestStream)
+void RequestParser::parseChunkedBody()
 {
 	int length = 0;
 	std::string strChunkSize;
@@ -514,7 +523,7 @@ void RequestParser::parseChunkedBody(std::istringstream& requestStream)
 	size_t numChunkSize = 0;
 
 	do {
-		std::getline(requestStream, strChunkSize);
+		std::getline(m_requestStream, strChunkSize);
 		if (strChunkSize[strChunkSize.size() - 1] == '\r')
 			strChunkSize.erase(strChunkSize.size() - 1);
 		else {
@@ -522,7 +531,7 @@ void RequestParser::parseChunkedBody(std::istringstream& requestStream)
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 		numChunkSize = convertHex(strChunkSize);
-		std::getline(requestStream, chunkData);
+		std::getline(m_requestStream, chunkData);
 		if (chunkData[chunkData.size() - 1] == '\r')
 			chunkData.erase(chunkData.size() - 1);
 		else {
@@ -546,8 +555,6 @@ void RequestParser::parseChunkedBody(std::istringstream& requestStream)
  * It processes each line, removing trailing carriage returns and concatenates
  * the lines to form the complete body.
  *
- * @param requestStream The input stream containing the non-chunked body.
- *
  * @throws std::runtime_error If there is an error converting the "Content-Length" header
  *                            to a size_t or if the body length does not match the "Content-Length" value.
  *
@@ -562,17 +569,17 @@ void RequestParser::parseChunkedBody(std::istringstream& requestStream)
  * parser.parseNonChunkedBody(requestStream);
  * @endcode
  */
-void RequestParser::parseNonChunkedBody(std::istringstream& requestStream)
+void RequestParser::parseNonChunkedBody()
 {
 	std::string body;
 	size_t length = 0;
 
-	while (std::getline(requestStream, body)) {
+	while (std::getline(m_requestStream, body)) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
 			length += 1;
 		}
-		if (!requestStream.eof())
+		if (!m_requestStream.eof())
 			body += '\n';
 		length += body.size();
 		m_request.body += body;

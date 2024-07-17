@@ -22,7 +22,7 @@ public:
 	RequestParser();
 
 	HTTPRequest parseHttpRequest(const std::string& request);
-	void clearRequest();
+    void clearParser();
 
 	// Getter functions
 	int getErrorCode() const;
@@ -34,6 +34,7 @@ private:
 	HTTPRequest m_request;
     bool m_hasBody;
 	bool m_chunked;
+    std::istringstream m_requestStream;
 
 	std::string parseMethod(const std::string& requestLine);
 	std::string parseUri(const std::string& requestLine);
@@ -43,8 +44,8 @@ private:
 	void checkHeaderName(const std::string& headerName);
 	void checkContentLength(const std::string& headerName, std::string& headerValue);
 	void checkTransferEncoding();
-	void parseChunkedBody(std::istringstream& requestStream);
-	void parseNonChunkedBody(std::istringstream& requestStream);
+	void parseChunkedBody();
+	void parseNonChunkedBody();
 
 	// Helper functions
 	std::string checkForSpace(const std::string&);
@@ -52,4 +53,5 @@ private:
 	bool isValidURIChar(uint8_t c) const;
 	bool isValidHeaderFieldNameChar(uint8_t c) const;
 	size_t convertHex(const std::string& chunkSize) const;
+    void clearRequest();
 };
