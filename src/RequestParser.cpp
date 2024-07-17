@@ -276,8 +276,8 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 			headerValue = headerLine.substr(delimiterPos + 1);;
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
-            headerValue = trimLeadingWhitespaces(headerValue);
-			headerValue = trimTrailingWhiteSpaces(headerValue);
+            headerValue = webutils::trimLeadingWhitespaces(headerValue);
+			headerValue = webutils::trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
 		}
@@ -642,7 +642,7 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
 			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
 
-		std::vector<std::string> strValues = split(headerValue, ',');
+		std::vector<std::string> strValues = webutils::split(headerValue, ',');
 		std::vector<long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr;
@@ -685,7 +685,7 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 		}
 
 		if (request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
-			std::vector<std::string> encodings = split(request.headers.at("Transfer-Encoding"), ',');
+			std::vector<std::string> encodings = webutils::split(request.headers.at("Transfer-Encoding"), ',');
 			if (encodings[encodings.size() - 1] != "chunked") {
 				request.errorCode = 400;
                 request.shallCloseConnection = true;
