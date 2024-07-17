@@ -5,13 +5,13 @@
 class InvalidConfigFileTests : public ::testing::Test
 {
 	protected:
-		ConfigFileParser configFileParser;
+		ConfigFileParser m_configFileParser;
 };
 
 class ValidConfigFileTests : public ::testing::Test
 {
 	protected:
-		ConfigFileParser configFileParser;
+		ConfigFileParser m_configFileParser;
 };
 
 /**
@@ -33,37 +33,37 @@ class ValidConfigFileTests : public ::testing::Test
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("invalid_file");}, testing::ThrowsMessage<std::runtime_error>("Failed to open config file"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("invalid_file");}, testing::ThrowsMessage<std::runtime_error>("Failed to open config file"));
 }
 
 TEST_F(InvalidConfigFileTests, FileIsEmpty)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("config_files/empty_file.conf");}, testing::ThrowsMessage<std::runtime_error>("Config file is empty"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/empty_file.conf");}, testing::ThrowsMessage<std::runtime_error>("Config file is empty"));
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsMissingBracket)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("config_files/missing_bracket.conf");}, testing::ThrowsMessage<std::runtime_error>("Open bracket(s) in config file"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/missing_bracket.conf");}, testing::ThrowsMessage<std::runtime_error>("Open bracket(s) in config file"));
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsTooManyBrackets)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("config_files/too_many_brackets.conf");}, testing::ThrowsMessage<std::runtime_error>("Open bracket(s) in config file"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/too_many_brackets.conf");}, testing::ThrowsMessage<std::runtime_error>("Open bracket(s) in config file"));
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("config_files/missing_http_block.conf");}, testing::ThrowsMessage<std::runtime_error>("Config file does not start with 'http {'"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");}, testing::ThrowsMessage<std::runtime_error>("Config file does not start with 'http {'"));
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("config_files/missing_server_block.conf");}, testing::ThrowsMessage<std::runtime_error>("No server(s) in config file"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");}, testing::ThrowsMessage<std::runtime_error>("No server(s) in config file"));
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsInvalidServerDirective)
 {
-	EXPECT_THAT([&]() {configFileParser.parseConfigFile("config_files/invalid_server_directive.conf");}, testing::ThrowsMessage<std::runtime_error>("Invalid server directive"));
+	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/invalid_server_directive.conf");}, testing::ThrowsMessage<std::runtime_error>("Invalid server directive"));
 }
 
 /**
@@ -77,15 +77,15 @@ TEST_F(InvalidConfigFileTests, FileContainsInvalidServerDirective)
 
 TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
 {
-	EXPECT_NO_THROW([&]() {configFileParser.parseConfigFile("config_files/listen_only_ip.conf");});
+	EXPECT_NO_THROW([&]() {m_configFileParser.parseConfigFile("config_files/listen_only_ip.conf");});
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsOnlyPort)
 {
-	EXPECT_NO_THROW([&]() {configFileParser.parseConfigFile("config_files/listen_only_port.conf");});
+	EXPECT_NO_THROW([&]() {m_configFileParser.parseConfigFile("config_files/listen_only_port.conf");});
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsIpAndPort)
 {
-	EXPECT_NO_THROW([&]() {configFileParser.parseConfigFile("config_files/listen_ip_and_port.conf");});
+	EXPECT_NO_THROW([&]() {m_configFileParser.parseConfigFile("config_files/listen_ip_and_port.conf");});
 }
