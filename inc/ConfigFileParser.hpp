@@ -7,6 +7,7 @@
 #include <fstream>
 #include <set>
 #include <stack>
+#include <string>
 
 /* ====== DEFINITIONS ====== */
 
@@ -34,14 +35,15 @@ private:
     void readServerConfigLine(void);
     void readLocationConfigLine(void);
 	void readDirectiveValue(const std::string& directive);
+	void readPort(void);
+	void readIpAddress(void);
 
 	// Checker functions
     bool isBracketOpen(const std::string& configFilePath);
 	bool isDirectiveValid(const std::string& directive, int block) const;
 	bool isSemicolonAtEnd(void) const;
-	bool isSemicolonCountOne(void) const;
-	bool isListenIpValid(void);
-	bool isListenPortValid(void);
+	bool isIpAddressValid(const std::string& ip) const;
+	bool isPortValid(const std::string& port) const;
 
 	// Helper functions
     void readAndTrimLine(void);

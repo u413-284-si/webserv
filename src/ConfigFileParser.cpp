@@ -220,19 +220,8 @@ bool ConfigFileParser::isSemicolonAtEnd(void) const
  * @return true If the ip address is valid
  * @return false If the ip address is not valid
  */
-bool ConfigFileParser::isListenIpValid(void)
+bool ConfigFileParser::isIpAddressValid(const std::string& ip) const
 {
-	size_t colonIndex = m_configFile.currentLine.find(':');
-	if (colonIndex == std::string::npos)
-	{
-		if (isListenPortValid())
-			return true;
-		colonIndex = m_configFile.currentLine.find(';');
-	}
-
-	size_t numIndex = m_configFile.currentLine.find_first_of("0123456789");
-	std::string ip = m_configFile.currentLine.substr(numIndex, colonIndex - numIndex - 1);
-
 	if (ip.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
 
@@ -264,49 +253,94 @@ bool ConfigFileParser::isListenIpValid(void)
 	if (firstOctet < minIpValue || secondOctet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
 		return false;
 
-	m_configFile.servers[m_configFile.serverIndex].listen.insert(std::make_pair(ip, 0));
-
 	return true;
 }
 
 /**
- * @brief Checks if the value of the listen directive is valid
+ * @brief Checks if the ip address is valid and reads it if that is the case
  *
- * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if a colon is present.
- * If no colon is present, there is no need to validate the port.
+ * For the case that no semicolon is can be found in the listen directive, the function checks
+ * if the defined values is valid port. If that is true, the function returns.
+ * If that is not true, the function checks if it is a valid ip address and reads it.
+ * 
+ */
+void ConfigFileParser::readIpAddress(void)
+{
+	size_t colonIndex = m_configFile.currentLine.find(':'); 
+	size_t numIndex = m_configFile.currentLine.find_first_of("0123456789");
+	std::string ip;
+
+	if (colonIndex == std::string::npos)
+	{
+		size_t semicolonIndex = m_configFile.currentLine.find(';');
+		std::string value = m_configFile.currentLine.substr(numIndex, semicolonIndex - numIndex);
+		if (isPortValid(value))
+			return ;
+		ip = value;
+	}
+	else
+		ip = m_configFile.currentLine.substr(numIndex, colonIndex - numIndex);
+
+	if (!isIpAddressValid(ip))
+		throw std::runtime_error("Invalid ip address");
+
+	m_configFile.servers[m_configFile.serverIndex].listen.insert(std::make_pair(ip, 0));
+}
+
+/**
+ * @brief Checks if the value of the listen directive is valid and reads it if that is the case
  *
  * The function makes sure that the port is valid in the following ways:
  * 1. The port must not contain a character other than '0'-'9'
  * 2. The value of the port must be between 1-65535
  *
- * @return true If the port is valid or there is no colon present
+ * @return true If the port is valid
  * @return false If the port is invalid
  */
-bool ConfigFileParser::isListenPortValid(void)
+bool ConfigFileParser::isPortValid(const std::string& port) const
 {
-	if (m_configFile.currentLine.find(':') == std::string::npos)
-		return true;
-
-	size_t colonIndex = m_configFile.currentLine.find(':');
-	size_t semicolonIndex = m_configFile.currentLine.find(';');
-	std::string portStr = m_configFile.currentLine.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
-
-	if (portStr.find_first_not_of("0123456789") != std::string::npos)
+	if (port.find_first_not_of("0123456789") != std::string::npos)
 		return false;
 
 	const int base = 10;
 	const int maxPort = 65535;
 	const int minPort = 1;
 
-	int long port = std::strtol(portStr.c_str(), NULL, base);
-	if (port <= minPort || port > maxPort) 
-		return false;
+	int long portNum = std::strtol(port.c_str(), NULL, base);
+	return !(portNum <= minPort || portNum > maxPort);
+}
+
+/**
+ * @brief Checks if the port is valid and reads it if that is the case
+ *
+ * For the case that no semicolon is can be found in the listen directive, the function checks
+ * if the defined values is valid ip address. If that is true, the function returns.
+ * If that is not true, the function and checks if it is a valid port and reads it.
+ * 
+ */
+void ConfigFileParser::readPort(void)
+{
+	size_t colonIndex = m_configFile.currentLine.find(':');
+	size_t numIndex = m_configFile.currentLine.find_first_of("0123456789");
+	size_t semicolonIndex = m_configFile.currentLine.find(';');
+	std::string port;
+
+	if (colonIndex == std::string::npos)
+	{
+		std::string value = m_configFile.currentLine.substr(numIndex, semicolonIndex - numIndex);
+		if (isIpAddressValid(value))
+			return;
+		port = value;
+	}
+	else
+		port = m_configFile.currentLine.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
+
+	if (!isPortValid(port))
+		throw std::runtime_error("Invalid port");
 
 	for (std::map<std::string, unsigned short>::iterator it = m_configFile.servers[m_configFile.serverIndex].listen.begin(); it != m_configFile.servers[m_configFile.serverIndex].listen.end(); it++)
 		if (it->second == 0)
-			it->second = port;
-	
-	return true;
+			it->second = std::atoi(port.c_str());
 }
 
 /**
@@ -322,10 +356,12 @@ void ConfigFileParser::readDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
 	{
-		if (!isListenIpValid())
-			throw std::runtime_error("Invalid ip address");
-		if (!isListenPortValid())
-			throw std::runtime_error("Invalid port");
+		readPort();
+		readIpAddress();
+		// if (!isIpValid())
+		// 	throw std::runtime_error("Invalid ip address");
+		// if (!isPortValid())
+		// 	throw std::runtime_error("Invalid port");
 	}
 }
 
