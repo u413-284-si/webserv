@@ -277,14 +277,16 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 			m_errorCode = 400;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
 		}
-		std::istringstream headerStream(headerLine);
 		std::string headerName;
 		std::string headerValue;
-		if (std::getline(headerStream, headerName, ':')) {
+        std::size_t delimiterPos = headerLine.find_first_of(':');
+		if (delimiterPos != std::string::npos) {
+            headerName = headerLine.substr(0, delimiterPos);
 			checkHeaderName(headerName);
-			std::getline(headerStream >> std::ws, headerValue);
+			headerValue = headerLine.substr(delimiterPos + 1);;
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
+            headerValue = trimLeadingWhitespaces(headerValue);
 			headerValue = trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
