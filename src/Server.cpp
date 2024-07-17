@@ -207,6 +207,9 @@ void    Server::handleConnections(int clientSock, RequestParser& parser){
 			if (checkForCompleteRequest(clientSock)) {
 				try{
 					parser.parseHttpRequest(m_requestStrings[clientSock], request);
+                    // ResponseBuilder does his stuff
+                    parser.clearParser();
+                    parser.clearRequest(request);
 				}
 				catch (std::exception& e){
 					std::cerr << "Error: " << e.what() << std::endl;
