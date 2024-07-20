@@ -8,6 +8,7 @@
 #include <set>
 #include <stack>
 #include <string>
+#include <iostream>
 
 /* ====== DEFINITIONS ====== */
 
@@ -34,9 +35,10 @@ private:
 	// Reader functions	
     void readServerConfigLine(void);
     void readLocationConfigLine(void);
-	void readDirectiveValue(const std::string& directive);
+	void readServerDirectiveValue(const std::string& directive);
 	void readPort(void);
 	void readIpAddress(void);
+	void readRoot(int block);
 
 	// Checker functions
     bool isBracketOpen(const std::string& configFilePath);

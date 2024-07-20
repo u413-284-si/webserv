@@ -351,6 +351,49 @@ void ConfigFileParser::readPort(void)
 }
 
 /**
+ * @brief Reads the root path
+ * 
+ * The function checks if the root path is valid and reads it if that is the case.
+ *
+ * It makes sure that the path is valid in the following ways:
+ * 1. There is a root path
+ * 2. There is only one root path
+ * 
+ * If at the end of the path is a slash, it removes it.
+ *
+ * This function can be used for the server block and location block
+ *
+ * @param block The block which surounds the directive
+ */
+void ConfigFileParser::readRoot(int block)
+{
+
+	std::string::size_type spaceIndex = m_configFile.currentLine.find(' ');
+	std::string strWithoutDirective = m_configFile.currentLine.substr(spaceIndex);
+	std::string::size_type firstCharOfRootPathIndex = strWithoutDirective.find_first_not_of(" \t\n\v\f\r");
+
+	if (firstCharOfRootPathIndex == std::string::npos)
+		throw std::runtime_error("No root path");
+
+	std::string::size_type lastCharOfRootPathIndex = strWithoutDirective.find_last_not_of(" \t\n\v\f\r");
+	std::string rootPath = strWithoutDirective.substr(firstCharOfRootPathIndex, lastCharOfRootPathIndex - firstCharOfRootPathIndex);
+
+
+	if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
+		throw std::runtime_error("More than one root path");
+
+	if (rootPath[rootPath.length() - 1] == '/')
+		rootPath = rootPath.substr(0, rootPath.length() - 1);
+
+	std::cout << "rootPath: " << "'" << rootPath << "'" << std::endl;
+
+	if (block == SERVER)
+		m_configFile.servers[m_configFile.serverIndex].root = rootPath;
+	else if (block == LOCATION)
+		m_configFile.servers[m_configFile.serverIndex].locations[m_configFile.servers[m_configFile.serverIndex].locationIndex].root = rootPath;
+}
+
+/**
  * @brief Reads and checks the value of the directive in the current line of the config file
  * 
  * @details This function is called when the directive is valid.
@@ -359,13 +402,15 @@ void ConfigFileParser::readPort(void)
 
  * @param directive Is the the directive which value is being read and checked
  */
-void ConfigFileParser::readDirectiveValue(const std::string& directive)
+void ConfigFileParser::readServerDirectiveValue(const std::string& directive)
 {
 	if (directive == "listen")
 	{
 		readIpAddress();
 		readPort();
 	}
+	else if (directive == "root")
+		readRoot(SERVER);
 }
 
 /**
@@ -400,7 +445,7 @@ void ConfigFileParser::readServerConfigLine(void)
 	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
 		throw std::runtime_error("Semicolon missing");
 
-	readDirectiveValue(directive);
+	readServerDirectiveValue(directive);
 }
 
 /**
