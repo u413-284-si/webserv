@@ -41,7 +41,7 @@ long getFileSize(const struct stat& fileStat)
  * Generates an HTML response with the contents of a directory.
  * The response contains a table with the file names, last modified time and file size.
  * The file names are links to the files.
- * If a function throws, retunes an empty string.
+ * If a function throws, returns empty string.
  * @param path Path to directory.
  * @return std::string HTML response.
  */
