@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-namespace utils {
+namespace webutils {
 
 /**
  * @brief Get file extension of file in provided path
@@ -35,7 +35,7 @@ std::string getFileExtension(const std::string& path)
  */
 std::string getGMTString(const time_t now, const char* format)
 {
-	char string[utils::timeStringBuffer];
+	char string[webutils::timeStringBuffer];
 
 	static_cast<void>(strftime(string, sizeof(string), format, gmtime(&now)));
 	return string;
@@ -51,7 +51,7 @@ std::string getGMTString(const time_t now, const char* format)
  */
 std::string getLocaltimeString(const time_t now, const char* format)
 {
-	char string[utils::timeStringBuffer];
+	char string[webutils::timeStringBuffer];
 
 	static_cast<void>(strftime(string, sizeof(string), format, localtime(&now)));
 	return string;

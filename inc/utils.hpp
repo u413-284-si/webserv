@@ -4,7 +4,7 @@
 #include <ctime>
 #include "StatusCode.hpp"
 
-namespace utils {
+namespace webutils {
 
 const int timeStringBuffer = 80;
 

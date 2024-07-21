@@ -105,7 +105,7 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
  */
 void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 {
-	m_response << "HTTP/1.1 " << response.status << ' ' << utils::statusCodeToReasonPhrase(response.status) << "\r\n";
+	m_response << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status) << "\r\n";
 }
 
 /**
@@ -123,13 +123,13 @@ void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 void ResponseBuilder::appendHeaders(const HTTPResponse& response)
 {
 	// Content-Type
-	m_response << "Content-Type: " << getMIMEType(utils::getFileExtension(response.targetResource)) << "\r\n";
+	m_response << "Content-Type: " << getMIMEType(webutils::getFileExtension(response.targetResource)) << "\r\n";
 	// Content-Length
 	m_response << "Content-Length: " << response.body.length() << "\r\n";
 	// Server
 	m_response << "Server: TriHard\r\n";
 	// Date
-	m_response << "Date: " << utils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	m_response << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	if (response.status == StatusMovedPermanently) {
 		m_response << "Location: " << response.targetResource << "\r\n";

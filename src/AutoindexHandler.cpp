@@ -19,7 +19,7 @@ AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
  */
 std::string getLastModifiedTime(const struct stat& fileStat)
 {
-	return utils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
+	return webutils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
 }
 
 /**

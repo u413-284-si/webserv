@@ -59,7 +59,7 @@ void ResponseBodyHandler::execute()
  */
 void ResponseBodyHandler::handleErrorBody()
 {
-	m_response.body = utils::getDefaultErrorPage(m_response.status);
+	m_response.body = webutils::getDefaultErrorPage(m_response.status);
 	// This is just to get the right extension. Could be put into its own data field of HTML struct.
 	m_response.targetResource = "error.html";
 }
