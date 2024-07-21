@@ -43,7 +43,7 @@ class TargetResourceHandlerTest : public ::testing::Test {
 	};
 	HTTPResponse m_response = {
 		.status = StatusOK,
-		.autoindex = false
+		.isAutoindex = false
 	};
 	MockFileSystemPolicy m_fileSystemPolicy;
 
@@ -152,7 +152,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 
 	EXPECT_EQ(m_response.status, StatusOK);
 	EXPECT_EQ(m_response.targetResource, "/fourth/location/test/autoindex/");
-	EXPECT_TRUE(m_response.autoindex);
+	EXPECT_TRUE(m_response.isAutoindex);
 }
 
 TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
@@ -167,7 +167,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 
 	EXPECT_EQ(m_response.status, StatusForbidden);
 	EXPECT_EQ(m_response.targetResource, "/second/location/test/");
-	EXPECT_FALSE(m_response.autoindex);
+	EXPECT_FALSE(m_response.isAutoindex);
 }
 
 TEST_F(TargetResourceHandlerTest, ServerError)
@@ -182,5 +182,5 @@ TEST_F(TargetResourceHandlerTest, ServerError)
 
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
 	EXPECT_EQ(m_response.targetResource, "/second/location/test/");
-	EXPECT_FALSE(m_response.autoindex);
+	EXPECT_FALSE(m_response.isAutoindex);
 }

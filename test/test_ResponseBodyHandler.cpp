@@ -29,7 +29,7 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 
 	m_response.targetResource = "/proc/self/";
 	m_response.status = StatusOK;
-	m_response.autoindex = true;
+	m_response.isAutoindex = true;
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusOK);
 	EXPECT_EQ(m_response.targetResource, "/proc/self/autoindex.html");
@@ -48,7 +48,7 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 
 	m_response.targetResource = "/proc/self/";
 	m_response.status = StatusOK;
-	m_response.autoindex = true;
+	m_response.isAutoindex = true;
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.status, StatusInternalServerError);
@@ -63,7 +63,7 @@ TEST_F(ResponseBodyHandlerTest, ErrorPage)
 {
 	m_response.targetResource = "/proc/self/";
 	m_response.status = StatusForbidden;
-	m_response.autoindex = false;
+	m_response.isAutoindex = false;
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_response.body, webutils::getDefaultErrorPage(m_response.status));
@@ -74,7 +74,7 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
 	.WillOnce(testing::Throw(std::runtime_error("openFile failed")));
 
-	m_response.autoindex = false;
+	m_response.isAutoindex = false;
 	m_response.status = StatusOK;
 	m_response.method = "GET";
 	m_response.targetResource = "/proc/self/cmdline";
@@ -89,7 +89,7 @@ TEST_F(ResponseBodyHandlerTest, FileFound)
 	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
 	.WillOnce(testing::Return("Hello World"));
 
-	m_response.autoindex = false;
+	m_response.isAutoindex = false;
 	m_response.status = StatusOK;
 	m_response.method = "GET";
 	m_response.targetResource = "/proc/self/cmdline";
