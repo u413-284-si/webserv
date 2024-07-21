@@ -26,9 +26,8 @@ void ResponseBodyHandler::execute()
 {
 	if (m_response.status != StatusOK) {
 		handleErrorBody();
-		return ;
 	}
-	if (m_response.isAutoindex) {
+	else if (m_response.isAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_response.body = autoindexHandler.execute(m_response.targetResource);
 		if (m_response.body.empty()) {
@@ -38,9 +37,8 @@ void ResponseBodyHandler::execute()
 		}
 		m_response.status = StatusOK;
 		m_response.targetResource += "autoindex.html";
-		return ;
 	}
-	if (m_response.method == "GET") {
+	else if (m_response.method == "GET") {
 		try {
 			m_response.body = m_fileSystemPolicy.getFileContents(m_response.targetResource.c_str());
 		} catch (std::exception& e) {
