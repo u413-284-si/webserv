@@ -69,7 +69,7 @@ void TargetResourceHandler::execute()
 					m_response.targetResource += m_response.location->index;
 					internalRedirect = true;
 				} else if (m_response.location->isAutoindex) {
-					m_response.autoindex = true;
+					m_response.isAutoindex = true;
 				} else
 					m_response.status = StatusForbidden;
 				break;

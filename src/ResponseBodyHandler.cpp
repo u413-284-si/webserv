@@ -28,7 +28,7 @@ void ResponseBodyHandler::execute()
 		handleErrorBody();
 		return ;
 	}
-	if (m_response.autoindex) {
+	if (m_response.isAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_response.body = autoindexHandler.execute(m_response.targetResource);
 		if (m_response.body.empty()) {

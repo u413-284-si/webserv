@@ -91,7 +91,7 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
 
 	response.status = StatusOK;
 	response.method = request.method;
-	response.autoindex = false;
+	response.isAutoindex = false;
 
 	return response;
 }
