@@ -385,8 +385,6 @@ void ConfigFileParser::readRoot(int block)
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath = rootPath.substr(0, rootPath.length() - 1);
 
-	std::cout << "rootPath: " << "'" << rootPath << "'" << std::endl;
-
 	if (block == SERVER)
 		m_configFile.servers[m_configFile.serverIndex].root = rootPath;
 	else if (block == LOCATION)

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "ConfigFile.hpp"
 
 /* ====== DEFINITIONS ====== */
 
@@ -46,3 +47,7 @@ struct ConfigFile {
 	size_t serverIndex;
     std::vector<ConfigServer> servers;
 };
+
+std::ostream& operator<<(std::ostream& ostream, const Location& location);
+std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer);
+std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile);
