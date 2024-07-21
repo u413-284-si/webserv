@@ -32,11 +32,11 @@ std::string getFileExtension(const std::string& path)
  * @param format strftime format string
  * @return std::string Timestring in provided format
  */
-std::string getGMTString(const time_t now, const char* format)
+std::string getGMTString(const time_t now, const std::string& format)
 {
 	char string[webutils::timeStringBuffer];
 
-	static_cast<void>(strftime(string, sizeof(string), format, gmtime(&now)));
+	static_cast<void>(strftime(string, sizeof(string), format.c_str(), gmtime(&now)));
 	return string;
 }
 
@@ -48,11 +48,11 @@ std::string getGMTString(const time_t now, const char* format)
  * @param format strftime format string
  * @return std::string Timestring in provided format
  */
-std::string getLocaltimeString(const time_t now, const char* format)
+std::string getLocaltimeString(const time_t now, const std::string& format)
 {
 	char string[webutils::timeStringBuffer];
 
-	static_cast<void>(strftime(string, sizeof(string), format, localtime(&now)));
+	static_cast<void>(strftime(string, sizeof(string), format.c_str(), localtime(&now)));
 	return string;
 }
 
