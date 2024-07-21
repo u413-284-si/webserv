@@ -85,9 +85,8 @@ DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 {
 	errno = 0;
 	DIR *dir = opendir(path.c_str());
-	if (dir == NULL) {
+	if (dir == NULL)
 		throw std::runtime_error(strerror(errno));
-	}
 	return dir;
 }
 
@@ -102,9 +101,8 @@ struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 {
 	errno = 0;
 	struct dirent *entry = readdir(dir);
-	if (entry == NULL && errno != 0) {
+	if (entry == NULL && errno != 0)
 		throw std::runtime_error(strerror(errno));
-	}
 	return entry;
 }
 
@@ -117,9 +115,8 @@ struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 int FileSystemPolicy::closeDirectory(DIR* dir) const
 {
 	errno = 0;
-	if (closedir(dir) == -1) {
+	if (closedir(dir) == -1)
 		return (errno);
-	}
 	return 0;
 }
 
@@ -134,8 +131,7 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;
-	if (stat(path.c_str(), &fileStat) == -1) {
+	if (stat(path.c_str(), &fileStat) == -1)
 		throw std::runtime_error(strerror(errno));
-	}
 	return fileStat;
 }
