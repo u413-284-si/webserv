@@ -1,4 +1,8 @@
+#include "LogOutputterConsole.hpp"
+#include "LogOutputterFile.hpp"
 #include "Server.hpp"
+#include "Log.hpp"
+#include "ConfigFile.hpp"
 
 int main(int argc, char** argv)
 {
@@ -7,9 +11,11 @@ int main(int argc, char** argv)
 		std::cerr << argv << " <config file>\n";
 		return 1;
 	}
-	(void)argv;
+	static_cast<void>(argv);
+	weblog::initConsole(weblog::LevelDebug);
 	try {
 		Server webserv;
+		LOG_INFO << "Starting server";
 		webserv.run();
 	} catch (std::exception& e) {
 		std::cerr << "error: " << e.what() << std::endl;
