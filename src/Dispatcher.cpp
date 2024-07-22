@@ -96,7 +96,7 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 	struct addrinfo hints = {};
 	hints.ai_flags = AI_PASSIVE;
 	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM | SOCK_NONBLOCK;
+	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = 0;
 	hints.ai_canonname = NULL;
 	hints.ai_addr = NULL;
@@ -111,7 +111,7 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 	int newFd = -1;
 	for (struct addrinfo *curr = list; curr != NULL; curr = curr->ai_next) {
 
-		newFd = socket(curr->ai_family, curr->ai_socktype, curr->ai_protocol);
+		newFd = socket(curr->ai_family, curr->ai_socktype | SOCK_NONBLOCK, curr->ai_protocol);
 		if (newFd == -1)
 			continue;
 
@@ -144,6 +144,7 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 
 	const Connection connection = { newFd, host, port };
 	IEndpoint* endpoint = new ServerEndpoint(connection);
+	LOG_INFO << "Added server endpoint: " << host << ':' << port;
 	m_endpoints.push_back(endpoint);
 
 	epoll_event event = {};
