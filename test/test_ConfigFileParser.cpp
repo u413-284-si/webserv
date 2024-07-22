@@ -33,38 +33,132 @@ class ValidConfigFileTests : public ::testing::Test
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("invalid_file");}, testing::ThrowsMessage<std::runtime_error>("Failed to open config file"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("invalid_file");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Failed to open config file", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
 
 TEST_F(InvalidConfigFileTests, FileIsEmpty)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/empty_file.conf");}, testing::ThrowsMessage<std::runtime_error>("Config file is empty"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/empty_file.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Config file is empty", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsMissingBracket)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/missing_bracket.conf");}, testing::ThrowsMessage<std::runtime_error>("Open bracket(s) in config file"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/missing_bracket.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Open bracket(s) in config file", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsTooManyBrackets)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/too_many_brackets.conf");}, testing::ThrowsMessage<std::runtime_error>("Open bracket(s) in config file"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/too_many_brackets.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Open bracket(s) in config file", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");}, testing::ThrowsMessage<std::runtime_error>("Config file does not start with 'http {'"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Config file does not start with 'http {'", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");}, testing::ThrowsMessage<std::runtime_error>("No server(s) in config file"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("No server(s) in config file", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsInvalidServerDirective)
 {
-	EXPECT_THAT([&]() {m_configFileParser.parseConfigFile("config_files/invalid_server_directive.conf");}, testing::ThrowsMessage<std::runtime_error>("Invalid server directive"));
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/invalid_server_directive.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Invalid server directive", e.what());
+			throw;
+		}
+	}, std::runtime_error);
 }
+
+TEST_F(InvalidConfigFileTests, FileContainsMissingSemicolon)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/missing_semicolon.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Semicolon missing", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
 
 /**
  * @brief Tests for a valid file
