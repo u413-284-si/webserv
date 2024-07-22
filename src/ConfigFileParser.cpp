@@ -335,17 +335,15 @@ void ConfigFileParser::readPort(void)
  */
 void ConfigFileParser::readRoot(int block)
 {
-
 	std::string::size_type spaceIndex = m_configFile.currentLine.find(' ');
 	std::string strWithoutDirective = m_configFile.currentLine.substr(spaceIndex);
 	std::string::size_type firstCharOfRootPathIndex = strWithoutDirective.find_first_not_of(" \t\n\v\f\r");
-
-	if (firstCharOfRootPathIndex == std::string::npos)
-		throw std::runtime_error("No root path");
-
 	std::string::size_type lastCharOfRootPathIndex = strWithoutDirective.find_last_not_of(" \t\n\v\f\r");
+
 	std::string rootPath = strWithoutDirective.substr(firstCharOfRootPathIndex, lastCharOfRootPathIndex - firstCharOfRootPathIndex);
 
+	if (rootPath.empty())
+		throw std::runtime_error("No root path");
 
 	if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
 		throw std::runtime_error("More than one root path");
@@ -405,7 +403,6 @@ void ConfigFileParser::readServerConfigLine(void)
 	while (!line.empty())
 	{
 		semicolonIndex = line.find(';');
-
 		directiveValuePair = line.substr(0, semicolonIndex + 1);
 		directive = line.substr(0, line.find(' '));
 
