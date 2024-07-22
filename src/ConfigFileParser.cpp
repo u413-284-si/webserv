@@ -390,39 +390,55 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive)
 		readRoot(SERVER);
 }
 
+
 /**
  * @brief Reads the current line of the server config and does several checks
  *
- * The function checks following things:
- * 1. That the directive is valid
- * 2. That at the end of the directive there is a semicolon 
- * 3. That the value of the directive is valid
- *
- * It also checks if the server block contains the location directive.
- * If this is the case, it calls the function readLocationConfigLine() whithin a loop to read and check the location block.
+ * How a line gets processed:
+ * 1. The current line is read until a semicolon is found and stored in a string.
+ *    If the line does not contain a semicolon, it throws an exception.
+ * 2. The directive of of the resulting string gets extracted and checked.
+ * 3. The value of the directive gets extracted and checked.
+ * 
+ * If the line contains more then one directive, this process gets repeated for each directive.
+ * Otherwise the line just gets cleared and the processing ends.
  */
 void ConfigFileParser::readServerConfigLine(void)
 {
     ConfigServer server;
     std::string directive;
+	std::string line = m_configFile.currentLine;
+	std::string directiveValuePair;
+	size_t semicolonIndex = 0;
 
 	initializeConfigServer(server);
 
-    directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
-	if (!isDirectiveValid(directive, SERVER))
-		throw std::runtime_error("Invalid server directive");
+	while (!line.empty())
+	{
+		semicolonIndex = line.find(';');
 
-	if (directive == "location") {
-		for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
-			readLocationConfigLine();
-		m_configFile.servers[m_configFile.serverIndex].locationIndex++;
-		return;
-    }
+		directiveValuePair = line.substr(0, semicolonIndex + 1);
+		directive = line.substr(0, line.find(' '));
 
-	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
-		throw std::runtime_error("Semicolon missing");
+		if (!isDirectiveValid(directive, SERVER))
+			throw std::runtime_error("Invalid server directive");
+		if (directive == "location") {
+			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+				readLocationConfigLine();
+			m_configFile.servers[m_configFile.serverIndex].locationIndex++;
+			break;
+   		}
+		
+		if (semicolonIndex == std::string::npos)
+			throw std::runtime_error("Semicolon missing");
 
-	readServerDirectiveValue(directive);
+		readServerDirectiveValue(directive);
+
+		if (line.size() > semicolonIndex + 2)
+			line = line.substr(semicolonIndex + 1);
+		else
+			line.clear();
+	}
 }
 
 /**
@@ -447,8 +463,8 @@ void ConfigFileParser::readLocationConfigLine(void)
     if (!isDirectiveValid(directive, LOCATION))
 		throw std::runtime_error("Invalid location directive");
 
-	if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
-		throw std::runtime_error("Semicolon missing");
+	// if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
+	// 	throw std::runtime_error("Semicolon missing");
 
     m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
