@@ -23,11 +23,10 @@ class ValidConfigFileTests : public ::testing::Test
  * 3. File has open brackets (including missing brackets and too many brackets)
  * 4. File is missing the http block
  * 5. File is missing server block
- * 6. File contains invalid directive (including server)
- * @todo FIXME: Check for invalid location directive
- * @todo FIXME: Check for missing semicolon
- * @todo FIXME: Check for invalid ip address
- * @todo FIXME: Check for invalid port
+ * 6. File contains invalid directive (including server and location)
+ * 7. File contains missing semicolon
+ * 8. File contains invalid ip address
+ * 9. File contains invalid port
  */
 
 
@@ -143,6 +142,22 @@ TEST_F(InvalidConfigFileTests, FileContainsInvalidServerDirective)
 	}, std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, FileContainsInvalidLocationDirective)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/invalid_location_directive.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Invalid location directive", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, FileContainsMissingSemicolon)
 {
 	EXPECT_THROW(
@@ -154,6 +169,70 @@ TEST_F(InvalidConfigFileTests, FileContainsMissingSemicolon)
 		catch (const std::exception& e)
 		{
 			EXPECT_STREQ("Semicolon missing", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsTooHighIpAddress)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/listen_invalid_ip_high.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Invalid ip address", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsIpAddressWithMissingDot)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/listen_invalid_ip_missing_dot.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Invalid ip address", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsTooHighPort)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/listen_invalid_port_high.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Invalid port", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsTooLowPort)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/listen_invalid_port_low.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("Invalid port", e.what());
 			throw;
 		}
 	}, std::runtime_error);
