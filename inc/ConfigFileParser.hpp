@@ -43,7 +43,6 @@ private:
 	// Checker functions
     bool isBracketOpen(const std::string& configFilePath);
 	bool isDirectiveValid(const std::string& directive, int block) const;
-	bool isSemicolonAtEnd(void) const;
 	bool isIpAddressValid(const std::string& ip) const;
 	bool isPortValid(const std::string& port) const;
 

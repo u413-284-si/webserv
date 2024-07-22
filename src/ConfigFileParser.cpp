@@ -196,17 +196,6 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
 
 
 /**
- * @brief Checks if the current line of the config file contains a semicolon
- * 
- * @return true If the line contains a semicolon a the end
- * @return false If the line does not contain a semicolon
- */
-bool ConfigFileParser::isSemicolonAtEnd(void) const
-{
-	return m_configFile.currentLine.find_last_of(';') != std::string::npos;
-}
-
-/**
  * @brief Checks if the provided ip address of the listen directive is valid and reads it if that is the case
  * 
  * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if a colon is present.
