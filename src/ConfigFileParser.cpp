@@ -338,7 +338,7 @@ void ConfigFileParser::readRoot(int block)
 	std::string::size_type spaceIndex = m_configFile.currentLine.find(' ');
 	std::string strWithoutDirective = m_configFile.currentLine.substr(spaceIndex);
 	std::string::size_type firstCharOfRootPathIndex = strWithoutDirective.find_first_not_of(" \t\n\v\f\r");
-	std::string::size_type lastCharOfRootPathIndex = strWithoutDirective.find_last_not_of(" \t\n\v\f\r");
+	std::string::size_type lastCharOfRootPathIndex = strWithoutDirective.find(';');
 
 	std::string rootPath = strWithoutDirective.substr(firstCharOfRootPathIndex, lastCharOfRootPathIndex - firstCharOfRootPathIndex);
 
