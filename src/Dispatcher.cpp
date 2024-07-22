@@ -142,9 +142,12 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 		return false;
 	}
 
-	const Connection connection = { newFd, host, port };
+	char buf_host[NI_MAXHOST];
+	char buf_port[NI_MAXSERV];
+	getnameinfo(list->ai_addr, list->ai_addrlen, buf_host, NI_MAXHOST, buf_port, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
+	const Connection connection = { newFd, buf_host, buf_port };
 	IEndpoint* endpoint = new ServerEndpoint(connection);
-	LOG_INFO << "Added server endpoint: " << host << ':' << port;
+	LOG_INFO << "Added server endpoint: " << buf_host << ':' << buf_port;
 	m_endpoints.push_back(endpoint);
 
 	epoll_event event = {};
