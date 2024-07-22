@@ -48,5 +48,5 @@ private:
 
 	// Helper functions
     void readAndTrimLine(void);
-    void removeLeadingAndTrailingSpaces();
+    void removeLeadingAndTrailingSpaces(std::string &line);
 };

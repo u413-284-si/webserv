@@ -128,17 +128,17 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 void ConfigFileParser::readAndTrimLine(void)
 {
 	getline(m_configFile.stream, m_configFile.currentLine);
-	removeLeadingAndTrailingSpaces();
+	removeLeadingAndTrailingSpaces(m_configFile.currentLine);
 }
 
 /**
  * @brief Removes leading and trailing spaces
  * 		  from the current line of the config file
  */
-void ConfigFileParser::removeLeadingAndTrailingSpaces(void)
+void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string &line)
 {
-    m_configFile.currentLine.erase(0, m_configFile.currentLine.find_first_not_of(' '));
-    m_configFile.currentLine.erase(m_configFile.currentLine.find_last_not_of(' ') + 1);
+    line.erase(0, line.find_first_not_of(' '));
+    line.erase(line.find_last_not_of(' ') + 1);
 }
 
 
