@@ -11,10 +11,7 @@ Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 	}
 }
 
-Dispatcher::~Dispatcher()
-{
-	close(m_epfd);
-}
+Dispatcher::~Dispatcher() { close(m_epfd); }
 
 Dispatcher::Dispatcher(const Dispatcher& other)
 	: m_timeout(other.m_timeout)
@@ -62,14 +59,99 @@ bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
 	return true;
 }
 
-int Dispatcher::wait()
+void Dispatcher::handleEvents()
 {
-	const int nfds = epoll_wait(m_epfd, &m_events[0], static_cast<int>(m_events.size()), m_timeout);
-	if (nfds == -1)
-		LOG_ERROR << "epoll_wait: " << strerror(errno) << '\n';
-	else if (nfds == 0)
-		LOG_DEBUG << "epoll_wait: Timeout\n";
-	else
-		LOG_DEBUG << "epoll_wait: " << nfds << " events\n";
-	return nfds;
+	while (true) {
+		const int nfds = epoll_wait(m_epfd, &m_events[0], static_cast<int>(m_events.size()), m_timeout);
+		if (nfds == -1)
+			LOG_ERROR << "epoll_wait: " << strerror(errno) << '\n';
+		else if (nfds == 0)
+			LOG_DEBUG << "epoll_wait: Timeout\n";
+		else
+			LOG_DEBUG << "epoll_wait: " << nfds << " events\n";
+
+		for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.begin() + nfds; ++iter) {
+			if (iter->events & EPOLLERR || iter->events & EPOLLHUP) {
+				LOG_ERROR << "epoll_wait: EPOLLERR or EPOLLHUP\n";
+				close(iter->data.fd);
+				continue;
+			}
+			if (iter->events & EPOLLIN) {
+				LOG_DEBUG << "epoll_wait: EPOLLIN\n";
+			}
+			if (iter->events & EPOLLOUT) {
+				LOG_DEBUG << "epoll_wait: EPOLLOUT\n";
+			}
+		}
+	}
+}
+
+bool Dispatcher::initServer(const std::string& host, const int backlog, const std::string& port)
+{
+	const char* node = NULL;
+
+	if (!host.empty() || host != "*")
+		node = host.c_str();
+
+	struct addrinfo hints = {};
+	hints.ai_flags = AI_PASSIVE;
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM | SOCK_NONBLOCK;
+	hints.ai_protocol = 0;
+	hints.ai_canonname = NULL;
+	hints.ai_addr = NULL;
+	hints.ai_next = NULL;
+
+	struct addrinfo *list = NULL;
+	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
+	if (result != 0) {
+		LOG_ERROR << "initServer(): " << gai_strerror(result) << '\n';
+		return false;
+	}
+	int newFd = -1;
+	for (struct addrinfo *curr = list; curr != NULL; curr = curr->ai_next) {
+
+		newFd = socket(curr->ai_family, curr->ai_socktype, curr->ai_protocol);
+		if (newFd == -1)
+			continue;
+
+		if (bind(newFd, curr->ai_addr, curr->ai_addrlen) == -1) {
+			close(newFd);
+			newFd = -1;
+			continue;
+		}
+
+		int reuse = 1;
+		if (setsockopt(newFd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int)) == -1) {
+			close(newFd);
+			newFd = -1;
+			continue;
+		}
+
+		if (listen(newFd, backlog) == -1) {
+			close(newFd);
+			newFd = -1;
+			continue;
+		}
+
+		break;
+	}
+	freeaddrinfo(list);
+	if (newFd == -1) {
+		LOG_ERROR << "initServer(): Cannot bind to a valid socket.\n";
+		return false;
+	}
+
+	const Connection connection = { newFd, host, port };
+	IEndpoint* endpoint = new ServerEndpoint(connection);
+	m_endpoints.push_back(endpoint);
+
+	epoll_event event = {};
+	event.events = EPOLLIN | EPOLLET;
+	event.data.ptr = static_cast<void *>(endpoint);
+	if (!addEvent(newFd, &event)) {
+		close(newFd);
+		return false;
+	}
+	return true;
 }
