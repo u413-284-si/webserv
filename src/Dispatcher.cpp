@@ -13,11 +13,6 @@ Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 
 Dispatcher::~Dispatcher()
 {
-	for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.end(); ++iter) {
-		if (iter->data.fd != -1) {
-			close(iter->data.fd);
-		}
-	}
 	close(m_epfd);
 }
 
@@ -37,28 +32,34 @@ Dispatcher& Dispatcher::operator=(const Dispatcher& other)
 	return *this;
 }
 
-void Dispatcher::addEvent(const int newfd, epoll_event* event) const
+bool Dispatcher::addEvent(const int newfd, epoll_event* event) const
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, newfd, event) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno) << '\n';
+		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd << '\n';
+	return true;
 }
 
-void Dispatcher::removeEvent(const int delfd) const
+bool Dispatcher::removeEvent(const int delfd) const
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_DEL, delfd, NULL) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno) << '\n';
+		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd << '\n';
+	return true;
 }
 
-void Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
+bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_MOD, modfd, event) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno) << '\n';
+		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd << '\n';
+	return true;
 }
 
 int Dispatcher::wait()
