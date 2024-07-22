@@ -420,8 +420,11 @@ void ConfigFileParser::readServerConfigLine(void)
 
 		readServerDirectiveValue(directive);
 
-		if (line.size() > semicolonIndex + 2)
+		if (line.size() > semicolonIndex + 1)
+		{
 			line = line.substr(semicolonIndex + 1);
+			removeLeadingAndTrailingSpaces(line);
+		}
 		else
 			line.clear();
 	}
@@ -452,7 +455,6 @@ void ConfigFileParser::readLocationConfigLine(void)
 	while (!line.empty())
 	{
 		semicolonIndex = line.find(';');
-
 		directiveValuePair = line.substr(0, semicolonIndex + 1);
 		directive = line.substr(0, line.find(' '));
 
@@ -464,8 +466,11 @@ void ConfigFileParser::readLocationConfigLine(void)
 
 		readServerDirectiveValue(directive);
 
-		if (line.size() > semicolonIndex + 2)
+		if (line.size() > semicolonIndex + 1)
+		{
 			line = line.substr(semicolonIndex + 1);
+			removeLeadingAndTrailingSpaces(line);
+		}
 		else
 			line.clear();
 	}
