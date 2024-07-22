@@ -139,17 +139,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 void ConfigFileParser::readAndTrimLine(void)
 {
 	getline(m_configFile.stream, m_configFile.currentLine);
-	if (!m_configFile.currentLine.empty() && isSemicolonAtEnd())
-	{
-		size_t semicolonIndex = m_configFile.currentLine.find(';');
-
-		m_configFile.currentLine = m_configFile.currentLine.substr(0, semicolonIndex);
-		removeLeadingAndTrailingSpaces();
-		m_configFile.currentLine += ';';
-	}
-	else {
-		removeLeadingAndTrailingSpaces();
-	}
+	removeLeadingAndTrailingSpaces();
 }
 
 /**
