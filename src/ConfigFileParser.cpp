@@ -396,8 +396,8 @@ void ConfigFileParser::readServerConfigLine(void)
 {
     ConfigServer server;
     std::string directive;
-	std::string line = m_configFile.currentLine;
 	std::string directiveValuePair;
+	std::string line = m_configFile.currentLine;
 	size_t semicolonIndex = 0;
 
 	initializeConfigServer(server);
@@ -430,30 +430,48 @@ void ConfigFileParser::readServerConfigLine(void)
 	}
 }
 
-/**
- * @brief Reads the current line of the location and does several checks
+ /**
+ * @brief Reads the current line of the location config and does several checks
  *
- * The function checks following things:
- * 1. That the directive is valid
- * 2. That at the end of the directive there is a semicolon 
- * 3. That the value of the directive is valid
- *
- * It also checks if the server block contains the location directive.
- * If this is the case, it calls the function readLocationConfigLine() whithin a loop to read and check the location block.
+ * How a line gets processed:
+ * 1. The current line is read until a semicolon is found and stored in a string.
+ *    If the line does not contain a semicolon, it throws an exception.
+ * 2. The directive of of the resulting string gets extracted and checked.
+ * 3. The value of the directive gets extracted and checked.
+ * 
+ * If the line contains more then one directive, this process gets repeated for each directive.
+ * Otherwise the line just gets cleared and the processing ends.
  */
 void ConfigFileParser::readLocationConfigLine(void)
 {
     Location location;
     std::string directive;
+    std::string directiveValuePair;
+	std::string line = m_configFile.currentLine;
+	size_t semicolonIndex = 0;
 
 	initializeLocation(location);
 	
-    directive = m_configFile.currentLine.substr(0, m_configFile.currentLine.find(' '));
-    if (!isDirectiveValid(directive, LOCATION))
-		throw std::runtime_error("Invalid location directive");
+	while (!line.empty())
+	{
+		semicolonIndex = line.find(';');
 
-	// if (!m_configFile.currentLine.empty() && !isSemicolonAtEnd())
-	// 	throw std::runtime_error("Semicolon missing");
+		directiveValuePair = line.substr(0, semicolonIndex + 1);
+		directive = line.substr(0, line.find(' '));
+
+		if (!isDirectiveValid(directive, LOCATION))
+			throw std::runtime_error("Invalid location directive");
+				
+		if (semicolonIndex == std::string::npos)
+			throw std::runtime_error("Semicolon missing");
+
+		readServerDirectiveValue(directive);
+
+		if (line.size() > semicolonIndex + 2)
+			line = line.substr(semicolonIndex + 1);
+		else
+			line.clear();
+	}
 
     m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
