@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Dispatcher.hpp"
+class Dispatcher;
 
 class IEndpoint {
 	public:

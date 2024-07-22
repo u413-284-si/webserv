@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
+#    By: gwolf <gwolf@student.42vienna.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/22 15:30:44 by gwolf            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,13 +75,15 @@ NAME := webserv
 
 SRC:= 	main.cpp \
 		ALogOutputter.cpp \
+		Dispatcher.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
-		Server.cpp
+		Server.cpp \
+		ServerEndpoint.cpp
 
 # ******************************
 # *     Object files           *
