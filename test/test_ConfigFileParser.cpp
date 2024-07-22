@@ -238,21 +238,21 @@ TEST_F(InvalidConfigFileTests, ListenDirectiveContainsTooLowPort)
 	}, std::runtime_error);
 }
 
-// TEST_F(InvalidConfigFileTests, RootDirectiveContainsNoPath)
-// {
-// 	EXPECT_THROW(
-// 	{
-// 		try
-// 		{
-// 			m_configFileParser.parseConfigFile("config_files/root_no_path.conf");
-// 		}
-// 		catch (const std::exception& e)
-// 		{
-// 			EXPECT_STREQ("No root path", e.what());
-// 			throw;
-// 		}
-// 	}, std::runtime_error);
-// }
+TEST_F(InvalidConfigFileTests, RootDirectiveContainsNoPath)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/root_no_path.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("No root path", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
 
 
 /**
