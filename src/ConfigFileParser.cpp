@@ -324,8 +324,7 @@ void ConfigFileParser::readPort(const std::string &value)
  * The function checks if the root path is valid and reads it if that is the case.
  *
  * It makes sure that the path is valid in the following ways:
- * 1. There is a root path
- * 2. There is only one root path
+ * 1. There is only one root path
  * 
  * If at the end of the path is a slash, it removes it.
  *
@@ -342,9 +341,6 @@ void ConfigFileParser::readRootPath(int block, const std::string &value)
 
 	std::string rootPath = strWithoutDirective.substr(firstCharOfRootPathIndex, lastCharOfRootPathIndex - firstCharOfRootPathIndex);
  
-	if (rootPath.empty())
-		throw std::runtime_error("No root path");
-
 	if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
