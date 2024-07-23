@@ -442,7 +442,7 @@ void ConfigFileParser::readServerConfigLine(void)
 			break;
    		}
 
-		readServerDirectiveValue(directive);
+		readServerDirectiveValue(directive, value);
 
 		if (line.size() > semicolonIndex + 1)
 		{
@@ -495,7 +495,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 		if (!isDirectiveValid(directive, LOCATION))
 			throw std::runtime_error("Invalid location directive");
 				
-		readServerDirectiveValue(directive);
+		readServerDirectiveValue(directive, value);
 
 		if (line.size() > semicolonIndex + 1)
 		{
