@@ -399,15 +399,21 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
 }
 
 
-std::string ConfigFileParser::getValue(const std::string& directiveValuePair) const
+/**
+ * @brief Gets the value from the line
+ * 
+ * @param line String containing the directive and value;
+ * @return std::string  The extracted value
+ */
+std::string ConfigFileParser::getValue(const std::string& line) const
 {
-	if (getDirective(directiveValuePair) == "location")
-		return directiveValuePair;
+	if (getDirective(line) == "location")
+		return line;
 
-	size_t semicolonIndex = directiveValuePair.find(';');
+	size_t semicolonIndex = line.find(';');
 	
-	size_t firstWhiteSpaceIndex = directiveValuePair.find_first_of(" \t\n\v\f\r");
-	std::string value = directiveValuePair.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
+	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
+	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	removeLeadingAndTrailingSpaces(value);
 
@@ -443,8 +449,7 @@ void ConfigFileParser::processRemainingLine(std::string& line) const
  * @brief Reads the current line of the server config and does several checks
  *
  * How a line gets processed:
- * 1. The current line is read until a semicolon is found and stored in a string.
- *    If the line does not contain a semicolon, it throws an exception.
+ * 1. Gets checked if it contains a semicolon.
  * 2. The directive of of the resulting string gets extracted and checked.
  * 3. The value of the directive gets extracted and checked.
  * 
@@ -457,23 +462,16 @@ void ConfigFileParser::readServerConfigLine(void)
     std::string directive;
 	std::string value;
 	std::string line = m_configFile.currentLine;
-	size_t semicolonIndex = 0;
 
 	initializeConfigServer(server);
 
 	while (!line.empty())
 	{
-		semicolonIndex = line.find(';');
-		if (semicolonIndex == std::string::npos && getDirective(line) != "location")
+		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
-		if (getDirective(line) == "location")
-			semicolonIndex = line.length();
 
-		std::string directiveValuePair = line.substr(0, semicolonIndex + 1);
-		removeLeadingAndTrailingSpaces(directiveValuePair);
-
-		directive = getDirective(directiveValuePair);
-		value = getValue(directiveValuePair);
+		directive = getDirective(line);
+		value = getValue(line);
 
 		if ((value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos ) && directive != "location")
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
@@ -489,13 +487,7 @@ void ConfigFileParser::readServerConfigLine(void)
 
 		readServerDirectiveValue(directive, value);
 
-		if (line.size() > semicolonIndex + 1)
-		{
-			line = line.substr(semicolonIndex + 1);
-			removeLeadingAndTrailingSpaces(line);
-		}
-		else
-			line.clear();
+		processRemainingLine(line);
 	}
 }
 
@@ -503,36 +495,30 @@ void ConfigFileParser::readServerConfigLine(void)
  * @brief Reads the current line of the location config and does several checks
  *
  * How a line gets processed:
- * 1. The current line is read until a semicolon is found and stored in a string.
- *    If the line does not contain a semicolon, it throws an exception.
+ * 1. Gets checked if it contains a semicolon.
  * 2. The directive of of the resulting string gets extracted and checked.
  * 3. The value of the directive gets extracted and checked.
  * 
  * If the line contains more then one directive, this process gets repeated for each directive.
  * Otherwise the line just gets cleared and the processing ends.
+
  */
 void ConfigFileParser::readLocationConfigLine(void)
 {
     Location location;
     std::string directive;
 	std::string value;
-    std::string directiveValuePair;
 	std::string line = m_configFile.currentLine;
-	size_t semicolonIndex = 0;
 
 	initializeLocation(location);
 	
 	while (!line.empty())
 	{
-		semicolonIndex = line.find(';');
-		if (semicolonIndex == std::string::npos && getDirective(line) != "exception")
+		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 
-		directiveValuePair = line.substr(0, semicolonIndex + 1);
-		removeLeadingAndTrailingSpaces(directiveValuePair);
-
-		directive = getDirective(directiveValuePair);
-		value = getValue(directiveValuePair);
+		directive = getDirective(line);
+		value = getValue(line);
 
 		if (value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
@@ -542,13 +528,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 				
 		readServerDirectiveValue(directive, value);
 
-		if (line.size() > semicolonIndex + 1)
-		{
-			line = line.substr(semicolonIndex + 1);
-			removeLeadingAndTrailingSpaces(line);
-		}
-		else
-			line.clear();
+		processRemainingLine(line);
 	}
 
     m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
