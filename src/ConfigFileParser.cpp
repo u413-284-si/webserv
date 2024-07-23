@@ -1,10 +1,35 @@
 #include "ConfigFileParser.hpp"
-#include <cstddef>
-#include <vector>
 
+/**
+ * @brief PRIVATE Construct a new ConfigFileParser:: ConfigFileParser object.
+ *
+ * The constructor is private to prevent direct object creation.
+ */
 ConfigFileParser::ConfigFileParser(void){}
 
-ConfigFileParser::~ConfigFileParser() { }
+/**
+ * @brief PRIVATE Construct a new ConfigFileParser:: ConfigFileParser object with copy.
+ * 
+ * The copy constructor is private to prevent direct object creation.
+ * @param ref The ConfigFileParser object to copy
+ */
+ConfigFileParser::ConfigFileParser(const ConfigFileParser &ref)
+{
+	static_cast<void>(ref);
+}
+
+/**
+ * @brief PRIVATE Overload of the assignment operator.
+ * 
+ * The assigment operator is private to prevent direct object creation.
+ * @param ref The ConfigFileParser object to assign.
+ * @return ConfigFileParser&  The ConfigFileParser object.
+ */
+ConfigFileParser& ConfigFileParser::operator=(const ConfigFileParser &ref)
+{
+	static_cast<void>(ref);
+	return *this;
+}
 
 /**
  * @brief Parses the config file into a ConfigFile object and returns this object

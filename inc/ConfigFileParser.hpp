@@ -19,12 +19,14 @@
 
 class ConfigFileParser {
 public:
-    ConfigFileParser(void);
-    ~ConfigFileParser();
 
 	const ConfigFile& parseConfigFile(const std::string& configFilePath);
 
 private:
+    ConfigFileParser(void);
+	ConfigFileParser(const ConfigFileParser& ref);
+	ConfigFileParser& operator=(const ConfigFileParser& ref);
+
     ConfigFile m_configFile;
 
 	// Initializer functions
