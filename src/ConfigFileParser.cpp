@@ -123,6 +123,18 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 }
 
 /**
+ * @brief Checks if the line contains a semicolon
+ * 
+ * @param line The current line to be checked
+ * @return true If the line does not contain a semicolon
+ * @return false If the line contains a semicolon
+ */
+bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
+{
+	return line.find(';') == std::string::npos && getDirective(line) != "location";
+}
+
+/**
  * @brief Reads the current line of the config file and removes leading and trailing spaces
  */
 void ConfigFileParser::readAndTrimLine(void)
