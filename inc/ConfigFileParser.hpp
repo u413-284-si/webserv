@@ -32,6 +32,10 @@ private:
 	void initializeConfigServer(ConfigServer &configServer);
 	void initializeLocation(Location &location);
 
+	// Getter functions
+	std::string getDirective(const std::string& directiveValuePair) const;
+	std::string getValue(const std::string& directiveValuePair) const;
+
 	// Reader functions	
     void readServerConfigLine(void);
     void readLocationConfigLine(void);

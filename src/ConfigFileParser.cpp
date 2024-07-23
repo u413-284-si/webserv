@@ -377,6 +377,24 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive)
 		readRoot(SERVER);
 }
 
+std::string ConfigFileParser::getDirective(const std::string& directiveValuePair) const
+{
+	size_t firstWhiteSpaceIndex = directiveValuePair.find_first_of(" \t\n\v\f\r");
+	std::string directive = directiveValuePair.substr(0, firstWhiteSpaceIndex);
+
+	return directive;
+}
+
+
+std::string ConfigFileParser::getValue(const std::string& directiveValuePair) const
+{
+	size_t semicolonIndex = directiveValuePair.find(';');
+	size_t lastWhiteSpaceIndex = directiveValuePair.find_last_of(" \t\n\v\f\r");
+	std::string value = directiveValuePair.substr(lastWhiteSpaceIndex, semicolonIndex);
+
+	return value;
+}
+
 
 /**
  * @brief Reads the current line of the server config and does several checks
