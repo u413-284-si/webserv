@@ -26,7 +26,6 @@ public:
 
 private:
     ConfigFile m_configFile;
-    std::stack<char> m_brackets;
 
 	// Initializer functions
 	void initializeConfigServer(ConfigServer &configServer);
@@ -45,7 +44,7 @@ private:
 	void readRootPath(int block, const std::string& value);
 
 	// Checker functions
-    bool isBracketOpen(const std::string& configFilePath);
+    bool isBracketOpen(const std::string& configFilePath) const;
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, int block) const;
 	bool isIpAddressValid(const std::string& ip) const;

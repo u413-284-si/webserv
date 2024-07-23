@@ -1,4 +1,6 @@
 #include "ConfigFileParser.hpp"
+#include <cstddef>
+#include <vector>
 
 ConfigFileParser::ConfigFileParser(void){}
 
@@ -102,24 +104,25 @@ void ConfigFileParser::initializeLocation(Location &location)
   * @return true If there is minimum one open bracket
   * @return false If there no open bracket
   */
-bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
+bool ConfigFileParser::isBracketOpen(const std::string& configFilePath) const
 {
     std::ifstream tmpStream;
     std::string tmpLine;
+	std::stack<char> brackets;
 
     tmpStream.open(configFilePath.c_str());
 
     while (getline(tmpStream, tmpLine)) {
         for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it) {
 			if (*it == '{')
-				m_brackets.push('{');
-			else if (*it == '}' && m_brackets.empty())
+				brackets.push('{');
+			else if (*it == '}' && brackets.empty())
 				return true;
 			else if (*it == '}')
-                m_brackets.pop();
+                brackets.pop();
         }
     }
-	return !m_brackets.empty();
+	return !brackets.empty();
 }
 
 /**
