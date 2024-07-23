@@ -41,7 +41,7 @@ private:
     void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string &value);
 	void readPort(void);
-	void readIpAddress(void);
+	void readIpAddress(const std::string &value);
 	void readRoot(int block);
 
 	// Checker functions

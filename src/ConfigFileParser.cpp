@@ -233,24 +233,24 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ip) const
  * If that is not true, the function checks if it is a valid ip address and reads it.
  * 
  */
-void ConfigFileParser::readIpAddress(void)
+void ConfigFileParser::readIpAddress(const std::string &value)
 {
-	size_t colonIndex = m_configFile.currentLine.find(':'); 
-	size_t numIndex = m_configFile.currentLine.find_first_of("0123456789");
+	size_t colonIndex = value.find(':'); 
+	size_t numIndex = value.find_first_of("0123456789");
 	std::string ip;
 
 	if (colonIndex == std::string::npos)
 	{
-		size_t semicolonIndex = m_configFile.currentLine.find(';');
-		std::string value = m_configFile.currentLine.substr(numIndex, semicolonIndex - numIndex);
-		if (isPortValid(value))
+		size_t semicolonIndex = value.find(';');
+		std::string num = value.substr(numIndex, semicolonIndex - numIndex);
+		if (isPortValid(num))
 			return ;
-		if (m_configFile.currentLine.find('.') == std::string::npos)
+		if (value.find('.') == std::string::npos)
 			throw std::runtime_error("Invalid port");
-		ip = value;
+		ip = num;
 	}
 	else
-		ip = m_configFile.currentLine.substr(numIndex, colonIndex - numIndex);
+		ip = value.substr(numIndex, colonIndex - numIndex);
 
 	if (!isIpAddressValid(ip))
 		throw std::runtime_error("Invalid ip address");
@@ -366,11 +366,11 @@ void ConfigFileParser::readRoot(int block)
 
  * @param directive Is the the directive which value is being read and checked
  */
-void ConfigFileParser::readServerDirectiveValue(const std::string& directive)
+void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string &value)
 {
 	if (directive == "listen")
 	{
-		readIpAddress();
+		readIpAddress(value);
 		readPort();
 	}
 	else if (directive == "root")
