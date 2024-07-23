@@ -414,6 +414,30 @@ std::string ConfigFileParser::getValue(const std::string& directiveValuePair) co
 	return value;
 }
 
+/**
+ * @brief Processes the line after the directive and value got extracted
+ *
+ * It can be the case that multiple directorives are in the same line.
+ * Therefore the line must still get read until all directives got processed.
+ * 
+ * If the line still contains more then one directive, the processed directive gets skipped.
+ * If the line does not contain any more directives, the line gets cleared.
+ * 
+ * @param line The current line
+ */
+void ConfigFileParser::processRemainingLine(std::string& line) const
+{
+	size_t semicolonIndex = line.find(';');
+
+	if (line.size() > semicolonIndex + 1)
+	{
+		line = line.substr(semicolonIndex + 1);
+		removeLeadingAndTrailingSpaces(line);
+	}
+	else
+		line.clear();
+}
+
 
 /**
  * @brief Reads the current line of the server config and does several checks

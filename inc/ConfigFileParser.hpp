@@ -54,4 +54,5 @@ private:
 	// Helper functions
     void readAndTrimLine(void);
     void removeLeadingAndTrailingSpaces(std::string &line) const;
+	void processRemainingLine(std::string& line) const;
 };
