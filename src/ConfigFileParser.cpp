@@ -380,10 +380,18 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 		readRootPath(SERVER, value);
 }
 
-std::string ConfigFileParser::getDirective(const std::string& directiveValuePair) const
+
+
+/**
+ * @brief Gets the directive from the line
+ * 
+ * @param line String containing the directive and value
+ * @return std::string The extracted directive
+ */
+std::string ConfigFileParser::getDirective(const std::string& line) const
 {
-	size_t firstWhiteSpaceIndex = directiveValuePair.find_first_of(" \t\n\v\f\r");
-	std::string directive = directiveValuePair.substr(0, firstWhiteSpaceIndex);
+	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
+	std::string directive = line.substr(0, firstWhiteSpaceIndex);
 
 	removeLeadingAndTrailingSpaces(directive);
 
