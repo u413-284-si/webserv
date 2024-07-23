@@ -390,7 +390,7 @@ std::string ConfigFileParser::getValue(const std::string& directiveValuePair) co
 {
 	size_t semicolonIndex = directiveValuePair.find(';');
 	size_t lastWhiteSpaceIndex = directiveValuePair.find_last_of(" \t\n\v\f\r");
-	std::string value = directiveValuePair.substr(lastWhiteSpaceIndex, semicolonIndex);
+	std::string value = directiveValuePair.substr(lastWhiteSpaceIndex, semicolonIndex - lastWhiteSpaceIndex);
 
 	return value;
 }
@@ -424,14 +424,13 @@ void ConfigFileParser::readServerConfigLine(void)
 		if (semicolonIndex == std::string::npos && getDirective(line) != "location")
 			throw std::runtime_error("Semicolon missing");
 
-		std::string directiveValuePair = line.substr(0, semicolonIndex);
+		std::string directiveValuePair = line.substr(0, semicolonIndex + 1);
 		removeLeadingAndTrailingSpaces(directiveValuePair);
 
 		directive = getDirective(directiveValuePair);
 		value = getValue(directiveValuePair);
-
-		// std::cout << "directive: " << directive << std::endl;
-		// std::cout << "value: " << value << std::endl;
+		if ((value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos ) && directive != "location")
+			throw std::runtime_error(directive + " directive has no value");
 
 		if (!isDirectiveValid(directive, SERVER))
 			throw std::runtime_error("Invalid server directive");
