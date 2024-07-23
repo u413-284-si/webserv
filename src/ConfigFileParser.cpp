@@ -135,7 +135,7 @@ void ConfigFileParser::readAndTrimLine(void)
  * @brief Removes leading and trailing spaces
  * 		  from the current line of the config file
  */
-void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string &line)
+void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string &line) const
 {
     line.erase(0, line.find_first_not_of(' '));
     line.erase(line.find_last_not_of(' ') + 1);
