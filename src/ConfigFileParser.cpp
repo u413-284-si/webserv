@@ -333,15 +333,15 @@ void ConfigFileParser::readPort(const std::string &value)
  *
  * @param block The block which surounds the directive
  */
-void ConfigFileParser::readRoot(int block)
+void ConfigFileParser::readRootPath(int block, const std::string &value)
 {
-	std::string::size_type spaceIndex = m_configFile.currentLine.find(' ');
-	std::string strWithoutDirective = m_configFile.currentLine.substr(spaceIndex);
+	std::string::size_type spaceIndex = value.find(' ');
+	std::string strWithoutDirective = value.substr(spaceIndex);
 	std::string::size_type firstCharOfRootPathIndex = strWithoutDirective.find_first_not_of(" \t\n\v\f\r");
 	std::string::size_type lastCharOfRootPathIndex = strWithoutDirective.find(';');
 
 	std::string rootPath = strWithoutDirective.substr(firstCharOfRootPathIndex, lastCharOfRootPathIndex - firstCharOfRootPathIndex);
-
+ 
 	if (rootPath.empty())
 		throw std::runtime_error("No root path");
 
@@ -374,7 +374,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 		readPort(value);
 	}
 	else if (directive == "root")
-		readRoot(SERVER);
+		readRootPath(SERVER, value);
 }
 
 std::string ConfigFileParser::getDirective(const std::string& directiveValuePair) const

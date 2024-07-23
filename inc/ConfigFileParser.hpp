@@ -42,7 +42,7 @@ private:
 	void readServerDirectiveValue(const std::string& directive, const std::string &value);
 	void readPort(const std::string& value);
 	void readIpAddress(const std::string &value);
-	void readRoot(int block);
+	void readRootPath(int block, const std::string& value);
 
 	// Checker functions
     bool isBracketOpen(const std::string& configFilePath);
