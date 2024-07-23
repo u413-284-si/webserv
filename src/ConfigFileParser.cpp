@@ -373,6 +373,8 @@ std::string ConfigFileParser::getDirective(const std::string& directiveValuePair
 	size_t firstWhiteSpaceIndex = directiveValuePair.find_first_of(" \t\n\v\f\r");
 	std::string directive = directiveValuePair.substr(0, firstWhiteSpaceIndex);
 
+	removeLeadingAndTrailingSpaces(directive);
+
 	return directive;
 }
 
@@ -381,9 +383,13 @@ std::string ConfigFileParser::getValue(const std::string& directiveValuePair) co
 {
 	if (getDirective(directiveValuePair) == "location")
 		return directiveValuePair;
+
 	size_t semicolonIndex = directiveValuePair.find(';');
-	size_t lastWhiteSpaceIndex = directiveValuePair.find_last_of(" \t\n\v\f\r");
-	std::string value = directiveValuePair.substr(lastWhiteSpaceIndex, semicolonIndex - lastWhiteSpaceIndex);
+	
+	size_t firstWhiteSpaceIndex = directiveValuePair.find_first_of(" \t\n\v\f\r");
+	std::string value = directiveValuePair.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
+
+	removeLeadingAndTrailingSpaces(value);
 
 	return value;
 }
