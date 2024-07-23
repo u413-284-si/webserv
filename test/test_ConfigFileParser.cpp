@@ -25,8 +25,10 @@ class ValidConfigFileTests : public ::testing::Test
  * 5. File is missing server block
  * 6. File contains invalid directive (including server and location)
  * 7. File contains missing semicolon
- * 8. File contains invalid ip address
- * 9. File contains invalid port
+ * 8. Listen directive contains invalid ip address
+ * 9. Listen directive contains invalid port
+ * 10. Root directive has no root path
+ * 11. Root directive has multiple root paths
  */
 
 
@@ -249,6 +251,22 @@ TEST_F(InvalidConfigFileTests, RootDirectiveContainsNoPath)
 		catch (const std::exception& e)
 		{
 			EXPECT_STREQ("'root' directive has no value", e.what());
+			throw;
+		}
+	}, std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, RootDirectiveContainsMultipleRootPaths)
+{
+	EXPECT_THROW(
+	{
+		try
+		{
+			m_configFileParser.parseConfigFile("config_files/root_multiple_paths.conf");
+		}
+		catch (const std::exception& e)
+		{
+			EXPECT_STREQ("More than one root path", e.what());
 			throw;
 		}
 	}, std::runtime_error);
