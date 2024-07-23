@@ -334,13 +334,8 @@ void ConfigFileParser::readPort(const std::string &value)
  */
 void ConfigFileParser::readRootPath(int block, const std::string &value)
 {
-	std::string::size_type spaceIndex = value.find(' ');
-	std::string strWithoutDirective = value.substr(spaceIndex);
-	std::string::size_type firstCharOfRootPathIndex = strWithoutDirective.find_first_not_of(" \t\n\v\f\r");
-	std::string::size_type lastCharOfRootPathIndex = strWithoutDirective.find(';');
+	std::string rootPath = value;
 
-	std::string rootPath = strWithoutDirective.substr(firstCharOfRootPathIndex, lastCharOfRootPathIndex - firstCharOfRootPathIndex);
- 
 	if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
