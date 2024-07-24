@@ -74,17 +74,17 @@ void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
  * - Semicolon (`;`)
  * - Equals sign (`=`)
  *
- * @param c The character to be checked.
+ * @param chr The character to be checked.
  * @return `true` if the character is not a valid URI character, `false` if valid.
  */
-bool RequestParser::isNotValidURIChar(uint8_t c)
+bool RequestParser::isNotValidURIChar(uint8_t chr)
 {
 	// Check for unreserved chars
-	if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~')
+	if (std::isalnum(chr) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
 		return false;
 
 	// Check for reserved characters
-	switch (c) {
+	switch (chr) {
 	case ':':
 	case '/':
 	case '?':
@@ -132,15 +132,15 @@ bool RequestParser::isNotValidURIChar(uint8_t c)
  * - Vertical bar (`|`)
  * - Tilde (`~`)
  *
- * @param c The character to be checked.
+ * @param chr The character to be checked.
  * @return `true` if the character is valid for an HTTP header field name, `false` otherwise.
  */
-bool RequestParser::isValidHeaderFieldNameChar(uint8_t c) const
+bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr) const
 {
-	if (std::isalnum(c))
+	if (std::isalnum(chr))
 		return true;
 
-	switch (c) {
+	switch (chr) {
 	case '!':
 	case '#':
 	case '$':
