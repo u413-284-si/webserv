@@ -22,8 +22,10 @@ public:
 
 	const ConfigFile& parseConfigFile(const std::string& configFilePath);
 
-private:
     ConfigFileParser(void);
+
+private:
+
 	ConfigFileParser(const ConfigFileParser& ref);
 	ConfigFileParser& operator=(const ConfigFileParser& ref);
 

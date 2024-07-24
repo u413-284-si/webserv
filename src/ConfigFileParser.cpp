@@ -1,9 +1,7 @@
 #include "ConfigFileParser.hpp"
 
 /**
- * @brief PRIVATE Construct a new ConfigFileParser:: ConfigFileParser object.
- *
- * The constructor is private to prevent direct object creation.
+ * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
  */
 ConfigFileParser::ConfigFileParser(void){}
 
