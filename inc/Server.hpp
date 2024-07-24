@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "RequestParser.hpp"
+#include "StatusCode.hpp"
 #include <algorithm>
 #include <errno.h>
 #include <fcntl.h>

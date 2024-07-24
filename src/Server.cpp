@@ -197,7 +197,7 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	HTTPRequest request;
 
 	request.method = MethodCount;
-	request.errorCode = 0;
+	request.errorCode = StatusOK;
 	request.shallCloseConnection = false;
 	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
 	if (bytesRead < 0) {

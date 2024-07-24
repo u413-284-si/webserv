@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "StatusCode.hpp"
 #include <iostream>
 #include <map>
 #include <string>
@@ -22,6 +23,6 @@ struct HTTPRequest {
 	std::string version;
 	std::map<std::string, std::string> headers;
 	std::string body;
-	unsigned int errorCode;
+	statusCode errorCode;
 	bool shallCloseConnection;
 };

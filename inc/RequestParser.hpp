@@ -3,6 +3,8 @@
 /* ====== LIBRARIES ====== */
 
 #include "HTTPRequest.hpp"
+#include "StatusCode.hpp"
+#include "error.hpp"
 #include "utilities.hpp"
 #include <iostream>
 #include <map>
