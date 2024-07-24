@@ -122,8 +122,10 @@ void ConfigFileParser::initializeLocation(Location &location)
  /**
   * @brief Checks if there are no open brackets
   *
-  * If a opening bracket is found, it is pushed onto the m_brackets stack
-  * If a closing bracket is found, it is popped from the m_brackets stack
+  * If a opening bracket is found, it is pushed onto the brackets stack
+  * If a closing bracket is found, it is popped from the brackets stack
+  *
+  * At the end the stack should be empty. If not, there are open brackets
   *
   * @param configFilePath Path from the config file
   * @return true If there is minimum one open bracket
