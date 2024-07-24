@@ -81,11 +81,11 @@ void Dispatcher::handleEvents()
 
 		for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.begin() + nfds; ++iter) {
 			uint32_t eventMask = iter->events;
-			if ((eventMask & EPOLLERR) == 0) {
+			if ((eventMask & EPOLLERR) != 0) {
 				LOG_DEBUG << "epoll_wait: EPOLLERR";
 				eventMask = EPOLLOUT;
 			}
-			else if ((eventMask & EPOLLHUP) == 0) {
+			else if ((eventMask & EPOLLHUP) != 0) {
 				LOG_DEBUG << "epoll_wait: EPOLLHUP";
 				eventMask = EPOLLOUT;
 			}
