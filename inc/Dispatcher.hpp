@@ -10,7 +10,8 @@
 #include <netdb.h>
 
 #include "Log.hpp"
-#include "ServerEndpoint.hpp"
+
+class IEndpoint;
 
 class Dispatcher {
 	public:

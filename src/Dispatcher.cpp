@@ -1,4 +1,5 @@
 #include "Dispatcher.hpp"
+#include "ServerEndpoint.hpp"
 
 Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 	: m_timeout(timeout)
