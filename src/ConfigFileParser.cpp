@@ -491,18 +491,18 @@ void ConfigFileParser::readServerConfigLine(void)
     }
 }
 
- /**
- * @brief Reads the current line of the location config and does several checks
- *
- * How a line gets processed:
- * 1. Gets checked if it contains a semicolon.
- * 2. The directive of of the resulting string gets extracted and checked.
- * 3. The value of the directive gets extracted and checked.
- * 
- * If the line contains more then one directive, this process gets repeated for each directive.
- * Otherwise the line just gets cleared and the processing ends.
+/**
+* @brief Reads the current line of the location config and does several checks
+*
+* How a line gets processed:
+* 1. Gets checked if it contains a semicolon.
+* 2. The directive of of the resulting string gets extracted and checked.
+* @todo FIXME: 3. The value of the directive gets extracted and checked.
+*
+* If the line contains more then one directive, this process gets repeated for each directive.
+* Otherwise the line just gets cleared and the processing ends.
 
- */
+*/
 void ConfigFileParser::readLocationConfigLine(void)
 {
     Location location;
@@ -522,8 +522,13 @@ void ConfigFileParser::readLocationConfigLine(void)
         if (value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos)
             throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-		processRemainingLine(line);
-	}
+        if (!isDirectiveValid(directive, LOCATION))
+            throw std::runtime_error("Invalid location directive");
+
+        // TODO: readLocationDirectiveValue(directive, value);
+
+        processRemainingLine(line);
+    }
 
     m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
