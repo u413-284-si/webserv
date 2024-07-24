@@ -277,11 +277,17 @@ TEST_F(InvalidConfigFileTests, RootDirectiveContainsMultipleRootPaths)
  * @brief Tests for a valid file
  * 
  * Checks if the following configuration are seen as valid:
- * 1. Listen directive contains only ip
- * 2. Listen directive contains only port
- * 3. Listen contains ip and port
+ * 1. A standard valid file
+ * 2. Listen directive contains only ip
+ * 3. Listen directive contains only port
+ * 4. Listen contains ip and port
  */
 
+TEST_F(ValidConfigFileTests, ValidFile)
+
+{
+	EXPECT_NO_THROW([&]() {m_configFileParser.parseConfigFile("config_files/valid_config.conf");});
+}
 TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
 {
 	EXPECT_NO_THROW([&]() {m_configFileParser.parseConfigFile("config_files/listen_only_ip.conf");});
