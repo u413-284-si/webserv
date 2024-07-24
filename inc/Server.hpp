@@ -5,15 +5,15 @@
 #include "RequestParser.hpp"
 #include "StatusCode.hpp"
 #include <algorithm>
-#include <errno.h>
+#include <cerrno>
 #include <fcntl.h>
 #include <iostream>
 #include <map>
 #include <netinet/in.h>
 #include <stdexcept>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sys/epoll.h>
 #include <unistd.h>
 
