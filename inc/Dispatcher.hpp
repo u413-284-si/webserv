@@ -19,7 +19,7 @@ class Dispatcher {
 		~Dispatcher();
 
 		bool addEvent(int newfd, epoll_event* event, IEndpoint* endpoint);
-		bool removeEvent(int delfd) const;
+		void removeEvent(int delfd, IEndpoint* endpoint);
 		bool modifyEvent(int modfd, epoll_event* event) const;
 		void handleEvents();
 		bool initServer(const std::string& host, int backlog, const std::string& port);

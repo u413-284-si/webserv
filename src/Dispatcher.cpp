@@ -44,14 +44,16 @@ bool Dispatcher::addEvent(const int newfd, epoll_event* event, IEndpoint* endpoi
 	return true;
 }
 
-bool Dispatcher::removeEvent(const int delfd) const
+void Dispatcher::removeEvent(const int delfd, IEndpoint* endpoint)
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_DEL, delfd, NULL) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno) << '\n';
-		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd << '\n';
-	return true;
+
+	m_endpoints.remove(endpoint);
+	delete endpoint;
+	LOG_DEBUG << "Removed endpoint";
 }
 
 bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
@@ -68,26 +70,26 @@ void Dispatcher::handleEvents()
 {
 	while (true) {
 		const int nfds = epoll_wait(m_epfd, &m_events[0], static_cast<int>(m_events.size()), m_timeout);
-		if (nfds == -1)
-			LOG_ERROR << "epoll_wait: " << strerror(errno) << '\n';
+		if (nfds == -1) {
+			LOG_ERROR << "epoll_wait: " << strerror(errno);
+			throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
+		}
 		else if (nfds == 0)
-			LOG_DEBUG << "epoll_wait: Timeout\n";
+			LOG_DEBUG << "epoll_wait: Timeout";
 		else
-			LOG_DEBUG << "epoll_wait: " << nfds << " events\n";
+			LOG_DEBUG << "epoll_wait: " << nfds << " events";
 
 		for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.begin() + nfds; ++iter) {
-			if (iter->events & EPOLLERR || iter->events & EPOLLHUP) {
-				LOG_ERROR << "epoll_wait: EPOLLERR or EPOLLHUP\n";
-				close(iter->data.fd);
-				continue;
+			uint32_t eventMask = iter->events;
+			if ((eventMask & EPOLLERR) == 0) {
+				LOG_DEBUG << "epoll_wait: EPOLLERR";
+				eventMask = EPOLLOUT;
 			}
-			if (iter->events & EPOLLIN) {
-				static_cast<IEndpoint *>(iter->data.ptr)->handleEvent(*this);
-				LOG_DEBUG << "epoll_wait: EPOLLIN\n";
+			else if ((eventMask & EPOLLHUP) == 0) {
+				LOG_DEBUG << "epoll_wait: EPOLLHUP";
+				eventMask = EPOLLOUT;
 			}
-			if (iter->events & EPOLLOUT) {
-				LOG_DEBUG << "epoll_wait: EPOLLOUT\n";
-			}
+			static_cast<IEndpoint *>(iter->data.ptr)->handleEvent(*this, eventMask);
 		}
 	}
 }
