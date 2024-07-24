@@ -5,17 +5,13 @@ ServerEndpoint::ServerEndpoint(const Connection& connection)
 {
 }
 
-ServerEndpoint::~ServerEndpoint()
-{
-	close (m_connection.fd);
-}
+ServerEndpoint::~ServerEndpoint() { close(m_connection.fd); }
 
 void ServerEndpoint::handleEvent(Dispatcher& dispatcher)
 {
-	struct sockaddr_in	clientAddr;
-	socklen_t			addr_len = sizeof(clientAddr);
-	int	clientSock = accept(
-		m_connection.fd, (struct sockaddr*)&clientAddr, &addr_len);
+	struct sockaddr_in clientAddr;
+	socklen_t addr_len = sizeof(clientAddr);
+	int clientSock = accept(m_connection.fd, (struct sockaddr*)&clientAddr, &addr_len);
 	if (clientSock < 0) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
 			return; // No more pending connections
@@ -26,10 +22,14 @@ void ServerEndpoint::handleEvent(Dispatcher& dispatcher)
 	}
 
 	// Add client socket to epoll instance
-	struct epoll_event	ev;
+	struct epoll_event ev;
 	ev.events = EPOLLIN;
 	ev.data.fd = clientSock;
 	if (!dispatcher.addEvent(clientSock, &ev)) {
 		close(clientSock);
 	}
 }
+
+time_t ServerEndpoint::getTimeSinceLastEvent() const { return (0); }
+
+void ServerEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }

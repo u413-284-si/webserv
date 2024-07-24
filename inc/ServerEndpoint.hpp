@@ -1,23 +1,26 @@
 #pragma once
 
-#include "IEndpoint.hpp"
 #include "Connection.hpp"
 #include "Dispatcher.hpp"
+#include "IEndpoint.hpp"
 #include "Log.hpp"
-#include <string>
-#include <unistd.h>
-#include <netdb.h>
 #include <cerrno>
+#include <netdb.h>
 #include <string.h>
+#include <string>
 #include <sys/epoll.h>
+#include <unistd.h>
 
 class ServerEndpoint : public IEndpoint {
-	public:
-		ServerEndpoint(const Connection& connection);
-		virtual ~ServerEndpoint();
+public:
+	ServerEndpoint(const Connection& connection);
+	virtual ~ServerEndpoint();
 
-		virtual void handleEvent(Dispatcher& dispatcher);
+	virtual void handleEvent(Dispatcher& dispatcher);
 
-	private:
-		Connection m_connection;
+	virtual time_t getTimeSinceLastEvent() const;
+	virtual void setTimeSinceLastEvent();
+
+private:
+	Connection m_connection;
 };
