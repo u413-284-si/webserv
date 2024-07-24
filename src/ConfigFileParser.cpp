@@ -271,13 +271,12 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ip) const
 void ConfigFileParser::readIpAddress(const std::string &value)
 {
 	size_t colonIndex = value.find(':'); 
-	size_t numIndex = value.find_first_of("0123456789");
 	std::string ip;
 
 	if (colonIndex == std::string::npos)
 	{
 		size_t semicolonIndex = value.find(';');
-		std::string num = value.substr(numIndex, semicolonIndex - numIndex);
+		std::string num = value.substr(0, semicolonIndex);
 		if (isPortValid(num))
 			return ;
 		if (value.find('.') == std::string::npos)
@@ -285,7 +284,7 @@ void ConfigFileParser::readIpAddress(const std::string &value)
 		ip = num;
 	}
 	else
-		ip = value.substr(numIndex, colonIndex - numIndex);
+		ip = value.substr(0, colonIndex);
 
 	if (!isIpAddressValid(ip))
 		throw std::runtime_error("Invalid ip address");
