@@ -327,14 +327,12 @@ bool ConfigFileParser::isPortValid(const std::string& port) const
 void ConfigFileParser::readPort(const std::string &value)
 {
 	size_t colonIndex = value.find(':');
-	size_t numIndex = value.find_first_of("0123456789");
 	size_t semicolonIndex = value.find(';');
 	std::string port;
 
-
 	if (colonIndex == std::string::npos)
 	{
-		std::string num = value.substr(numIndex, semicolonIndex - numIndex);
+		std::string num = value.substr(0, semicolonIndex);
 		if (isIpAddressValid(num))
 			return;
 		if (value.find('.') != std::string::npos)
