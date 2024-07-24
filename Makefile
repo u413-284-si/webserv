@@ -75,6 +75,7 @@ NAME := webserv
 
 SRC:= 	main.cpp \
 		ALogOutputter.cpp \
+		ClientEndpoint.cpp \
 		Dispatcher.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
