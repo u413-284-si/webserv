@@ -30,13 +30,17 @@ Dispatcher& Dispatcher::operator=(const Dispatcher& other)
 	return *this;
 }
 
-bool Dispatcher::addEvent(const int newfd, epoll_event* event) const
+bool Dispatcher::addEvent(const int newfd, epoll_event* event, IEndpoint* endpoint)
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, newfd, event) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno) << '\n';
 		return false;
 	}
-	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd << '\n';
+	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd;
+
+	m_endpoints.push_back(endpoint);
+	LOG_DEBUG << "Added new endpoint";
+
 	return true;
 }
 
@@ -143,20 +147,19 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 		return false;
 	}
 
-	char buf_host[NI_MAXHOST];
-	char buf_port[NI_MAXSERV];
-	getnameinfo(list->ai_addr, list->ai_addrlen, buf_host, NI_MAXHOST, buf_port, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-	const Connection connection = { newFd, buf_host, buf_port };
+	char bufHost[NI_MAXHOST];
+	char bufPort[NI_MAXSERV];
+	getnameinfo(list->ai_addr, list->ai_addrlen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
+	const Connection connection = { newFd, bufHost, bufPort };
 	IEndpoint* endpoint = new ServerEndpoint(connection);
-	LOG_INFO << "Added server endpoint: " << buf_host << ':' << buf_port;
-	m_endpoints.push_back(endpoint);
-
 	epoll_event event = {};
 	event.events = EPOLLIN | EPOLLET;
 	event.data.ptr = static_cast<void *>(endpoint);
-	if (!addEvent(newFd, &event)) {
+	if (!addEvent(newFd, &event, endpoint)) {
 		close(newFd);
+		delete endpoint;
 		return false;
 	}
+	LOG_INFO << "Added server endpoint: " << connection.host << ':' << connection.port;
 	return true;
 }

@@ -18,7 +18,7 @@ class Dispatcher {
 		explicit Dispatcher(int timeout, size_t maxEvents = 1024);
 		~Dispatcher();
 
-		bool addEvent(int newfd, epoll_event* event) const;
+		bool addEvent(int newfd, epoll_event* event, IEndpoint* endpoint);
 		bool removeEvent(int delfd) const;
 		bool modifyEvent(int modfd, epoll_event* event) const;
 		void handleEvents();
