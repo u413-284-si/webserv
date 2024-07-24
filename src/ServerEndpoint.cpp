@@ -11,6 +11,8 @@ ServerEndpoint::~ServerEndpoint() { close(m_connection.fd); }
 
 void ServerEndpoint::handleEvent(Dispatcher& dispatcher)
 {
+	LOG_DEBUG << "Endpoint " << m_connection.host << ':' << m_connection.port;
+
 	struct sockaddr_storage clientAddr = { };
 	socklen_t clientLen = sizeof(clientAddr);
 	const int clientSock = accept(m_connection.fd, reinterpret_cast<struct sockaddr*>(&clientAddr), &clientLen);

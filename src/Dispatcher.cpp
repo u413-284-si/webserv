@@ -82,6 +82,7 @@ void Dispatcher::handleEvents()
 				continue;
 			}
 			if (iter->events & EPOLLIN) {
+				static_cast<IEndpoint *>(iter->data.ptr)->handleEvent(*this);
 				LOG_DEBUG << "epoll_wait: EPOLLIN\n";
 			}
 			if (iter->events & EPOLLOUT) {
