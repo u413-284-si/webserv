@@ -9,10 +9,14 @@ ServerEndpoint::ServerEndpoint(const Connection& connection)
 
 ServerEndpoint::~ServerEndpoint() { close(m_connection.fd); }
 
-void ServerEndpoint::handleEvent(Dispatcher& dispatcher)
+void ServerEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
-	LOG_DEBUG << "Endpoint " << m_connection.host << ':' << m_connection.port;
+	LOG_DEBUG << "ServerEndpoint " << m_connection.host << ':' << m_connection.port;
 
+	if ((eventMask & EPOLLIN) == 0) {
+		LOG_ERROR << "Received unknown event:" << eventMask;
+		return;
+	}
 	struct sockaddr_storage clientAddr = { };
 	socklen_t clientLen = sizeof(clientAddr);
 	const int clientSock = accept(m_connection.fd, reinterpret_cast<struct sockaddr*>(&clientAddr), &clientLen);
@@ -33,7 +37,7 @@ void ServerEndpoint::handleEvent(Dispatcher& dispatcher)
 
 	// Add client socket to epoll instance
 	struct epoll_event event = { };
-	event.events = EPOLLIN | EPOLLOUT;
+	event.events = EPOLLIN;
 	event.data.ptr = static_cast<void*>(endpoint);
 
 	if (!dispatcher.addEvent(clientSock, &event, endpoint)) {

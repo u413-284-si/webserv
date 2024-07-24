@@ -18,7 +18,7 @@ public:
 	ServerEndpoint(const Connection& connection);
 	virtual ~ServerEndpoint();
 
-	virtual void handleEvent(Dispatcher& dispatcher);
+	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
 
 	virtual time_t getTimeSinceLastEvent() const;
 
