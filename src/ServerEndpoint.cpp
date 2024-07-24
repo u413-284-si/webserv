@@ -1,4 +1,5 @@
 #include "ServerEndpoint.hpp"
+#include "Dispatcher.hpp"
 
 ServerEndpoint::ServerEndpoint(const Connection& connection)
 	: m_connection(connection)

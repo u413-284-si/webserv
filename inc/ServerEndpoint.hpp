@@ -1,15 +1,17 @@
 #pragma once
 
-#include "Connection.hpp"
-#include "Dispatcher.hpp"
-#include "IEndpoint.hpp"
-#include "Log.hpp"
 #include <cerrno>
 #include <netdb.h>
 #include <string.h>
 #include <string>
 #include <sys/epoll.h>
 #include <unistd.h>
+
+#include "Connection.hpp"
+#include "IEndpoint.hpp"
+#include "Log.hpp"
+
+class Dispatcher;
 
 class ServerEndpoint : public IEndpoint {
 public:
