@@ -3,13 +3,12 @@
 /* ====== LIBRARIES ====== */
 
 #include "StatusCode.hpp"
+#include "ConfigFile.hpp"
 #include <iostream>
 #include <map>
 #include <string>
 
 /* ====== DEFINITIONS ====== */
-
-enum Method { MethodGet = 0, MethodPost = 1, MethodDelete = 2, MethodCount = 3 };
 
 struct URI {
 	std::string path;
