@@ -18,4 +18,5 @@ public:
 private:
 	Connection m_connection;
 	Connection m_server;
+	time_t m_TimeSinceLastEvent;
 };

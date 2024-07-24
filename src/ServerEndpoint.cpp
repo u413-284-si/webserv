@@ -44,5 +44,3 @@ void ServerEndpoint::handleEvent(Dispatcher& dispatcher)
 }
 
 time_t ServerEndpoint::getTimeSinceLastEvent() const { return (0); }
-
-void ServerEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }

@@ -21,7 +21,6 @@ public:
 	virtual void handleEvent(Dispatcher& dispatcher);
 
 	virtual time_t getTimeSinceLastEvent() const;
-	virtual void setTimeSinceLastEvent();
 
 private:
 	Connection m_connection;
