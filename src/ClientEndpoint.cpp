@@ -20,7 +20,7 @@ void ClientEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		const ssize_t bytesRead = recv(m_connection.fd, buffer, 1024, 0);
 		if (bytesRead < 0) {
 			LOG_ERROR << "recv: " << strerror(errno) << '\n';
-			dispatcher.removeEvent(m_connection.fd, this);
+			return (dispatcher.removeEvent(m_connection.fd, this));
 		} else if (bytesRead == 0) {
 			LOG_INFO << "Connection closed by client: " << m_connection.host << ':' << m_connection.port;
 			dispatcher.removeEvent(m_connection.fd, this);
@@ -43,11 +43,11 @@ void ClientEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		const ssize_t bytesSent = send(m_connection.fd, response.str().c_str(), response.str().size(), 0);
 		if (bytesSent < 0) {
 			LOG_ERROR << "send: " << strerror(errno) << '\n';
-			dispatcher.removeEvent(m_connection.fd, this);
+			return (dispatcher.removeEvent(m_connection.fd, this));
 		}
 		else {
 			LOG_INFO << "Sent response to client: " << m_connection.host << ':' << m_connection.port;
-			dispatcher.removeEvent(m_connection.fd, this);
+			return (dispatcher.removeEvent(m_connection.fd, this));
 		}
 	}
 	else {
