@@ -25,14 +25,13 @@ std::string webutils::trimLeadingWhitespaces(const std::string& str)
 }
 
 /**
- * @brief Removes trailing whitespaces from a given string.
- *
- * This function creates a copy of the input string and removes any
- * trailing whitespace characters from it. The modified string is
- * then returned.
- *
- * @param str The input string from which to remove trailing whitespaces.
- * @return A new string with trailing whitespaces removed.
+ * @brief Trims trailing white spaces from a string.
+ * 
+ * This function removes all trailing white spaces (spaces, tabs, newlines, etc.)
+ * from the input string.
+ * 
+ * @param str The string to be trimmed. The string is modified in place.
+ * 
  */
 void webutils::trimTrailingWhiteSpaces(std::string& str)
 {
@@ -56,16 +55,18 @@ void webutils::trimTrailingWhiteSpaces(std::string& str)
  */
 std::vector<std::string> webutils::split(const std::string& str, const std::string& delimiter)
 {
-	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+	size_t posStart = 0;
+	size_t posEnd = 0;
+	size_t delimLen = delimiter.length();
 	std::string token;
 	std::vector<std::string> res;
 
-	while ((pos_end = str.find(delimiter, pos_start)) != std::string::npos) {
-		token = str.substr(pos_start, pos_end - pos_start);
-		pos_start = pos_end + delim_len;
+	while ((posEnd = str.find(delimiter, posStart)) != std::string::npos) {
+		token = str.substr(posStart, posEnd - posStart);
+		posStart = posEnd + delimLen;
 		res.push_back(token);
 	}
 
-	res.push_back(str.substr(pos_start));
+	res.push_back(str.substr(posStart));
 	return res;
 }
