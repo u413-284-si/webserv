@@ -2,8 +2,8 @@
 
 /* ====== LIBRARIES ====== */
 
-#include "StatusCode.hpp"
 #include "ConfigFile.hpp"
+#include "StatusCode.hpp"
 #include <iostream>
 #include <map>
 #include <string>

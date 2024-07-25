@@ -26,20 +26,20 @@ std::string webutils::trimLeadingWhitespaces(const std::string& str)
 
 /**
  * @brief Trims trailing white spaces from a string.
- * 
+ *
  * This function removes all trailing white spaces (spaces, tabs, newlines, etc.)
  * from the input string.
- * 
+ *
  * @param str The string to be trimmed. The string is modified in place.
- * 
+ *
  */
 void webutils::trimTrailingWhiteSpaces(std::string& str)
 {
-	std::string::size_type  end = str.size();
+	std::string::size_type end = str.size();
 
-    while (end > 0 && (std::isspace(str.at(end - 1)) != 0))
-        --end;
-    str.erase(end);
+	while (end > 0 && (std::isspace(str.at(end - 1)) != 0))
+		--end;
+	str.erase(end);
 }
 
 /**

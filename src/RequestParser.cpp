@@ -236,9 +236,10 @@ void RequestParser::clearParser()
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 RequestParser::RequestParser()
-    : m_hasBody(false)
-    , m_chunked(false)
-{}
+	: m_hasBody(false)
+	, m_chunked(false)
+{
+}
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -325,7 +326,8 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
  * @param requestLine The request line string from which the method is to be parsed.
  * @param request The HTTP request object to be filled.
  * @return A substring of `requestLine` starting from the character after the parsed method.
- * @throws std::runtime_error If the method is not implemented, an error is thrown and the error code is set to StatusMethodNotImplemented.
+ * @throws std::runtime_error If the method is not implemented, an error is thrown and the error code is set to
+ * StatusMethodNotImplemented.
  */
 std::string RequestParser::parseMethod(const std::string& requestLine, HTTPRequest& request)
 {
@@ -418,11 +420,11 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
 			index--;
 			break;
 		}
-        if (requestLine.at(index) == '?') {
+		if (requestLine.at(index) == '?') {
 			request.errorCode = StatusBadRequest;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
-        request.uri.query.push_back(requestLine.at(index));
+		request.uri.query.push_back(requestLine.at(index));
 	}
 }
 
@@ -449,7 +451,7 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
 			index--;
 			break;
 		}
-        if (requestLine.at(index) == '#') {
+		if (requestLine.at(index) == '#') {
 			request.errorCode = StatusBadRequest;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
@@ -483,7 +485,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
 	}
-    if (requestLine[index] != '1') {
+	if (requestLine[index] != '1') {
 		request.errorCode = StatusNonSupportedVersion;
 		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
 	}
@@ -497,7 +499,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
 	}
-    if (requestLine[index] != '1' && requestLine[index] != '0') {
+	if (requestLine[index] != '1' && requestLine[index] != '0') {
 		request.errorCode = StatusNonSupportedVersion;
 		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
 	}
