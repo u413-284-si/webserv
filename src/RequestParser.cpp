@@ -135,7 +135,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
  * @param chr The character to be checked.
  * @return `true` if the character is valid for an HTTP header field name, `false` otherwise.
  */
-bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr) const
+bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
 {
 	if (std::isalnum(chr) != 0)
 		return true;
@@ -174,7 +174,7 @@ bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr) const
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-size_t RequestParser::convertHex(const std::string& chunkSize) const
+size_t RequestParser::convertHex(const std::string& chunkSize)
 {
 	if (chunkSize.empty())
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
@@ -278,7 +278,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	// Step 2: Parse headers
 	std::string headerLine;
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
-	while ((std::getline(m_requestStream, headerLine) != 0) && headerLine != "\r" && !headerLine.empty()) {
+	while (std::getline(m_requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			request.errorCode = StatusBadRequest;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
@@ -582,7 +582,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 	std::string body;
 	size_t length = 0;
 
-	while (std::getline(m_requestStream, body) != 0) {
+	while (std::getline(m_requestStream, body)) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
 			length += 1;

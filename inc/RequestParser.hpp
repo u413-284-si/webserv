@@ -22,7 +22,7 @@ public:
 	RequestParser();
 
 	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
-	void clearRequest(HTTPRequest& request);
+	static void clearRequest(HTTPRequest& request);
 	void clearParser();
 
 private:
@@ -30,12 +30,12 @@ private:
 	bool m_chunked;
 	std::istringstream m_requestStream;
 
-	std::string parseMethod(const std::string& requestLine, HTTPRequest& request);
-	std::string parseUri(const std::string& requestLine, HTTPRequest& request);
-	void parseUriQuery(const std::string& requestLine, int& index, HTTPRequest& request);
-	void parseUriFragment(const std::string& requestLine, int& index, HTTPRequest& request);
-	std::string parseVersion(const std::string& requestLine, HTTPRequest& request);
-	void checkHeaderName(const std::string& headerName, HTTPRequest& request);
+	static std::string parseMethod(const std::string& requestLine, HTTPRequest& request);
+	static std::string parseUri(const std::string& requestLine, HTTPRequest& request);
+	static void parseUriQuery(const std::string& requestLine, int& index, HTTPRequest& request);
+	static void parseUriFragment(const std::string& requestLine, int& index, HTTPRequest& request);
+	static std::string parseVersion(const std::string& requestLine, HTTPRequest& request);
+	static void checkHeaderName(const std::string& headerName, HTTPRequest& request);
 	void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
 	void checkTransferEncoding(HTTPRequest& request);
 	void parseChunkedBody(HTTPRequest& request);
@@ -45,6 +45,6 @@ private:
 	static std::string checkForSpace(const std::string&, HTTPRequest& request);
 	static void checkForCRLF(const std::string&, HTTPRequest& request);
 	static bool isNotValidURIChar(uint8_t chr);
-	bool isValidHeaderFieldNameChar(uint8_t chr) const;
-	size_t convertHex(const std::string& chunkSize) const;
+	static bool isValidHeaderFieldNameChar(uint8_t chr);
+	static size_t convertHex(const std::string& chunkSize);
 };
