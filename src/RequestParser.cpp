@@ -328,22 +328,22 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
  */
 std::string RequestParser::parseMethod(const std::string& requestLine, HTTPRequest& request)
 {
-	int i = 0;
+	int index = 0;
 
 	if (requestLine.compare(0, 3, "GET") == 0) {
 		request.method = MethodGet;
-		i = 3;
+		index = 3;
 	} else if (requestLine.compare(0, 4, "POST") == 0) {
 		request.method = MethodPost;
-		i = 4;
+		index = 4;
 	} else if (requestLine.compare(0, 6, "DELETE") == 0) {
 		request.method = MethodDelete;
-		i = 6;
+		index = 6;
 	} else {
 		request.errorCode = StatusMethodNotImplemented;
 		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);
 	}
-	return (requestLine.substr(i));
+	return (requestLine.substr(index));
 }
 
 /**
@@ -365,8 +365,8 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
  */
 std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest& request)
 {
-	int i = 0;
-	if (requestLine.at(i) != '/') {
+	int index = 0;
+	if (requestLine.at(index) != '/') {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
@@ -378,19 +378,19 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		throw std::runtime_error(ERR_URI_INVALID_CHAR);
 	}
 
-	request.uri.path.push_back(requestLine[i]);
-	while (requestLine.at(++i) != 0) {
-		if (requestLine.at(i) == ' ')
+	request.uri.path.push_back(requestLine[index]);
+	while (requestLine.at(++index) != 0) {
+		if (requestLine.at(index) == ' ')
 			break;
-		else if (requestLine.at(i) == '?')
-			parseUriQuery(requestLine, i, request);
-		else if (requestLine.at(i) == '#')
-			parseUriFragment(requestLine, i, request);
+		else if (requestLine.at(index) == '?')
+			parseUriQuery(requestLine, index, request);
+		else if (requestLine.at(index) == '#')
+			parseUriFragment(requestLine, index, request);
 		else
-			request.uri.path.push_back(requestLine.at(i));
+			request.uri.path.push_back(requestLine.at(index));
 		// FIXME: setup max. URI length?
 	}
-	return (requestLine.substr(i));
+	return (requestLine.substr(index));
 }
 
 /**
@@ -475,29 +475,29 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
 	}
-	int i = 5;
-	if (isdigit(requestLine[i]) == 0) {
+	int index = 5;
+	if (isdigit(requestLine[index]) == 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
-	} else if (requestLine[i] != '1') {
+	} else if (requestLine[index] != '1') {
 		request.errorCode = StatusNonSupportedVersion;
 		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
 	}
-	request.version.push_back(requestLine[i]);
-	if (requestLine[++i] != '.') {
+	request.version.push_back(requestLine[index]);
+	if (requestLine[++index] != '.') {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_DELIM);
 	}
-	request.version.push_back(requestLine[i]);
-	if (isdigit(requestLine[++i]) == 0) {
+	request.version.push_back(requestLine[index]);
+	if (isdigit(requestLine[++index]) == 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
-	} else if (requestLine[i] != '1' && requestLine[i] != '0') {
+	} else if (requestLine[index] != '1' && requestLine[index] != '0') {
 		request.errorCode = StatusNonSupportedVersion;
 		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
 	}
-	request.version.push_back(requestLine[i]);
-	return (requestLine.substr(++i));
+	request.version.push_back(requestLine[index]);
+	return (requestLine.substr(++index));
 }
 
 /**
