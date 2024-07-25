@@ -1,4 +1,6 @@
 #include "utilities.hpp"
+#include <cctype>
+#include <sys/socket.h>
 
 /**
  * @brief Removes leading whitespaces from a given string.
@@ -12,14 +14,14 @@
  */
 std::string webutils::trimLeadingWhitespaces(const std::string& str)
 {
-	std::string::const_iterator it = str.begin();
+	std::string::const_iterator iter = str.begin();
 
 	// Find the first character that is not a whitespace
-	while (it != str.end() && std::isspace(static_cast<unsigned char>(*it)))
-		++it;
+	while (iter != str.end() && (std::isspace(static_cast<unsigned char>(*iter)) != 0))
+		++iter;
 
 	// Return the substring starting from the first non-whitespace character
-	return std::string(it, str.end());
+	return std::string(iter, str.end());
 }
 
 /**
@@ -32,12 +34,13 @@ std::string webutils::trimLeadingWhitespaces(const std::string& str)
  * @param str The input string from which to remove trailing whitespaces.
  * @return A new string with trailing whitespaces removed.
  */
-std::string webutils::trimTrailingWhiteSpaces(const std::string& str)
+void webutils::trimTrailingWhiteSpaces(std::string& str)
 {
-	std::string s(str);
+	std::string::size_type  end = str.size();
 
-	s.erase(find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(isspace))).base(), s.end());
-	return s;
+    while (end > 0 && (std::isspace(str.at(end - 1)) != 0))
+        --end;
+    str.erase(end);
 }
 
 /**

@@ -294,7 +294,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
-			headerValue = webutils::trimTrailingWhiteSpaces(headerValue);
+			webutils::trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
 		}
