@@ -1,4 +1,5 @@
 #include "RequestParser.hpp"
+#include <cstddef>
 
 /* ====== HELPER FUNCTIONS ====== */
 
@@ -330,15 +331,15 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
 {
 	int index = 0;
 
-	if (requestLine.compare(0, 3, "GET") == 0) {
+	if (requestLine.compare(0, getLength, "GET") == 0) {
 		request.method = MethodGet;
-		index = 3;
-	} else if (requestLine.compare(0, 4, "POST") == 0) {
+		index = getLength;
+	} else if (requestLine.compare(0, postLength, "POST") == 0) {
 		request.method = MethodPost;
-		index = 4;
-	} else if (requestLine.compare(0, 6, "DELETE") == 0) {
+		index = postLength;
+	} else if (requestLine.compare(0, deleteLength, "DELETE") == 0) {
 		request.method = MethodDelete;
-		index = 6;
+		index = deleteLength;
 	} else {
 		request.errorCode = StatusMethodNotImplemented;
 		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);
@@ -382,7 +383,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 	while (requestLine.at(++index) != 0) {
 		if (requestLine.at(index) == ' ')
 			break;
-		else if (requestLine.at(index) == '?')
+		if (requestLine.at(index) == '?')
 			parseUriQuery(requestLine, index, request);
 		else if (requestLine.at(index) == '#')
 			parseUriFragment(requestLine, index, request);
@@ -416,11 +417,12 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
 		if (requestLine.at(index) == ' ' || requestLine.at(index) == '#') {
 			index--;
 			break;
-		} else if (requestLine.at(index) == '?') {
+		}
+        if (requestLine.at(index) == '?') {
 			request.errorCode = StatusBadRequest;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		} else
-			request.uri.query.push_back(requestLine.at(index));
+		}
+        request.uri.query.push_back(requestLine.at(index));
 	}
 }
 
@@ -446,11 +448,12 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
 		if (requestLine.at(index) == ' ') {
 			index--;
 			break;
-		} else if (requestLine.at(index) == '#') {
+		}
+        if (requestLine.at(index) == '#') {
 			request.errorCode = StatusBadRequest;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		} else
-			request.uri.fragment.push_back(requestLine.at(index));
+		}
+		request.uri.fragment.push_back(requestLine.at(index));
 	}
 }
 
@@ -471,15 +474,16 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
  */
 std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequest& request)
 {
-	if (requestLine.substr(0, 5) != "HTTP/") {
+	if (requestLine.substr(0, versionPrefixLength) != "HTTP/") {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
 	}
-	int index = 5;
+	int index = versionPrefixLength;
 	if (isdigit(requestLine[index]) == 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
-	} else if (requestLine[index] != '1') {
+	}
+    if (requestLine[index] != '1') {
 		request.errorCode = StatusNonSupportedVersion;
 		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
 	}
@@ -492,7 +496,8 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 	if (isdigit(requestLine[++index]) == 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
-	} else if (requestLine[index] != '1' && requestLine[index] != '0') {
+	}
+    if (requestLine[index] != '1' && requestLine[index] != '0') {
 		request.errorCode = StatusNonSupportedVersion;
 		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
 	}
@@ -523,7 +528,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
  */
 void RequestParser::parseChunkedBody(HTTPRequest& request)
 {
-	int length = 0;
+	size_t length = 0;
 	std::string strChunkSize;
 	std::string chunkData;
 	size_t numChunkSize = 0;
