@@ -80,7 +80,7 @@ void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
 bool RequestParser::isNotValidURIChar(uint8_t chr)
 {
 	// Check for unreserved chars
-	if (std::isalnum(chr) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
+	if ((std::isalnum(chr) != 0) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
 		return false;
 
 	// Check for reserved characters
@@ -137,7 +137,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
  */
 bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr) const
 {
-	if (std::isalnum(chr))
+	if (std::isalnum(chr) != 0)
 		return true;
 
 	switch (chr) {
@@ -180,7 +180,7 @@ size_t RequestParser::convertHex(const std::string& chunkSize) const
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
 
 	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
-		if (!std::isxdigit(*it))
+		if (std::isxdigit(*it) == 0)
 			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
 	}
 
@@ -278,7 +278,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	// Step 2: Parse headers
 	std::string headerLine;
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
-	while (std::getline(m_requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
+	while ((std::getline(m_requestStream, headerLine) != 0) && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			request.errorCode = StatusBadRequest;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
@@ -380,7 +380,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 	}
 
 	request.uri.path.push_back(requestLine[i]);
-	while (requestLine.at(++i)) {
+	while (requestLine.at(++i) != 0) {
 		if (requestLine.at(i) == ' ')
 			break;
 		else if (requestLine.at(i) == '?')
@@ -413,7 +413,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
  */
 void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HTTPRequest& request)
 {
-	while (requestLine.at(++index)) {
+	while (requestLine.at(++index) != 0) {
 		if (requestLine.at(index) == ' ' || requestLine.at(index) == '#') {
 			index--;
 			break;
@@ -443,7 +443,7 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
  */
 void RequestParser::parseUriFragment(const std::string& requestLine, int& index, HTTPRequest& request)
 {
-	while (requestLine.at(++index)) {
+	while (requestLine.at(++index) != 0) {
 		if (requestLine.at(index) == ' ') {
 			index--;
 			break;
@@ -477,7 +477,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
 	}
 	int i = 5;
-	if (!isdigit(requestLine[i])) {
+	if (isdigit(requestLine[i]) == 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
 	} else if (requestLine[i] != '1') {
@@ -490,7 +490,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		throw std::runtime_error(ERR_INVALID_VERSION_DELIM);
 	}
 	request.version.push_back(requestLine[i]);
-	if (!isdigit(requestLine[++i])) {
+	if (isdigit(requestLine[++i]) == 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
 	} else if (requestLine[i] != '1' && requestLine[i] != '0') {
@@ -582,7 +582,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 	std::string body;
 	size_t length = 0;
 
-	while (std::getline(m_requestStream, body)) {
+	while (std::getline(m_requestStream, body) != 0) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
 			length += 1;
@@ -614,7 +614,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
  */
 void RequestParser::checkHeaderName(const std::string& headerName, HTTPRequest& request)
 {
-	if (isspace(headerName[headerName.size() - 1])) {
+	if (isspace(headerName[headerName.size() - 1]) != 0) {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_HEADER_COLON_WHITESPACE);
 	}
@@ -661,7 +661,7 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr;
 			long contentLength = strtol(strValues[i].c_str(), &endptr, 10);
-			if (!contentLength || *endptr != '\0') {
+			if ((contentLength == 0) || *endptr != '\0') {
 				request.errorCode = StatusBadRequest;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 			}
