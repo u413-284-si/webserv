@@ -235,10 +235,9 @@ void RequestParser::clearParser()
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 RequestParser::RequestParser()
-{
-	m_hasBody = false;
-	m_chunked = false;
-}
+    : m_hasBody(false)
+    , m_chunked(false)
+{}
 
 /* ====== MEMBER FUNCTIONS ====== */
 
