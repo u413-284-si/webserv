@@ -12,7 +12,7 @@ ConnectedEndpoint::~ConnectedEndpoint() { close(m_connection.fd); }
 
 void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
-	LOG_DEBUG << "ClientEndpoint " << m_connection.host << ':' << m_connection.port;
+	LOG_DEBUG << "ConnectedEndpoint with client: " << m_connection.host << ':' << m_connection.port;
 
 	if ((eventMask & EPOLLIN) != 0) {
 		LOG_DEBUG << "Received read event";

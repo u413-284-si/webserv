@@ -11,7 +11,7 @@ ListeningEndpoint::~ListeningEndpoint() { close(m_connection.fd); }
 
 void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
-	LOG_DEBUG << "ServerEndpoint " << m_connection.host << ':' << m_connection.port;
+	LOG_DEBUG << "ListeningEndpoint " << m_connection.host << ':' << m_connection.port;
 
 	if ((eventMask & EPOLLIN) == 0) {
 		LOG_ERROR << "Received unknown event:" << eventMask;
@@ -50,7 +50,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		close(clientSock);
 		delete endpoint;
 	}
-	LOG_INFO << "Added client endpoint: " << connection.host << ':' << connection.port;
+	LOG_INFO << "Connected to client: " << connection.host << ':' << connection.port;
 }
 
 time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }
