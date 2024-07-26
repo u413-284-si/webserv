@@ -12,10 +12,10 @@
 #include "IEndpoint.hpp"
 #include "Log.hpp"
 
-class ClientEndpoint : public IEndpoint {
+class ConnectedEndpoint : public IEndpoint {
 public:
-	ClientEndpoint(const Connection& connection, const Connection& server);
-	virtual ~ClientEndpoint();
+	ConnectedEndpoint(const Connection& connection, const Connection& server);
+	virtual ~ConnectedEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
 

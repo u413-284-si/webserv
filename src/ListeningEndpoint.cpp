@@ -1,15 +1,15 @@
-#include "ServerEndpoint.hpp"
-#include "ClientEndpoint.hpp"
+#include "ListeningEndpoint.hpp"
+#include "ConnectedEndpoint.hpp"
 #include "Dispatcher.hpp"
 
-ServerEndpoint::ServerEndpoint(const Connection& connection)
+ListeningEndpoint::ListeningEndpoint(const Connection& connection)
 	: m_connection(connection)
 {
 }
 
-ServerEndpoint::~ServerEndpoint() { close(m_connection.fd); }
+ListeningEndpoint::~ListeningEndpoint() { close(m_connection.fd); }
 
-void ServerEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
+void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
 	LOG_DEBUG << "ServerEndpoint " << m_connection.host << ':' << m_connection.port;
 
@@ -39,7 +39,7 @@ void ServerEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		return;
 	}
 	const Connection connection = { clientSock, bufHost, bufPort };
-	IEndpoint* endpoint = new ClientEndpoint(connection, m_connection);
+	IEndpoint* endpoint = new ConnectedEndpoint(connection, m_connection);
 
 	// Add client socket to epoll instance
 	struct epoll_event event = { };
@@ -53,4 +53,4 @@ void ServerEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 	LOG_INFO << "Added client endpoint: " << connection.host << ':' << connection.port;
 }
 
-time_t ServerEndpoint::getTimeSinceLastEvent() const { return (0); }
+time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }

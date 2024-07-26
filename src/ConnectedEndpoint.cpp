@@ -1,16 +1,16 @@
-#include "ClientEndpoint.hpp"
+#include "ConnectedEndpoint.hpp"
 #include "Dispatcher.hpp"
 
-ClientEndpoint::ClientEndpoint(const Connection& connection, const Connection& server)
+ConnectedEndpoint::ConnectedEndpoint(const Connection& connection, const Connection& server)
 	: m_connection(connection)
 	, m_server(server)
 	, m_TimeSinceLastEvent(std::time(0))
 {
 }
 
-ClientEndpoint::~ClientEndpoint() { close(m_connection.fd); }
+ConnectedEndpoint::~ConnectedEndpoint() { close(m_connection.fd); }
 
-void ClientEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
+void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
 	LOG_DEBUG << "ClientEndpoint " << m_connection.host << ':' << m_connection.port;
 
@@ -56,6 +56,6 @@ void ClientEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 	setTimeSinceLastEvent();
 }
 
-time_t ClientEndpoint::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
+time_t ConnectedEndpoint::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
 
-void ClientEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }
+void ConnectedEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }

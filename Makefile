@@ -75,16 +75,16 @@ NAME := webserv
 
 SRC:= 	main.cpp \
 		ALogOutputter.cpp \
-		ClientEndpoint.cpp \
+		ConnectedEndpoint.cpp \
 		Dispatcher.cpp \
+		ListeningEndpoint.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
-		Server.cpp \
-		ServerEndpoint.cpp
+		Server.cpp
 
 # ******************************
 # *     Object files           *

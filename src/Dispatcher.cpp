@@ -1,5 +1,5 @@
 #include "Dispatcher.hpp"
-#include "ServerEndpoint.hpp"
+#include "ListeningEndpoint.hpp"
 
 Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 	: m_timeout(timeout)
@@ -162,7 +162,7 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 	}
 
 	const Connection connection = { newFd, bufHost, bufPort };
-	IEndpoint* endpoint = new ServerEndpoint(connection);
+	IEndpoint* endpoint = new ListeningEndpoint(connection);
 	epoll_event event = {};
 	event.events = EPOLLIN | EPOLLET;
 	event.data.ptr = static_cast<void *>(endpoint);

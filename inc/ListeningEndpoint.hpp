@@ -13,10 +13,10 @@
 
 class Dispatcher;
 
-class ServerEndpoint : public IEndpoint {
+class ListeningEndpoint : public IEndpoint {
 public:
-	ServerEndpoint(const Connection& connection);
-	virtual ~ServerEndpoint();
+	ListeningEndpoint(const Connection& connection);
+	virtual ~ListeningEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
 
