@@ -19,11 +19,12 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		char buffer[1024];
 		const ssize_t bytesRead = recv(m_connection.fd, buffer, 1024, 0);
 		if (bytesRead < 0) {
-			LOG_ERROR << "recv: " << strerror(errno) << '\n';
+			LOG_ERROR << "recv: " << strerror(errno);
 			return (dispatcher.removeEvent(m_connection.fd, this));
-		} else if (bytesRead == 0) {
+		}
+		if (bytesRead == 0) {
 			LOG_INFO << "Connection closed by client: " << m_connection.host << ':' << m_connection.port;
-			dispatcher.removeEvent(m_connection.fd, this);
+			return (dispatcher.removeEvent(m_connection.fd, this));
 		}
 		m_buffer += std::string(buffer, bytesRead);
 		if (m_buffer.find("\r\n\r\n") != std::string::npos) {
@@ -45,12 +46,19 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 			LOG_ERROR << "send: " << strerror(errno) << '\n';
 			return (dispatcher.removeEvent(m_connection.fd, this));
 		}
-		else {
-			LOG_INFO << "Sent response to client: " << m_connection.host << ':' << m_connection.port;
-			return (dispatcher.removeEvent(m_connection.fd, this));
-		}
+		LOG_INFO << "Sent response to client: " << m_connection.host << ':' << m_connection.port;
+		// we need to check if connection should be closed.
+		// If so, we should remove it from epoll
+		LOG_INFO << "Closing connection to client: " << m_connection.host << ':' << m_connection.port;
+		return (dispatcher.removeEvent(m_connection.fd, this));
+		/* else we would modify to read again
+		struct epoll_event event = { };
+		event.events = EPOLLIN;
+		event.data.ptr = static_cast<void*>(this);
+		dispatcher.modifyEvent(m_connection.fd, &event);
+		*/
 	}
-	else {
+	else { // we don't know this event
 		LOG_ERROR << "Received unknown event:" << eventMask;
 	}
 	setTimeSinceLastEvent();
