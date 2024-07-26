@@ -30,8 +30,14 @@ void ServerEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 
 	char bufHost[NI_MAXHOST];
 	char bufPort[NI_MAXSERV];
-	getnameinfo(reinterpret_cast<struct sockaddr*>(&clientAddr), clientLen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV,
+	const int ret = getnameinfo(reinterpret_cast<struct sockaddr*>(&clientAddr), clientLen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV,
 		NI_NUMERICHOST | NI_NUMERICSERV);
+	// we could also use standard values if getnameinfo() fails
+	if (ret != 0) {
+		LOG_ERROR << "getnameinfo: " << gai_strerror(ret) << '\n';
+		close(clientSock);
+		return;
+	}
 	const Connection connection = { clientSock, bufHost, bufPort };
 	IEndpoint* endpoint = new ClientEndpoint(connection, m_connection);
 
