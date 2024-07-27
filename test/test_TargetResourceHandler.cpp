@@ -36,7 +36,7 @@ class TargetResourceHandlerTest : public ::testing::Test {
 		.root= "/fourth/location",
 		.isAutoindex= true };
 	HTTPRequest m_request = {
-		.method = "GET",
+		.method = MethodGet,
 		.uri = {
 			.path = "/test"
 		}

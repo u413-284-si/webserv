@@ -2,6 +2,7 @@
 #include <gmock/gmock.h>
 #include <stdexcept>
 
+#include "ConfigFile.hpp"
 #include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
 #include "MockFileSystemPolicy.hpp"
@@ -76,7 +77,7 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 
 	m_response.isAutoindex = false;
 	m_response.status = StatusOK;
-	m_response.method = "GET";
+	m_response.method = MethodGet;
 	m_response.targetResource = "/proc/self/cmdline";
 
 	m_responseBodyHandler.execute();
@@ -91,7 +92,7 @@ TEST_F(ResponseBodyHandlerTest, FileFound)
 
 	m_response.isAutoindex = false;
 	m_response.status = StatusOK;
-	m_response.method = "GET";
+	m_response.method = MethodGet;
 	m_response.targetResource = "/proc/self/cmdline";
 
 	m_responseBodyHandler.execute();
