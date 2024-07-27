@@ -78,6 +78,9 @@ TEST := unittest
 
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
+		AutoindexHandler.cpp \
+		Directory.cpp \
+		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
@@ -85,30 +88,20 @@ SRC:=	main.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
 		RequestParser.cpp \
+		ResponseBodyHandler.cpp \
+		ResponseBuilder.cpp \
 		Server.cpp \
+		TargetResourceHandler.cpp \
 		utilities.cpp
 
 # ******************************
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	testBody.cpp \
-			testHeader.cpp \
-			testRequestLine.cpp
-		AutoindexHandler.cpp \
-		Directory.cpp \
-		FileSystemPolicy.cpp \
-		ResponseBodyHandler.cpp \
-		ResponseBuilder.cpp \
-		Server.cpp \
-		TargetResourceHandler.cpp \
-		utils.cpp
-
-# ******************************
-# *     Test source files      *
-# ******************************
-
 TEST_SRC :=	test_AutoindexHandler.cpp \
+			testBody.cpp \
+			testHeader.cpp \
+			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
