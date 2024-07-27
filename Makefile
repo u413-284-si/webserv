@@ -164,7 +164,7 @@ $(TEST): CXXFLAGS = -Wall -Werror -pthread
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgtest_main -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
