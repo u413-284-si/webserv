@@ -7,7 +7,6 @@
 #include <string>
 #include "TargetResourceHandler.hpp"
 #include "ResponseBodyHandler.hpp"
-#include "utils.hpp"
 
 /**
  * @brief Class to build a HTTP response.
