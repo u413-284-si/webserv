@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/16 02:19:24 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ BLUE := \033[34m
 
 SRC_DIR := src
 
+TEST_DIR := test
+
 # Base directory for object files
 OBJ_DIR := obj
 
@@ -66,8 +68,9 @@ POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 # *     Targets                *
 # ******************************
 
-# Target
 NAME := webserv
+
+TEST := unittest
 
 # ******************************
 # *     Source files           *
@@ -81,7 +84,17 @@ SRC:= 	main.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
-		Server.cpp
+		RequestParser.cpp \
+		Server.cpp \
+		utilities.cpp
+
+# ******************************
+# *     Test source files      *
+# ******************************
+
+TEST_SRC :=	testBody.cpp \
+			testHeader.cpp \
+			testRequestLine.cpp
 
 # ******************************
 # *     Object files           *
@@ -89,11 +102,17 @@ SRC:= 	main.cpp \
 
 OBJS = 	$(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 
+TEST_OBJS = $(addprefix $(OBJ_DIR)/, $(TEST_SRC:.cpp=.o))
+# Remove main.o from test objects to link with special gtest main
+TEST_OBJS += $(filter-out $(OBJ_DIR)/main.o, $(OBJS))
+
 # ******************************
 # *     Dependency files       *
 # ******************************
 
 DEPFILES =	$(SRC:%.cpp=$(DEP_DIR)/%.d)
+
+DEPFILES +=	$(TEST_SRC:%.cpp=$(DEP_DIR)/%.d)
 
 # ******************************
 # *     Log files              *
@@ -124,6 +143,20 @@ $(NAME): $(OBJS)
 # ******************************
 # *     Special targets        *
 # ******************************
+
+# Alias for creating unittests
+.PHONY: test
+test: $(TEST)
+
+# Reconfigure flags for linking with gtest
+$(TEST): CXXFLAGS = -Wall -Werror -pthread
+# Set file counter to number of test files + object files
+$(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
+$(TEST): $(TEST_OBJS)
+	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgtest_main -o $(TEST)
+	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -181,10 +214,16 @@ CURRENT_FILE := 0
 # | $(DEPDIR) = 	Declare the dependency directory as an order-only prerequisite of the target,
 # 					so that it will be created when needed.
 # $(eval ...) =		Increment file counter.
-# $(eval ...) =		Increment file counter.
 # $(POSTCOMPILE) =	Move temp dependency file and touch object to ensure right timestamps.
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR)
+	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
+	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
+	$(SILENT)$(COMPILE) $< -o $@
+	$(SILENT)$(POSTCOMPILE)
+
+# Similar target for testfiles
+$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE) $< -o $@
@@ -251,7 +290,8 @@ help:
 	@echo "Below are the available targets and variables you can use."
 	@echo ""
 	@echo "$(YELLOW)Targets:$(RESET)"
-	@echo "  all         - Compiles the default version of the miniRT program."
+	@echo "  all         - Compiles the default version of the $(NAME) program."
+	@echo "  test        - Compiles the unit tests linking with gtest."
 	@echo "  clean       - Removes object files and dependency files."
 	@echo "  fclean      - Performs 'clean' and also removes binaries and log files."
 	@echo "  re          - Performs 'fclean' and then 'all'."
