@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/16 02:19:24 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,17 @@ SRC:=	main.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
+		RequestParser.cpp \
+		Server.cpp \
+		utilities.cpp
+
+# ******************************
+# *     Test source files      *
+# ******************************
+
+TEST_SRC :=	testBody.cpp \
+			testHeader.cpp \
+			testRequestLine.cpp
 		AutoindexHandler.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \
@@ -154,13 +165,13 @@ $(NAME): $(OBJS)
 .PHONY: test
 test: $(TEST)
 
-# Reconfigure flags for linking with gtest and gmock
+# Reconfigure flags for linking with gtest
 $(TEST): CXXFLAGS = -Wall -Werror -pthread
 # Set file counter to number of test files + object files
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgmock_main -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgtest_main -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 

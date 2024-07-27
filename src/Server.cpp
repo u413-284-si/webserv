@@ -38,7 +38,7 @@ static void setNonblocking(int sock)
 Server::Server()
 {
 	// Create server socket using TCP protocol SOCK_STREAM
-	m_serverSock = socket(AF_INET, SOCK_STREAM, 0);
+	m_serverSock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
 	if (m_serverSock < 0) {
 		throw std::runtime_error("socket");
 	}
@@ -113,6 +113,8 @@ Server::~Server()
  */
 void Server::run()
 {
+	RequestParser parser;
+
 	while (1) {
 		struct epoll_event events[MAX_EVENTS];
 		// Blocking call to epoll_wait
@@ -124,7 +126,7 @@ void Server::run()
 			if (events[n].data.fd == m_serverSock)
 				acceptConnection();
 			else
-				handleConnections(events[n].data.fd);
+				handleConnections(events[n].data.fd, parser);
 		}
 	}
 }
@@ -189,45 +191,30 @@ void Server::acceptConnection()
  *      to the client socket using the write function.
  *
  */
-void Server::handleConnections(int clientSock)
-{
-	// Handle client data
-	char buffer[BUFFER_SIZE];
-	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
-	if (bytesRead < 0) {
-		std::cerr << "error: read\n";
-		close(clientSock);
-	} else if (bytesRead == 0) {
-		// Connection closed by client
-		close(clientSock);
-	} else {
-		// Temp for testing until other classes are implemented
-		Location location;
-		location.path = "/";
-		location.root = "/workspaces/webserv";
-		location.index = "index.html";
-		location.isAutoindex = true;
-		ServerConfig serverConfig;
-		serverConfig.locations.push_back(location);
-		ConfigFile configFile;
-		configFile.serverConfigs.push_back(serverConfig);
-		HTTPRequest request;
-		request.body = buffer;
-		request.uri.path = "/";
-		request.method = "GET";
-		ResponseBuilder responseBuilder(configFile, FileSystemPolicy());
-		responseBuilder.buildResponse(request);
-		write(clientSock, responseBuilder.getResponse().c_str(), responseBuilder.getResponse().size());
-		// FIXME: check requestString for complete HTTP request.
-		// If yes, hand over to request parser and then clear the requestString.
-		// If no, concatenate to requestString and exit, only to come back for remainder.
-		// if (checkRequestString()) {
-		// 	RequestParser	parseSoGood;
+void    Server::handleConnections(int clientSock){
+     // Handle client data
+        char	buffer[BUFFER_SIZE];
+        int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+        if (bytesRead < 0) {
+			std::cerr << "error: read\n";
+			close(clientSock);
+		}
+        else if (bytesRead == 0) {
+            // Connection closed by client
+            close(clientSock);
+        } else {
+            // Echo data back to client
+            write(clientSock, buffer, bytesRead);
+			// FIXME: check requestString for complete HTTP request.
+			// If yes, hand over to request parser and then clear the requestString.
+			// If no, concatenate to requestString and exit, only to come back for remainder.
+			// if (checkRequestString()) {
+			// 	RequestParser	parseSoGood;
 
-		// 	parseSoGood.parse();
-		// 	m_requestString[clientSock].clear();
-		// } else
-		// 		m_requestStrings[clientSock] += buffer;
-		//
-	}
+			// 	parseSoGood.parse();
+			// 	m_requestString[clientSock].clear();
+			// } else
+			// 		m_requestStrings[clientSock] += buffer;
+			//
+        }
 }
