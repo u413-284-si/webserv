@@ -292,7 +292,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 		}
 		std::string headerName;
 		std::string headerValue;
-		std::size_t delimiterPos = headerLine.find_first_of(':');
+		const std::size_t delimiterPos = headerLine.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
 			headerName = headerLine.substr(0, delimiterPos);
 			checkHeaderName(headerName, request);
@@ -384,7 +384,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 	}
 
 	// Check URI string for invalid chars
-	std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
+	const std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
 	if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_URI_INVALID_CHAR);
@@ -597,7 +597,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
 	std::string body;
-	size_t length = 0;
+	long length = 0;
 
 	while (!std::getline(m_requestStream, body).fail()) {
 		if (body[body.size() - 1] == '\r') {
@@ -606,10 +606,10 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		}
 		if (!m_requestStream.eof())
 			body += '\n';
-		length += body.size();
+		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	size_t contentLength = strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
@@ -677,7 +677,7 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
 		std::vector<long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-			long contentLength = strtol(strValues[i].c_str(), &endptr, decimalBase);
+			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, decimalBase);
 			if ((contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
