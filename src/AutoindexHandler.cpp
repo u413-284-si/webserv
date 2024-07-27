@@ -1,5 +1,4 @@
 #include "AutoindexHandler.hpp"
-#include "utils.hpp"
 
 /**
  * @brief Construct a new AutoindexHandler object
