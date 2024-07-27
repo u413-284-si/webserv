@@ -285,7 +285,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	// Step 2: Parse headers
 	std::string headerLine;
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
-	while (std::getline(m_requestStream, headerLine) && headerLine != "\r" && !headerLine.empty()) {
+	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
@@ -599,7 +599,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 	std::string body;
 	size_t length = 0;
 
-	while (std::getline(m_requestStream, body)) {
+	while (!std::getline(m_requestStream, body).fail()) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
 			length += 1;
