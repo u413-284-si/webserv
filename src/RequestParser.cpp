@@ -337,6 +337,9 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
  */
 std::string RequestParser::parseMethod(const std::string& requestLine, HTTPRequest& request)
 {
+	const int getLength = 3; // GET -> 3 chars
+	const int postLength = 4; // POST -> 4 chars
+	const int deleteLength = 6; // DELETE -> 6 chars
 	int index = 0;
 
 	if (requestLine.compare(0, getLength, "GET") == 0) {
@@ -482,6 +485,8 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
  */
 std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequest& request)
 {
+	const int versionPrefixLength = 5; // HTTP/ -> 5 chars
+
 	if (requestLine.substr(0, versionPrefixLength) != "HTTP/") {
 		request.errorCode = StatusBadRequest;
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);

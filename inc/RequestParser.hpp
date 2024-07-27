@@ -15,10 +15,6 @@
 
 /* ====== DEFINITIONS ====== */
 
-const int versionPrefixLength = 5; // HTTP/ -> 5 chars
-const int getLength = 3; // GET -> 3 chars
-const int postLength = 4; // POST -> 4 chars
-const int deleteLength = 6; // DELETE -> 6 chars
 const int decimalBase = 10;
 
 /* ====== CLASS DECLARATION ====== */
