@@ -44,8 +44,8 @@ private:
 	void parseNonChunkedBody(HTTPRequest& request);
 
 	// Helper functions
-	static std::string checkForSpace(const std::string&, HTTPRequest& request);
-	static void checkForCRLF(const std::string&, HTTPRequest& request);
+	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
+	static void checkForCRLF(const std::string& str, HTTPRequest& request);
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
 	static size_t convertHex(const std::string& chunkSize);
