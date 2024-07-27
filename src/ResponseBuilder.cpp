@@ -89,7 +89,7 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
 {
 	HTTPResponse response;
 
-	response.status = StatusOK;
+	response.status = request.httpStatus;
 	response.method = request.method;
 	response.isAutoindex = false;
 

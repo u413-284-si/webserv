@@ -1,4 +1,5 @@
 #include "ResponseBodyHandler.hpp"
+#include "ConfigFile.hpp"
 
 /**
  * @brief Construct a new ResponseBodyHandler object
@@ -38,7 +39,7 @@ void ResponseBodyHandler::execute()
 		m_response.status = StatusOK;
 		m_response.targetResource += "autoindex.html";
 	}
-	else if (m_response.method == "GET") {
+	else if (m_response.method == MethodGet) {
 		try {
 			m_response.body = m_fileSystemPolicy.getFileContents(m_response.targetResource.c_str());
 		} catch (std::exception& e) {

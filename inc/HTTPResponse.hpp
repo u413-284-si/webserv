@@ -9,6 +9,6 @@ struct HTTPResponse {
 	std::string	targetResource;
 	std::string body;
 	std::vector<Location>::const_iterator location;
-	std::string method;
+	Method method;
 	bool isAutoindex;
 };
