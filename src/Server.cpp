@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include "ResponseBuilder.hpp"
 
 /* ====== HELPER FUNCTIONS ====== */
 
@@ -191,30 +190,59 @@ void Server::acceptConnection()
  *      to the client socket using the write function.
  *
  */
-void    Server::handleConnections(int clientSock){
-     // Handle client data
-        char	buffer[BUFFER_SIZE];
-        int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
-        if (bytesRead < 0) {
-			std::cerr << "error: read\n";
-			close(clientSock);
-		}
-        else if (bytesRead == 0) {
-            // Connection closed by client
-            close(clientSock);
-        } else {
-            // Echo data back to client
-            write(clientSock, buffer, bytesRead);
-			// FIXME: check requestString for complete HTTP request.
-			// If yes, hand over to request parser and then clear the requestString.
-			// If no, concatenate to requestString and exit, only to come back for remainder.
-			// if (checkRequestString()) {
-			// 	RequestParser	parseSoGood;
+void Server::handleConnections(int clientSock, RequestParser& parser)
+{
+	// Handle client data
+	char buffer[BUFFER_SIZE];
+	HTTPRequest request;
 
-			// 	parseSoGood.parse();
-			// 	m_requestString[clientSock].clear();
-			// } else
-			// 		m_requestStrings[clientSock] += buffer;
-			//
-        }
+	request.method = MethodCount;
+	request.httpStatus = StatusOK;
+	request.shallCloseConnection = false;
+	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+	if (bytesRead < 0) {
+		std::cerr << "error: read\n";
+		close(clientSock);
+	} else if (bytesRead == 0) {
+		// Connection closed by client
+		close(clientSock);
+	} else {
+		m_requestStrings[clientSock] += buffer;
+		if (checkForCompleteRequest(clientSock)) {
+			try {
+				parser.parseHttpRequest(m_requestStrings[clientSock], request);
+				// ResponseBuilder does his stuff
+				parser.clearParser();
+				parser.clearRequest(request);
+			} catch (std::exception& e) {
+				std::cerr << "Error: " << e.what() << std::endl;
+			}
+			// response builder retrieves request and does his stuff
+		}
+	}
+}
+
+bool Server::checkForCompleteRequest(int clientSock)
+{
+	size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
+
+	if (headerEndPos != std::string::npos) {
+		headerEndPos += 4;
+		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
+		// FIXME: add check against default/config max body size
+		size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
+		size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
+
+		if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
+			unsigned long contentLength
+				= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
+			if (bodySize >= contentLength)
+				return true;
+		} else if (transferEncodingPos != std::string::npos) {
+			std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
+			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
+				return true;
+		}
+	}
+	return false;
 }
