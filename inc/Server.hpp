@@ -2,18 +2,20 @@
 
 /* ====== LIBRARIES ====== */
 
-#include <iostream>
-#include <stdexcept>
-#include <sys/epoll.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <netinet/in.h>
+#include "RequestParser.hpp"
+#include "StatusCode.hpp"
 #include <algorithm>
-#include <errno.h>
-#include <string.h>
+#include <cerrno>
+#include <fcntl.h>
+#include <iostream>
 #include <map>
+#include <netinet/in.h>
+#include <stdexcept>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <sys/epoll.h>
+#include <unistd.h>
 
 /* ====== DEFINITIONS ====== */
 
@@ -23,17 +25,19 @@
 
 /* ====== CLASS DECLARATION ====== */
 
-class Server{
-    private:
-                int							m_serverSock;
-				int							m_epfd;
-				std::map<int,std::string>	m_requestStrings;
+class Server {
+private:
+	int m_serverSock;
+	int m_epfd;
+	std::map<int, std::string> m_requestStrings;
 
-    public:
-                Server();
-                ~Server();
+	void acceptConnection();
+	void handleConnections(int clientSock, RequestParser& parser);
+	bool checkForCompleteRequest(int clientSock);
 
-                void    run();
-                void    acceptConnection();
-                void    handleConnections(int clientSock);
+public:
+	Server();
+	~Server();
+
+	void run();
 };
