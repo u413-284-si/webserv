@@ -2,15 +2,18 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "RequestParser.hpp"
+#include "StatusCode.hpp"
 #include <algorithm>
 #include <cerrno>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include <fcntl.h>
 #include <iostream>
 #include <map>
 #include <netinet/in.h>
 #include <stdexcept>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -26,18 +29,17 @@
 
 class Server {
 private:
-	Server(const Server& ref);
-	Server& operator=(const Server& ref);
-
 	int m_serverSock;
 	int m_epfd;
 	std::map<int, std::string> m_requestStrings;
+
+	void acceptConnection();
+	void handleConnections(int clientSock, RequestParser& parser);
+	bool checkForCompleteRequest(int clientSock);
 
 public:
 	Server();
 	~Server();
 
 	void run();
-	void acceptConnection();
-	void handleConnections(int clientSock);
 };

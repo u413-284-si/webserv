@@ -1,11 +1,35 @@
 #include "Server.hpp"
 
+/* ====== HELPER FUNCTIONS ====== */
+
+/**
+ * @brief Set the socket to nonblocking mode
+ *
+ * Use fcntl to manipulate fd/sockets. Retrieve the currently set flags with
+ * F_GETFL. Set the flag with with F_SETFL. Use bitwise OR to set the
+ * O_NONBLOCK bit in "flags" while preserving all other bits.
+ * @param sock	Socket to be manipulated
+ */
+static void setNonblocking(int sock)
+{
+	int	flags = fcntl(sock, F_GETFL, 0);
+	if (flags == -1) {
+		throw std::runtime_error("fcntl(F_GETFL)");
+	}
+	if (fcntl(sock, F_SETFL, flags | O_NONBLOCK) == -1) {
+		throw std::runtime_error("fcntl(F_SETFL)");
+	}
+}
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 /**
  * @brief Constructor for the Server class.
  *
  * This constructor initializes a server instance by creating a server socket,
+ * setting it to non-blocking mode, binding it to a specific address and port,
+ * listening on the server socket, creating an epoll instance for event handling,
+ * and adding the server socket to the epoll instance.
+ *
  * using TCP protocol SOCK_STREAM, and setting it to non-blocking mode.
  * It also creates an epoll instance for event handling.
  * If any of these operations fail, the constructor throws a std::runtime_error.
@@ -64,6 +88,7 @@ Server::Server()
  *
  * @details The destructor performs the following cleanup actions:
  *
+ *
  * 1. Closes the server socket to release the bound port and stop accepting
  * new connections.
  * 2. Closes the epoll instance to release associated resources and stop
@@ -71,6 +96,8 @@ Server::Server()
  */
 Server::~Server()
 {
+	close(m_serverSock);
+	close(m_epfd);
 	close(m_serverSock);
 	close(m_epfd);
 }
@@ -119,8 +146,10 @@ Server& Server::operator=(const Server& ref)
  */
 void Server::run()
 {
-	while (true) {
-		struct epoll_event events[MAX_EVENTS]; // NOLINT
+	RequestParser parser;
+
+	while (1) {
+		struct epoll_event events[MAX_EVENTS];
 		// Blocking call to epoll_wait
 		int nfds = epoll_wait(m_epfd, events, MAX_EVENTS, -1);
 		if (nfds < 0)
@@ -176,6 +205,7 @@ void Server::acceptConnection()
 /**
  * @brief Handle data from a client connection.
  *
+ *
  * This method is responsible for reading data from a client socket
  * and processing it.
  *
@@ -194,30 +224,30 @@ void Server::acceptConnection()
  *      to the client socket using the write function.
  *
  */
-void Server::handleConnections(int clientSock)
-{
-	// Handle client data
-	char buffer[BUFFER_SIZE]; // NOLINT
-	ssize_t bytesRead = recv(clientSock, buffer, BUFFER_SIZE, 0);
-	if (bytesRead < 0) {
-		std::cerr << "error: recv\n";
-		close(clientSock);
-	} else if (bytesRead == 0) {
-		// Connection closed by client
-		close(clientSock);
-	} else {
-		// Echo data back to client
-		send(clientSock, buffer, bytesRead, 0);
-		// FIXME: check requestString for complete HTTP request.
-		// If yes, hand over to request parser and then clear the requestString.
-		// If no, concatenate to requestString and exit, only to come back for remainder.
-		// if (checkRequestString()) {
-		// 	RequestParser	parseSoGood;
+void    Server::handleConnections(int clientSock){
+     // Handle client data
+        char	buffer[BUFFER_SIZE];
+        int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+        if (bytesRead < 0) {
+			std::cerr << "error: read\n";
+			close(clientSock);
+		}
+        else if (bytesRead == 0) {
+            // Connection closed by client
+            close(clientSock);
+        } else {
+            // Echo data back to client
+            write(clientSock, buffer, bytesRead);
+			// FIXME: check requestString for complete HTTP request.
+			// If yes, hand over to request parser and then clear the requestString.
+			// If no, concatenate to requestString and exit, only to come back for remainder.
+			// if (checkRequestString()) {
+			// 	RequestParser	parseSoGood;
 
-		// 	parseSoGood.parse();
-		// 	m_requestString[clientSock].clear();
-		// } else
-		// 		m_requestStrings[clientSock] += buffer;
-		//
-	}
+			// 	parseSoGood.parse();
+			// 	m_requestString[clientSock].clear();
+			// } else
+			// 		m_requestStrings[clientSock] += buffer;
+			//
+        }
 }
