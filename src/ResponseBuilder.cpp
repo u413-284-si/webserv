@@ -50,6 +50,8 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 {
 	resetStream();
 
+	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
+
 	HTTPResponse response = initHTTPResponse(request);
 
 	if (response.status == StatusOK) {
@@ -57,8 +59,12 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 		targetResourceHandler.execute();
 	}
 
+	LOG_DEBUG << "Target resource: " << response.targetResource;
+
 	ResponseBodyHandler responseBodyHandler(response, m_fileSystemPolicy);
 	responseBodyHandler.execute();
+
+	LOG_DEBUG << "Response body: " << response.body;
 
 	appendStatusLine(response);
 	appendHeaders(response);

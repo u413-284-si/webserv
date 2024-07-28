@@ -4,6 +4,7 @@
 #include "HTTPResponse.hpp"
 #include "RequestParser.hpp"
 #include "FileSystemPolicy.hpp"
+#include "Log.hpp"
 #include <string>
 #include "TargetResourceHandler.hpp"
 #include "ResponseBodyHandler.hpp"
