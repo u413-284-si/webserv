@@ -203,7 +203,9 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	request.shallCloseConnection = false;
 
 	Location location = {};
-	location.root = "/";
+	location.path = "/";
+	location.root = "/workspaces/webserv";
+	location.index = "index.html";
 
 	ServerConfig serverConfig;
 	serverConfig.locations.push_back(location);
@@ -221,7 +223,7 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	} else {
 		m_requestStrings[clientSock] += buffer;
 		if (checkForCompleteRequest(clientSock)) {
-			LOG_DEBUG << "Received complete request: " << m_requestStrings[clientSock];
+			LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[clientSock];
 			try {
 				parser.parseHttpRequest(m_requestStrings[clientSock], request);
 				parser.clearParser();
