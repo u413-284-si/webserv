@@ -33,7 +33,7 @@ void ResponseBuilder::setActiveServer(const std::vector<ServerConfig>::const_ite
  * If str() would be returned, old parts of the stream would be included.
  * @return std::string Response.
  */
-std::string ResponseBuilder::getResponse() const { return m_response.str().c_str(); }
+std::string ResponseBuilder::getResponse() const { return m_responseStream.str().c_str(); }
 
 /**
  * @brief Build the response for a given request.
@@ -68,7 +68,7 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 
 	appendStatusLine(response);
 	appendHeaders(response);
-	m_response << response.body << "\r\n";
+	m_responseStream << response.body << "\r\n";
 }
 
 /**
@@ -80,7 +80,7 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 void ResponseBuilder::resetStream()
 {
 	if (!m_isFirstTime)
-		m_response.seekp(std::ios::beg);
+		m_responseStream.seekp(std::ios::beg);
 
 	m_isFirstTime = false;
 }
@@ -111,7 +111,7 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
  */
 void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 {
-	m_response << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status) << "\r\n";
+	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status) << "\r\n";
 }
 
 /**
@@ -129,19 +129,19 @@ void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 void ResponseBuilder::appendHeaders(const HTTPResponse& response)
 {
 	// Content-Type
-	m_response << "Content-Type: " << getMIMEType(webutils::getFileExtension(response.targetResource)) << "\r\n";
+	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(response.targetResource)) << "\r\n";
 	// Content-Length
-	m_response << "Content-Length: " << response.body.length() << "\r\n";
+	m_responseStream << "Content-Length: " << response.body.length() << "\r\n";
 	// Server
-	m_response << "Server: TriHard\r\n";
+	m_responseStream << "Server: TriHard\r\n";
 	// Date
-	m_response << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	m_responseStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	if (response.status == StatusMovedPermanently) {
-		m_response << "Location: " << response.targetResource << "\r\n";
+		m_responseStream << "Location: " << response.targetResource << "\r\n";
 	}
 	// Delimiter
-	m_response << "\r\n";
+	m_responseStream << "\r\n";
 }
 
 /**

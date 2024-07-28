@@ -33,6 +33,6 @@ private:
 	const ConfigFile& m_configFile;
 	std::vector<ServerConfig>::const_iterator m_activeServer;
 	const FileSystemPolicy& m_fileSystemPolicy;
-	std::stringstream m_response;
+	std::stringstream m_responseStream;
 	bool m_isFirstTime;
 };
