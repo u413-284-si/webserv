@@ -2,16 +2,16 @@
 #include "ConnectedEndpoint.hpp"
 #include "Dispatcher.hpp"
 
-ListeningEndpoint::ListeningEndpoint(const Connection& connection)
-	: m_connection(connection)
+ListeningEndpoint::ListeningEndpoint(const Socket& connection)
+	: m_serverSock(connection)
 {
 }
 
-ListeningEndpoint::~ListeningEndpoint() { close(m_connection.fd); }
+ListeningEndpoint::~ListeningEndpoint() { close(m_serverSock.fd); }
 
 void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
-	LOG_DEBUG << "ListeningEndpoint " << m_connection.host << ':' << m_connection.port;
+	LOG_DEBUG << "ListeningEndpoint " << m_serverSock.host << ':' << m_serverSock.port;
 
 	if ((eventMask & EPOLLIN) == 0) {
 		LOG_ERROR << "Received unknown event:" << eventMask;
@@ -19,7 +19,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 	}
 	struct sockaddr_storage clientAddr = { };
 	socklen_t clientLen = sizeof(clientAddr);
-	const int clientSock = accept(m_connection.fd, reinterpret_cast<struct sockaddr*>(&clientAddr), &clientLen);
+	const int clientSock = accept(m_serverSock.fd, reinterpret_cast<struct sockaddr*>(&clientAddr), &clientLen);
 	if (clientSock < 0) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
 			return; // No more pending connections
@@ -38,8 +38,8 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		close(clientSock);
 		return;
 	}
-	const Connection connection = { clientSock, bufHost, bufPort };
-	IEndpoint* endpoint = new ConnectedEndpoint(connection, m_connection);
+	const Socket connection = { clientSock, bufHost, bufPort };
+	IEndpoint* endpoint = new ConnectedEndpoint(connection, m_serverSock);
 
 	// Add client socket to epoll instance
 	struct epoll_event event = { };

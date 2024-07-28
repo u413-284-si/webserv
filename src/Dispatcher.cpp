@@ -142,18 +142,10 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 			continue;
 		}
 
-		break;
-	}
-	if (newFd == -1) {
-		LOG_ERROR << "initServer(): Cannot bind to a valid socket.\n";
-		return false;
-	}
-
-	char bufHost[NI_MAXHOST];
+		char bufHost[NI_MAXHOST];
 	char bufPort[NI_MAXSERV];
 	const int ret = getnameinfo(list->ai_addr, list->ai_addrlen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	// We don't need the list anymore
-	freeaddrinfo(list);
 
 	if (ret != 0) {
 		LOG_ERROR << "initServer(): " << gai_strerror(ret) << '\n';
@@ -161,8 +153,8 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 		return false;
 	}
 
-	const Connection connection = { newFd, bufHost, bufPort };
-	IEndpoint* endpoint = new ListeningEndpoint(connection);
+	const Socket newSock = { newFd, bufHost, bufPort };
+	IEndpoint* endpoint = new ListeningEndpoint(newSock);
 	epoll_event event = {};
 	event.events = EPOLLIN | EPOLLET;
 	event.data.ptr = static_cast<void *>(endpoint);
@@ -171,6 +163,13 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 		delete endpoint;
 		return false;
 	}
-	LOG_INFO << "Added server endpoint: " << connection.host << ':' << connection.port;
+	LOG_INFO << "Added server endpoint: " << newSock.host << ':' << newSock.port;
+	}
+	if (newFd == -1) {
+		LOG_ERROR << "initServer(): Cannot bind to a valid socket.\n";
+		return false;
+	}
+
+
 	return true;
 }

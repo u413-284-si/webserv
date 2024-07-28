@@ -7,7 +7,7 @@
 #include <sys/epoll.h>
 #include <unistd.h>
 
-#include "Connection.hpp"
+#include "Socket.hpp"
 #include "IEndpoint.hpp"
 #include "Log.hpp"
 
@@ -15,7 +15,7 @@ class Dispatcher;
 
 class ListeningEndpoint : public IEndpoint {
 public:
-	ListeningEndpoint(const Connection& connection);
+	ListeningEndpoint(const Socket& serverSock);
 	virtual ~ListeningEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
@@ -23,5 +23,5 @@ public:
 	virtual time_t getTimeSinceLastEvent() const;
 
 private:
-	Connection m_connection;
+	Socket m_serverSock;
 };

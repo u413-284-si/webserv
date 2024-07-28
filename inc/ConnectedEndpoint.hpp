@@ -8,13 +8,13 @@
 #include <string.h>
 #include <sstream>
 
-#include "Connection.hpp"
+#include "Socket.hpp"
 #include "IEndpoint.hpp"
 #include "Log.hpp"
 
 class ConnectedEndpoint : public IEndpoint {
 public:
-	ConnectedEndpoint(const Connection& connection, const Connection& server);
+	ConnectedEndpoint(const Socket& clientSock, const Socket& serverSock);
 	virtual ~ConnectedEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
@@ -23,8 +23,8 @@ public:
 	virtual void setTimeSinceLastEvent();
 
 private:
-	Connection m_connection;
-	Connection m_server;
+	Socket m_clientSock;
+	Socket m_serverSock;
 	time_t m_TimeSinceLastEvent;
 	std::string m_buffer;
 };

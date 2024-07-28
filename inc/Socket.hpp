@@ -2,7 +2,7 @@
 
 #include <string>
 
-struct Connection {
+struct Socket {
 	int fd;
 	std::string host;
 	std::string port;
