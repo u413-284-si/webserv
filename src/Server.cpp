@@ -1,35 +1,11 @@
 #include "Server.hpp"
 
-/* ====== HELPER FUNCTIONS ====== */
-
-/**
- * @brief Set the socket to nonblocking mode
- *
- * Use fcntl to manipulate fd/sockets. Retrieve the currently set flags with
- * F_GETFL. Set the flag with with F_SETFL. Use bitwise OR to set the
- * O_NONBLOCK bit in "flags" while preserving all other bits.
- * @param sock	Socket to be manipulated
- */
-static void setNonblocking(int sock)
-{
-	int	flags = fcntl(sock, F_GETFL, 0);
-	if (flags == -1) {
-		throw std::runtime_error("fcntl(F_GETFL)");
-	}
-	if (fcntl(sock, F_SETFL, flags | O_NONBLOCK) == -1) {
-		throw std::runtime_error("fcntl(F_SETFL)");
-	}
-}
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 /**
  * @brief Constructor for the Server class.
  *
  * This constructor initializes a server instance by creating a server socket,
- * setting it to non-blocking mode, binding it to a specific address and port,
- * listening on the server socket, creating an epoll instance for event handling,
- * and adding the server socket to the epoll instance.
- *
  * using TCP protocol SOCK_STREAM, and setting it to non-blocking mode.
  * It also creates an epoll instance for event handling.
  * If any of these operations fail, the constructor throws a std::runtime_error.
@@ -44,9 +20,8 @@ Server::Server()
 	: m_serverSock(socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0))
 	, m_epfd(epoll_create(1))
 {
-	if (m_serverSock < 0) {
+	if (m_serverSock < 0)
 		throw std::runtime_error("socket");
-	}
 
 	if (m_epfd < 0) {
 		close(m_serverSock);
@@ -58,7 +33,9 @@ Server::Server()
 	serverAddr.sin_family = AF_INET; // Communicates with IPv4
 	serverAddr.sin_addr.s_addr = INADDR_ANY; // Accept any arriving ip addresses
 	serverAddr.sin_port = htons(PORT); // Listen on specified port
-	if (bind(m_serverSock, reinterpret_cast<struct sockaddr*>(&serverAddr), sizeof(serverAddr)) < 0) { // NOLINT
+
+	// NOLINTNEXTLINE: Ignore reinterpret_cast warning, as it is necessary for the bind function
+	if (bind(m_serverSock, reinterpret_cast<struct sockaddr*>(&serverAddr), sizeof(serverAddr)) < 0) {
 		close(m_serverSock);
 		throw std::runtime_error("bind");
 	}
@@ -88,7 +65,6 @@ Server::Server()
  *
  * @details The destructor performs the following cleanup actions:
  *
- *
  * 1. Closes the server socket to release the bound port and stop accepting
  * new connections.
  * 2. Closes the epoll instance to release associated resources and stop
@@ -96,8 +72,6 @@ Server::Server()
  */
 Server::~Server()
 {
-	close(m_serverSock);
-	close(m_epfd);
 	close(m_serverSock);
 	close(m_epfd);
 }
@@ -148,7 +122,7 @@ void Server::run()
 {
 	RequestParser parser;
 
-	while (1) {
+	while (true) {
 		struct epoll_event events[MAX_EVENTS];
 		// Blocking call to epoll_wait
 		int nfds = epoll_wait(m_epfd, events, MAX_EVENTS, -1);
@@ -159,7 +133,7 @@ void Server::run()
 			if (events[i].data.fd == m_serverSock)
 				acceptConnection();
 			else
-				handleConnections(events[i].data.fd);
+				handleConnections(events[i].data.fd, parser);
 		}
 	}
 }
@@ -182,11 +156,13 @@ void Server::acceptConnection()
 	while (true) {
 		struct sockaddr_in clientAddr = {};
 		socklen_t addrLen = sizeof(clientAddr);
-		int clientSock = accept(m_serverSock, reinterpret_cast<struct sockaddr*>(&clientAddr), &addrLen); // NOLINT
+
+		// NOLINTNEXTLINE: Ignore reinterpret_cast warning, as it is necessary for the accept function
+		int clientSock = accept(m_serverSock, reinterpret_cast<struct sockaddr*>(&clientAddr), &addrLen);
+
 		if (clientSock < 0) {
-			if (errno == EAGAIN || errno == EWOULDBLOCK) {
+			if (errno == EAGAIN || errno == EWOULDBLOCK)
 				break; // No more pending connections
-			}
 			std::cerr << "error: accept: " << strerror(errno) << "\n";
 			break;
 		}
@@ -204,7 +180,6 @@ void Server::acceptConnection()
 
 /**
  * @brief Handle data from a client connection.
- *
  *
  * This method is responsible for reading data from a client socket
  * and processing it.
@@ -224,30 +199,59 @@ void Server::acceptConnection()
  *      to the client socket using the write function.
  *
  */
-void    Server::handleConnections(int clientSock){
-     // Handle client data
-        char	buffer[BUFFER_SIZE];
-        int		bytesRead = read(clientSock, buffer, BUFFER_SIZE);
-        if (bytesRead < 0) {
-			std::cerr << "error: read\n";
-			close(clientSock);
-		}
-        else if (bytesRead == 0) {
-            // Connection closed by client
-            close(clientSock);
-        } else {
-            // Echo data back to client
-            write(clientSock, buffer, bytesRead);
-			// FIXME: check requestString for complete HTTP request.
-			// If yes, hand over to request parser and then clear the requestString.
-			// If no, concatenate to requestString and exit, only to come back for remainder.
-			// if (checkRequestString()) {
-			// 	RequestParser	parseSoGood;
+void Server::handleConnections(int clientSock, RequestParser& parser)
+{
+	// Handle client data
+	char buffer[BUFFER_SIZE];
+	HTTPRequest request;
 
-			// 	parseSoGood.parse();
-			// 	m_requestString[clientSock].clear();
-			// } else
-			// 		m_requestStrings[clientSock] += buffer;
-			//
-        }
+	request.method = MethodCount;
+	request.httpStatus = StatusOK;
+	request.shallCloseConnection = false;
+	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+	if (bytesRead < 0) {
+		std::cerr << "error: read\n";
+		close(clientSock);
+	} else if (bytesRead == 0) {
+		// Connection closed by client
+		close(clientSock);
+	} else {
+		m_requestStrings[clientSock] += buffer;
+		if (checkForCompleteRequest(clientSock)) {
+			try {
+				parser.parseHttpRequest(m_requestStrings[clientSock], request);
+				// ResponseBuilder does his stuff
+				parser.clearParser();
+				parser.clearRequest(request);
+			} catch (std::exception& e) {
+				std::cerr << "Error: " << e.what() << std::endl;
+			}
+			// response builder retrieves request and does his stuff
+		}
+	}
+}
+
+bool Server::checkForCompleteRequest(int clientSock)
+{
+	size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
+
+	if (headerEndPos != std::string::npos) {
+		headerEndPos += 4;
+		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
+		// FIXME: add check against default/config max body size
+		size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
+		size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
+
+		if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
+			unsigned long contentLength
+				= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
+			if (bodySize >= contentLength)
+				return true;
+		} else if (transferEncodingPos != std::string::npos) {
+			std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
+			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
+				return true;
+		}
+	}
+	return false;
 }

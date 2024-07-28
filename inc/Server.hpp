@@ -6,14 +6,13 @@
 #include "StatusCode.hpp"
 #include <algorithm>
 #include <cerrno>
-#include <fcntl.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <netinet/in.h>
 #include <stdexcept>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -36,6 +35,9 @@ private:
 	void acceptConnection();
 	void handleConnections(int clientSock, RequestParser& parser);
 	bool checkForCompleteRequest(int clientSock);
+
+	Server(const Server& ref);
+	Server& operator=(const Server& ref);
 
 public:
 	Server();
