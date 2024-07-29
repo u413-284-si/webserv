@@ -1,21 +1,21 @@
 #pragma once
 
 #include <cerrno>
+#include <cstring>
 #include <netdb.h>
-#include <string.h>
 #include <string>
 #include <sys/epoll.h>
 #include <unistd.h>
 
-#include "Socket.hpp"
 #include "IEndpoint.hpp"
 #include "Log.hpp"
+#include "Socket.hpp"
 
 class Dispatcher;
 
 class ListeningEndpoint : public IEndpoint {
 public:
-	ListeningEndpoint(const Socket& serverSock);
+	explicit ListeningEndpoint(const Socket& serverSock);
 	virtual ~ListeningEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
@@ -24,4 +24,8 @@ public:
 
 private:
 	Socket m_serverSock;
+
+	// Not copyable
+	ListeningEndpoint(const ListeningEndpoint& ref);
+	ListeningEndpoint& operator=(const ListeningEndpoint& ref);
 };

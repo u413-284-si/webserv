@@ -10,6 +10,25 @@ ConnectedEndpoint::ConnectedEndpoint(const Connection& connection)
 
 ConnectedEndpoint::~ConnectedEndpoint() { close(m_clientSock.fd); }
 
+ConnectedEndpoint::ConnectedEndpoint(const ConnectedEndpoint& ref)
+	: m_clientSock(ref.m_clientSock)
+	, m_serverSock(ref.m_serverSock)
+	, m_TimeSinceLastEvent(ref.m_TimeSinceLastEvent)
+	, m_buffer(ref.m_buffer)
+{
+}
+
+ConnectedEndpoint& ConnectedEndpoint::operator=(const ConnectedEndpoint& ref)
+{
+	if (this != &ref) {
+		m_clientSock = ref.m_clientSock;
+		m_serverSock = ref.m_serverSock;
+		m_TimeSinceLastEvent = ref.m_TimeSinceLastEvent;
+		m_buffer = ref.m_buffer;
+	}
+	return (*this);
+}
+
 void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
 	LOG_DEBUG << "ConnectedEndpoint with client: " << m_clientSock.host << ':' << m_clientSock.port;
@@ -29,14 +48,13 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		m_buffer += std::string(buffer, bytesRead);
 		if (m_buffer.find("\r\n\r\n") != std::string::npos) {
 			LOG_DEBUG << "Received full request from client: " << m_clientSock.host << ':' << m_clientSock.port;
-			struct epoll_event event = { };
+			struct epoll_event event = {};
 			event.events = EPOLLOUT;
 			event.data.ptr = static_cast<void*>(this);
 			dispatcher.modifyEvent(m_clientSock.fd, &event);
 		}
 		// Wait for more data
-	}
-	else if ((eventMask & EPOLLOUT) != 0) {
+	} else if ((eventMask & EPOLLOUT) != 0) {
 		LOG_DEBUG << "Received write event";
 		std::stringstream response;
 		response << "HTTP/1.1 200 OK\r\nContent-Length: " << m_buffer.size() << "\r\n\r\n";
@@ -57,8 +75,7 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		event.data.ptr = static_cast<void*>(this);
 		dispatcher.modifyEvent(m_connection.fd, &event);
 		*/
-	}
-	else { // we don't know this event
+	} else { // we don't know this event
 		LOG_ERROR << "Received unknown event:" << eventMask;
 	}
 	setTimeSinceLastEvent();

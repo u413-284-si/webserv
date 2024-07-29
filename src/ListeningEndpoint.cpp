@@ -9,6 +9,19 @@ ListeningEndpoint::ListeningEndpoint(const Socket& serverSock)
 
 ListeningEndpoint::~ListeningEndpoint() { close(m_serverSock.fd); }
 
+ListeningEndpoint::ListeningEndpoint(const ListeningEndpoint& ref)
+	: m_serverSock(ref.m_serverSock)
+{
+}
+
+ListeningEndpoint& ListeningEndpoint::operator=(const ListeningEndpoint& ref)
+{
+	if (this != &ref) {
+		m_serverSock = ref.m_serverSock;
+	}
+	return (*this);
+}
+
 void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
 	LOG_DEBUG << "ListeningEndpoint " << m_serverSock.host << ':' << m_serverSock.port;
@@ -17,8 +30,9 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		LOG_ERROR << "Received unknown event:" << eventMask;
 		return;
 	}
-	struct sockaddr_storage clientAddr = { };
+	struct sockaddr_storage clientAddr = {};
 	socklen_t clientLen = sizeof(clientAddr);
+	// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
 	const int clientSock = accept(m_serverSock.fd, reinterpret_cast<struct sockaddr*>(&clientAddr), &clientLen);
 	if (clientSock < 0) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
@@ -30,20 +44,20 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 
 	char bufHost[NI_MAXHOST];
 	char bufPort[NI_MAXSERV];
-	const int ret = getnameinfo(reinterpret_cast<struct sockaddr*>(&clientAddr), clientLen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV,
-		NI_NUMERICHOST | NI_NUMERICSERV);
+	// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
+	const int ret = getnameinfo(reinterpret_cast<struct sockaddr*>(&clientAddr), clientLen, bufHost, NI_MAXHOST,
+		bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	// we could also use standard values if getnameinfo() fails
 	if (ret != 0) {
 		LOG_ERROR << "getnameinfo: " << gai_strerror(ret) << '\n';
 		close(clientSock);
 		return;
 	}
-	const Connection connection = { {clientSock, bufHost, bufPort},
-									m_serverSock };
+	const Connection connection = { { clientSock, bufHost, bufPort }, m_serverSock };
 	IEndpoint* endpoint = new ConnectedEndpoint(connection);
 
 	// Add client socket to epoll instance
-	struct epoll_event event = { };
+	struct epoll_event event = {};
 	event.events = EPOLLIN;
 	event.data.ptr = static_cast<void*>(endpoint);
 

@@ -74,22 +74,22 @@ void Dispatcher::handleEvents()
 			LOG_ERROR << "epoll_wait: " << strerror(errno);
 			throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
 		}
-		else if (nfds == 0)
+		if (nfds == 0)
 			LOG_DEBUG << "epoll_wait: Timeout";
 		else
 			LOG_DEBUG << "epoll_wait: " << nfds << " events";
 
-		for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.begin() + nfds; ++iter) {
+		for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.begin() + nfds;
+			 ++iter) {
 			uint32_t eventMask = iter->events;
 			if ((eventMask & EPOLLERR) != 0) {
 				LOG_DEBUG << "epoll_wait: EPOLLERR";
 				eventMask = EPOLLOUT;
-			}
-			else if ((eventMask & EPOLLHUP) != 0) {
+			} else if ((eventMask & EPOLLHUP) != 0) {
 				LOG_DEBUG << "epoll_wait: EPOLLHUP";
 				eventMask = EPOLLOUT;
 			}
-			static_cast<IEndpoint *>(iter->data.ptr)->handleEvent(*this, eventMask);
+			static_cast<IEndpoint*>(iter->data.ptr)->handleEvent(*this, eventMask);
 		}
 	}
 }
@@ -110,14 +110,14 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 	hints.ai_addr = NULL;
 	hints.ai_next = NULL;
 
-	struct addrinfo *list = NULL;
+	struct addrinfo* list = NULL;
 	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
 	if (result != 0) {
 		LOG_ERROR << "initServer(): " << gai_strerror(result) << '\n';
 		return false;
 	}
 	int newFd = -1;
-	for (struct addrinfo *curr = list; curr != NULL; curr = curr->ai_next) {
+	for (struct addrinfo* curr = list; curr != NULL; curr = curr->ai_next) {
 
 		newFd = socket(curr->ai_family, curr->ai_socktype | SOCK_NONBLOCK, curr->ai_protocol);
 		if (newFd == -1)
@@ -143,33 +143,33 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 		}
 
 		char bufHost[NI_MAXHOST];
-	char bufPort[NI_MAXSERV];
-	const int ret = getnameinfo(list->ai_addr, list->ai_addrlen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-	// We don't need the list anymore
+		char bufPort[NI_MAXSERV];
+		const int ret = getnameinfo(
+			list->ai_addr, list->ai_addrlen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
+		// We don't need the list anymore
 
-	if (ret != 0) {
-		LOG_ERROR << "initServer(): " << gai_strerror(ret) << '\n';
-		close(newFd);
-		return false;
-	}
+		if (ret != 0) {
+			LOG_ERROR << "initServer(): " << gai_strerror(ret) << '\n';
+			close(newFd);
+			return false;
+		}
 
-	const Socket newSock = { newFd, bufHost, bufPort };
-	IEndpoint* endpoint = new ListeningEndpoint(newSock);
-	epoll_event event = {};
-	event.events = EPOLLIN | EPOLLET;
-	event.data.ptr = static_cast<void *>(endpoint);
-	if (!addEvent(newFd, &event, endpoint)) {
-		close(newFd);
-		delete endpoint;
-		return false;
-	}
-	LOG_INFO << "Added server endpoint: " << newSock.host << ':' << newSock.port;
+		const Socket newSock = { newFd, bufHost, bufPort };
+		IEndpoint* endpoint = new ListeningEndpoint(newSock);
+		epoll_event event = {};
+		event.events = EPOLLIN | EPOLLET;
+		event.data.ptr = static_cast<void*>(endpoint);
+		if (!addEvent(newFd, &event, endpoint)) {
+			close(newFd);
+			delete endpoint;
+			return false;
+		}
+		LOG_INFO << "Added server endpoint: " << newSock.host << ':' << newSock.port;
 	}
 	if (newFd == -1) {
 		LOG_ERROR << "initServer(): Cannot bind to a valid socket.\n";
 		return false;
 	}
-
 
 	return true;
 }

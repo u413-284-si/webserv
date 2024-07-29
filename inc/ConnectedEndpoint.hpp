@@ -1,20 +1,20 @@
 #pragma once
 
+#include <cerrno>
+#include <cstring>
+#include <sstream>
 #include <string>
-#include <unistd.h>
 #include <sys/epoll.h>
 #include <sys/socket.h>
-#include <cerrno>
-#include <string.h>
-#include <sstream>
+#include <unistd.h>
 
-#include "Socket.hpp"
 #include "IEndpoint.hpp"
 #include "Log.hpp"
+#include "Socket.hpp"
 
 class ConnectedEndpoint : public IEndpoint {
 public:
-	ConnectedEndpoint(const Connection& connection);
+	explicit ConnectedEndpoint(const Connection& connection);
 	virtual ~ConnectedEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
@@ -27,4 +27,8 @@ private:
 	Socket m_serverSock;
 	time_t m_TimeSinceLastEvent;
 	std::string m_buffer;
+
+	// Not copyable
+	ConnectedEndpoint(const ConnectedEndpoint& ref);
+	ConnectedEndpoint& operator=(const ConnectedEndpoint& ref);
 };
