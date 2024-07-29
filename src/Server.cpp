@@ -248,10 +248,9 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 
 bool Server::checkForCompleteRequest(int clientSock)
 {
-	size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
+	const size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
 
-	if (headerEndPos != std::string::npos) {
-		return true;
+	return (headerEndPos != std::string::npos);
 		/*
 		headerEndPos += 4;
 		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
@@ -270,6 +269,4 @@ bool Server::checkForCompleteRequest(int clientSock)
 				return true;
 		}
 		*/
-	}
-	return false;
 }
