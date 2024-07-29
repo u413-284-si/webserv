@@ -10,6 +10,8 @@ Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 		LOG_ERROR << "epoll_create: " << strerror(errno) << '\n';
 		throw std::runtime_error("epoll_create:" + std::string(strerror(errno)));
 	}
+	m_host.resize(NI_MAXHOST);
+	m_port.resize(NI_MAXSERV);
 }
 
 Dispatcher::~Dispatcher() { close(m_epfd); }
@@ -113,48 +115,48 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 	struct addrinfo* list = NULL;
 	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
 	if (result != 0) {
-		LOG_ERROR << "initServer(): " << gai_strerror(result) << '\n';
+		LOG_ERROR << "getaddrinfo(): " << gai_strerror(result) << '\n';
 		return false;
 	}
-	int newFd = -1;
+	size_t successfulSock = 0;
 	for (struct addrinfo* curr = list; curr != NULL; curr = curr->ai_next) {
+		LOG_DEBUG << "Trying to bind " << successfulSock + 1 << ". time";
 
-		newFd = socket(curr->ai_family, curr->ai_socktype | SOCK_NONBLOCK, curr->ai_protocol);
-		if (newFd == -1)
+		const int newFd = socket(curr->ai_family, curr->ai_socktype | SOCK_NONBLOCK, curr->ai_protocol);
+		if (newFd == -1) {
+			LOG_DEBUG << "socket(): " << strerror(errno);
 			continue;
+		}
 
 		if (bind(newFd, curr->ai_addr, curr->ai_addrlen) == -1) {
 			close(newFd);
-			newFd = -1;
+			LOG_DEBUG << "bind(): " << strerror(errno);
 			continue;
 		}
 
 		int reuse = 1;
 		if (setsockopt(newFd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int)) == -1) {
 			close(newFd);
-			newFd = -1;
+			LOG_DEBUG << "setsockopt(): " << strerror(errno);
 			continue;
 		}
 
 		if (listen(newFd, backlog) == -1) {
 			close(newFd);
-			newFd = -1;
+			LOG_DEBUG << "listen(): " << strerror(errno);
 			continue;
 		}
 
-		char bufHost[NI_MAXHOST];
-		char bufPort[NI_MAXSERV];
 		const int ret = getnameinfo(
-			list->ai_addr, list->ai_addrlen, bufHost, NI_MAXHOST, bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-		// We don't need the list anymore
+			list->ai_addr, list->ai_addrlen, &m_host[0], NI_MAXHOST, &m_port[0], NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 
 		if (ret != 0) {
-			LOG_ERROR << "initServer(): " << gai_strerror(ret) << '\n';
 			close(newFd);
+			LOG_ERROR << "getnameinfo(): " << gai_strerror(ret) << '\n';
 			return false;
 		}
 
-		const Socket newSock = { newFd, bufHost, bufPort };
+		const Socket newSock = { newFd, m_host, m_port };
 		IEndpoint* endpoint = new ListeningEndpoint(newSock);
 		epoll_event event = {};
 		event.events = EPOLLIN | EPOLLET;
@@ -164,10 +166,14 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 			delete endpoint;
 			return false;
 		}
-		LOG_INFO << "Added server endpoint: " << newSock.host << ':' << newSock.port;
+		LOG_INFO << "Created listening endpoint: " << newSock;
+		++successfulSock;
 	}
-	if (newFd == -1) {
-		LOG_ERROR << "initServer(): Cannot bind to a valid socket.\n";
+	// We don't need the list anymore
+	freeaddrinfo(list);
+
+	if (successfulSock == 0) {
+		LOG_ERROR << "Cannot bind to a valid socket.\n";
 		return false;
 	}
 

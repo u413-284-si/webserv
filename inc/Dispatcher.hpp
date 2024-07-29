@@ -29,6 +29,8 @@ private:
 	int m_epfd;
 	std::vector<struct epoll_event> m_events;
 	std::list<IEndpoint*> m_endpoints;
+	std::string m_host;
+	std::string m_port;
 
 	// Not copyable
 	Dispatcher(const Dispatcher& other);
