@@ -96,7 +96,7 @@ void Dispatcher::handleEvents()
 	}
 }
 
-bool Dispatcher::initServer(const std::string& host, const int backlog, const std::string& port)
+bool Dispatcher::addListeningEndpoint(const std::string& host, const int backlog, const std::string& port)
 {
 	const char* node = NULL;
 
@@ -147,26 +147,10 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 			continue;
 		}
 
-		const int ret = getnameinfo(
-			list->ai_addr, list->ai_addrlen, &m_host[0], NI_MAXHOST, &m_port[0], NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-
-		if (ret != 0) {
-			close(newFd);
-			LOG_ERROR << "getnameinfo(): " << gai_strerror(ret) << '\n';
-			return false;
+		if (!createListeningEndpoint(curr, newFd)) {
+			continue;
 		}
 
-		const Socket newSock = { newFd, m_host, m_port };
-		IEndpoint* endpoint = new ListeningEndpoint(newSock);
-		epoll_event event = {};
-		event.events = EPOLLIN | EPOLLET;
-		event.data.ptr = static_cast<void*>(endpoint);
-		if (!addEvent(newFd, &event, endpoint)) {
-			close(newFd);
-			delete endpoint;
-			return false;
-		}
-		LOG_INFO << "Created listening endpoint: " << newSock;
 		++successfulSock;
 	}
 	// We don't need the list anymore
@@ -177,5 +161,32 @@ bool Dispatcher::initServer(const std::string& host, const int backlog, const st
 		return false;
 	}
 
+	return true;
+}
+
+bool Dispatcher::createListeningEndpoint(const struct addrinfo* curr, const int newFd)
+{
+	const int ret = getnameinfo(curr->ai_addr, curr->ai_addrlen, &m_host[0], NI_MAXHOST, &m_port[0], NI_MAXSERV,
+		NI_NUMERICHOST | NI_NUMERICSERV);
+
+	if (ret != 0) {
+		close(newFd);
+		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret) << '\n';
+		return false;
+	}
+
+	const Socket newSock = { newFd, m_host, m_port };
+
+	IEndpoint* endpoint = new ListeningEndpoint(newSock);
+
+	epoll_event event = {};
+	event.events = EPOLLIN | EPOLLET;
+	event.data.ptr = static_cast<void*>(endpoint);
+	if (!addEvent(newFd, &event, endpoint)) {
+		close(newFd);
+		delete endpoint;
+		return false;
+	}
+	LOG_INFO << "Created listening endpoint: " << newSock;
 	return true;
 }

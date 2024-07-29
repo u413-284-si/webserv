@@ -22,7 +22,7 @@ public:
 	void removeEvent(int delfd, IEndpoint* endpoint);
 	bool modifyEvent(int modfd, epoll_event* event) const;
 	void handleEvents();
-	bool initServer(const std::string& host, int backlog, const std::string& port);
+	bool addListeningEndpoint(const std::string& host, int backlog, const std::string& port);
 
 private:
 	int m_timeout;
@@ -31,6 +31,8 @@ private:
 	std::list<IEndpoint*> m_endpoints;
 	std::string m_host;
 	std::string m_port;
+
+	bool createListeningEndpoint(const struct addrinfo* curr, int newFd);
 
 	// Not copyable
 	Dispatcher(const Dispatcher& other);

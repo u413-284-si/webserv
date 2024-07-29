@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 	try{
 		Dispatcher dispatcher(-1);
 		LOG_DEBUG << "Add new server";
-		dispatcher.initServer("*", 10, "8080");
+		dispatcher.addListeningEndpoint("*", 10, "8080");
 		LOG_INFO << "Dispatcher started";
 		dispatcher.handleEvents();
 	}
