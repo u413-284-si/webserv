@@ -1,9 +1,9 @@
 #include "ConnectedEndpoint.hpp"
 #include "Dispatcher.hpp"
 
-ConnectedEndpoint::ConnectedEndpoint(const Socket& connection, const Socket& server)
-	: m_clientSock(connection)
-	, m_serverSock(server)
+ConnectedEndpoint::ConnectedEndpoint(const Connection& connection)
+	: m_clientSock(connection.clientSock)
+	, m_serverSock(connection.serverSock)
 	, m_TimeSinceLastEvent(std::time(0))
 {
 }

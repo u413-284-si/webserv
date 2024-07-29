@@ -7,3 +7,9 @@ struct Socket {
 	std::string host;
 	std::string port;
 };
+
+
+struct Connection {
+	Socket clientSock;
+	Socket serverSock;
+};

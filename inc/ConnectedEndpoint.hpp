@@ -14,7 +14,7 @@
 
 class ConnectedEndpoint : public IEndpoint {
 public:
-	ConnectedEndpoint(const Socket& clientSock, const Socket& serverSock);
+	ConnectedEndpoint(const Connection& connection);
 	virtual ~ConnectedEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);

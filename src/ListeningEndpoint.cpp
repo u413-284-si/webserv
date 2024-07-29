@@ -2,8 +2,8 @@
 #include "ConnectedEndpoint.hpp"
 #include "Dispatcher.hpp"
 
-ListeningEndpoint::ListeningEndpoint(const Socket& connection)
-	: m_serverSock(connection)
+ListeningEndpoint::ListeningEndpoint(const Socket& serverSock)
+	: m_serverSock(serverSock)
 {
 }
 
@@ -38,8 +38,9 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		close(clientSock);
 		return;
 	}
-	const Socket connection = { clientSock, bufHost, bufPort };
-	IEndpoint* endpoint = new ConnectedEndpoint(connection, m_serverSock);
+	const Connection connection = { {clientSock, bufHost, bufPort},
+									m_serverSock };
+	IEndpoint* endpoint = new ConnectedEndpoint(connection);
 
 	// Add client socket to epoll instance
 	struct epoll_event event = { };
@@ -50,7 +51,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		close(clientSock);
 		delete endpoint;
 	}
-	LOG_INFO << "Connected to client: " << connection.host << ':' << connection.port;
+	LOG_INFO << "Connected to client: " << connection.clientSock.host << ':' << connection.clientSock.port;
 }
 
 time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }
