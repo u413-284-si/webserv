@@ -30,10 +30,12 @@ void ResponseBuilder::setActiveServer(const std::vector<ServerConfig>::const_ite
  * @brief Get the built response.
  *
  * The stream is returned as c_str() since it is reused.
+ * The buffer is never cleared all the way, only reset to the beginning.
  * If str() would be returned, old parts of the stream would be included.
+ * This works since every thing inserted into the string sets a new zero terminator.
  * @return std::string Response.
  */
-std::string ResponseBuilder::getResponse() const { return m_responseStream.str().c_str(); }
+std::string ResponseBuilder::getResponse() const { return m_responseStream.str().c_str(); } // NOLINT
 
 /**
  * @brief Build the response for a given request.
