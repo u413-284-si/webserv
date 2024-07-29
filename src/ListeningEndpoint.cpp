@@ -24,7 +24,7 @@ ListeningEndpoint& ListeningEndpoint::operator=(const ListeningEndpoint& ref)
 
 void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
-	LOG_DEBUG << "ListeningEndpoint " << m_serverSock.host << ':' << m_serverSock.port;
+	LOG_DEBUG << "ListeningEndpoint " << m_serverSock;
 
 	if ((eventMask & EPOLLIN) == 0) {
 		LOG_ERROR << "Received unknown event:" << eventMask;
@@ -38,7 +38,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
 			return; // No more pending connections
 		}
-		LOG_ERROR << "accept: " << strerror(errno) << '\n';
+		LOG_ERROR << "accept(): " << strerror(errno);
 		return;
 	}
 
@@ -49,7 +49,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	// we could also use standard values if getnameinfo() fails
 	if (ret != 0) {
-		LOG_ERROR << "getnameinfo: " << gai_strerror(ret) << '\n';
+		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
 		close(clientSock);
 		return;
 	}
@@ -65,7 +65,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		close(clientSock);
 		delete endpoint;
 	}
-	LOG_INFO << "Connected to client: " << connection.clientSock.host << ':' << connection.clientSock.port;
+	LOG_INFO << "Connected to client: " << connection.clientSock;
 }
 
 time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }

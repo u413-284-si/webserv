@@ -31,7 +31,7 @@ ConnectedEndpoint& ConnectedEndpoint::operator=(const ConnectedEndpoint& ref)
 
 void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 {
-	LOG_DEBUG << "ConnectedEndpoint with client: " << m_clientSock.host << ':' << m_clientSock.port;
+	LOG_DEBUG << "ConnectedEndpoint with client: " << m_clientSock;
 
 	if ((eventMask & EPOLLIN) != 0) {
 		LOG_DEBUG << "Received read event";
@@ -42,12 +42,12 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 			return (dispatcher.removeEvent(m_clientSock.fd, this));
 		}
 		if (bytesRead == 0) {
-			LOG_INFO << "Connection closed by client: " << m_clientSock.host << ':' << m_clientSock.port;
+			LOG_INFO << "Connection closed by client: " << m_clientSock;
 			return (dispatcher.removeEvent(m_clientSock.fd, this));
 		}
 		m_buffer += std::string(buffer, bytesRead);
 		if (m_buffer.find("\r\n\r\n") != std::string::npos) {
-			LOG_DEBUG << "Received full request from client: " << m_clientSock.host << ':' << m_clientSock.port;
+			LOG_DEBUG << "Received full request from client: " << m_clientSock;
 			struct epoll_event event = {};
 			event.events = EPOLLOUT;
 			event.data.ptr = static_cast<void*>(this);
@@ -64,10 +64,10 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 			LOG_ERROR << "send: " << strerror(errno) << '\n';
 			return (dispatcher.removeEvent(m_clientSock.fd, this));
 		}
-		LOG_INFO << "Sent response to client: " << m_clientSock.host << ':' << m_clientSock.port;
+		LOG_INFO << "Sent response to client: " << m_clientSock;
 		// we need to check if connection should be closed.
 		// If so, we should remove it from epoll
-		LOG_INFO << "Closing connection to client: " << m_clientSock.host << ':' << m_clientSock.port;
+		LOG_INFO << "Closing connection to client: " << m_clientSock;
 		return (dispatcher.removeEvent(m_clientSock.fd, this));
 		/* else we would modify to read again
 		struct epoll_event event = { };

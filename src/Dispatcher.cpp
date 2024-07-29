@@ -7,7 +7,7 @@ Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 	, m_events(maxEvents)
 {
 	if (m_epfd == -1) {
-		LOG_ERROR << "epoll_create: " << strerror(errno) << '\n';
+		LOG_ERROR << "epoll_create: " << strerror(errno);
 		throw std::runtime_error("epoll_create:" + std::string(strerror(errno)));
 	}
 	m_host.resize(NI_MAXHOST);
@@ -35,7 +35,7 @@ Dispatcher& Dispatcher::operator=(const Dispatcher& other)
 bool Dispatcher::addEvent(const int newfd, epoll_event* event, IEndpoint* endpoint)
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, newfd, event) == -1) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno) << '\n';
+		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno);
 		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd;
@@ -49,9 +49,9 @@ bool Dispatcher::addEvent(const int newfd, epoll_event* event, IEndpoint* endpoi
 void Dispatcher::removeEvent(const int delfd, IEndpoint* endpoint)
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_DEL, delfd, NULL) == -1) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno) << '\n';
+		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno);
 	}
-	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd << '\n';
+	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd;
 
 	m_endpoints.remove(endpoint);
 	delete endpoint;
@@ -61,10 +61,10 @@ void Dispatcher::removeEvent(const int delfd, IEndpoint* endpoint)
 bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_MOD, modfd, event) == -1) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno) << '\n';
+		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno);
 		return false;
 	}
-	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd << '\n';
+	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd;
 	return true;
 }
 
@@ -115,7 +115,7 @@ bool Dispatcher::addListeningEndpoint(const std::string& host, const int backlog
 	struct addrinfo* list = NULL;
 	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
 	if (result != 0) {
-		LOG_ERROR << "getaddrinfo(): " << gai_strerror(result) << '\n';
+		LOG_ERROR << "getaddrinfo(): " << gai_strerror(result);
 		return false;
 	}
 	size_t successfulSock = 0;
@@ -157,7 +157,7 @@ bool Dispatcher::addListeningEndpoint(const std::string& host, const int backlog
 	freeaddrinfo(list);
 
 	if (successfulSock == 0) {
-		LOG_ERROR << "Cannot bind to a valid socket.\n";
+		LOG_ERROR << "Cannot bind to a valid socket.";
 		return false;
 	}
 
@@ -171,7 +171,7 @@ bool Dispatcher::createListeningEndpoint(const struct addrinfo* curr, const int 
 
 	if (ret != 0) {
 		close(newFd);
-		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret) << '\n';
+		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
 		return false;
 	}
 
