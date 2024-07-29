@@ -20,13 +20,14 @@ public:
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
 
 	virtual time_t getTimeSinceLastEvent() const;
-	virtual void setTimeSinceLastEvent();
 
 private:
 	Socket m_clientSock;
 	Socket m_serverSock;
 	time_t m_TimeSinceLastEvent;
 	std::string m_buffer;
+	
+	virtual void setTimeSinceLastEvent();
 
 	// Not copyable
 	ConnectedEndpoint(const ConnectedEndpoint& ref);
