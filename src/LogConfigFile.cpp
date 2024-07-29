@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "ConfigFile.hpp"
+#include "Socket.hpp"
 
 /**
  * @brief Overload << operator to append a Location.
@@ -66,5 +67,18 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin();
 		 it != configFile.serverConfigs.end(); ++it)
 		ostream << *it;
+	return ostream;
+}
+
+/**
+ * @brief Overload << operator to append a Socket.
+ *
+ * @param ostream The output stream.
+ * @param socket The Socket object.
+ * @return std::ostream& The output stream.
+ */
+std::ostream& operator<<(std::ostream& ostream, const Socket& socket)
+{
+	ostream << socket.host << ':' << socket.port;
 	return ostream;
 }
