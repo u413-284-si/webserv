@@ -36,7 +36,7 @@ private:
 	int m_epfd;
 	std::map<int, std::string> m_requestStrings;
 
-	void acceptConnection();
+	void acceptConnection() const;
 	void handleConnections(int clientSock, RequestParser& parser);
 	bool checkForCompleteRequest(int clientSock);
 

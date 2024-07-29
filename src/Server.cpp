@@ -152,7 +152,7 @@ void Server::run()
  * EWOULDBLOCK (equivalent error codes indicating that a non-blocking operation
  * would normally block), meaning that no more connections are pending.
  */
-void Server::acceptConnection()
+void Server::acceptConnection() const
 {
 	while (true) {
 		struct sockaddr_in clientAddr = {};
