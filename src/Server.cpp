@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "ConfigFile.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -201,6 +202,7 @@ void Server::acceptConnection()
  */
 void Server::handleConnections(int clientSock, RequestParser& parser)
 {
+	LOG_DEBUG << "Handling connection on fd " << clientSock;
 	// Handle client data
 	char buffer[BUFFER_SIZE];
 	HTTPRequest request;
@@ -208,6 +210,18 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	request.method = MethodCount;
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
+
+	Location location = {};
+	location.path = "/";
+	location.root = "/workspaces/webserv";
+	location.index = "index.html";
+
+	ServerConfig serverConfig;
+	serverConfig.locations.push_back(location);
+
+	ConfigFile configFile;
+	configFile.serverConfigs.push_back(serverConfig);
+
 	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
 	if (bytesRead < 0) {
 		std::cerr << "error: read\n";
@@ -218,15 +232,16 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	} else {
 		m_requestStrings[clientSock] += buffer;
 		if (checkForCompleteRequest(clientSock)) {
+			LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[clientSock];
 			try {
 				parser.parseHttpRequest(m_requestStrings[clientSock], request);
-				// ResponseBuilder does his stuff
 				parser.clearParser();
-				parser.clearRequest(request);
 			} catch (std::exception& e) {
 				std::cerr << "Error: " << e.what() << std::endl;
 			}
-			// response builder retrieves request and does his stuff
+			ResponseBuilder builder(configFile);
+			builder.buildResponse(request);
+			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
 		}
 	}
 }
@@ -236,6 +251,8 @@ bool Server::checkForCompleteRequest(int clientSock)
 	size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
 
 	if (headerEndPos != std::string::npos) {
+		return true;
+		/*
 		headerEndPos += 4;
 		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
 		// FIXME: add check against default/config max body size
@@ -252,6 +269,7 @@ bool Server::checkForCompleteRequest(int clientSock)
 			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
 				return true;
 		}
+		*/
 	}
 	return false;
 }

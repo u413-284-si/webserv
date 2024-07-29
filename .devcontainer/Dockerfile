@@ -12,15 +12,16 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		cppcheck \
 		doxygen \
 		libgtest-dev \
+		libgmock-dev \
 		clangd \
 		bear
 
 # Setup googletest
 RUN mkdir -p $HOME/build \
 	&& cd $HOME/build \
-	&& cmake /usr/src/googletest/googletest \
+	&& cmake /usr/src/googletest \
 	&& make \
-	&& cp lib/libgtest* /usr/lib/ \
+	&& cp lib/libg* /usr/lib/ \
 	&& cd .. \
 	&& sudo rm -rf build
 
