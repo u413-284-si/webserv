@@ -24,6 +24,8 @@ public:
 
 private:
 	Socket m_serverSock;
+	std::string m_host;
+	std::string m_port;
 
 	// Not copyable
 	ListeningEndpoint(const ListeningEndpoint& ref);

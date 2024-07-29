@@ -5,6 +5,8 @@
 ListeningEndpoint::ListeningEndpoint(const Socket& serverSock)
 	: m_serverSock(serverSock)
 {
+	m_host.resize(NI_MAXHOST);
+	m_port.resize(NI_MAXSERV);
 }
 
 ListeningEndpoint::~ListeningEndpoint() { close(m_serverSock.fd); }
@@ -42,18 +44,17 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		return;
 	}
 
-	char bufHost[NI_MAXHOST];
-	char bufPort[NI_MAXSERV];
 	// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
-	const int ret = getnameinfo(reinterpret_cast<struct sockaddr*>(&clientAddr), clientLen, bufHost, NI_MAXHOST,
-		bufPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
+	const int ret = getnameinfo(reinterpret_cast<struct sockaddr*>(&clientAddr), clientLen, &m_host[0], NI_MAXHOST,
+		&m_port[0], NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	// we could also use standard values if getnameinfo() fails
 	if (ret != 0) {
 		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
 		close(clientSock);
 		return;
 	}
-	const Connection connection = { { clientSock, bufHost, bufPort }, m_serverSock };
+
+	const Connection connection = { { clientSock, m_host, m_port }, m_serverSock };
 	IEndpoint* endpoint = new ConnectedEndpoint(connection);
 
 	// Add client socket to epoll instance
@@ -65,7 +66,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		close(clientSock);
 		delete endpoint;
 	}
-	LOG_INFO << "Connected to client: " << connection.clientSock;
+	LOG_INFO << "Created connected endpoint: " << connection.clientSock << " for server: " << connection.serverSock;
 }
 
 time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }
