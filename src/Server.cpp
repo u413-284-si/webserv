@@ -222,7 +222,7 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	ConfigFile configFile;
 	configFile.serverConfigs.push_back(serverConfig);
 
-	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+	const ssize_t bytesRead = read(clientSock, buffer, BUFFER_SIZE);
 	if (bytesRead < 0) {
 		std::cerr << "error: read\n";
 		close(clientSock);
