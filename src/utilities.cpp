@@ -252,5 +252,4 @@ std::string getDefaultErrorPage(statusCode status)
 	return (ret);
 }
 
-
 } // webutils
