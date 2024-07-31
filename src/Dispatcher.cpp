@@ -41,7 +41,7 @@ bool Dispatcher::addEvent(const int newfd, epoll_event* event, IEndpoint* endpoi
 	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd;
 
 	m_endpoints.push_back(endpoint);
-	LOG_DEBUG << "Added new endpoint";
+	LOG_DEBUG << "Added new " << endpoint->getType();
 
 	return true;
 }
