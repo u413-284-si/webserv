@@ -7,10 +7,9 @@ Dispatcher::Dispatcher(const int epollTimeout, const size_t maxEvents)
 	, m_epollEvents(maxEvents)
 	, m_clientTimeout(s_clientTimeout)
 {
-	if (m_epfd == -1) {
-		LOG_ERROR << "epoll_create: " << strerror(errno);
+	if (m_epfd == -1)
 		throw std::runtime_error("epoll_create:" + std::string(strerror(errno)));
-	}
+
 	m_host.resize(NI_MAXHOST);
 	m_port.resize(NI_MAXSERV);
 }
@@ -54,6 +53,7 @@ void Dispatcher::removeEvent(const int delfd) const
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_DEL, delfd, NULL) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno);
+		return;
 	}
 	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd;
 }
@@ -70,12 +70,12 @@ bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
 
 void Dispatcher::handleEvents()
 {
+	LOG_INFO << "Dispatcher started to handle events";
+
 	while (true) {
 		const int nfds = epoll_wait(m_epfd, &m_epollEvents[0], static_cast<int>(m_epollEvents.size()), m_epollTimeout);
-		if (nfds == -1) {
-			LOG_ERROR << "epoll_wait: " << strerror(errno);
+		if (nfds == -1)
 			throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
-		}
 		if (nfds == 0)
 			LOG_DEBUG << "epoll_wait: Timeout";
 		else
