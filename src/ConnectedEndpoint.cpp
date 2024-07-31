@@ -91,6 +91,8 @@ time_t ConnectedEndpoint::getTimeSinceLastEvent() const { return (std::time(0) -
 
 bool ConnectedEndpoint::isActive() const { return m_isActive; }
 
+std::string ConnectedEndpoint::getType() const { return "ConnectedEndpoint"; }
+
 void ConnectedEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }
 
 void ConnectedEndpoint::closeConnection(Dispatcher& dispatcher)

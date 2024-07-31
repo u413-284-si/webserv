@@ -22,6 +22,7 @@ public:
 
 	virtual time_t getTimeSinceLastEvent() const;
 	virtual bool isActive() const;
+	virtual std::string getType() const;
 
 private:
 	Socket m_serverSock;

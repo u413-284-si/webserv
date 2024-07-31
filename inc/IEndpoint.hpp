@@ -2,6 +2,7 @@
 
 #include <ctime>
 #include <stdint.h>
+#include <string>
 
 class Dispatcher;
 
@@ -11,4 +12,5 @@ public:
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask) = 0;
 	virtual time_t getTimeSinceLastEvent() const = 0;
 	virtual bool isActive() const = 0;
+	virtual std::string getType() const = 0;
 };
