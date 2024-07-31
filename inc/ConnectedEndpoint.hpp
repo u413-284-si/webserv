@@ -20,13 +20,15 @@ public:
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
 
 	virtual time_t getTimeSinceLastEvent() const;
+	virtual bool isActive() const;
 
 private:
 	Socket m_clientSock;
 	Socket m_serverSock;
 	time_t m_TimeSinceLastEvent;
 	std::string m_buffer;
-	
+	bool m_isActive;
+
 	virtual void setTimeSinceLastEvent();
 
 	// Not copyable

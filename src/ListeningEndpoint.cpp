@@ -71,3 +71,5 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 }
 
 time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }
+
+bool ListeningEndpoint::isActive() const { return (true); }

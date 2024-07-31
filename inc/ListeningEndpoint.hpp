@@ -21,6 +21,7 @@ public:
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
 
 	virtual time_t getTimeSinceLastEvent() const;
+	virtual bool isActive() const;
 
 private:
 	Socket m_serverSock;

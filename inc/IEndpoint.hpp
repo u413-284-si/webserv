@@ -10,4 +10,5 @@ public:
 	virtual ~IEndpoint() { }
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask) = 0;
 	virtual time_t getTimeSinceLastEvent() const = 0;
+	virtual bool isActive() const = 0;
 };

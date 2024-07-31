@@ -5,6 +5,7 @@ ConnectedEndpoint::ConnectedEndpoint(const Connection& connection)
 	: m_clientSock(connection.clientSock)
 	, m_serverSock(connection.serverSock)
 	, m_TimeSinceLastEvent(std::time(0))
+	, m_isActive(true)
 {
 }
 
@@ -15,6 +16,7 @@ ConnectedEndpoint::ConnectedEndpoint(const ConnectedEndpoint& ref)
 	, m_serverSock(ref.m_serverSock)
 	, m_TimeSinceLastEvent(ref.m_TimeSinceLastEvent)
 	, m_buffer(ref.m_buffer)
+	, m_isActive(true)
 {
 }
 
@@ -25,6 +27,7 @@ ConnectedEndpoint& ConnectedEndpoint::operator=(const ConnectedEndpoint& ref)
 		m_serverSock = ref.m_serverSock;
 		m_TimeSinceLastEvent = ref.m_TimeSinceLastEvent;
 		m_buffer = ref.m_buffer;
+		m_isActive = ref.isActive();
 	}
 	return (*this);
 }
@@ -84,3 +87,5 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 time_t ConnectedEndpoint::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
 
 void ConnectedEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }
+
+bool ConnectedEndpoint::isActive() const { return m_isActive; }
