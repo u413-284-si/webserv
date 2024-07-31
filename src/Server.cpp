@@ -1,78 +1,57 @@
 #include "Server.hpp"
+#include "ConfigFile.hpp"
 
-/* ====== HELPER FUNCTIONS ====== */
-
-/**
- * @brief Set the socket to nonblocking mode
- *
- * Use fcntl to manipulate fd/sockets. Retrieve the currently set flags with
- * F_GETFL. Set the flag with with F_SETFL. Use bitwise OR to set the
- * O_NONBLOCK bit in "flags" while preserving all other bits.
- * @param sock	Socket to be manipulated
- */
-static void setNonblocking(int sock)
-{
-	int flags = fcntl(sock, F_GETFL, 0);
-	if (flags == -1) {
-		throw std::runtime_error("fcntl(F_GETFL)");
-	}
-	if (fcntl(sock, F_SETFL, flags | O_NONBLOCK) == -1) {
-		throw std::runtime_error("fcntl(F_SETFL)");
-	}
-}
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 /**
  * @brief Constructor for the Server class.
  *
  * This constructor initializes a server instance by creating a server socket,
- * setting it to non-blocking mode, binding it to a specific address and port,
- * listening on the server socket, creating an epoll instance for event handling,
- * and adding the server socket to the epoll instance.
+ * using TCP protocol SOCK_STREAM, and setting it to non-blocking mode.
+ * It also creates an epoll instance for event handling.
+ * If any of these operations fail, the constructor throws a std::runtime_error.
+ * Then it bind() the server socket to a specific address and port, listen() on the server socket
+ * Then the server socket is added to the epoll instance.
  *
  * @throws std::runtime_error if any of the socket creation, binding, listening,
  *         epoll creation, or epoll control operations fail.
  *
  */
 Server::Server()
+	: m_serverSock(socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0))
+	, m_epfd(epoll_create(1))
 {
-	// Create server socket using TCP protocol SOCK_STREAM
-	m_serverSock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
-	if (m_serverSock < 0) {
+	if (m_serverSock < 0)
 		throw std::runtime_error("socket");
+
+	if (m_epfd < 0) {
+		close(m_serverSock);
+		throw std::runtime_error("epoll_create");
 	}
 
-	// Set server socket to non-blocking
-	setNonblocking(m_serverSock);
-
 	// Bind server socket
-	struct sockaddr_in server_addr = {};
-	server_addr.sin_family = AF_INET; // Communicates with IPv4
-	server_addr.sin_addr.s_addr = INADDR_ANY; // Accept any arriving ip addresses
-	server_addr.sin_port = htons(PORT); // Listen on specified port
-	if (bind(m_serverSock, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
+	struct sockaddr_in serverAddr = {};
+	serverAddr.sin_family = AF_INET; // Communicates with IPv4
+	serverAddr.sin_addr.s_addr = INADDR_ANY; // Accept any arriving ip addresses
+	serverAddr.sin_port = htons(PORT); // Listen on specified port
+
+	// NOLINTNEXTLINE: Ignore reinterpret_cast warning, as it is necessary for the bind function
+	if (bind(m_serverSock, reinterpret_cast<struct sockaddr*>(&serverAddr), sizeof(serverAddr)) < 0) {
 		close(m_serverSock);
 		throw std::runtime_error("bind");
 	}
 
 	// Listen on server socket
-	if (listen(m_serverSock, 10) < 0) {
+	if (listen(m_serverSock, CONNECTION_QUEUE) < 0) {
 		close(m_serverSock);
 		throw std::runtime_error("listen");
 	}
 
-	// Create epoll instance
-	m_epfd = epoll_create1(0);
-	if (m_epfd < 0) {
-		close(m_serverSock);
-		throw std::runtime_error("epoll_create1");
-	}
-
 	// Add server socket to epoll instance
-	struct epoll_event ev;
-	ev.events = EPOLLIN | EPOLLET; // Edge-triggered mode
-	ev.data.fd = m_serverSock;
-	if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, m_serverSock, &ev) < 0) {
+	struct epoll_event event = {};
+	event.events = EPOLLIN | EPOLLET; // Edge-triggered mode
+	event.data.fd = m_serverSock;
+	if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, m_serverSock, &event) < 0) {
 		close(m_serverSock);
 		close(m_epfd);
 		throw std::runtime_error("epoll_ctl: m_serverSock");
@@ -98,6 +77,36 @@ Server::~Server()
 	close(m_epfd);
 }
 
+/**
+ * @brief Copy constructor for the Server class.
+ *
+ * Private, should not be used.
+ * @param ref Server instance to copy.
+ */
+Server::Server(const Server& ref)
+	: m_serverSock(ref.m_serverSock)
+	, m_epfd(ref.m_epfd)
+{
+}
+
+/**
+ * @brief Assignment operator for the Server class.
+ *
+ * Private, should not be used.
+ * @param ref Server instance to copy.
+ * @return Server& Reference to the current instance.
+ */
+Server& Server::operator=(const Server& ref)
+{
+	if (this == &ref)
+		return *this;
+
+	m_serverSock = ref.m_serverSock;
+	m_epfd = ref.m_epfd;
+
+	return *this;
+}
+
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
@@ -114,18 +123,18 @@ void Server::run()
 {
 	RequestParser parser;
 
-	while (1) {
+	while (true) {
 		struct epoll_event events[MAX_EVENTS];
 		// Blocking call to epoll_wait
 		int nfds = epoll_wait(m_epfd, events, MAX_EVENTS, -1);
 		if (nfds < 0)
 			throw std::runtime_error("epoll_wait");
 
-		for (int n = 0; n < nfds; ++n) {
-			if (events[n].data.fd == m_serverSock)
+		for (int i = 0; i < nfds; ++i) {
+			if (events[i].data.fd == m_serverSock)
 				acceptConnection();
 			else
-				handleConnections(events[n].data.fd, parser);
+				handleConnections(events[i].data.fd, parser);
 		}
 	}
 }
@@ -143,26 +152,27 @@ void Server::run()
  * EWOULDBLOCK (equivalent error codes indicating that a non-blocking operation
  * would normally block), meaning that no more connections are pending.
  */
-void Server::acceptConnection()
+void Server::acceptConnection() const
 {
-	while (1) {
-		struct sockaddr_in clientAddr;
-		socklen_t addr_len = sizeof(clientAddr);
-		int clientSock = accept(m_serverSock, (struct sockaddr*)&clientAddr, &addr_len);
+	while (true) {
+		struct sockaddr_in clientAddr = {};
+		socklen_t addrLen = sizeof(clientAddr);
+
+		// NOLINTNEXTLINE: Ignore reinterpret_cast warning, as it is necessary for the accept function
+		int clientSock = accept(m_serverSock, reinterpret_cast<struct sockaddr*>(&clientAddr), &addrLen);
+
 		if (clientSock < 0) {
-			if (errno == EAGAIN || errno == EWOULDBLOCK) {
+			if (errno == EAGAIN || errno == EWOULDBLOCK)
 				break; // No more pending connections
-			} else {
-				std::cerr << "error: accept: " << strerror(errno) << "\n";
-				break;
-			}
+			std::cerr << "error: accept: " << strerror(errno) << "\n";
+			break;
 		}
 
 		// Add client socket to epoll instance
-		struct epoll_event ev;
-		ev.events = EPOLLIN;
-		ev.data.fd = clientSock;
-		if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, clientSock, &ev) < 0) {
+		struct epoll_event event = {};
+		event.events = EPOLLIN;
+		event.data.fd = clientSock;
+		if (epoll_ctl(m_epfd, EPOLL_CTL_ADD, clientSock, &event) < 0) {
 			std::cerr << "error: epoll_ctl: clientSock: " << strerror(errno) << "\n";
 			close(clientSock);
 		}
@@ -192,6 +202,7 @@ void Server::acceptConnection()
  */
 void Server::handleConnections(int clientSock, RequestParser& parser)
 {
+	LOG_DEBUG << "Handling connection on fd " << clientSock;
 	// Handle client data
 	char buffer[BUFFER_SIZE];
 	HTTPRequest request;
@@ -199,7 +210,19 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	request.method = MethodCount;
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
-	int bytesRead = read(clientSock, buffer, BUFFER_SIZE);
+
+	Location location = {};
+	location.path = "/";
+	location.root = "/workspaces/webserv";
+	location.index = "index.html";
+
+	ServerConfig serverConfig;
+	serverConfig.locations.push_back(location);
+
+	ConfigFile configFile;
+	configFile.serverConfigs.push_back(serverConfig);
+
+	const ssize_t bytesRead = read(clientSock, buffer, BUFFER_SIZE);
 	if (bytesRead < 0) {
 		std::cerr << "error: read\n";
 		close(clientSock);
@@ -209,24 +232,26 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	} else {
 		m_requestStrings[clientSock] += buffer;
 		if (checkForCompleteRequest(clientSock)) {
+			LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[clientSock];
 			try {
 				parser.parseHttpRequest(m_requestStrings[clientSock], request);
-				// ResponseBuilder does his stuff
 				parser.clearParser();
-				parser.clearRequest(request);
 			} catch (std::exception& e) {
 				std::cerr << "Error: " << e.what() << std::endl;
 			}
-			// response builder retrieves request and does his stuff
+			ResponseBuilder builder(configFile);
+			builder.buildResponse(request);
+			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
 		}
 	}
 }
 
 bool Server::checkForCompleteRequest(int clientSock)
 {
-	size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
+	const size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
 
-	if (headerEndPos != std::string::npos) {
+	return (headerEndPos != std::string::npos);
+		/*
 		headerEndPos += 4;
 		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
 		// FIXME: add check against default/config max body size
@@ -243,6 +268,5 @@ bool Server::checkForCompleteRequest(int clientSock)
 			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
 				return true;
 		}
-	}
-	return false;
+		*/
 }
