@@ -29,7 +29,7 @@ private:
 	std::string m_buffer;
 	bool m_isActive;
 
-	virtual void setTimeSinceLastEvent();
+	void setTimeSinceLastEvent();
 
 	// Not copyable
 	ConnectedEndpoint(const ConnectedEndpoint& ref);
