@@ -30,6 +30,8 @@ private:
 	std::string m_host;
 	std::string m_port;
 
+	bool createConnectedEndpoint(Dispatcher& dispatcher, int clientFd, const struct sockaddr* clientAddr, socklen_t clientLen);
+
 	// Not copyable
 	ListeningEndpoint(const ListeningEndpoint& ref);
 	ListeningEndpoint& operator=(const ListeningEndpoint& ref);
