@@ -14,16 +14,29 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	static_cast<void>(argv);
+
+	Location location = {};
+	location.path = "/";
+	location.root = "/workspaces/webserv";
+	location.index = "index.html";
+
+	ServerConfig serverConfig;
+	serverConfig.locations.push_back(location);
+	serverConfig.port = 8080;
+	serverConfig.host = "localhost";
+
+	ConfigFile configFile;
+	configFile.serverConfigs.push_back(serverConfig);
+
 	weblog::initConsole(weblog::LevelDebug);
 	try{
 		Dispatcher dispatcher(-1);
 		LOG_DEBUG << "Add new server";
 		dispatcher.addListeningEndpoint("*", 10, "8080");
-		LOG_INFO << "Dispatcher started";
 		dispatcher.handleEvents();
 	}
 	catch (std::exception& e){
-		std::cerr << "error: " << e.what() << std::endl;
+		LOG_ERROR << e.what();
 		return 1;
 	}
 	return 0;
