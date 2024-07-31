@@ -1,11 +1,11 @@
 #include "Dispatcher.hpp"
 #include "ListeningEndpoint.hpp"
 
-Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
-	: m_epoll_timeout(timeout)
+Dispatcher::Dispatcher(const int epollTimeout, const size_t maxEvents)
+	: m_epollTimeout(epollTimeout)
 	, m_epfd(epoll_create(1))
-	, m_events(maxEvents)
-	, m_clientTimeout(time_t(60))
+	, m_epollEvents(maxEvents)
+	, m_clientTimeout(s_clientTimeout)
 {
 	if (m_epfd == -1) {
 		LOG_ERROR << "epoll_create: " << strerror(errno);
@@ -18,9 +18,10 @@ Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 Dispatcher::~Dispatcher() { close(m_epfd); }
 
 Dispatcher::Dispatcher(const Dispatcher& other)
-	: m_epoll_timeout(other.m_epoll_timeout)
+	: m_epollTimeout(other.m_epollTimeout)
 	, m_epfd(other.m_epfd)
-	, m_events(other.m_events)
+	, m_epollEvents(other.m_epollEvents)
+	, m_clientTimeout(s_clientTimeout)
 {
 }
 
@@ -28,7 +29,9 @@ Dispatcher& Dispatcher::operator=(const Dispatcher& other)
 {
 	if (this != &other) {
 		m_epfd = other.m_epfd;
-		m_events = other.m_events;
+		m_epollEvents = other.m_epollEvents;
+		m_epollTimeout = other.m_epollTimeout;
+		m_clientTimeout = other.m_clientTimeout;
 	}
 	return *this;
 }
@@ -68,7 +71,7 @@ bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
 void Dispatcher::handleEvents()
 {
 	while (true) {
-		const int nfds = epoll_wait(m_epfd, &m_events[0], static_cast<int>(m_events.size()), m_epoll_timeout);
+		const int nfds = epoll_wait(m_epfd, &m_epollEvents[0], static_cast<int>(m_epollEvents.size()), m_epollTimeout);
 		if (nfds == -1) {
 			LOG_ERROR << "epoll_wait: " << strerror(errno);
 			throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
@@ -78,8 +81,8 @@ void Dispatcher::handleEvents()
 		else
 			LOG_DEBUG << "epoll_wait: " << nfds << " events";
 
-		for (std::vector<struct epoll_event>::iterator iter = m_events.begin(); iter != m_events.begin() + nfds;
-			 ++iter) {
+		for (std::vector<struct epoll_event>::iterator iter = m_epollEvents.begin();
+			 iter != m_epollEvents.begin() + nfds; ++iter) {
 			uint32_t eventMask = iter->events;
 			if ((eventMask & EPOLLERR) != 0) {
 				LOG_DEBUG << "epoll_wait: EPOLLERR";

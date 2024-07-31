@@ -14,8 +14,13 @@
 class IEndpoint;
 
 class Dispatcher {
+private:
+	static const int s_epollTimeout = 1000;
+	static const int s_epollMaxEvents = 10;
+	static const time_t s_clientTimeout = 60;
+
 public:
-	explicit Dispatcher(int timeout, size_t maxEvents = 1024);
+	explicit Dispatcher(int epollTimeout = s_epollTimeout, size_t maxEvents = s_epollMaxEvents);
 	~Dispatcher();
 
 	bool addEvent(int newfd, epoll_event* event, IEndpoint* endpoint);
@@ -25,9 +30,9 @@ public:
 	bool addListeningEndpoint(const std::string& host, int backlog, const std::string& port);
 
 private:
-	int m_epoll_timeout;
+	int m_epollTimeout;
 	int m_epfd;
-	std::vector<struct epoll_event> m_events;
+	std::vector<struct epoll_event> m_epollEvents;
 	std::list<IEndpoint*> m_endpoints;
 	std::string m_host;
 	std::string m_port;
