@@ -19,8 +19,8 @@ public:
 	std::vector<std::string> getEntries();
 
 private:
-	Directory(const Directory&);
-	Directory& operator=(const Directory&);
+	Directory(const Directory& ref);
+	Directory& operator=(const Directory& ref);
 
 	const FileSystemPolicy& m_fileSystemPolicy;
 	DIR* m_directory;

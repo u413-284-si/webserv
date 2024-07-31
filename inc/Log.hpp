@@ -1,3 +1,5 @@
+#pragma once
+
 #include "LogOutputterConsole.hpp"
 #include "LogOutputterFile.hpp"
 #include "Logger.hpp"
