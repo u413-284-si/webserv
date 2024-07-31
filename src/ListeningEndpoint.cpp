@@ -70,6 +70,13 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 	LOG_INFO << "Created connected endpoint: " << connection.clientSock << " for server: " << connection.serverSock;
 }
 
+void ListeningEndpoint::handleTimeout(Dispatcher& dispatcher)
+{
+	LOG_DEBUG << "ListeningEndpoint " << m_serverSock;
+	static_cast<void>(dispatcher);
+	LOG_WARN << "Timeout on listening endpoint should not happen";
+}
+
 time_t ListeningEndpoint::getTimeSinceLastEvent() const { return (0); }
 
 bool ListeningEndpoint::isActive() const { return (true); }

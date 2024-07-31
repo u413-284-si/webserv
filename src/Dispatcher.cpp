@@ -2,9 +2,10 @@
 #include "ListeningEndpoint.hpp"
 
 Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
-	: m_timeout(timeout)
+	: m_epoll_timeout(timeout)
 	, m_epfd(epoll_create(1))
 	, m_events(maxEvents)
+	, m_clientTimeout(time_t(60))
 {
 	if (m_epfd == -1) {
 		LOG_ERROR << "epoll_create: " << strerror(errno);
@@ -17,7 +18,7 @@ Dispatcher::Dispatcher(const int timeout, const size_t maxEvents)
 Dispatcher::~Dispatcher() { close(m_epfd); }
 
 Dispatcher::Dispatcher(const Dispatcher& other)
-	: m_timeout(other.m_timeout)
+	: m_epoll_timeout(other.m_epoll_timeout)
 	, m_epfd(other.m_epfd)
 	, m_events(other.m_events)
 {
@@ -67,7 +68,7 @@ bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const
 void Dispatcher::handleEvents()
 {
 	while (true) {
-		const int nfds = epoll_wait(m_epfd, &m_events[0], static_cast<int>(m_events.size()), m_timeout);
+		const int nfds = epoll_wait(m_epfd, &m_events[0], static_cast<int>(m_events.size()), m_epoll_timeout);
 		if (nfds == -1) {
 			LOG_ERROR << "epoll_wait: " << strerror(errno);
 			throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
@@ -89,6 +90,8 @@ void Dispatcher::handleEvents()
 			}
 			static_cast<IEndpoint*>(iter->data.ptr)->handleEvent(*this, eventMask);
 		}
+		handleTimeout();
+		removeInactiveEndpoints();
 	}
 }
 
@@ -185,6 +188,16 @@ bool Dispatcher::createListeningEndpoint(const struct addrinfo* curr, const int 
 	}
 	LOG_INFO << "Created listening endpoint: " << newSock;
 	return true;
+}
+
+void Dispatcher::handleTimeout()
+{
+	for (std::list<IEndpoint*>::iterator iter = m_endpoints.begin(); iter != m_endpoints.end(); ++iter) {
+		if (!(*iter)->isActive())
+			continue;
+		if ((*iter)->getTimeSinceLastEvent() >= m_clientTimeout)
+			(*iter)->handleTimeout(*this);
+	}
 }
 
 void Dispatcher::removeInactiveEndpoints()

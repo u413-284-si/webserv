@@ -18,6 +18,7 @@ public:
 	virtual ~ConnectedEndpoint();
 
 	virtual void handleEvent(Dispatcher& dispatcher, uint32_t eventMask);
+	virtual void handleTimeout(Dispatcher& dispatcher);
 
 	virtual time_t getTimeSinceLastEvent() const;
 	virtual bool isActive() const;

@@ -25,14 +25,16 @@ public:
 	bool addListeningEndpoint(const std::string& host, int backlog, const std::string& port);
 
 private:
-	int m_timeout;
+	int m_epoll_timeout;
 	int m_epfd;
 	std::vector<struct epoll_event> m_events;
 	std::list<IEndpoint*> m_endpoints;
 	std::string m_host;
 	std::string m_port;
+	time_t m_clientTimeout;
 
 	bool createListeningEndpoint(const struct addrinfo* curr, int newFd);
+	void handleTimeout();
 	void removeInactiveEndpoints();
 
 	// Not copyable

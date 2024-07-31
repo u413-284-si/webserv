@@ -87,6 +87,12 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 	setTimeSinceLastEvent();
 }
 
+void ConnectedEndpoint::handleTimeout(Dispatcher& dispatcher)
+{
+	LOG_INFO << "ConnectedEndpoint with client: " << m_clientSock << " timed out";
+	closeConnection(dispatcher);
+}
+
 time_t ConnectedEndpoint::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
 
 bool ConnectedEndpoint::isActive() const { return m_isActive; }
