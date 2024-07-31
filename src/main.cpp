@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
 	weblog::initConsole(weblog::LevelDebug);
 	try{
-		Dispatcher dispatcher(-1);
+		Dispatcher dispatcher(configFile);
 		LOG_DEBUG << "Add new server";
 		dispatcher.addListeningEndpoint("*", 10, "8080");
 		dispatcher.handleEvents();

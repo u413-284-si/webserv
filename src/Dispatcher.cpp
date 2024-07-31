@@ -1,8 +1,9 @@
 #include "Dispatcher.hpp"
 #include "ListeningEndpoint.hpp"
 
-Dispatcher::Dispatcher(const int epollTimeout, const size_t maxEvents)
-	: m_epollTimeout(epollTimeout)
+Dispatcher::Dispatcher(const ConfigFile& configFile, const int epollTimeout, const size_t maxEvents)
+	: m_configFile(configFile)
+	, m_epollTimeout(epollTimeout)
 	, m_epfd(epoll_create(1))
 	, m_epollEvents(maxEvents)
 	, m_clientTimeout(s_clientTimeout)
@@ -17,7 +18,8 @@ Dispatcher::Dispatcher(const int epollTimeout, const size_t maxEvents)
 Dispatcher::~Dispatcher() { close(m_epfd); }
 
 Dispatcher::Dispatcher(const Dispatcher& other)
-	: m_epollTimeout(other.m_epollTimeout)
+	: m_configFile(other.m_configFile)
+	, m_epollTimeout(other.m_epollTimeout)
 	, m_epfd(other.m_epfd)
 	, m_epollEvents(other.m_epollEvents)
 	, m_clientTimeout(s_clientTimeout)

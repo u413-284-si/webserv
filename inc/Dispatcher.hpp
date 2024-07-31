@@ -20,7 +20,7 @@ private:
 	static const time_t s_clientTimeout = 60;
 
 public:
-	explicit Dispatcher(int epollTimeout = s_epollTimeout, size_t maxEvents = s_epollMaxEvents);
+	explicit Dispatcher(const ConfigFile& configFile, int epollTimeout = s_epollTimeout, size_t maxEvents = s_epollMaxEvents);
 	~Dispatcher();
 
 	bool addEvent(int newfd, epoll_event* event, IEndpoint* endpoint);
@@ -30,6 +30,7 @@ public:
 	bool addListeningEndpoint(const std::string& host, int backlog, const std::string& port);
 
 private:
+	const ConfigFile& m_configFile;
 	int m_epollTimeout;
 	int m_epfd;
 	std::vector<struct epoll_event> m_epollEvents;
