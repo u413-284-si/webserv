@@ -46,16 +46,12 @@ bool Dispatcher::addEvent(const int newfd, epoll_event* event, IEndpoint* endpoi
 	return true;
 }
 
-void Dispatcher::removeEvent(const int delfd, IEndpoint* endpoint)
+void Dispatcher::removeEvent(const int delfd) const
 {
 	if (epoll_ctl(m_epfd, EPOLL_CTL_DEL, delfd, NULL) == -1) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno);
 	}
 	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd;
-
-	m_endpoints.remove(endpoint);
-	delete endpoint;
-	LOG_DEBUG << "Removed endpoint";
 }
 
 bool Dispatcher::modifyEvent(const int modfd, epoll_event* event) const

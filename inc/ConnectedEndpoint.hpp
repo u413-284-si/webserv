@@ -30,6 +30,7 @@ private:
 	bool m_isActive;
 
 	void setTimeSinceLastEvent();
+	void closeConnection(Dispatcher& dispatcher);
 
 	// Not copyable
 	ConnectedEndpoint(const ConnectedEndpoint& ref);

@@ -19,7 +19,7 @@ public:
 	~Dispatcher();
 
 	bool addEvent(int newfd, epoll_event* event, IEndpoint* endpoint);
-	void removeEvent(int delfd, IEndpoint* endpoint);
+	void removeEvent(int delfd) const;
 	bool modifyEvent(int modfd, epoll_event* event) const;
 	void handleEvents();
 	bool addListeningEndpoint(const std::string& host, int backlog, const std::string& port);

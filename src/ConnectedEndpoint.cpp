@@ -42,11 +42,13 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		const ssize_t bytesRead = recv(m_clientSock.fd, buffer, 1024, 0);
 		if (bytesRead < 0) {
 			LOG_ERROR << "recv: " << strerror(errno);
-			return (dispatcher.removeEvent(m_clientSock.fd, this));
+			closeConnection(dispatcher);
+			return;
 		}
 		if (bytesRead == 0) {
 			LOG_INFO << "Connection closed by client: " << m_clientSock;
-			return (dispatcher.removeEvent(m_clientSock.fd, this));
+			closeConnection(dispatcher);
+			return;
 		}
 		m_buffer += std::string(buffer, bytesRead);
 		if (m_buffer.find("\r\n\r\n") != std::string::npos) {
@@ -65,13 +67,14 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 		const ssize_t bytesSent = send(m_clientSock.fd, response.str().c_str(), response.str().size(), 0);
 		if (bytesSent < 0) {
 			LOG_ERROR << "send: " << strerror(errno) << '\n';
-			return (dispatcher.removeEvent(m_clientSock.fd, this));
+			closeConnection(dispatcher);
+			return;
 		}
 		LOG_INFO << "Sent response to client: " << m_clientSock;
 		// we need to check if connection should be closed.
 		// If so, we should remove it from epoll
 		LOG_INFO << "Closing connection to client: " << m_clientSock;
-		return (dispatcher.removeEvent(m_clientSock.fd, this));
+		closeConnection(dispatcher);
 		/* else we would modify to read again
 		struct epoll_event event = { };
 		event.events = EPOLLIN;
@@ -86,6 +89,13 @@ void ConnectedEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 
 time_t ConnectedEndpoint::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
 
+bool ConnectedEndpoint::isActive() const { return m_isActive; }
+
 void ConnectedEndpoint::setTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }
 
-bool ConnectedEndpoint::isActive() const { return m_isActive; }
+void ConnectedEndpoint::closeConnection(Dispatcher& dispatcher)
+{
+	dispatcher.removeEvent(m_clientSock.fd);
+	close(m_clientSock.fd);
+	m_isActive = false;
+}
