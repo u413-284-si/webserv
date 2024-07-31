@@ -65,6 +65,7 @@ void ListeningEndpoint::handleEvent(Dispatcher& dispatcher, uint32_t eventMask)
 	if (!dispatcher.addEvent(clientSock, &event, endpoint)) {
 		close(clientSock);
 		delete endpoint;
+		return;
 	}
 	LOG_INFO << "Created connected endpoint: " << connection.clientSock << " for server: " << connection.serverSock;
 }
