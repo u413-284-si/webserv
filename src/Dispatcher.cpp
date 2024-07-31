@@ -186,3 +186,16 @@ bool Dispatcher::createListeningEndpoint(const struct addrinfo* curr, const int 
 	LOG_INFO << "Created listening endpoint: " << newSock;
 	return true;
 }
+
+void Dispatcher::removeInactiveEndpoints()
+{
+	for (std::list<IEndpoint*>::iterator iter = m_endpoints.begin(); iter != m_endpoints.end();) {
+		if (!(*iter)->isActive()) {
+			LOG_DEBUG << "Removing inactive " << (*iter)->getType();
+			delete *iter;
+			iter = m_endpoints.erase(iter);
+		} else {
+			++iter;
+		}
+	}
+}

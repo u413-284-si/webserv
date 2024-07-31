@@ -33,6 +33,7 @@ private:
 	std::string m_port;
 
 	bool createListeningEndpoint(const struct addrinfo* curr, int newFd);
+	void removeInactiveEndpoints();
 
 	// Not copyable
 	Dispatcher(const Dispatcher& other);
