@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include "ConfigFile.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -239,7 +238,7 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 			} catch (std::exception& e) {
 				std::cerr << "Error: " << e.what() << std::endl;
 			}
-			ResponseBuilder builder(configFile);
+			ResponseBuilder builder(configFile, m_fileSystemPolicy);
 			builder.buildResponse(request);
 			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
 		}
