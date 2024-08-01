@@ -12,7 +12,7 @@
  */
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());
+	explicit ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:

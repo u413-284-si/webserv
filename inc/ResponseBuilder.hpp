@@ -15,7 +15,7 @@
  */
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());
+	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy);
 
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse() const;

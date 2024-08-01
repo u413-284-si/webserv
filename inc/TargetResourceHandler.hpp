@@ -17,7 +17,7 @@ class TargetResourceHandler {
 
 public:
 	TargetResourceHandler(const std::vector<Location>& locations, const HTTPRequest& request, HTTPResponse& response,
-		const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());
+		const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:
