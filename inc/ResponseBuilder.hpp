@@ -1,17 +1,23 @@
 #pragma once
 
 #include "ConfigFile.hpp"
-#include "HTTPResponse.hpp"
-#include "RequestParser.hpp"
 #include "FileSystemPolicy.hpp"
+#include "HTTPResponse.hpp"
 #include "Log.hpp"
-#include <string>
-#include "TargetResourceHandler.hpp"
+#include "RequestParser.hpp"
 #include "ResponseBodyHandler.hpp"
+#include "TargetResourceHandler.hpp"
+#include <string>
 
 /**
  * @brief Class to build a HTTP response.
  *
+ * This class is responsible to build a HTTP response based on the request received.
+ * The ConfigFile is used to get the configuration of the server.
+ * It uses the classes TargetResourceHandler to handle the target resource and
+ * ResponseBodyHandler for the body of the response.
+ * The FileSystemPolicy passed in the constructor needs to outlive this class. It is passed to subclasses.
+ * A mock of FileSystemPolicy can be used for testing.
  */
 class ResponseBuilder {
 public:

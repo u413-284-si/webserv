@@ -9,6 +9,8 @@
 /**
  * @brief Class to handle the body of a HTTP response.
  *
+ * The FileSystemPolicy passed in the constructor needs to outlive this class.
+ * A mock of FileSystemPolicy can be used for testing.
  */
 class ResponseBodyHandler {
 public:

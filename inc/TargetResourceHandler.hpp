@@ -12,6 +12,8 @@
 /**
  * @brief Class to handle the target resource of a HTTP Request.
  *
+ * The FileSystemPolicy passed in the constructor needs to outlive this class.
+ * A mock of FileSystemPolicy can be used for testing.
  */
 class TargetResourceHandler {
 
