@@ -35,7 +35,7 @@ private:
 	static const int s_epollMaxEvents = 10;
 	static const int s_backlog = 10;
 	static const time_t s_clientTimeout = 60;
-	static const std::size_t s_bufferSize = 8192;
+	static const std::size_t s_bufferSize = 1024;
 
 public:
 	explicit Server(
@@ -51,7 +51,6 @@ private:
 	std::vector<struct epoll_event> m_epollEvents; /**< Holds epoll events */
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection */
-	std::size_t m_bufferSize; /**< Size of buffer for reading requests */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	std::map<int, std::string> m_requestStrings; /**< Buffers for active Connections */

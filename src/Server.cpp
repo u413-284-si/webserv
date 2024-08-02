@@ -20,7 +20,6 @@ Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
 	, m_epollEvents(maxEvents)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
-	, m_bufferSize(s_bufferSize)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
 {
 	if (m_epfd < 0)
@@ -111,7 +110,7 @@ bool Server::init()
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 
-		if (checkDuplicateServer(iter->host, webutils::toString(iter->port)))
+		if (checkDuplicateServer(m_virtualServers, iter->host, webutils::toString(iter->port)))
 			continue;
 
 		if (!addVirtualServer(iter->host, m_backlog, webutils::toString(iter->port))) {
@@ -289,14 +288,14 @@ void Server::handleConnections(const Connection& connection)
 {
 	LOG_DEBUG << "Handling connection: " << connection.getClient() << " for server: " << connection.getServer();
 	// Handle client data
-	char buffer[BUFFER_SIZE];
+	char buffer[s_bufferSize];
 	HTTPRequest request;
 
 	request.method = MethodCount;
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
 
-	const ssize_t bytesRead = recv(connection.getClient().fd, buffer, BUFFER_SIZE, 0);
+	const ssize_t bytesRead = recv(connection.getClient().fd, buffer, s_bufferSize, 0);
 	if (bytesRead < 0) {
 		std::cerr << "error: read\n";
 		close(connection.getClient().fd);
@@ -429,11 +428,21 @@ bool modifyEvent(int epfd, int modfd, epoll_event* event)
 
 bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port)
 {
-	for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
+	if (host == "localhost") {
+		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
 		 iter != virtualServers.end(); ++iter) {
-		if (iter->second.host == host && iter->second.port == port) {
-			LOG_DEBUG << "Virtual server already exists: " << iter->second;
-			return true;
+			if ((iter->second.host == "127.0.0.1" || iter->second.host == "::1") && iter->second.port == port) {
+				LOG_DEBUG << "Virtual server already exists: " << iter->second;
+				return true;
+			}
+		}
+	} else {
+		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
+			 iter != virtualServers.end(); ++iter) {
+			if (iter->second.host == host && iter->second.port == port) {
+				LOG_DEBUG << "Virtual server already exists: " << iter->second;
+				return true;
+			}
 		}
 	}
 	return false;
