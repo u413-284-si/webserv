@@ -8,10 +8,4 @@ struct Socket {
 	std::string port;
 };
 
-
-struct Connection {
-	Socket clientSock;
-	Socket serverSock;
-};
-
 std::ostream& operator<<(std::ostream& ostream, const Socket& socket);
