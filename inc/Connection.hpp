@@ -8,16 +8,19 @@ class Connection {
 public:
 	Connection(const Socket& server, const Socket& client);
 
-	void closeConnection();
+	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse };
 
-	time_t getTimeSinceLastEvent() const;
-	bool isActive() const;
-	Socket getClient() const;
+	void setStatus(ConnectionStatus status);
+	void closeConnection() const;
+
 	Socket getServer() const;
+	Socket getClient() const;
+	time_t getTimeSinceLastEvent() const;
+	ConnectionStatus getStatus() const;
 
 private:
 	Socket m_server;
 	Socket m_client;
 	time_t m_TimeSinceLastEvent;
-	bool m_isActive;
+	ConnectionStatus m_status;
 };
