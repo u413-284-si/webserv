@@ -104,6 +104,7 @@ TEST_SRC :=	test_AutoindexHandler.cpp \
 			testHeader.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
+			test_Server.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
