@@ -61,6 +61,8 @@ private:
 	bool init();
 	bool addVirtualServer(const std::string& host, int backlog, const std::string& port);
 
+	void handleEvent(int eventfd, uint32_t eventMask);
+
 	void acceptConnections(const Socket& serverSock, uint32_t eventMask);
 	void handleConnections(const Connection& connection);
 	void handleTimeout();
@@ -76,6 +78,7 @@ private:
 int createListeningSocket(struct addrinfo* addrinfo, int backlog);
 Socket retrieveSocketInfo(int sockFd, const struct sockaddr* sockaddr, socklen_t socklen);
 
+int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout);
 bool addEvent(int epfd, int newfd, epoll_event* event);
 void removeEvent(int epfd, int delfd);
 bool modifyEvent(int epfd, int modfd, epoll_event* event);

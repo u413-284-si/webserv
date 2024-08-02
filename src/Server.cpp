@@ -60,29 +60,11 @@ void Server::run()
 	LOG_INFO << "Server started";
 
 	while (true) {
-		const int nfds = epoll_wait(m_epfd, &m_epollEvents[0], static_cast<int>(m_epollEvents.size()), m_epollTimeout);
-		if (nfds == -1)
-			throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
-		if (nfds == 0)
-			LOG_DEBUG << "epoll_wait: Timeout";
-		else
-			LOG_DEBUG << "epoll_wait: " << nfds << " events";
+		const int nfds = waitForEvents(m_epfd, m_epollEvents, m_epollTimeout);
 
-		for (std::vector<struct epoll_event>::const_iterator iterEpoll = m_epollEvents.begin();
-			 iterEpoll != m_epollEvents.begin() + nfds; ++iterEpoll) {
-			uint32_t eventMask = iterEpoll->events;
-			if ((eventMask & EPOLLERR) != 0) {
-				LOG_DEBUG << "epoll_wait: EPOLLERR";
-				eventMask = EPOLLOUT;
-			} else if ((eventMask & EPOLLHUP) != 0) {
-				LOG_DEBUG << "epoll_wait: EPOLLHUP";
-				eventMask = EPOLLOUT;
-			}
-			std::map<int, Socket>::const_iterator iterSock = m_virtualServers.find(iterEpoll->data.fd);
-			if (iterSock != m_virtualServers.end())
-				acceptConnections(iterSock->second, eventMask);
-			else
-				handleConnections(m_connections.at(iterEpoll->data.fd));
+		for (std::vector<struct epoll_event>::const_iterator iter = m_epollEvents.begin();
+			 iter != m_epollEvents.begin() + nfds; ++iter) {
+			handleEvent(iter->data.fd, iter->events);
 		}
 		// handleTimeout();
 	}
@@ -179,6 +161,22 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 	}
 
 	return true;
+}
+
+void Server::handleEvent(int eventfd, uint32_t eventMask)
+{
+	if ((eventMask & EPOLLERR) != 0) {
+		LOG_DEBUG << "epoll_wait: EPOLLERR";
+		eventMask = EPOLLOUT;
+	} else if ((eventMask & EPOLLHUP) != 0) {
+		LOG_DEBUG << "epoll_wait: EPOLLHUP";
+		eventMask = EPOLLOUT;
+	}
+	std::map<int, Socket>::const_iterator iter = m_virtualServers.find(eventfd);
+	if (iter != m_virtualServers.end())
+		acceptConnections(iter->second, eventMask);
+	else
+		handleConnections(m_connections.at(eventfd));
 }
 
 bool Server::registerVirtualServer(const Socket& serverSock)
@@ -394,6 +392,19 @@ Socket retrieveSocketInfo(const int sockFd, const struct sockaddr* sockaddr, soc
 	const Socket newSock = { sockFd, bufferHost, bufferPort };
 
 	return (newSock);
+}
+
+int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout)
+{
+	const int nfds = epoll_wait(epfd, &events[0], static_cast<int>(events.size()), timeout);
+	if (nfds == -1) {
+		throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
+	if (nfds == 0)
+		LOG_DEBUG << "epoll_wait: Timeout";
+	else
+		LOG_DEBUG << "epoll_wait: " << nfds << " events";
+	}
+	return nfds;
 }
 
 bool addEvent(int epfd, int newfd, epoll_event* event)
