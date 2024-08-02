@@ -66,18 +66,23 @@ void Server::run()
 			 iter != m_epollEvents.begin() + nfds; ++iter) {
 			handleEvent(iter->data.fd, iter->events);
 		}
-		// handleTimeout();
+		handleTimeout();
 	}
 }
 
 void Server::handleTimeout()
 {
-	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {
-		if (iter->second.getTimeSinceLastEvent() > m_clientTimeout) {
-			LOG_INFO << "Connection timeout: ";
+	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); /* no increment */) {
+		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
+		LOG_DEBUG << iter->second.getClient() << ": Time since last event: " << timeSinceLastEvent;
+		if (timeSinceLastEvent > m_clientTimeout) {
+			LOG_INFO << "Connection timeout: " << iter->second.getClient();
 			removeEvent(m_epfd, iter->first);
-			m_connections.erase(iter);
+			iter->second.closeConnection();
+			m_connections.erase(iter++);
 		}
+		else
+			++iter;
 	}
 }
 
@@ -396,14 +401,15 @@ Socket retrieveSocketInfo(const int sockFd, const struct sockaddr* sockaddr, soc
 
 int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout)
 {
+	LOG_DEBUG << "Waiting for events";
+
 	const int nfds = epoll_wait(epfd, &events[0], static_cast<int>(events.size()), timeout);
-	if (nfds == -1) {
+	if (nfds == -1)
 		throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
 	if (nfds == 0)
 		LOG_DEBUG << "epoll_wait: Timeout";
 	else
 		LOG_DEBUG << "epoll_wait: " << nfds << " events";
-	}
 	return nfds;
 }
 
