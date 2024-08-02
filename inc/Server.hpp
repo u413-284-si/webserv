@@ -47,10 +47,10 @@ public:
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	int m_epfd; /**< FD of epoll instance */
-	int m_epollTimeout; /**< Timeout for epoll instance */
+	int m_epollTimeout; /**< Timeout for epoll instance in milliseconds*/
 	std::vector<struct epoll_event> m_epollEvents; /**< Holds epoll events */
 	int m_backlog; /**< Backlog for listening sockets */
-	time_t m_clientTimeout; /**< Timeout for a Connection */
+	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	std::map<int, std::string> m_requestStrings; /**< Buffers for active Connections */
