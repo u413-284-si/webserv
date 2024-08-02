@@ -8,6 +8,8 @@ class Connection {
 public:
 	Connection(const Socket& server, const Socket& client);
 
+	void closeConnection();
+
 	time_t getTimeSinceLastEvent() const;
 	bool isActive() const;
 	Socket getClient() const;

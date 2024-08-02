@@ -8,6 +8,12 @@ Connection::Connection(const Socket& server, const Socket& client)
 {
 }
 
+void Connection::closeConnection()
+{
+	close(m_client.fd);
+	m_isActive = false;
+}
+
 time_t Connection::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
 
 bool Connection::isActive() const { return m_isActive; }
