@@ -79,11 +79,9 @@ TEST := unittest
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
-		ConnectedEndpoint.cpp \
+		Connection.cpp \
 		Directory.cpp \
-		Dispatcher.cpp \
 		FileSystemPolicy.cpp \
-		ListeningEndpoint.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
