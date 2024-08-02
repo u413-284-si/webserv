@@ -20,6 +20,7 @@ Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
 	, m_epollEvents(maxEvents)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
+	, m_bufferSize(s_bufferSize)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
 {
 	if (m_epfd < 0)
@@ -99,17 +100,7 @@ void Server::handleTimeout()
 	}
 }
 
-bool Server::checkDuplicateServer(const std::string& host, const std::string& port)
-{
-	for (std::map<int, Socket>::const_iterator iter = m_virtualServers.begin();
-		 iter != m_virtualServers.end(); ++iter) {
-		if (iter->second.host == host && iter->second.port == port) {
-			LOG_DEBUG << "Virtual server already exists: " << iter->second;
-			return true;
-		}
-	}
-	return false;
-}
+
 
 bool Server::init()
 {
@@ -434,4 +425,16 @@ bool modifyEvent(int epfd, int modfd, epoll_event* event)
 	}
 	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd;
 	return true;
+}
+
+bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port)
+{
+	for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
+		 iter != virtualServers.end(); ++iter) {
+		if (iter->second.host == host && iter->second.port == port) {
+			LOG_DEBUG << "Virtual server already exists: " << iter->second;
+			return true;
+		}
+	}
+	return false;
 }

@@ -66,12 +66,9 @@ private:
 	void handleConnections(const Connection& connection);
 	void handleTimeout();
 
-	bool checkDuplicateServer(const std::string& host, const std::string& port);
 	bool checkForCompleteRequest(int clientSock);
 	bool registerVirtualServer(const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, const Socket& clientSock);
-
-
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
@@ -83,3 +80,5 @@ Socket retrieveSocketInfo(int sockFd, const struct sockaddr* sockaddr, socklen_t
 bool addEvent(int epfd, int newfd, epoll_event* event);
 void removeEvent(int epfd, int delfd);
 bool modifyEvent(int epfd, int modfd, epoll_event* event);
+
+bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);
