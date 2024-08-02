@@ -1,4 +1,7 @@
 #include "Server.hpp"
+#include "ConnectedEndpoint.hpp"
+#include "Connection.hpp"
+#include <cmath>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -26,6 +29,7 @@ Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
 		throw std::runtime_error("epoll_create:" + std::string(strerror(errno)));
 	if (!init())
 		throw std::runtime_error("Failed to initialize virtual servers");
+	m_buffer.resize(s_bufferSize);
 }
 
 /**
@@ -72,7 +76,8 @@ void Server::run()
 
 void Server::handleTimeout()
 {
-	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); /* no increment */) {
+	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end();
+		/* no increment */) {
 		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
 		LOG_DEBUG << iter->second.getClient() << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > m_clientTimeout) {
@@ -80,13 +85,10 @@ void Server::handleTimeout()
 			removeEvent(m_epfd, iter->first);
 			iter->second.closeConnection();
 			m_connections.erase(iter++);
-		}
-		else
+		} else
 			++iter;
 	}
 }
-
-
 
 bool Server::init()
 {
@@ -123,7 +125,8 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 		node = host.c_str();
 
 	struct addrinfo hints = {
-		AI_PASSIVE, /* .ai_flags - If node is NULL returned address will be suitable to bind(2) a socket which can accept(2) connections.*/
+		AI_PASSIVE, /* .ai_flags - If node is NULL returned address will be suitable to bind(2) a socket which can
+					   accept(2) connections.*/
 		AF_UNSPEC, /*.ai_family - Allow IPv4 or IPv6 */
 		SOCK_STREAM, /* .ai_socktype - TCP uses SOCK_STREAM */
 		0, /* .ai_protocol - Accept any protocoll */
@@ -287,40 +290,23 @@ bool Server::registerConnection(const Socket& serverSock, const Socket& clientSo
  *      to the client socket using the write function.
  *
  */
-void Server::handleConnections(const Connection& connection)
+void Server::handleConnections(Connection& connection)
 {
 	LOG_DEBUG << "Handling connection: " << connection.getClient() << " for server: " << connection.getServer();
-	// Handle client data
-	char buffer[s_bufferSize];
-	HTTPRequest request;
 
-	request.method = MethodCount;
-	request.httpStatus = StatusOK;
-	request.shallCloseConnection = false;
-
-	const ssize_t bytesRead = recv(connection.getClient().fd, buffer, s_bufferSize, 0);
-	if (bytesRead < 0) {
-		std::cerr << "error: read\n";
-		close(connection.getClient().fd);
-	} else if (bytesRead == 0) {
-		// Connection closed by client
-		close(connection.getClient().fd);
-	} else {
-		m_requestStrings[connection.getClient().fd] += buffer;
-		if (checkForCompleteRequest(connection.getClient().fd)) {
-			LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[connection.getClient().fd];
-			try {
-				m_requestParser.parseHttpRequest(m_requestStrings[connection.getClient().fd], request);
-				m_requestParser.clearParser();
-			} catch (std::exception& e) {
-				std::cerr << "Error: " << e.what() << std::endl;
-			}
-			m_responseBuilder.buildResponse(request);
-			send(connection.getClient().fd, m_responseBuilder.getResponse().c_str(),
-				m_responseBuilder.getResponse().size(), 0);
-		} else {
-			LOG_DEBUG << "Received partial request: " << '\n' << m_requestStrings[connection.getClient().fd];
-		}
+	switch (connection.getStatus()) {
+	case Connection::ReceiveRequest:
+		receiveRequest(connection);
+		break;
+	case Connection::ReceiveBody:
+		receiveBody(connection);
+		break;
+	case Connection::BuildResponse:
+		buildResponse(connection);
+		break;
+	case Connection::SendResponse:
+		sendResponse(connection);
+		break;
 	}
 }
 
@@ -446,16 +432,16 @@ bool modifyEvent(int epfd, int modfd, epoll_event* event)
 bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port)
 {
 	if (host == "localhost") {
-		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
-		 iter != virtualServers.end(); ++iter) {
+		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin(); iter != virtualServers.end();
+			 ++iter) {
 			if ((iter->second.host == "127.0.0.1" || iter->second.host == "::1") && iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
 			}
 		}
 	} else {
-		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
-			 iter != virtualServers.end(); ++iter) {
+		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin(); iter != virtualServers.end();
+			 ++iter) {
 			if (iter->second.host == host && iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
@@ -463,4 +449,71 @@ bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std
 		}
 	}
 	return false;
+}
+
+void Server::receiveRequest(Connection& connection)
+{
+	LOG_DEBUG << "Receiving request from: " << connection.getClient();
+
+	const ssize_t bytesRead = recv(connection.getClient().fd, &m_buffer[0], static_cast<int>(m_buffer.size()), 0);
+
+	if (bytesRead == -1) {
+		LOG_ERROR << "recv()" << strerror(errno);
+		connection.closeConnection();
+		return;
+	}
+
+	if (bytesRead == 0) {
+		LOG_INFO << "Connection closed by client: " << connection.getClient();
+		connection.closeConnection();
+		return;
+	}
+
+	m_requestStrings[connection.getClient().fd] += m_buffer.substr(0, bytesRead);
+	connection.updateBytesReceived(bytesRead);
+
+	if (!checkForCompleteRequest(connection.getClient().fd)) {
+		LOG_DEBUG << "Received partial request: " << '\n' << m_requestStrings[connection.getClient().fd];
+		if (connection.getBytesReceived() > m_buffer.size()) {
+			LOG_ERROR << "Request too large: " << connection.getClient();
+			connection.closeConnection();
+		}
+		return;
+	}
+
+	LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[connection.getClient().fd];
+
+	HTTPRequest request;
+
+	request.method = MethodCount;
+	request.httpStatus = StatusOK;
+	request.shallCloseConnection = false;
+	try {
+		m_requestParser.parseHttpRequest(m_requestStrings[connection.getClient().fd], request);
+		m_requestParser.clearParser();
+	} catch (std::exception& e) {
+		LOG_ERROR << e.what();
+	}
+	connection.setStatus(Connection::BuildResponse);
+	struct epoll_event event = {};
+	event.events = EPOLLOUT;
+	event.data.fd = connection.getClient().fd;
+	modifyEvent(m_epfd, connection.getClient().fd, &event);
+}
+
+void Server::receiveBody(Connection& connection)
+{
+
+}
+
+void Server::buildResponse(Connection& connection)
+{
+	m_responseBuilder.buildResponse(request);
+	send(connection.getClient().fd, m_responseBuilder.getResponse().c_str(),
+		m_responseBuilder.getResponse().size(), 0);
+}
+
+void Server::sendResponse(Connection& connection)
+{
+
 }

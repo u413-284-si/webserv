@@ -53,6 +53,7 @@ private:
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
+	std::string m_buffer; /**< Buffer for reading from sockets */
 	std::map<int, std::string> m_requestStrings; /**< Buffers for active Connections */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
@@ -64,8 +65,13 @@ private:
 	void handleEvent(int eventfd, uint32_t eventMask);
 
 	void acceptConnections(const Socket& serverSock, uint32_t eventMask);
-	void handleConnections(const Connection& connection);
+	void handleConnections(Connection& connection);
 	void handleTimeout();
+
+	void receiveRequest(Connection& connection);
+	void receiveBody(Connection& connection);
+	void buildResponse(Connection& connection);
+	void sendResponse(Connection& connection);
 
 	bool checkForCompleteRequest(int clientSock);
 	bool registerVirtualServer(const Socket& serverSock);
