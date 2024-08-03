@@ -21,9 +21,9 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <stdexcept>
+#include <string>
 #include <sys/epoll.h>
 #include <sys/socket.h>
-#include <string>
 #include <unistd.h>
 #include <utility>
 
@@ -58,7 +58,7 @@ private:
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 
-	bool init();
+	bool initVirtualServers();
 	bool addVirtualServer(const std::string& host, int backlog, const std::string& port);
 
 	void handleEvent(int eventfd, uint32_t eventMask);
@@ -83,4 +83,5 @@ bool addEvent(int epfd, int newfd, epoll_event* event);
 void removeEvent(int epfd, int delfd);
 bool modifyEvent(int epfd, int modfd, epoll_event* event);
 
-bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);
+bool checkDuplicateServer(
+	const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);

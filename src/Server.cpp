@@ -4,14 +4,27 @@
 
 /**
  * @brief Constructor for the Server class.
+
+ * The Server constructor initializes a Server object with the provided configuration file, epoll
+ * timeout, and maximum events, along with other member variables.
+ * It creates an epoll instance using the epoll_create function and initializes the epoll events array
+ * with the maximum number of events that can be processed by the epoll instance.
+ * It also initializes the virtual servers using the configuration file with Server::initVirtualServers().
  *
- * This constructor initializes an epoll instance for event handling.
- * Then it calls Server::init() to initialize virtual servers, as they are
- * defined in the configuration file.
- * If any of these operations fail, the constructor throws a std::runtime_error.
- *
- * @throws std::runtime_error if epoll_create or Server::init() fail.
- *
+ * @param configFile The `configFile` parameter is an object of type `ConfigFile` that is passed to the
+ * `Server` constructor. It is used to configure the server with settings such especially the number and
+ * configuration of virtual servers.
+ * @param epollTimeout The `epollTimeout` parameter in the `Server` constructor represents the timeout
+ * value in milliseconds for the `epoll_wait` function. This function is used for waiting for events on
+ * an epoll instance. The `epoll_wait` function will block for this duration if no events are available
+ * before returning
+ * @param maxEvents The `maxEvents` parameter in the `Server` constructor represents the maximum number
+ * of events that can be processed by the epoll instance. This value determines the size of the event
+ * array used by epoll to store events that are ready for processing. It is used to allocate memory for
+ * the array that holds the events returned by `epoll_wait`.
+
+ * @throws std::runtime_error if epoll_create() or Server::initVirtualServers() fail.
+ * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
 Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
 	: m_configFile(configFile)
@@ -24,7 +37,7 @@ Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
 {
 	if (m_epfd < 0)
 		throw std::runtime_error("epoll_create:" + std::string(strerror(errno)));
-	if (!init())
+	if (!initVirtualServers())
 		throw std::runtime_error("Failed to initialize virtual servers");
 }
 
@@ -72,7 +85,8 @@ void Server::run()
 
 void Server::handleTimeout()
 {
-	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); /* no increment */) {
+	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end();
+		/* no increment */) {
 		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
 		LOG_DEBUG << iter->second.getClient() << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > m_clientTimeout) {
@@ -80,15 +94,12 @@ void Server::handleTimeout()
 			removeEvent(m_epfd, iter->first);
 			iter->second.closeConnection();
 			m_connections.erase(iter++);
-		}
-		else
+		} else
 			++iter;
 	}
 }
 
-
-
-bool Server::init()
+bool Server::initVirtualServers()
 {
 	LOG_INFO << "Initializing virtual servers";
 
@@ -123,7 +134,8 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 		node = host.c_str();
 
 	struct addrinfo hints = {
-		AI_PASSIVE, /* .ai_flags - If node is NULL returned address will be suitable to bind(2) a socket which can accept(2) connections.*/
+		AI_PASSIVE, /* .ai_flags - If node is NULL returned address will be suitable to bind(2) a socket which can
+					   accept(2) connections.*/
 		AF_UNSPEC, /*.ai_family - Allow IPv4 or IPv6 */
 		SOCK_STREAM, /* .ai_socktype - TCP uses SOCK_STREAM */
 		0, /* .ai_protocol - Accept any protocoll */
@@ -446,16 +458,16 @@ bool modifyEvent(int epfd, int modfd, epoll_event* event)
 bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port)
 {
 	if (host == "localhost") {
-		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
-		 iter != virtualServers.end(); ++iter) {
+		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin(); iter != virtualServers.end();
+			 ++iter) {
 			if ((iter->second.host == "127.0.0.1" || iter->second.host == "::1") && iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
 			}
 		}
 	} else {
-		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin();
-			 iter != virtualServers.end(); ++iter) {
+		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin(); iter != virtualServers.end();
+			 ++iter) {
 			if (iter->second.host == host && iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
