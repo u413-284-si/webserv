@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "ConfigFile.hpp"
+#include "Log.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -122,13 +123,29 @@ Server& Server::operator=(const Server& ref)
 void Server::run()
 {
 	RequestParser parser;
+	const int maxEvents = 10;
+	const int timeout = 5000; // epoll timeout in milliseconds
+	const int acceptedIdleTime = 10; // time until an idle connection is closed
 
 	while (true) {
-		struct epoll_event events[MAX_EVENTS];
+		struct epoll_event events[maxEvents];
 		// Blocking call to epoll_wait
-		int nfds = epoll_wait(m_epfd, events, MAX_EVENTS, -1);
+		int nfds = epoll_wait(m_epfd, events, maxEvents, timeout);
 		if (nfds < 0)
 			throw std::runtime_error("epoll_wait");
+		if (nfds == 0) {
+			LOG_WARN << "Timeout: no events received within " << timeout << " ms.";
+
+			time_t currentTime = std::time(NULL);
+			for (std::map<int, time_t>::iterator iter = m_connectionLastActive.begin();
+				 iter != m_connectionLastActive.end(); iter++) {
+				if (currentTime - iter->second > acceptedIdleTime) {
+					close(iter->first);
+					m_connectionLastActive.erase(iter);
+				}
+			}
+			continue;
+		}
 
 		for (int i = 0; i < nfds; ++i) {
 			if (events[i].data.fd == m_serverSock)
@@ -241,8 +258,9 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 			}
 			ResponseBuilder builder(configFile);
 			builder.buildResponse(request);
-			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
+			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0);
 		}
+		m_connectionLastActive[clientSock] = std::time(NULL);
 	}
 }
 
@@ -251,22 +269,22 @@ bool Server::checkForCompleteRequest(int clientSock)
 	const size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
 
 	return (headerEndPos != std::string::npos);
-		/*
-		headerEndPos += 4;
-		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
-		// FIXME: add check against default/config max body size
-		size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
-		size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
+	/*
+	headerEndPos += 4;
+	size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
+	// FIXME: add check against default/config max body size
+	size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
+	size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
 
-		if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
-			unsigned long contentLength
-				= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
-			if (bodySize >= contentLength)
-				return true;
-		} else if (transferEncodingPos != std::string::npos) {
-			std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
-			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
-				return true;
-		}
-		*/
+	if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
+		unsigned long contentLength
+			= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
+		if (bodySize >= contentLength)
+			return true;
+	} else if (transferEncodingPos != std::string::npos) {
+		std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
+		if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
+			return true;
+	}
+	*/
 }

@@ -23,7 +23,6 @@
 
 /* ====== DEFINITIONS ====== */
 
-#define MAX_EVENTS 10
 #define PORT 8080
 #define BUFFER_SIZE 1024
 #define CONNECTION_QUEUE 10
@@ -35,6 +34,7 @@ private:
 	int m_serverSock;
 	int m_epfd;
 	std::map<int, std::string> m_requestStrings;
+    std::map<int, time_t> m_connectionLastActive;
 
 	void acceptConnection() const;
 	void handleConnections(int clientSock, RequestParser& parser);
