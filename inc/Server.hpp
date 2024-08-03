@@ -53,7 +53,7 @@ private:
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
-	std::map<int, std::string> m_requestStrings; /**< Buffers for active Connections */
+	std::map<int, std::string> m_connectionBuffers; /**< Buffers for active Connections */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
@@ -61,7 +61,7 @@ private:
 	bool initVirtualServers();
 	bool addVirtualServer(const std::string& host, int backlog, const std::string& port);
 
-	void handleEvent(int eventfd, uint32_t eventMask);
+	void handleEvent(struct epoll_event);
 
 	void acceptConnections(const Socket& serverSock, uint32_t eventMask);
 	void handleConnections(const Connection& connection);
