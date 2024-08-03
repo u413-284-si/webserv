@@ -76,8 +76,11 @@ TEST := unittest
 # *     Source files           *
 # ******************************
 
-SRC:= 	main.cpp \
+SRC:=	main.cpp \
 		ALogOutputter.cpp \
+		AutoindexHandler.cpp \
+		Directory.cpp \
+		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
@@ -85,16 +88,23 @@ SRC:= 	main.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
 		RequestParser.cpp \
+		ResponseBodyHandler.cpp \
+		ResponseBuilder.cpp \
 		Server.cpp \
+		TargetResourceHandler.cpp \
 		utilities.cpp
 
 # ******************************
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	testBody.cpp \
+TEST_SRC :=	test_AutoindexHandler.cpp \
+			testBody.cpp \
 			testHeader.cpp \
-			testRequestLine.cpp
+			testRequestLine.cpp \
+			test_ResponseBodyHandler.cpp \
+			test_TargetResourceHandler.cpp \
+			test_utils.cpp
 
 # ******************************
 # *     Object files           *
@@ -123,7 +133,7 @@ LOG_VALGRIND = $(LOG_FILE)_valgrind.log
 LOG_PERF = $(LOG_FILE)_perf.data
 
 # ******************************
-# *     Default target         *
+# *     Default target        *
 # ******************************
 
 .PHONY: all
@@ -154,7 +164,7 @@ $(TEST): CXXFLAGS = -Wall -Werror -pthread
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgtest_main -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
@@ -257,8 +267,8 @@ clean:
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
 fclean: clean
-	@rm -rf $(NAME)*
-	@printf "$(RED)removed binaries $(NAME)*$(RESET)\n"
+	@rm -rf $(NAME) $(TEST)
+	@printf "$(RED)removed binaries $(NAME) $(TEST) $(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@echo
@@ -291,7 +301,7 @@ help:
 	@echo ""
 	@echo "$(YELLOW)Targets:$(RESET)"
 	@echo "  all         - Compiles the default version of the $(NAME) program."
-	@echo "  test        - Compiles the unit tests linking with gtest."
+	@echo "  test        - Compiles the unit tests linking with gtest and gmock."
 	@echo "  clean       - Removes object files and dependency files."
 	@echo "  fclean      - Performs 'clean' and also removes binaries and log files."
 	@echo "  re          - Performs 'fclean' and then 'all'."

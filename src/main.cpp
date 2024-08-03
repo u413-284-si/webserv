@@ -3,18 +3,19 @@
 #include "Server.hpp"
 #include "Log.hpp"
 #include "ConfigFile.hpp"
+#include <cerrno>
 
 int main(int argc, char** argv)
 {
 	if (argc != 2) {
 		std::cerr << "error: arguments invalid\nexpected: ";
-		std::cerr << argv[0] << " <config file>\n";
+		std::cerr << program_invocation_name << " <config file>\n";
 		return 1;
 	}
 	static_cast<void>(argv);
 	weblog::initConsole(weblog::LevelDebug);
-	try{
-		Server	webserv;
+	try {
+		Server webserv;
 		LOG_INFO << "Starting server";
 		webserv.run();
 	} catch (std::exception& e) {
