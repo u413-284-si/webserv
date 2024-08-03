@@ -93,33 +93,6 @@ void Server::run()
 }
 
 /**
- * @brief Iterates through all connections and closes any that have timed out.
-
- * The for loop through the connections map has no increment statement because the
- * iterator is incremented in the loop body. If .erase() is called on an iterator,
- * it is invalidated.
- * The time since last event is saved in a variable to print it to the log and check
- * if it is greater than m_clientTimeout. If it is, the connection is removed from epoll,
- * and closed by calling Connection::closeConnection(). This makes sure that the connection
- * is properly closed.
- */
-void Server::handleTimeout()
-{
-	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end();
-		/* no increment */) {
-		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
-		LOG_DEBUG << iter->second.getClient() << ": Time since last event: " << timeSinceLastEvent;
-		if (timeSinceLastEvent > m_clientTimeout) {
-			LOG_INFO << "Connection timeout: " << iter->second.getClient();
-			removeEvent(m_epfd, iter->first);
-			iter->second.closeConnection();
-			m_connections.erase(iter++);
-		} else
-			++iter;
-	}
-}
-
-/**
  * @brief Initialize virtual servers.
  *
  * Initializes virtual servers by iterating through the serverConfigs
@@ -227,10 +200,11 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 /**
  * @brief Accepts new connections or handles existing ones
 
- * If the event mask contains `EPOLLERR` or `EPOLLHUP`, the event mask is set to `EPOLLOUT`.
+ * If the event mask contains EPOLLERR or EPOLLHUP, the event mask is set to EPOLLIN.
  * This is done to handle errors and hangups that may occur during the processing the connection.
- * The Server will then try to send() to the connected client, which will error out, resulting in a
- * connection close.
+ * The Server could then try to recv(), which will return 0 in case of EPOLLHUP or -1 in case of EPOLLERR,
+ * resulting in a connection close.
+ * See also https://stackoverflow.com/a/29206631
  *
  * Checks if the event file descriptor is in the virtual servers map. If it is, it calls acceptConnections().
  * If it is not, it calls handleConnections() with the connection from the connections map.
@@ -244,43 +218,16 @@ void Server::handleEvent(struct epoll_event event)
 	uint32_t eventMask = event.events;
 	if ((eventMask & EPOLLERR) != 0) {
 		LOG_DEBUG << "epoll_wait: EPOLLERR";
-		eventMask = EPOLLOUT;
+		eventMask = EPOLLIN;
 	} else if ((eventMask & EPOLLHUP) != 0) {
 		LOG_DEBUG << "epoll_wait: EPOLLHUP";
-		eventMask = EPOLLOUT;
+		eventMask = EPOLLIN;
 	}
 	std::map<int, Socket>::const_iterator iter = m_virtualServers.find(event.data.fd);
 	if (iter != m_virtualServers.end())
 		acceptConnections(iter->second, eventMask);
 	else
 		handleConnections(m_connections.at(event.data.fd));
-}
-
-/**
- * @brief Register a virtual server.
- *
- * Adds a virtual server to the list of virtual servers and registers it with epoll.
- *
- * @param serverSock The socket of the virtual server to register.
- *
- * @return true if the virtual server was successfully registered, false otherwise.
- */
-bool Server::registerVirtualServer(const Socket& serverSock)
-{
-	struct epoll_event event = {};
-	event.events = EPOLLIN;
-	event.data.fd = serverSock.fd;
-
-	if (!addEvent(m_epfd, serverSock.fd, &event)) {
-		close(serverSock.fd);
-		LOG_ERROR << "Failed to add event for " << serverSock;
-		return false;
-	}
-
-	m_virtualServers[serverSock.fd] = serverSock;
-
-	LOG_INFO << "New virtual server: " << serverSock;
-	return true;
 }
 
 /**
@@ -298,13 +245,23 @@ bool Server::registerVirtualServer(const Socket& serverSock)
  * would normally block), meaning that no more connections are pending.
  * If another errno is returned logs an error and continues to the next
  * iteration of the loop. This is because the server sockets are in EPOLLET mode.
-
+ *
+ * If the event mask contains EPOLLERR, it logs an error and closes the server socket.
+ * The server socket is then removed from the virtual servers map.
+ *
  * @param serverSock Server socket which reported an event.
  * @param eventMask Event mask of the reported event.
  */
 void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
 {
 	LOG_DEBUG << "Accept connections on: " << serverSock;
+
+	if ((eventMask & EPOLLERR) != 0) {
+		LOG_ERROR << "Error condition happened on the associated file descriptor of " << serverSock;
+		close (serverSock.fd);
+		m_virtualServers.erase(serverSock.fd);
+		return;
+	}
 
 	if ((eventMask & EPOLLIN) == 0) {
 		LOG_ERROR << "Received unknown event:" << eventMask;
@@ -333,39 +290,6 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
 		if (!registerConnection(serverSock, clientSock))
 			continue;
 	}
-}
-
-/**
- * @brief Register a connection.
- *
- * Registers a client fd with epoll.
- * If it fails to add the event, it logs an error and closes the client socket.
- * If the connection is successfully registered, adds the connection to map m_connections.
- * The []-operator creates a new entry in the map if the key does not exist or overwrites an existing one.
- * The same way (re-)initializes the map m_connectionBuffers[newFD] to an empty string.
- *
- * @param serverSock The socket of the server that the connection is associated with.
- * @param clientSock The socket of the client connection to register.
- *
- * @return true if the connection was successfully registered, false otherwise.
- */
-bool Server::registerConnection(const Socket& serverSock, const Socket& clientSock)
-{
-	struct epoll_event event = {};
-	event.events = EPOLLIN;
-	event.data.fd = clientSock.fd;
-
-	if (!addEvent(m_epfd, clientSock.fd, &event)) {
-		close(clientSock.fd);
-		LOG_ERROR << "Failed to add event for " << clientSock;
-		return false;
-	}
-
-	m_connections[clientSock.fd] = Connection(serverSock, clientSock);
-	m_connectionBuffers[clientSock.fd] = "";
-
-	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
-	return true;
 }
 
 /**
@@ -426,6 +350,33 @@ void Server::handleConnections(const Connection& connection)
 	}
 }
 
+/**
+ * @brief Iterates through all connections and closes any that have timed out.
+
+ * The for loop through the connections map has no increment statement because the
+ * iterator is incremented in the loop body. If .erase() is called on an iterator,
+ * it is invalidated.
+ * The time since last event is saved in a variable to print it to the log and check
+ * if it is greater than m_clientTimeout. If it is, the connection is removed from epoll,
+ * and closed by calling Connection::closeConnection(). This makes sure that the connection
+ * is properly closed.
+ */
+void Server::handleTimeout()
+{
+	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end();
+		/* no increment */) {
+		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
+		LOG_DEBUG << iter->second.getClient() << ": Time since last event: " << timeSinceLastEvent;
+		if (timeSinceLastEvent > m_clientTimeout) {
+			LOG_INFO << "Connection timeout: " << iter->second.getClient();
+			removeEvent(m_epfd, iter->first);
+			iter->second.closeConnection();
+			m_connections.erase(iter++);
+		} else
+			++iter;
+	}
+}
+
 bool Server::checkForCompleteRequest(int clientSock)
 {
 	const size_t headerEndPos = m_connectionBuffers[clientSock].find("\r\n\r\n");
@@ -449,6 +400,66 @@ bool Server::checkForCompleteRequest(int clientSock)
 			return true;
 	}
 	*/
+}
+
+/**
+ * @brief Register a virtual server.
+ *
+ * Adds a virtual server to the list of virtual servers and registers it with epoll.
+ *
+ * @param serverSock The socket of the virtual server to register.
+ *
+ * @return true if the virtual server was successfully registered, false otherwise.
+ */
+bool Server::registerVirtualServer(const Socket& serverSock)
+{
+	struct epoll_event event = {};
+	event.events = EPOLLIN;
+	event.data.fd = serverSock.fd;
+
+	if (!addEvent(m_epfd, serverSock.fd, &event)) {
+		close(serverSock.fd);
+		LOG_ERROR << "Failed to add event for " << serverSock;
+		return false;
+	}
+
+	m_virtualServers[serverSock.fd] = serverSock;
+
+	LOG_INFO << "New virtual server: " << serverSock;
+	return true;
+}
+
+/**
+ * @brief Register a connection.
+ *
+ * Registers a client fd with epoll.
+ * If it fails to add the event, it logs an error and closes the client socket.
+ * If the connection is successfully registered, adds the connection to map m_connections.
+ * The []-operator creates a new entry in the map if the key does not exist or overwrites an existing one.
+ * The same way (re-)initializes the map m_connectionBuffers[newFD] to an empty string.
+ *
+ * @param serverSock The socket of the server that the connection is associated with.
+ * @param clientSock The socket of the client connection to register.
+ *
+ * @return true if the connection was successfully registered, false otherwise.
+ */
+bool Server::registerConnection(const Socket& serverSock, const Socket& clientSock)
+{
+	struct epoll_event event = {};
+	event.events = EPOLLIN;
+	event.data.fd = clientSock.fd;
+
+	if (!addEvent(m_epfd, clientSock.fd, &event)) {
+		close(clientSock.fd);
+		LOG_ERROR << "Failed to add event for " << clientSock;
+		return false;
+	}
+
+	m_connections[clientSock.fd] = Connection(serverSock, clientSock);
+	m_connectionBuffers[clientSock.fd] = "";
+
+	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
+	return true;
 }
 
 /* ====== HELPER FUNCTIONS ====== */
