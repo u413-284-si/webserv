@@ -7,6 +7,7 @@
 
 class Connection {
 public:
+	Connection();
 	Connection(const Socket& server, const Socket& client);
 
 	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse };

@@ -1,5 +1,14 @@
 #include "Connection.hpp"
 
+Connection::Connection()
+	: m_server(Socket())
+	, m_client(Socket())
+	, m_TimeSinceLastEvent(std::time(0))
+	, m_status(ReceiveRequest)
+	, m_bytesReceived(0)
+{
+}
+
 Connection::Connection(const Socket& server, const Socket& client)
 	: m_server(server)
 	, m_client(client)
