@@ -34,7 +34,7 @@ private:
 	int m_serverSock;
 	int m_epfd;
 	std::map<int, std::string> m_requestStrings;
-    std::map<int, time_t> m_connectionLastActive;
+	std::map<int, time_t> m_connectionLastActive;
 
 	void acceptConnection() const;
 	void handleConnections(int clientSock, RequestParser& parser);
