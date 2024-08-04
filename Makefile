@@ -81,12 +81,12 @@ SRC:=	main.cpp \
 		AutoindexHandler.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \
-		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
+		LogOstreamInserters.cpp \
 		RequestParser.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
