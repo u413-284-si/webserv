@@ -1,10 +1,9 @@
 #pragma once
 
+#include "LogOstreamInserters.hpp"
 #include <ctime>
 #include <sstream>
 #include <string>
-
-#include "ConfigFile.hpp"
 
 namespace weblog {
 

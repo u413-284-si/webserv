@@ -1,6 +1,4 @@
-#include <iostream>
-
-#include "ConfigFile.hpp"
+#include "LogOstreamInserters.hpp"
 
 /**
  * @brief Overload << operator to append a Location.
