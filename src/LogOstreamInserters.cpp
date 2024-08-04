@@ -177,3 +177,21 @@ std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest)
 	ostream << "Shall close connection: " << httpRequest.shallCloseConnection << '\n';
 	return ostream;
 }
+
+/**
+ * @brief Overload << operator to append a HTTPResponse.
+ *
+ * @param ostream The output stream.
+ * @param httpResponse The HTTPResponse object.
+ * @return std::ostream& The output stream.
+ */
+std::ostream& operator<<(std::ostream& ostream, const HTTPResponse& httpResponse)
+{
+	ostream << "Status code: " << httpResponse.status << '\n';
+	ostream << "Target Resource: " << httpResponse.targetResource << '\n';
+	ostream << "Body: " << httpResponse.body << '\n';
+	ostream << "Location: " << *httpResponse.location << '\n';
+	ostream << "Method: " << httpResponse.method << '\n';
+	ostream << "Autoindex: " << httpResponse.isAutoindex << '\n';
+	return ostream;
+}
