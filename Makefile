@@ -6,7 +6,7 @@
 #    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/06/05 23:52:30 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/16 02:19:24 by sqiu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,22 +76,35 @@ TEST := unittest
 # *     Source files           *
 # ******************************
 
-SRC:= 	main.cpp \
+SRC:=	main.cpp \
 		ALogOutputter.cpp \
+		AutoindexHandler.cpp \
+		Directory.cpp \
+		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
+		RequestParser.cpp \
+		ResponseBodyHandler.cpp \
+		ResponseBuilder.cpp \
 		Server.cpp \
-		ConfigFileParser.cpp
+		TargetResourceHandler.cpp \
+		utilities.cpp
 
 # ******************************
 # *     Test source files      *
 # ******************************
 
-TEST_SRC := test_ConfigFileParser.cpp
+TEST_SRC :=	test_AutoindexHandler.cpp \
+			testBody.cpp \
+			testHeader.cpp \
+			testRequestLine.cpp \
+			test_ResponseBodyHandler.cpp \
+			test_TargetResourceHandler.cpp \
+			test_utils.cpp
 
 # ******************************
 # *     Object files           *
@@ -145,7 +158,7 @@ $(NAME): $(OBJS)
 .PHONY: test
 test: $(TEST)
 
-# Reconfigure flags for linking with gtest and gmock
+# Reconfigure flags for linking with gtest
 $(TEST): CXXFLAGS = -Wall -Werror -pthread
 # Set file counter to number of test files + object files
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
@@ -256,7 +269,7 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@rm -rf $(NAME) $(TEST)
-	@printf "$(RED)removed binaries $(NAME)*$(RESET)\n"
+	@printf "$(RED)removed binaries $(NAME) $(TEST) $(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@echo
