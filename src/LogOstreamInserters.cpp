@@ -19,6 +19,11 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "  Allow: " << location.limitExcept.allow << '\n';
 	ostream << "  Deny: " << location.limitExcept.deny << '\n';
 	ostream << "  Allowed methods:\n";
+	for (int i = 0; i < MethodCount; ++i) {
+		// NOLINTNEXTLINE: The bool array can never be out of bounds, since it has the same size as MethodCount.
+		if (location.limitExcept.allowedMethods[i])
+			ostream << "    " << static_cast<Method>(i) << '\n';
+	}
 	ostream << "Returns:\n";
 	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
 		 it != location.returns.end(); ++it) {
@@ -64,5 +69,33 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin();
 		 it != configFile.serverConfigs.end(); ++it)
 		ostream << *it;
+	return ostream;
+}
+
+/**
+ * @brief Overload << operator to a Method.
+ *
+ * Translates the Method enum to a string.
+ * If the Method is MethodCount, it will output "enum MethodCount".
+ * @param ostream The output stream.
+ * @param method The Method enum.
+ * @return std::ostream& The output stream.
+ */
+std::ostream& operator<<(std::ostream& ostream, Method method)
+{
+	switch (method) {
+	case MethodGet:
+		ostream << "GET";
+		break;
+	case MethodPost:
+		ostream << "POST";
+		break;
+	case MethodDelete:
+		ostream << "DELETE";
+		break;
+	case MethodCount:
+		ostream << "enum MethodCount";
+		break;
+	}
 	return ostream;
 }
