@@ -16,14 +16,14 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "CGI path: " << location.cgiPath << '\n';
 	ostream << "Autoindex: " << location.isAutoindex << '\n';
 	ostream << "LimitExcept:\n";
-	ostream << "  Allow: " << location.limitExcept.allow << '\n';
-	ostream << "  Deny: " << location.limitExcept.deny << '\n';
 	ostream << "  Allowed methods:\n";
 	for (int i = 0; i < MethodCount; ++i) {
 		// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as MethodCount.
 		if (location.limitExcept.allowedMethods[i])
 			ostream << "    " << static_cast<Method>(i) << '\n';
 	}
+	ostream << "  Allow: " << location.limitExcept.allow << '\n';
+	ostream << "  Deny: " << location.limitExcept.deny << '\n';
 	ostream << "Returns:\n";
 	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
 		 it != location.returns.end(); ++it) {
@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  */
 std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig)
 {
-	ostream << "Server: " << serverConfig.serverName << '\n';
+	ostream << "Server name: " << serverConfig.serverName << '\n';
 	ostream << "Host: " << serverConfig.host << '\n';
 	ostream << "Port: " << serverConfig.port << '\n';
 	ostream << "Max body size: " << serverConfig.maxBodySize << '\n';
