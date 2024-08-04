@@ -79,6 +79,7 @@ TEST := unittest
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		ConfigFileParser.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
@@ -99,6 +100,7 @@ SRC:=	main.cpp \
 # ******************************
 
 TEST_SRC :=	test_AutoindexHandler.cpp \
+			test_ConfigFileParser.cpp \
 			testBody.cpp \
 			testHeader.cpp \
 			testRequestLine.cpp \

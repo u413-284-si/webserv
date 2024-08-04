@@ -214,13 +214,14 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	Location location = {};
 	location.path = "/";
 	location.root = "/workspaces/webserv";
-	location.index = "index.html";
+	location.indices[0] = "index.html";
 
-	ServerConfig serverConfig;
-	serverConfig.locations.push_back(location);
+	// ServerConfig serverConfig;
+	ConfigServer configServer;
+	configServer.locations.push_back(location);
 
 	ConfigFile configFile;
-	configFile.serverConfigs.push_back(serverConfig);
+	configFile.servers.push_back(configServer);
 
 	const ssize_t bytesRead = read(clientSock, buffer, BUFFER_SIZE);
 	if (bytesRead < 0) {

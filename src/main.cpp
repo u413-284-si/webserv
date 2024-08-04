@@ -18,6 +18,8 @@ int main(int argc, char** argv)
 	try {
 		Server webserv;
 		LOG_INFO << "Starting server";
+		ConfigFileParser parser;
+		parser.parseConfigFile(argv[1]);
 		webserv.run();
 	} catch (std::exception& e) {
 		std::cerr << "error: " << e.what() << std::endl;
