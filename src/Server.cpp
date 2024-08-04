@@ -125,7 +125,7 @@ void Server::run()
 	RequestParser parser;
 	const int maxEvents = 10;
 	const int timeout = 5000; // epoll timeout in milliseconds
-	const int acceptedIdleTime = 10; // time until an idle connection is closed
+	const int acceptedIdleTime = 10; // time in seconds until an idle connection is closed
 
 	while (true) {
 		struct epoll_event events[maxEvents];
