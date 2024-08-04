@@ -20,7 +20,7 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "  Deny: " << location.limitExcept.deny << '\n';
 	ostream << "  Allowed methods:\n";
 	for (int i = 0; i < MethodCount; ++i) {
-		// NOLINTNEXTLINE: The bool array can never be out of bounds, since it has the same size as MethodCount.
+		// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as MethodCount.
 		if (location.limitExcept.allowedMethods[i])
 			ostream << "    " << static_cast<Method>(i) << '\n';
 	}
@@ -150,9 +150,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
  */
 std::ostream& operator<<(std::ostream& ostream, const URI& uri)
 {
-	ostream << "Path: " << uri.path << '\n';
-	ostream << "Query: " << uri.query << '\n';
-	ostream << "Fragment: " << uri.fragment << '\n';
+	ostream << "  Path: " << uri.path << '\n';
+	ostream << "  Query: " << uri.query << '\n';
+	ostream << "  Fragment: " << uri.fragment << '\n';
 	return ostream;
 }
 
@@ -188,9 +188,9 @@ std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest)
 std::ostream& operator<<(std::ostream& ostream, const HTTPResponse& httpResponse)
 {
 	ostream << "Status code: " << httpResponse.status << '\n';
-	ostream << "Target Resource: " << httpResponse.targetResource << '\n';
+	ostream << "Target resource: " << httpResponse.targetResource << '\n';
 	ostream << "Body: " << httpResponse.body << '\n';
-	ostream << "Location: " << *httpResponse.location << '\n';
+	ostream << "Location:\n" << *httpResponse.location << '\n';
 	ostream << "Method: " << httpResponse.method << '\n';
 	ostream << "Autoindex: " << httpResponse.isAutoindex << '\n';
 	return ostream;
