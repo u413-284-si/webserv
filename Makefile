@@ -101,6 +101,7 @@ SRC:=	main.cpp \
 TEST_SRC :=	test_AutoindexHandler.cpp \
 			testBody.cpp \
 			testHeader.cpp \
+			test_OstreamInserters.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
 			test_TargetResourceHandler.cpp \
