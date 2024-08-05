@@ -11,6 +11,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		clang-tidy \
 		cppcheck \
 		doxygen \
+		graphviz \
 		libgtest-dev \
 		libgmock-dev \
 		clangd \
