@@ -25,3 +25,6 @@ struct HTTPRequest {
 	statusCode httpStatus;
 	bool shallCloseConnection;
 };
+
+std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
+std::ostream& operator<<(std::ostream& ostream, const URI& uri);

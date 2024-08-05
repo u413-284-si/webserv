@@ -1,6 +1,5 @@
 #pragma once
 
-#include "LogOstreamInserters.hpp"
 #include <ctime>
 #include <sstream>
 #include <string>

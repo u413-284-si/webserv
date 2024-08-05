@@ -1,4 +1,7 @@
-#include "LogOstreamInserters.hpp"
+#include "ConfigFile.hpp"
+#include "StatusCode.hpp"
+#include "HTTPRequest.hpp"
+#include "HTTPResponse.hpp"
 
 /**
  * @brief Overload << operator to append a Location.
