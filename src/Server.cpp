@@ -236,7 +236,7 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 				parser.parseHttpRequest(m_requestStrings[clientSock], request);
 				parser.clearParser();
 			} catch (std::exception& e) {
-				std::cerr << "Error: " << e.what() << std::endl;
+				LOG_ERROR << "Error: " << e.what();
 			}
 			ResponseBuilder builder(configFile, m_fileSystemPolicy);
 			builder.buildResponse(request);
