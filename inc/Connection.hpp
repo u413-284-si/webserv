@@ -29,7 +29,7 @@ public:
 private:
 	Socket m_server; /**< Server socket associated with connection */
 	Socket m_client; /**< Client socket associated with connection */
-	time_t m_TimeSinceLastEvent; /**< Time elapsed since last action on this connection */
+	time_t m_timeSinceLastEvent; /**< Time elapsed since last action on this connection */
 	ConnectionStatus m_status; /**< Current status of the connection */
 	std::size_t m_bytesReceived; /**< Number of bytes received from client */
 };

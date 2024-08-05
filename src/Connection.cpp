@@ -11,7 +11,7 @@
 Connection::Connection()
 	: m_server(Socket())
 	, m_client(Socket())
-	, m_TimeSinceLastEvent(std::time(0))
+	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveRequest)
 	, m_bytesReceived(0)
 {
@@ -26,7 +26,7 @@ Connection::Connection()
 Connection::Connection(const Socket& server, const Socket& client)
 	: m_server(server)
 	, m_client(client)
-	, m_TimeSinceLastEvent(std::time(0))
+	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveRequest)
 	, m_bytesReceived(0)
 {
@@ -42,7 +42,7 @@ void Connection::closeConnection() const { close(m_client.fd); }
 /**
  * @brief Update the time since the last event on this connection.
  */
-void Connection::updateTimeSinceLastEvent() { m_TimeSinceLastEvent = std::time(0); }
+void Connection::updateTimeSinceLastEvent() { m_timeSinceLastEvent = std::time(0); }
 
 /**
  * @brief Set the status of the connection.
@@ -77,7 +77,7 @@ Socket Connection::getClient() const { return m_client; }
  *
  * @return time_t Time elapsed since last action on this connection
  */
-time_t Connection::getTimeSinceLastEvent() const { return (std::time(0) - m_TimeSinceLastEvent); }
+time_t Connection::getTimeSinceLastEvent() const { return (std::time(0) - m_timeSinceLastEvent); }
 
 /**
  * @brief Returns the current status of the connection.
