@@ -339,7 +339,7 @@ void Server::handleConnections(const Connection& connection)
 				m_requestParser.parseHttpRequest(m_connectionBuffers[connection.getClient().fd], request);
 				m_requestParser.clearParser();
 			} catch (std::exception& e) {
-				std::cerr << "Error: " << e.what() << std::endl;
+				LOG_ERROR << "Error: " << e.what();
 			}
 			m_responseBuilder.buildResponse(request);
 			send(connection.getClient().fd, m_responseBuilder.getResponse().c_str(),
