@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "ConfigFile.hpp"
-#include "LogOstreamInserters.hpp"
+#include "StatusCode.hpp"
+#include "HTTPRequest.hpp"
+#include "HTTPResponse.hpp"
 
 TEST(OstreamInserters, Method)
 {
