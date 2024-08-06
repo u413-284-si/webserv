@@ -1,4 +1,5 @@
 #include "RequestParser.hpp"
+#include "Log.hpp"
 #include <cstddef>
 
 /* ====== HELPER FUNCTIONS ====== */
@@ -282,6 +283,10 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	requestLine = parseVersion(requestLine, request);
 	checkForCRLF(requestLine, request);
 
+    LOG_DEBUG << "Parsed method: " << request.method;
+    LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
+    LOG_DEBUG << "Parsed version: " << request.version; 
+
 	// Step 2: Parse headers
 	std::string headerLine;
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
@@ -304,6 +309,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 			webutils::trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
+            LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
 		}
 	}
 	checkTransferEncoding(request);
@@ -319,6 +325,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 		else
 			parseNonChunkedBody(request);
 	}
+    LOG_DEBUG << "Parsed body: " << request.body;
 }
 
 /**
