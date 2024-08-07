@@ -352,10 +352,6 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		}
 	}
 	checkTransferEncoding(request);
-	if (headerLine != "\r") {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_MISS_CRLF);
-	}
 }
 
 /**
