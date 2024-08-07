@@ -602,9 +602,9 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
-    std::stringstream sstream;
-    sstream << length;
-    request.headers["Content-Length"] = sstream.str();
+	std::stringstream sstream;
+	sstream << length;
+	request.headers["Content-Length"] = sstream.str();
 }
 
 /**
@@ -773,10 +773,10 @@ bool RequestParser::checkForCompleteBody(const std::string& bodyString, HTTPRequ
 	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
 		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
 		if (contentLength < bodyString.size()) {
-            request.httpStatus = StatusBadRequest;
-		    throw std::runtime_error(ERR_CONTENT_LENGTH);
-        }
-        if (contentLength == bodyString.size())
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_CONTENT_LENGTH);
+		}
+		if (contentLength == bodyString.size())
 			return true;
 	}
 	return transferEncodingIterator != request.headers.end() && bodyString.find("0\r\n\r\n") != std::string::npos;
