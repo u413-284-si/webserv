@@ -283,9 +283,9 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	requestLine = parseVersion(requestLine, request);
 	checkForCRLF(requestLine, request);
 
-    LOG_DEBUG << "Parsed method: " << request.method;
-    LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
-    LOG_DEBUG << "Parsed version: " << request.version; 
+	LOG_DEBUG << "Parsed method: " << request.method;
+	LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
+	LOG_DEBUG << "Parsed version: " << request.version;
 
 	// Step 2: Parse headers
 	std::string headerLine;
@@ -309,7 +309,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 			webutils::trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
-            LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
+			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
 		}
 	}
 	checkTransferEncoding(request);
@@ -325,7 +325,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 		else
 			parseNonChunkedBody(request);
 	}
-    LOG_DEBUG << "Parsed body: " << request.body;
+	LOG_DEBUG << "Parsed body: " << request.body;
 }
 
 /**
@@ -734,3 +734,7 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 		}
 	}
 }
+
+RequestParser::ParsingStatus RequestParser::getStatus() const { return m_status; }
+
+void RequestParser::setStatus(ParsingStatus status) { m_status = status; }
