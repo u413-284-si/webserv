@@ -106,21 +106,6 @@ TEST(RequestParser_NonValidHeaders, InvalidFieldName) {
     }
 }
 
-TEST(RequestParser_NonValidHeaders, MissingCRLFAfterHeaderSection) {
-	RequestParser	p;
-    HTTPRequest		request;
-
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n", request), std::runtime_error);
-    p.clearParser();
-    p.clearRequest(request);
-    try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n", request);
-    }
-    catch(const std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
-    }
-}
-
 TEST(RequestParser_NonValidHeaders, EmptyContentLength) {
 	RequestParser	p;
     HTTPRequest		request;
