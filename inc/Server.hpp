@@ -31,11 +31,11 @@
 
 class Server {
 private:
-	static const int s_epollTimeout = 1000;
-	static const int s_epollMaxEvents = 10;
-	static const int s_backlog = 10;
-	static const time_t s_clientTimeout = 60;
-	static const std::size_t s_bufferSize = 1024;
+	static const int s_epollTimeout = 1000; /**< Default timeout for epoll instance in miliseconds */
+	static const int s_epollMaxEvents = 10; /**< Default maximum number of events for epoll instance */
+	static const int s_backlog = 10; /**< Default backlog for listening sockets */
+	static const time_t s_clientTimeout = 60; /**< Default timeout for a Connection in seconds */
+	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
 
 public:
 	explicit Server(

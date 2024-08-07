@@ -7,7 +7,7 @@
 
  * The Server constructor initializes a Server object with the provided configuration file, epoll
  * timeout, and maximum events, along with other member variables.
- * It creates an epoll instance using the epoll_create function and initializes the epoll events array
+ * It creates an epoll instance using the epoll_create function and initializes the epoll events vector
  * with the maximum number of events that can be processed by the epoll instance.
  * It also initializes the virtual servers using the configuration file with Server::initVirtualServers().
  *
@@ -20,7 +20,7 @@
  * before returning
  * @param maxEvents The `maxEvents` parameter in the `Server` constructor represents the maximum number
  * of events that can be processed by the epoll instance. This value determines the size of the event
- * array used by epoll to store events that are ready for processing. It is used to allocate memory for
+ * vector used by epoll to store events that are ready for processing. It is used to allocate memory for
  * the array that holds the events returned by `epoll_wait`.
 
  * @throws std::runtime_error if epoll_create() or Server::initVirtualServers() fail.
@@ -201,7 +201,7 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
  * @brief Accepts new connections or handles existing ones
 
  * If the event mask contains EPOLLERR or EPOLLHUP, the event mask is set to EPOLLIN.
- * This is done to handle errors and hangups that may occur during the processing the connection.
+ * This is done to handle errors and hangups that may occur during the processing of the connection.
  * The Server could then try to recv(), which will return 0 in case of EPOLLHUP or -1 in case of EPOLLERR,
  * resulting in a connection close.
  * See also https://stackoverflow.com/a/29206631
