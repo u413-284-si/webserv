@@ -35,6 +35,7 @@ private:
 	int m_serverSock;
 	int m_epfd;
 	std::map<int, std::string> m_requestStrings;
+	FileSystemPolicy m_fileSystemPolicy;
 
 	void acceptConnection() const;
 	void handleConnections(int clientSock, RequestParser& parser);
