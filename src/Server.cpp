@@ -230,43 +230,17 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 		close(clientSock);
 	} else {
 		m_requestStrings[clientSock] += buffer;
-		// if (checkForCompleteRequest(clientSock)) {
-		// 	LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[clientSock];
-			try {
-				parser.parseHttpRequest(m_requestStrings[clientSock], request);
-			} catch (std::exception& e) {
-				LOG_ERROR << "Error: " << e.what();
-			}
-            if (parser.getStatus() == RequestParser::ParsingComplete) {
-                parser.clearParser();
-                ResponseBuilder builder(configFile, m_fileSystemPolicy);
-                builder.buildResponse(request);
-                send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
-		    }
-	}
-}
-
-bool Server::checkForCompleteRequest(int clientSock)
-{
-	const size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
-
-	return (headerEndPos != std::string::npos);
-		/*
-		headerEndPos += 4;
-		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
-		// FIXME: add check against default/config max body size
-		size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
-		size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
-
-		if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
-			unsigned long contentLength
-				= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
-			if (bodySize >= contentLength)
-				return true;
-		} else if (transferEncodingPos != std::string::npos) {
-			std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
-			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
-				return true;
+		try {
+			parser.parseHttpRequest(m_requestStrings[clientSock], request);
+		} catch (std::exception& e) {
+			LOG_ERROR << "Error: " << e.what();
 		}
-		*/
+		if (parser.getStatus() == RequestParser::ParsingComplete) {
+			LOG_DEBUG << "Parsing completed";
+			parser.clearParser();
+			ResponseBuilder builder(configFile, m_fileSystemPolicy);
+			builder.buildResponse(request);
+			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0);
+		}
+	}
 }
