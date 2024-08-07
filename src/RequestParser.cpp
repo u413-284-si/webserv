@@ -608,7 +608,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 	} while (numChunkSize > 0);
     std::stringstream sstream;
     sstream << length;
-    request.headers.at("Content-Length") = sstream.str();
+    request.headers["Content-Length"] = sstream.str();
 }
 
 /**
