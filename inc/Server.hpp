@@ -75,13 +75,13 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-int createListeningSocket(struct addrinfo* addrinfo, int backlog);
-Socket retrieveSocketInfo(int sockFd, const struct sockaddr* sockaddr, socklen_t socklen);
+int createListeningSocket(const struct addrinfo& addrinfo, int backlog);
+Socket retrieveSocketInfo(int sockFd, struct sockaddr& sockaddr, socklen_t socklen);
 
 int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout);
-bool addEvent(int epfd, int newfd, epoll_event* event);
+bool addEvent(int epfd, int newfd, epoll_event& event);
 void removeEvent(int epfd, int delfd);
-bool modifyEvent(int epfd, int modfd, epoll_event* event);
+bool modifyEvent(int epfd, int modfd, epoll_event& event);
 
 bool checkDuplicateServer(
 	const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);

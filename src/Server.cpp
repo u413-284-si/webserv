@@ -172,11 +172,11 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 	for (struct addrinfo* curr = list; curr != NULL; curr = curr->ai_next) {
 		LOG_DEBUG << countTryCreateSocket << ". try to create listening socket";
 
-		const int newFd = createListeningSocket(curr, backlog);
+		const int newFd = createListeningSocket(*curr, backlog);
 		if (newFd == -1)
 			continue;
 
-		const Socket serverSock = retrieveSocketInfo(newFd, curr->ai_addr, curr->ai_addrlen);
+		const Socket serverSock = retrieveSocketInfo(newFd, *curr->ai_addr, curr->ai_addrlen);
 		if (serverSock.fd == -1)
 			continue;
 
@@ -281,7 +281,7 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
 			continue;
 		}
 
-		const Socket clientSock = retrieveSocketInfo(clientFd, addrCast, clientLen);
+		const Socket clientSock = retrieveSocketInfo(clientFd, *addrCast, clientLen);
 		if (clientSock.fd == -1)
 			continue;
 
@@ -416,7 +416,7 @@ bool Server::registerVirtualServer(const Socket& serverSock)
 	event.events = EPOLLIN;
 	event.data.fd = serverSock.fd;
 
-	if (!addEvent(m_epfd, serverSock.fd, &event)) {
+	if (!addEvent(m_epfd, serverSock.fd, event)) {
 		close(serverSock.fd);
 		LOG_ERROR << "Failed to add event for " << serverSock;
 		return false;
@@ -448,7 +448,7 @@ bool Server::registerConnection(const Socket& serverSock, const Socket& clientSo
 	event.events = EPOLLIN;
 	event.data.fd = clientSock.fd;
 
-	if (!addEvent(m_epfd, clientSock.fd, &event)) {
+	if (!addEvent(m_epfd, clientSock.fd, event)) {
 		close(clientSock.fd);
 		LOG_ERROR << "Failed to add event for " << clientSock;
 		return false;
@@ -474,11 +474,12 @@ bool Server::registerConnection(const Socket& serverSock, const Socket& clientSo
  *
  * @return The file descriptor of the new socket if successful, -1 otherwise.
  */
-int createListeningSocket(struct addrinfo* addrinfo, int backlog)
+int createListeningSocket(const struct addrinfo& addrinfo, int backlog)
 {
-	addrinfo->ai_socktype |= SOCK_NONBLOCK;
+	unsigned int socktype = addrinfo.ai_socktype;
+	socktype |= SOCK_NONBLOCK;
 
-	const int newFd = socket(addrinfo->ai_family, addrinfo->ai_socktype, addrinfo->ai_protocol);
+	const int newFd = socket(addrinfo.ai_family, static_cast<int>(socktype), addrinfo.ai_protocol);
 	if (newFd == -1) {
 		LOG_DEBUG << "socket(): " << strerror(errno);
 		return -1;
@@ -491,7 +492,7 @@ int createListeningSocket(struct addrinfo* addrinfo, int backlog)
 		return -1;
 	}
 
-	if (-1 == bind(newFd, addrinfo->ai_addr, addrinfo->ai_addrlen)) {
+	if (-1 == bind(newFd, addrinfo.ai_addr, addrinfo.ai_addrlen)) {
 		close(newFd);
 		LOG_DEBUG << "bind(): " << strerror(errno);
 		return -1;
@@ -516,13 +517,13 @@ int createListeningSocket(struct addrinfo* addrinfo, int backlog)
  *
  * @return A Socket object containing the host and port information.
  */
-Socket retrieveSocketInfo(const int sockFd, const struct sockaddr* sockaddr, socklen_t socklen)
+Socket retrieveSocketInfo(const int sockFd, struct sockaddr& sockaddr, socklen_t socklen)
 {
 	char bufferHost[NI_MAXHOST];
 	char bufferPort[NI_MAXSERV];
 
 	const int ret = getnameinfo(
-		sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
+		&sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	if (ret != 0) {
 		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
 		close(sockFd);
@@ -579,9 +580,9 @@ int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout
  *
  * @return true if the event was successfully added, false otherwise.
  */
-bool addEvent(int epfd, int newfd, epoll_event* event)
+bool addEvent(int epfd, int newfd, epoll_event& event)
 {
-	if (-1 == epoll_ctl(epfd, EPOLL_CTL_ADD, newfd, event)) {
+	if (-1 == epoll_ctl(epfd, EPOLL_CTL_ADD, newfd, &event)) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno);
 		return false;
 	}
@@ -618,9 +619,9 @@ void removeEvent(int epfd, int delfd)
  *
  * @return true if the event was successfully modified, false otherwise.
  */
-bool modifyEvent(int epfd, int modfd, epoll_event* event)
+bool modifyEvent(int epfd, int modfd, epoll_event& event)
 {
-	if (-1 == epoll_ctl(epfd, EPOLL_CTL_MOD, modfd, event)) {
+	if (-1 == epoll_ctl(epfd, EPOLL_CTL_MOD, modfd, &event)) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno);
 		return false;
 	}
