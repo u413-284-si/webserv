@@ -20,15 +20,15 @@ public:
 	void setStatus(ConnectionStatus status);
 	void updateBytesReceived(std::size_t bytesReceived);
 
-	Socket getServer() const;
-	Socket getClient() const;
+	Socket getServerSocket() const;
+	Socket getClientSocket() const;
 	time_t getTimeSinceLastEvent() const;
 	ConnectionStatus getStatus() const;
 	std::size_t getBytesReceived() const;
 
 private:
-	Socket m_server; /**< Server socket associated with connection */
-	Socket m_client; /**< Client socket associated with connection */
+	Socket m_serverSocket; /**< Server socket associated with connection */
+	Socket m_clientSocket; /**< Client socket associated with connection */
 	time_t m_timeSinceLastEvent; /**< Time elapsed since last action on this connection */
 	ConnectionStatus m_status; /**< Current status of the connection */
 	std::size_t m_bytesReceived; /**< Number of bytes received from client */

@@ -9,8 +9,8 @@
  * For example std::map::[] operator requires default constructor.
  */
 Connection::Connection()
-	: m_server(Socket())
-	, m_client(Socket())
+	: m_serverSocket(Socket())
+	, m_clientSocket(Socket())
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveRequest)
 	, m_bytesReceived(0)
@@ -24,8 +24,8 @@ Connection::Connection()
  * @param client Client socket associated with connection
  */
 Connection::Connection(const Socket& server, const Socket& client)
-	: m_server(server)
-	, m_client(client)
+	: m_serverSocket(server)
+	, m_clientSocket(client)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveRequest)
 	, m_bytesReceived(0)
@@ -37,7 +37,7 @@ Connection::Connection(const Socket& server, const Socket& client)
  * @todo Implement a more robust way to close the connection. For example in case of timeout
  *       the server send a message before closing the connection.
  */
-void Connection::closeConnection() const { close(m_client.fd); }
+void Connection::closeConnection() const { close(m_clientSocket.fd); }
 
 /**
  * @brief Update the time since the last event on this connection.
@@ -63,14 +63,14 @@ void Connection::updateBytesReceived(std::size_t bytesReceived) { m_bytesReceive
  *
  * @return Socket Server socket associated with connection
  */
-Socket Connection::getServer() const { return m_server; }
+Socket Connection::getServerSocket() const { return m_serverSocket; }
 
 /**
  * @brief Returns the client socket associated with the connection.
  *
  * @return Socket Client socket associated with connection
  */
-Socket Connection::getClient() const { return m_client; }
+Socket Connection::getClientSocket() const { return m_clientSocket; }
 
 /**
  * @brief Returns the time elapsed since the last action on this connection.

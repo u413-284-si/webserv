@@ -258,7 +258,7 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
 
 	if ((eventMask & EPOLLERR) != 0) {
 		LOG_ERROR << "Error condition happened on the associated file descriptor of " << serverSock;
-		close (serverSock.fd);
+		close(serverSock.fd);
 		m_virtualServers.erase(serverSock.fd);
 		return;
 	}
@@ -315,7 +315,8 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
  */
 void Server::handleConnections(const Connection& connection)
 {
-	LOG_DEBUG << "Handling connection: " << connection.getClient() << " for server: " << connection.getServer();
+	LOG_DEBUG << "Handling connection: " << connection.getClientSocket()
+			  << " for server: " << connection.getServerSocket();
 	// Handle client data
 	char buffer[s_bufferSize];
 	HTTPRequest request;
@@ -324,28 +325,28 @@ void Server::handleConnections(const Connection& connection)
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
 
-	const ssize_t bytesRead = recv(connection.getClient().fd, buffer, s_bufferSize, 0);
+	const ssize_t bytesRead = recv(connection.getClientSocket().fd, buffer, s_bufferSize, 0);
 	if (bytesRead < 0) {
 		std::cerr << "error: read\n";
-		close(connection.getClient().fd);
+		close(connection.getClientSocket().fd);
 	} else if (bytesRead == 0) {
 		// Connection closed by client
-		close(connection.getClient().fd);
+		close(connection.getClientSocket().fd);
 	} else {
-		m_connectionBuffers[connection.getClient().fd] += buffer;
-		if (checkForCompleteRequest(connection.getClient().fd)) {
-			LOG_DEBUG << "Received complete request: " << '\n' << m_connectionBuffers[connection.getClient().fd];
+		m_connectionBuffers[connection.getClientSocket().fd] += buffer;
+		if (checkForCompleteRequest(connection.getClientSocket().fd)) {
+			LOG_DEBUG << "Received complete request: " << '\n' << m_connectionBuffers[connection.getClientSocket().fd];
 			try {
-				m_requestParser.parseHttpRequest(m_connectionBuffers[connection.getClient().fd], request);
+				m_requestParser.parseHttpRequest(m_connectionBuffers[connection.getClientSocket().fd], request);
 				m_requestParser.clearParser();
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
 			m_responseBuilder.buildResponse(request);
-			send(connection.getClient().fd, m_responseBuilder.getResponse().c_str(),
+			send(connection.getClientSocket().fd, m_responseBuilder.getResponse().c_str(),
 				m_responseBuilder.getResponse().size(), 0);
 		} else {
-			LOG_DEBUG << "Received partial request: " << '\n' << m_connectionBuffers[connection.getClient().fd];
+			LOG_DEBUG << "Received partial request: " << '\n' << m_connectionBuffers[connection.getClientSocket().fd];
 		}
 	}
 }
@@ -366,9 +367,9 @@ void Server::handleTimeout()
 	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end();
 		/* no increment */) {
 		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
-		LOG_DEBUG << iter->second.getClient() << ": Time since last event: " << timeSinceLastEvent;
+		LOG_DEBUG << iter->second.getClientSocket() << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > m_clientTimeout) {
-			LOG_INFO << "Connection timeout: " << iter->second.getClient();
+			LOG_INFO << "Connection timeout: " << iter->second.getClientSocket();
 			removeEvent(m_epfd, iter->first);
 			iter->second.closeConnection();
 			m_connections.erase(iter++);
