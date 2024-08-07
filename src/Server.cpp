@@ -230,18 +230,19 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 		close(clientSock);
 	} else {
 		m_requestStrings[clientSock] += buffer;
-		if (checkForCompleteRequest(clientSock)) {
-			LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[clientSock];
+		// if (checkForCompleteRequest(clientSock)) {
+		// 	LOG_DEBUG << "Received complete request: " << '\n' << m_requestStrings[clientSock];
 			try {
 				parser.parseHttpRequest(m_requestStrings[clientSock], request);
-				parser.clearParser();
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
-			ResponseBuilder builder(configFile, m_fileSystemPolicy);
-			builder.buildResponse(request);
-			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
-		}
+            if (parser.getStatus() == RequestParser::ParsingComplete) {
+                parser.clearParser();
+                ResponseBuilder builder(configFile, m_fileSystemPolicy);
+                builder.buildResponse(request);
+                send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
+		    }
 	}
 }
 
