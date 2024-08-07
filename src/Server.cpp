@@ -120,10 +120,8 @@ bool Server::initVirtualServers()
 		}
 	}
 
-	if (m_virtualServers.empty()) {
-		LOG_ERROR << "No virtual servers added";
+	if (m_virtualServers.empty())
 		return false;
-	}
 
 	LOG_INFO << "Finished setting up virtual servers";
 	return true;
