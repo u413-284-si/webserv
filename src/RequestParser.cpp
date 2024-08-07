@@ -245,6 +245,7 @@ void RequestParser::clearParser()
 RequestParser::RequestParser()
 	: m_hasBody(false)
 	, m_chunked(false)
+    , m_status(InitialParse)
 {
 }
 
