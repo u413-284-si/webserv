@@ -12,12 +12,14 @@
 /**
  * @brief Class to handle the target resource of a HTTP Request.
  *
+ * The FileSystemPolicy passed in the constructor needs to outlive this class.
+ * A mock of FileSystemPolicy can be used for testing.
  */
 class TargetResourceHandler {
 
 public:
 	TargetResourceHandler(const std::vector<Location>& locations, const HTTPRequest& request, HTTPResponse& response,
-		const FileSystemPolicy& fileSystemPolicy = FileSystemPolicy());
+		const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:
