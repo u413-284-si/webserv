@@ -1,4 +1,5 @@
 #include "RequestParser.hpp"
+#include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include <cstddef>
 
@@ -230,6 +231,12 @@ void RequestParser::clearParser()
 {
 	m_hasBody = false;
 	m_chunked = false;
+	m_status = ParseRequestLineAndHeaders;
+	resetRequestStream();
+}
+
+void RequestParser::resetRequestStream()
+{
 	m_requestStream.clear();
 	m_requestStream.str("");
 }
@@ -245,7 +252,7 @@ void RequestParser::clearParser()
 RequestParser::RequestParser()
 	: m_hasBody(false)
 	, m_chunked(false)
-    , m_status(InitialParse)
+	, m_status(ParseRequestLineAndHeaders)
 {
 }
 
@@ -269,9 +276,37 @@ RequestParser::RequestParser()
  */
 void RequestParser::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
 {
-	m_requestStream.str(requestString);
+	const std::string headerEndString = "\r\n\r\n";
+	const size_t headerEndPos = requestString.find(headerEndString);
 
-	// Step 1: Parse the request-line
+	if (headerEndPos == std::string::npos)
+		return;
+
+	if (m_status == ParseRequestLineAndHeaders) {
+		m_requestStream.str(requestString);
+		parseRequestLine(request);
+		parseHeaders(request);
+		if (m_hasBody)
+			setStatus(ParseBody);
+		else
+			setStatus(ParsingComplete);
+	}
+
+	const std::string bodyString = requestString.substr(headerEndPos + headerEndString.size());
+	if (m_status == ParseBody && checkForCompleteBody(bodyString, request)) {
+		resetRequestStream();
+		m_requestStream.str(bodyString);
+		if (m_chunked)
+			parseChunkedBody(request);
+		else
+			parseNonChunkedBody(request);
+		LOG_DEBUG << "Parsed body: " << request.body;
+		setStatus(ParsingComplete);
+	}
+}
+
+void RequestParser::parseRequestLine(HTTPRequest& request)
+{
 	std::string requestLine;
 	if (!std::getline(m_requestStream, requestLine) || requestLine.empty()) {
 		request.httpStatus = StatusBadRequest;
@@ -287,9 +322,12 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	LOG_DEBUG << "Parsed method: " << request.method;
 	LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
 	LOG_DEBUG << "Parsed version: " << request.version;
+}
 
-	// Step 2: Parse headers
+void RequestParser::parseHeaders(HTTPRequest& request)
+{
 	std::string headerLine;
+
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
 	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
@@ -318,15 +356,6 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_MISS_CRLF);
 	}
-
-	// Step 3: Parse body (if any)
-	if (m_hasBody) {
-		if (m_chunked)
-			parseChunkedBody(request);
-		else
-			parseNonChunkedBody(request);
-	}
-	LOG_DEBUG << "Parsed body: " << request.body;
 }
 
 /**
@@ -577,6 +606,9 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
+    std::stringstream sstream;
+    sstream << length;
+    request.headers.at("Content-Length") = sstream.str();
 }
 
 /**
@@ -605,23 +637,23 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
 	std::string body;
-	long length = 0;
+	// long length = 0;
 
 	while (!std::getline(m_requestStream, body).fail()) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
-			length += 1;
+			// length += 1;
 		}
 		if (!m_requestStream.eof())
 			body += '\n';
-		length += static_cast<long>(body.size());
+		// length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
-	if (contentLength != length) {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_CONTENT_LENGTH);
-	}
+	// const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+	// if (contentLength != length) {
+	// 	request.httpStatus = StatusBadRequest;
+	// 	throw std::runtime_error(ERR_CONTENT_LENGTH);
+	// }
 }
 
 /**
@@ -734,6 +766,24 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 			m_hasBody = true;
 		}
 	}
+}
+
+bool RequestParser::checkForCompleteBody(const std::string& bodyString, HTTPRequest& request)
+{
+	std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
+	std::map<std::string, std::string>::const_iterator transferEncodingIterator
+		= request.headers.find("Transfer-Encoding");
+
+	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
+		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
+		if (contentLength < bodyString.size()) {
+            request.httpStatus = StatusBadRequest;
+		    throw std::runtime_error(ERR_CONTENT_LENGTH);
+        }
+        if (contentLength == bodyString.size())
+			return true;
+	}
+	return transferEncodingIterator != request.headers.end() && bodyString.find("0\r\n\r\n") != std::string::npos;
 }
 
 RequestParser::ParsingStatus RequestParser::getStatus() const { return m_status; }
