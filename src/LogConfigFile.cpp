@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "ConfigFile.hpp"
 
@@ -13,14 +14,19 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 {
 	ostream << "Path: " << location.path << '\n';
 	ostream << "Root: " << location.root << '\n';
-	ostream << "Index: " << location.index << '\n';
+	ostream << "Index:\n";
+	for (std::vector<std::string>::const_iterator it = location.indices.begin(), end = location.indices.end(); it != end; ++it)
+		ostream << *it << '\n';	
 	ostream << "CGI extension: " << location.cgiExt << '\n';
 	ostream << "CGI path: " << location.cgiPath << '\n';
 	ostream << "Autoindex: " << location.isAutoindex << '\n';
-	ostream << "LimitExcept:\n";
-	ostream << "  Allow: " << location.limitExcept.allow << '\n';
-	ostream << "  Deny: " << location.limitExcept.deny << '\n';
-	ostream << "  Allowed methods:\n";
+	ostream << "Max body size: " << location.maxBodySize << '\n';
+	ostream << "Error pages:\n";
+	for (std::map<unsigned short, std::string>::const_iterator it = location.errorPage.begin(), end = location.errorPage.end(); it != end; ++it)
+		ostream << it->first << ": " << it->second << '\n';	
+	ostream << "Allowed methods:\n";
+	for (int i = 0; i < MethodCount - 1; ++i)
+		ostream << "  " << location.allowedMethods[i] << '\n';	
 	ostream << "Returns:\n";
 	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
 		 it != location.returns.end(); ++it) {
@@ -36,18 +42,20 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  * @param serverConfig The ServerConfig object.
  * @return std::ostream& The output stream.
  */
-std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig)
+std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)
 {
-	ostream << "Server: " << serverConfig.serverName << '\n';
-	ostream << "Host: " << serverConfig.host << '\n';
-	ostream << "Port: " << serverConfig.port << '\n';
-	ostream << "Max body size: " << serverConfig.maxBodySize << '\n';
+	ostream << "Server: " << configServer.serverName << '\n';
+	ostream << "Root: " << configServer.root << '\n';
+	ostream << "Listen:\n";
+	for (std::map<std::string, unsigned short>::const_iterator it = configServer.listen.begin(); it != configServer.listen.end(); ++it)
+		ostream << "  " << it->first << ": " << it->second << '\n';
+	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = serverConfig.errorPage.begin();
-		 it != serverConfig.errorPage.end(); ++it)
+	for (std::map<unsigned short, std::string>::const_iterator it = configServer.errorPage.begin();
+		 it != configServer.errorPage.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Locations:\n";
-	for (std::vector<Location>::const_iterator it = serverConfig.locations.begin(); it != serverConfig.locations.end();
+	for (std::vector<Location>::const_iterator it = configServer.locations.begin(); it != configServer.locations.end();
 		 ++it)
 		ostream << *it;
 	return ostream;
@@ -63,8 +71,8 @@ std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 {
 	ostream << "Config file:\n";
-	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin();
-		 it != configFile.serverConfigs.end(); ++it)
+	for (std::vector<ConfigServer>::const_iterator it = configFile.servers.begin();
+		 it != configFile.servers.end(); ++it)
 		ostream << *it;
 	return ostream;
 }

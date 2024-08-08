@@ -30,7 +30,7 @@ class TargetResourceHandlerTest : public ::testing::Test {
 	Location m_location3 = {
 		.path= "/test/secret",
 		.root= "/third/location",
-		.index= "index.html" };
+		.indices= { "index.html", "index.htm" }};
 	Location m_location4 = {
 		.path= "/test/autoindex",
 		.root= "/fourth/location",

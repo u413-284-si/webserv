@@ -1,6 +1,7 @@
 #include "LogOutputterConsole.hpp"
 #include "LogOutputterFile.hpp"
 #include "Server.hpp"
+#include "ConfigFileParser.hpp"
 #include "Log.hpp"
 #include "ConfigFile.hpp"
 #include <cerrno>
@@ -17,6 +18,8 @@ int main(int argc, char** argv)
 	try {
 		Server webserv;
 		LOG_INFO << "Starting server";
+		ConfigFileParser parser;
+		parser.parseConfigFile(argv[1]);
 		webserv.run();
 	} catch (std::exception& e) {
 		std::cerr << "error: " << e.what() << std::endl;

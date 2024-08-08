@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include "ConfigFile.hpp"
 
 /**
  * @brief Construct a new ResponseBuilder object
@@ -8,7 +9,7 @@
  */
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
 	: m_configFile(configFile)
-	, m_activeServer(configFile.serverConfigs.begin())
+	, m_activeServer(configFile.servers.begin())
 	, m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {
@@ -21,7 +22,7 @@ ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemP
  * The active server is used for location searching.
  * @param activeServer Server to be set as active.
  */
-void ResponseBuilder::setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer)
+void ResponseBuilder::setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer)
 {
 	m_activeServer = activeServer;
 }

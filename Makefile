@@ -79,6 +79,7 @@ TEST := unittest
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		ConfigFileParser.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
@@ -99,6 +100,7 @@ SRC:=	main.cpp \
 # ******************************
 
 TEST_SRC :=	test_AutoindexHandler.cpp \
+			test_ConfigFileParser.cpp \
 			testBody.cpp \
 			testHeader.cpp \
 			testRequestLine.cpp \
@@ -261,8 +263,9 @@ $(DEPFILES):
 .PHONY: clean
 clean:
 	@printf "$(YELLOW)$(BOLD)clean$(RESET) [$(BLUE)$@$(RESET)]\n"
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR) $(TEST_DIR)/*.o
 	@printf "$(RED)removed dir $(OBJ_DIR)$(RESET)\n"
+	@printf "$(RED)removed *.o in dir $(TEST_DIR)$(RESET)\n"
 
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean

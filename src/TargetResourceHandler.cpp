@@ -65,8 +65,8 @@ void TargetResourceHandler::execute()
 				if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
 					m_response.targetResource += "/";
 					m_response.status = StatusMovedPermanently;
-				} else if (!m_response.location->index.empty()) {
-					m_response.targetResource += m_response.location->index;
+				} else if (!m_response.location->indices.empty()) {
+					m_response.targetResource += m_response.location->indices[0];
 					internalRedirect = true;
 				} else if (m_response.location->isAutoindex) {
 					m_response.isAutoindex = true;
