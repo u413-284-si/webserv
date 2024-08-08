@@ -83,8 +83,9 @@ void ConfigFileParser::initializeConfigServer(ConfigServer& configServer)
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
 	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
-	configServer.validServerDirectives = std::vector<std::string>(
-		validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize);
+	configServer.validServerDirectives = std::vector<std::string>(validServerDirectiveNames,
+		validServerDirectiveNames + validServerDirectiveNamesSize); // NOLINT: no good alternative for pointer arithmetic
+
 	configServer.serverName = "";
 	configServer.root = "html";
 	configServer.listen.insert(std::make_pair("127.0.0.1", 80));
