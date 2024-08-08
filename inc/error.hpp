@@ -31,3 +31,4 @@
 #define ERR_CHUNK_SIZE "Invalid HTTP request: Indicated chunk size different than actual chunk size"
 #define ERR_CONVERSION_STRING_TO_SIZE_T "String to size_t conversion error"
 #define ERR_CONTENT_LENGTH "Invalid HTTP request: Indicated content length different than actual body size"
+#define ERR_UNEXPECTED_BODY "Invalid HTTP request: Method should not have a body"

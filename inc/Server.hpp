@@ -39,7 +39,6 @@ private:
 
 	void acceptConnection() const;
 	void handleConnections(int clientSock, RequestParser& parser);
-	bool checkForCompleteRequest(int clientSock);
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);

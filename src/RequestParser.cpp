@@ -1,5 +1,8 @@
 #include "RequestParser.hpp"
+#include "ConfigFile.hpp"
+#include "HTTPRequest.hpp"
 #include "Log.hpp"
+#include "error.hpp"
 #include <cstddef>
 
 /* ====== HELPER FUNCTIONS ====== */
@@ -230,6 +233,12 @@ void RequestParser::clearParser()
 {
 	m_hasBody = false;
 	m_chunked = false;
+	m_status = ParseRequestLineAndHeaders;
+	resetRequestStream();
+}
+
+void RequestParser::resetRequestStream()
+{
 	m_requestStream.clear();
 	m_requestStream.str("");
 }
@@ -245,32 +254,88 @@ void RequestParser::clearParser()
 RequestParser::RequestParser()
 	: m_hasBody(false)
 	, m_chunked(false)
+	, m_status(ParseRequestLineAndHeaders)
 {
 }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
- * @brief Parses an HTTP request string into an HTTPRequest object.
+ * @brief Parses the entire HTTP request from the given string and updates the HTTPRequest object.
  *
- * This function takes a raw HTTP request string and parses it into an
- * `HTTPRequest` object. The parsing process involves several steps:
- * 1. Parsing the request line (method, URI, and version).
- * 2. Parsing the headers.
- * 3. Parsing the body (if any).
+ * This function first attempts to find the end of the HTTP headers in the request string.
+ * If the headers are found and the current status is set to parse request line and headers,
+ * it parses the request line and headers. If the request includes a body, and the method is
+ * allowed to have a body, the function transitions the parsing status to handle the body.
  *
- * If any errors are encountered during parsing, an appropriate error code is
- * set, and a `std::runtime_error` is thrown.
+ * Once the headers are parsed, the function extracts the body portion of the request and
+ * checks if the body is complete. If the body is complete, it is then parsed according to
+ * whether it's chunked or not.
  *
- * @param requestString The raw HTTP request string to be parsed.
- * @param request The HTTP request object to be filled.
- * @throws std::runtime_error If there is any error during parsing.
+ * @param requestString The HTTP request as a string.
+ * @param request The HTTPRequest object to be populated with parsed data.
+ *
+ * @throw std::runtime_error If the request line is missing, if an unexpected body is encountered,
+ * or if other parsing errors occur (e.g., invalid headers, body issues).
  */
 void RequestParser::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
 {
-	m_requestStream.str(requestString);
+	const std::string headerEndString = "\r\n\r\n";
+	const size_t headerEndPos = requestString.find(headerEndString);
 
-	// Step 1: Parse the request-line
+	if (headerEndPos == std::string::npos)
+		return;
+
+	if (m_status == ParseRequestLineAndHeaders) {
+		m_requestStream.str(requestString);
+		parseRequestLine(request);
+		parseHeaders(request);
+		if (m_hasBody) {
+			if (!checkMethodCanHaveBody(request)) {
+				request.httpStatus = StatusBadRequest;
+				throw std::runtime_error(ERR_UNEXPECTED_BODY);
+			}
+			setStatus(ParseBody);
+		} else
+			setStatus(ParsingComplete);
+	}
+
+	const std::string bodyString = requestString.substr(headerEndPos + headerEndString.size());
+	if (m_status == ParseBody && checkForCompleteBody(bodyString, request)) {
+		resetRequestStream();
+		m_requestStream.str(bodyString);
+		if (m_chunked)
+			parseChunkedBody(request);
+		else
+			parseNonChunkedBody(request);
+		LOG_DEBUG << "Parsed body: " << request.body;
+		setStatus(ParsingComplete);
+	}
+}
+
+/**
+ * @brief Parses the request line of an HTTP request.
+ *
+ * This function processes the first line of the HTTP request, which typically includes the method,
+ * URI, and HTTP version. The request line is validated and broken down into its components.
+ *
+ * The function performs the following steps:
+ * - Reads the request line from the request stream.
+ * - Parses the HTTP method (e.g., GET, POST).
+ * - Checks for and skips over required spaces between the components of the request line.
+ * - Parses the request URI, which may include the path, query, and fragment.
+ * - Parses the HTTP version.
+ * - Validates that the line ends with a CRLF sequence.
+ *
+ * If any part of the request line is malformed or missing, the function sets the HTTP status
+ * to `400 Bad Request` and throws an exception.
+ *
+ * @param request The HTTP request object where the parsed components of the request line will be stored.
+ *
+ * @throws std::runtime_error If the request line is missing, malformed, or contains invalid components.
+ */
+void RequestParser::parseRequestLine(HTTPRequest& request)
+{
 	std::string requestLine;
 	if (!std::getline(m_requestStream, requestLine) || requestLine.empty()) {
 		request.httpStatus = StatusBadRequest;
@@ -283,12 +348,33 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 	requestLine = parseVersion(requestLine, request);
 	checkForCRLF(requestLine, request);
 
-    LOG_DEBUG << "Parsed method: " << request.method;
-    LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
-    LOG_DEBUG << "Parsed version: " << request.version; 
+	LOG_DEBUG << "Parsed method: " << request.method;
+	LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
+	LOG_DEBUG << "Parsed version: " << request.version;
+}
 
-	// Step 2: Parse headers
+/**
+ * @brief Parses the HTTP headers from the request stream.
+ *
+ * This function reads and parses the HTTP headers from the request stream until the end of the header section,
+ * which is indicated by an empty line (`\r\n\r\n`). Each header is extracted, validated, and stored in the `request`
+ * object.
+ *
+ * - If a header line begins with a space or tab, it is considered obsolete line folding, and the function
+ *   sets the HTTP status to `400 Bad Request` and throws an exception.
+ * - The function splits each header into a name and value pair using the `:` delimiter, trims any leading
+ *   or trailing whitespace, and stores the pair in the `request.headers` map.
+ * - The `Content-Length` and `Transfer-Encoding` headers are checked specifically for validity.
+ *
+ * @param request The HTTP request object where the parsed headers will be stored.
+ *
+ * @throws std::runtime_error If the header line contains obsolete line folding or if there's an issue
+ * with the `Content-Length` header.
+ */
+void RequestParser::parseHeaders(HTTPRequest& request)
+{
 	std::string headerLine;
+
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
 	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
@@ -309,23 +395,10 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 			webutils::trimTrailingWhiteSpaces(headerValue);
 			checkContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
-            LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
+			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
 		}
 	}
 	checkTransferEncoding(request);
-	if (headerLine != "\r") {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_MISS_CRLF);
-	}
-
-	// Step 3: Parse body (if any)
-	if (m_hasBody) {
-		if (m_chunked)
-			parseChunkedBody(request);
-		else
-			parseNonChunkedBody(request);
-	}
-    LOG_DEBUG << "Parsed body: " << request.body;
 }
 
 /**
@@ -530,7 +603,8 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
  *
  * This function reads and processes the chunked transfer encoding format from the input stream.
  * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
- * request body, and handles any formatting errors.
+ * request body, and handles any formatting errors. The actual body size is stored in the header
+ * entry "Content-Length".
  *
  * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
@@ -576,6 +650,9 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
+	std::stringstream sstream;
+	sstream << length;
+	request.headers["Content-Length"] = sstream.str();
 }
 
 /**
@@ -604,23 +681,23 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
 	std::string body;
-	long length = 0;
+	// long length = 0;
 
 	while (!std::getline(m_requestStream, body).fail()) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
-			length += 1;
+			// length += 1;
 		}
 		if (!m_requestStream.eof())
 			body += '\n';
-		length += static_cast<long>(body.size());
+		// length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
-	if (contentLength != length) {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_CONTENT_LENGTH);
-	}
+	// const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+	// if (contentLength != length) {
+	// 	request.httpStatus = StatusBadRequest;
+	// 	throw std::runtime_error(ERR_CONTENT_LENGTH);
+	// }
 }
 
 /**
@@ -734,3 +811,91 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 		}
 	}
 }
+
+/**
+ * @brief Checks if the HTTP request body is complete based on headers.
+ *
+ * This function checks whether the HTTP request body is fully received
+ * by examining the `Content-Length` and `Transfer-Encoding` headers.
+ *
+ * - If the `Content-Length` header is present and `Transfer-Encoding` is not,
+ *   the function compares the actual body size with the specified content length.
+ * - If the body size exceeds the specified `Content-Length`, it sets the
+ *   HTTP status to `400 Bad Request` and throws an exception.
+ * - If the `Transfer-Encoding` header is present, it checks for the presence
+ *   of the termination sequence (`0\r\n\r\n`) to determine completeness.
+ *
+ * @param bodyString The actual body of the HTTP request received so far.
+ * @param request The HTTP request object containing headers and status.
+ *
+ * @return true If the body is complete.
+ * @return false If the body is not yet complete.
+ *
+ * @throws std::runtime_error If the body size exceeds the specified `Content-Length`.
+ */
+bool RequestParser::checkForCompleteBody(const std::string& bodyString, HTTPRequest& request)
+{
+	std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
+	std::map<std::string, std::string>::const_iterator transferEncodingIterator
+		= request.headers.find("Transfer-Encoding");
+
+	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
+		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
+		if (contentLength < bodyString.size()) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_CONTENT_LENGTH);
+		}
+		if (contentLength == bodyString.size())
+			return true;
+	}
+	return transferEncodingIterator != request.headers.end() && bodyString.find("0\r\n\r\n") != std::string::npos;
+}
+
+/**
+ * @brief Checks if the HTTP request method allows a body.
+ *
+ * This function determines whether the specified HTTP request method can have
+ * a body. The methods POST and DELETE allow bodies, while method GET does not.
+ *
+ * @param request The HTTP request object containing the method to check.
+ *
+ * @return true If the method allows a body (e.g., POST, DELETE).
+ * @return false If the method does not allow a body (e.g., GET).
+ *
+ * @note The function asserts that the method in the request is within the
+ *       expected range (from MethodGet to MethodCount).
+ */
+bool RequestParser::checkMethodCanHaveBody(HTTPRequest& request)
+{
+	assert(request.method >= MethodGet && request.method <= MethodCount);
+
+	switch (request.method) {
+	case MethodGet:
+	case MethodCount:
+		return false;
+	case MethodPost:
+	case MethodDelete:
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Gets the current parsing status of the RequestParser.
+ *
+ * This function returns the current status of the request parsing process.
+ * The status indicates whether the parsing is still in progress or has completed successfully,
+ *
+ * @return RequestParser::ParsingStatus The current status of the parser.
+ */
+RequestParser::ParsingStatus RequestParser::getStatus() const { return m_status; }
+
+/**
+ * @brief Sets the parsing status of the RequestParser.
+ *
+ * This function updates the current parsing status of the RequestParser.
+ * The status can indicate whether the parsing is ongoing or completed successfully,
+ *
+ * @param status The new parsing status to set.
+ */
+void RequestParser::setStatus(ParsingStatus status) { m_status = status; }
