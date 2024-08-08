@@ -202,7 +202,7 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
  * This is done to handle errors and hangups that may occur during the processing of the connection.
  * The Server could then try to recv(), which will return 0 in case of EPOLLHUP or -1 in case of EPOLLERR,
  * resulting in a connection close.
- * See also https://stackoverflow.com/a/29206631
+ * @sa https://stackoverflow.com/a/29206631
  *
  * Checks if the event file descriptor is in the virtual servers map. If it is, it calls acceptConnections().
  * If it is not, it calls handleConnections() with the connection from the connections map.
