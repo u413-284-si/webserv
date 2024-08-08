@@ -3,7 +3,11 @@
 /**
  * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
  */
-ConfigFileParser::ConfigFileParser(void) { }
+ConfigFileParser::ConfigFileParser(void)
+	: m_configFile()
+	, m_locationIndex(0)
+{
+}
 
 /**
  * @brief PRIVATE Construct a new ConfigFileParser:: ConfigFileParser object with copy.
@@ -11,10 +15,7 @@ ConfigFileParser::ConfigFileParser(void) { }
  * The copy constructor is private to prevent direct object creation.
  * @param ref The ConfigFileParser object to copy
  */
-ConfigFileParser::ConfigFileParser(const ConfigFileParser& ref)
-{
-    static_cast<void>(ref);
-}
+ConfigFileParser::ConfigFileParser(const ConfigFileParser& ref) { static_cast<void>(ref); }
 
 /**
  * @brief PRIVATE Overload of the assignment operator.
@@ -25,8 +26,8 @@ ConfigFileParser::ConfigFileParser(const ConfigFileParser& ref)
  */
 ConfigFileParser& ConfigFileParser::operator=(const ConfigFileParser& ref)
 {
-    static_cast<void>(ref);
-    return *this;
+	static_cast<void>(ref);
+	return *this;
 }
 
 /**
@@ -44,31 +45,31 @@ ConfigFileParser& ConfigFileParser::operator=(const ConfigFileParser& ref)
  */
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
-    m_configFile.stream.open(configFilePath.c_str());
-    if (!m_configFile.stream.is_open())
-        throw std::runtime_error("Failed to open config file");
-    if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
-        throw std::runtime_error("Config file is empty");
+	m_configFile.stream.open(configFilePath.c_str());
+	if (!m_configFile.stream.is_open())
+		throw std::runtime_error("Failed to open config file");
+	if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
+		throw std::runtime_error("Config file is empty");
 
-    if (isBracketOpen(configFilePath))
-        throw std::runtime_error("Open bracket(s) in config file");
+	if (isBracketOpen(configFilePath))
+		throw std::runtime_error("Open bracket(s) in config file");
 
-    readAndTrimLine();
-    if (m_configFile.currentLine != "http {")
-        throw std::runtime_error("Config file does not start with 'http {'");
+	readAndTrimLine();
+	if (m_configFile.currentLine != "http {")
+		throw std::runtime_error("Config file does not start with 'http {'");
 
-    m_configFile.serverIndex = 0;
-    for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine()) {
-        if (m_configFile.currentLine == "server {") {
-            for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
-                readServerConfigLine();
-            m_configFile.serverIndex++;
-        }
-    }
-    if (m_configFile.servers.empty())
-        throw std::runtime_error("No server(s) in config file");
+	m_configFile.serverIndex = 0;
+	for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine()) {
+		if (m_configFile.currentLine == "server {") {
+			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+				readServerConfigLine();
+			m_configFile.serverIndex++;
+		}
+	}
+	if (m_configFile.servers.empty())
+		throw std::runtime_error("No server(s) in config file");
 
-    return m_configFile;
+	return m_configFile;
 }
 
 /**
@@ -78,20 +79,20 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
  */
 void ConfigFileParser::initializeConfigServer(ConfigServer& configServer)
 {
-    const char* validServerDirectiveNames[] = { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
-    const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
+	const char* validServerDirectiveNames[]
+		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
+	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
-    configServer.validServerDirectives = std::vector<std::string>(validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize);
-    configServer.serverName = "";
-    configServer.root = "html";
-    configServer.listen.insert(std::make_pair("127.0.0.1", 80));
-    configServer.locationIndex = 0;
-    configServer.maxBodySize = 1;
-    configServer.errorPage = std::map<unsigned short, std::string>();
-    configServer.locationIndex = 0;
-    configServer.locations = std::vector<Location>();
+	configServer.validServerDirectives = std::vector<std::string>(
+		validServerDirectiveNames, validServerDirectiveNames + validServerDirectiveNamesSize);
+	configServer.serverName = "";
+	configServer.root = "html";
+	configServer.listen.insert(std::make_pair("127.0.0.1", 80));
+	configServer.maxBodySize = 1;
+	configServer.errorPage = std::map<unsigned short, std::string>();
+	configServer.locations = std::vector<Location>();
 
-    m_configFile.servers.push_back(configServer);
+	m_configFile.servers.push_back(configServer);
 }
 
 /**
@@ -101,18 +102,21 @@ void ConfigFileParser::initializeConfigServer(ConfigServer& configServer)
  */
 void ConfigFileParser::initializeLocation(Location& location)
 {
-    const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
-    const int validLocationDirectiveNamesSize = sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
+	const char* validLocationDirectiveNames[]
+		= { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
+	const int validLocationDirectiveNamesSize
+		= sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
 
-    location.path = "";
-    location.root = "html";
-    location.indices = std::vector<std::string>();
-    location.cgiExt = "";
-    location.cgiPath = "";
-    location.isAutoindex = false;
-    location.returns = std::map<unsigned short, std::string>();
-    location.validLocationDirectives = std::vector<std::string>(validLocationDirectiveNames, validLocationDirectiveNames + validLocationDirectiveNamesSize);
-    m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
+	location.path = "";
+	location.root = "html";
+	location.indices = std::vector<std::string>();
+	location.cgiExt = "";
+	location.cgiPath = "";
+	location.isAutoindex = false;
+	location.returns = std::map<unsigned short, std::string>();
+	location.validLocationDirectives = std::vector<std::string>(
+		validLocationDirectiveNames, validLocationDirectiveNames + validLocationDirectiveNamesSize);
+	m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
 
 /**
@@ -129,23 +133,23 @@ void ConfigFileParser::initializeLocation(Location& location)
  */
 bool ConfigFileParser::isBracketOpen(const std::string& configFilePath) const
 {
-    std::ifstream tmpStream;
-    std::string tmpLine;
-    std::stack<char> brackets;
+	std::ifstream tmpStream;
+	std::string tmpLine;
+	std::stack<char> brackets;
 
-    tmpStream.open(configFilePath.c_str());
+	tmpStream.open(configFilePath.c_str());
 
-    while (getline(tmpStream, tmpLine)) {
-        for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it) {
-            if (*it == '{')
-                brackets.push('{');
-            else if (*it == '}' && brackets.empty())
-                return true;
-            else if (*it == '}')
-                brackets.pop();
-        }
-    }
-    return !brackets.empty();
+	while (getline(tmpStream, tmpLine)) {
+		for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it) {
+			if (*it == '{')
+				brackets.push('{');
+			else if (*it == '}' && brackets.empty())
+				return true;
+			else if (*it == '}')
+				brackets.pop();
+		}
+	}
+	return !brackets.empty();
 }
 
 /**
@@ -157,7 +161,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath) const
  */
 bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
 {
-    return line.find(';') == std::string::npos && getDirective(line) != "location";
+	return line.find(';') == std::string::npos && getDirective(line) != "location";
 }
 
 /**
@@ -165,8 +169,8 @@ bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
  */
 void ConfigFileParser::readAndTrimLine(void)
 {
-    getline(m_configFile.stream, m_configFile.currentLine);
-    removeLeadingAndTrailingSpaces(m_configFile.currentLine);
+	getline(m_configFile.stream, m_configFile.currentLine);
+	removeLeadingAndTrailingSpaces(m_configFile.currentLine);
 }
 
 /**
@@ -175,8 +179,8 @@ void ConfigFileParser::readAndTrimLine(void)
  */
 void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string& line) const
 {
-    line.erase(0, line.find_first_not_of(' '));
-    line.erase(line.find_last_not_of(' ') + 1);
+	line.erase(0, line.find_first_not_of(' '));
+	line.erase(line.find_last_not_of(' ') + 1);
 }
 
 /**
@@ -190,23 +194,27 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string& line) const
 
 bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block) const
 {
-    if (block == SERVER) {
-        std::vector<std::string> validServerDirectives = m_configFile.servers[m_configFile.serverIndex].validServerDirectives;
-        if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive) == validServerDirectives.end())
-            return false;
-    } else if (block == LOCATION) {
-        std::vector<std::string> validLocationDirectives = m_configFile.servers[m_configFile.serverIndex].locations[m_configFile.servers[m_configFile.serverIndex].locationIndex].validLocationDirectives;
-        if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive) == validLocationDirectives.end())
-            return false;
-    }
-    return true;
+	if (block == SERVER) {
+		std::vector<std::string> validServerDirectives
+			= m_configFile.servers[m_configFile.serverIndex].validServerDirectives;
+		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive)
+			== validServerDirectives.end())
+			return false;
+	} else if (block == LOCATION) {
+		std::vector<std::string> validLocationDirectives
+			= m_configFile.servers[m_configFile.serverIndex].locations[m_locationIndex].validLocationDirectives;
+		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive)
+			== validLocationDirectives.end())
+			return false;
+	}
+	return true;
 }
 
 /**
  * @brief Checks if the provided ip address of the listen directive is valid and reads it if that is the case
  *
- * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if a colon is present.
- * If no colon is present, the port or the ip address must be valid.
+ * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if
+ * a colon is present. If no colon is present, the port or the ip address must be valid.
  *
  * The function makes sure that the ip address is valid in the following ways:
  * 1. The ip address must not contain any character other than '0'-'9' or '.'
@@ -219,38 +227,38 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
  */
 bool ConfigFileParser::isIpAddressValid(const std::string& ip) const
 {
-    if (ip.find_first_not_of("0123456789.") != std::string::npos)
-        return false;
+	if (ip.find_first_not_of("0123456789.") != std::string::npos)
+		return false;
 
-    size_t firstDotIndex = ip.find('.');
-    if (firstDotIndex == std::string::npos)
-        return false;
-    size_t secondDotIndex = ip.find('.', firstDotIndex + 1);
-    if (secondDotIndex == std::string::npos)
-        return false;
-    size_t thirdDotIndex = ip.find('.', secondDotIndex + 1);
-    if (thirdDotIndex == std::string::npos)
-        return false;
+	size_t firstDotIndex = ip.find('.');
+	if (firstDotIndex == std::string::npos)
+		return false;
+	size_t secondDotIndex = ip.find('.', firstDotIndex + 1);
+	if (secondDotIndex == std::string::npos)
+		return false;
+	size_t thirdDotIndex = ip.find('.', secondDotIndex + 1);
+	if (thirdDotIndex == std::string::npos)
+		return false;
 
-    std::string firstOctetStr = ip.substr(0, firstDotIndex);
-    std::string secondOctetStr = ip.substr(firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
-    std::string thirdOctetStr = ip.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
-    std::string fourthOctetStr = ip.substr(thirdDotIndex + 1, ip.length() - thirdDotIndex - 1);
+	std::string firstOctetStr = ip.substr(0, firstDotIndex);
+	std::string secondOctetStr = ip.substr(firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
+	std::string thirdOctetStr = ip.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
+	std::string fourthOctetStr = ip.substr(thirdDotIndex + 1, ip.length() - thirdDotIndex - 1);
 
-    const int base = 10;
-    long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
-    long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
-    long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
-    long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
+	const int base = 10;
+	long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
+	long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
+	long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
+	long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
 
-    const short maxIpValue = 255;
-    const short minIpValue = 0;
-    if (firstOctet > maxIpValue || secondOctet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
-        return false;
-    if (firstOctet < minIpValue || secondOctet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
-        return false;
+	const short maxIpValue = 255;
+	const short minIpValue = 0;
+	if (firstOctet > maxIpValue || secondOctet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
+		return false;
+	if (firstOctet < minIpValue || secondOctet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
+		return false;
 
-    return true;
+	return true;
 }
 
 /**
@@ -263,24 +271,24 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ip) const
  */
 void ConfigFileParser::readIpAddress(const std::string& value)
 {
-    size_t colonIndex = value.find(':');
-    std::string ip;
+	size_t colonIndex = value.find(':');
+	std::string ip;
 
-    if (colonIndex == std::string::npos) {
-        size_t semicolonIndex = value.find(';');
-        std::string num = value.substr(0, semicolonIndex);
-        if (isPortValid(num))
-            return;
-        if (value.find('.') == std::string::npos)
-            throw std::runtime_error("Invalid port");
-        ip = num;
-    } else
-        ip = value.substr(0, colonIndex);
+	if (colonIndex == std::string::npos) {
+		size_t semicolonIndex = value.find(';');
+		std::string num = value.substr(0, semicolonIndex);
+		if (isPortValid(num))
+			return;
+		if (value.find('.') == std::string::npos)
+			throw std::runtime_error("Invalid port");
+		ip = num;
+	} else
+		ip = value.substr(0, colonIndex);
 
-    if (!isIpAddressValid(ip))
-        throw std::runtime_error("Invalid ip address");
+	if (!isIpAddressValid(ip))
+		throw std::runtime_error("Invalid ip address");
 
-    m_configFile.servers[m_configFile.serverIndex].listen.insert(std::make_pair(ip, 0));
+	m_configFile.servers[m_configFile.serverIndex].listen.insert(std::make_pair(ip, 0));
 }
 
 /**
@@ -296,15 +304,15 @@ void ConfigFileParser::readIpAddress(const std::string& value)
  */
 bool ConfigFileParser::isPortValid(const std::string& port) const
 {
-    if (port.find_first_not_of("0123456789") != std::string::npos)
-        return false;
+	if (port.find_first_not_of("0123456789") != std::string::npos)
+		return false;
 
-    const int base = 10;
-    const int maxPort = 65535;
-    const int minPort = 1;
+	const int base = 10;
+	const int maxPort = 65535;
+	const int minPort = 1;
 
-    int long portNum = std::strtol(port.c_str(), NULL, base);
-    return !(portNum <= minPort || portNum > maxPort);
+	int long portNum = std::strtol(port.c_str(), NULL, base);
+	return !(portNum <= minPort || portNum > maxPort);
 }
 
 /**
@@ -317,26 +325,28 @@ bool ConfigFileParser::isPortValid(const std::string& port) const
  */
 void ConfigFileParser::readPort(const std::string& value)
 {
-    size_t colonIndex = value.find(':');
-    size_t semicolonIndex = value.find(';');
-    std::string port;
+	size_t colonIndex = value.find(':');
+	size_t semicolonIndex = value.find(';');
+	std::string port;
 
-    if (colonIndex == std::string::npos) {
-        std::string num = value.substr(0, semicolonIndex);
-        if (isIpAddressValid(num))
-            return;
-        if (value.find('.') != std::string::npos)
-            throw std::runtime_error("Invalid ip address");
-        port = num;
-    } else
-        port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
+	if (colonIndex == std::string::npos) {
+		std::string num = value.substr(0, semicolonIndex);
+		if (isIpAddressValid(num))
+			return;
+		if (value.find('.') != std::string::npos)
+			throw std::runtime_error("Invalid ip address");
+		port = num;
+	} else
+		port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
 
-    if (!isPortValid(port))
-        throw std::runtime_error("Invalid port");
+	if (!isPortValid(port))
+		throw std::runtime_error("Invalid port");
 
-    for (std::map<std::string, unsigned short>::iterator it = m_configFile.servers[m_configFile.serverIndex].listen.begin(); it != m_configFile.servers[m_configFile.serverIndex].listen.end(); it++)
-        if (it->second == 0)
-            it->second = std::atoi(port.c_str());
+	for (std::map<std::string, unsigned short>::iterator it
+		 = m_configFile.servers[m_configFile.serverIndex].listen.begin();
+		 it != m_configFile.servers[m_configFile.serverIndex].listen.end(); it++)
+		if (it->second == 0)
+			it->second = std::atoi(port.c_str());
 }
 
 /**
@@ -355,18 +365,18 @@ void ConfigFileParser::readPort(const std::string& value)
  */
 void ConfigFileParser::readRootPath(int block, const std::string& value)
 {
-    std::string rootPath = value;
+	std::string rootPath = value;
 
-    if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
-        throw std::runtime_error("More than one root path");
+	if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
+		throw std::runtime_error("More than one root path");
 
-    if (rootPath[rootPath.length() - 1] == '/')
-        rootPath = rootPath.substr(0, rootPath.length() - 1);
+	if (rootPath[rootPath.length() - 1] == '/')
+		rootPath = rootPath.substr(0, rootPath.length() - 1);
 
-    if (block == SERVER)
-        m_configFile.servers[m_configFile.serverIndex].root = rootPath;
-    else if (block == LOCATION)
-        m_configFile.servers[m_configFile.serverIndex].locations[m_configFile.servers[m_configFile.serverIndex].locationIndex].root = rootPath;
+	if (block == SERVER)
+		m_configFile.servers[m_configFile.serverIndex].root = rootPath;
+	else if (block == LOCATION)
+		m_configFile.servers[m_configFile.serverIndex].locations[m_locationIndex].root = rootPath;
 }
 
 /**
@@ -380,11 +390,11 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
  */
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
-    if (directive == "listen") {
-        readIpAddress(value);
-        readPort(value);
-    } else if (directive == "root")
-        readRootPath(SERVER, value);
+	if (directive == "listen") {
+		readIpAddress(value);
+		readPort(value);
+	} else if (directive == "root")
+		readRootPath(SERVER, value);
 }
 
 /**
@@ -395,12 +405,12 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 std::string ConfigFileParser::getDirective(const std::string& line) const
 {
-    size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
-    std::string directive = line.substr(0, firstWhiteSpaceIndex);
+	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
+	std::string directive = line.substr(0, firstWhiteSpaceIndex);
 
-    removeLeadingAndTrailingSpaces(directive);
+	removeLeadingAndTrailingSpaces(directive);
 
-    return directive;
+	return directive;
 }
 
 /**
@@ -411,17 +421,17 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
  */
 std::string ConfigFileParser::getValue(const std::string& line) const
 {
-    if (getDirective(line) == "location")
-        return line;
+	if (getDirective(line) == "location")
+		return line;
 
-    size_t semicolonIndex = line.find(';');
+	size_t semicolonIndex = line.find(';');
 
-    size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
-    std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
+	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
+	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
-    removeLeadingAndTrailingSpaces(value);
+	removeLeadingAndTrailingSpaces(value);
 
-    return value;
+	return value;
 }
 
 /**
@@ -437,13 +447,13 @@ std::string ConfigFileParser::getValue(const std::string& line) const
  */
 void ConfigFileParser::processRemainingLine(std::string& line) const
 {
-    size_t semicolonIndex = line.find(';');
+	size_t semicolonIndex = line.find(';');
 
-    if (line.size() > semicolonIndex + 1) {
-        line = line.substr(semicolonIndex + 1);
-        removeLeadingAndTrailingSpaces(line);
-    } else
-        line.clear();
+	if (line.size() > semicolonIndex + 1) {
+		line = line.substr(semicolonIndex + 1);
+		removeLeadingAndTrailingSpaces(line);
+	} else
+		line.clear();
 }
 
 /**
@@ -459,36 +469,36 @@ void ConfigFileParser::processRemainingLine(std::string& line) const
  */
 void ConfigFileParser::readServerConfigLine(void)
 {
-    ConfigServer server;
-    std::string directive;
-    std::string value;
-    std::string line = m_configFile.currentLine;
+	ConfigServer server;
+	std::string directive;
+	std::string value;
+	std::string line = m_configFile.currentLine;
 
-    initializeConfigServer(server);
+	initializeConfigServer(server);
 
-    while (!line.empty()) {
-        if (isSemicolonMissing(line))
-            throw std::runtime_error("Semicolon missing");
+	while (!line.empty()) {
+		if (isSemicolonMissing(line))
+			throw std::runtime_error("Semicolon missing");
 
-        directive = getDirective(line);
-        value = getValue(line);
+		directive = getDirective(line);
+		value = getValue(line);
 
-        if ((value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos) && directive != "location")
-            throw std::runtime_error("'" + directive + "'" + " directive has no value");
+		if ((value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos) && directive != "location")
+			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-        if (!isDirectiveValid(directive, SERVER))
-            throw std::runtime_error("Invalid server directive");
-        if (directive == "location") {
-            for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
-                readLocationConfigLine();
-            m_configFile.servers[m_configFile.serverIndex].locationIndex++;
-            break;
-        }
+		if (!isDirectiveValid(directive, SERVER))
+			throw std::runtime_error("Invalid server directive");
+		if (directive == "location") {
+			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+				readLocationConfigLine();
+			m_locationIndex++;
+			break;
+		}
 
-        readServerDirectiveValue(directive, value);
+		readServerDirectiveValue(directive, value);
 
-        processRemainingLine(line);
-    }
+		processRemainingLine(line);
+	}
 }
 
 /**
@@ -505,30 +515,30 @@ void ConfigFileParser::readServerConfigLine(void)
 */
 void ConfigFileParser::readLocationConfigLine(void)
 {
-    Location location;
-    std::string directive;
-    std::string value;
-    std::string line = m_configFile.currentLine;
+	Location location;
+	std::string directive;
+	std::string value;
+	std::string line = m_configFile.currentLine;
 
-    initializeLocation(location);
+	initializeLocation(location);
 
-    while (!line.empty()) {
-        if (isSemicolonMissing(line))
-            throw std::runtime_error("Semicolon missing");
+	while (!line.empty()) {
+		if (isSemicolonMissing(line))
+			throw std::runtime_error("Semicolon missing");
 
-        directive = getDirective(line);
-        value = getValue(line);
+		directive = getDirective(line);
+		value = getValue(line);
 
-        if (value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos)
-            throw std::runtime_error("'" + directive + "'" + " directive has no value");
+		if (value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos)
+			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-        if (!isDirectiveValid(directive, LOCATION))
-            throw std::runtime_error("Invalid location directive");
+		if (!isDirectiveValid(directive, LOCATION))
+			throw std::runtime_error("Invalid location directive");
 
-        // TODO: readLocationDirectiveValue(directive, value);
+		// TODO: readLocationDirectiveValue(directive, value);
 
-        processRemainingLine(line);
-    }
+		processRemainingLine(line);
+	}
 
-    m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
+	m_configFile.servers[m_configFile.serverIndex].locations.push_back(location);
 }
