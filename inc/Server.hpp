@@ -3,9 +3,12 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "Connection.hpp"
+#include "FileSystemPolicy.hpp"
 #include "Log.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
+#include "Socket.hpp"
 #include "StatusCode.hpp"
 
 #include <algorithm>
@@ -15,38 +18,78 @@
 #include <cstring>
 #include <iostream>
 #include <map>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <stdexcept>
+#include <string>
 #include <sys/epoll.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
-/* ====== DEFINITIONS ====== */
-
-#define MAX_EVENTS 10
-#define PORT 8080
-#define BUFFER_SIZE 1024
-#define CONNECTION_QUEUE 10
+#include <utility>
 
 /* ====== CLASS DECLARATION ====== */
 
+/**
+ * @brief Main class of the HTTP server.
+ *
+ * This class is responsible for the main loop of the server. It handles the epoll instance and the
+ * listening sockets of the virtual servers. It also handles the connections and the timeout of the
+ * connections.
+ * @todo Remove s_backlog and m_backlog and use value from the config file.
+ */
 class Server {
 private:
-	int m_serverSock;
-	int m_epfd;
-	std::map<int, std::string> m_requestStrings;
-	FileSystemPolicy m_fileSystemPolicy;
-
-	void acceptConnection() const;
-	void handleConnections(int clientSock, RequestParser& parser);
-	bool checkForCompleteRequest(int clientSock);
-
-	Server(const Server& ref);
-	Server& operator=(const Server& ref);
+	static const int s_epollTimeout = 1000; /**< Default timeout for epoll instance in miliseconds */
+	static const int s_epollMaxEvents = 10; /**< Default maximum number of events for epoll instance */
+	static const int s_backlog = 10; /**< Default backlog for listening sockets */
+	static const time_t s_clientTimeout = 60; /**< Default timeout for a Connection in seconds */
+	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
 
 public:
-	Server();
+	explicit Server(
+		const ConfigFile& configFile, int epollTimeout = s_epollTimeout, size_t maxEvents = s_epollMaxEvents);
 	~Server();
 
 	void run();
+
+private:
+	const ConfigFile& m_configFile; /**< Global config file */
+	int m_epfd; /**< FD of epoll instance */
+	int m_epollTimeout; /**< Timeout for epoll instance in milliseconds*/
+	std::vector<struct epoll_event> m_epollEvents; /**< Holds epoll events */
+	int m_backlog; /**< Backlog for listening sockets */
+	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
+	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
+	std::map<int, Connection> m_connections; /**< Current active Connections */
+	std::map<int, std::string> m_connectionBuffers; /**< Buffers for active Connections */
+	RequestParser m_requestParser; /**< Handles parsing of request */
+	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
+	ResponseBuilder m_responseBuilder; /**< Handles building of response */
+
+	bool initVirtualServers();
+	bool addVirtualServer(const std::string& host, int backlog, const std::string& port);
+
+	void handleEvent(struct epoll_event);
+
+	void acceptConnections(const Socket& serverSock, uint32_t eventMask);
+	void handleConnections(const Connection& connection);
+	void handleTimeout();
+
+	bool checkForCompleteRequest(int clientSock);
+	bool registerVirtualServer(const Socket& serverSock);
+	bool registerConnection(const Socket& serverSock, const Socket& clientSock);
+
+	Server(const Server& ref);
+	Server& operator=(const Server& ref);
 };
+
+int createListeningSocket(const struct addrinfo& addrinfo, int backlog);
+Socket retrieveSocketInfo(int sockFd, struct sockaddr& sockaddr, socklen_t socklen);
+
+int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout);
+bool addEvent(int epfd, int newfd, epoll_event& event);
+void removeEvent(int epfd, int delfd);
+bool modifyEvent(int epfd, int modfd, epoll_event& event);
+
+bool checkDuplicateServer(
+	const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);

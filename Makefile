@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
+#    By: gwolf <gwolf@student.42vienna.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/07/16 02:19:24 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/22 15:30:44 by gwolf            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ TEST := unittest
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		Connection.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
@@ -103,6 +104,7 @@ TEST_SRC :=	test_AutoindexHandler.cpp \
 			testHeader.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
+			test_Server.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
