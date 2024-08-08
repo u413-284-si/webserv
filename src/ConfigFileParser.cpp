@@ -194,12 +194,12 @@ void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string& line) const
 
 bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block) const
 {
-	if (block == SERVER) {
+	if (block == ServerBlock) {
 		std::vector<std::string> validServerDirectives = m_configFile.servers[m_serverIndex].validServerDirectives;
 		if (std::find(validServerDirectives.begin(), validServerDirectives.end(), directive)
 			== validServerDirectives.end())
 			return false;
-	} else if (block == LOCATION) {
+	} else if (block == LocationBlock) {
 		std::vector<std::string> validLocationDirectives
 			= m_configFile.servers[m_serverIndex].locations[m_locationIndex].validLocationDirectives;
 		if (std::find(validLocationDirectives.begin(), validLocationDirectives.end(), directive)
@@ -371,9 +371,9 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath = rootPath.substr(0, rootPath.length() - 1);
 
-	if (block == SERVER)
+	if (block == ServerBlock)
 		m_configFile.servers[m_serverIndex].root = rootPath;
-	else if (block == LOCATION)
+	else if (block == LocationBlock)
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].root = rootPath;
 }
 
@@ -392,7 +392,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 		readIpAddress(value);
 		readPort(value);
 	} else if (directive == "root")
-		readRootPath(SERVER, value);
+		readRootPath(ServerBlock, value);
 }
 
 /**
@@ -484,7 +484,7 @@ void ConfigFileParser::readServerConfigLine(void)
 		if ((value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos) && directive != "location")
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-		if (!isDirectiveValid(directive, SERVER))
+		if (!isDirectiveValid(directive, ServerBlock))
 			throw std::runtime_error("Invalid server directive");
 		if (directive == "location") {
 			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
@@ -530,7 +530,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 		if (value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-		if (!isDirectiveValid(directive, LOCATION))
+		if (!isDirectiveValid(directive, LocationBlock))
 			throw std::runtime_error("Invalid location directive");
 
 		// TODO: readLocationDirectiveValue(directive, value);

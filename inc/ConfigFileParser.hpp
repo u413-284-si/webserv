@@ -12,8 +12,7 @@
 
 /* ====== DEFINITIONS ====== */
 
-#define SERVER 1
-#define LOCATION 2
+enum Block { ServerBlock, LocationBlock };
 
 /* ====== CLASS DECLARATION ====== */
 
