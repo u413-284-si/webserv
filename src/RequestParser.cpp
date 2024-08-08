@@ -1,6 +1,8 @@
 #include "RequestParser.hpp"
+#include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
+#include "error.hpp"
 #include <cstddef>
 
 /* ====== HELPER FUNCTIONS ====== */
@@ -286,8 +288,13 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 		m_requestStream.str(requestString);
 		parseRequestLine(request);
 		parseHeaders(request);
-		if (m_hasBody)
+		if (m_hasBody) {
+            if (!checkMethodCanHaveBody(request)) {
+	        	request.httpStatus = StatusBadRequest;
+                throw std::runtime_error(ERR_UNEXPECTED_BODY);
+            }       
 			setStatus(ParseBody);
+        }
 		else
 			setStatus(ParsingComplete);
 	}
@@ -780,6 +787,20 @@ bool RequestParser::checkForCompleteBody(const std::string& bodyString, HTTPRequ
 			return true;
 	}
 	return transferEncodingIterator != request.headers.end() && bodyString.find("0\r\n\r\n") != std::string::npos;
+}
+
+bool RequestParser::checkMethodCanHaveBody(HTTPRequest& request)
+{
+    assert(request.method >= MethodGet && request.method <= MethodCount);
+
+    switch (request.method) {
+	case MethodGet:
+    case MethodCount:
+		return false;
+	case MethodPost:
+    case MethodDelete:
+        return true;
+    }
 }
 
 RequestParser::ParsingStatus RequestParser::getStatus() const { return m_status; }

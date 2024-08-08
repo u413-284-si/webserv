@@ -6,6 +6,7 @@
 #include "StatusCode.hpp"
 #include "error.hpp"
 #include "utilities.hpp"
+#include <cassert>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -56,6 +57,7 @@ private:
 	void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
 	void checkTransferEncoding(HTTPRequest& request);
 	static bool checkForCompleteBody(const std::string& bodyString, HTTPRequest& request);
+	static bool checkMethodCanHaveBody(HTTPRequest& request);
 
 	void setStatus(ParsingStatus status);
 
