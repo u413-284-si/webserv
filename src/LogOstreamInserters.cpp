@@ -1,7 +1,9 @@
 #include "ConfigFile.hpp"
-#include "StatusCode.hpp"
 #include "HTTPRequest.hpp"
 #include "HTTPResponse.hpp"
+#include "StatusCode.hpp"
+
+#include <cassert>
 
 /**
  * @brief Overload << operator to append a Location.
@@ -21,7 +23,8 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "LimitExcept:\n";
 	ostream << "  Allowed methods:\n";
 	for (int i = 0; i < MethodCount; ++i) {
-		// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as MethodCount.
+		// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as
+		// MethodCount.
 		if (location.limitExcept.allowedMethods[i])
 			ostream << "    " << static_cast<Method>(i) << '\n';
 	}
@@ -79,6 +82,8 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
  * @brief Overload << operator to a Method.
  *
  * Translates the Method enum to a string.
+ * Since Method is an enum it should only contain valid values. On the off chance of memory bugs, it's asserted that the
+ * value is in range of the enum.
  * If the Method is MethodCount, it will output "enum MethodCount".
  * @param ostream The output stream.
  * @param method The Method enum.
@@ -86,6 +91,8 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
  */
 std::ostream& operator<<(std::ostream& ostream, Method method)
 {
+	assert(method >= MethodGet && method <= MethodCount);
+
 	switch (method) {
 	case MethodGet:
 		ostream << "GET";
@@ -106,12 +113,18 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
 /**
  * @brief Overload << operator to append a statusCode.
  *
+ * Translates the Method enum to a string.
+ * Since Method is an enum it should only contain valid values. On the off chance of memory bugs, it's asserted that the
+ * value is in range of the enum.
+ *
  * @param ostream The output stream.
  * @param statusCode The statusCode enum.
  * @return std::ostream& The output stream.
  */
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 {
+	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+
 	switch (statusCode) {
 	case StatusOK:
 		ostream << "200 OK";
