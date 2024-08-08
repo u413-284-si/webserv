@@ -37,60 +37,64 @@ TEST(RequestParser_NonValidBody, DifferingChunkSize) {
 	RequestParser	p;
     HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request), std::runtime_error);
-    p.clearRequest(request);
-    p.clearParser();
-    try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
-    }
-    catch(const std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
-    }
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
 }
 
 TEST(RequestParser_NonValidBody, DifferingContentLength) {
 	RequestParser	p;
     HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n", request), std::runtime_error);
-    p.clearRequest(request);
-    p.clearParser();
-    try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n", request);
-    }
-    catch(const std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
-    }
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Indicated content length different than actual body size", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
 }
 
 TEST(RequestParser_NonValidBody, MissingCRLFInChunk) {
 	RequestParser	p;
     HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request), std::runtime_error);
-    p.clearRequest(request);
-    p.clearParser();
-    try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
-    }
-    catch(const std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
-    }
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
 }
 
 TEST(RequestParser_NonValidBody, MissingCRInChunk) {
 	RequestParser	p;
     HTTPRequest request;
 
-	EXPECT_THROW(p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request), std::runtime_error);
-    p.clearRequest(request);
-    p.clearParser();
-    try{
-        p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
-    }
-    catch(const std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
-    }
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
 }
 
 // PREVIOUS TEST CODE
