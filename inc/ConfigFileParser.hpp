@@ -50,7 +50,7 @@ private:
 	bool isBracketOpen(const std::string& configFilePath) const;
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, int block) const;
-	bool isIpAddressValid(const std::string& ip) const;
+	bool isIpAddressValid(const std::string& ipAddress) const;
 	bool isPortValid(const std::string& port) const;
 
 	// Helper functions

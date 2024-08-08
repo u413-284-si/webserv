@@ -224,25 +224,25 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
  * @return true If the ip address is valid
  * @return false If the ip address is not valid
  */
-bool ConfigFileParser::isIpAddressValid(const std::string& ip) const
+bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress) const
 {
-	if (ip.find_first_not_of("0123456789.") != std::string::npos)
+	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
 
-	size_t firstDotIndex = ip.find('.');
+	size_t firstDotIndex = ipAddress.find('.');
 	if (firstDotIndex == std::string::npos)
 		return false;
-	size_t secondDotIndex = ip.find('.', firstDotIndex + 1);
+	size_t secondDotIndex = ipAddress.find('.', firstDotIndex + 1);
 	if (secondDotIndex == std::string::npos)
 		return false;
-	size_t thirdDotIndex = ip.find('.', secondDotIndex + 1);
+	size_t thirdDotIndex = ipAddress.find('.', secondDotIndex + 1);
 	if (thirdDotIndex == std::string::npos)
 		return false;
 
-	std::string firstOctetStr = ip.substr(0, firstDotIndex);
-	std::string secondOctetStr = ip.substr(firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
-	std::string thirdOctetStr = ip.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
-	std::string fourthOctetStr = ip.substr(thirdDotIndex + 1, ip.length() - thirdDotIndex - 1);
+	std::string firstOctetStr = ipAddress.substr(0, firstDotIndex);
+	std::string secondOctetStr = ipAddress.substr(firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
+	std::string thirdOctetStr = ipAddress.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
+	std::string fourthOctetStr = ipAddress.substr(thirdDotIndex + 1, ipAddress.length() - thirdDotIndex - 1);
 
 	const int base = 10;
 	long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
