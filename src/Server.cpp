@@ -231,11 +231,12 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 		close(clientSock);
 	} else {
 		m_requestStrings[clientSock] += buffer;
-        if (m_requestStrings[clientSock].size() > configFile.serverConfigs.at(0).maxBodySize) {
-            request.httpStatus = StatusRequestTooLarge;
-            // FIXME: ResponseBuilder needs to send the "Request Entity Too Large" error back to client. Do we close then?
-            return;
-        }
+		if (m_requestStrings[clientSock].size() > configFile.serverConfigs.at(0).maxBodySize) {
+			request.httpStatus = StatusRequestTooLarge;
+			// FIXME: ResponseBuilder needs to send the "Request Entity Too Large" error back to client. Do we close
+			// then?
+			return;
+		}
 		try {
 			parser.parseHttpRequest(m_requestStrings[clientSock], request);
 		} catch (std::exception& e) {
