@@ -7,6 +7,7 @@ enum statusCode {
 	StatusForbidden = 403,
 	StatusNotFound = 404,
 	StatusMethodNotAllowed = 405,
+    StatusRequestTooLarge = 413,
 	StatusInternalServerError = 500,
 	StatusMethodNotImplemented = 501,
 	StatusNonSupportedVersion = 505
