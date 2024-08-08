@@ -801,6 +801,7 @@ bool RequestParser::checkMethodCanHaveBody(HTTPRequest& request)
     case MethodDelete:
         return true;
     }
+    return false;
 }
 
 RequestParser::ParsingStatus RequestParser::getStatus() const { return m_status; }
