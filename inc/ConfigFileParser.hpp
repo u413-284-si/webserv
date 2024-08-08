@@ -29,6 +29,7 @@ private:
 
 	ConfigFile m_configFile;
 	size_t m_locationIndex;
+	size_t m_serverIndex;
 
 	// Initializer functions
 	void initializeConfigServer(ConfigServer& configServer);
