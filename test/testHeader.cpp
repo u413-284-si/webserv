@@ -33,7 +33,7 @@ TEST(RequestParser_ValidHeaders, ContentLength)
 	RequestParser p;
 	HTTPRequest request;
 
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
 					   "www.example.com\r\nContent-Length: 23\r\n\r\n01234567890123456789012",
 		request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
@@ -45,7 +45,7 @@ TEST(RequestParser_ValidHeaders, RepeatedEqualContentLength)
 	RequestParser p;
 	HTTPRequest request;
 
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
 					   "www.example.com\r\nContent-Length: 23, 23\r\n\r\n01234567890123456789012",
 		request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");
@@ -57,7 +57,7 @@ TEST(RequestParser_ValidHeaders, TransferEncodingChunked)
 	RequestParser p;
 	HTTPRequest request;
 
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+	p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
 					   "www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n0\r\n\r\n",
 		request);
 	EXPECT_EQ(request.headers["Host"], "www.example.com");

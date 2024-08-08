@@ -7,7 +7,7 @@ TEST(RequestParser_ValidBody, ChunkedBody) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
+	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
 	EXPECT_EQ(request.body, "hello world!");
 }
 
@@ -15,7 +15,7 @@ TEST(RequestParser_ValidBody, NoBodyTrigger) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n", request);
+	p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n", request);
 	EXPECT_EQ(request.body, "");
 }
 
@@ -23,11 +23,11 @@ TEST(RequestParser_ValidBody, NonChunkedBody) {
 	RequestParser	p;
 	HTTPRequest		request;
 
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello \r\nworld!", request);
+	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello \r\nworld!", request);
 	EXPECT_EQ(request.body, "hello \nworld!");
     p.clearRequest(request);
 	p.clearParser();
-	p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n", request);
+	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n", request);
 	EXPECT_EQ(request.body, "hello \nworld!\n");
 }
 
@@ -40,7 +40,7 @@ TEST(RequestParser_NonValidBody, DifferingChunkSize) {
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
 				throw;
@@ -56,7 +56,7 @@ TEST(RequestParser_NonValidBody, DifferingContentLength) {
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n", request);
+				p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Indicated content length different than actual body size", e.what());
 				throw;
@@ -72,7 +72,7 @@ TEST(RequestParser_NonValidBody, MissingCRLFInChunk) {
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
 				throw;
@@ -88,9 +88,25 @@ TEST(RequestParser_NonValidBody, MissingCRInChunk) {
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST(RequestParser_NonValidBody, UnexpectedBody) {
+	RequestParser	p;
+    HTTPRequest request;
+
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Method should not have a body", e.what());
 				throw;
 			}
 		},
