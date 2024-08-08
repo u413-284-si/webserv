@@ -29,6 +29,14 @@
 
 /* ====== CLASS DECLARATION ====== */
 
+/**
+ * @brief Main class of the HTTP server.
+ *
+ * This class is responsible for the main loop of the server. It handles the epoll instance and the
+ * listening sockets of the virtual servers. It also handles the connections and the timeout of the
+ * connections.
+ * @todo Remove s_backlog and m_backlog and use value from the config file.
+ */
 class Server {
 private:
 	static const int s_epollTimeout = 1000; /**< Default timeout for epoll instance in miliseconds */
