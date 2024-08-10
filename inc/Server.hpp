@@ -83,6 +83,7 @@ private:
 	Server& operator=(const Server& ref);
 };
 
+struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port);
 int createListeningSocket(const struct addrinfo& addrinfo, int backlog);
 Socket retrieveSocketInfo(int sockFd, struct sockaddr& sockaddr, socklen_t socklen);
 

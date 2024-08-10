@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include <string>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -130,10 +131,14 @@ bool Server::initVirtualServers()
 /**
  * @brief Add a virtual server.
  *
- * Creates a listening socket for a virtual server using the provided host, port, and backlog.
- * It uses getaddrinfo() to get the address information for the provided host and port.
- * It then creates a listening socket using createListeningSocket() and registers the virtual server
- * using Server::registerVirtualServer().
+ * Creates a listening socket for a virtual server using the provided host, port, and backlog and adds it to the
+ * virtual servers map.
+ * Uses resolveListeningAddresses() to get a list of address information for the provided host and port.
+ * It then tries to create a listening socket for each value in the list using createListeningSocket(). If succesful
+ * calls retrieveSocketInfo() and registers the virtual server using Server::registerVirtualServer(). If any step fails,
+ * it continues to the next value in the list.
+ * After the loop, address list is freed.
+ * If no valid socket was created, it logs an error and returns false.
  *
  * @param host host address for the virtual server.
  * @param backlog maximum length to which the queue of pending connections for the virtual server may grow.
@@ -143,29 +148,9 @@ bool Server::initVirtualServers()
  */
 bool Server::addVirtualServer(const std::string& host, const int backlog, const std::string& port)
 {
-	const char* node = NULL;
-
-	if (!host.empty() || host != "*")
-		node = host.c_str();
-
-	struct addrinfo hints = {
-		AI_PASSIVE, /* .ai_flags - If node is NULL returned address will be suitable to bind(2) a socket which can
-					   accept(2) connections.*/
-		AF_UNSPEC, /*.ai_family - Allow IPv4 or IPv6 */
-		SOCK_STREAM, /* .ai_socktype - TCP uses SOCK_STREAM */
-		0, /* .ai_protocol - Accept any protocoll */
-		sizeof(struct addrinfo), /* .ai_addrlen - not used */
-		NULL, /* .ai_addr - not used */
-		NULL, /* .ai_canonname - not used */
-		NULL /* .ai_next - not used */
-	};
-
-	struct addrinfo* list = NULL;
-	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
-	if (result != 0) {
-		LOG_ERROR << "getaddrinfo(): " << gai_strerror(result);
+	struct addrinfo* list = resolveListeningAddresses(host, port);
+	if (list == NULL)
 		return false;
-	}
 
 	size_t successfulSock = 0;
 	size_t countTryCreateSocket = 1;
@@ -462,6 +447,60 @@ bool Server::registerConnection(const Socket& serverSock, const Socket& clientSo
 }
 
 /* ====== HELPER FUNCTIONS ====== */
+
+/**
+ * @brief Resolves the passed host and port to a list of addresses suitable for listening.
+ *
+ * Uses getaddrinfo() to get a list of address information for the provided host and port. Since a host/port combination
+ * can resolve to multiple addresses, getaddrinfo() returns a linked list of addrinfo structures. If the passed host is
+ * empty or "*", it sets the passed node to NULL, which will return an address suitable for accepting any network
+ * connections.
+ *
+ * An addrinfo hints struct is used to specify the criteria for selecting the address with the following values:
+ * - .ai_flags - AI_PASSIVE: The returned address will be suitable to bind(2) a socket which can accept(2) connections.
+ * With this flag set: If node is NULL, returned address (INADDR_ANY) will be suitable to accept any network
+ * connections. W/o the flag the returned address is a loopback not allowing external connections.
+ * - .ai_family - AF_UNSPEC: Allow IPv4 or IPv6.
+ * - .ai_socktype - SOCK_STREAM: TCP uses SOCK_STREAM.
+ * - .ai_protocol - 0: Accept any protocol.
+ * - .ai_addrlen - sizeof(struct addrinfo): Not used.
+ * - .ai_addr - NULL: Not used.
+ * - .ai_canonname - NULL: Not used.
+ * - .ai_next - NULL: Not used.
+ *
+ * If getaddrinfo() returns an error, it logs the error message and returns NULL.
+ *
+ * @param host The host address to resolve.
+ * @param port The port number to resolve.
+ * @return struct addrinfo* A pointer to the list of addresses if successful, NULL otherwise.
+ */
+struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port)
+{
+	const char* node = NULL;
+
+	if (!host.empty() || host != "*")
+		node = host.c_str();
+
+	struct addrinfo hints = {
+		AI_PASSIVE, /* .ai_flags */
+		AF_UNSPEC, /*.ai_family  */
+		SOCK_STREAM, /* .ai_socktype */
+		0, /* .ai_protocol */
+		sizeof(struct addrinfo), /* .ai_addrlen */
+		NULL, /* .ai_addr */
+		NULL, /* .ai_canonname */
+		NULL /* .ai_next */
+	};
+
+	struct addrinfo* list = NULL;
+	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
+	if (result != 0) {
+		LOG_ERROR << "getaddrinfo(): " << gai_strerror(result);
+		return NULL;
+	}
+
+	return list;
+}
 
 /**
  * @brief Create a listening socket.
