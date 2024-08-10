@@ -25,13 +25,13 @@ private:
 
 public:
 	explicit EpollWrapper(size_t maxEvents = s_epollMaxEvents, int epollTimeout = s_epollTimeout);
-	~EpollWrapper();
+	virtual ~EpollWrapper();
 
-	int waitForEvents();
-	std::vector<struct epoll_event>::const_iterator eventsBegin() const;
-	bool addEvent(int newfd, epoll_event& event) const;
-	void removeEvent(int delfd) const;
-	bool modifyEvent(int modfd, epoll_event& event) const;
+	virtual int waitForEvents();
+	virtual std::vector<struct epoll_event>::const_iterator eventsBegin() const;
+	virtual bool addEvent(int newfd, epoll_event& event) const;
+	virtual void removeEvent(int delfd) const;
+	virtual bool modifyEvent(int modfd, epoll_event& event) const;
 
 private:
 	int m_epfd; /**< FD of epoll instance */
