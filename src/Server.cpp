@@ -211,14 +211,14 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
 
-	Location location = {};
-	location.path = "/";
-	location.root = "/workspaces/webserv";
-	location.indices[0] = "index.html";
+	Location location;
+	location.setPath("/");
+	location.setRoot("/workspaces/webserv");
+	location.getIndices()[0] = "index.html";
 
 	// ServerConfig serverConfig;
 	ConfigServer configServer;
-	configServer.locations.push_back(location);
+	configServer.setLocation(location);
 
 	ConfigFile configFile;
 	configFile.servers.push_back(configServer);
@@ -242,7 +242,7 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 			}
 			ResponseBuilder builder(configFile);
 			builder.buildResponse(request);
-			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0 );
+			send(clientSock, builder.getResponse().c_str(), builder.getResponse().size(), 0);
 		}
 	}
 }
@@ -252,22 +252,22 @@ bool Server::checkForCompleteRequest(int clientSock)
 	const size_t headerEndPos = m_requestStrings[clientSock].find("\r\n\r\n");
 
 	return (headerEndPos != std::string::npos);
-		/*
-		headerEndPos += 4;
-		size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
-		// FIXME: add check against default/config max body size
-		size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
-		size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
+	/*
+	headerEndPos += 4;
+	size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
+	// FIXME: add check against default/config max body size
+	size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
+	size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
 
-		if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
-			unsigned long contentLength
-				= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
-			if (bodySize >= contentLength)
-				return true;
-		} else if (transferEncodingPos != std::string::npos) {
-			std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
-			if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
-				return true;
-		}
-		*/
+	if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
+		unsigned long contentLength
+			= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
+		if (bodySize >= contentLength)
+			return true;
+	} else if (transferEncodingPos != std::string::npos) {
+		std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
+		if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
+			return true;
+	}
+	*/
 }

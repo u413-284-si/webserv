@@ -49,7 +49,7 @@ void TargetResourceHandler::execute()
 
 		// construct target resource
 		if (!internalRedirect)
-			m_response.targetResource = m_response.location->root + m_request.uri.path;
+			m_response.targetResource = m_response.location->getRoot() + m_request.uri.path;
 		internalRedirect = false;
 
 		// what type is it
@@ -65,10 +65,10 @@ void TargetResourceHandler::execute()
 				if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
 					m_response.targetResource += "/";
 					m_response.status = StatusMovedPermanently;
-				} else if (!m_response.location->indices.empty()) {
-					m_response.targetResource += m_response.location->indices[0];
+				} else if (!m_response.location->getIndices().empty()) {
+					m_response.targetResource += m_response.location->getIndices()[0];
 					internalRedirect = true;
-				} else if (m_response.location->isAutoindex) {
+				} else if (m_response.location->getIsAutoindex()) {
 					m_response.isAutoindex = true;
 				} else
 					m_response.status = StatusForbidden;
@@ -104,9 +104,9 @@ std::vector<Location>::const_iterator TargetResourceHandler::matchLocation(const
 	std::vector<Location>::const_iterator locationMatch = m_locations.end();
 
 	for (std::vector<Location>::const_iterator it = m_locations.begin(); it != m_locations.end(); ++it) {
-		if (path.find(it->path) == 0) {
-			if (it->path.length() > longestMatch) {
-				longestMatch = it->path.length();
+		if (path.find(it->getPath()) == 0) {
+			if (it->getPath().length() > longestMatch) {
+				longestMatch = it->getPath().length();
 				locationMatch = it;
 			}
 		}

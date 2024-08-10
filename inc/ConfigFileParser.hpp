@@ -27,12 +27,10 @@ private:
 	ConfigFileParser& operator=(const ConfigFileParser& ref);
 
 	ConfigFile m_configFile;
-	size_t m_locationIndex;
 	size_t m_serverIndex;
-
-	// Initializer functions
-	void initializeConfigServer(ConfigServer& configServer);
-	void initializeLocation(Location& location);
+	std::vector<std::string> m_validServerDirectives;
+	size_t m_locationIndex;
+	std::vector<std::string> m_validLocationDirectives;
 
 	// Getter functions
 	std::string getDirective(const std::string& line) const;

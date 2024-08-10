@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "ConfigFile.hpp"
@@ -12,24 +13,28 @@
  */
 std::ostream& operator<<(std::ostream& ostream, const Location& location)
 {
-	ostream << "Path: " << location.path << '\n';
-	ostream << "Root: " << location.root << '\n';
+	ostream << "Path: " << location.getPath() << '\n';
+	ostream << "Root: " << location.getRoot() << '\n';
 	ostream << "Index:\n";
-	for (std::vector<std::string>::const_iterator it = location.indices.begin(), end = location.indices.end(); it != end; ++it)
-		ostream << *it << '\n';	
-	ostream << "CGI extension: " << location.cgiExt << '\n';
-	ostream << "CGI path: " << location.cgiPath << '\n';
-	ostream << "Autoindex: " << location.isAutoindex << '\n';
-	ostream << "Max body size: " << location.maxBodySize << '\n';
+	std::vector<std::string> indices = location.getIndices();
+	for (std::vector<std::string>::const_iterator it = indices.begin(), end = indices.end(); it != end; ++it)
+		ostream << *it << '\n';
+	ostream << "CGI extension: " << location.getCgiExt() << '\n';
+	ostream << "CGI path: " << location.getCgiPath() << '\n';
+	ostream << "Autoindex: " << location.getIsAutoindex() << '\n';
+	ostream << "Max body size: " << location.getMaxBodySize() << '\n';
 	ostream << "Error pages:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = location.errorPage.begin(), end = location.errorPage.end(); it != end; ++it)
-		ostream << it->first << ": " << it->second << '\n';	
+	std::map<unsigned short, std::string> errorPages = location.getErrorPages();
+	for (std::map<unsigned short, std::string>::const_iterator it = errorPages.begin(), end = errorPages.end();
+		 it != end; ++it)
+		ostream << it->first << ": " << it->second << '\n';
 	ostream << "Allowed methods:\n";
-	for (int i = 0; i < MethodCount - 1; ++i)
-		ostream << "  " << location.allowedMethods[i] << '\n';	
+	std::cout << "Get: " << location.getAllowedMethod(MethodGet) << '\n';
+	std::cout << "Post: " << location.getAllowedMethod(MethodPost) << '\n';
+	std::cout << "Delete: " << location.getAllowedMethod(MethodDelete) << '\n';
 	ostream << "Returns:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
-		 it != location.returns.end(); ++it) {
+	std::map<unsigned short, std::string> returns = location.getReturns();
+	for (std::map<unsigned short, std::string>::const_iterator it = returns.begin(); it != returns.end(); ++it) {
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	}
 	return ostream;
@@ -44,19 +49,20 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  */
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)
 {
-	ostream << "Server: " << configServer.serverName << '\n';
-	ostream << "Root: " << configServer.root << '\n';
+	ostream << "Server: " << configServer.getServerName() << '\n';
+	ostream << "Root: " << configServer.getRoot() << '\n';
 	ostream << "Listen:\n";
-	for (std::map<std::string, unsigned short>::const_iterator it = configServer.listen.begin(); it != configServer.listen.end(); ++it)
+	std::map<std::string, unsigned short> listen = configServer.getListen();
+	for (std::map<std::string, unsigned short>::const_iterator it = listen.begin(); it != listen.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
-	ostream << "Max body size: " << configServer.maxBodySize << '\n';
+	ostream << "Max body size: " << configServer.getMaxBodySize() << '\n';
 	ostream << "Error pages:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = configServer.errorPage.begin();
-		 it != configServer.errorPage.end(); ++it)
+	std::map<unsigned short, std::string> errorPages = configServer.getErrorPages();
+	for (std::map<unsigned short, std::string>::const_iterator it = errorPages.begin(); it != errorPages.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Locations:\n";
-	for (std::vector<Location>::const_iterator it = configServer.locations.begin(); it != configServer.locations.end();
-		 ++it)
+	std::vector<Location> locations = configServer.getLocations();
+	for (std::vector<Location>::const_iterator it = locations.begin(); it != locations.end(); ++it)
 		ostream << *it;
 	return ostream;
 }
@@ -71,8 +77,8 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 {
 	ostream << "Config file:\n";
-	for (std::vector<ConfigServer>::const_iterator it = configFile.servers.begin();
-		 it != configFile.servers.end(); ++it)
+	for (std::vector<ConfigServer>::const_iterator it = configFile.servers.begin(); it != configFile.servers.end();
+		 ++it)
 		ostream << *it;
 	return ostream;
 }

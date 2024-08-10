@@ -79,6 +79,7 @@ TEST := unittest
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		ConfigFile.cpp \
 		ConfigFileParser.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \

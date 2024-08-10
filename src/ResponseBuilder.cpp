@@ -58,7 +58,8 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 	HTTPResponse response = initHTTPResponse(request);
 
 	if (response.status == StatusOK) {
-		TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
+		TargetResourceHandler targetResourceHandler(
+			m_activeServer->getLocations(), request, response, m_fileSystemPolicy);
 		targetResourceHandler.execute();
 	}
 
@@ -114,7 +115,8 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
  */
 void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 {
-	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status) << "\r\n";
+	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status)
+					 << "\r\n";
 }
 
 /**
