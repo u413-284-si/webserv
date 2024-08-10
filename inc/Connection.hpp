@@ -13,9 +13,8 @@ public:
 	Connection();
 	Connection(const Socket& server, const Socket& client);
 
-	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse };
+	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse, Timeout };
 
-	void closeConnection() const;
 	void updateTimeSinceLastEvent();
 	void setStatus(ConnectionStatus status);
 	void updateBytesReceived(std::size_t bytesReceived);

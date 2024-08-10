@@ -53,6 +53,7 @@ Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
  * 2. Closes all open connections to release associated resources.
  * 3. Closes the epoll instance to release associated resources and stop
  * monitoring events.
+ * @todo Is it possible to send a last message to all connected clients to notify server shutdown?
  */
 Server::~Server()
 {
@@ -61,7 +62,7 @@ Server::~Server()
 
 	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {
 		removeEvent(m_epfd, iter->first);
-		iter->second.closeConnection();
+		close(iter->first);
 	}
 	close(m_epfd);
 }
@@ -161,11 +162,13 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 		if (newFd == -1)
 			continue;
 
-		const Socket serverSock = retrieveSocketInfo(newFd, *curr->ai_addr, curr->ai_addrlen);
-		if (serverSock.fd == -1)
+		const Socket serverSock = retrieveSocketInfo(*curr->ai_addr, curr->ai_addrlen);
+		if (serverSock.host.empty() && serverSock.port.empty()) {
+			close(newFd);
 			continue;
+		}
 
-		if (!registerVirtualServer(serverSock))
+		if (!registerVirtualServer(newFd, serverSock))
 			continue;
 
 		++successfulSock;
@@ -208,9 +211,9 @@ void Server::handleEvent(struct epoll_event event)
 	}
 	std::map<int, Socket>::const_iterator iter = m_virtualServers.find(event.data.fd);
 	if (iter != m_virtualServers.end())
-		acceptConnections(iter->second, eventMask);
+		acceptConnections(iter->first, iter->second, eventMask);
 	else
-		handleConnections(m_connections.at(event.data.fd));
+		handleConnections(event.data.fd, m_connections.at(event.data.fd));
 }
 
 /**
@@ -232,17 +235,19 @@ void Server::handleEvent(struct epoll_event event)
  * If the event mask contains EPOLLERR, it logs an error and closes the server socket.
  * The server socket is then removed from the virtual servers map.
  *
+ * @param serverFd File descriptor of the server socket.
  * @param serverSock Server socket which reported an event.
  * @param eventMask Event mask of the reported event.
  */
-void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
+void Server::acceptConnections(const int serverFd, const Socket& serverSock, uint32_t eventMask)
 {
 	LOG_DEBUG << "Accept connections on: " << serverSock;
 
 	if ((eventMask & EPOLLERR) != 0) {
 		LOG_ERROR << "Error condition happened on the associated file descriptor of " << serverSock;
-		close(serverSock.fd);
-		m_virtualServers.erase(serverSock.fd);
+		removeEvent(m_epfd, serverFd);
+		close(serverFd);
+		m_virtualServers.erase(serverFd);
 		return;
 	}
 
@@ -258,7 +263,7 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
 		// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
 		struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&clientAddr);
 
-		const int clientFd = accept(serverSock.fd, addrCast, &clientLen);
+		const int clientFd = accept(serverFd, addrCast, &clientLen);
 		if (clientFd == -1) {
 			if (errno == EAGAIN || errno == EWOULDBLOCK)
 				return; // No more pending connections
@@ -266,11 +271,13 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
 			continue;
 		}
 
-		const Socket clientSock = retrieveSocketInfo(clientFd, *addrCast, clientLen);
-		if (clientSock.fd == -1)
+		const Socket clientSock = retrieveSocketInfo(*addrCast, clientLen);
+		if (clientSock.host.empty() && clientSock.port.empty()) {
+			close(clientFd);
 			continue;
+		}
 
-		if (!registerConnection(serverSock, clientSock))
+		if (!registerConnection(serverSock, clientFd, clientSock))
 			continue;
 	}
 }
@@ -296,7 +303,7 @@ void Server::acceptConnections(const Socket& serverSock, uint32_t eventMask)
  *      to the client socket using the write function.
  *
  */
-void Server::handleConnections(const Connection& connection)
+void Server::handleConnections(const int clientFd, const Connection& connection)
 {
 	LOG_DEBUG << "Handling connection: " << connection.getClientSocket()
 			  << " for server: " << connection.getServerSocket();
@@ -308,28 +315,28 @@ void Server::handleConnections(const Connection& connection)
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
 
-	const ssize_t bytesRead = recv(connection.getClientSocket().fd, buffer, s_bufferSize, 0);
+	const ssize_t bytesRead = recv(clientFd, buffer, s_bufferSize, 0);
 	if (bytesRead < 0) {
 		std::cerr << "error: read\n";
-		close(connection.getClientSocket().fd);
+		close(clientFd);
 	} else if (bytesRead == 0) {
 		// Connection closed by client
-		close(connection.getClientSocket().fd);
+		close(clientFd);
 	} else {
-		m_connectionBuffers[connection.getClientSocket().fd] += buffer;
-		if (checkForCompleteRequest(connection.getClientSocket().fd)) {
-			LOG_DEBUG << "Received complete request: " << '\n' << m_connectionBuffers[connection.getClientSocket().fd];
+		m_connectionBuffers[clientFd] += buffer;
+		if (checkForCompleteRequest(clientFd)) {
+			LOG_DEBUG << "Received complete request: " << '\n' << m_connectionBuffers[clientFd];
 			try {
-				m_requestParser.parseHttpRequest(m_connectionBuffers[connection.getClientSocket().fd], request);
+				m_requestParser.parseHttpRequest(m_connectionBuffers[clientFd], request);
 				m_requestParser.clearParser();
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
 			m_responseBuilder.buildResponse(request);
-			send(connection.getClientSocket().fd, m_responseBuilder.getResponse().c_str(),
+			send(clientFd, m_responseBuilder.getResponse().c_str(),
 				m_responseBuilder.getResponse().size(), 0);
 		} else {
-			LOG_DEBUG << "Received partial request: " << '\n' << m_connectionBuffers[connection.getClientSocket().fd];
+			LOG_DEBUG << "Received partial request: " << '\n' << m_connectionBuffers[clientFd];
 		}
 	}
 }
@@ -344,6 +351,7 @@ void Server::handleConnections(const Connection& connection)
  * if it is greater than m_clientTimeout. If it is, the connection is removed from epoll,
  * and closed by calling Connection::closeConnection(). This makes sure that the connection
  * is properly closed.
+ * @todo Send a message to client in case of timeout?
  */
 void Server::handleTimeout()
 {
@@ -354,7 +362,7 @@ void Server::handleTimeout()
 		if (timeSinceLastEvent > m_clientTimeout) {
 			LOG_INFO << "Connection timeout: " << iter->second.getClientSocket();
 			removeEvent(m_epfd, iter->first);
-			iter->second.closeConnection();
+			close(iter->first);
 			m_connections.erase(iter++);
 		} else
 			++iter;
@@ -395,19 +403,19 @@ bool Server::checkForCompleteRequest(int clientSock)
  *
  * @return true if the virtual server was successfully registered, false otherwise.
  */
-bool Server::registerVirtualServer(const Socket& serverSock)
+bool Server::registerVirtualServer(const int serverFd, const Socket& serverSock)
 {
 	struct epoll_event event = {};
 	event.events = EPOLLIN;
-	event.data.fd = serverSock.fd;
+	event.data.fd = serverFd;
 
-	if (!addEvent(m_epfd, serverSock.fd, event)) {
-		close(serverSock.fd);
+	if (!addEvent(m_epfd, serverFd, event)) {
+		close(serverFd);
 		LOG_ERROR << "Failed to add event for " << serverSock;
 		return false;
 	}
 
-	m_virtualServers[serverSock.fd] = serverSock;
+	m_virtualServers[serverFd] = serverSock;
 
 	LOG_INFO << "New virtual server: " << serverSock;
 	return true;
@@ -427,20 +435,20 @@ bool Server::registerVirtualServer(const Socket& serverSock)
  *
  * @return true if the connection was successfully registered, false otherwise.
  */
-bool Server::registerConnection(const Socket& serverSock, const Socket& clientSock)
+bool Server::registerConnection(const Socket& serverSock, const int clientFd, const Socket& clientSock)
 {
 	struct epoll_event event = {};
 	event.events = EPOLLIN;
-	event.data.fd = clientSock.fd;
+	event.data.fd = clientFd;
 
-	if (!addEvent(m_epfd, clientSock.fd, event)) {
-		close(clientSock.fd);
+	if (!addEvent(m_epfd, clientFd, event)) {
+		close(clientFd);
 		LOG_ERROR << "Failed to add event for " << clientSock;
 		return false;
 	}
 
-	m_connections[clientSock.fd] = Connection(serverSock, clientSock);
-	m_connectionBuffers[clientSock.fd] = "";
+	m_connections[clientFd] = Connection(serverSock, clientSock);
+	m_connectionBuffers[clientFd] = "";
 
 	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
 	return true;
@@ -557,7 +565,7 @@ int createListeningSocket(const struct addrinfo& addrinfo, int backlog)
  *
  * @return A Socket object containing the host and port information.
  */
-Socket retrieveSocketInfo(const int sockFd, struct sockaddr& sockaddr, socklen_t socklen)
+Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen)
 {
 	char bufferHost[NI_MAXHOST];
 	char bufferPort[NI_MAXSERV];
@@ -566,12 +574,11 @@ Socket retrieveSocketInfo(const int sockFd, struct sockaddr& sockaddr, socklen_t
 		&sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	if (ret != 0) {
 		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
-		close(sockFd);
-		const Socket errSock = { -1, "", "" };
+		const Socket errSock = { "", "" };
 		return (errSock);
 	}
 
-	const Socket newSock = { sockFd, bufferHost, bufferPort };
+	const Socket newSock = { bufferHost, bufferPort };
 
 	return (newSock);
 }

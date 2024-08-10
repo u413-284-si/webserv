@@ -33,13 +33,6 @@ Connection::Connection(const Socket& server, const Socket& client)
 }
 
 /**
- * @brief Close the client socket.
- * @todo Implement a more robust way to close the connection. For example in case of timeout
- *       the server send a message before closing the connection.
- */
-void Connection::closeConnection() const { close(m_clientSocket.fd); }
-
-/**
  * @brief Update the time since the last event on this connection.
  */
 void Connection::updateTimeSinceLastEvent() { m_timeSinceLastEvent = std::time(0); }

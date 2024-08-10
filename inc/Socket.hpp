@@ -6,7 +6,6 @@
  * @brief Represent a socket connection.
  */
 struct Socket {
-	int fd;
 	std::string host;
 	std::string port;
 };

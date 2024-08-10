@@ -71,13 +71,13 @@ private:
 
 	void handleEvent(struct epoll_event);
 
-	void acceptConnections(const Socket& serverSock, uint32_t eventMask);
-	void handleConnections(const Connection& connection);
+	void acceptConnections(int serverFd, const Socket& serverSock, uint32_t eventMask);
+	void handleConnections(int clientFd, const Connection& connection);
 	void handleTimeout();
 
 	bool checkForCompleteRequest(int clientSock);
-	bool registerVirtualServer(const Socket& serverSock);
-	bool registerConnection(const Socket& serverSock, const Socket& clientSock);
+	bool registerVirtualServer(int serverFd, const Socket& serverSock);
+	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
@@ -85,7 +85,7 @@ private:
 
 struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port);
 int createListeningSocket(const struct addrinfo& addrinfo, int backlog);
-Socket retrieveSocketInfo(int sockFd, struct sockaddr& sockaddr, socklen_t socklen);
+Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen);
 
 int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout);
 bool addEvent(int epfd, int newfd, epoll_event& event);
