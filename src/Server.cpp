@@ -458,8 +458,8 @@ bool Server::registerConnection(const Socket& serverSock, const Socket& clientSo
  *
  * An addrinfo hints struct is used to specify the criteria for selecting the address with the following values:
  * - .ai_flags - AI_PASSIVE: The returned address will be suitable to bind(2) a socket which can accept(2) connections.
- * With this flag set: If node is NULL, returned address (INADDR_ANY) will be suitable to accept any network
- * connections. W/o the flag the returned address is a loopback not allowing external connections.
+ *   With this flag set: If node is NULL, returned address (INADDR_ANY) will be suitable to accept any network
+ *   connections. W/o the flag the returned address is a loopback not allowing external connections.
  * - .ai_family - AF_UNSPEC: Allow IPv4 or IPv6.
  * - .ai_socktype - SOCK_STREAM: TCP uses SOCK_STREAM.
  * - .ai_protocol - 0: Accept any protocol.
@@ -470,6 +470,7 @@ bool Server::registerConnection(const Socket& serverSock, const Socket& clientSo
  *
  * If getaddrinfo() returns an error, it logs the error message and returns NULL.
  *
+ * @sa man getaddrinfo
  * @param host The host address to resolve.
  * @param port The port number to resolve.
  * @return struct addrinfo* A pointer to the list of addresses if successful, NULL otherwise.
