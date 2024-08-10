@@ -27,9 +27,10 @@
  * @throws std::runtime_error if epoll_create() or Server::initVirtualServers() fail.
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
-Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper)
+Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy)
 	: m_configFile(configFile)
 	, m_epollWrapper(epollWrapper)
+	, m_socketPolicy(socketPolicy)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
@@ -144,7 +145,7 @@ bool Server::initVirtualServers()
  */
 bool Server::addVirtualServer(const std::string& host, const int backlog, const std::string& port)
 {
-	struct addrinfo* list = resolveListeningAddresses(host, port);
+	struct addrinfo* list = m_socketPolicy.resolveListeningAddresses(host, port);
 	if (list == NULL)
 		return false;
 
@@ -153,11 +154,11 @@ bool Server::addVirtualServer(const std::string& host, const int backlog, const 
 	for (struct addrinfo* curr = list; curr != NULL; curr = curr->ai_next) {
 		LOG_DEBUG << countTryCreateSocket << ". try to create listening socket";
 
-		const int newFd = createListeningSocket(*curr, backlog);
+		const int newFd = m_socketPolicy.createListeningSocket(*curr, backlog);
 		if (newFd == -1)
 			continue;
 
-		const Socket serverSock = retrieveSocketInfo(*curr->ai_addr, curr->ai_addrlen);
+		const Socket serverSock = m_socketPolicy.retrieveSocketInfo(*curr->ai_addr, curr->ai_addrlen);
 		if (serverSock.host.empty() && serverSock.port.empty()) {
 			close(newFd);
 			continue;
@@ -258,15 +259,13 @@ void Server::acceptConnections(const int serverFd, const Socket& serverSock, uin
 		// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
 		struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&clientAddr);
 
-		const int clientFd = accept(serverFd, addrCast, &clientLen);
-		if (clientFd == -1) {
-			if (errno == EAGAIN || errno == EWOULDBLOCK)
-				return; // No more pending connections
-			LOG_ERROR << "accept(): " << strerror(errno);
-			continue;
-		}
+		const int clientFd = m_socketPolicy.acceptConnection(serverFd, addrCast, &clientLen);
+		if (clientFd == -2)
+			return; // No more pending connections
+		if (clientFd == -1)
+			continue; // Error accepting connection
 
-		const Socket clientSock = retrieveSocketInfo(*addrCast, clientLen);
+		const Socket clientSock = m_socketPolicy.retrieveSocketInfo(*addrCast, clientLen);
 		if (clientSock.host.empty() && clientSock.port.empty()) {
 			close(clientFd);
 			continue;
@@ -310,9 +309,9 @@ void Server::handleConnections(const int clientFd, const Connection& connection)
 	request.httpStatus = StatusOK;
 	request.shallCloseConnection = false;
 
-	const ssize_t bytesRead = recv(clientFd, buffer, s_bufferSize, 0);
+	const ssize_t bytesRead = m_socketPolicy.readFromSocket(clientFd, buffer, s_bufferSize, 0);
 	if (bytesRead < 0) {
-		std::cerr << "error: read\n";
+		// Internal server error
 		close(clientFd);
 	} else if (bytesRead == 0) {
 		// Connection closed by client
@@ -328,8 +327,7 @@ void Server::handleConnections(const int clientFd, const Connection& connection)
 				LOG_ERROR << "Error: " << e.what();
 			}
 			m_responseBuilder.buildResponse(request);
-			send(clientFd, m_responseBuilder.getResponse().c_str(),
-				m_responseBuilder.getResponse().size(), 0);
+			m_socketPolicy.writeToSocket(clientFd, m_responseBuilder.getResponse().c_str(), m_responseBuilder.getResponse().size(), 0);
 		} else {
 			LOG_DEBUG << "Received partial request: " << '\n' << m_connectionBuffers[clientFd];
 		}
@@ -450,133 +448,6 @@ bool Server::registerConnection(const Socket& serverSock, const int clientFd, co
 }
 
 /* ====== HELPER FUNCTIONS ====== */
-
-/**
- * @brief Resolves the passed host and port to a list of addresses suitable for listening.
- *
- * Uses getaddrinfo() to get a list of address information for the provided host and port. Since a host/port combination
- * can resolve to multiple addresses, getaddrinfo() returns a linked list of addrinfo structures. If the passed host is
- * empty or "*", it sets the passed node to NULL, which will return an address suitable for accepting any network
- * connections.
- *
- * An addrinfo hints struct is used to specify the criteria for selecting the address with the following values:
- * - .ai_flags - AI_PASSIVE: The returned address will be suitable to bind(2) a socket which can accept(2) connections.
- *   With this flag set: If node is NULL, returned address (INADDR_ANY) will be suitable to accept any network
- *   connections. W/o the flag the returned address is a loopback not allowing external connections.
- * - .ai_family - AF_UNSPEC: Allow IPv4 or IPv6.
- * - .ai_socktype - SOCK_STREAM: TCP uses SOCK_STREAM.
- * - .ai_protocol - 0: Accept any protocol.
- * - .ai_addrlen - sizeof(struct addrinfo): Not used.
- * - .ai_addr - NULL: Not used.
- * - .ai_canonname - NULL: Not used.
- * - .ai_next - NULL: Not used.
- *
- * If getaddrinfo() returns an error, it logs the error message and returns NULL.
- *
- * @sa man getaddrinfo
- * @param host The host address to resolve.
- * @param port The port number to resolve.
- * @return struct addrinfo* A pointer to the list of addresses if successful, NULL otherwise.
- */
-struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port)
-{
-	const char* node = NULL;
-
-	if (!host.empty() || host != "*")
-		node = host.c_str();
-
-	struct addrinfo hints = {
-		AI_PASSIVE, /* .ai_flags */
-		AF_UNSPEC, /*.ai_family  */
-		SOCK_STREAM, /* .ai_socktype */
-		0, /* .ai_protocol */
-		sizeof(struct addrinfo), /* .ai_addrlen */
-		NULL, /* .ai_addr */
-		NULL, /* .ai_canonname */
-		NULL /* .ai_next */
-	};
-
-	struct addrinfo* list = NULL;
-	const int result = getaddrinfo(node, port.c_str(), &hints, &list);
-	if (result != 0) {
-		LOG_ERROR << "getaddrinfo(): " << gai_strerror(result);
-		return NULL;
-	}
-
-	return list;
-}
-
-/**
- * @brief Create a listening socket.
- *
- * Creates a new socket with the provided address information and binds it to the address.
- * It sets the socket to non-blocking mode and listens for incoming connections.
- *
- * @param addrinfo The address information for the socket.
- * @param backlog The maximum length to which the queue of pending connections may grow.
- *
- * @return The file descriptor of the new socket if successful, -1 otherwise.
- */
-int createListeningSocket(const struct addrinfo& addrinfo, int backlog)
-{
-	unsigned int socktype = addrinfo.ai_socktype;
-	socktype |= SOCK_NONBLOCK;
-
-	const int newFd = socket(addrinfo.ai_family, static_cast<int>(socktype), addrinfo.ai_protocol);
-	if (newFd == -1) {
-		LOG_DEBUG << "socket(): " << strerror(errno);
-		return -1;
-	}
-
-	int reuse = 1;
-	if (-1 == setsockopt(newFd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int))) {
-		close(newFd);
-		LOG_DEBUG << "setsockopt(): " << strerror(errno);
-		return -1;
-	}
-
-	if (-1 == bind(newFd, addrinfo.ai_addr, addrinfo.ai_addrlen)) {
-		close(newFd);
-		LOG_DEBUG << "bind(): " << strerror(errno);
-		return -1;
-	}
-
-	if (-1 == listen(newFd, backlog)) {
-		close(newFd);
-		LOG_DEBUG << "listen(): " << strerror(errno);
-		return -1;
-	}
-	return newFd;
-}
-
-/**
- * @brief Retrieve socket information.
- *
- * Retrieves the host and port information from a socket and returns it as a Socket object.
- *
- * @param sockFd The file descriptor of the socket.
- * @param sockaddr The socket address structure.
- * @param socklen The length of the socket address structure.
- *
- * @return A Socket object containing the host and port information.
- */
-Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen)
-{
-	char bufferHost[NI_MAXHOST];
-	char bufferPort[NI_MAXSERV];
-
-	const int ret = getnameinfo(
-		&sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-	if (ret != 0) {
-		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
-		const Socket errSock = { "", "" };
-		return (errSock);
-	}
-
-	const Socket newSock = { bufferHost, bufferPort };
-
-	return (newSock);
-}
 
 /**
  * @brief Check for duplicate virtual servers.

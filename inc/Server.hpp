@@ -10,6 +10,7 @@
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
 #include "Socket.hpp"
+#include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
 
 #include <algorithm>
@@ -45,8 +46,7 @@ private:
 	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
 
 public:
-	explicit Server(
-		const ConfigFile& configFile, EpollWrapper& epollWrapper);
+	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
 
 	void run();
@@ -54,6 +54,7 @@ public:
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
+	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
@@ -79,10 +80,6 @@ private:
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
 };
-
-struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port);
-int createListeningSocket(const struct addrinfo& addrinfo, int backlog);
-Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen);
 
 bool checkDuplicateServer(
 	const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);

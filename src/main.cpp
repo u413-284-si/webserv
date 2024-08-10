@@ -6,6 +6,7 @@
 #include "LogOutputterFile.hpp"
 #include "ResponseBuilder.hpp"
 #include "Server.hpp"
+#include "SocketPolicy.hpp"
 #include <cerrno>
 
 ConfigFile createDummyConfig()
@@ -60,7 +61,8 @@ int main(int argc, char** argv)
 	weblog::initConsole(weblog::LevelDebug);
 	try {
 		EpollWrapper epollWrapper;
-		Server server(configFile, epollWrapper);
+		SocketPolicy socketPolicy;
+		Server server(configFile, epollWrapper, socketPolicy);
 		server.run();
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
