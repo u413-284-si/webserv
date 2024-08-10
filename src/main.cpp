@@ -1,4 +1,5 @@
 #include "ConfigFile.hpp"
+#include "EpollWrapper.hpp"
 #include "Log.hpp"
 #include "LogData.hpp"
 #include "LogOutputterConsole.hpp"
@@ -55,10 +56,11 @@ int main(int argc, char** argv)
 	static_cast<void>(argv);
 
 	ConfigFile configFile = createDummyConfig();
-	
+
 	weblog::initConsole(weblog::LevelDebug);
 	try {
-		Server server(configFile, -1);
+		EpollWrapper epollWrapper;
+		Server server(configFile, epollWrapper);
 		server.run();
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();

@@ -27,17 +27,13 @@
  * @throws std::runtime_error if epoll_create() or Server::initVirtualServers() fail.
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
-Server::Server(const ConfigFile& configFile, int epollTimeout, size_t maxEvents)
+Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper)
 	: m_configFile(configFile)
-	, m_epfd(epoll_create(1))
-	, m_epollTimeout(epollTimeout)
-	, m_epollEvents(maxEvents)
+	, m_epollWrapper(epollWrapper)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
 {
-	if (m_epfd < 0)
-		throw std::runtime_error("epoll_create:" + std::string(strerror(errno)));
 	if (!initVirtualServers())
 		throw std::runtime_error("Failed to initialize virtual servers");
 }
@@ -61,10 +57,9 @@ Server::~Server()
 		close(iter->first);
 
 	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {
-		removeEvent(m_epfd, iter->first);
+		m_epollWrapper.removeEvent(iter->first);
 		close(iter->first);
 	}
-	close(m_epfd);
 }
 
 /* ====== MEMBER FUNCTIONS ====== */
@@ -84,10 +79,10 @@ void Server::run()
 	LOG_INFO << "Server started";
 
 	while (true) {
-		const int nfds = waitForEvents(m_epfd, m_epollEvents, m_epollTimeout);
+		const int nfds = m_epollWrapper.waitForEvents();
 
-		for (std::vector<struct epoll_event>::const_iterator iter = m_epollEvents.begin();
-			 iter != m_epollEvents.begin() + nfds; ++iter) {
+		for (std::vector<struct epoll_event>::const_iterator iter = m_epollWrapper.eventsBegin();
+			 iter != m_epollWrapper.eventsBegin() + nfds; ++iter) {
 			handleEvent(*iter);
 		}
 		handleTimeout();
@@ -245,7 +240,7 @@ void Server::acceptConnections(const int serverFd, const Socket& serverSock, uin
 
 	if ((eventMask & EPOLLERR) != 0) {
 		LOG_ERROR << "Error condition happened on the associated file descriptor of " << serverSock;
-		removeEvent(m_epfd, serverFd);
+		m_epollWrapper.removeEvent(serverFd);
 		close(serverFd);
 		m_virtualServers.erase(serverFd);
 		return;
@@ -361,7 +356,7 @@ void Server::handleTimeout()
 		LOG_DEBUG << iter->second.getClientSocket() << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > m_clientTimeout) {
 			LOG_INFO << "Connection timeout: " << iter->second.getClientSocket();
-			removeEvent(m_epfd, iter->first);
+			m_epollWrapper.removeEvent(iter->first);
 			close(iter->first);
 			m_connections.erase(iter++);
 		} else
@@ -409,7 +404,7 @@ bool Server::registerVirtualServer(const int serverFd, const Socket& serverSock)
 	event.events = EPOLLIN;
 	event.data.fd = serverFd;
 
-	if (!addEvent(m_epfd, serverFd, event)) {
+	if (!m_epollWrapper.addEvent(serverFd, event)) {
 		close(serverFd);
 		LOG_ERROR << "Failed to add event for " << serverSock;
 		return false;
@@ -441,7 +436,7 @@ bool Server::registerConnection(const Socket& serverSock, const int clientFd, co
 	event.events = EPOLLIN;
 	event.data.fd = clientFd;
 
-	if (!addEvent(m_epfd, clientFd, event)) {
+	if (!m_epollWrapper.addEvent(clientFd, event)) {
 		close(clientFd);
 		LOG_ERROR << "Failed to add event for " << clientSock;
 		return false;
@@ -581,99 +576,6 @@ Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen)
 	const Socket newSock = { bufferHost, bufferPort };
 
 	return (newSock);
-}
-
-/**
- * @brief Wait for events on an epoll instance.
- *
- * If epoll_wait returns -1, it checks if the error is due to an interrupt signal.
- * If it is, it returns 0. Otherwise, it throws a runtime error with the error message.
- * If epoll_wait returns 0, it logs a timeout message. Otherwise, it logs the number of events.
- *
- * @param epfd The file descriptor of the epoll instance.
- * @param events The vector to store the events.
- * @param timeout The timeout value in milliseconds.
- *
- * @return The number of events that occurred.
-
- * @throws std::runtime_error if epoll_wait encounters an error.
- */
-int waitForEvents(int epfd, std::vector<struct epoll_event>& events, int timeout)
-{
-	LOG_DEBUG << "Waiting for events";
-
-	const int nfds = epoll_wait(epfd, &events[0], static_cast<int>(events.size()), timeout);
-	if (nfds == -1) {
-		if (errno == EINTR)
-			return 0;
-		throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
-	}
-
-	if (nfds == 0)
-		LOG_DEBUG << "epoll_wait: Timeout";
-	else
-		LOG_DEBUG << "epoll_wait: " << nfds << " events";
-	return nfds;
-}
-
-/**
- * @brief Add an event to an epoll instance.
- *
- * If epoll_ctl returns -1, it logs an error message and returns false.
- *
- * @param epfd The file descriptor of the epoll instance.
- * @param newfd The file descriptor of the new event.
- * @param event The event to add.
- *
- * @return true if the event was successfully added, false otherwise.
- */
-bool addEvent(int epfd, int newfd, epoll_event& event)
-{
-	if (-1 == epoll_ctl(epfd, EPOLL_CTL_ADD, newfd, &event)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno);
-		return false;
-	}
-	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd;
-
-	return true;
-}
-
-/**
- * @brief Remove an event from an epoll instance.
- *
- * If epoll_ctl returns -1, it logs an error message.
- *
- * @param epfd The file descriptor of the epoll instance.
- * @param delfd The file descriptor of the event to remove.
- */
-void removeEvent(int epfd, int delfd)
-{
-	if (-1 == epoll_ctl(epfd, EPOLL_CTL_DEL, delfd, NULL)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno);
-		return;
-	}
-	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd;
-}
-
-/**
- * @brief Modify an event in an epoll instance.
- *
- * If epoll_ctl returns -1, it logs an error message and returns false.
- *
- * @param epfd The file descriptor of the epoll instance.
- * @param modfd The file descriptor of the event to modify.
- * @param event The modified event.
- *
- * @return true if the event was successfully modified, false otherwise.
- */
-bool modifyEvent(int epfd, int modfd, epoll_event& event)
-{
-	if (-1 == epoll_ctl(epfd, EPOLL_CTL_MOD, modfd, &event)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno);
-		return false;
-	}
-	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd;
-	return true;
 }
 
 /**

@@ -81,6 +81,7 @@ SRC:=	main.cpp \
 		AutoindexHandler.cpp \
 		Connection.cpp \
 		Directory.cpp \
+		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
 		LogConfigFile.cpp \
 		LogData.cpp \
