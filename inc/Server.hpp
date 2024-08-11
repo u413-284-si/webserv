@@ -76,16 +76,17 @@ private:
 void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
 	std::map<int, Socket>& virtualServers, std::map<int, Connection>& connections,
 	std::map<int, std::string>& connectionBuffers, int serverFd, const Socket& serverSock, uint32_t eventMask);
+bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
+	std::map<int, std::string>& connectionBuffers, const Socket& serverSock, int clientFd, const Socket& clientSock);
 
 bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const SocketPolicy& socketPolicy,
 	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int backlog);
-bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Socket>& virtualServers, const std::string& host, int backlog, const std::string& port);
-
-bool checkForCompleteRequest(const std::string& connectionBuffer);
-bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
-	std::map<int, std::string>& connectionBuffers, const Socket& serverSock, int clientFd, const Socket& clientSock);
-bool registerVirtualServer(
-	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int serverFd, const Socket& serverSock);
 bool checkDuplicateServer(
 	const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);
+bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
+	std::map<int, Socket>& virtualServers, const std::string& host, int backlog, const std::string& port);
+bool registerVirtualServer(
+	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int serverFd, const Socket& serverSock);
+
+bool checkForCompleteRequest(const std::string& connectionBuffer);
+
