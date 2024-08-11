@@ -146,7 +146,7 @@ bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const So
  * @return true if the virtual server was successfully added, false otherwise.
  */
 bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Socket> virtualServers, const std::string& host, const int backlog, const std::string& port)
+	std::map<int, Socket>& virtualServers, const std::string& host, const int backlog, const std::string& port)
 {
 	struct addrinfo* list = socketPolicy.resolveListeningAddresses(host, port);
 	if (list == NULL)

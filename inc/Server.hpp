@@ -76,7 +76,7 @@ private:
 
 bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const SocketPolicy& socketPolicy,
 	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int backlog);
-bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper, std::map<int, Socket> virtualServers, const std::string& host, int backlog, const std::string& port);
+bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, const std::string& host, int backlog, const std::string& port);
 
 bool checkForCompleteRequest(const std::string& connectionBuffer);
 bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
