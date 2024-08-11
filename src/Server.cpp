@@ -87,7 +87,7 @@ void Server::run()
 			 iter != m_epollWrapper.eventsBegin() + nfds; ++iter) {
 			handleEvent(*iter);
 		}
-		handleTimeout();
+		handleTimeout(m_connections, m_clientTimeout, m_epollWrapper);
 	}
 }
 
@@ -352,17 +352,17 @@ void Server::handleConnections(const int clientFd, const Connection& connection)
  * is properly closed.
  * @todo Send a message to client in case of timeout?
  */
-void Server::handleTimeout()
+void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout, const EpollWrapper& epollWrapper)
 {
-	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end();
+	for (std::map<int, Connection>::iterator iter = connections.begin(); iter != connections.end();
 		/* no increment */) {
 		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
 		LOG_DEBUG << iter->second.getClientSocket() << ": Time since last event: " << timeSinceLastEvent;
-		if (timeSinceLastEvent > m_clientTimeout) {
+		if (timeSinceLastEvent > clientTimeout) {
 			LOG_INFO << "Connection timeout: " << iter->second.getClientSocket();
-			m_epollWrapper.removeEvent(iter->first);
+			epollWrapper.removeEvent(iter->first);
 			close(iter->first);
-			m_connections.erase(iter++);
+			connections.erase(iter++);
 		} else
 			++iter;
 	}

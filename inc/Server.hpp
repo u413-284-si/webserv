@@ -67,7 +67,6 @@ private:
 	void handleEvent(struct epoll_event);
 
 	void handleConnections(int clientFd, const Connection& connection);
-	void handleTimeout();
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
@@ -90,3 +89,5 @@ bool registerVirtualServer(
 	int serverFd, const Socket& serverSock, std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper);
 
 bool checkForCompleteRequest(const std::string& connectionBuffer);
+
+void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout, const EpollWrapper& epollWrapper);
