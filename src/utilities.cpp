@@ -1,4 +1,5 @@
 #include "utilities.hpp"
+#include "ConfigFile.hpp"
 #include "StatusCode.hpp"
 #include <cctype>
 #include <sys/socket.h>
@@ -252,4 +253,20 @@ std::string getDefaultErrorPage(statusCode status)
 	return (ret);
 }
 
+std::string methodToString(Method method)
+{
+    assert(method >= MethodGet && method <= MethodCount);
+    
+    switch (method) {
+    case MethodGet:
+        return "GET";
+    case MethodPost:
+        return "POST";
+    case MethodDelete:
+        return "DELETE";
+    case MethodCount:
+        return "METHODCOUNT";
+    }
+    return "";
+}
 } // webutils
