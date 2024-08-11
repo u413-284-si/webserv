@@ -36,7 +36,7 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
 {
-	if (!initVirtualServers(m_configFile.serverConfigs, m_socketPolicy, m_epollWrapper, m_virtualServers, m_backlog))
+	if (!initVirtualServers(m_backlog, m_configFile.serverConfigs, m_virtualServers, m_epollWrapper, m_socketPolicy))
 		throw std::runtime_error("Failed to initialize virtual servers");
 }
 
@@ -101,8 +101,8 @@ void Server::run()
  *
  * @return true if at least one virtual server was added, false otherwise.
  */
-bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const SocketPolicy& socketPolicy,
-	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int backlog)
+bool initVirtualServers(int backlog, const std::vector<ServerConfig>& serverConfigs,
+	std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy)
 {
 	LOG_INFO << "Initializing virtual servers";
 
@@ -110,11 +110,11 @@ bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const So
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 
-		if (checkDuplicateServer(virtualServers, iter->host, webutils::toString(iter->port)))
+		if (checkDuplicateServer(iter->host, webutils::toString(iter->port), virtualServers))
 			continue;
 
 		if (!addVirtualServer(
-				socketPolicy, epollWrapper, virtualServers, iter->host, backlog, webutils::toString(iter->port))) {
+				iter->host, backlog, webutils::toString(iter->port), virtualServers, epollWrapper, socketPolicy )) {
 			LOG_DEBUG << "Failed to add virtual server: " << iter->serverName;
 			continue;
 		}
@@ -145,8 +145,8 @@ bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const So
  *
  * @return true if the virtual server was successfully added, false otherwise.
  */
-bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Socket>& virtualServers, const std::string& host, const int backlog, const std::string& port)
+bool addVirtualServer(const std::string& host, int backlog, const std::string& port,
+	std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy)
 {
 	struct addrinfo* list = socketPolicy.resolveListeningAddresses(host, port);
 	if (list == NULL)
@@ -167,7 +167,7 @@ bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epol
 			continue;
 		}
 
-		if (!registerVirtualServer(epollWrapper, virtualServers, newFd, serverSock))
+		if (!registerVirtualServer(newFd, serverSock, virtualServers, epollWrapper))
 			continue;
 
 		++successfulSock;
@@ -210,7 +210,7 @@ void Server::handleEvent(struct epoll_event event)
 			return;
 		}
 		acceptConnections(
-			m_socketPolicy, m_epollWrapper, m_connections, m_connectionBuffers, iter->first, iter->second, eventMask);
+			iter->first, iter->second, eventMask, m_connections, m_connectionBuffers, m_epollWrapper, m_socketPolicy);
 	} else {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_DEBUG << "epoll_wait: EPOLLERR";
@@ -246,9 +246,9 @@ void Server::handleEvent(struct epoll_event event)
  * @param serverSock Server socket which reported an event.
  * @param eventMask Event mask of the reported event.
  */
-void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers, const int serverFd,
-	const Socket& serverSock, uint32_t eventMask)
+void acceptConnections(int serverFd, const Socket& serverSock, uint32_t eventMask,
+	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
+	const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy)
 {
 	LOG_DEBUG << "Accept connections on: " << serverSock;
 
@@ -276,7 +276,7 @@ void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epo
 			continue;
 		}
 
-		if (!registerConnection(epollWrapper, connections, connectionBuffers, serverSock, clientFd, clientSock))
+		if (!registerConnection(serverSock, clientFd, clientSock, connections, connectionBuffers, epollWrapper))
 			continue;
 	}
 }
@@ -402,8 +402,8 @@ bool checkForCompleteRequest(const std::string& connectionBuffer)
  *
  * @return true if the virtual server was successfully registered, false otherwise.
  */
-bool registerVirtualServer(const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, const int serverFd,
-	const Socket& serverSock)
+bool registerVirtualServer(
+	int serverFd, const Socket& serverSock, std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper)
 {
 	struct epoll_event event = {};
 	event.events = EPOLLIN;
@@ -435,9 +435,9 @@ bool registerVirtualServer(const EpollWrapper& epollWrapper, std::map<int, Socke
  *
  * @return true if the connection was successfully registered, false otherwise.
  */
-bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
-	std::map<int, std::string>& connectionBuffers, const Socket& serverSock, const int clientFd,
-	const Socket& clientSock)
+bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock,
+	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
+	const EpollWrapper& epollWrapper)
 {
 	struct epoll_event event = {};
 	event.events = EPOLLIN;
@@ -470,7 +470,7 @@ bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connecti
  *
  * @return true if a duplicate virtual server exists, false otherwise.
  */
-bool checkDuplicateServer(const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port)
+bool checkDuplicateServer(const std::string& host, const std::string& port, const std::map<int, Socket>& virtualServers)
 {
 	if (host == "localhost") {
 		for (std::map<int, Socket>::const_iterator iter = virtualServers.begin(); iter != virtualServers.end();

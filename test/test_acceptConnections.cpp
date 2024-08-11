@@ -52,7 +52,7 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
 
 	EXPECT_EQ(connections.size(), 1);
 	EXPECT_EQ(connections[dummyClientFd].getServerSocket().host, serverSock.host);
@@ -82,7 +82,7 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 	.Times(3)
 	.WillRepeatedly(Return(true));
 
-	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
 
 	EXPECT_EQ(connections.size(), 3);
 
@@ -106,8 +106,8 @@ TEST_F(AcceptConnectionsTest, UnkownEvent)
 {
 	uint32_t eventMask = EPOLLOUT;
 
-	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
-
+	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
+	
 	EXPECT_EQ(connections.size(), 0);
 }
 
@@ -120,7 +120,7 @@ TEST_F(AcceptConnectionsTest, acceptConnectionFail)
 	.WillOnce(Return(-1))
 	.WillOnce(Return(-2));
 
-	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
 
 	EXPECT_EQ(connections.size(), 0);
 }
@@ -139,7 +139,7 @@ TEST_F(AcceptConnectionsTest, retrieveSocketInfoFail)
 	.Times(1).
 	WillOnce(Return(Socket { "", "" }));
 
-	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
 
 	EXPECT_EQ(connections.size(), 0);
 }
@@ -161,7 +161,7 @@ TEST_F(AcceptConnectionsTest, registerConnectionFail)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
 
 	EXPECT_EQ(connections.size(), 0);
 }

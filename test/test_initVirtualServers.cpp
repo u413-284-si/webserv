@@ -69,7 +69,7 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	.Times(2)
 	.WillRepeatedly(Return(true));
 
-	EXPECT_EQ(initVirtualServers(serverConfigs, socketPolicy, epollWrapper, virtualServers, backlog), true);
+	EXPECT_EQ(initVirtualServers(backlog, serverConfigs, virtualServers, epollWrapper, socketPolicy), true);
 	EXPECT_EQ(virtualServers.size(), 2);
 	EXPECT_EQ(virtualServers[dummyFd].host, serverConfig.host);
 	EXPECT_EQ(virtualServers[dummyFd].port, webutils::toString(serverConfig.port));

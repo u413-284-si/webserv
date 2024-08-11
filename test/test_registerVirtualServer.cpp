@@ -28,7 +28,7 @@ TEST_F(RegisterVirtualServerTest, ServerRegisterSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	EXPECT_EQ(registerVirtualServer(epollWrapper, virtualServers, dummyFd, socket), true);
+	EXPECT_EQ(registerVirtualServer(dummyFd, socket, virtualServers, epollWrapper), true);
 	EXPECT_EQ(virtualServers.size(), 1);
 	EXPECT_EQ(virtualServers[dummyFd].host, socket.host);
 	EXPECT_EQ(virtualServers[dummyFd].port, socket.port);
@@ -40,7 +40,7 @@ TEST_F(RegisterVirtualServerTest, ServerRegisterFail)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	EXPECT_EQ(registerVirtualServer(epollWrapper, virtualServers, dummyFd, socket), false);
+	EXPECT_EQ(registerVirtualServer(dummyFd, socket, virtualServers, epollWrapper), false);
 	EXPECT_EQ(virtualServers.size(), 0);
 }
 
@@ -53,7 +53,7 @@ TEST_F(RegisterVirtualServerTest, ServerAlreadyPresent)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	EXPECT_EQ(registerVirtualServer(epollWrapper, virtualServers, dummyFd, socket), false);
+	EXPECT_EQ(registerVirtualServer(dummyFd, socket, virtualServers, epollWrapper), false);
 	EXPECT_EQ(virtualServers.size(), 1);
 	EXPECT_EQ(virtualServers[dummyFd].host, socket2.host);
 	EXPECT_EQ(virtualServers[dummyFd].port, socket2.port);

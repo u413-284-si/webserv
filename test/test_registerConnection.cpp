@@ -29,7 +29,7 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	EXPECT_EQ(registerConnection(epollWrapper, connections, connectionBuffers, serverSock, dummyFd, clientSocket), true);
+	EXPECT_EQ(registerConnection(serverSock, dummyFd, clientSocket, connections, connectionBuffers, epollWrapper), true);
 	EXPECT_EQ(connections.size(), 1);
 	EXPECT_EQ(connections[dummyFd].getServerSocket().host, serverSock.host);
 	EXPECT_EQ(connections[dummyFd].getServerSocket().port, serverSock.port);
@@ -43,7 +43,7 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	EXPECT_EQ(registerConnection(epollWrapper, connections, connectionBuffers, serverSock, dummyFd, clientSocket), false);
+	EXPECT_EQ(registerConnection(serverSock, dummyFd, clientSocket, connections, connectionBuffers, epollWrapper), false);
 	EXPECT_EQ(connections.size(), 0);
 }
 
@@ -63,7 +63,7 @@ TEST_F(RegisterConnectionTest, OverwriteOldConnection)
 	.Times(1)
 	.WillRepeatedly(Return(true));
 
-	EXPECT_EQ(registerConnection(epollWrapper, connections, connectionBuffers, serverSock, dummyFd, clientSocket), true);
+	EXPECT_EQ(registerConnection(serverSock, dummyFd, clientSocket, connections, connectionBuffers, epollWrapper), true);
 	EXPECT_EQ(connections.size(), 1);
 	EXPECT_EQ(connections[dummyFd].getServerSocket().host, serverSock.host);
 	EXPECT_EQ(connections[dummyFd].getServerSocket().port, serverSock.port);

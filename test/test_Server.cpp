@@ -12,7 +12,7 @@ TEST(checkDuplicateServer, EmptyMap)
 	std::string host = "127.0.0.1";
 	std::string port = "8080";
 
-	EXPECT_EQ(checkDuplicateServer(virtualServers, host, port), false);
+	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), false);
 }
 
 TEST(checkDuplicateServer, NoDuplicate)
@@ -24,7 +24,7 @@ TEST(checkDuplicateServer, NoDuplicate)
 	std::string host = "127.0.0.1";
 	std::string port = "8080";
 
-	EXPECT_EQ(checkDuplicateServer(virtualServers, host, port), false);
+	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), false);
 }
 
 TEST(checkDuplicateServer, DuplicateServer)
@@ -37,7 +37,7 @@ TEST(checkDuplicateServer, DuplicateServer)
 	std::string host = "127.0.0.1";
 	std::string port = "8080";
 
-	EXPECT_EQ(checkDuplicateServer(virtualServers, host, port), true);
+	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), true);
 }
 
 TEST(checkDuplicateServer, DuplicateServerLocalhost)
@@ -52,13 +52,13 @@ TEST(checkDuplicateServer, DuplicateServerLocalhost)
 	std::string host = "localhost";
 	std::string port = "7070";
 
-	EXPECT_EQ(checkDuplicateServer(virtualServers, host, port), true);
+	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), true);
 
 	port = "2020";
 
-	EXPECT_EQ(checkDuplicateServer(virtualServers, host, port), false);
+	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), false);
 
 	port = "1010";
 
-	EXPECT_EQ(checkDuplicateServer(virtualServers, host, port), true);
+	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), true);
 }

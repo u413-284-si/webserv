@@ -73,19 +73,20 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
-	std::map<int, std::string>& connectionBuffers, int serverFd, const Socket& serverSock, uint32_t eventMask);
-bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
-	std::map<int, std::string>& connectionBuffers, const Socket& serverSock, int clientFd, const Socket& clientSock);
+void acceptConnections(int serverFd, const Socket& serverSock, uint32_t eventMask,
+	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
+	const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
+bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock,
+	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
+	const EpollWrapper& epollWrapper);
 
-bool initVirtualServers(const std::vector<ServerConfig>& serverConfigs, const SocketPolicy& socketPolicy,
-	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int backlog);
+bool initVirtualServers(int backlog, const std::vector<ServerConfig>& serverConfigs,
+	std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 bool checkDuplicateServer(
-	const std::map<int, Socket>& virtualServers, const std::string& host, const std::string& port);
-bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Socket>& virtualServers, const std::string& host, int backlog, const std::string& port);
+	const std::string& host, const std::string& port, const std::map<int, Socket>& virtualServers);
+bool addVirtualServer(const std::string& host, int backlog, const std::string& port,
+	std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 bool registerVirtualServer(
-	const EpollWrapper& epollWrapper, std::map<int, Socket>& virtualServers, int serverFd, const Socket& serverSock);
+	int serverFd, const Socket& serverSock, std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper);
 
 bool checkForCompleteRequest(const std::string& connectionBuffer);
-
