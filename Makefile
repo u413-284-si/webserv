@@ -105,6 +105,7 @@ TEST_SRC :=	test_addVirtualServer.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			testHeader.cpp \
+			test_registerVirtualServer.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
 			test_Server.cpp \
