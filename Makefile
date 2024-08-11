@@ -101,7 +101,8 @@ SRC:=	main.cpp \
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	test_addVirtualServer.cpp \
+TEST_SRC :=	test_acceptConnections.cpp \
+			test_addVirtualServer.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			testHeader.cpp \
@@ -167,12 +168,12 @@ $(NAME): $(OBJS)
 test: $(TEST)
 
 # Reconfigure flags for linking with gtest
-$(TEST): CXXFLAGS = -Wall -Werror -pthread -fsanitize=address
+$(TEST): CXXFLAGS = -Wall -Werror -pthread
 # Set file counter to number of test files + object files
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -fsanitize=address -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
