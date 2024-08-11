@@ -73,8 +73,7 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Socket>& virtualServers, std::map<int, Connection>& connections,
+void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
 	std::map<int, std::string>& connectionBuffers, int serverFd, const Socket& serverSock, uint32_t eventMask);
 bool registerConnection(const EpollWrapper& epollWrapper, std::map<int, Connection>& connections,
 	std::map<int, std::string>& connectionBuffers, const Socket& serverSock, int clientFd, const Socket& clientSock);

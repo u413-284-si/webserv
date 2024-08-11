@@ -201,18 +201,26 @@ bool addVirtualServer(const SocketPolicy& socketPolicy, const EpollWrapper& epol
 void Server::handleEvent(struct epoll_event event)
 {
 	uint32_t eventMask = event.events;
-	if ((eventMask & EPOLLERR) != 0) {
-		LOG_DEBUG << "epoll_wait: EPOLLERR";
-		eventMask = EPOLLIN;
-	} else if ((eventMask & EPOLLHUP) != 0) {
-		LOG_DEBUG << "epoll_wait: EPOLLHUP";
-		eventMask = EPOLLIN;
-	}
+
 	std::map<int, Socket>::const_iterator iter = m_virtualServers.find(event.data.fd);
-	if (iter != m_virtualServers.end())
-		acceptConnections(m_socketPolicy, m_epollWrapper, m_virtualServers, m_connections, m_connectionBuffers, iter->first, iter->second, eventMask);
-	else
+	if (iter != m_virtualServers.end()) {
+		if ((eventMask & EPOLLERR) != 0) {
+			LOG_ERROR << "Error condition happened on the associated file descriptor of " << iter->second;
+			// what to do here?
+			return;
+		}
+		acceptConnections(
+			m_socketPolicy, m_epollWrapper, m_connections, m_connectionBuffers, iter->first, iter->second, eventMask);
+	} else {
+		if ((eventMask & EPOLLERR) != 0) {
+			LOG_DEBUG << "epoll_wait: EPOLLERR";
+			eventMask = EPOLLIN;
+		} else if ((eventMask & EPOLLHUP) != 0) {
+			LOG_DEBUG << "epoll_wait: EPOLLHUP";
+			eventMask = EPOLLIN;
+		}
 		handleConnections(event.data.fd, m_connections.at(event.data.fd));
+	}
 }
 
 /**
@@ -239,18 +247,10 @@ void Server::handleEvent(struct epoll_event event)
  * @param eventMask Event mask of the reported event.
  */
 void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
-	std::map<int, Socket>& virtualServers, std::map<int, Connection>& connections,
-	std::map<int, std::string>& connectionBuffers, const int serverFd, const Socket& serverSock, uint32_t eventMask)
+	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers, const int serverFd,
+	const Socket& serverSock, uint32_t eventMask)
 {
 	LOG_DEBUG << "Accept connections on: " << serverSock;
-
-	if ((eventMask & EPOLLERR) != 0) {
-		LOG_ERROR << "Error condition happened on the associated file descriptor of " << serverSock;
-		epollWrapper.removeEvent(serverFd);
-		close(serverFd);
-		virtualServers.erase(serverFd);
-		return;
-	}
 
 	if ((eventMask & EPOLLIN) == 0) {
 		LOG_ERROR << "Received unknown event:" << eventMask;

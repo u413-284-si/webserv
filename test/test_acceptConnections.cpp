@@ -9,14 +9,11 @@ using ::testing::Return;
 
 class AcceptConnectionsTest : public ::testing::Test {
 	protected:
-	AcceptConnectionsTest() {
-		virtualServers[dummyServerFd] = serverSock;
-	 }
+	AcceptConnectionsTest() { }
 	~AcceptConnectionsTest() override { }
 
 	MockSocketPolicy socketPolicy;
 	MockEpollWrapper epollWrapper;
-	std::map<int, Socket> virtualServers;
 	std::map<int, Connection> connections;
 	std::map<int, std::string> connectionBuffers;
 
@@ -55,7 +52,7 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
 
 	EXPECT_EQ(connections.size(), 1);
 	EXPECT_EQ(connections[dummyClientFd].getServerSocket().host, serverSock.host);
@@ -85,10 +82,10 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 	.Times(3)
 	.WillRepeatedly(Return(true));
 
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
 
 	EXPECT_EQ(connections.size(), 3);
-	
+
 	EXPECT_EQ(connections[dummyClientFd].getServerSocket().host, serverSock.host);
 	EXPECT_EQ(connections[dummyClientFd].getServerSocket().port, serverSock.port);
 	EXPECT_EQ(connections[dummyClientFd].getClientSocket().host, host);
@@ -105,28 +102,12 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 	EXPECT_EQ(connections[dummyClientFd3].getClientSocket().port, port3);
 }
 
-TEST_F(AcceptConnectionsTest, ErrorConditionOnEpoll)
-{
-	uint32_t eventMask = EPOLLERR;
-
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(1);
-
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
-
-	EXPECT_EQ(virtualServers.size(), 0);
-	EXPECT_EQ(connections.size(), 0);
-}
-
 TEST_F(AcceptConnectionsTest, UnkownEvent)
 {
 	uint32_t eventMask = EPOLLOUT;
 
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(virtualServers.size(), 1);
-	EXPECT_EQ(virtualServers[dummyServerFd].host, serverSock.host);
-	EXPECT_EQ(virtualServers[dummyServerFd].port, serverSock.port);
 	EXPECT_EQ(connections.size(), 0);
 }
 
@@ -139,9 +120,8 @@ TEST_F(AcceptConnectionsTest, acceptConnectionFail)
 	.WillOnce(Return(-1))
 	.WillOnce(Return(-2));
 
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(virtualServers.size(), 1);
 	EXPECT_EQ(connections.size(), 0);
 }
 
@@ -159,9 +139,8 @@ TEST_F(AcceptConnectionsTest, retrieveSocketInfoFail)
 	.Times(1).
 	WillOnce(Return(Socket { "", "" }));
 
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(virtualServers.size(), 1);
 	EXPECT_EQ(connections.size(), 0);
 }
 
@@ -182,8 +161,7 @@ TEST_F(AcceptConnectionsTest, registerConnectionFail)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	acceptConnections(socketPolicy, epollWrapper, virtualServers, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
+	acceptConnections(socketPolicy, epollWrapper, connections, connectionBuffers, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(virtualServers.size(), 1);
 	EXPECT_EQ(connections.size(), 0);
 }
