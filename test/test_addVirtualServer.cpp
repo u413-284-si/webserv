@@ -23,7 +23,7 @@ class AddVirtualServerTest : public ::testing::Test {
 
 TEST_F(AddVirtualServerTest, ServerAddSuccess)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
 		.ai_next = nullptr
 	};
@@ -62,7 +62,7 @@ TEST_F(AddVirtualServerTest, resolveListeningAddressesFails)
 
 TEST_F(AddVirtualServerTest, createListeningSocketFails)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
 		.ai_next = nullptr
 	};
@@ -81,7 +81,7 @@ TEST_F(AddVirtualServerTest, createListeningSocketFails)
 
 TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
 		.ai_next = nullptr
 	};
@@ -104,7 +104,7 @@ TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
 
 TEST_F(AddVirtualServerTest, registerVirtualServerFails)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
 		.ai_next = nullptr
 	};
@@ -131,8 +131,8 @@ TEST_F(AddVirtualServerTest, registerVirtualServerFails)
 
 TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
-	struct addrinfo* addrinfo2 = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
+	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
 	*addrinfo = {
 		.ai_next = addrinfo2
 	};
@@ -165,8 +165,8 @@ TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
 
 TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
-	struct addrinfo* addrinfo2 = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
+	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
 	*addrinfo = {
 		.ai_next = addrinfo2
 	};
@@ -200,9 +200,9 @@ TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
 
 TEST_F(AddVirtualServerTest, AddThree)
 {
-	struct addrinfo* addrinfo = new struct addrinfo;
-	struct addrinfo* addrinfo2 = new struct addrinfo;
-	struct addrinfo* addrinfo3 = new struct addrinfo;
+	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
+	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
+	struct addrinfo* addrinfo3 = (struct addrinfo*)malloc(sizeof(*addrinfo3));
 	*addrinfo = {
 		.ai_next = addrinfo2
 	};
