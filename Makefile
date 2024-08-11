@@ -101,7 +101,8 @@ SRC:=	main.cpp \
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	test_AutoindexHandler.cpp \
+TEST_SRC :=	test_addVirtualServer.cpp \
+			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			testHeader.cpp \
 			testRequestLine.cpp \
