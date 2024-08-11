@@ -106,6 +106,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			test_checkDuplicateServer.cpp \
+			test_handleTimeout.cpp \
 			testHeader.cpp \
 			test_initVirtualServers.cpp \
 			test_registerConnection.cpp \
@@ -168,12 +169,12 @@ $(NAME): $(OBJS)
 test: $(TEST)
 
 # Reconfigure flags for linking with gtest
-$(TEST): CXXFLAGS = -Wall -Werror -pthread
+$(TEST): CXXFLAGS = -Wall -Werror -pthread -fsanitize=address
 # Set file counter to number of test files + object files
 $(TEST): TOTAL_FILES := $(words $(TEST_OBJS))
 $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -o $(TEST)
+	$(SILENT)$(CXX) $(TEST_OBJS) -lgtest -lgmock -lgtest_main -fsanitize=address -o $(TEST)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$(TEST) created!$(RESET)\n"
 
