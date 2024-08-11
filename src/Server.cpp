@@ -210,7 +210,7 @@ void Server::handleEvent(struct epoll_event event)
 	}
 	std::map<int, Socket>::const_iterator iter = m_virtualServers.find(event.data.fd);
 	if (iter != m_virtualServers.end())
-		acceptConnections(iter->first, iter->second, eventMask);
+		acceptConnections(m_socketPolicy, m_epollWrapper, m_virtualServers, m_connections, m_connectionBuffers, iter->first, iter->second, eventMask);
 	else
 		handleConnections(event.data.fd, m_connections.at(event.data.fd));
 }
@@ -238,15 +238,17 @@ void Server::handleEvent(struct epoll_event event)
  * @param serverSock Server socket which reported an event.
  * @param eventMask Event mask of the reported event.
  */
-void Server::acceptConnections(const int serverFd, const Socket& serverSock, uint32_t eventMask)
+void acceptConnections(const SocketPolicy& socketPolicy, const EpollWrapper& epollWrapper,
+	std::map<int, Socket>& virtualServers, std::map<int, Connection>& connections,
+	std::map<int, std::string>& connectionBuffers, const int serverFd, const Socket& serverSock, uint32_t eventMask)
 {
 	LOG_DEBUG << "Accept connections on: " << serverSock;
 
 	if ((eventMask & EPOLLERR) != 0) {
 		LOG_ERROR << "Error condition happened on the associated file descriptor of " << serverSock;
-		m_epollWrapper.removeEvent(serverFd);
+		epollWrapper.removeEvent(serverFd);
 		close(serverFd);
-		m_virtualServers.erase(serverFd);
+		virtualServers.erase(serverFd);
 		return;
 	}
 
@@ -262,19 +264,19 @@ void Server::acceptConnections(const int serverFd, const Socket& serverSock, uin
 		// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
 		struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&clientAddr);
 
-		const int clientFd = m_socketPolicy.acceptConnection(serverFd, addrCast, &clientLen);
+		const int clientFd = socketPolicy.acceptConnection(serverFd, addrCast, &clientLen);
 		if (clientFd == -2)
 			return; // No more pending connections
 		if (clientFd == -1)
 			continue; // Error accepting connection
 
-		const Socket clientSock = m_socketPolicy.retrieveSocketInfo(*addrCast, clientLen);
+		const Socket clientSock = socketPolicy.retrieveSocketInfo(*addrCast, clientLen);
 		if (clientSock.host.empty() && clientSock.port.empty()) {
 			close(clientFd);
 			continue;
 		}
 
-		if (!registerConnection(m_epollWrapper, m_connections, m_connectionBuffers, serverSock, clientFd, clientSock))
+		if (!registerConnection(epollWrapper, connections, connectionBuffers, serverSock, clientFd, clientSock))
 			continue;
 	}
 }
