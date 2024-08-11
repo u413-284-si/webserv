@@ -105,13 +105,13 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_addVirtualServer.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
+			test_checkDuplicateServer.cpp \
 			testHeader.cpp \
 			test_initVirtualServers.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
-			test_Server.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
