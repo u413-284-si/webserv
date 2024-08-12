@@ -212,13 +212,13 @@ void Server::handleConnections(int clientSock, RequestParser& parser)
 	request.shallCloseConnection = false;
 
 	Location location;
-	location.setPath("/");
-	location.setRoot("/workspaces/webserv");
-	location.getIndices()[0] = "index.html";
+	location.path = "/";
+	location.root = "/workspaces/webserv";
+	location.indices[0] = "index.html";
 
 	// ServerConfig serverConfig;
 	ConfigServer configServer;
-	configServer.setLocation(location);
+	configServer.locations.push_back(location);
 
 	ConfigFile configFile;
 	configFile.servers.push_back(configServer);

@@ -19,17 +19,17 @@ protected:
 		Location m_location3;
 		Location m_location4;
 
-		m_location1.setPath("/");
-		m_location1.setRoot("/first/location");
-		m_location2.setPath("/test");
-		m_location2.setRoot("/second/location");
-		m_location3.setPath("/test/secret");
-		m_location3.setRoot("/third/location");
-		m_location3.setIndex("index.html");
-		m_location3.setIndex("index.htm");
-		m_location4.setPath("/test/autoindex");
-		m_location4.setRoot("/fourth/location");
-		m_location4.setIsAutoindex(true);
+		m_location1.path = "/";
+		m_location1.root = "/first/location";
+		m_location2.path = "/test";
+		m_location2.root = "/second/location";
+		m_location3.path = "/test/secret";
+		m_location3.root = "/third/location";
+		m_location3.indices.emplace_back("index.html");
+		m_location3.indices.emplace_back("index.htm");
+		m_location4.path = "/test/autoindex";
+		m_location4.root = "/fourth/location";
+		m_location4.isAutoindex = true;
 
 		m_locations.push_back(m_location3);
 		m_locations.push_back(m_location2);

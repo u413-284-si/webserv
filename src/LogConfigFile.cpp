@@ -13,28 +13,28 @@
  */
 std::ostream& operator<<(std::ostream& ostream, const Location& location)
 {
-	ostream << "Path: " << location.getPath() << '\n';
-	ostream << "Root: " << location.getRoot() << '\n';
+	ostream << "Path: " << location.path << '\n';
+	ostream << "Root: " << location.root << '\n';
 	ostream << "Index:\n";
-	std::vector<std::string> indices = location.getIndices();
+	std::vector<std::string> indices = location.indices;
 	for (std::vector<std::string>::const_iterator it = indices.begin(), end = indices.end(); it != end; ++it)
 		ostream << *it << '\n';
-	ostream << "CGI extension: " << location.getCgiExt() << '\n';
-	ostream << "CGI path: " << location.getCgiPath() << '\n';
-	ostream << "Autoindex: " << location.getIsAutoindex() << '\n';
-	ostream << "Max body size: " << location.getMaxBodySize() << '\n';
+	ostream << "CGI extension: " << location.cgiExt << '\n';
+	ostream << "CGI path: " << location.cgiPath << '\n';
+	ostream << "Autoindex: " << location.isAutoindex << '\n';
+	ostream << "Max body size: " << location.maxBodySize << '\n';
 	ostream << "Error pages:\n";
-	std::map<unsigned short, std::string> errorPages = location.getErrorPages();
+	std::map<unsigned short, std::string> errorPages = location.errorPage;
 	for (std::map<unsigned short, std::string>::const_iterator it = errorPages.begin(), end = errorPages.end();
 		 it != end; ++it)
 		ostream << it->first << ": " << it->second << '\n';
 	ostream << "Allowed methods:\n";
-	std::cout << "Get: " << location.getAllowedMethod(MethodGet) << '\n';
-	std::cout << "Post: " << location.getAllowedMethod(MethodPost) << '\n';
-	std::cout << "Delete: " << location.getAllowedMethod(MethodDelete) << '\n';
+	std::cout << "Get: " << location.allowedMethods[MethodGet] << '\n';
+	std::cout << "Post: " << location.allowedMethods[MethodPost] << '\n';
+	std::cout << "Delete: " << location.allowedMethods[MethodDelete] << '\n';
 	ostream << "Returns:\n";
-	std::map<unsigned short, std::string> returns = location.getReturns();
-	for (std::map<unsigned short, std::string>::const_iterator it = returns.begin(); it != returns.end(); ++it) {
+	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
+		 it != location.returns.end(); ++it) {
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	}
 	return ostream;
@@ -49,19 +49,19 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  */
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)
 {
-	ostream << "Server: " << configServer.getServerName() << '\n';
-	ostream << "Root: " << configServer.getRoot() << '\n';
+	ostream << "Server: " << configServer.serverName << '\n';
+	ostream << "Root: " << configServer.root << '\n';
 	ostream << "Listen:\n";
-	std::map<std::string, unsigned short> listen = configServer.getListen();
+	std::map<std::string, unsigned short> listen = configServer.listen;
 	for (std::map<std::string, unsigned short>::const_iterator it = listen.begin(); it != listen.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
-	ostream << "Max body size: " << configServer.getMaxBodySize() << '\n';
+	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
-	std::map<unsigned short, std::string> errorPages = configServer.getErrorPages();
+	std::map<unsigned short, std::string> errorPages = configServer.errorPage;
 	for (std::map<unsigned short, std::string>::const_iterator it = errorPages.begin(); it != errorPages.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Locations:\n";
-	std::vector<Location> locations = configServer.getLocations();
+	std::vector<Location> locations = configServer.locations;
 	for (std::vector<Location>::const_iterator it = locations.begin(); it != locations.end(); ++it)
 		ostream << *it;
 	return ostream;

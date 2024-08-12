@@ -1,4 +1,5 @@
 #include "ConfigFileParser.hpp"
+#include <utility>
 
 /**
  * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
@@ -237,7 +238,7 @@ void ConfigFileParser::readIpAddress(const std::string& value)
 	if (!isIpAddressValid(ip))
 		throw std::runtime_error("Invalid ip address");
 
-	m_configFile.servers[m_serverIndex].setListen(ip, 0);
+	m_configFile.servers[m_serverIndex].listen.insert(std::make_pair(ip, 0));
 }
 
 /**
@@ -291,7 +292,7 @@ void ConfigFileParser::readPort(const std::string& value)
 	if (!isPortValid(port))
 		throw std::runtime_error("Invalid port");
 
-	std::map<std::string, unsigned short> listen = m_configFile.servers[m_serverIndex].getListen();
+	std::map<std::string, unsigned short> listen = m_configFile.servers[m_serverIndex].listen;
 	for (std::map<std::string, unsigned short>::iterator it = listen.begin(); it != listen.end(); it++)
 		if (it->second == 0)
 			it->second = std::atoi(port.c_str());
@@ -322,9 +323,9 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
 		rootPath = rootPath.substr(0, rootPath.length() - 1);
 
 	if (block == ServerBlock)
-		m_configFile.servers[m_serverIndex].setRoot(rootPath);
+		m_configFile.servers[m_serverIndex].root = rootPath;
 	else if (block == LocationBlock)
-		m_configFile.servers[m_serverIndex].getLocations()[m_locationIndex].setRoot(rootPath);
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].root = rootPath;
 }
 
 /**
@@ -468,7 +469,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 	std::string value;
 	std::string line = m_configFile.currentLine;
 
-	m_configFile.servers[m_serverIndex].setLocation(location);
+	m_configFile.servers[m_serverIndex].locations.push_back(location);
 
 	while (!line.empty()) {
 		if (isSemicolonMissing(line))
@@ -488,5 +489,5 @@ void ConfigFileParser::readLocationConfigLine(void)
 		processRemainingLine(line);
 	}
 
-	m_configFile.servers[m_serverIndex].setLocation(location);
+	m_configFile.servers[m_serverIndex].locations.push_back(location);
 }
