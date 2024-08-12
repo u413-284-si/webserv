@@ -1,4 +1,5 @@
 #include "ConfigFileParser.hpp"
+#include <cstddef>
 #include <utility>
 
 /**
@@ -212,36 +213,6 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress) const
 }
 
 /**
- * @brief Checks if the ip address is valid and reads it if that is the case
- *
- * For the case that no semicolon is can be found in the listen directive, the function checks
- * if the defined values is valid port. If that is true, the function returns.
- * If that is not true, the function checks if it is a valid ip address and reads it.
- *
- */
-void ConfigFileParser::readIpAddress(const std::string& value)
-{
-	size_t colonIndex = value.find(':');
-	std::string ip;
-
-	if (colonIndex == std::string::npos) {
-		size_t semicolonIndex = value.find(';');
-		std::string num = value.substr(0, semicolonIndex);
-		if (isPortValid(num))
-			return;
-		if (value.find('.') == std::string::npos)
-			throw std::runtime_error("Invalid port");
-		ip = num;
-	} else
-		ip = value.substr(0, colonIndex);
-
-	if (!isIpAddressValid(ip))
-		throw std::runtime_error("Invalid ip address");
-
-	m_configFile.servers[m_serverIndex].listen.insert(std::make_pair(ip, 0));
-}
-
-/**
  * @brief Checks if the value of the listen directive is valid and reads it if that is the case
  *
  * The function makes sure that the port is valid in the following ways:
@@ -263,39 +234,6 @@ bool ConfigFileParser::isPortValid(const std::string& port) const
 
 	int long portNum = std::strtol(port.c_str(), NULL, base);
 	return !(portNum <= minPort || portNum > maxPort);
-}
-
-/**
- * @brief Checks if the port is valid and reads it if that is the case
- *
- * For the case that no semicolon is can be found in the listen directive, the function checks
- * if the defined values is valid ip address. If that is true, the function returns.
- * If that is not true, the function and checks if it is a valid port and reads it.
- *
- */
-void ConfigFileParser::readPort(const std::string& value)
-{
-	size_t colonIndex = value.find(':');
-	size_t semicolonIndex = value.find(';');
-	std::string port;
-
-	if (colonIndex == std::string::npos) {
-		std::string num = value.substr(0, semicolonIndex);
-		if (isIpAddressValid(num))
-			return;
-		if (value.find('.') != std::string::npos)
-			throw std::runtime_error("Invalid ip address");
-		port = num;
-	} else
-		port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
-
-	if (!isPortValid(port))
-		throw std::runtime_error("Invalid port");
-
-	std::map<std::string, unsigned short> listen = m_configFile.servers[m_serverIndex].listen;
-	for (std::map<std::string, unsigned short>::iterator it = listen.begin(); it != listen.end(); it++)
-		if (it->second == 0)
-			it->second = std::atoi(port.c_str());
 }
 
 /**
@@ -329,6 +267,54 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
 }
 
 /**
+ * @brief Reads the socket (inlcuding ip address and port)
+ *
+ * The function checks if the socket is valid and reads it if that is the case.
+ *
+ * At first the functions checks if there is a colon in the value of the directive.
+ * If that is the case, the function reads the ip address AND port.
+ *
+ * When there is no colon, the function checks if there is a dot in the value of the directive.
+ * If that is the case, the function checks and reads the ip address.
+ * Otherwise it checks and reads the port.
+ *
+ * @param value The value of the directive
+ */
+void ConfigFileParser::readSocket(const std::string& value)
+{
+	size_t colonIndex = value.find(':');
+	size_t semicolonIndex = value.find(';');
+	size_t dot = value.find('.');
+
+	if (colonIndex != std::string::npos) {
+		std::string ipAddress = value.substr(0, colonIndex);
+		if (!isIpAddressValid(ipAddress))
+			throw std::runtime_error("Invalid ip address");
+
+		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
+		if (!isPortValid(port))
+			throw std::runtime_error("Invalid port");
+
+		m_configFile.servers[m_serverIndex].listen.insert(std::make_pair(ipAddress, port));
+	} else {
+		if (dot == std::string::npos) {
+			std::string port = value.substr(0, semicolonIndex);
+			if (!isPortValid(value))
+				throw std::runtime_error("Invalid port");
+
+			m_configFile.servers[m_serverIndex].listen.insert(std::make_pair("127.0.0.1", port));
+
+		} else {
+			std::string ipAddress = value.substr(0, semicolonIndex);
+			if (!isIpAddressValid(ipAddress))
+				throw std::runtime_error("Invalid ip address");
+
+			m_configFile.servers[m_serverIndex].listen.insert(std::make_pair(ipAddress, "80"));
+		}
+	}
+}
+
+/**
  * @brief Reads and checks the value of the directive in the current line of the config file
  *
  * @details This function is called when the directive is valid.
@@ -340,8 +326,7 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
 	if (directive == "listen") {
-		readIpAddress(value);
-		readPort(value);
+		readSocket(value);
 	} else if (directive == "root")
 		readRootPath(ServerBlock, value);
 }

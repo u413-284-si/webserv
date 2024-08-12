@@ -18,7 +18,7 @@ ConfigServer::ConfigServer(void)
 	: root("html")
 	, maxBodySize(1)
 {
-	listen.insert(std::make_pair("127.0.0.1", 80));
+	listen.insert(std::make_pair("127.0.0.1", "80"));
 	errorPage = std::map<unsigned short, std::string>();
 	locations = std::vector<Location>();
 }

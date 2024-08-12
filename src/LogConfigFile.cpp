@@ -52,8 +52,8 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer
 	ostream << "Server: " << configServer.serverName << '\n';
 	ostream << "Root: " << configServer.root << '\n';
 	ostream << "Listen:\n";
-	std::map<std::string, unsigned short> listen = configServer.listen;
-	for (std::map<std::string, unsigned short>::const_iterator it = listen.begin(); it != listen.end(); ++it)
+	std::map<std::string, std::string> listen = configServer.listen;
+	for (std::map<std::string, std::string>::const_iterator it = listen.begin(); it != listen.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
