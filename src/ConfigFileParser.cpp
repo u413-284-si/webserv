@@ -26,25 +26,10 @@ ConfigFileParser::ConfigFileParser(void)
 }
 
 /**
- * @brief PRIVATE Construct a new ConfigFileParser:: ConfigFileParser object with copy.
+ * @brief PUBLIC Destruct a Config File Parser:: Config File Parser object
  *
- * The copy constructor is private to prevent direct object creation.
- * @param ref The ConfigFileParser object to copy
  */
-ConfigFileParser::ConfigFileParser(const ConfigFileParser& ref) { static_cast<void>(ref); }
-
-/**
- * @brief PRIVATE Overload of the assignment operator.
- *
- * The assigment operator is private to prevent direct object creation.
- * @param ref The ConfigFileParser object to assign.
- * @return ConfigFileParser&  The ConfigFileParser object.
- */
-ConfigFileParser& ConfigFileParser::operator=(const ConfigFileParser& ref)
-{
-	static_cast<void>(ref);
-	return *this;
-}
+ConfigFileParser::~ConfigFileParser(void) { }
 
 /**
  * @brief Parses the config file into a ConfigFile object and returns this object
