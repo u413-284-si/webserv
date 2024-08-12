@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "utilities.hpp"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -42,8 +43,6 @@ private:
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
 	void readSocket(const std::string& value);
-	void readPort(const std::string& value);
-	void readIpAddress(const std::string& value);
 	void readRootPath(int block, const std::string& value);
 
 	// Checker functions
@@ -55,6 +54,5 @@ private:
 
 	// Helper functions
 	void readAndTrimLine(void);
-	void removeLeadingAndTrailingSpaces(std::string& line) const;
 	void processRemainingLine(std::string& line) const;
 };

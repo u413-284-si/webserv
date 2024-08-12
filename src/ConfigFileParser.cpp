@@ -1,6 +1,6 @@
 #include "ConfigFileParser.hpp"
+#include "utilities.hpp"
 #include <cstddef>
-#include <utility>
 
 /**
  * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
@@ -125,18 +125,22 @@ bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
 void ConfigFileParser::readAndTrimLine(void)
 {
 	getline(m_configFile.stream, m_configFile.currentLine);
-	removeLeadingAndTrailingSpaces(m_configFile.currentLine);
+	std::cout << "line before: '" << m_configFile.currentLine << "'" << std::endl;
+	m_configFile.currentLine = webutils::trimLeadingWhitespaces(m_configFile.currentLine);
+	webutils::trimTrailingWhiteSpaces(m_configFile.currentLine);
+	std::cout << "line after: '" << m_configFile.currentLine << "'" << std::endl;
+	std::cout << std::endl;
 }
 
 /**
  * @brief Removes leading and trailing spaces
  * 		  from the current line of the config file
  */
-void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string& line) const
-{
-	line.erase(0, line.find_first_not_of(' '));
-	line.erase(line.find_last_not_of(' ') + 1);
-}
+// void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string& line) const
+// {
+// 	line.erase(0, line.find_first_not_of(' '));
+// 	line.erase(line.find_last_not_of(' ') + 1);
+// }
 
 /**
  * @brief Checks if the directive is valid for the given block
@@ -342,7 +346,8 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
 	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
 	std::string directive = line.substr(0, firstWhiteSpaceIndex);
 
-	removeLeadingAndTrailingSpaces(directive);
+	directive = webutils::trimLeadingWhitespaces(directive);
+	webutils::trimTrailingWhiteSpaces(directive);
 
 	return directive;
 }
@@ -363,7 +368,8 @@ std::string ConfigFileParser::getValue(const std::string& line) const
 	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
 	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
-	removeLeadingAndTrailingSpaces(value);
+	value = webutils::trimLeadingWhitespaces(value);
+	webutils::trimTrailingWhiteSpaces(value);
 
 	return value;
 }
@@ -385,7 +391,8 @@ void ConfigFileParser::processRemainingLine(std::string& line) const
 
 	if (line.size() > semicolonIndex + 1) {
 		line = line.substr(semicolonIndex + 1);
-		removeLeadingAndTrailingSpaces(line);
+		line = webutils::trimLeadingWhitespaces(line);
+		webutils::trimTrailingWhiteSpaces(line);
 	} else
 		line.clear();
 }
