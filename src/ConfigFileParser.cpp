@@ -272,7 +272,7 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
  * The function checks if the socket is valid and reads it if that is the case.
  *
  * At first the functions checks if there is a colon in the value of the directive.
- * If that is the case, the function reads the ip address AND port.
+ * If that is the case, the function checks and reads the ip address AND port.
  *
  * When there is no colon, the function checks if there is a dot in the value of the directive.
  * If that is the case, the function checks and reads the ip address.
