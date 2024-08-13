@@ -127,7 +127,6 @@ void ConfigFileParser::readAndTrimLine(void)
 	getline(m_configFile.stream, m_configFile.currentLine);
 	m_configFile.currentLine = webutils::trimLeadingWhitespaces(m_configFile.currentLine);
 	webutils::trimTrailingWhiteSpaces(m_configFile.currentLine);
-	std::cout << std::endl;
 }
 
 /**
@@ -274,9 +273,9 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
  */
 void ConfigFileParser::readSocket(const std::string& value)
 {
-	size_t colonIndex = value.find(':');
-	size_t semicolonIndex = value.find(';');
-	size_t dot = value.find('.');
+	const size_t colonIndex = value.find(':');
+	const size_t semicolonIndex = value.find(';');
+	const size_t dot = value.find('.');
 
 	if (colonIndex != std::string::npos) {
 		std::string ipAddress = value.substr(0, colonIndex);
