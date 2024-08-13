@@ -94,7 +94,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 
 	tmpStream.open(configFilePath.c_str());
 
-	while (getline(tmpStream, tmpLine)) {
+	while (!(getline(tmpStream, tmpLine).fail())) {
 		for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it) {
 			if (*it == '{')
 				brackets.push('{');
