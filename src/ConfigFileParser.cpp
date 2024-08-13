@@ -347,9 +347,6 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
  */
 std::string ConfigFileParser::getValue(const std::string& line) const
 {
-	if (getDirective(line) == "location")
-		return line;
-
 	size_t semicolonIndex = line.find(';');
 
 	size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
@@ -407,19 +404,19 @@ void ConfigFileParser::readServerConfigLine(void)
 			throw std::runtime_error("Semicolon missing");
 
 		const std::string directive = getDirective(line);
-		const std::string value = getValue(line);
-
-		if ((value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos) && directive != "location")
-			throw std::runtime_error("'" + directive + "'" + " directive has no value");
-
-		if (!isDirectiveValid(directive, ServerBlock))
-			throw std::runtime_error("Invalid server directive");
 		if (directive == "location") {
 			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
 				readLocationConfigLine();
 			m_locationIndex++;
 			break;
 		}
+		const std::string value = getValue(line);
+
+		if ((value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos))
+			throw std::runtime_error("'" + directive + "'" + " directive has no value");
+
+		if (!isDirectiveValid(directive, ServerBlock))
+			throw std::runtime_error("Invalid server directive");
 
 		readServerDirectiveValue(directive, value);
 
