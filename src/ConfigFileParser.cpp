@@ -364,10 +364,10 @@ std::string ConfigFileParser::getValue(const std::string& line) const
 /**
  * @brief Processes the line after the directive and value got extracted
  *
- * It can be the case that multiple directorives are in the same line.
+ * It can be the case that multiple directives are in the same line.
  * Therefore the line must still get read until all directives got processed.
  *
- * If the line still contains more then one directive, the processed directive gets skipped.
+ * If the line still contains more then one directive, the already processed directive gets skipped.
  * If the line does not contain any more directives, the line gets cleared.
  *
  * @param line The current line
