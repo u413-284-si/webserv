@@ -1,64 +1,81 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
 
-TEST(checkDuplicateServer, EmptyMap)
+using ::testing::Return;
+
+class CheckDuplicateServerTest : public ::testing::Test {
+	protected:
+	CheckDuplicateServerTest() : server(configFile, epollWrapper, socketPolicy) { }
+	~CheckDuplicateServerTest() override { }
+
+	ConfigFile configFile;
+	MockEpollWrapper epollWrapper;
+	MockSocketPolicy socketPolicy;
+	Server server;
+};
+
+TEST_F(CheckDuplicateServerTest, EmptyMap)
 {
-	std::map<int, Socket> virtualServers;
+	std::string host = "127.0.0.1";
+	std::string port = "8080";
+
+	EXPECT_EQ(checkDuplicateServer(server, host, port), false);
+}
+
+TEST_F(CheckDuplicateServerTest, NoDuplicate)
+{
+	EXPECT_CALL(epollWrapper, addEvent)
+	.Times(2)
+	.WillRepeatedly(Return(true));
+
+	server.registerVirtualServer(10, (Socket { "127.0.0.1", "7070" }));
+	server.registerVirtualServer(20, (Socket { "192.168.0.1", "8080" }));
 
 	std::string host = "127.0.0.1";
 	std::string port = "8080";
 
-	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), false);
+	EXPECT_EQ(checkDuplicateServer(server, host, port), false);
 }
 
-TEST(checkDuplicateServer, NoDuplicate)
+TEST_F(CheckDuplicateServerTest, DuplicateServer)
 {
-	std::map<int, Socket> virtualServers;
-	virtualServers[1] = Socket { "127.0.0.1", "7070" };
-	virtualServers[2] = Socket { "192.168.0.1", "8080" };
+	EXPECT_CALL(epollWrapper, addEvent)
+	.Times(3)
+	.WillRepeatedly(Return(true));
+
+	server.registerVirtualServer(10, (Socket { "127.0.0.1", "6060" }));
+	server.registerVirtualServer(20, (Socket { "127.0.0.1", "7070" }));
+	server.registerVirtualServer(30, (Socket { "127.0.0.1", "8080" }));
 
 	std::string host = "127.0.0.1";
 	std::string port = "8080";
 
-	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), false);
+	EXPECT_EQ(checkDuplicateServer(server, host, port), true);
 }
 
-TEST(checkDuplicateServer, DuplicateServer)
+TEST_F(CheckDuplicateServerTest, DuplicateServerLocalhost)
 {
-	std::map<int, Socket> virtualServers;
-	virtualServers[1] = Socket { "127.0.0.1", "6060" };
-	virtualServers[2] = Socket { "127.0.0.1", "7070" };
-	virtualServers[3] = Socket { "127.0.0.1", "8080" };
+	EXPECT_CALL(epollWrapper, addEvent)
+	.Times(5)
+	.WillRepeatedly(Return(true));
 
-	std::string host = "127.0.0.1";
-	std::string port = "8080";
-
-	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), true);
-}
-
-TEST(checkDuplicateServer, DuplicateServerLocalhost)
-{
-	std::map<int, Socket> virtualServers;
-	virtualServers[1] = Socket { "127.0.0.1", "6060" };
-	virtualServers[2] = Socket { "127.0.0.1", "7070" };
-	virtualServers[3] = Socket { "127.0.0.1", "8080" };
-	virtualServers[4] = Socket { "::1", "9090" };
-	virtualServers[5] = Socket { "::1", "1010" };
+	server.registerVirtualServer(10, (Socket { "127.0.0.1", "6060" }));
+	server.registerVirtualServer(20, (Socket { "127.0.0.1", "7070" }));
+	server.registerVirtualServer(30, (Socket { "127.0.0.1", "8080" }));
+	server.registerVirtualServer(40, (Socket { "::1", "9090" }));
+	server.registerVirtualServer(50, (Socket { "::1", "1010" }));
 
 	std::string host = "localhost";
 	std::string port = "7070";
+	std::string port2 = "2020";
+	std::string port3 = "1010";
 
-	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), true);
-
-	port = "2020";
-
-	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), false);
-
-	port = "1010";
-
-	EXPECT_EQ(checkDuplicateServer(host, port, virtualServers), true);
+	EXPECT_EQ(checkDuplicateServer(server, host, port), true);
+	EXPECT_EQ(checkDuplicateServer(server, host, port2), false);
+	EXPECT_EQ(checkDuplicateServer(server, host, port3), true);
 }

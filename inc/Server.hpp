@@ -53,6 +53,8 @@ public:
 
 	const std::map<int, Socket>& getVirtualServers() const;
 	const std::map<int, Connection>& getConnections() const;
+	const std::vector<ServerConfig>& getServerConfigs() const;
+
 
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);

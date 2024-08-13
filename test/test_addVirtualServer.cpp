@@ -9,16 +9,20 @@ using ::testing::Return;
 
 class AddVirtualServerTest : public ::testing::Test {
 	protected:
-	AddVirtualServerTest() { }
+	AddVirtualServerTest() : server(configFile, epollWrapper, socketPolicy) { }
 	~AddVirtualServerTest() override { }
 
-	std::map<int, Socket> virtualServers;
-	MockSocketPolicy socketPolicy;
+	ConfigFile configFile;
 	MockEpollWrapper epollWrapper;
+	MockSocketPolicy socketPolicy;
+	Server server;
+
 	std::string host = "127.0.0.1";
 	std::string port = "8080";
 	const int backlog = 10;
 	const int dummyFd = 10;
+	const int dummyFd2 = 11;
+	const int dummyFd3 = 12;
 };
 
 TEST_F(AddVirtualServerTest, ServerAddSuccess)
@@ -44,10 +48,10 @@ TEST_F(AddVirtualServerTest, ServerAddSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), true);
-	EXPECT_EQ(virtualServers.size(), 1);
-	EXPECT_EQ(virtualServers[dummyFd].host, host);
-	EXPECT_EQ(virtualServers[dummyFd].port, port);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(server.getVirtualServers().size(), 1);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
 }
 
 TEST_F(AddVirtualServerTest, resolveListeningAddressesFails)
@@ -56,8 +60,8 @@ TEST_F(AddVirtualServerTest, resolveListeningAddressesFails)
 	.Times(1)
 	.WillOnce(Return(nullptr));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), false);
-	EXPECT_EQ(virtualServers.size(), 0);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
 TEST_F(AddVirtualServerTest, createListeningSocketFails)
@@ -75,8 +79,8 @@ TEST_F(AddVirtualServerTest, createListeningSocketFails)
 	.Times(1)
 	.WillOnce(Return(-1));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), false);
-	EXPECT_EQ(virtualServers.size(), 0);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
 TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
@@ -98,8 +102,8 @@ TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
 	.Times(1).
 	WillOnce(Return(Socket { "", "" }));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), false);
-	EXPECT_EQ(virtualServers.size(), 0);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
 TEST_F(AddVirtualServerTest, registerVirtualServerFails)
@@ -125,8 +129,8 @@ TEST_F(AddVirtualServerTest, registerVirtualServerFails)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), false);
-	EXPECT_EQ(virtualServers.size(), 0);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
 TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
@@ -157,10 +161,10 @@ TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), true);
-	EXPECT_EQ(virtualServers.size(), 1);
-	EXPECT_EQ(virtualServers[dummyFd].host, host);
-	EXPECT_EQ(virtualServers[dummyFd].port, port);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(server.getVirtualServers().size(), 1);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
 }
 
 TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
@@ -192,10 +196,10 @@ TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), true);
-	EXPECT_EQ(virtualServers.size(), 1);
-	EXPECT_EQ(virtualServers[dummyFd].host, host);
-	EXPECT_EQ(virtualServers[dummyFd].port, port);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(server.getVirtualServers().size(), 1);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
 }
 
 TEST_F(AddVirtualServerTest, AddThree)
@@ -220,8 +224,8 @@ TEST_F(AddVirtualServerTest, AddThree)
 	EXPECT_CALL(socketPolicy, createListeningSocket)
 	.Times(3)
 	.WillOnce(Return(dummyFd))
-	.WillOnce(Return(dummyFd + 1))
-	.WillOnce(Return(dummyFd + 2));
+	.WillOnce(Return(dummyFd2))
+	.WillOnce(Return(dummyFd3));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
 	.Times(3)
@@ -231,12 +235,12 @@ TEST_F(AddVirtualServerTest, AddThree)
 	.Times(3)
 	.WillRepeatedly(Return(true));
 
-	EXPECT_EQ(addVirtualServer(host, backlog, port, virtualServers, epollWrapper, socketPolicy), true);
-	EXPECT_EQ(virtualServers.size(), 3);
-	EXPECT_EQ(virtualServers[dummyFd].host, host);
-	EXPECT_EQ(virtualServers[dummyFd].port, port);
-	EXPECT_EQ(virtualServers[dummyFd + 1].host, host);
-	EXPECT_EQ(virtualServers[dummyFd + 1].port, port);
-	EXPECT_EQ(virtualServers[dummyFd + 2].host, host);
-	EXPECT_EQ(virtualServers[dummyFd + 2].port, port);
+	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(server.getVirtualServers().size(), 3);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd2).host, host);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd2).port, port);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd3).host, host);
+	EXPECT_EQ(server.getVirtualServers().at(dummyFd3).port, port);
 }

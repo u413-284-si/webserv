@@ -9,22 +9,32 @@ using ::testing::Return;
 
 class InitVirtualServersTest : public ::testing::Test {
 	protected:
-	InitVirtualServersTest() {
+	InitVirtualServersTest()
+	{
+		ServerConfig serverConfig;
 		serverConfig.host = "127.0.0.1";
 		serverConfig.port = 8080;
+
+		ServerConfig serverConfig2;
 		serverConfig2.host = "localhost";
 		serverConfig2.port = 7070;
-		serverConfigs.push_back(serverConfig);
-		serverConfigs.push_back(serverConfig2);
-	}
-	~InitVirtualServersTest() override { }
 
-	ServerConfig serverConfig;
-	ServerConfig serverConfig2;
-	std::vector<ServerConfig> serverConfigs;
-	MockSocketPolicy socketPolicy;
+		configFile.serverConfigs.push_back(serverConfig);
+		configFile.serverConfigs.push_back(serverConfig2);
+
+		server = new Server(configFile, epollWrapper, socketPolicy);
+	}
+
+	~InitVirtualServersTest() override
+	{
+		delete server;
+	}
+
+	ConfigFile configFile;
 	MockEpollWrapper epollWrapper;
-	std::map<int, Socket> virtualServers;
+	MockSocketPolicy socketPolicy;
+	Server* server;
+
 	const int backlog = 10;
 
 	const int dummyFd = 10;
@@ -69,10 +79,10 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	.Times(2)
 	.WillRepeatedly(Return(true));
 
-	EXPECT_EQ(initVirtualServers(backlog, serverConfigs, virtualServers, epollWrapper, socketPolicy), true);
-	EXPECT_EQ(virtualServers.size(), 2);
-	EXPECT_EQ(virtualServers[dummyFd].host, serverConfig.host);
-	EXPECT_EQ(virtualServers[dummyFd].port, webutils::toString(serverConfig.port));
-	EXPECT_EQ(virtualServers[dummyFd2].host, serverConfig2.host);
-	EXPECT_EQ(virtualServers[dummyFd2].port, webutils::toString(serverConfig2.port));
+	EXPECT_EQ(initVirtualServers(*server, backlog, server->getServerConfigs()), true);
+	EXPECT_EQ(server->getVirtualServers().size(), 2);
+	EXPECT_EQ(server->getVirtualServers().at(dummyFd).host, configFile.serverConfigs[0].host);
+	EXPECT_EQ(server->getVirtualServers().at(dummyFd).port, webutils::toString(configFile.serverConfigs[0].port));
+	EXPECT_EQ(server->getVirtualServers().at(dummyFd2).host, configFile.serverConfigs[1].host);
+	EXPECT_EQ(server->getVirtualServers().at(dummyFd2).port, webutils::toString(configFile.serverConfigs[1].port));
 }

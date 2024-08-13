@@ -1,19 +1,23 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockSocketPolicy.hpp"
 #include "Server.hpp"
 
 using ::testing::Return;
 
 class RegisterConnectionTest : public ::testing::Test {
 	protected:
-	RegisterConnectionTest() { }
+	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy) { }
 	~RegisterConnectionTest() override { }
 
+	ConfigFile configFile;
 	MockEpollWrapper epollWrapper;
-	std::map<int, Connection> connections;
-	std::map<int, std::string> connectionBuffers;
+	MockSocketPolicy socketPolicy;
+	Server server;
+
 	Socket serverSock = {
 		"127.0.0.1",
 		"8080" };
@@ -29,12 +33,16 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	EXPECT_EQ(registerConnection(serverSock, dummyFd, clientSocket, connections, connectionBuffers, epollWrapper), true);
-	EXPECT_EQ(connections.size(), 1);
-	EXPECT_EQ(connections[dummyFd].getServerSocket().host, serverSock.host);
-	EXPECT_EQ(connections[dummyFd].getServerSocket().port, serverSock.port);
-	EXPECT_EQ(connections[dummyFd].getClientSocket().host, clientSocket.host);
-	EXPECT_EQ(connections[dummyFd].getClientSocket().port, clientSocket.port);
+	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), true);
+	EXPECT_EQ(server.getConnections().size(), 1);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().host, clientSocket.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().port, clientSocket.port);
+
+	// destructor calls removeEvent
+	EXPECT_CALL(epollWrapper, removeEvent)
+	.Times(1);
 }
 
 TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
@@ -43,8 +51,8 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	EXPECT_EQ(registerConnection(serverSock, dummyFd, clientSocket, connections, connectionBuffers, epollWrapper), false);
-	EXPECT_EQ(connections.size(), 0);
+	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), false);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 TEST_F(RegisterConnectionTest, OverwriteOldConnection)
@@ -55,19 +63,24 @@ TEST_F(RegisterConnectionTest, OverwriteOldConnection)
 	Socket oldClientSocket = {
 		"1.1.1.1",
 		"11111" };
-	Connection oldConnection(oldServerSock, oldClientSocket);
-	connections[dummyFd] = oldConnection;
-	connectionBuffers[dummyFd] = "Old connection buffer";
 
 	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(1)
+	.Times(2)
 	.WillRepeatedly(Return(true));
 
-	EXPECT_EQ(registerConnection(serverSock, dummyFd, clientSocket, connections, connectionBuffers, epollWrapper), true);
-	EXPECT_EQ(connections.size(), 1);
-	EXPECT_EQ(connections[dummyFd].getServerSocket().host, serverSock.host);
-	EXPECT_EQ(connections[dummyFd].getServerSocket().port, serverSock.port);
-	EXPECT_EQ(connections[dummyFd].getClientSocket().host, clientSocket.host);
-	EXPECT_EQ(connections[dummyFd].getClientSocket().port, clientSocket.port);
-	EXPECT_EQ(connectionBuffers[dummyFd], "");
+	EXPECT_EQ(server.registerConnection(oldServerSock, dummyFd, oldClientSocket), true);
+	EXPECT_EQ(server.getConnections().size(), 1);
+
+	// reuse the same dummyFd
+	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), true);
+	EXPECT_EQ(server.getConnections().size(), 1);
+
+	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().host, clientSocket.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().port, clientSocket.port);
+
+	// destructor calls removeEvent
+	EXPECT_CALL(epollWrapper, removeEvent)
+	.Times(1);
 }

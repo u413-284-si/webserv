@@ -36,8 +36,6 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
 {
-	if (!initVirtualServers(*this, m_backlog, m_configFile.serverConfigs))
-		throw std::runtime_error("Failed to initialize virtual servers");
 }
 
 /**
@@ -506,3 +504,5 @@ int Server::acceptConnection(int sockfd, struct sockaddr* addr, socklen_t* addrl
 const std::map<int, Socket>& Server::getVirtualServers() const { return m_virtualServers; }
 
 const std::map<int, Connection>& Server::getConnections() const { return m_connections; }
+
+const std::vector<ServerConfig>& Server::getServerConfigs() const { return m_configFile.serverConfigs; }

@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "ConfigFile.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockEpollWrapper.hpp"
 #include "Server.hpp"
@@ -9,13 +10,13 @@ using ::testing::Return;
 
 class AcceptConnectionsTest : public ::testing::Test {
 	protected:
-	AcceptConnectionsTest() { }
+	AcceptConnectionsTest() : server(configFile, epollWrapper, socketPolicy) { }
 	~AcceptConnectionsTest() override { }
 
-	MockSocketPolicy socketPolicy;
+	ConfigFile configFile;
 	MockEpollWrapper epollWrapper;
-	std::map<int, Connection> connections;
-	std::map<int, std::string> connectionBuffers;
+	MockSocketPolicy socketPolicy;
+	Server server;
 
 	const int dummyServerFd = 10;
 	Socket serverSock = {
@@ -52,13 +53,17 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 	.Times(1)
 	.WillOnce(Return(true));
 
-	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
+	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(connections.size(), 1);
-	EXPECT_EQ(connections[dummyClientFd].getServerSocket().host, serverSock.host);
-	EXPECT_EQ(connections[dummyClientFd].getServerSocket().port, serverSock.port);
-	EXPECT_EQ(connections[dummyClientFd].getClientSocket().host, host);
-	EXPECT_EQ(connections[dummyClientFd].getClientSocket().port, port);
+	EXPECT_EQ(server.getConnections().size(), 1);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().host, host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().port, port);
+
+	// destructor calls removeEvent
+	EXPECT_CALL(epollWrapper, removeEvent)
+	.Times(1);
 }
 
 TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
@@ -82,33 +87,37 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 	.Times(3)
 	.WillRepeatedly(Return(true));
 
-	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
+	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(connections.size(), 3);
+	EXPECT_EQ(server.getConnections().size(), 3);
 
-	EXPECT_EQ(connections[dummyClientFd].getServerSocket().host, serverSock.host);
-	EXPECT_EQ(connections[dummyClientFd].getServerSocket().port, serverSock.port);
-	EXPECT_EQ(connections[dummyClientFd].getClientSocket().host, host);
-	EXPECT_EQ(connections[dummyClientFd].getClientSocket().port, port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().host, host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().port, port);
 
-	EXPECT_EQ(connections[dummyClientFd2].getServerSocket().host, serverSock.host);
-	EXPECT_EQ(connections[dummyClientFd2].getServerSocket().port, serverSock.port);
-	EXPECT_EQ(connections[dummyClientFd2].getClientSocket().host, host2);
-	EXPECT_EQ(connections[dummyClientFd2].getClientSocket().port, port2);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getServerSocket().host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getServerSocket().port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getClientSocket().host, host2);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getClientSocket().port, port2);
 
-	EXPECT_EQ(connections[dummyClientFd3].getServerSocket().host, serverSock.host);
-	EXPECT_EQ(connections[dummyClientFd3].getServerSocket().port, serverSock.port);
-	EXPECT_EQ(connections[dummyClientFd3].getClientSocket().host, host3);
-	EXPECT_EQ(connections[dummyClientFd3].getClientSocket().port, port3);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getServerSocket().host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getServerSocket().port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getClientSocket().host, host3);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getClientSocket().port, port3);
+
+	// destructor calls removeEvent
+	EXPECT_CALL(epollWrapper, removeEvent)
+	.Times(3);
 }
 
 TEST_F(AcceptConnectionsTest, UnkownEvent)
 {
 	uint32_t eventMask = EPOLLOUT;
 
-	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
-	
-	EXPECT_EQ(connections.size(), 0);
+	acceptConnections(server, dummyServerFd, serverSock, eventMask);
+
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 TEST_F(AcceptConnectionsTest, acceptConnectionFail)
@@ -120,9 +129,9 @@ TEST_F(AcceptConnectionsTest, acceptConnectionFail)
 	.WillOnce(Return(-1))
 	.WillOnce(Return(-2));
 
-	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
+	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(connections.size(), 0);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 
@@ -139,9 +148,9 @@ TEST_F(AcceptConnectionsTest, retrieveSocketInfoFail)
 	.Times(1).
 	WillOnce(Return(Socket { "", "" }));
 
-	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
+	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(connections.size(), 0);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 TEST_F(AcceptConnectionsTest, registerConnectionFail)
@@ -161,7 +170,7 @@ TEST_F(AcceptConnectionsTest, registerConnectionFail)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	acceptConnections(dummyServerFd, serverSock, eventMask, connections, connectionBuffers, epollWrapper, socketPolicy);
+	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
-	EXPECT_EQ(connections.size(), 0);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
