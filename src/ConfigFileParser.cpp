@@ -108,11 +108,11 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 }
 
 /**
- * @brief Checks if the line contains a semicolon
+ * @brief Checks if the line contains a semicolon, except for the directive "location"
  *
  * @param line The current line to be checked
- * @return true If the line does not contain a semicolon
- * @return false If the line contains a semicolon
+ * @return true If the line does not contain a semicolon and is not the directive "location"
+ * @return false If the line contains a semicolon or the directive is "location"
  */
 bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
 {
