@@ -204,7 +204,7 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress)
 }
 
 /**
- * @brief Checks if the value of the listen directive is valid and reads it if that is the case
+ * @brief Checks if the port number of the listen directive is valid
  *
  * The function makes sure that the port is valid in the following ways:
  * 1. The port must not contain a character other than '0'-'9'
