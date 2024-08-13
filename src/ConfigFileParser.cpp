@@ -398,8 +398,6 @@ void ConfigFileParser::processRemainingLine(std::string& line) const
 void ConfigFileParser::readServerConfigLine(void)
 {
 	ConfigServer server;
-	std::string directive;
-	std::string value;
 	std::string line = m_configFile.currentLine;
 
 	m_configFile.servers.push_back(server);
@@ -408,8 +406,8 @@ void ConfigFileParser::readServerConfigLine(void)
 		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 
-		directive = getDirective(line);
-		value = getValue(line);
+		const std::string directive = getDirective(line);
+		const std::string value = getValue(line);
 
 		if ((value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos) && directive != "location")
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
@@ -444,8 +442,6 @@ void ConfigFileParser::readServerConfigLine(void)
 void ConfigFileParser::readLocationConfigLine(void)
 {
 	Location location;
-	std::string directive;
-	std::string value;
 	std::string line = m_configFile.currentLine;
 
 	m_configFile.servers[m_serverIndex].locations.push_back(location);
@@ -454,8 +450,8 @@ void ConfigFileParser::readLocationConfigLine(void)
 		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 
-		directive = getDirective(line);
-		value = getValue(line);
+		const std::string directive = getDirective(line);
+		const std::string value = getValue(line);
 
 		if (value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
