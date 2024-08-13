@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "Method.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -9,8 +10,6 @@
 #include <vector>
 
 /* ====== DEFINITIONS ====== */
-
-enum Method { MethodGet, MethodPost, MethodDelete, MethodCount };
 
 struct Location {
 
