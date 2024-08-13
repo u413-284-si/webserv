@@ -125,22 +125,10 @@ bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
 void ConfigFileParser::readAndTrimLine(void)
 {
 	getline(m_configFile.stream, m_configFile.currentLine);
-	std::cout << "line before: '" << m_configFile.currentLine << "'" << std::endl;
 	m_configFile.currentLine = webutils::trimLeadingWhitespaces(m_configFile.currentLine);
 	webutils::trimTrailingWhiteSpaces(m_configFile.currentLine);
-	std::cout << "line after: '" << m_configFile.currentLine << "'" << std::endl;
 	std::cout << std::endl;
 }
-
-/**
- * @brief Removes leading and trailing spaces
- * 		  from the current line of the config file
- */
-// void ConfigFileParser::removeLeadingAndTrailingSpaces(std::string& line) const
-// {
-// 	line.erase(0, line.find_first_not_of(' '));
-// 	line.erase(line.find_last_not_of(' ') + 1);
-// }
 
 /**
  * @brief Checks if the directive is valid for the given block
