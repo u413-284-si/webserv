@@ -50,7 +50,7 @@ private:
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, int block) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
-	bool isPortValid(const std::string& port) const;
+	static bool isPortValid(const std::string& port);
 
 	// Helper functions
 	void readAndTrimLine(void);

@@ -214,7 +214,7 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress)
  * @return true If the port is valid
  * @return false If the port is invalid
  */
-bool ConfigFileParser::isPortValid(const std::string& port) const
+bool ConfigFileParser::isPortValid(const std::string& port)
 {
 	if (port.find_first_not_of("0123456789") != std::string::npos)
 		return false;
