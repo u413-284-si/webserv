@@ -330,7 +330,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 std::string ConfigFileParser::getDirective(const std::string& line) const
 {
-	size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
+	const size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
 	std::string directive = line.substr(0, firstWhiteSpaceIndex);
 
 	directive = webutils::trimLeadingWhitespaces(directive);
@@ -347,9 +347,9 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
  */
 std::string ConfigFileParser::getValue(const std::string& line) const
 {
-	size_t semicolonIndex = line.find(';');
+	const size_t semicolonIndex = line.find(';');
 
-	size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
+	const size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
 	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
