@@ -49,7 +49,7 @@ private:
 	static bool isBracketOpen(const std::string& configFilePath);
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, int block) const;
-	bool isIpAddressValid(const std::string& ipAddress) const;
+	static bool isIpAddressValid(const std::string& ipAddress);
 	bool isPortValid(const std::string& port) const;
 
 	// Helper functions

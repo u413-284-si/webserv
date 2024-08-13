@@ -168,18 +168,18 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block)
  * @return true If the ip address is valid
  * @return false If the ip address is not valid
  */
-bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress) const
+bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress)
 {
 	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
 
-	size_t firstDotIndex = ipAddress.find('.');
+	const size_t firstDotIndex = ipAddress.find('.');
 	if (firstDotIndex == std::string::npos)
 		return false;
-	size_t secondDotIndex = ipAddress.find('.', firstDotIndex + 1);
+	const size_t secondDotIndex = ipAddress.find('.', firstDotIndex + 1);
 	if (secondDotIndex == std::string::npos)
 		return false;
-	size_t thirdDotIndex = ipAddress.find('.', secondDotIndex + 1);
+	const size_t thirdDotIndex = ipAddress.find('.', secondDotIndex + 1);
 	if (thirdDotIndex == std::string::npos)
 		return false;
 
@@ -189,10 +189,10 @@ bool ConfigFileParser::isIpAddressValid(const std::string& ipAddress) const
 	std::string fourthOctetStr = ipAddress.substr(thirdDotIndex + 1, ipAddress.length() - thirdDotIndex - 1);
 
 	const int base = 10;
-	long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
-	long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
-	long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
-	long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
+	const long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
+	const long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
+	const long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
+	const long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
 
 	const short maxIpValue = 255;
 	const short minIpValue = 0;
