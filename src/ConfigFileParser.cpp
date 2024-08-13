@@ -386,10 +386,10 @@ void ConfigFileParser::processRemainingLine(std::string& line) const
  *
  * How a line gets processed:
  * 1. Gets checked if it contains a semicolon.
- * 2. The directive of of the resulting string gets extracted and checked.
+ * 2. The directive of the resulting string gets extracted and checked.
  * 3. The value of the directive gets extracted and checked.
  *
- * If the line contains more then one directive, this process gets repeated for each directive.
+ * If the line contains more than one directive, this process gets repeated for each directive.
  * Otherwise the line just gets cleared and the processing ends.
  */
 void ConfigFileParser::readServerConfigLine(void)
@@ -432,7 +432,7 @@ void ConfigFileParser::readServerConfigLine(void)
 * 2. The directive of of the resulting string gets extracted and checked.
 * @todo FIXME: 3. The value of the directive gets extracted and checked.
 *
-* If the line contains more then one directive, this process gets repeated for each directive.
+* If the line contains more than one directive, this process gets repeated for each directive.
 * Otherwise the line just gets cleared and the processing ends.
 
 */
