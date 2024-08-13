@@ -367,7 +367,7 @@ std::string ConfigFileParser::getValue(const std::string& line) const
  * It can be the case that multiple directives are in the same line.
  * Therefore the line must still get read until all directives got processed.
  *
- * If the line still contains more then one directive, the already processed directive gets skipped.
+ * If the line still contains more than one directive, the already processed directive gets skipped.
  * If the line does not contain any more directives, the line gets cleared.
  *
  * @param line The current line
