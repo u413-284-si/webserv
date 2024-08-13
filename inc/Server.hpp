@@ -51,6 +51,17 @@ public:
 
 	void run();
 
+	const std::map<int, Socket>& getVirtualServers() const;
+	const std::map<int, Connection>& getConnections() const;
+
+	bool registerVirtualServer(int serverFd, const Socket& serverSock);
+	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
+
+	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
+	int createListeningSocket(const struct addrinfo& addrinfo, int backlog) const;
+	Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const;
+	int acceptConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const;
+
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
@@ -72,21 +83,11 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-void acceptConnections(int serverFd, const Socket& serverSock, uint32_t eventMask,
-	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
-	const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
-bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock,
-	std::map<int, Connection>& connections, std::map<int, std::string>& connectionBuffers,
-	const EpollWrapper& epollWrapper);
+void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
-bool initVirtualServers(int backlog, const std::vector<ServerConfig>& serverConfigs,
-	std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
-bool checkDuplicateServer(
-	const std::string& host, const std::string& port, const std::map<int, Socket>& virtualServers);
-bool addVirtualServer(const std::string& host, int backlog, const std::string& port,
-	std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
-bool registerVirtualServer(
-	int serverFd, const Socket& serverSock, std::map<int, Socket>& virtualServers, const EpollWrapper& epollWrapper);
+bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs);
+bool checkDuplicateServer(const Server& server, const std::string& host, const std::string& port);
+bool addVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
 bool checkForCompleteRequest(const std::string& connectionBuffer);
 
