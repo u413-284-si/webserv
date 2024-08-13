@@ -14,6 +14,7 @@
 /* ====== DEFINITIONS ====== */
 
 enum Block { ServerBlock, LocationBlock };
+#define WHITESAPCE " \t\n\v\f\r"
 
 /* ====== CLASS DECLARATION ====== */
 

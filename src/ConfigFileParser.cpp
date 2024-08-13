@@ -245,7 +245,7 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
 {
 	std::string rootPath = value;
 
-	if (rootPath.find_first_of("  \t\n\v\f\r") != std::string::npos)
+	if (rootPath.find_first_of(WHITESAPCE) != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
 	if (rootPath[rootPath.length() - 1] == '/')
@@ -330,7 +330,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 std::string ConfigFileParser::getDirective(const std::string& line) const
 {
-	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
+	size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
 	std::string directive = line.substr(0, firstWhiteSpaceIndex);
 
 	directive = webutils::trimLeadingWhitespaces(directive);
@@ -352,7 +352,7 @@ std::string ConfigFileParser::getValue(const std::string& line) const
 
 	size_t semicolonIndex = line.find(';');
 
-	size_t firstWhiteSpaceIndex = line.find_first_of(" \t\n\v\f\r");
+	size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
 	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
@@ -411,7 +411,7 @@ void ConfigFileParser::readServerConfigLine(void)
 		directive = getDirective(line);
 		value = getValue(line);
 
-		if ((value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos) && directive != "location")
+		if ((value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos) && directive != "location")
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 		if (!isDirectiveValid(directive, ServerBlock))
@@ -457,7 +457,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 		directive = getDirective(line);
 		value = getValue(line);
 
-		if (value.empty() || value.find_last_not_of(" \t\n\v\f\r") == std::string::npos)
+		if (value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 		if (!isDirectiveValid(directive, LocationBlock))
