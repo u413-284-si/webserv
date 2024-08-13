@@ -46,7 +46,7 @@ private:
 	void readRootPath(int block, const std::string& value);
 
 	// Checker functions
-	bool isBracketOpen(const std::string& configFilePath) const;
+	static bool isBracketOpen(const std::string& configFilePath);
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, int block) const;
 	bool isIpAddressValid(const std::string& ipAddress) const;

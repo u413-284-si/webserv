@@ -86,7 +86,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
  * @return true If there is minimum one open bracket
  * @return false If there no open bracket
  */
-bool ConfigFileParser::isBracketOpen(const std::string& configFilePath) const
+bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 {
 	std::ifstream tmpStream;
 	std::string tmpLine;
