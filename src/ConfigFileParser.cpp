@@ -223,7 +223,7 @@ bool ConfigFileParser::isPortValid(const std::string& port)
 	const int maxPort = 65535;
 	const int minPort = 1;
 
-	int long portNum = std::strtol(port.c_str(), NULL, base);
+	const long portNum = std::strtol(port.c_str(), NULL, base);
 	return !(portNum <= minPort || portNum > maxPort);
 }
 
