@@ -14,8 +14,8 @@ ConfigFileParser::ConfigFileParser(void)
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
 	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
-	const char* validLocationDirectiveNames[]
-		= { "root", "index", "cgi_ext", "cgi_path", "autoindex", "limit_except", "location", "return" };
+	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "client_max_body_size",
+		"autoindex", "limit_except", "location", "return" };
 	const int validLocationDirectiveNamesSize
 		= sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
 
