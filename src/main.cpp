@@ -63,6 +63,7 @@ int main(int argc, char** argv)
 		EpollWrapper epollWrapper;
 		SocketPolicy socketPolicy;
 		Server server(configFile, epollWrapper, socketPolicy);
+		initVirtualServers(server, 10, server.getServerConfigs());
 		server.run();
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
