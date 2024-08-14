@@ -1,6 +1,8 @@
 #include "Server.hpp"
 #include "ConfigFile.hpp"
+#include <cstdlib>
 #include <string>
+#include <sys/epoll.h>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -297,7 +299,32 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 void handleConnection(Server& server, const int clientFd, Connection& connection)
 {
 	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " for server: " << connection.m_serverSocket;
-	// Handle client data
+
+	switch (connection.m_status) {
+	case (Connection::ReceiveRequest):
+		connectionReceiveRequest(server, clientFd, connection);
+		break;
+	case (Connection::ReceiveBody):
+		connectionReceiveBody(server, clientFd, connection);
+		break;
+	case (Connection::BuildResponse):
+		connectionBuildResponse(server, clientFd, connection);
+		break;
+	case (Connection::SendResponse):
+		connectionSendResponse(server, clientFd, connection);
+		break;
+	case (Connection::Timeout):
+		connectionHandleTimeout(server, clientFd, connection);
+		break;
+	case (Connection::Closed):
+		break;
+	}
+}
+
+void connectionReceiveRequest(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "ReceiveRequest for: " << connection.m_clientSocket;
+
 	char buffer[1000];
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, 1000, 0);
@@ -317,13 +344,70 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
-			server.buildResponse(connection.m_request);
-			connection.m_buffer = server.getResponse();
-			server.writeToSocket(clientFd, connection.m_buffer.c_str(), connection.m_buffer.size(), 0);
+			connection.m_status = Connection::BuildResponse;
+			struct epoll_event event = {};
+			event.data.fd = clientFd;
+			event.events = EPOLLOUT;
+			server.modifyEvent(clientFd, event);
 		} else {
 			LOG_DEBUG << "Received partial request: " << '\n' << connection.m_buffer;
 		}
+		connection.m_timeSinceLastEvent = std::time(0);
 	}
+}
+
+void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "ReceiveBody for: " << connection.m_clientSocket;
+
+	(void)server;
+	(void)clientFd;
+}
+
+void connectionBuildResponse(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
+
+	server.buildResponse(connection.m_request);
+	connection.m_buffer = server.getResponse();
+	connection.m_status = Connection::SendResponse;
+	connectionSendResponse(server, clientFd, connection);
+}
+
+void connectionSendResponse(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket;
+
+	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());
+	const ssize_t sentBytes = server.writeToSocket(clientFd, connection.m_buffer.c_str(), bytesToSend, 0);
+	if (sentBytes == -1) {
+		LOG_ERROR << "Internal server error";
+		close(clientFd);
+		connection.m_status = Connection::Closed;
+		return;
+	}
+	if (sentBytes < bytesToSend) {
+		LOG_DEBUG << "Sent " << sentBytes << " bytes";
+		connection.m_buffer.erase(0, sentBytes);
+		connection.m_timeSinceLastEvent = std::time(0);
+	}
+
+	if (connection.m_request.shallCloseConnection) {
+		LOG_DEBUG << "Closing connection";
+		close(clientFd);
+		connection.m_status = Connection::Closed;
+	} else {
+		LOG_DEBUG << "Connection alive";
+		clearConnection(connection);
+	}
+}
+
+void connectionHandleTimeout(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "Timeout for: " << connection.m_clientSocket;
+
+	(void)server;
+	(void)clientFd;
 }
 
 /**
@@ -346,7 +430,10 @@ void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout,
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > clientTimeout) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			epollWrapper.removeEvent(iter->first);
+			struct epoll_event event = {};
+			event.data.fd = iter->first;
+			event.events = EPOLLOUT;
+			epollWrapper.modifyEvent(iter->first, event);
 			close(iter->first);
 			connections.erase(iter++);
 		} else
@@ -503,6 +590,12 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 {
 	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
 }
+
+bool Server::addEvent(int newfd, epoll_event& event) const { return m_epollWrapper.addEvent(newfd, event); }
+
+bool Server::modifyEvent(int modfd, epoll_event& event) const { return m_epollWrapper.modifyEvent(modfd, event); }
+
+void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
 
 const std::map<int, Socket>& Server::getVirtualServers() const { return m_virtualServers; }
 

@@ -58,6 +58,7 @@ public:
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 
+	// SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	int createListeningSocket(const struct addrinfo& addrinfo, int backlog) const;
 	Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const;
@@ -65,9 +66,16 @@ public:
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
+	// EpollWrapper
+	bool addEvent(int newfd, epoll_event& event) const;
+	bool modifyEvent(int modfd, epoll_event& event) const;
+	void removeEvent(int delfd) const;
+
+	// RequestParser
 	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
 	void clearParser();
 
+	// ResponseBuilder
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse();
 
@@ -89,14 +97,18 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-void handleConnection(Server& server, int clientFd, Connection& connection);
-
-void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
-
 bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs);
 bool checkDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool addVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
+void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
+
+void handleConnection(Server& server, int clientFd, Connection& connection);
+void connectionReceiveRequest(Server& server, int clientFd, Connection& connection);
 bool checkForCompleteRequest(const std::string& connectionBuffer);
+void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
+void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
+void connectionSendResponse(Server& server, int clientFd, Connection& connection);
+void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
 
 void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout, const EpollWrapper& epollWrapper);

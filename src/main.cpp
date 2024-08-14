@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 
 	weblog::initConsole(weblog::LevelDebug);
 	try {
-		EpollWrapper epollWrapper;
+		EpollWrapper epollWrapper(10, -1);
 		SocketPolicy socketPolicy;
 		Server server(configFile, epollWrapper, socketPolicy);
 		initVirtualServers(server, 10, server.getServerConfigs());

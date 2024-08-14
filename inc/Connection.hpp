@@ -15,7 +15,7 @@ public:
 	Connection();
 	Connection(const Socket& server, const Socket& client);
 
-	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse, Timeout };
+	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse, Timeout, Closed };
 
 	Socket m_serverSocket; /**< Server socket associated with connection */
 	Socket m_clientSocket; /**< Client socket associated with connection */
@@ -24,3 +24,5 @@ public:
 	std::string m_buffer; /**< Bytes received from client */
 	HTTPRequest m_request; /**< Request of the client */
 };
+
+void clearConnection(Connection& connection);
