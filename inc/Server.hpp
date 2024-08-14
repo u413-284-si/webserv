@@ -72,14 +72,13 @@ private:
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
-	std::map<int, std::string> m_connectionBuffers; /**< Buffers for active Connections */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 
 	void handleEvent(struct epoll_event);
 
-	void handleConnections(int clientFd, const Connection& connection);
+	void handleConnections(int clientFd, Connection& connection);
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);

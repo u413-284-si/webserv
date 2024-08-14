@@ -24,7 +24,7 @@ TEST_F(HandleTimeoutTest, Timeout)
 	time_t clientTimeout = -1;
 
 	Connection connection;
-	connection.updateTimeSinceLastEvent();
+	connection.m_timeSinceLastEvent = std::time(0);
 	connections[dummyFd] = connection;
 
 	EXPECT_CALL(epollWrapper, removeEvent)
@@ -40,7 +40,7 @@ TEST_F(HandleTimeoutTest, NoTimeout)
 	time_t clientTimeout = 100;
 
 	Connection connection;
-	connection.updateTimeSinceLastEvent();
+	connection.m_timeSinceLastEvent = std::time(0);
 	connections[dummyFd] = connection;
 
 	handleTimeout(connections, clientTimeout, epollWrapper);
@@ -53,7 +53,7 @@ TEST_F(HandleTimeoutTest, MultipleTimeouts)
 	time_t clientTimeout = -1;
 
 	Connection connection;
-	connection.updateTimeSinceLastEvent();
+	connection.m_timeSinceLastEvent = std::time(0);
 	connections[dummyFd] = connection;
 	connections[dummyFd2] = connection;
 	connections[dummyFd3] = connection;

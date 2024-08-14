@@ -36,10 +36,10 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterSuccess)
 {
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().host, clientSocket.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().port, clientSocket.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);
 }
 
 TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
@@ -68,8 +68,8 @@ TEST_F(RegisterConnectionTest, OverwriteOldConnection)
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 
-	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().host, clientSocket.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().port, clientSocket.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);
 }

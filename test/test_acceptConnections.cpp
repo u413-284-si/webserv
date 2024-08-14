@@ -58,10 +58,10 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
 	EXPECT_EQ(server.getConnections().size(), 1);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().host, host);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().port, port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_clientSocket.host, host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_clientSocket.port, port);
 
 }
 
@@ -86,20 +86,20 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 
 	EXPECT_EQ(server.getConnections().size(), 3);
 
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getServerSocket().port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().host, host);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().port, port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_clientSocket.host, host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_clientSocket.port, port);
 
-	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getServerSocket().host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getServerSocket().port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getClientSocket().host, host2);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd2).getClientSocket().port, port2);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).m_clientSocket.host, host2);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd2).m_clientSocket.port, port2);
 
-	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getServerSocket().host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getServerSocket().port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getClientSocket().host, host3);
-	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getClientSocket().port, port3);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).m_clientSocket.host, host3);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd3).m_clientSocket.port, port3);
 }
 
 TEST_F(AcceptConnectionsTest, UnkownEvent)

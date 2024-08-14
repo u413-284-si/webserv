@@ -294,10 +294,10 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  *      to the client socket using the write function.
  *
  */
-void Server::handleConnections(const int clientFd, const Connection& connection)
+void Server::handleConnections(const int clientFd, Connection& connection)
 {
-	LOG_DEBUG << "Handling connection: " << connection.getClientSocket()
-			  << " for server: " << connection.getServerSocket();
+	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket
+			  << " for server: " << connection.m_serverSocket;
 	// Handle client data
 	char buffer[s_bufferSize];
 	HTTPRequest request;
@@ -314,11 +314,11 @@ void Server::handleConnections(const int clientFd, const Connection& connection)
 		// Connection closed by client
 		close(clientFd);
 	} else {
-		m_connectionBuffers[clientFd] += buffer;
-		if (checkForCompleteRequest(m_connectionBuffers[clientFd])) {
-			LOG_DEBUG << "Received complete request: " << '\n' << m_connectionBuffers[clientFd];
+		connection.m_buffer += buffer;
+		if (checkForCompleteRequest(connection.m_buffer)) {
+			LOG_DEBUG << "Received complete request: " << '\n' << connection.m_buffer;
 			try {
-				m_requestParser.parseHttpRequest(m_connectionBuffers[clientFd], request);
+				m_requestParser.parseHttpRequest(connection.m_buffer, request);
 				m_requestParser.clearParser();
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
@@ -327,7 +327,7 @@ void Server::handleConnections(const int clientFd, const Connection& connection)
 			m_socketPolicy.writeToSocket(
 				clientFd, m_responseBuilder.getResponse().c_str(), m_responseBuilder.getResponse().size(), 0);
 		} else {
-			LOG_DEBUG << "Received partial request: " << '\n' << m_connectionBuffers[clientFd];
+			LOG_DEBUG << "Received partial request: " << '\n' << connection.m_buffer;
 		}
 	}
 }
@@ -348,10 +348,10 @@ void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout,
 {
 	for (std::map<int, Connection>::iterator iter = connections.begin(); iter != connections.end();
 		/* no increment */) {
-		time_t timeSinceLastEvent = iter->second.getTimeSinceLastEvent();
-		LOG_DEBUG << iter->second.getClientSocket() << ": Time since last event: " << timeSinceLastEvent;
+		time_t timeSinceLastEvent = std::time(0) - iter->second.m_timeSinceLastEvent;
+		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > clientTimeout) {
-			LOG_INFO << "Connection timeout: " << iter->second.getClientSocket();
+			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
 			epollWrapper.removeEvent(iter->first);
 			close(iter->first);
 			connections.erase(iter++);
@@ -439,7 +439,6 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 	}
 
 	m_connections[clientFd] = Connection(serverSock, clientSock);
-	m_connectionBuffers[clientFd] = "";
 
 	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
 	return true;
