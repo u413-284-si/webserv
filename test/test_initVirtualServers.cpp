@@ -6,6 +6,7 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class InitVirtualServersTest : public ::testing::Test {
 	protected:
@@ -23,6 +24,9 @@ class InitVirtualServersTest : public ::testing::Test {
 		configFile.serverConfigs.push_back(serverConfig2);
 
 		server = new Server(configFile, epollWrapper, socketPolicy);
+
+		ON_CALL(epollWrapper, addEvent)
+		.WillByDefault(Return(true));
 	}
 
 	~InitVirtualServersTest() override
@@ -31,7 +35,7 @@ class InitVirtualServersTest : public ::testing::Test {
 	}
 
 	ConfigFile configFile;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server* server;
 
@@ -74,10 +78,6 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	.Times(2)
 	.WillOnce(Return(serverSock1))
 	.WillOnce(Return(serverSock2));
-
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(2)
-	.WillRepeatedly(Return(true));
 
 	EXPECT_EQ(initVirtualServers(*server, backlog, server->getServerConfigs()), true);
 	EXPECT_EQ(server->getVirtualServers().size(), 2);

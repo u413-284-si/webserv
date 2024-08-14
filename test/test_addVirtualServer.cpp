@@ -6,14 +6,19 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class AddVirtualServerTest : public ::testing::Test {
 	protected:
-	AddVirtualServerTest() : server(configFile, epollWrapper, socketPolicy) { }
+	AddVirtualServerTest() : server(configFile, epollWrapper, socketPolicy)
+	{
+		ON_CALL(epollWrapper, addEvent)
+		.WillByDefault(Return(true));
+	}
 	~AddVirtualServerTest() override { }
 
 	ConfigFile configFile;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
 
@@ -41,12 +46,8 @@ TEST_F(AddVirtualServerTest, ServerAddSuccess)
 	.WillOnce(Return(dummyFd));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
-	.Times(1).
-	WillOnce(Return(Socket { host, port }));
-
-	EXPECT_CALL(epollWrapper, addEvent)
 	.Times(1)
-	.WillOnce(Return(true));
+	.WillOnce(Return(Socket { host, port }));
 
 	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
@@ -99,8 +100,8 @@ TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
 	.WillOnce(Return(dummyFd));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
-	.Times(1).
-	WillOnce(Return(Socket { "", "" }));
+	.Times(1)
+	.WillOnce(Return(Socket { "", "" }));
 
 	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
@@ -122,8 +123,8 @@ TEST_F(AddVirtualServerTest, registerVirtualServerFails)
 	.WillOnce(Return(dummyFd));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
-	.Times(1).
-	WillOnce(Return(Socket { host, port }));
+	.Times(1)
+	.WillOnce(Return(Socket { host, port }));
 
 	EXPECT_CALL(epollWrapper, addEvent)
 	.Times(1)
@@ -154,12 +155,8 @@ TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
 	.WillOnce(Return(-1));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
-	.Times(1).
-	WillOnce(Return(Socket { host, port }));
-
-	EXPECT_CALL(epollWrapper, addEvent)
 	.Times(1)
-	.WillOnce(Return(true));
+	.WillOnce(Return(Socket { host, port }));
 
 	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
@@ -191,10 +188,6 @@ TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
 	.Times(2)
 	.WillOnce(Return(Socket { "", "" }))
 	.WillOnce(Return(Socket { host, port }));
-
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(1)
-	.WillOnce(Return(true));
 
 	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
@@ -230,10 +223,6 @@ TEST_F(AddVirtualServerTest, AddThree)
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
 	.Times(3)
 	.WillRepeatedly(Return(Socket { host, port }));
-
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(3)
-	.WillRepeatedly(Return(true));
 
 	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 3);

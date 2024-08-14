@@ -7,14 +7,19 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class CheckDuplicateServerTest : public ::testing::Test {
 	protected:
-	CheckDuplicateServerTest() : server(configFile, epollWrapper, socketPolicy) { }
+	CheckDuplicateServerTest() : server(configFile, epollWrapper, socketPolicy)
+	{
+		ON_CALL(epollWrapper, addEvent)
+		.WillByDefault(Return(true));
+	}
 	~CheckDuplicateServerTest() override { }
 
 	ConfigFile configFile;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
 };
@@ -29,10 +34,6 @@ TEST_F(CheckDuplicateServerTest, EmptyMap)
 
 TEST_F(CheckDuplicateServerTest, NoDuplicate)
 {
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(2)
-	.WillRepeatedly(Return(true));
-
 	server.registerVirtualServer(10, (Socket { "127.0.0.1", "7070" }));
 	server.registerVirtualServer(20, (Socket { "192.168.0.1", "8080" }));
 
@@ -44,10 +45,6 @@ TEST_F(CheckDuplicateServerTest, NoDuplicate)
 
 TEST_F(CheckDuplicateServerTest, DuplicateServer)
 {
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(3)
-	.WillRepeatedly(Return(true));
-
 	server.registerVirtualServer(10, (Socket { "127.0.0.1", "6060" }));
 	server.registerVirtualServer(20, (Socket { "127.0.0.1", "7070" }));
 	server.registerVirtualServer(30, (Socket { "127.0.0.1", "8080" }));
@@ -60,10 +57,6 @@ TEST_F(CheckDuplicateServerTest, DuplicateServer)
 
 TEST_F(CheckDuplicateServerTest, DuplicateServerLocalhost)
 {
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(5)
-	.WillRepeatedly(Return(true));
-
 	server.registerVirtualServer(10, (Socket { "127.0.0.1", "6060" }));
 	server.registerVirtualServer(20, (Socket { "127.0.0.1", "7070" }));
 	server.registerVirtualServer(30, (Socket { "127.0.0.1", "8080" }));

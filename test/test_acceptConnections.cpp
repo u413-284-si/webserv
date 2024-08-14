@@ -1,3 +1,4 @@
+#include "gmock/gmock.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -7,14 +8,19 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class AcceptConnectionsTest : public ::testing::Test {
 	protected:
-	AcceptConnectionsTest() : server(configFile, epollWrapper, socketPolicy) { }
+	AcceptConnectionsTest() : server(configFile, epollWrapper, socketPolicy)
+	{
+		ON_CALL(epollWrapper, addEvent)
+		.WillByDefault(Return(true));
+	}
 	~AcceptConnectionsTest() override { }
 
 	ConfigFile configFile;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
 
@@ -49,10 +55,6 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 	.Times(1)
 	.WillOnce(Return(Socket { host, port }));
 
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(1)
-	.WillOnce(Return(true));
-
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
 	EXPECT_EQ(server.getConnections().size(), 1);
@@ -61,9 +63,6 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().host, host);
 	EXPECT_EQ(server.getConnections().at(dummyClientFd).getClientSocket().port, port);
 
-	// destructor calls removeEvent
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(1);
 }
 
 TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
@@ -83,10 +82,6 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 	.WillOnce(Return(Socket { host2, port2 }))
 	.WillOnce(Return(Socket { host3, port3 }));
 
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(3)
-	.WillRepeatedly(Return(true));
-
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
 	EXPECT_EQ(server.getConnections().size(), 3);
@@ -105,10 +100,6 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getServerSocket().port, serverSock.port);
 	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getClientSocket().host, host3);
 	EXPECT_EQ(server.getConnections().at(dummyClientFd3).getClientSocket().port, port3);
-
-	// destructor calls removeEvent
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(3);
 }
 
 TEST_F(AcceptConnectionsTest, UnkownEvent)

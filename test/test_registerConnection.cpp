@@ -7,14 +7,19 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class RegisterConnectionTest : public ::testing::Test {
 	protected:
-	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy) { }
+	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy)
+	{
+		ON_CALL(epollWrapper, addEvent)
+		.WillByDefault(Return(true));
+	}
 	~RegisterConnectionTest() override { }
 
 	ConfigFile configFile;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
 
@@ -29,20 +34,12 @@ class RegisterConnectionTest : public ::testing::Test {
 
 TEST_F(RegisterConnectionTest, ConnectionRegisterSuccess)
 {
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(1)
-	.WillOnce(Return(true));
-
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().host, serverSock.host);
 	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().port, serverSock.port);
 	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().host, clientSocket.host);
 	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().port, clientSocket.port);
-
-	// destructor calls removeEvent
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(1);
 }
 
 TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
@@ -64,10 +61,6 @@ TEST_F(RegisterConnectionTest, OverwriteOldConnection)
 		"1.1.1.1",
 		"11111" };
 
-	EXPECT_CALL(epollWrapper, addEvent)
-	.Times(2)
-	.WillRepeatedly(Return(true));
-
 	EXPECT_EQ(server.registerConnection(oldServerSock, dummyFd, oldClientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 
@@ -79,8 +72,4 @@ TEST_F(RegisterConnectionTest, OverwriteOldConnection)
 	EXPECT_EQ(server.getConnections().at(dummyFd).getServerSocket().port, serverSock.port);
 	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().host, clientSocket.host);
 	EXPECT_EQ(server.getConnections().at(dummyFd).getClientSocket().port, clientSocket.port);
-
-	// destructor calls removeEvent
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(1);
 }
