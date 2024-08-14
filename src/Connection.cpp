@@ -1,4 +1,6 @@
 #include "Connection.hpp"
+#include "ConfigFile.hpp"
+#include "StatusCode.hpp"
 
 /**
  * @brief Construct a new Connection:: Connection object
@@ -14,6 +16,9 @@ Connection::Connection()
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveRequest)
 {
+	m_request.method = MethodCount;
+	m_request.httpStatus = StatusOK;
+	m_request.shallCloseConnection = false;
 }
 
 /**
@@ -27,5 +32,9 @@ Connection::Connection(const Socket& server, const Socket& client)
 	, m_clientSocket(client)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveRequest)
+	, m_request(HTTPRequest())
 {
+	m_request.method = MethodCount;
+	m_request.httpStatus = StatusOK;
+	m_request.shallCloseConnection = false;
 }
