@@ -213,7 +213,7 @@ void Server::handleEvent(struct epoll_event event)
 			LOG_DEBUG << "epoll_wait: EPOLLHUP";
 			eventMask = EPOLLIN;
 		}
-		handleConnections(event.data.fd, m_connections.at(event.data.fd));
+		handleConnection(*this, event.data.fd, m_connections.at(event.data.fd));
 	}
 }
 
@@ -294,19 +294,13 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  *      to the client socket using the write function.
  *
  */
-void Server::handleConnections(const int clientFd, Connection& connection)
+void handleConnection(Server& server, const int clientFd, Connection& connection)
 {
-	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket
-			  << " for server: " << connection.m_serverSocket;
+	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " for server: " << connection.m_serverSocket;
 	// Handle client data
-	char buffer[s_bufferSize];
-	HTTPRequest request;
+	char buffer[1000];
 
-	request.method = MethodCount;
-	request.httpStatus = StatusOK;
-	request.shallCloseConnection = false;
-
-	const ssize_t bytesRead = m_socketPolicy.readFromSocket(clientFd, buffer, s_bufferSize, 0);
+	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, 1000, 0);
 	if (bytesRead < 0) {
 		// Internal server error
 		close(clientFd);
@@ -318,14 +312,14 @@ void Server::handleConnections(const int clientFd, Connection& connection)
 		if (checkForCompleteRequest(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request: " << '\n' << connection.m_buffer;
 			try {
-				m_requestParser.parseHttpRequest(connection.m_buffer, request);
-				m_requestParser.clearParser();
+				server.parseHttpRequest(connection.m_buffer, connection.m_request);
+				server.clearParser();
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
-			m_responseBuilder.buildResponse(request);
-			m_socketPolicy.writeToSocket(
-				clientFd, m_responseBuilder.getResponse().c_str(), m_responseBuilder.getResponse().size(), 0);
+			server.buildResponse(connection.m_request);
+			connection.m_buffer = server.getResponse();
+			server.writeToSocket(clientFd, connection.m_buffer.c_str(), connection.m_buffer.size(), 0);
 		} else {
 			LOG_DEBUG << "Received partial request: " << '\n' << connection.m_buffer;
 		}
@@ -500,8 +494,29 @@ int Server::acceptConnection(int sockfd, struct sockaddr* addr, socklen_t* addrl
 	return m_socketPolicy.acceptConnection(sockfd, addr, addrlen);
 }
 
+ssize_t Server::readFromSocket(int sockfd, char* buffer, size_t size, int flags) const
+{
+	return m_socketPolicy.readFromSocket(sockfd, buffer, size, flags);
+}
+
+ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const
+{
+	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
+}
+
 const std::map<int, Socket>& Server::getVirtualServers() const { return m_virtualServers; }
 
 const std::map<int, Connection>& Server::getConnections() const { return m_connections; }
 
 const std::vector<ServerConfig>& Server::getServerConfigs() const { return m_configFile.serverConfigs; }
+
+void Server::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
+{
+	m_requestParser.parseHttpRequest(requestString, request);
+}
+
+void Server::clearParser() { m_requestParser.clearParser(); }
+
+void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
+
+std::string Server::getResponse() { return m_responseBuilder.getResponse(); }

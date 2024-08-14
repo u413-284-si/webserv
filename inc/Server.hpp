@@ -55,7 +55,6 @@ public:
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ServerConfig>& getServerConfigs() const;
 
-
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 
@@ -63,6 +62,14 @@ public:
 	int createListeningSocket(const struct addrinfo& addrinfo, int backlog) const;
 	Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const;
 	int acceptConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const;
+	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
+	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
+
+	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
+	void clearParser();
+
+	void buildResponse(const HTTPRequest& request);
+	std::string getResponse();
 
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
@@ -78,11 +85,11 @@ private:
 
 	void handleEvent(struct epoll_event);
 
-	void handleConnections(int clientFd, Connection& connection);
-
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
 };
+
+void handleConnection(Server& server, int clientFd, Connection& connection);
 
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
