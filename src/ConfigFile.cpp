@@ -9,14 +9,14 @@
  * Default constructor for the ConfigServer struct. Initializes the object with default values.
  *
  * - Sets the root directory to "html".
- * - Sets the maximum body size to 1.
+ * - Sets the maximum body size to 1 (1 MB).
  * - Sets the error pages to an empty map.
  * - Initializes the listen map with "127.0.0.1" and port 80.
  * - Sets the locations to an empty vector.
  */
 ConfigServer::ConfigServer(void)
 	: root("html")
-	, maxBodySize(1)
+	, maxBodySize(1) // 1 MB
 {
 	listen.insert(std::make_pair("127.0.0.1", "80"));
 	errorPage = std::map<unsigned short, std::string>();
