@@ -1,11 +1,13 @@
 #include "CGIHandler.hpp"
+#include "StatusCode.hpp"
 #include "utilities.hpp"
 #include <cstddef>
 #include <sched.h>
+#include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
-CGIHandler::CGIHandler(std::string cgipath, std::string cgiExt)
+CGIHandler::CGIHandler(const std::string& cgipath, const std::string& cgiExt)
 	: m_cgiPath(cgipath)
 	, m_cgiExt(cgiExt)
 	, m_cgiPid(-1)
@@ -27,7 +29,8 @@ const std::map<std::string, std::string>& CGIHandler::getEnv() const { return m_
 
 /* ====== MEMBER FUNCTIONS ====== */
 
-void CGIHandler::init(int clientFd, HTTPRequest& request, Location& location, unsigned short serverPort)
+statusCode CGIHandler::init(
+	const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort)
 {
 	m_env["REDIRECT_STATUS"]
 		= "200"; // indicates successfull internal redirection to the script; required for old PHP scripts
@@ -38,9 +41,10 @@ void CGIHandler::init(int clientFd, HTTPRequest& request, Location& location, un
 	m_env["PATH_INFO"] = extractPathInfo(request.uri.path);
 	m_env["PATH_TRANSLATED"] = location.root + m_cgiPath;
 	m_env["QUERY_STRING"] = request.uri.query;
-	m_env["REMOTE_ADDR"] = ; // IP address of the client -> getsocketname()
-	if (request.headers.find("Authorization") != request.headers.end())
-		m_env["AUTH_TYPE"] = request.headers["Authorization"].substr(0, request.headers["Authorization"].find(' '));
+	std::string clientIP;
+	if (StatusOK != extractClientIP(clientSocket, clientIP))
+		return StatusInternalServerError;
+	m_env["REMOTE_ADDR"] = clientIP; // IP address of the client
 	m_env["REQUEST_URI"] = request.uri.path + '?' + request.uri.query;
 	std::stringstream strStream;
 	strStream << serverPort;
@@ -51,6 +55,33 @@ void CGIHandler::init(int clientFd, HTTPRequest& request, Location& location, un
 		m_env["CONTENT_LENGTH"] = request.headers["Content-Length"];
 	if (request.headers.find("Content-Type") != request.headers.end())
 		m_env["CONTENT_TYPE"] = request.headers["Content-Type"];
+	return StatusOK;
+}
+
+statusCode CGIHandler::execute()
+{
+	std::vector<std::string> envComposite;
+	std::vector<std::string> argvAsStrings;
+	std::vector<char*> envp;
+	std::vector<char*> argv;
+	char* endptr = NULL;
+
+	setEnvp(envComposite, envp);
+
+	argvAsStrings.push_back(m_env["SCRIPT_FILENAME"]);
+	argv.push_back(&(*(argvAsStrings.begin())).at(0));
+	argv.push_back(endptr);
+    return StatusOK;
+}
+
+void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const
+{
+	for (std::map<std::string, std::string>::const_iterator citer = m_env.begin(); citer != m_env.end(); citer++) {
+		std::string tmp = citer->first + '=' + citer->second;
+		envComposite.push_back(tmp);
+	}
+	for (std::vector<std::string>::iterator iter = envComposite.begin(); iter != envComposite.end(); iter++)
+		envp.push_back(&(*iter).at(0)); // FIXME: remove reference to pointer value?
 }
 
 std::string CGIHandler::extractPathInfo(const std::string& path)
@@ -63,4 +94,19 @@ std::string CGIHandler::extractPathInfo(const std::string& path)
 	if (pathInfoStart == std::string::npos)
 		return "";
 	return tmp.substr(pathInfoStart);
+}
+
+statusCode CGIHandler::extractClientIP(const int& clientSocket, std::string& clientIP)
+{
+	struct sockaddr_in clientAddress = {};
+	socklen_t addrLen = sizeof(clientAddress);
+	// NOLINTNEXTLINE: Ignore reinterpret_cast warning
+	getsockname(clientSocket, reinterpret_cast<struct sockaddr*>(&clientAddress), &addrLen);
+
+	// Convert the IP address to a string
+	char dest[INET_ADDRSTRLEN];
+	if (inet_ntop(AF_INET, &clientAddress.sin_addr, dest, INET_ADDRSTRLEN) == NULL)
+		return StatusInternalServerError;
+	clientIP = dest;
+	return StatusOK;
 }
