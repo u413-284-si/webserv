@@ -69,9 +69,11 @@ statusCode CGIHandler::execute()
 	setEnvp(envComposite, envp);
 
 	argvAsStrings.push_back(m_env["SCRIPT_FILENAME"]);
-	argv.push_back(&(*(argvAsStrings.begin())).at(0));
+	argvAsStrings.push_back(m_env["SCRIPT_NAME"]);
+	for (std::vector<std::string>::iterator iter = argvAsStrings.begin(); iter != argvAsStrings.end(); iter++)
+		argv.push_back(&(*iter).at(0));
 	argv.push_back(endptr);
-    return StatusOK;
+	return StatusOK;
 }
 
 void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const
