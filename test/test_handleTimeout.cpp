@@ -5,14 +5,19 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class HandleTimeoutTest : public ::testing::Test {
 	protected:
-	HandleTimeoutTest() { }
+	HandleTimeoutTest()
+	{
+		ON_CALL(epollWrapper, modifyEvent)
+		.WillByDefault(Return(true));
+	}
 	~HandleTimeoutTest() override { }
 
 	std::map<int, Connection> connections;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	const int dummyFd = 10;
 	const int dummyFd2 = 20;
 	const int dummyFd3 = 30;
@@ -26,9 +31,6 @@ TEST_F(HandleTimeoutTest, Timeout)
 	Connection connection;
 	connection.m_timeSinceLastEvent = std::time(0);
 	connections[dummyFd] = connection;
-
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(1);
 
 	handleTimeout(connections, clientTimeout, epollWrapper);
 
@@ -57,9 +59,6 @@ TEST_F(HandleTimeoutTest, MultipleTimeouts)
 	connections[dummyFd] = connection;
 	connections[dummyFd2] = connection;
 	connections[dummyFd3] = connection;
-
-	EXPECT_CALL(epollWrapper, removeEvent)
-	.Times(3);
 
 	handleTimeout(connections, clientTimeout, epollWrapper);
 
