@@ -30,6 +30,8 @@ private:
 	ConfigFileParser& operator=(const ConfigFileParser& ref);
 
 	ConfigFile m_configFile;
+	std::ifstream m_stream;
+	std::string m_currentLine;
 	size_t m_serverIndex;
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;

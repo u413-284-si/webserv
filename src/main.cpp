@@ -1,9 +1,9 @@
+#include "ConfigFile.hpp"
+#include "ConfigFileParser.hpp"
+#include "Log.hpp"
 #include "LogOutputterConsole.hpp"
 #include "LogOutputterFile.hpp"
 #include "Server.hpp"
-#include "ConfigFileParser.hpp"
-#include "Log.hpp"
-#include "ConfigFile.hpp"
 #include <cerrno>
 
 int main(int argc, char** argv)

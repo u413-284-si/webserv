@@ -250,10 +250,10 @@ TEST_F(InvalidConfigFileTests, RootDirectiveContainsMultipleRootPaths)
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
-
 {
 	EXPECT_NO_THROW(m_configFileParser.parseConfigFile("config_files/valid_config.conf"));
 }
+
 TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
 {
 	EXPECT_NO_THROW(m_configFileParser.parseConfigFile("config_files/listen_only_ip.conf"));

@@ -48,22 +48,22 @@ ConfigFileParser::~ConfigFileParser(void) { }
  */
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
-	m_configFile.stream.open(configFilePath.c_str());
-	if (!m_configFile.stream.is_open())
+	m_stream.open(configFilePath.c_str());
+	if (!m_stream.is_open())
 		throw std::runtime_error("Failed to open config file");
-	if (m_configFile.stream.peek() == std::ifstream::traits_type::eof())
+	if (m_stream.peek() == std::ifstream::traits_type::eof())
 		throw std::runtime_error("Config file is empty");
 
 	if (isBracketOpen(configFilePath))
 		throw std::runtime_error("Open bracket(s) in config file");
 
 	readAndTrimLine();
-	if (m_configFile.currentLine != "http {")
+	if (m_currentLine != "http {")
 		throw std::runtime_error("Config file does not start with 'http {'");
 
-	for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine()) {
-		if (m_configFile.currentLine == "server {") {
-			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+	for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine()) {
+		if (m_currentLine == "server {") {
+			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
 				readServerConfigLine();
 			m_serverIndex++;
 		}
@@ -124,9 +124,9 @@ bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
  */
 void ConfigFileParser::readAndTrimLine(void)
 {
-	getline(m_configFile.stream, m_configFile.currentLine);
-	m_configFile.currentLine = webutils::trimLeadingWhitespaces(m_configFile.currentLine);
-	webutils::trimTrailingWhiteSpaces(m_configFile.currentLine);
+	getline(m_stream, m_currentLine);
+	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
+	webutils::trimTrailingWhiteSpaces(m_currentLine);
 }
 
 /**
@@ -395,7 +395,7 @@ void ConfigFileParser::processRemainingLine(std::string& line) const
 void ConfigFileParser::readServerConfigLine(void)
 {
 	ConfigServer server;
-	std::string line = m_configFile.currentLine;
+	std::string line = m_currentLine;
 
 	m_configFile.servers.push_back(server);
 
@@ -405,7 +405,7 @@ void ConfigFileParser::readServerConfigLine(void)
 
 		const std::string directive = getDirective(line);
 		if (directive == "location") {
-			for (readAndTrimLine(); m_configFile.currentLine != "}"; readAndTrimLine())
+			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
 				readLocationConfigLine();
 			m_locationIndex++;
 			break;
@@ -439,7 +439,7 @@ void ConfigFileParser::readServerConfigLine(void)
 void ConfigFileParser::readLocationConfigLine(void)
 {
 	Location location;
-	std::string line = m_configFile.currentLine;
+	std::string line = m_currentLine;
 
 	m_configFile.servers[m_serverIndex].locations.push_back(location);
 

@@ -43,8 +43,6 @@ public:
 };
 
 struct ConfigFile {
-	std::ifstream stream;
-	std::string currentLine;
 	std::vector<ConfigServer> servers;
 };
 
