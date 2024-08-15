@@ -19,7 +19,7 @@ ConfigServer::ConfigServer(void)
 	, maxBodySize(1) // 1 MB
 {
 	listen.insert(std::make_pair("127.0.0.1", "80"));
-	errorPage = std::map<unsigned short, std::string>();
+	errorPage = std::map<statusCode, std::string>();
 	locations = std::vector<Location>();
 }
 
@@ -42,7 +42,8 @@ Location::Location(void)
 	, allowedMethods()
 {
 	indices = std::vector<std::string>();
-	returns = std::map<unsigned short, std::string>();
+	errorPage = std::map<statusCode, std::string>();
+	returns = std::map<statusCode, std::string>();
 	allowedMethods[0] = true;
 	allowedMethods[1] = false;
 	allowedMethods[2] = false;

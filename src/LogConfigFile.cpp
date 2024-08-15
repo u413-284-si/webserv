@@ -24,17 +24,17 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "Autoindex: " << location.isAutoindex << '\n';
 	ostream << "Max body size: " << location.maxBodySize << '\n';
 	ostream << "Error pages:\n";
-	std::map<unsigned short, std::string> errorPages = location.errorPage;
-	for (std::map<unsigned short, std::string>::const_iterator it = errorPages.begin(), end = errorPages.end();
-		 it != end; ++it)
+	std::map<statusCode, std::string> errorPages = location.errorPage;
+	for (std::map<statusCode, std::string>::const_iterator it = errorPages.begin(), end = errorPages.end(); it != end;
+		 ++it)
 		ostream << it->first << ": " << it->second << '\n';
 	ostream << "Allowed methods:\n";
 	ostream << "Get: " << location.allowedMethods[MethodGet] << '\n';
 	ostream << "Post: " << location.allowedMethods[MethodPost] << '\n';
 	ostream << "Delete: " << location.allowedMethods[MethodDelete] << '\n';
 	ostream << "Returns:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
-		 it != location.returns.end(); ++it) {
+	for (std::map<statusCode, std::string>::const_iterator it = location.returns.begin(); it != location.returns.end();
+		 ++it) {
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	}
 	return ostream;
@@ -57,8 +57,8 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
-	std::map<unsigned short, std::string> errorPages = configServer.errorPage;
-	for (std::map<unsigned short, std::string>::const_iterator it = errorPages.begin(); it != errorPages.end(); ++it)
+	std::map<statusCode, std::string> errorPages = configServer.errorPage;
+	for (std::map<statusCode, std::string>::const_iterator it = errorPages.begin(); it != errorPages.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Locations:\n";
 	std::vector<Location> locations = configServer.locations;

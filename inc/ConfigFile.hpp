@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "Method.hpp"
+#include "StatusCode.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -23,9 +24,9 @@ public:
 	std::string cgiPath;
 	bool isAutoindex;
 	unsigned long maxBodySize;
-	std::map<unsigned short, std::string> errorPage;
+	std::map<statusCode, std::string> errorPage;
 	bool allowedMethods[MethodCount];
-	std::map<unsigned short, std::string> returns;
+	std::map<statusCode, std::string> returns;
 };
 
 struct ConfigServer {
@@ -37,7 +38,7 @@ public:
 	std::string root;
 	std::map<std::string, std::string> listen;
 	unsigned long maxBodySize;
-	std::map<unsigned short, std::string> errorPage;
+	std::map<statusCode, std::string> errorPage;
 	std::vector<Location> locations;
 };
 
