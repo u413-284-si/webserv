@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "ConfigFile.hpp"
+#include <cstddef>
 #include <cstdlib>
 #include <string>
 #include <sys/epoll.h>
@@ -325,16 +326,21 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 {
 	LOG_DEBUG << "ReceiveRequest for: " << connection.m_clientSocket;
 
-	char buffer[1000];
+	const size_t bufferSize = 1000;
+	char buffer[bufferSize];
+	const size_t bytesToRead = bufferSize - connection.m_bytesReceived;
 
-	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, 1000, 0);
+	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
 	if (bytesRead < 0) {
 		// Internal server error
 		close(clientFd);
+		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
 		// Connection closed by client
 		close(clientFd);
+		connection.m_status = Connection::Closed;
 	} else {
+		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
 		if (checkForCompleteRequest(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request: " << '\n' << connection.m_buffer;
@@ -349,9 +355,14 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request: " << '\n' << connection.m_buffer;
+			if (connection.m_bytesReceived == bufferSize) {
+				LOG_ERROR << "Buffer full, closing connection";
+				close(clientFd);
+				connection.m_status = Connection::Closed;
+			}
 		}
-		connection.m_timeSinceLastEvent = std::time(0);
 	}
+	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
