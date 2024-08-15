@@ -395,10 +395,12 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 		connection.m_status = Connection::Closed;
 		return;
 	}
+
 	if (sentBytes < bytesToSend) {
 		LOG_DEBUG << "Sent " << sentBytes << " bytes";
 		connection.m_buffer.erase(0, sentBytes);
 		connection.m_timeSinceLastEvent = std::time(0);
+		return;
 	}
 
 	if (connection.m_request.shallCloseConnection) {
@@ -407,6 +409,7 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 		connection.m_status = Connection::Closed;
 	} else {
 		LOG_DEBUG << "Connection alive";
+		server.modifyEvent(clientFd, EPOLLIN);
 		clearConnection(connection);
 	}
 }

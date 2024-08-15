@@ -107,6 +107,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			testBody.cpp \
 			test_checkDuplicateServer.cpp \
 			test_connectionReceiveRequest.cpp \
+			test_connectionSendResponse.cpp \
 			test_handleTimeout.cpp \
 			testHeader.cpp \
 			test_initVirtualServers.cpp \

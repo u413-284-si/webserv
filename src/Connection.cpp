@@ -47,4 +47,6 @@ void clearConnection(Connection& connection)
 	connection.m_request.httpStatus = StatusOK;
 	connection.m_request.shallCloseConnection = false;
 	connection.m_buffer = "";
+	connection.m_bytesReceived = 0;
+	connection.m_timeSinceLastEvent = std::time(0);
 }
