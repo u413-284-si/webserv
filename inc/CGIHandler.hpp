@@ -14,6 +14,7 @@
 #include <netinet/in.h>
 #include <sched.h>
 #include <string>
+#include <unistd.h>
 #include <vector>
 
 /* ====== DEFINITIONS ====== */
@@ -22,9 +23,6 @@
 
 class CGIHandler {
 public:
-	int pipeIn[2]; // pipe for passing input from server to CGI program
-	int pipeOut[2]; // pipe for passing output from CGI program to server
-
 	explicit CGIHandler(const std::string& cgipath, const std::string& cgiExt);
 
 	statusCode init(const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
@@ -34,9 +32,6 @@ private:
 	std::string m_cgiPath; // URL until CGI script extension
 	std::string m_cgiExt;
 	std::map<std::string, std::string> m_env;
-
-	pid_t m_cgiPid;
-	int m_exitStatus;
 
 	CGIHandler(const CGIHandler& ref);
 	CGIHandler& operator=(const CGIHandler& rhs);

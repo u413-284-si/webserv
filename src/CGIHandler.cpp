@@ -1,8 +1,10 @@
 #include "CGIHandler.hpp"
+#include "Log.hpp"
 #include "StatusCode.hpp"
 #include "utilities.hpp"
 #include <cstddef>
 #include <sched.h>
+#include <unistd.h>
 #include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -10,18 +12,12 @@
 CGIHandler::CGIHandler(const std::string& cgipath, const std::string& cgiExt)
 	: m_cgiPath(cgipath)
 	, m_cgiExt(cgiExt)
-	, m_cgiPid(-1)
-	, m_exitStatus(0)
 {
 }
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
 
-void CGIHandler::setCGIPid(pid_t cgiPid) { m_cgiPid = cgiPid; }
-
 void CGIHandler::setCGIPath(const std::string& cgiPath) { m_cgiPath = cgiPath; }
-
-const pid_t& CGIHandler::getCGIPid() const { return m_cgiPid; }
 
 const std::string& CGIHandler::getCGIPath() const { return m_cgiPath; }
 
@@ -73,6 +69,43 @@ statusCode CGIHandler::execute()
 	for (std::vector<std::string>::iterator iter = argvAsStrings.begin(); iter != argvAsStrings.end(); iter++)
 		argv.push_back(&(*iter).at(0));
 	argv.push_back(endptr);
+
+	int pipeIn[2]; // Pipe for passing input from server to CGI program
+	int pipeOut[2]; // Pipe for passing output from CGI program to server
+	if (pipe(pipeIn) == -1) {
+		LOG_ERROR << "Error: pipe(): pipeIn";
+		return StatusInternalServerError;
+	}
+	if (pipe(pipeOut) == -1) {
+		LOG_ERROR << "Error: pipe(): pipeOut";
+		close(pipeIn[0]);
+		close(pipeIn[1]);
+		return StatusInternalServerError;
+	}
+
+	pid_t cgiPid = fork();
+	if (cgiPid == -1) {
+		LOG_ERROR << "Error: fork()";
+		close(pipeIn[0]);
+		close(pipeIn[1]);
+		close(pipeOut[0]);
+		close(pipeOut[1]);
+		return StatusInternalServerError;
+	}
+	if (cgiPid == 0) {
+		dup2(pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
+		dup2(pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
+		close(pipeIn[0]); // Can be closed as the read connection to server exists in stdin now
+		close(pipeIn[1]);
+		close(pipeOut[0]);
+		close(pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
+		if (execve(argv[0], argv.data(), envp.data()) == -1) {
+			std::string error = "Status: 500\r\n\r\n";
+			write(STDOUT_FILENO, error.c_str(), error.size());
+		}
+	} else {
+	}
+
 	return StatusOK;
 }
 
@@ -107,8 +140,10 @@ statusCode CGIHandler::extractClientIP(const int& clientSocket, std::string& cli
 
 	// Convert the IP address to a string
 	char dest[INET_ADDRSTRLEN];
-	if (inet_ntop(AF_INET, &clientAddress.sin_addr, dest, INET_ADDRSTRLEN) == NULL)
+	if (inet_ntop(AF_INET, &clientAddress.sin_addr, dest, INET_ADDRSTRLEN) == NULL) {
+		LOG_ERROR << "Error: inet_ntop()";
 		return StatusInternalServerError;
+	}
 	clientIP = dest;
 	return StatusOK;
 }
