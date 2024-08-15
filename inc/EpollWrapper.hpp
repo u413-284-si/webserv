@@ -29,9 +29,9 @@ public:
 
 	virtual int waitForEvents();
 	virtual std::vector<struct epoll_event>::const_iterator eventsBegin() const;
-	virtual bool addEvent(int newfd, epoll_event& event) const;
+	virtual bool addEvent(int newfd, uint32_t eventMask) const;
+	virtual bool modifyEvent(int modfd, uint32_t eventMask) const;
 	virtual void removeEvent(int delfd) const;
-	virtual bool modifyEvent(int modfd, epoll_event& event) const;
 
 private:
 	int m_epfd; /**< FD of epoll instance */

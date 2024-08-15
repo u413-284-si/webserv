@@ -346,10 +346,7 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 			}
 			connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 			connection.m_status = Connection::BuildResponse;
-			struct epoll_event event = {};
-			event.data.fd = clientFd;
-			event.events = EPOLLOUT;
-			server.modifyEvent(clientFd, event);
+			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request: " << '\n' << connection.m_buffer;
 		}
@@ -431,10 +428,7 @@ void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout,
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > clientTimeout) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			struct epoll_event event = {};
-			event.data.fd = iter->first;
-			event.events = EPOLLOUT;
-			epollWrapper.modifyEvent(iter->first, event);
+			epollWrapper.modifyEvent(iter->first, EPOLLOUT);
 			close(iter->first);
 			connections.erase(iter++);
 		} else
@@ -478,11 +472,7 @@ bool checkForCompleteRequest(const std::string& connectionBuffer)
  */
 bool Server::registerVirtualServer(int serverFd, const Socket& serverSock)
 {
-	struct epoll_event event = {};
-	event.events = EPOLLIN;
-	event.data.fd = serverFd;
-
-	if (!m_epollWrapper.addEvent(serverFd, event)) {
+	if (!m_epollWrapper.addEvent(serverFd, EPOLLIN | EPOLLET)) {
 		close(serverFd);
 		LOG_ERROR << "Failed to add event for " << serverSock;
 		return false;
@@ -510,11 +500,7 @@ bool Server::registerVirtualServer(int serverFd, const Socket& serverSock)
  */
 bool Server::registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock)
 {
-	struct epoll_event event = {};
-	event.events = EPOLLIN;
-	event.data.fd = clientFd;
-
-	if (!m_epollWrapper.addEvent(clientFd, event)) {
+	if (!m_epollWrapper.addEvent(clientFd, EPOLLIN)) {
 		close(clientFd);
 		LOG_ERROR << "Failed to add event for " << clientSock;
 		return false;
@@ -592,9 +578,9 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
 }
 
-bool Server::addEvent(int newfd, epoll_event& event) const { return m_epollWrapper.addEvent(newfd, event); }
+bool Server::addEvent(int newfd, uint32_t eventMask) const { return m_epollWrapper.addEvent(newfd, eventMask); }
 
-bool Server::modifyEvent(int modfd, epoll_event& event) const { return m_epollWrapper.modifyEvent(modfd, event); }
+bool Server::modifyEvent(int modfd, uint32_t eventMask) const { return m_epollWrapper.modifyEvent(modfd, eventMask); }
 
 void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
 

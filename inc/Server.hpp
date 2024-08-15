@@ -67,8 +67,8 @@ public:
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
 	// EpollWrapper
-	bool addEvent(int newfd, epoll_event& event) const;
-	bool modifyEvent(int modfd, epoll_event& event) const;
+	bool addEvent(int newfd, uint32_t eventMask) const;
+	bool modifyEvent(int modfd, uint32_t eventMask) const;
 	void removeEvent(int delfd) const;
 
 	// RequestParser

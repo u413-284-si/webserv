@@ -61,18 +61,23 @@ int EpollWrapper::waitForEvents()
 std::vector<struct epoll_event>::const_iterator EpollWrapper::eventsBegin() const { return m_events.begin(); }
 
 /**
- * @brief Add an event to an epoll instance.
+ * @brief Add an event to the epoll instance.
  *
+ * Calls epoll_ctl() with EPOLL_CTL_ADD to add a new event to the epoll instance.
+ * It sets event.data.fd to newfd and event.events to eventMask.
  * If epoll_ctl returns -1, it logs an error message and returns false.
  *
- * @param epfd The file descriptor of the epoll instance.
  * @param newfd The file descriptor of the new event.
- * @param event The event to add.
+ * @param eventMask The eventmask of the new event to add.
  *
  * @return true if the event was successfully added, false otherwise.
  */
-bool EpollWrapper::addEvent(int newfd, epoll_event& event) const
+bool EpollWrapper::addEvent(int newfd, uint32_t eventMask) const
 {
+	struct epoll_event event = {};
+	event.events = eventMask;
+	event.data.fd = newfd;
+
 	if (-1 == epoll_ctl(m_epfd, EPOLL_CTL_ADD, newfd, &event)) {
 		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno);
 		return false;
@@ -83,8 +88,35 @@ bool EpollWrapper::addEvent(int newfd, epoll_event& event) const
 }
 
 /**
- * @brief Remove an event from an epoll instance.
+ * @brief Modify an event in the epoll instance.
  *
+ * Calls epoll_ctl() with EPOLL_CTL_MOD to modify an existing event in the epoll instance.
+ * It sets event.data.fd to modfd and event.events to eventMask.
+ * If epoll_ctl() returns -1, it logs an error message and returns false.
+ *
+ * @param modfd The file descriptor of the event to modify.
+ * @param eventMask The eventmask of the modified event.
+ *
+ * @return true if the event was successfully modified, false otherwise.
+ */
+bool EpollWrapper::modifyEvent(int modfd, uint32_t eventMask) const
+{
+	struct epoll_event event = {};
+	event.events = eventMask;
+	event.data.fd = modfd;
+
+	if (-1 == epoll_ctl(m_epfd, EPOLL_CTL_MOD, modfd, &event)) {
+		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno);
+		return false;
+	}
+	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd;
+	return true;
+}
+
+/**
+ * @brief Remove an event from the epoll instance.
+ *
+ * Calls epoll_ctl() with EPOLL_CTL_DEL to remove an existing event from the epoll instance.
  * If epoll_ctl returns -1, it logs an error message.
  *
  * @param delfd The file descriptor of the event to remove.
@@ -96,24 +128,4 @@ void EpollWrapper::removeEvent(int delfd) const
 		return;
 	}
 	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd;
-}
-
-/**
- * @brief Modify an event in an epoll instance.
- *
- * If epoll_ctl returns -1, it logs an error message and returns false.
- *
- * @param modfd The file descriptor of the event to modify.
- * @param event The modified event.
- *
- * @return true if the event was successfully modified, false otherwise.
- */
-bool EpollWrapper::modifyEvent(int modfd, epoll_event& event) const
-{
-	if (-1 == epoll_ctl(m_epfd, EPOLL_CTL_MOD, modfd, &event)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno);
-		return false;
-	}
-	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd;
-	return true;
 }
