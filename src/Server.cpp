@@ -344,6 +344,7 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
+			connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 			connection.m_status = Connection::BuildResponse;
 			struct epoll_event event = {};
 			event.data.fd = clientFd;
