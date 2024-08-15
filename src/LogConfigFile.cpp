@@ -29,9 +29,9 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 		 it != end; ++it)
 		ostream << it->first << ": " << it->second << '\n';
 	ostream << "Allowed methods:\n";
-	std::cout << "Get: " << location.allowedMethods[MethodGet] << '\n';
-	std::cout << "Post: " << location.allowedMethods[MethodPost] << '\n';
-	std::cout << "Delete: " << location.allowedMethods[MethodDelete] << '\n';
+	ostream << "Get: " << location.allowedMethods[MethodGet] << '\n';
+	ostream << "Post: " << location.allowedMethods[MethodPost] << '\n';
+	ostream << "Delete: " << location.allowedMethods[MethodDelete] << '\n';
 	ostream << "Returns:\n";
 	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
 		 it != location.returns.end(); ++it) {
