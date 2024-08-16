@@ -88,7 +88,7 @@ void Server::run()
 			 iter != m_epollWrapper.eventsBegin() + nfds; ++iter) {
 			handleEvent(*this, *iter);
 		}
-		handleTimeout(m_connections, m_clientTimeout, m_epollWrapper);
+		checkForTimeout(*this);
 	}
 }
 
@@ -418,8 +418,10 @@ void connectionHandleTimeout(Server& server, int clientFd, Connection& connectio
 {
 	LOG_DEBUG << "Timeout for: " << connection.m_clientSocket;
 
-	(void)server;
-	(void)clientFd;
+	connection.m_request.shallCloseConnection = true;
+	connection.m_request.httpStatus = StatusRequestTimeout;
+
+	connectionBuildResponse(server, clientFd, connection);
 }
 
 /**
@@ -434,19 +436,19 @@ void connectionHandleTimeout(Server& server, int clientFd, Connection& connectio
  * is properly closed.
  * @todo Send a message to client in case of timeout?
  */
-void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout, const EpollWrapper& epollWrapper)
+void checkForTimeout(Server& server)
 {
-	for (std::map<int, Connection>::iterator iter = connections.begin(); iter != connections.end();
-		/* no increment */) {
-		time_t timeSinceLastEvent = std::time(0) - iter->second.m_timeSinceLastEvent;
+	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
+		 iter != server.getConnections().end(); ++iter) {
+		if (iter->second.m_status == Connection::Closed)
+			continue;
+		const time_t timeSinceLastEvent = std::time(0) - iter->second.m_timeSinceLastEvent;
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
-		if (timeSinceLastEvent > clientTimeout) {
+		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			epollWrapper.modifyEvent(iter->first, EPOLLOUT);
-			close(iter->first);
-			connections.erase(iter++);
-		} else
-			++iter;
+			server.modifyEvent(iter->first, EPOLLOUT);
+			iter->second.m_status = Connection::Timeout;
+		}
 	}
 }
 
@@ -600,14 +602,13 @@ void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
 
 const std::map<int, Socket>& Server::getVirtualServers() const { return m_virtualServers; }
 
-std::map<int, Connection>& Server::getConnections()
-{
-	return m_connections;
-}
+std::map<int, Connection>& Server::getConnections() { return m_connections; }
 
 const std::map<int, Connection>& Server::getConnections() const { return m_connections; }
 
 const std::vector<ServerConfig>& Server::getServerConfigs() const { return m_configFile.serverConfigs; }
+
+time_t Server::getClientTimeout() const { return m_clientTimeout; }
 
 void Server::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
 {

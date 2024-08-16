@@ -14,6 +14,7 @@
 #include "StatusCode.hpp"
 
 #include <algorithm>
+#include <bits/types/time_t.h>
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -55,6 +56,7 @@ public:
 	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ServerConfig>& getServerConfigs() const;
+	time_t getClientTimeout() const;
 
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
@@ -92,7 +94,6 @@ private:
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 
-
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
 };
@@ -112,4 +113,4 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
 
-void handleTimeout(std::map<int, Connection>& connections, time_t clientTimeout, const EpollWrapper& epollWrapper);
+void checkForTimeout(Server& server);
