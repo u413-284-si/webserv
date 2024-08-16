@@ -260,7 +260,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
 		struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&clientAddr);
 
-		const int clientFd = server.acceptConnection(serverFd, addrCast, &clientLen);
+		const int clientFd = server.accept(serverFd, addrCast, &clientLen);
 		if (clientFd == -2)
 			return; // No more pending connections
 		if (clientFd == -1)
@@ -580,9 +580,9 @@ Socket Server::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) 
 	return m_socketPolicy.retrieveSocketInfo(sockaddr, socklen);
 }
 
-int Server::acceptConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
+int Server::accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
-	return m_socketPolicy.acceptConnection(sockfd, addr, addrlen);
+	return m_socketPolicy.accept(sockfd, addr, addrlen);
 }
 
 ssize_t Server::readFromSocket(int sockfd, char* buffer, size_t size, int flags) const
@@ -634,7 +634,4 @@ void cleanupClosedConnections(Server& server)
 	}
 }
 
-void Server::setClientTimeout(time_t clientTimeout)
-{
-	m_clientTimeout = clientTimeout;
-}
+void Server::setClientTimeout(time_t clientTimeout) { m_clientTimeout = clientTimeout; }

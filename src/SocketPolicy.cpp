@@ -145,7 +145,7 @@ Socket SocketPolicy::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t soc
  * @retval -1 If accept() failed and errno is not EAGAIN or EWOULDBLOCK.
  * @return -2 No more pending connections.
  */
-int SocketPolicy::acceptConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
+int SocketPolicy::accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
 	const int newFd = accept(sockfd, addr, addrlen);
 	if (newFd == -1) {
