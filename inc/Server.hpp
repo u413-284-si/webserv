@@ -52,17 +52,24 @@ public:
 
 	void run();
 
+	// Getters
 	const std::map<int, Socket>& getVirtualServers() const;
 	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ServerConfig>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 
+	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	void setClientTimeout(time_t clientTimeout);
 
-	// SocketPolicy
+	// Dispatch to EpollWrapper
+	bool addEvent(int newfd, uint32_t eventMask) const;
+	bool modifyEvent(int modfd, uint32_t eventMask) const;
+	void removeEvent(int delfd) const;
+
+	// Dispatch to SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	int createListeningSocket(const struct addrinfo& addrinfo, int backlog) const;
 	Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const;
@@ -70,16 +77,11 @@ public:
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
-	// EpollWrapper
-	bool addEvent(int newfd, uint32_t eventMask) const;
-	bool modifyEvent(int modfd, uint32_t eventMask) const;
-	void removeEvent(int delfd) const;
-
-	// RequestParser
+	// Dispatch to RequestParser
 	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
 	void clearParser();
 
-	// ResponseBuilder
+	// Dispatch to ResponseBuilder
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse();
 
@@ -104,6 +106,7 @@ bool checkDuplicateServer(const Server& server, const std::string& host, const s
 bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
 void handleEvent(Server& server, struct epoll_event);
+
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
 void handleConnection(Server& server, int clientFd, Connection& connection);

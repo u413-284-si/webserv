@@ -4,8 +4,13 @@
  * @brief Constructor for EpollWrapper.
  *
  * This constructor creates an epoll instance and initializes the epoll events vector.
- * @param maxEvents Maximum number of events for the epoll instance.
- * @param epollTimeout Timeout for the epoll instance in milliseconds.
+ *
+ * @param maxEvents Represents the maximum number of events that can be processed by the epoll instance. This value
+ * determines the size of the event vector used by epoll to store events that are ready for processing. It is used to
+ * allocate memory for the array that holds the events returned by `epoll_wait`.
+ * @param epollTimeout Represents the timeout value in milliseconds for the `epoll_wait` function. This function is used
+ * for waiting for events on an epoll instance. The `epoll_wait` function will block for this duration if no events are
+ * available before returning
  */
 EpollWrapper::EpollWrapper(size_t maxEvents, int epollTimeout)
 	: m_epfd(epoll_create(1))
