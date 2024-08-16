@@ -1,4 +1,5 @@
 #include "CGIHandler.hpp"
+#include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
 #include "utilities.hpp"
@@ -54,7 +55,7 @@ statusCode CGIHandler::init(
 	return StatusOK;
 }
 
-statusCode CGIHandler::execute()
+statusCode CGIHandler::execute(HTTPRequest& request)
 {
 	std::vector<std::string> envComposite;
 	std::vector<std::string> argvAsStrings;
@@ -104,8 +105,21 @@ statusCode CGIHandler::execute()
 			write(STDOUT_FILENO, error.c_str(), error.size());
 		}
 	} else {
+		if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
+			close(pipeIn[0]);
+			close(pipeIn[1]);
+			close(pipeOut[0]);
+			close(pipeOut[1]);
+			return StatusInternalServerError;
+		}
+		if (receiveDataFromCGIProcess() != StatusOK) {
+			close(pipeIn[0]);
+			close(pipeIn[1]);
+			close(pipeOut[0]);
+			close(pipeOut[1]);
+			return StatusInternalServerError;
+		}
 	}
-
 	return StatusOK;
 }
 
@@ -118,6 +132,23 @@ void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<cha
 	for (std::vector<std::string>::iterator iter = envComposite.begin(); iter != envComposite.end(); iter++)
 		envp.push_back(&(*iter).at(0)); // FIXME: remove reference to pointer value?
 }
+
+statusCode CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request)
+{
+    long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
+
+	if (bytesSent == -1) {
+		LOG_ERROR << "Error: write(): can't send to CGI";
+		return StatusInternalServerError;
+	}
+    if (bytesSent != static_cast<long>(request.body.size())) {
+        LOG_WARN << "Incomplete body sent: Sent amount: " << bytesSent;
+        return StatusInternalServerError;
+    }
+	return StatusOK;
+}
+
+// HELPER FUNCTIONS
 
 std::string CGIHandler::extractPathInfo(const std::string& path)
 {

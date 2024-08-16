@@ -26,7 +26,7 @@ public:
 	explicit CGIHandler(const std::string& cgipath, const std::string& cgiExt);
 
 	statusCode init(const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
-	statusCode execute();
+	statusCode execute(HTTPRequest& request);
 
 private:
 	std::string m_cgiPath; // URL until CGI script extension
@@ -46,6 +46,8 @@ private:
 	const std::map<std::string, std::string>& getEnv() const;
 
 	void setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const;
+    statusCode sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request);
+    statusCode receiveDataFromCGIProcess();
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
