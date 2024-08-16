@@ -86,7 +86,7 @@ void Server::run()
 
 		for (std::vector<struct epoll_event>::const_iterator iter = m_epollWrapper.eventsBegin();
 			 iter != m_epollWrapper.eventsBegin() + nfds; ++iter) {
-			handleEvent(*iter);
+			handleEvent(*this, *iter);
 		}
 		handleTimeout(m_connections, m_clientTimeout, m_epollWrapper);
 	}
@@ -196,18 +196,18 @@ bool addVirtualServer(Server& server, const std::string& host, int backlog, cons
  *
  * @param event The epoll event to handle.
  */
-void Server::handleEvent(struct epoll_event event)
+void handleEvent(Server& server, struct epoll_event event)
 {
 	uint32_t eventMask = event.events;
 
-	std::map<int, Socket>::const_iterator iter = m_virtualServers.find(event.data.fd);
-	if (iter != m_virtualServers.end()) {
+	std::map<int, Socket>::const_iterator iter = server.getVirtualServers().find(event.data.fd);
+	if (iter != server.getVirtualServers().end()) {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_ERROR << "Error condition happened on the associated file descriptor of " << iter->second;
 			// what to do here?
 			return;
 		}
-		acceptConnections(*this, iter->first, iter->second, eventMask);
+		acceptConnections(server, iter->first, iter->second, eventMask);
 	} else {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_DEBUG << "epoll_wait: EPOLLERR";
@@ -216,7 +216,7 @@ void Server::handleEvent(struct epoll_event event)
 			LOG_DEBUG << "epoll_wait: EPOLLHUP";
 			eventMask = EPOLLIN;
 		}
-		handleConnection(*this, event.data.fd, m_connections.at(event.data.fd));
+		handleConnection(server, event.data.fd, server.getConnections().at(event.data.fd));
 	}
 }
 
@@ -599,6 +599,11 @@ bool Server::modifyEvent(int modfd, uint32_t eventMask) const { return m_epollWr
 void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
 
 const std::map<int, Socket>& Server::getVirtualServers() const { return m_virtualServers; }
+
+std::map<int, Connection>& Server::getConnections()
+{
+	return m_connections;
+}
 
 const std::map<int, Connection>& Server::getConnections() const { return m_connections; }
 

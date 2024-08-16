@@ -52,6 +52,7 @@ public:
 	void run();
 
 	const std::map<int, Socket>& getVirtualServers() const;
+	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ServerConfig>& getServerConfigs() const;
 
@@ -91,7 +92,6 @@ private:
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 
-	void handleEvent(struct epoll_event);
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
@@ -101,6 +101,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ServerCon
 bool checkDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool addVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
+void handleEvent(Server& server, struct epoll_event);
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
 void handleConnection(Server& server, int clientFd, Connection& connection);
