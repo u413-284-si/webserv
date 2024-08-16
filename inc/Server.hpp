@@ -60,6 +60,7 @@ public:
 
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
+	void setClientTimeout(time_t clientTimeout);
 
 	// SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
@@ -100,7 +101,7 @@ private:
 
 bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs);
 bool checkDuplicateServer(const Server& server, const std::string& host, const std::string& port);
-bool addVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
+bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
 void handleEvent(Server& server, struct epoll_event);
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);

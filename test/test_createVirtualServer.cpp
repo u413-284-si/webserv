@@ -8,14 +8,14 @@
 using ::testing::Return;
 using ::testing::NiceMock;
 
-class AddVirtualServerTest : public ::testing::Test {
+class CreateVirtualServerTest : public ::testing::Test {
 	protected:
-	AddVirtualServerTest() : server(configFile, epollWrapper, socketPolicy)
+	CreateVirtualServerTest() : server(configFile, epollWrapper, socketPolicy)
 	{
 		ON_CALL(epollWrapper, addEvent)
 		.WillByDefault(Return(true));
 	}
-	~AddVirtualServerTest() override { }
+	~CreateVirtualServerTest() override { }
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
@@ -30,7 +30,7 @@ class AddVirtualServerTest : public ::testing::Test {
 	const int dummyFd3 = 12;
 };
 
-TEST_F(AddVirtualServerTest, ServerAddSuccess)
+TEST_F(CreateVirtualServerTest, ServerAddSuccess)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
@@ -49,23 +49,23 @@ TEST_F(AddVirtualServerTest, ServerAddSuccess)
 	.Times(1)
 	.WillOnce(Return(Socket { host, port }));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
 }
 
-TEST_F(AddVirtualServerTest, resolveListeningAddressesFails)
+TEST_F(CreateVirtualServerTest, resolveListeningAddressesFails)
 {
 	EXPECT_CALL(socketPolicy, resolveListeningAddresses)
 	.Times(1)
 	.WillOnce(Return(nullptr));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
-TEST_F(AddVirtualServerTest, createListeningSocketFails)
+TEST_F(CreateVirtualServerTest, createListeningSocketFails)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
@@ -80,11 +80,11 @@ TEST_F(AddVirtualServerTest, createListeningSocketFails)
 	.Times(1)
 	.WillOnce(Return(-1));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
-TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
+TEST_F(CreateVirtualServerTest, retrieveSocketInfoFails)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
@@ -103,11 +103,11 @@ TEST_F(AddVirtualServerTest, retrieveSocketInfoFails)
 	.Times(1)
 	.WillOnce(Return(Socket { "", "" }));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
-TEST_F(AddVirtualServerTest, registerVirtualServerFails)
+TEST_F(CreateVirtualServerTest, registerVirtualServerFails)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
@@ -130,11 +130,11 @@ TEST_F(AddVirtualServerTest, registerVirtualServerFails)
 	.Times(1)
 	.WillOnce(Return(false));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), false);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
 }
 
-TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
+TEST_F(CreateVirtualServerTest, FirstFailsSecondSuccess)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
@@ -158,13 +158,13 @@ TEST_F(AddVirtualServerTest, FirstFailsSecondSuccess)
 	.Times(1)
 	.WillOnce(Return(Socket { host, port }));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
 }
 
-TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
+TEST_F(CreateVirtualServerTest, FirstSuccessSecondFail)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
@@ -189,13 +189,13 @@ TEST_F(AddVirtualServerTest, FirstSuccessSecondFail)
 	.WillOnce(Return(Socket { "", "" }))
 	.WillOnce(Return(Socket { host, port }));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
 }
 
-TEST_F(AddVirtualServerTest, AddThree)
+TEST_F(CreateVirtualServerTest, AddThree)
 {
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
@@ -224,7 +224,7 @@ TEST_F(AddVirtualServerTest, AddThree)
 	.Times(3)
 	.WillRepeatedly(Return(Socket { host, port }));
 
-	EXPECT_EQ(addVirtualServer(server, host, backlog, port), true);
+	EXPECT_EQ(createVirtualServer(server, host, backlog, port), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 3);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);

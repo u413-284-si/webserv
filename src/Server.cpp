@@ -114,7 +114,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ServerCon
 		if (checkDuplicateServer(server, iter->host, webutils::toString(iter->port)))
 			continue;
 
-		if (!addVirtualServer(server, iter->host, backlog, webutils::toString(iter->port))) {
+		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port))) {
 			LOG_DEBUG << "Failed to add virtual server: " << iter->serverName;
 			continue;
 		}
@@ -145,7 +145,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ServerCon
  *
  * @return true if the virtual server was successfully added, false otherwise.
  */
-bool addVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port)
+bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port)
 {
 	struct addrinfo* list = server.resolveListeningAddresses(host, port);
 	if (list == NULL)
@@ -632,4 +632,9 @@ void cleanupClosedConnections(Server& server)
 		else
 			++iter;
 	}
+}
+
+void Server::setClientTimeout(time_t clientTimeout)
+{
+	m_clientTimeout = clientTimeout;
 }
