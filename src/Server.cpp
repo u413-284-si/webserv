@@ -89,6 +89,7 @@ void Server::run()
 			handleEvent(*this, *iter);
 		}
 		checkForTimeout(*this);
+		cleanupClosedConnections(*this);
 	}
 }
 
@@ -620,3 +621,15 @@ void Server::clearParser() { m_requestParser.clearParser(); }
 void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
 
 std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
+
+void cleanupClosedConnections(Server& server)
+{
+	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
+		 iter != server.getConnections().end();
+		/* no iter*/) {
+		if (iter->second.m_status == Connection::Closed)
+			server.getConnections().erase(iter++);
+		else
+			++iter;
+	}
+}

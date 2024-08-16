@@ -114,3 +114,5 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
 
 void checkForTimeout(Server& server);
+
+void cleanupClosedConnections(Server& server);
