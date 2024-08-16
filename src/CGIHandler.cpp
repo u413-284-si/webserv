@@ -1,9 +1,11 @@
 #include "CGIHandler.hpp"
+#include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
 #include "utilities.hpp"
 #include <cstddef>
+#include <cstdlib>
 #include <sched.h>
 #include <unistd.h>
 #include <vector>
@@ -55,7 +57,7 @@ statusCode CGIHandler::init(
 	return StatusOK;
 }
 
-statusCode CGIHandler::execute(HTTPRequest& request)
+statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 {
 	std::vector<std::string> envComposite;
 	std::vector<std::string> argvAsStrings;
@@ -74,11 +76,11 @@ statusCode CGIHandler::execute(HTTPRequest& request)
 	int pipeIn[2]; // Pipe for passing input from server to CGI program
 	int pipeOut[2]; // Pipe for passing output from CGI program to server
 	if (pipe(pipeIn) == -1) {
-		LOG_ERROR << "Error: pipe(): pipeIn";
+		LOG_ERROR << "Error: pipe(): pipeIn: " << errno;
 		return StatusInternalServerError;
 	}
 	if (pipe(pipeOut) == -1) {
-		LOG_ERROR << "Error: pipe(): pipeOut";
+		LOG_ERROR << "Error: pipe(): pipeOut: " << errno;
 		close(pipeIn[0]);
 		close(pipeIn[1]);
 		return StatusInternalServerError;
@@ -86,7 +88,7 @@ statusCode CGIHandler::execute(HTTPRequest& request)
 
 	pid_t cgiPid = fork();
 	if (cgiPid == -1) {
-		LOG_ERROR << "Error: fork()";
+		LOG_ERROR << "Error: fork(): " << errno;
 		close(pipeIn[0]);
 		close(pipeIn[1]);
 		close(pipeOut[0]);
@@ -104,23 +106,20 @@ statusCode CGIHandler::execute(HTTPRequest& request)
 			std::string error = "Status: 500\r\n\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
 		}
-	} else {
-		if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
-			close(pipeIn[0]);
-			close(pipeIn[1]);
-			close(pipeOut[0]);
-			close(pipeOut[1]);
-			return StatusInternalServerError;
-		}
-		if (receiveDataFromCGIProcess() != StatusOK) {
-			close(pipeIn[0]);
-			close(pipeIn[1]);
-			close(pipeOut[0]);
-			close(pipeOut[1]);
-			return StatusInternalServerError;
-		}
-	}
-	return StatusOK;
+    }
+    if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
+        close(pipeIn[0]);
+        close(pipeIn[1]);
+        close(pipeOut[0]);
+        close(pipeOut[1]);
+        return StatusInternalServerError;
+    }
+    statusCode exitStatus = receiveDataFromCGIProcess(pipeOut[0], cgiPid, newBody);
+    close(pipeIn[0]);
+    close(pipeIn[1]);
+    close(pipeOut[0]);
+    close(pipeOut[1]);
+    return exitStatus;
 }
 
 void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const
@@ -135,17 +134,43 @@ void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<cha
 
 statusCode CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request)
 {
-    long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
+	long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
 
 	if (bytesSent == -1) {
-		LOG_ERROR << "Error: write(): can't send to CGI";
+		LOG_ERROR << "Error: write(): can't send to CGI: " << errno;
 		return StatusInternalServerError;
 	}
-    if (bytesSent != static_cast<long>(request.body.size())) {
-        LOG_WARN << "Incomplete body sent: Sent amount: " << bytesSent;
-        return StatusInternalServerError;
-    }
+	if (bytesSent != static_cast<long>(request.body.size())) {
+		LOG_WARN << "Incomplete body sent: Sent amount: " << bytesSent;
+		return StatusInternalServerError;
+	}
 	return StatusOK;
+}
+
+statusCode CGIHandler::receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody)
+{
+	char buffer[BUFFER_SIZE];
+	long bytesRead = read(pipeOutReadEnd, buffer, sizeof(buffer));
+
+	if (bytesRead == -1) {
+		LOG_ERROR << "Error: read(): can't read from CGI: " << errno;
+		return StatusInternalServerError;
+	}
+	if (bytesRead == 0) {
+        int status = 0;
+        if (waitpid(cgiPid, &status, 0) == -1) {
+            LOG_ERROR << "Error: waitpid(): " << errno;
+		    return StatusInternalServerError;
+        }
+        // NOLINTNEXTLINE misinterpretation by HIC++ standard
+        if (WEXITSTATUS(status) != 0) {
+            LOG_ERROR << "Error: child returned with: " << status;
+            return StatusInternalServerError;
+        }
+        return StatusOK;
+    }
+    newBody.append(buffer, bytesRead);
+    return StatusOK;
 }
 
 // HELPER FUNCTIONS
