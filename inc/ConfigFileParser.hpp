@@ -46,12 +46,12 @@ private:
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
 	void readSocket(const std::string& value);
-	void readRootPath(int block, const std::string& value);
+	void readRootPath(Block block, const std::string& value);
 
 	// Checker functions
 	static bool isBracketOpen(const std::string& configFilePath);
 	bool isSemicolonMissing(const std::string& line) const;
-	bool isDirectiveValid(const std::string& directive, int block) const;
+	bool isDirectiveValid(const std::string& directive, Block block) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
 	static bool isPortValid(const std::string& port);
 

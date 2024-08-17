@@ -140,7 +140,7 @@ void ConfigFileParser::readAndTrimLine(void)
  * @return false When the directive is invalid
  */
 
-bool ConfigFileParser::isDirectiveValid(const std::string& directive, int block) const
+bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block block) const
 {
 	if (block == ServerBlock) {
 		if (std::find(m_validServerDirectives.begin(), m_validServerDirectives.end(), directive)
@@ -243,7 +243,7 @@ bool ConfigFileParser::isPortValid(const std::string& port)
  *
  * @param block The block which surounds the directive
  */
-void ConfigFileParser::readRootPath(int block, const std::string& value)
+void ConfigFileParser::readRootPath(Block block, const std::string& value)
 {
 	std::string rootPath = value;
 
