@@ -14,7 +14,6 @@
 /* ====== DEFINITIONS ====== */
 
 enum Block { ServerBlock, LocationBlock };
-#define WHITESAPCE " \t\n\v\f\r"
 
 /* ====== CLASS DECLARATION ====== */
 
@@ -36,6 +35,7 @@ private:
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;
 	std::vector<std::string> m_validLocationDirectives;
+	static const char* const whitespace;
 
 	// Getter functions
 	std::string getDirective(const std::string& line) const;

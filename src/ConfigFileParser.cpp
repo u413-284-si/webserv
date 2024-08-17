@@ -2,6 +2,8 @@
 #include "utilities.hpp"
 #include <cstddef>
 
+const char* const ConfigFileParser::whitespace = " \t\n\v\f\r";
+
 /**
  * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
  */
@@ -245,7 +247,7 @@ void ConfigFileParser::readRootPath(int block, const std::string& value)
 {
 	std::string rootPath = value;
 
-	if (rootPath.find_first_of(WHITESAPCE) != std::string::npos)
+	if (rootPath.find_first_of(whitespace) != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
 	if (rootPath[rootPath.length() - 1] == '/')
@@ -330,7 +332,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 std::string ConfigFileParser::getDirective(const std::string& line) const
 {
-	const size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
+	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
 	std::string directive = line.substr(0, firstWhiteSpaceIndex);
 
 	directive = webutils::trimLeadingWhitespaces(directive);
@@ -349,7 +351,7 @@ std::string ConfigFileParser::getValue(const std::string& line) const
 {
 	const size_t semicolonIndex = line.find(';');
 
-	const size_t firstWhiteSpaceIndex = line.find_first_of(WHITESAPCE);
+	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
 	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
@@ -412,7 +414,7 @@ void ConfigFileParser::readServerConfigLine(void)
 		}
 		const std::string value = getValue(line);
 
-		if ((value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos))
+		if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 		if (!isDirectiveValid(directive, ServerBlock))
@@ -450,7 +452,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 		const std::string directive = getDirective(line);
 		const std::string value = getValue(line);
 
-		if (value.empty() || value.find_last_not_of(WHITESAPCE) == std::string::npos)
+		if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 		if (!isDirectiveValid(directive, LocationBlock))
