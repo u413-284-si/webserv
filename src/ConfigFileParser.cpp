@@ -251,7 +251,7 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
 		throw std::runtime_error("More than one root path");
 
 	if (rootPath[rootPath.length() - 1] == '/')
-		rootPath = rootPath.substr(0, rootPath.length() - 1);
+		rootPath.erase(rootPath.end() - 1);
 
 	if (block == ServerBlock)
 		m_configFile.servers[m_serverIndex].root = rootPath;
