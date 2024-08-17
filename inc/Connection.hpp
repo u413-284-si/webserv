@@ -28,3 +28,6 @@ public:
 };
 
 void clearConnection(Connection& connection);
+
+std::ostream& operator<<(std::ostream& ostream, const Connection& connection);
+std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status);

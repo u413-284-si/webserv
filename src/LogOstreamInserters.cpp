@@ -2,6 +2,8 @@
 #include "HTTPRequest.hpp"
 #include "HTTPResponse.hpp"
 #include "StatusCode.hpp"
+#include "Socket.hpp"
+#include "Connection.hpp"
 
 #include <cassert>
 
@@ -144,6 +146,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 	case StatusMethodNotAllowed:
 		ostream << "405 Method Not Allowed";
 		break;
+	case StatusRequestTimeout:
+		ostream << "408 Request Timeout";
+		break;
 	case StatusInternalServerError:
 		ostream << "500 Internal Server Error";
 		break;
@@ -209,5 +214,71 @@ std::ostream& operator<<(std::ostream& ostream, const HTTPResponse& httpResponse
 	ostream << "Location:\n" << *httpResponse.location << '\n';
 	ostream << "Method: " << httpResponse.method << '\n';
 	ostream << "Autoindex: " << httpResponse.isAutoindex << '\n';
+	return ostream;
+}
+
+/**
+ * @brief Overload << operator to append a Socket.
+ *
+ * @param ostream The output stream.
+ * @param socket The Socket object.
+ * @return std::ostream& The output stream.
+ */
+std::ostream& operator<<(std::ostream& ostream, const Socket& socket)
+{
+	ostream << socket.host << ':' << socket.port;
+	return ostream;
+}
+
+/**
+ * @brief Overload << operator to append a Connection::ConnectionStatus.
+ *
+ * @param ostream The output stream.
+ * @param status The Connection::ConnectionStatus enum.
+ * @return std::ostream& The output stream.
+ */
+std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status)
+{
+	assert(status >= Connection::ReceiveRequest && status <= Connection::Closed);
+
+	switch (status) {
+	case Connection::ReceiveRequest:
+		ostream << "ReceiveRequest";
+		break;
+	case Connection::ReceiveBody:
+		ostream << "ReceiveBody";
+		break;
+	case Connection::BuildResponse:
+		ostream << "BuildResponse";
+		break;
+	case Connection::SendResponse:
+		ostream << "SendResponse";
+		break;
+	case Connection::Timeout:
+		ostream << "Timeout";
+		break;
+	case Connection::Closed:
+		ostream << "Closed";
+		break;
+	}
+	return ostream;
+}
+
+/**
+ * @brief Overload << operator to append a Connection.
+ *
+ * @param ostream The output stream.
+ * @param connection The Connection object.
+ * @return std::ostream& The output stream.
+ */
+std::ostream& operator<<(std::ostream& ostream, const Connection& connection)
+{
+	ostream << "Server: " << connection.m_serverSocket << '\n';
+	ostream << "Client: " << connection.m_clientSocket << '\n';
+	ostream << "Time since last event: " << connection.m_timeSinceLastEvent << '\n';
+	ostream << "Status: " << connection.m_status << '\n';
+	ostream << "Bytes received: " << connection.m_bytesReceived << '\n';
+	ostream << "Request:\n" << connection.m_request;
+	ostream << "Buffer:\n" << connection.m_buffer << '\n';
 	return ostream;
 }
