@@ -116,7 +116,8 @@ $(document).ready(function(){initNavTree('_h_t_t_p_response_8hpp.html',''); init
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">HTTPResponse.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -127,7 +128,7 @@ $(document).ready(function(){initNavTree('_h_t_t_p_response_8hpp.html',''); init
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for HTTPResponse.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_h_t_t_p_response_8hpp__incl.svg" width="412" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_h_t_t_p_response_8hpp__incl.svg" width="371" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -143,7 +144,69 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a90ce26113503360cc1b49959f236d9ac"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_h_t_t_p_response_8hpp.html#a90ce26113503360cc1b49959f236d9ac">operator&lt;&lt;</a> (std::ostream &amp;ostream, const <a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a> &amp;httpResponse)</td></tr>
+<tr class="memdesc:a90ce26113503360cc1b49959f236d9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload &lt;&lt; operator to append a <a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a>.  <a href="_h_t_t_p_response_8hpp.html#a90ce26113503360cc1b49959f236d9ac">More...</a><br /></td></tr>
+<tr class="separator:a90ce26113503360cc1b49959f236d9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a90ce26113503360cc1b49959f236d9ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90ce26113503360cc1b49959f236d9ac">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a> &amp;&#160;</td>
+          <td class="paramname"><em>httpResponse</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Overload &lt;&lt; operator to append a <a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ostream</td><td>The output stream. </td></tr>
+    <tr><td class="paramname">httpResponse</td><td>The <a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a> object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00204">204</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;{</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Status code: &quot;</span> &lt;&lt; httpResponse.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Target resource: &quot;</span> &lt;&lt; httpResponse.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Body: &quot;</span> &lt;&lt; httpResponse.<a class="code" href="struct_h_t_t_p_response.html#a64a9aad0bf4cc1b2b5f7bbc8b3cb1867">body</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Location:\n&quot;</span> &lt;&lt; *httpResponse.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Method: &quot;</span> &lt;&lt; httpResponse.<a class="code" href="struct_h_t_t_p_response.html#a942d78646197be70428d3ad901f11e16">method</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Autoindex: &quot;</span> &lt;&lt; httpResponse.<a class="code" href="struct_h_t_t_p_response.html#a2a0f9b7fbdaa2b7cd8c3cfab3c6744da">isAutoindex</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;}</div>
+<div class="ttc" id="astruct_h_t_t_p_response_html_a0c84b69a9a87836404f133b63ba913ff"><div class="ttname"><a href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">HTTPResponse::location</a></div><div class="ttdeci">std::vector&lt; Location &gt;::const_iterator location</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00011">HTTPResponse.hpp:11</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_response_html_a2a0f9b7fbdaa2b7cd8c3cfab3c6744da"><div class="ttname"><a href="struct_h_t_t_p_response.html#a2a0f9b7fbdaa2b7cd8c3cfab3c6744da">HTTPResponse::isAutoindex</a></div><div class="ttdeci">bool isAutoindex</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00013">HTTPResponse.hpp:13</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_response_html_a64a9aad0bf4cc1b2b5f7bbc8b3cb1867"><div class="ttname"><a href="struct_h_t_t_p_response.html#a64a9aad0bf4cc1b2b5f7bbc8b3cb1867">HTTPResponse::body</a></div><div class="ttdeci">std::string body</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00010">HTTPResponse.hpp:10</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_response_html_a942d78646197be70428d3ad901f11e16"><div class="ttname"><a href="struct_h_t_t_p_response.html#a942d78646197be70428d3ad901f11e16">HTTPResponse::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00012">HTTPResponse.hpp:12</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_response_html_abb1f67a89da83fe7933c065a4303d123"><div class="ttname"><a href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">HTTPResponse::status</a></div><div class="ttdeci">statusCode status</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00008">HTTPResponse.hpp:8</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_response_html_ae63067d4d65191ed345dee9e1d873e31"><div class="ttname"><a href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">HTTPResponse::targetResource</a></div><div class="ttdeci">std::string targetResource</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00009">HTTPResponse.hpp:9</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

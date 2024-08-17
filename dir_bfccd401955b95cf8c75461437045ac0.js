@@ -17,13 +17,8 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "FileSystemPolicy.hpp", "_file_system_policy_8hpp.html", [
       [ "FileSystemPolicy", "class_file_system_policy.html", "class_file_system_policy" ]
     ] ],
-    [ "HTTPRequest.hpp", "_h_t_t_p_request_8hpp.html", [
-      [ "URI", "struct_u_r_i.html", "struct_u_r_i" ],
-      [ "HTTPRequest", "struct_h_t_t_p_request.html", "struct_h_t_t_p_request" ]
-    ] ],
-    [ "HTTPResponse.hpp", "_h_t_t_p_response_8hpp.html", [
-      [ "HTTPResponse", "struct_h_t_t_p_response.html", "struct_h_t_t_p_response" ]
-    ] ],
+    [ "HTTPRequest.hpp", "_h_t_t_p_request_8hpp.html", "_h_t_t_p_request_8hpp" ],
+    [ "HTTPResponse.hpp", "_h_t_t_p_response_8hpp.html", "_h_t_t_p_response_8hpp" ],
     [ "Log.hpp", "_log_8hpp.html", "_log_8hpp" ],
     [ "LogData.hpp", "_log_data_8hpp.html", "_log_data_8hpp" ],
     [ "Logger.hpp", "_logger_8hpp.html", [

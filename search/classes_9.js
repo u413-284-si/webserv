@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['targetresourcehandler_251',['TargetResourceHandler',['../class_target_resource_handler.html',1,'']]],
-  ['targetresourcehandlertest_252',['TargetResourceHandlerTest',['../class_target_resource_handler_test.html',1,'']]]
+  ['server_259',['Server',['../class_server.html',1,'']]],
+  ['serverconfig_260',['ServerConfig',['../struct_server_config.html',1,'']]]
 ];

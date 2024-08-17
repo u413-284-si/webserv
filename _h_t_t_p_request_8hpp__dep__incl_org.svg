@@ -12,8 +12,8 @@
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title=" ">
-<polygon fill="#bfbfbf" stroke="black" points="436.5,-291.5 436.5,-310.5 556.5,-310.5 556.5,-291.5 436.5,-291.5"/>
-<text text-anchor="middle" x="496.5" y="-298.5" font-family="Helvetica,sans-Serif" font-size="10.00">inc/HTTPRequest.hpp</text>
+<polygon fill="#bfbfbf" stroke="black" points="594.5,-291.5 594.5,-310.5 714.5,-310.5 714.5,-291.5 594.5,-291.5"/>
+<text text-anchor="middle" x="654.5" y="-298.5" font-family="Helvetica,sans-Serif" font-size="10.00">inc/HTTPRequest.hpp</text>
 </a>
 </g>
 </g>
@@ -29,8 +29,38 @@
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M496.5,-280.8C496.5,-271.91 496.5,-261.78 496.5,-254.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="493,-281.08 496.5,-291.08 500,-281.08 493,-281.08"/>
+<path fill="none" stroke="midnightblue" d="M619.89,-288.17C590.14,-278 547.95,-263.59 521.42,-254.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="618.87,-291.52 629.46,-291.44 621.13,-284.9 618.87,-291.52"/>
+</g>
+<!-- Node15 -->
+<g id="node15" class="node">
+<title>Node15</title>
+<g id="a_node15"><a xlink:href="_log_ostream_inserters_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="none" stroke="black" points="576.5,-235.5 576.5,-254.5 732.5,-254.5 732.5,-235.5 576.5,-235.5"/>
+<text text-anchor="middle" x="654.5" y="-242.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/LogOstreamInserters.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node15 -->
+<g id="edge17" class="edge">
+<title>Node1&#45;&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M654.5,-280.8C654.5,-271.91 654.5,-261.78 654.5,-254.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="651,-281.08 654.5,-291.08 658,-281.08 651,-281.08"/>
+</g>
+<!-- Node16 -->
+<g id="node16" class="node">
+<title>Node16</title>
+<g id="a_node16"><a xlink:href="test___ostream_inserters_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="none" stroke="black" points="751,-235.5 751,-254.5 918,-254.5 918,-235.5 751,-235.5"/>
+<text text-anchor="middle" x="834.5" y="-242.5" font-family="Helvetica,sans-Serif" font-size="10.00">test/test_OstreamInserters.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node16 -->
+<g id="edge18" class="edge">
+<title>Node1&#45;&gt;Node16</title>
+<path fill="none" stroke="midnightblue" d="M692.61,-288.57C726.56,-278.38 775.49,-263.7 806.11,-254.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="691.59,-285.22 683.02,-291.44 693.61,-291.92 691.59,-285.22"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -150,8 +180,8 @@
 <!-- Node2&#45;&gt;Node14 -->
 <g id="edge16" class="edge">
 <title>Node2&#45;&gt;Node14</title>
-<path fill="none" stroke="midnightblue" d="M568.74,-235.19C652.33,-225.01 788.96,-208.35 870.95,-198.36"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="568.07,-231.75 558.56,-236.43 568.91,-238.7 568.07,-231.75"/>
+<path fill="none" stroke="midnightblue" d="M568.92,-234.83C680.54,-221.02 798.46,-206.84 870.92,-198.18"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="568.33,-231.38 558.84,-236.08 569.19,-238.32 568.33,-231.38"/>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">

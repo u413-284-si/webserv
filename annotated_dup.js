@@ -17,6 +17,7 @@ var annotated_dup =
     [ "LimitExcept", "struct_limit_except.html", "struct_limit_except" ],
     [ "Location", "struct_location.html", "struct_location" ],
     [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", "class_mock_file_system_policy" ],
+    [ "OstreamInsertersTest", "class_ostream_inserters_test.html", "class_ostream_inserters_test" ],
     [ "RequestParser", "class_request_parser.html", "class_request_parser" ],
     [ "ResponseBodyHandler", "class_response_body_handler.html", "class_response_body_handler" ],
     [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", "class_response_body_handler_test" ],

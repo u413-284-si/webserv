@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['uri_253',['URI',['../struct_u_r_i.html',1,'']]]
+  ['targetresourcehandler_261',['TargetResourceHandler',['../class_target_resource_handler.html',1,'']]],
+  ['targetresourcehandlertest_262',['TargetResourceHandlerTest',['../class_target_resource_handler_test.html',1,'']]]
 ];

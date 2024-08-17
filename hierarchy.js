@@ -24,6 +24,7 @@ var hierarchy =
     [ "ServerConfig", "struct_server_config.html", null ],
     [ "TargetResourceHandler", "class_target_resource_handler.html", null ],
     [ "testing::Test", null, [
+      [ "OstreamInsertersTest", "class_ostream_inserters_test.html", null ],
       [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", null ],
       [ "TargetResourceHandlerTest", "class_target_resource_handler_test.html", null ]
     ] ],

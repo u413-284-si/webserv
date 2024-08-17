@@ -10,5 +10,6 @@ var _status_code_8hpp =
       [ "StatusInternalServerError", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc", null ],
       [ "StatusMethodNotImplemented", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259", null ],
       [ "StatusNonSupportedVersion", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949", null ]
-    ] ]
+    ] ],
+    [ "operator<<", "_status_code_8hpp.html#ae82a3a6d4c05ac5fa5534cd8e5adf09a", null ]
 ];
