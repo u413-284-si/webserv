@@ -83,12 +83,12 @@ SRC:=	main.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
-		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
+		LogOstreamInserters.cpp \
 		RequestParser.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
@@ -110,6 +110,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_connectionSendResponse.cpp \
 			test_createVirtualServer.cpp \
 			testHeader.cpp \
+			test_OstreamInserters.cpp \
 			test_initVirtualServers.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \
