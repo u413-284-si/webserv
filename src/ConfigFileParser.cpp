@@ -373,14 +373,9 @@ std::string ConfigFileParser::getValue(const std::string& line) const
  */
 void ConfigFileParser::processRemainingLine(std::string& line) const
 {
-	size_t semicolonIndex = line.find(';');
-
-	if (line.size() > semicolonIndex + 1) {
-		line = line.substr(semicolonIndex + 1);
-		line = webutils::trimLeadingWhitespaces(line);
-		webutils::trimTrailingWhiteSpaces(line);
-	} else
-		line.clear();
+	line.erase(0, line.find(';') + 1);
+	line = webutils::trimLeadingWhitespaces(line);
+	webutils::trimTrailingWhiteSpaces(line);
 }
 
 /**

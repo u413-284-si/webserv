@@ -262,7 +262,8 @@ TEST_F(ValidConfigFileTests, ValidFile)
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_ip_and_port.conf"));
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/several_directives_on_one_line.conf"));
 	EXPECT_NE(configFile.servers[0].listen.find("127.0.0.1"), configFile.servers[0].listen.end());
 	EXPECT_EQ("80", configFile.servers[0].listen["127.0.0.1"]);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
