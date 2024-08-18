@@ -199,7 +199,13 @@ std::string getDefaultErrorPage(statusCode status)
 	"<head><title>408 Request timeout</title></head>\r\n"
 	"<body>\r\n"
 	"<center><h1>408 Request timeout</h1></center>\r\n";
-	
+
+	static const char* error431Page =
+	"<html>\r\n"
+	"<head><title>431 Request header fields too large</title></head>\r\n"
+	"<body>\r\n"
+	"<center><h1>431 Request header fields too large</h1></center>\r\n";
+
 	static const char* error500page =
 	"<html>\r\n"
 	"<head><title>500 Internal server error</title></head>\r\n"
@@ -245,6 +251,9 @@ std::string getDefaultErrorPage(statusCode status)
 		break;
 	case StatusRequestTimeout:
 		ret = error408Page;
+		break;
+	case StatusRequestHeaderFieldsTooLarge:
+		ret = error431Page;
 		break;
 	case StatusInternalServerError:
 		ret = error500page;

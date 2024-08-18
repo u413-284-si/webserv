@@ -603,8 +603,8 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * connection are updated.
  * If the buffer contains a complete request, it parses the request. Then the request is removed from the client buffer,
  * the connection is set to BuildResponse state and the event is modified to listen to EPOLLOUT.
- * If no complete request was received and the received bytes match the buffer size, it closes the connection, since the
- * request is too big.
+ * If no complete request was received and the received bytes match the buffer size, sets HTTP status code to 413
+ * Request Header Fields Too Large and status to build response, since the request header was too big.
  *
  * In any case the time since the last event is updated to the current time.
  *
@@ -635,7 +635,7 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
 		if (checkForCompleteRequest(connection.m_buffer)) {
-			LOG_DEBUG << "Received complete request: " << '\n' << connection.m_buffer;
+			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
 			try {
 				server.parseHttpRequest(connection.m_buffer, connection.m_request);
 				server.clearParser();
@@ -646,11 +646,11 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
-			LOG_DEBUG << "Received partial request: " << '\n' << connection.m_buffer;
+			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
 			if (connection.m_bytesReceived == bufferSize) {
-				LOG_ERROR << "Buffer full, closing connection";
-				close(clientFd);
-				connection.m_status = Connection::Closed;
+				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
+				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+				connection.m_status = Connection::BuildResponse;
 			}
 		}
 	}
@@ -822,13 +822,13 @@ void checkForTimeout(Server& server)
  * @param server The server object to cleanup closed connections for.
  */
 void cleanupClosedConnections(Server& server)
- {
-	 for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
-		  iter != server.getConnections().end();
-		 /* no iter*/) {
-		 if (iter->second.m_status == Connection::Closed)
-			 server.getConnections().erase(iter++);
-		 else
-			 ++iter;
-	 }
- }
+{
+	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
+		 iter != server.getConnections().end();
+		/* no iter*/) {
+		if (iter->second.m_status == Connection::Closed)
+			server.getConnections().erase(iter++);
+		else
+			++iter;
+	}
+}

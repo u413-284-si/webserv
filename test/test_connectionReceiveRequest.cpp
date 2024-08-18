@@ -113,5 +113,6 @@ TEST_F(ConnectionReceiveRequestTest, RequestSizeTooBig)
 
 	EXPECT_EQ(connection.m_bytesReceived, 1000);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(connection.m_request.httpStatus, StatusRequestHeaderFieldsTooLarge);
 }

@@ -149,6 +149,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 	case StatusRequestTimeout:
 		ostream << "408 Request Timeout";
 		break;
+	case StatusRequestHeaderFieldsTooLarge:
+		ostream << "431 Request Header Fields Too Large";
+		break;
 	case StatusInternalServerError:
 		ostream << "500 Internal Server Error";
 		break;
