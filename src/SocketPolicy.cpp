@@ -134,18 +134,18 @@ Socket SocketPolicy::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t soc
 /**
  * @brief Accept a connection on a socket.
  *
- * Accepts a connection on the provided socket file descriptor and retrieves the address information of the client.
- * The provided socket must be in non-blocking mode.
+ * Accepts a connection using accept(2) on the provided socket file descriptor and retrieves the address information of
+ * the client. The provided socket should be in non-blocking mode.
  *
  * @param sockfd The file descriptor of the socket.
  * @param addr The address information of the client.
  * @param addrlen The length of the address information.
  *
  * @retval The file descriptor of the new socket if successful.
- * @retval -1 If accept() failed and errno is not EAGAIN or EWOULDBLOCK.
+ * @retval -1 If accept(2) failed and errno is not EAGAIN or EWOULDBLOCK.
  * @return -2 No more pending connections.
  */
-int SocketPolicy::accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
+int SocketPolicy::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
 	const int newFd = ::accept(sockfd, addr, addrlen);
 	if (newFd == -1) {

@@ -246,16 +246,16 @@ Socket Server::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) 
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::accept.
+ * @brief Wrapper function to SocketPolicy::acceptSingleConnection().
  *
  * @param sockfd The file descriptor of the socket.
  * @param addr The socket address.
  * @param addrlen The length of the socket address.
  * @return int The file descriptor of the accepted socket.
  */
-int Server::accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
+int Server::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
-	return m_socketPolicy.accept(sockfd, addr, addrlen);
+	return m_socketPolicy.acceptSingleConnection(sockfd, addr, addrlen);
 }
 
 /**
@@ -531,7 +531,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
 		struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&clientAddr);
 
-		const int clientFd = server.accept(serverFd, addrCast, &clientLen);
+		const int clientFd = server.acceptSingleConnection(serverFd, addrCast, &clientLen);
 		if (clientFd == -2)
 			return; // No more pending connections
 		if (clientFd == -1)

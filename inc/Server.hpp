@@ -73,7 +73,7 @@ public:
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	int createListeningSocket(const struct addrinfo& addrinfo, int backlog) const;
 	Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const;
-	int accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const;
+	int acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const;
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
