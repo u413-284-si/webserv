@@ -147,7 +147,7 @@ Socket SocketPolicy::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t soc
  */
 int SocketPolicy::accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
-	const int newFd = accept(sockfd, addr, addrlen);
+	const int newFd = ::accept(sockfd, addr, addrlen);
 	if (newFd == -1) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
 			return (-2); // No more pending connections
