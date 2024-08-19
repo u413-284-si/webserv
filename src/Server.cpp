@@ -619,7 +619,7 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 	LOG_DEBUG << "ReceiveRequest for: " << connection.m_clientSocket;
 
 	const size_t bufferSize = 1000;
-	char buffer[bufferSize];
+	char buffer[bufferSize] = {};
 	const size_t bytesToRead = bufferSize - connection.m_bytesReceived;
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
