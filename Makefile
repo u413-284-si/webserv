@@ -83,12 +83,12 @@ SRC:=	main.cpp \
 		ConfigFileParser.cpp \
 		Directory.cpp \
 		FileSystemPolicy.cpp \
-		LogConfigFile.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
+		LogOstreamInserters.cpp \
 		RequestParser.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
@@ -104,6 +104,7 @@ TEST_SRC :=	test_AutoindexHandler.cpp \
 			test_ConfigFileParser.cpp \
 			testBody.cpp \
 			testHeader.cpp \
+			test_OstreamInserters.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
 			test_TargetResourceHandler.cpp \

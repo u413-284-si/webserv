@@ -12,3 +12,5 @@ struct HTTPResponse {
 	Method method;
 	bool isAutoindex;
 };
+
+std::ostream& operator<<(std::ostream& ostream, const HTTPResponse& httpResponse);
