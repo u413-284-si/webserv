@@ -44,7 +44,7 @@ TEST_F(AcceptConnectionsTest, AcceptConnectionsSuccess)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, accept).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(Socket { host, port }));
 
@@ -61,7 +61,7 @@ TEST_F(AcceptConnectionsTest, AcceptThreeConnections)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, accept)
+	EXPECT_CALL(socketPolicy, acceptSingleConnection)
 		.Times(4)
 		.WillOnce(Return(dummyClientFd))
 		.WillOnce(Return(dummyClientFd2))
@@ -107,7 +107,7 @@ TEST_F(AcceptConnectionsTest, acceptConnectionFail)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, accept).Times(2).WillOnce(Return(-1)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(-1)).WillOnce(Return(-2));
 
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
@@ -118,7 +118,7 @@ TEST_F(AcceptConnectionsTest, retrieveSocketInfoFail)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, accept).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(Socket { "", "" }));
 
@@ -131,7 +131,7 @@ TEST_F(AcceptConnectionsTest, registerConnectionFail)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, accept).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
 
 	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(Socket { host, port }));
 

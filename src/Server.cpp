@@ -500,11 +500,11 @@ void handleEvent(Server& server, struct epoll_event event)
  * If the event mask does not contain `EPOLLIN`, it logs an error and returns. A server socket should always receive a
  * read event.
  *
- * In a loop, calls Server::accept() to accept new connections on the server socket.
- * When Server::accept() is successful, information of the client socket is retrieved with Server::retrieveSocketInfo().
- * This new client socket is then registered with Server::registerConnection().
+ * In a loop, calls Server::acceptSingleConnection() to accept new connections on the server socket.
+ * When Server::acceptSingleConnection() is successful, information of the client socket is retrieved with
+ * Server::retrieveSocketInfo(). This new client socket is then registered with Server::registerConnection().
  *
- * The while-loop allows for multiple connections to be accepted in one call of this function. It is broken when accept
+ * The while-loop allows for multiple connections to be accepted in one call of this function. It is broken when accept()
  * sets errno to EAGAIN or EWOULDBLOCK (equivalent error codes indicating that a non-blocking operation would normally
  * block), meaning that no more connections are pending. If another errno is returned logs an error and continues to the
  * next iteration of the loop. This is because the server sockets are in EPOLLET mode. If only one connection would be
