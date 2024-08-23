@@ -347,10 +347,8 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ServerCon
 		if (checkDuplicateServer(server, iter->host, webutils::toString(iter->port)))
 			continue;
 
-		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port))) {
+		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port)))
 			LOG_DEBUG << "Failed to add virtual server: " << iter->serverName;
-			continue;
-		}
 	}
 
 	if (server.getVirtualServers().empty())
