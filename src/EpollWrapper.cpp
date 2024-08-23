@@ -12,7 +12,7 @@
  * for waiting for events on an epoll instance. The `epoll_wait` function will block for this duration if no events are
  * available before returning
  */
-EpollWrapper::EpollWrapper(size_t maxEvents, int epollTimeout)
+EpollWrapper::EpollWrapper(int maxEvents, int epollTimeout)
 	: m_epfd(epoll_create(1))
 	, m_events(maxEvents)
 	, m_timeout(epollTimeout)

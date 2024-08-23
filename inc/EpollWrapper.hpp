@@ -24,7 +24,7 @@ private:
 	static const int s_epollTimeout = 1000; /**< Default timeout for epoll instance in milliseconds */
 
 public:
-	explicit EpollWrapper(size_t maxEvents = s_epollMaxEvents, int epollTimeout = s_epollTimeout);
+	explicit EpollWrapper(int maxEvents = s_epollMaxEvents, int epollTimeout = s_epollTimeout);
 	virtual ~EpollWrapper();
 
 	virtual int waitForEvents();
