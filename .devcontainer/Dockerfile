@@ -1,30 +1,53 @@
-FROM mcr.microsoft.com/devcontainers/cpp:1-debian-12
+FROM mcr.microsoft.com/devcontainers/cpp:debian-12
 
-# Upgrade the image
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y upgrade
-
-# Install dependencies for static analysis
+# Install tools
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 	&& apt-get -y install --no-install-recommends \
+	# Code formatting
 		clang-format \
+	# Code analysis
 		clang-tidy \
 		cppcheck \
+	# Commenting
 		doxygen \
 		graphviz \
+	# Google Test
 		libgtest-dev \
 		libgmock-dev \
+	# Language Server
 		clangd \
-		bear
+	# Create compile_commands.json
+		bear \
+	# Networking tools
+		netcat-openbsd \
+		telnet \
+		siege \
+	# Dependencies for kcov
+		binutils-dev \
+		libssl-dev \
+		libcurl4-openssl-dev \
+		libelf-dev \
+		libstdc++-12-dev \
+		zlib1g-dev \
+		libdw-dev \
+		libiberty-dev \
+	&& rm -rf /var/lib/apt/lists/*
 
-# Setup googletest
-RUN mkdir -p $HOME/build \
-	&& cd $HOME/build \
+# Build googletest and kcov
+RUN mkdir build \
+	&& cd build \
 	&& cmake /usr/src/googletest \
 	&& make \
 	&& cp lib/libg* /usr/lib/ \
 	&& cd .. \
-	&& sudo rm -rf build
+	&& sudo rm -rf build \
+	&& git clone https://github.com/SimonKagstrom/kcov \
+	&& cd kcov \
+	&& cmake . \
+	&& make \
+	&& make install \
+	&& cd .. \
+	&& rm -rf kcov
 
 # Setup codechecker
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
