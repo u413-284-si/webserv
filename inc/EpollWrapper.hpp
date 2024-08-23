@@ -21,7 +21,7 @@ class EpollWrapper {
 
 private:
 	static const int s_epollMaxEvents = 10; /**< Default maximum number of events for epoll instance */
-	static const int s_epollTimeout = 1000; /**< Default timeout for epoll instance in miliseconds */
+	static const int s_epollTimeout = 1000; /**< Default timeout for epoll instance in milliseconds */
 
 public:
 	explicit EpollWrapper(size_t maxEvents = s_epollMaxEvents, int epollTimeout = s_epollTimeout);
