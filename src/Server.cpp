@@ -327,7 +327,7 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * Initializes virtual servers by iterating through the serverConfigs
  * vector in the configuration file and opening a socket for each virtual server.
- * It checks for duplicate servers using checkDuplicateServer() and
+ * It checks for duplicate servers using isDuplicateServer() and
  * skips opening the socket server if it already exists.
  *
  * @param server The server object to initialize virtual servers for.
@@ -344,7 +344,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ServerCon
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 
-		if (checkDuplicateServer(server, iter->host, webutils::toString(iter->port)))
+		if (isDuplicateServer(server, iter->host, webutils::toString(iter->port)))
 			continue;
 
 		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port)))
@@ -370,7 +370,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ServerCon
  *
  * @return true if a duplicate virtual server exists, false otherwise.
  */
-bool checkDuplicateServer(const Server& server, const std::string& host, const std::string& port)
+bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port)
 {
 	if (host == "localhost") {
 		for (std::map<int, Socket>::const_iterator iter = server.getVirtualServers().begin();
@@ -502,11 +502,11 @@ void handleEvent(Server& server, struct epoll_event event)
  * When Server::acceptSingleConnection() is successful, information of the client socket is retrieved with
  * Server::retrieveSocketInfo(). This new client socket is then registered with Server::registerConnection().
  *
- * The while-loop allows for multiple connections to be accepted in one call of this function. It is broken when accept()
- * sets errno to EAGAIN or EWOULDBLOCK (equivalent error codes indicating that a non-blocking operation would normally
- * block), meaning that no more connections are pending. If another errno is returned logs an error and continues to the
- * next iteration of the loop. This is because the server sockets are in EPOLLET mode. If only one connection would be
- * accepted the same server fd would not be reported again.
+ * The while-loop allows for multiple connections to be accepted in one call of this function. It is broken when
+ * accept() sets errno to EAGAIN or EWOULDBLOCK (equivalent error codes indicating that a non-blocking operation would
+ * normally block), meaning that no more connections are pending. If another errno is returned logs an error and
+ * continues to the next iteration of the loop. This is because the server sockets are in EPOLLET mode. If only one
+ * connection would be accepted the same server fd would not be reported again.
  *
  * @param server The server object to accept connections for.
  * @param serverFd File descriptor of the server socket.

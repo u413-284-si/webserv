@@ -102,7 +102,7 @@ private:
 };
 
 bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs);
-bool checkDuplicateServer(const Server& server, const std::string& host, const std::string& port);
+bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
 void handleEvent(Server& server, struct epoll_event);
