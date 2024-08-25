@@ -111,7 +111,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 
 void handleConnection(Server& server, int clientFd, Connection& connection);
 void connectionReceiveRequest(Server& server, int clientFd, Connection& connection);
-bool checkForCompleteRequest(const std::string& connectionBuffer);
+bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);

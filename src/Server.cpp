@@ -632,7 +632,7 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 	} else {
 		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
-		if (checkForCompleteRequest(connection.m_buffer)) {
+		if (isCompleteRequestHeader(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
 			try {
 				server.parseHttpRequest(connection.m_buffer, connection.m_request);
@@ -662,29 +662,9 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
  * @param connectionBuffer The buffer to check for a complete request.
  * @return true if the buffer contains a complete request, false otherwise.
  */
-bool checkForCompleteRequest(const std::string& connectionBuffer)
+bool isCompleteRequestHeader(const std::string& connectionBuffer)
 {
-	const size_t headerEndPos = connectionBuffer.find("\r\n\r\n");
-
-	return (headerEndPos != std::string::npos);
-	/*
-	headerEndPos += 4;
-	size_t bodySize = m_requestStrings[clientSock].size() - headerEndPos;
-	// FIXME: add check against default/config max body size
-	size_t contentLengthPos = m_requestStrings[clientSock].find("Content-Length");
-	size_t transferEncodingPos = m_requestStrings[clientSock].find("Transfer-Encoding");
-
-	if (contentLengthPos != std::string::npos && transferEncodingPos == std::string::npos) {
-		unsigned long contentLength
-			= std::strtoul(m_requestStrings[clientSock].c_str() + contentLengthPos + 15, NULL, 10);
-		if (bodySize >= contentLength)
-			return true;
-	} else if (transferEncodingPos != std::string::npos) {
-		std::string tmp = m_requestStrings[clientSock].substr(transferEncodingPos);
-		if (tmp.find("chunked") != std::string::npos && tmp.find("0\r\n\r\n") != std::string::npos)
-			return true;
-	}
-	*/
+	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
 }
 
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
