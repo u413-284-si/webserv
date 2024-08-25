@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/devcontainers/cpp:debian-12
 
+# Set default compiler to clang++
+RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+
 # Install tools
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 	&& apt-get -y install --no-install-recommends \
