@@ -107,7 +107,6 @@ int SocketPolicy::createListeningSocket(const struct addrinfo& addrinfo, int bac
  *
  * Retrieves the host and port information from a socket and returns it as a Socket object.
  *
- * @param sockFd The file descriptor of the socket.
  * @param sockaddr The socket address structure.
  * @param socklen The length of the socket address structure.
  *

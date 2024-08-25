@@ -552,16 +552,8 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  * This function dispatches to the correct function depending on the connection state.
  *
  * @param server The server object to handle the connection for.
- * @param clientSock The file descriptor of the client.
+ * @param clientFd The file descriptor of the client.
  * @param connection The connection object to handle.
- *
- *    - If bytesRead is less than 0, it indicates that there is no more data to be read
- *      or an error occurred with the read operation, and the loop breaks.
- *    - If bytesRead is 0, it indicates that the connection has been closed by the client,
- *      so the method closes the client socket and exits the loop.
- *    - Otherwise, the method echoes the received data back to the client by writing it
- *      to the client socket using the write function.
- *
  */
 void handleConnection(Server& server, const int clientFd, Connection& connection)
 {

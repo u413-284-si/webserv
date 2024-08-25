@@ -29,9 +29,9 @@ std::string getDefaultErrorPage(statusCode status);
 /**
  * @brief Convert a type to a string
  *
- * @tparam Type
- * @param type
- * @return std::string
+ * @tparam Type The type to convert
+ * @param type The type to convert
+ * @return std::string The string representation of the type
  * @todo Delete if not needed anymore
  */
 template <typename Type> std::string toString(const Type& type)

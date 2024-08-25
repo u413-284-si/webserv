@@ -133,7 +133,7 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 /**
  * @brief Returns reason phrase for a given status code.
  *
- * @param status Status code.
+ * @param statusCode Status code.
  * @return std::string Reason phrase.
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
@@ -172,7 +172,7 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 /**
  * @brief Get Default Error Page for a given status code.
  *
- * @param status Status code.
+ * @param statusCode Status code.
  * @return std::string Default error page.
  */
 std::string getDefaultErrorPage(statusCode statusCode)
