@@ -285,7 +285,7 @@ void RequestParser::parseHttpRequest(const std::string& requestString, HTTPReque
 
     LOG_DEBUG << "Parsed method: " << request.method;
     LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
-    LOG_DEBUG << "Parsed version: " << request.version; 
+    LOG_DEBUG << "Parsed version: " << request.version;
 
 	// Step 2: Parse headers
 	std::string headerLine;
@@ -548,7 +548,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
  */
 void RequestParser::parseChunkedBody(HTTPRequest& request)
 {
-	size_t length = 0;
+	// size_t length = 0;
 	std::string strChunkSize;
 	std::string chunkData;
 	size_t numChunkSize = 0;
@@ -574,7 +574,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 			throw std::runtime_error(ERR_CHUNK_SIZE);
 		}
 		request.body += chunkData;
-		length += numChunkSize;
+		// length += numChunkSize;
 	} while (numChunkSize > 0);
 }
 
