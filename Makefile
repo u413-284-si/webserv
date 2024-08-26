@@ -240,10 +240,13 @@ check_bear_installed:
 	}
 
 # Create coverage report to display with coverage gutter
+EXCL_PATH = --exclude-path=/usr/include,/usr/lib,./$(TEST_DIR)
 .PHONY: coverage
 coverage: | $(COV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)kcov --cobertura-only $(COV_DIR) ./$(TEST)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)kcov $(EXCL_PATH) $(COV_DIR) ./$(TEST)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)kcov $(EXCL_PATH) --cobertura-only $(COV_DIR) ./$(TEST)
 
 .PHONY: doxycheck
 doxycheck: CXXFLAGS += -Wdocumentation
@@ -311,6 +314,8 @@ fclean: clean
 	@printf "$(RED)removed binaries $(NAME) $(TEST) $(TEST_SANI)$(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
+	@rm -rf $(COV_DIR)
+	@printf "$(RED)removed subdir $(COV_DIR)$(RESET)\n"
 	@echo
 
 # ******************************
