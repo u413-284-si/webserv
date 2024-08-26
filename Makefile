@@ -72,6 +72,9 @@ DEP_DIR := $(OBJ_DIR)/dep
 # Subdirectory for log files
 LOG_DIR := log
 
+# Directory for coverage report
+COV_DIR := .vscode/coverage
+
 # ******************************
 # *     Vars for compiling     *
 # ******************************
@@ -234,6 +237,12 @@ check_bear_installed:
 		echo >&2 "bear is not installed. Please install bear to continue."; exit 1; \
 	}
 
+# Create coverage report to display with coverage gutter
+.PHONY: coverage
+coverage: | $(COV_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)kcov --cobertura-only $(COV_DIR) ./$(TEST)
+
 # ******************************
 # *     Object compiling and   *
 # *     dependecy creation     *
@@ -270,7 +279,7 @@ message:
 	@printf "$(YELLOW)$(BOLD)compile objects$(RESET) [$(BLUE)$@$(RESET)]\n"
 
 # Create subdirectory if it doesn't exist
-$(DEP_DIR) $(LOG_DIR):
+$(DEP_DIR) $(LOG_DIR) $(COV_DIR):
 	@printf "$(YELLOW)$(BOLD)create subdir$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@echo $@
 	$(SILENT)mkdir -p $@
