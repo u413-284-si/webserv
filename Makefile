@@ -59,6 +59,8 @@ ifeq ($(MAKECMDGOALS),test)
 	OBJ_DIR := $(BASE_OBJ_DIR)/$(TEST)
 else ifeq ($(MAKECMDGOALS),test_sani)
 	OBJ_DIR := $(BASE_OBJ_DIR)/$(TEST_SANI)
+else ifeq ($(MAKECMDGOALS),doxycheck)
+	OBJ_DIR := $(BASE_OBJ_DIR)/doxycheck
 else
 	OBJ_DIR := $(BASE_OBJ_DIR)/$(NAME)
 endif
@@ -81,7 +83,7 @@ COV_DIR := .vscode/coverage
 
 CXX := clang++
 CPPFLAGS := -I $(INC_DIR)
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -pedantic -g -Wdocumentation
+CXXFLAGS = -std=c++98 -Wall -Werror -Wextra -Wpedantic -g
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
 LDFLAGS =
 LDLIBS =
@@ -242,6 +244,10 @@ check_bear_installed:
 coverage: | $(COV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov --cobertura-only $(COV_DIR) ./$(TEST)
+
+.PHONY: doxycheck
+doxycheck: CXXFLAGS += -Wdocumentation
+doxycheck: $(NAME)
 
 # ******************************
 # *     Object compiling and   *
