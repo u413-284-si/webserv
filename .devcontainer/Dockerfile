@@ -34,9 +34,12 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		zlib1g-dev \
 		libdw-dev \
 		libiberty-dev \
+	# Remove valgrind because we build newer version
+	&& apt-get remove -y \
+		valgrind \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Build googletest and kcov
+# Build googletest, kcov, and valgrind
 RUN mkdir build \
 	&& cd build \
 	&& cmake /usr/src/googletest \
@@ -50,7 +53,16 @@ RUN mkdir build \
 	&& make \
 	&& make install \
 	&& cd .. \
-	&& rm -rf kcov
+	&& rm -rf kcov \
+	&& wget https://sourceware.org/pub/valgrind/valgrind-3.23.0.tar.bz2 \
+	&& tar -xvf valgrind-3.23.0.tar.bz2 \
+	&& cd valgrind-3.23.0 \
+	&& ./configure --prefix=/usr/ \
+	&& make \
+	&& make install \
+	&& cd .. \
+	&& rm -rf valgrind-3.23.0 \
+	&& rm valgrind-3.23.0.tar.bz2
 
 # Setup codechecker
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
