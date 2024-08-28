@@ -9,6 +9,7 @@
 
 #include <arpa/inet.h>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <netinet/in.h>

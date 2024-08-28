@@ -76,11 +76,11 @@ statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 	int pipeIn[2]; // Pipe for passing input from server to CGI program
 	int pipeOut[2]; // Pipe for passing output from CGI program to server
 	if (pipe(pipeIn) == -1) {
-		LOG_ERROR << "Error: pipe(): pipeIn: " << errno;
+		LOG_ERROR << "Error: pipe(): pipeIn: " + std::string(std::strerror(errno));
 		return StatusInternalServerError;
 	}
 	if (pipe(pipeOut) == -1) {
-		LOG_ERROR << "Error: pipe(): pipeOut: " << errno;
+		LOG_ERROR << "Error: pipe(): pipeOut: " + std::string(std::strerror(errno));
 		close(pipeIn[0]);
 		close(pipeIn[1]);
 		return StatusInternalServerError;
@@ -88,7 +88,7 @@ statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 
 	pid_t cgiPid = fork();
 	if (cgiPid == -1) {
-		LOG_ERROR << "Error: fork(): " << errno;
+		LOG_ERROR << "Error: fork(): " + std::string(std::strerror(errno));
 		close(pipeIn[0]);
 		close(pipeIn[1]);
 		close(pipeOut[0]);
@@ -137,7 +137,7 @@ statusCode CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& req
 	long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
 
 	if (bytesSent == -1) {
-		LOG_ERROR << "Error: write(): can't send to CGI: " << errno;
+		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
 		return StatusInternalServerError;
 	}
 	if (bytesSent != static_cast<long>(request.body.size())) {
@@ -153,13 +153,13 @@ statusCode CGIHandler::receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiP
 	long bytesRead = read(pipeOutReadEnd, buffer, sizeof(buffer));
 
 	if (bytesRead == -1) {
-		LOG_ERROR << "Error: read(): can't read from CGI: " << errno;
+		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
 		return StatusInternalServerError;
 	}
 	if (bytesRead == 0) {
         int status = 0;
         if (waitpid(cgiPid, &status, 0) == -1) {
-            LOG_ERROR << "Error: waitpid(): " << errno;
+            LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
 		    return StatusInternalServerError;
         }
         // NOLINTNEXTLINE misinterpretation by HIC++ standard
