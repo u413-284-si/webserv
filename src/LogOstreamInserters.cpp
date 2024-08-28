@@ -1,9 +1,9 @@
 #include "ConfigFile.hpp"
+#include "Connection.hpp"
 #include "HTTPRequest.hpp"
 #include "HTTPResponse.hpp"
-#include "StatusCode.hpp"
 #include "Socket.hpp"
-#include "Connection.hpp"
+#include "StatusCode.hpp"
 
 #include <cassert>
 
@@ -242,11 +242,11 @@ std::ostream& operator<<(std::ostream& ostream, const Socket& socket)
  */
 std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status)
 {
-	assert(status >= Connection::ReceiveRequest && status <= Connection::Closed);
+	assert(status >= Connection::ReceiveHeader && status <= Connection::Closed);
 
 	switch (status) {
-	case Connection::ReceiveRequest:
-		ostream << "ReceiveRequest";
+	case Connection::ReceiveHeader:
+		ostream << "ReceiveHeader";
 		break;
 	case Connection::ReceiveBody:
 		ostream << "ReceiveBody";

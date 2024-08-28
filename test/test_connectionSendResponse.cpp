@@ -6,16 +6,16 @@
 #include "Server.hpp"
 
 using ::testing::DoAll;
+using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::SetArrayArgument;
-using ::testing::NiceMock;
 
 class ConnectionSendResponseTest : public ::testing::Test {
 protected:
-	ConnectionSendResponseTest() : server(configFile, epollWrapper, socketPolicy)
+	ConnectionSendResponseTest()
+		: server(configFile, epollWrapper, socketPolicy)
 	{
-		ON_CALL(epollWrapper, modifyEvent)
-		.WillByDefault(Return(true));
+		ON_CALL(epollWrapper, modifyEvent).WillByDefault(Return(true));
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_buffer = response;
@@ -37,25 +37,21 @@ protected:
 
 TEST_F(ConnectionSendResponseTest, SendFullResponseKeepAlive)
 {
-	EXPECT_CALL(socketPolicy, writeToSocket)
-	.Times(1)
-	.WillOnce(Return(connection.m_buffer.size()));
+	EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
 
 	connectionSendResponse(server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, 0);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));
-	EXPECT_EQ(connection.m_status, Connection::ReceiveRequest);
+	EXPECT_EQ(connection.m_status, Connection::ReceiveHeader);
 }
 
 TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
 {
 	connection.m_request.shallCloseConnection = true;
 
-	EXPECT_CALL(socketPolicy, writeToSocket)
-	.Times(1)
-	.WillOnce(Return(connection.m_buffer.size()));
+	EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
 
 	connectionSendResponse(server, dummyFd, connection);
 
@@ -70,8 +66,8 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 	std::string partialResponse = "ntent-Length: 4\r\n\r\nABCD";
 
 	EXPECT_CALL(socketPolicy, writeToSocket)
-	.Times(1)
-	.WillOnce(Return(connection.m_buffer.size() - partialResponse.size()));
+		.Times(1)
+		.WillOnce(Return(connection.m_buffer.size() - partialResponse.size()));
 
 	connectionSendResponse(server, dummyFd, connection);
 
@@ -83,9 +79,7 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 
 TEST_F(ConnectionSendResponseTest, SendFail)
 {
-	EXPECT_CALL(socketPolicy, writeToSocket)
-	.Times(1)
-	.WillOnce(Return(-1));
+	EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(-1));
 
 	connectionSendResponse(server, dummyFd, connection);
 

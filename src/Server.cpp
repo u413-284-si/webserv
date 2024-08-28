@@ -575,8 +575,8 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " for server: " << connection.m_serverSocket;
 
 	switch (connection.m_status) {
-	case (Connection::ReceiveRequest):
-		connectionReceiveRequest(server, clientFd, connection);
+	case (Connection::ReceiveHeader):
+		connectionReceiveHeader(server, clientFd, connection);
 		break;
 	case (Connection::ReceiveBody):
 		connectionReceiveBody(server, clientFd, connection);
@@ -596,7 +596,7 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 }
 
 /**
- * @brief Receive a request from a client.
+ * @brief Receive request header from a client.
  *
  * This function reads data from the client socket using Server::readFromSocket().
  * The amount of bytes to read from the socket is determined by the bytes already received from the client. It can never
@@ -609,7 +609,7 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * If the buffer contains a complete request, it parses the request. Then the request is removed from the client buffer,
  * the connection is set to BuildResponse state and the event is modified to listen to EPOLLOUT.
  * If no complete request was received and the received bytes match the buffer size, sets HTTP status code to 413
- * Request Header Fields Too Large and status to build response, since the request header was too big.
+ * Request Header Fields Too Large and status to BuildResponse, since the request header was too big.
  *
  * In any case the time since the last event is updated to the current time.
  *
@@ -619,9 +619,9 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * @todo Implement body handling.
  * @todo make clientHeaderBufferSize configurable.
  */
-void connectionReceiveRequest(Server& server, int clientFd, Connection& connection)
+void connectionReceiveHeader(Server& server, int clientFd, Connection& connection)
 {
-	LOG_DEBUG << "ReceiveRequest for: " << connection.m_clientSocket;
+	LOG_DEBUG << "Receive Request Header for: " << connection.m_clientSocket;
 
 	char buffer[Server::s_clientHeaderBufferSize] = {};
 	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_bytesReceived;

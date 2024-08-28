@@ -105,7 +105,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			test_checkForTimeout.cpp \
-			test_connectionReceiveRequest.cpp \
+			test_connectionReceiveHeader.cpp \
 			test_connectionSendResponse.cpp \
 			test_createVirtualServer.cpp \
 			testHeader.cpp \

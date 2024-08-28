@@ -5,15 +5,15 @@
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
 
-using ::testing::Return;
 using ::testing::NiceMock;
+using ::testing::Return;
 
 class CheckForTimeoutTest : public ::testing::Test {
-	protected:
-	CheckForTimeoutTest() : server(configFile, epollWrapper, socketPolicy)
+protected:
+	CheckForTimeoutTest()
+		: server(configFile, epollWrapper, socketPolicy)
 	{
-		ON_CALL(epollWrapper, addEvent)
-		.WillByDefault(Return(true));
+		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 	}
 	~CheckForTimeoutTest() override { }
 
@@ -26,12 +26,8 @@ class CheckForTimeoutTest : public ::testing::Test {
 	const int dummyFd2 = 20;
 	const int dummyFd3 = 30;
 
-	const Socket dummySocket = {
-		"1.1.1.1",
-		"8080"
-	};
+	const Socket dummySocket = { "1.1.1.1", "8080" };
 };
-
 
 TEST_F(CheckForTimeoutTest, Timeout)
 {
@@ -52,7 +48,7 @@ TEST_F(CheckForTimeoutTest, NoTimeout)
 
 	checkForTimeout(server);
 
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::ReceiveRequest);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::ReceiveHeader);
 }
 
 TEST_F(CheckForTimeoutTest, MultipleTimeouts)

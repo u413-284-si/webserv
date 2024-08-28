@@ -64,8 +64,8 @@ TEST(OstreamInserters, Socket)
 TEST(OstreamInserters, ConnectionStatus)
 {
 	std::ostringstream ostream;
-	ostream << Connection::ReceiveRequest;
-	EXPECT_EQ(ostream.str(), "ReceiveRequest");
+	ostream << Connection::ReceiveHeader;
+	EXPECT_EQ(ostream.str(), "ReceiveHeader");
 	ostream.str("");
 	ostream << Connection::ReceiveBody;
 	EXPECT_EQ(ostream.str(), "ReceiveBody");
@@ -86,7 +86,8 @@ TEST(OstreamInserters, ConnectionStatus)
 // sets default values for all struct which get printed
 class OstreamInsertersTest : public ::testing::Test {
 protected:
-	OstreamInsertersTest() {
+	OstreamInsertersTest()
+	{
 		m_connection.m_timeSinceLastEvent = 1234;
 		m_connection.m_buffer = "GET / HTTP/1.1";
 		m_connection.m_bytesReceived = 1024;
@@ -246,12 +247,17 @@ TEST_F(OstreamInsertersTest, Connection)
 	ostream << m_connection;
 
 	std::ostringstream expected;
-	expected << "Server: " << m_connection.m_serverSocket << "\n"
-				"Client: " << m_connection.m_clientSocket << "\n"
+	expected << "Server: " << m_connection.m_serverSocket
+			 << "\n"
+				"Client: "
+			 << m_connection.m_clientSocket
+			 << "\n"
 				"Time since last event: 1234\n"
-				"Status: " << m_connection.m_status << "\n"
+				"Status: "
+			 << m_connection.m_status
+			 << "\n"
 				"Bytes received: 1024\n"
-				"Request:\n" << m_httpRequest <<
-				"Buffer:\nGET / HTTP/1.1\n";
+				"Request:\n"
+			 << m_httpRequest << "Buffer:\nGET / HTTP/1.1\n";
 	EXPECT_EQ(ostream.str(), expected.str());
 }

@@ -6,7 +6,7 @@
  * @brief Construct a new Connection:: Connection object
  *
  * The time since last event is initialized to the current time.
- * The status is initialized to ReceiveRequest.
+ * The status is initialized to ReceiveHeader.
  * Default constructor is needed for STL containers.
  * For example std::map::[] operator requires default constructor.
  */
@@ -14,7 +14,7 @@ Connection::Connection()
 	: m_serverSocket(Socket())
 	, m_clientSocket(Socket())
 	, m_timeSinceLastEvent(std::time(0))
-	, m_status(ReceiveRequest)
+	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
 {
 	m_request.method = MethodCount;
@@ -32,7 +32,7 @@ Connection::Connection(const Socket& server, const Socket& client)
 	: m_serverSocket(server)
 	, m_clientSocket(client)
 	, m_timeSinceLastEvent(std::time(0))
-	, m_status(ReceiveRequest)
+	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
 {
 	m_request.method = MethodCount;
@@ -42,7 +42,7 @@ Connection::Connection(const Socket& server, const Socket& client)
 
 void clearConnection(Connection& connection)
 {
-	connection.m_status = Connection::ReceiveRequest;
+	connection.m_status = Connection::ReceiveHeader;
 	connection.m_request.method = MethodCount;
 	connection.m_request.httpStatus = StatusOK;
 	connection.m_request.shallCloseConnection = false;

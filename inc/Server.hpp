@@ -110,7 +110,7 @@ void handleEvent(Server& server, struct epoll_event);
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
 void handleConnection(Server& server, int clientFd, Connection& connection);
-void connectionReceiveRequest(Server& server, int clientFd, Connection& connection);
+void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);

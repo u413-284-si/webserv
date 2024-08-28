@@ -5,8 +5,8 @@
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
-#include <unistd.h>
 #include <string>
+#include <unistd.h>
 
 /**
  * @brief Represents a connection between a server and a client.
@@ -16,7 +16,7 @@ public:
 	Connection();
 	Connection(const Socket& server, const Socket& client);
 
-	enum ConnectionStatus { ReceiveRequest, ReceiveBody, BuildResponse, SendResponse, Timeout, Closed };
+	enum ConnectionStatus { ReceiveHeader, ReceiveBody, BuildResponse, SendResponse, Timeout, Closed };
 
 	Socket m_serverSocket; /**< Server socket associated with connection */
 	Socket m_clientSocket; /**< Client socket associated with connection */
