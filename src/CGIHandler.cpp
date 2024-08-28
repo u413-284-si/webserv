@@ -28,7 +28,7 @@ const std::map<std::string, std::string>& CGIHandler::getEnv() const { return m_
 
 /* ====== MEMBER FUNCTIONS ====== */
 
-statusCode CGIHandler::init(
+void CGIHandler::init(
 	const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort)
 {
 	m_env["REDIRECT_STATUS"]
@@ -41,8 +41,10 @@ statusCode CGIHandler::init(
 	m_env["PATH_TRANSLATED"] = location.root + m_cgiPath;
 	m_env["QUERY_STRING"] = request.uri.query;
 	std::string clientIP;
-	if (StatusOK != extractClientIP(clientSocket, clientIP))
-		return StatusInternalServerError;
+	if (StatusOK != extractClientIP(clientSocket, clientIP)) {
+		request.httpStatus = StatusInternalServerError;
+		return;
+	}
 	m_env["REMOTE_ADDR"] = clientIP; // IP address of the client
 	m_env["REQUEST_URI"] = request.uri.path + '?' + request.uri.query;
 	std::stringstream strStream;
@@ -54,10 +56,9 @@ statusCode CGIHandler::init(
 		m_env["CONTENT_LENGTH"] = request.headers["Content-Length"];
 	if (request.headers.find("Content-Type") != request.headers.end())
 		m_env["CONTENT_TYPE"] = request.headers["Content-Type"];
-	return StatusOK;
 }
 
-statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
+void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 {
 	std::vector<std::string> envComposite;
 	std::vector<std::string> argvAsStrings;
@@ -77,13 +78,15 @@ statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 	int pipeOut[2]; // Pipe for passing output from CGI program to server
 	if (pipe(pipeIn) == -1) {
 		LOG_ERROR << "Error: pipe(): pipeIn: " + std::string(std::strerror(errno));
-		return StatusInternalServerError;
+		request.httpStatus = StatusInternalServerError;
+		return;
 	}
 	if (pipe(pipeOut) == -1) {
 		LOG_ERROR << "Error: pipe(): pipeOut: " + std::string(std::strerror(errno));
 		close(pipeIn[0]);
 		close(pipeIn[1]);
-		return StatusInternalServerError;
+		request.httpStatus = StatusInternalServerError;
+		return;
 	}
 
 	pid_t cgiPid = fork();
@@ -93,7 +96,8 @@ statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 		close(pipeIn[1]);
 		close(pipeOut[0]);
 		close(pipeOut[1]);
-		return StatusInternalServerError;
+		request.httpStatus = StatusInternalServerError;
+		return;
 	}
 	if (cgiPid == 0) {
 		dup2(pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
@@ -106,20 +110,23 @@ statusCode CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 			std::string error = "Status: 500\r\n\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
 		}
-    }
-    if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
-        close(pipeIn[0]);
-        close(pipeIn[1]);
-        close(pipeOut[0]);
-        close(pipeOut[1]);
-        return StatusInternalServerError;
-    }
-    statusCode exitStatus = receiveDataFromCGIProcess(pipeOut[0], cgiPid, newBody);
-    close(pipeIn[0]);
-    close(pipeIn[1]);
-    close(pipeOut[0]);
-    close(pipeOut[1]);
-    return exitStatus;
+	}
+	close(pipeIn[0]); /**< Close read end of input pipe in parent process */
+	close(pipeOut[1]); /**< Close write end of output pipe in parent process */
+
+	// if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
+	// 	close(pipeIn[0]);
+	// 	close(pipeIn[1]);
+	// 	close(pipeOut[0]);
+	// 	close(pipeOut[1]);
+	// 	return StatusInternalServerError;
+	// }
+	// statusCode exitStatus = receiveDataFromCGIProcess(pipeOut[0], cgiPid, newBody);
+	// close(pipeIn[0]);
+	// close(pipeIn[1]);
+	// close(pipeOut[0]);
+	// close(pipeOut[1]);
+	// return exitStatus;
 }
 
 void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const
@@ -132,45 +139,57 @@ void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<cha
 		envp.push_back(&(*iter).at(0)); // FIXME: remove reference to pointer value?
 }
 
-statusCode CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request)
+void CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request)
 {
+	if (request.body.empty()) {
+		close(pipeInWriteEnd);
+		return;
+	}
+
 	long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
 
 	if (bytesSent == -1) {
 		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
-		return StatusInternalServerError;
+		request.httpStatus = StatusInternalServerError;
+		close(pipeInWriteEnd);
+		return;
 	}
-	if (bytesSent != static_cast<long>(request.body.size())) {
-		LOG_WARN << "Incomplete body sent: Sent amount: " << bytesSent;
-		return StatusInternalServerError;
+	if (bytesSent == static_cast<long>(request.body.size())) {
+		close(pipeInWriteEnd);
+		return;
 	}
-	return StatusOK;
+	request.body = request.body.substr(bytesSent);
 }
 
-statusCode CGIHandler::receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody)
+void CGIHandler::receiveDataFromCGIProcess(
+	int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request)
 {
-	char buffer[CGIHandler::s_cgiBodyBufferSize] =  {};
+	char buffer[CGIHandler::s_cgiBodyBufferSize] = {};
 	long bytesRead = read(pipeOutReadEnd, buffer, sizeof(buffer));
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
-		return StatusInternalServerError;
+		request.httpStatus = StatusInternalServerError;
+		return;
 	}
 	if (bytesRead == 0) {
-        int status = 0;
-        if (waitpid(cgiPid, &status, 0) == -1) {
-            LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
-		    return StatusInternalServerError;
-        }
-        // NOLINTNEXTLINE misinterpretation by HIC++ standard
-        if (WEXITSTATUS(status) != 0) {
-            LOG_ERROR << "Error: child returned with: " << status;
-            return StatusInternalServerError;
-        }
-        return StatusOK;
-    }
-    newBody.append(buffer, bytesRead);
-    return StatusOK;
+		int status = 0;
+		if (waitpid(cgiPid, &status, 0) == -1) {
+			LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
+			request.httpStatus = StatusInternalServerError;
+			return;
+		}
+		// NOLINTNEXTLINE misinterpretation by HIC++ standard
+		if (WEXITSTATUS(status)
+			!= 0) { /**< Any child exit status unequal to 0 indicates unsuccessful completion of the process */
+			LOG_ERROR << "Error: child returned with: "
+					  // NOLINTNEXTLINE misinterpretation by HIC++ standard
+					  << WEXITSTATUS(status);
+			request.httpStatus = StatusInternalServerError;
+			return;
+		}
+	}
+	newBody.append(buffer, bytesRead);
 }
 
 // HELPER FUNCTIONS
@@ -192,12 +211,15 @@ statusCode CGIHandler::extractClientIP(const int& clientSocket, std::string& cli
 	struct sockaddr_in clientAddress = {};
 	socklen_t addrLen = sizeof(clientAddress);
 	// NOLINTNEXTLINE: Ignore reinterpret_cast warning
-	getsockname(clientSocket, reinterpret_cast<struct sockaddr*>(&clientAddress), &addrLen);
+	if (-1 == getsockname(clientSocket, reinterpret_cast<struct sockaddr*>(&clientAddress), &addrLen)) {
+		LOG_ERROR << "Error: getsockname(): " + std::string(std::strerror(errno));
+		return StatusInternalServerError;
+	}
 
 	// Convert the IP address to a string
 	char dest[INET_ADDRSTRLEN];
 	if (inet_ntop(AF_INET, &clientAddress.sin_addr, dest, INET_ADDRSTRLEN) == NULL) {
-		LOG_ERROR << "Error: inet_ntop()";
+		LOG_ERROR << "Error: inet_ntop(): " + std::string(std::strerror(errno));
 		return StatusInternalServerError;
 	}
 	clientIP = dest;

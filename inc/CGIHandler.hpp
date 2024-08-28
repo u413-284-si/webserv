@@ -30,9 +30,9 @@ class CGIHandler {
 public:
 	explicit CGIHandler(const std::string& cgipath, const std::string& cgiExt);
 
-	statusCode init(
+	void init(
 		const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
-	statusCode execute(HTTPRequest& request, std::string& newBody);
+	void execute(HTTPRequest& request, std::string& newBody);
 
 private:
     static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
@@ -54,8 +54,8 @@ private:
 	const std::map<std::string, std::string>& getEnv() const;
 
 	void setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const;
-	static statusCode sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request);
-	static statusCode receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody);
+	static void sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request);
+	static void receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request);
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
