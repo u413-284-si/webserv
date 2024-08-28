@@ -149,7 +149,7 @@ statusCode CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& req
 
 statusCode CGIHandler::receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody)
 {
-	char buffer[BUFFER_SIZE];
+	char buffer[CGIHandler::s_cgiBodyBufferSize] =  {};
 	long bytesRead = read(pipeOutReadEnd, buffer, sizeof(buffer));
 
 	if (bytesRead == -1) {
