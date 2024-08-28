@@ -11,12 +11,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 	# Code analysis
 		clang-tidy \
 		cppcheck \
-	# Commenting
+	# Doxygen comments
 		doxygen \
 		graphviz \
-	# Google Test
-		libgtest-dev \
-		libgmock-dev \
 	# Language Server
 		clangd \
 	# Create compile_commands.json
@@ -39,22 +36,8 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		valgrind \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Build googletest, kcov, and valgrind
-RUN mkdir build \
-	&& cd build \
-	&& cmake /usr/src/googletest \
-	&& make \
-	&& cp lib/libg* /usr/lib/ \
-	&& cd .. \
-	&& sudo rm -rf build \
-	&& git clone https://github.com/SimonKagstrom/kcov \
-	&& cd kcov \
-	&& cmake . \
-	&& make \
-	&& make install \
-	&& cd .. \
-	&& rm -rf kcov \
-	&& wget https://sourceware.org/pub/valgrind/valgrind-3.23.0.tar.bz2 \
+# Build valgrind 3.23.0
+RUN wget https://sourceware.org/pub/valgrind/valgrind-3.23.0.tar.bz2 \
 	&& tar -xvf valgrind-3.23.0.tar.bz2 \
 	&& cd valgrind-3.23.0 \
 	&& ./configure --prefix=/usr/ \
@@ -63,6 +46,24 @@ RUN mkdir build \
 	&& cd .. \
 	&& rm -rf valgrind-3.23.0 \
 	&& rm valgrind-3.23.0.tar.bz2
+
+# Build googletest
+RUN git clone https://github.com/google/googletest \
+	&& cd googletest \
+	&& cmake . \
+	&& make \
+	&& make install \
+	&& cd .. \
+	&& rm -rf googletest
+
+# Build kcov
+RUN git clone https://github.com/SimonKagstrom/kcov \
+	&& cd kcov \
+	&& cmake . \
+	&& make \
+	&& make install \
+	&& cd .. \
+	&& rm -rf kcov
 
 # Setup codechecker
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
