@@ -41,12 +41,12 @@
  * @todo Remove s_backlog and m_backlog and use value from the config file.
  */
 class Server {
-private:
+public:
 	static const int s_backlog = 10; /**< Default backlog for listening sockets */
 	static const time_t s_clientTimeout = 60; /**< Default timeout for a Connection in seconds */
 	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
+	static const std::size_t s_clientHeaderBufferSize = 1000; /**< Default buffer size for request header in Bytes */
 
-public:
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
 

@@ -617,15 +617,14 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * @param clientFd The file descriptor of the client.
  * @param connection The connection object to receive the request for.
  * @todo Implement body handling.
- * @todo Send error message if request is too big.
+ * @todo make clientHeaderBufferSize configurable.
  */
 void connectionReceiveRequest(Server& server, int clientFd, Connection& connection)
 {
 	LOG_DEBUG << "ReceiveRequest for: " << connection.m_clientSocket;
 
-	const size_t bufferSize = 1000;
-	char buffer[bufferSize] = {};
-	const size_t bytesToRead = bufferSize - connection.m_bytesReceived;
+	char buffer[Server::s_clientHeaderBufferSize] = {};
+	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_bytesReceived;
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
 	if (bytesRead == -1) {
@@ -652,7 +651,7 @@ void connectionReceiveRequest(Server& server, int clientFd, Connection& connecti
 			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-			if (connection.m_bytesReceived == bufferSize) {
+			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
 				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 				connection.m_status = Connection::BuildResponse;
