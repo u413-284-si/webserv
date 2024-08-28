@@ -6,7 +6,7 @@
 #    By: gwolf <gwolf@student.42vienna.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/07/22 15:30:44 by gwolf            ###   ########.fr        #
+#    Updated: 2024/08/28 15:00:05 by gwolf            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ COV_DIR := .vscode/coverage
 # *     Vars for compiling     *
 # ******************************
 
-CXX := clang++
+CXX := c++
 CPPFLAGS := -I $(INC_DIR)
 CXXFLAGS = -std=c++98 -Wall -Werror -Wextra -Wpedantic -g
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
