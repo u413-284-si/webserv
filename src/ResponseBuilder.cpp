@@ -7,8 +7,7 @@
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
-	: m_configFile(configFile)
-	, m_activeServer(configFile.serverConfigs.begin())
+	: m_activeServer(configFile.serverConfigs.begin())
 	, m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {

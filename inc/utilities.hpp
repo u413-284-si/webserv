@@ -2,12 +2,12 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "StatusCode.hpp"
 #include <algorithm>
+#include <ctime>
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <ctime>
-#include "StatusCode.hpp"
 
 /* ====== DECLARATIONS ====== */
 
@@ -25,5 +25,20 @@ std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
 std::string getDefaultErrorPage(statusCode status);
+
+/**
+ * @brief Convert a type to a string
+ *
+ * @tparam Type The type to convert
+ * @param type The type to convert
+ * @return std::string The string representation of the type
+ * @todo Delete if not needed anymore
+ */
+template <typename Type> std::string toString(const Type& type)
+{
+	std::stringstream stream;
+	stream << type;
+	return stream.str();
+}
 
 } // webutils
