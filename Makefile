@@ -252,7 +252,7 @@ check_bear_installed:
 	}
 
 # Create coverage report to display with coverage gutter
-EXCL_PATH = --exclude-path=/usr/include,/usr/lib,./$(TEST_DIR)
+EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 .PHONY: coverage
 coverage: | $(COV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
