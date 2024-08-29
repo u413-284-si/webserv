@@ -2,7 +2,9 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
 [
     [ "ALogOutputter.cpp", "_a_log_outputter_8cpp.html", null ],
     [ "AutoindexHandler.cpp", "_autoindex_handler_8cpp.html", "_autoindex_handler_8cpp" ],
+    [ "Connection.cpp", "_connection_8cpp.html", "_connection_8cpp" ],
     [ "Directory.cpp", "_directory_8cpp.html", null ],
+    [ "EpollWrapper.cpp", "_epoll_wrapper_8cpp.html", null ],
     [ "FileSystemPolicy.cpp", "_file_system_policy_8cpp.html", null ],
     [ "LogData.cpp", "_log_data_8cpp.html", null ],
     [ "Logger.cpp", "_logger_8cpp.html", null ],
@@ -14,7 +16,8 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "RequestParser.cpp", "_request_parser_8cpp.html", null ],
     [ "ResponseBodyHandler.cpp", "_response_body_handler_8cpp.html", null ],
     [ "ResponseBuilder.cpp", "_response_builder_8cpp.html", null ],
-    [ "Server.cpp", "_server_8cpp.html", null ],
+    [ "Server.cpp", "_server_8cpp.html", "_server_8cpp" ],
+    [ "SocketPolicy.cpp", "_socket_policy_8cpp.html", null ],
     [ "TargetResourceHandler.cpp", "_target_resource_handler_8cpp.html", null ],
     [ "utilities.cpp", "utilities_8cpp.html", "utilities_8cpp" ]
 ];

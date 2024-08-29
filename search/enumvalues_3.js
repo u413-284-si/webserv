@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['statusbadrequest_447',['StatusBadRequest',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424',1,'StatusCode.hpp']]],
-  ['statusforbidden_448',['StatusForbidden',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345',1,'StatusCode.hpp']]],
-  ['statusinternalservererror_449',['StatusInternalServerError',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc',1,'StatusCode.hpp']]],
-  ['statusmethodnotallowed_450',['StatusMethodNotAllowed',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018',1,'StatusCode.hpp']]],
-  ['statusmethodnotimplemented_451',['StatusMethodNotImplemented',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259',1,'StatusCode.hpp']]],
-  ['statusmovedpermanently_452',['StatusMovedPermanently',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46',1,'StatusCode.hpp']]],
-  ['statusnonsupportedversion_453',['StatusNonSupportedVersion',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949',1,'StatusCode.hpp']]],
-  ['statusnotfound_454',['StatusNotFound',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415',1,'StatusCode.hpp']]],
-  ['statusok_455',['StatusOK',['../_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080',1,'StatusCode.hpp']]]
+  ['leveldebug_696',['LevelDebug',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162',1,'weblog']]],
+  ['levelerror_697',['LevelError',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770eab82c23bc5e10d460d131462c637178b3',1,'weblog']]],
+  ['levelinfo_698',['LevelInfo',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea58fb77d048847e4bc776bcdcd0c667d9',1,'weblog']]],
+  ['levelwarn_699',['LevelWarn',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea10ddceac1c9b5f3c9a58962e09999157',1,'weblog']]]
 ];

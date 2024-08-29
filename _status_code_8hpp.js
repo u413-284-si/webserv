@@ -7,6 +7,8 @@ var _status_code_8hpp =
       [ "StatusForbidden", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345", null ],
       [ "StatusNotFound", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415", null ],
       [ "StatusMethodNotAllowed", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018", null ],
+      [ "StatusRequestTimeout", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f", null ],
+      [ "StatusRequestHeaderFieldsTooLarge", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212", null ],
       [ "StatusInternalServerError", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc", null ],
       [ "StatusMethodNotImplemented", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259", null ],
       [ "StatusNonSupportedVersion", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949", null ]

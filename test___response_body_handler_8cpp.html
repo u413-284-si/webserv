@@ -253,7 +253,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    m_responseBodyHandler.execute();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    EXPECT_EQ(m_response.status, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00012">StatusCode.hpp:12</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -290,10 +290,10 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    m_response.isAutoindex = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    m_responseBodyHandler.execute();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    EXPECT_EQ(m_response.body, <a class="code" href="namespacewebutils.html#ae25d96f683d8f8f541fa148b8807f2ed">webutils::getDefaultErrorPage</a>(m_response.status));</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    EXPECT_EQ(m_response.body, <a class="code" href="namespacewebutils.html#ab12d562733bb60393254f6345f6c296f">webutils::getDefaultErrorPage</a>(m_response.status));</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
-<div class="ttc" id="anamespacewebutils_html_ae25d96f683d8f8f541fa148b8807f2ed"><div class="ttname"><a href="namespacewebutils.html#ae25d96f683d8f8f541fa148b8807f2ed">webutils::getDefaultErrorPage</a></div><div class="ttdeci">std::string getDefaultErrorPage(statusCode status)</div><div class="ttdoc">Get Default Error Page for a given status code.</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8cpp_source.html#l00165">utilities.cpp:165</a></div></div>
+<div class="ttc" id="anamespacewebutils_html_ab12d562733bb60393254f6345f6c296f"><div class="ttname"><a href="namespacewebutils.html#ab12d562733bb60393254f6345f6c296f">webutils::getDefaultErrorPage</a></div><div class="ttdeci">std::string getDefaultErrorPage(statusCode status)</div><div class="ttdoc">Get Default Error Page for a given status code.</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8cpp_source.html#l00178">utilities.cpp:178</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -341,7 +341,7 @@ Here is the call graph for this function:</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    m_responseBodyHandler.execute();</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    EXPECT_EQ(m_response.status, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    EXPECT_EQ(m_response.body, <a class="code" href="namespacewebutils.html#ae25d96f683d8f8f541fa148b8807f2ed">webutils::getDefaultErrorPage</a>(m_response.status));</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    EXPECT_EQ(m_response.body, <a class="code" href="namespacewebutils.html#ab12d562733bb60393254f6345f6c296f">webutils::getDefaultErrorPage</a>(m_response.status));</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
 <div class="ttc" id="a_config_file_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec"><div class="ttname"><a href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a></div><div class="ttdeci">@ MethodGet</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00007">ConfigFile.hpp:7</a></div></div>
 </div><!-- fragment --><div class="dynheader">

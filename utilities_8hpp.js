@@ -6,7 +6,8 @@ var utilities_8hpp =
     [ "getFileExtension", "utilities_8hpp.html#a900811a6a7865748dae9dbab442127cf", null ],
     [ "getGMTString", "utilities_8hpp.html#ae29ddfc0ffbb42f9b1bd34ed1d77b762", null ],
     [ "getLocaltimeString", "utilities_8hpp.html#ab6119b08526700518f576bb78554be59", null ],
-    [ "statusCodeToReasonPhrase", "utilities_8hpp.html#a581a57647d4b10ed4f260520fca761d7", null ],
-    [ "getDefaultErrorPage", "utilities_8hpp.html#ae25d96f683d8f8f541fa148b8807f2ed", null ],
+    [ "statusCodeToReasonPhrase", "utilities_8hpp.html#a1ea30da2f7898c9a992297784744fe91", null ],
+    [ "getDefaultErrorPage", "utilities_8hpp.html#ab12d562733bb60393254f6345f6c296f", null ],
+    [ "toString", "utilities_8hpp.html#afd1710fd588c15830d10aef146da8ddb", null ],
     [ "timeStringBuffer", "utilities_8hpp.html#a835d10ac34a533945ccd642c629a600c", null ]
 ];

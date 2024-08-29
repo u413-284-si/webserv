@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['leveldebug_439',['LevelDebug',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162',1,'weblog']]],
-  ['levelerror_440',['LevelError',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770eab82c23bc5e10d460d131462c637178b3',1,'weblog']]],
-  ['levelinfo_441',['LevelInfo',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea58fb77d048847e4bc776bcdcd0c667d9',1,'weblog']]],
-  ['levelwarn_442',['LevelWarn',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea10ddceac1c9b5f3c9a58962e09999157',1,'weblog']]]
+  ['closed_691',['Closed',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614',1,'Connection']]]
 ];

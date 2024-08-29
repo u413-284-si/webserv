@@ -123,16 +123,16 @@ $(document).ready(function(){initNavTree('utilities_8hpp.html',''); initResizabl
 <div class="title">utilities.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_status_code_8hpp_source.html">StatusCode.hpp</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;ctime&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
-<code>#include &lt;ctime&gt;</code><br />
-<code>#include &quot;<a class="el" href="_status_code_8hpp_source.html">StatusCode.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utilities.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8hpp__incl.svg" width="566" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8hpp__incl.svg" width="564" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -169,12 +169,16 @@ Functions</h2></td></tr>
 <tr class="memitem:ab6119b08526700518f576bb78554be59"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#ab6119b08526700518f576bb78554be59">webutils::getLocaltimeString</a> (const time_t now, const std::string &amp;format)</td></tr>
 <tr class="memdesc:ab6119b08526700518f576bb78554be59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns localtime string in provided format.  <a href="namespacewebutils.html#ab6119b08526700518f576bb78554be59">More...</a><br /></td></tr>
 <tr class="separator:ab6119b08526700518f576bb78554be59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a581a57647d4b10ed4f260520fca761d7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a581a57647d4b10ed4f260520fca761d7">webutils::statusCodeToReasonPhrase</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> status)</td></tr>
-<tr class="memdesc:a581a57647d4b10ed4f260520fca761d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reason phrase for a given status code.  <a href="namespacewebutils.html#a581a57647d4b10ed4f260520fca761d7">More...</a><br /></td></tr>
-<tr class="separator:a581a57647d4b10ed4f260520fca761d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae25d96f683d8f8f541fa148b8807f2ed"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#ae25d96f683d8f8f541fa148b8807f2ed">webutils::getDefaultErrorPage</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> status)</td></tr>
-<tr class="memdesc:ae25d96f683d8f8f541fa148b8807f2ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Default Error Page for a given status code.  <a href="namespacewebutils.html#ae25d96f683d8f8f541fa148b8807f2ed">More...</a><br /></td></tr>
-<tr class="separator:ae25d96f683d8f8f541fa148b8807f2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ea30da2f7898c9a992297784744fe91"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91">webutils::statusCodeToReasonPhrase</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
+<tr class="memdesc:a1ea30da2f7898c9a992297784744fe91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reason phrase for a given status code.  <a href="namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91">More...</a><br /></td></tr>
+<tr class="separator:a1ea30da2f7898c9a992297784744fe91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab12d562733bb60393254f6345f6c296f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#ab12d562733bb60393254f6345f6c296f">webutils::getDefaultErrorPage</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
+<tr class="memdesc:ab12d562733bb60393254f6345f6c296f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Default Error Page for a given status code.  <a href="namespacewebutils.html#ab12d562733bb60393254f6345f6c296f">More...</a><br /></td></tr>
+<tr class="separator:ab12d562733bb60393254f6345f6c296f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd1710fd588c15830d10aef146da8ddb"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:afd1710fd588c15830d10aef146da8ddb"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a> (const Type &amp;type)</td></tr>
+<tr class="memdesc:afd1710fd588c15830d10aef146da8ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a type to a string.  <a href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">More...</a><br /></td></tr>
+<tr class="separator:afd1710fd588c15830d10aef146da8ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

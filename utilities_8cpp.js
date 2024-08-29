@@ -6,6 +6,6 @@ var utilities_8cpp =
     [ "getFileExtension", "utilities_8cpp.html#a900811a6a7865748dae9dbab442127cf", null ],
     [ "getGMTString", "utilities_8cpp.html#ae29ddfc0ffbb42f9b1bd34ed1d77b762", null ],
     [ "getLocaltimeString", "utilities_8cpp.html#ab6119b08526700518f576bb78554be59", null ],
-    [ "statusCodeToReasonPhrase", "utilities_8cpp.html#a581a57647d4b10ed4f260520fca761d7", null ],
-    [ "getDefaultErrorPage", "utilities_8cpp.html#ae25d96f683d8f8f541fa148b8807f2ed", null ]
+    [ "statusCodeToReasonPhrase", "utilities_8cpp.html#a1ea30da2f7898c9a992297784744fe91", null ],
+    [ "getDefaultErrorPage", "utilities_8cpp.html#ab12d562733bb60393254f6345f6c296f", null ]
 ];

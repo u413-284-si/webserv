@@ -241,31 +241,31 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00015">15</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Path: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a11102d52a8508daf01be1d666c57531b">path</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Root: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#abcb6a2cd9887a166063ea4ce40794c22">root</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Index: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#adbe66d8981e680fafd1c327091c27e8e">index</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;CGI extension: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#aad604c8547e93f80ae1e908739fdaa68">cgiExt</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;CGI path: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#aa62b6dfbbbe95e15f9f8e8df6b52b921">cgiPath</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Autoindex: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5">isAutoindex</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;LimitExcept:\n&quot;</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;  Allowed methods:\n&quot;</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>; ++i) {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="comment">// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="comment">// MethodCount.</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">if</span> (location.<a class="code" href="struct_location.html#a4c3f7f5b7002309d6ceefb36169fcd66">limitExcept</a>.<a class="code" href="struct_limit_except.html#afa29559246b97377a6f85c9bc209ef91">allowedMethods</a>[i])</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            ostream &lt;&lt; <span class="stringliteral">&quot;    &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0f">Method</a><span class="keyword">&gt;</span>(i) &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;  Allow: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a4c3f7f5b7002309d6ceefb36169fcd66">limitExcept</a>.<a class="code" href="struct_limit_except.html#a825ea15e10d8c6f4bf2a9d71f91f2361">allow</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;  Deny: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a4c3f7f5b7002309d6ceefb36169fcd66">limitExcept</a>.<a class="code" href="struct_limit_except.html#af1a707d2c4d26b1d3d32dc507e7a7584">deny</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Returns:\n&quot;</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;unsigned short, std::string&gt;::const_iterator it = location.<a class="code" href="struct_location.html#a375b2f9e917b2c0cbc07c71d09f2f580">returns</a>.begin();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;         it != location.<a class="code" href="struct_location.html#a375b2f9e917b2c0cbc07c71d09f2f580">returns</a>.end(); ++it) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00017">17</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Path: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a11102d52a8508daf01be1d666c57531b">path</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Root: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#abcb6a2cd9887a166063ea4ce40794c22">root</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Index: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#adbe66d8981e680fafd1c327091c27e8e">index</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;CGI extension: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#aad604c8547e93f80ae1e908739fdaa68">cgiExt</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;CGI path: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#aa62b6dfbbbe95e15f9f8e8df6b52b921">cgiPath</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Autoindex: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5">isAutoindex</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;LimitExcept:\n&quot;</span>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;  Allowed methods:\n&quot;</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>; ++i) {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="comment">// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="comment">// MethodCount.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">if</span> (location.<a class="code" href="struct_location.html#a4c3f7f5b7002309d6ceefb36169fcd66">limitExcept</a>.<a class="code" href="struct_limit_except.html#afa29559246b97377a6f85c9bc209ef91">allowedMethods</a>[i])</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            ostream &lt;&lt; <span class="stringliteral">&quot;    &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0f">Method</a><span class="keyword">&gt;</span>(i) &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;  Allow: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a4c3f7f5b7002309d6ceefb36169fcd66">limitExcept</a>.<a class="code" href="struct_limit_except.html#a825ea15e10d8c6f4bf2a9d71f91f2361">allow</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;  Deny: &quot;</span> &lt;&lt; location.<a class="code" href="struct_location.html#a4c3f7f5b7002309d6ceefb36169fcd66">limitExcept</a>.<a class="code" href="struct_limit_except.html#af1a707d2c4d26b1d3d32dc507e7a7584">deny</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Returns:\n&quot;</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;unsigned short, std::string&gt;::const_iterator it = location.<a class="code" href="struct_location.html#a375b2f9e917b2c0cbc07c71d09f2f580">returns</a>.begin();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;         it != location.<a class="code" href="struct_location.html#a375b2f9e917b2c0cbc07c71d09f2f580">returns</a>.end(); ++it) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
 <div class="ttc" id="a_config_file_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0f"><div class="ttname"><a href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0f">Method</a></div><div class="ttdeci">Method</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00007">ConfigFile.hpp:7</a></div></div>
 <div class="ttc" id="astruct_limit_except_html_a825ea15e10d8c6f4bf2a9d71f91f2361"><div class="ttname"><a href="struct_limit_except.html#a825ea15e10d8c6f4bf2a9d71f91f2361">LimitExcept::allow</a></div><div class="ttdeci">std::string allow</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00011">ConfigFile.hpp:11</a></div></div>
 <div class="ttc" id="astruct_limit_except_html_af1a707d2c4d26b1d3d32dc507e7a7584"><div class="ttname"><a href="struct_limit_except.html#af1a707d2c4d26b1d3d32dc507e7a7584">LimitExcept::deny</a></div><div class="ttdeci">std::string deny</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00012">ConfigFile.hpp:12</a></div></div>
@@ -317,22 +317,22 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00048">48</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Server name: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#a90f0c5a19d4d6f716028718d64cc2b43">serverName</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Host: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#aea03a861d1838d4a9e51c0944c0ed4aa">host</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Port: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#a520a0e5f537c59fb3c34c5ba3f16b60a">port</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Max body size: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#a6b262ac00408bae685692673fa91c696">maxBodySize</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Error pages:\n&quot;</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;unsigned short, std::string&gt;::const_iterator it = serverConfig.<a class="code" href="struct_server_config.html#a84d0c21c9d0b86da2d15c0da8c1b439b">errorPage</a>.begin();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;         it != serverConfig.<a class="code" href="struct_server_config.html#a84d0c21c9d0b86da2d15c0da8c1b439b">errorPage</a>.end(); ++it)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Locations:\n&quot;</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator it = serverConfig.<a class="code" href="struct_server_config.html#aaae77a23b19cb0194f52c28aed213861">locations</a>.begin(); it != serverConfig.<a class="code" href="struct_server_config.html#aaae77a23b19cb0194f52c28aed213861">locations</a>.end();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;         ++it)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        ostream &lt;&lt; *it;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00050">50</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Server name: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#a90f0c5a19d4d6f716028718d64cc2b43">serverName</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Host: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#aea03a861d1838d4a9e51c0944c0ed4aa">host</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Port: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#a520a0e5f537c59fb3c34c5ba3f16b60a">port</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Max body size: &quot;</span> &lt;&lt; serverConfig.<a class="code" href="struct_server_config.html#a6b262ac00408bae685692673fa91c696">maxBodySize</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Error pages:\n&quot;</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;unsigned short, std::string&gt;::const_iterator it = serverConfig.<a class="code" href="struct_server_config.html#a84d0c21c9d0b86da2d15c0da8c1b439b">errorPage</a>.begin();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;         it != serverConfig.<a class="code" href="struct_server_config.html#a84d0c21c9d0b86da2d15c0da8c1b439b">errorPage</a>.end(); ++it)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Locations:\n&quot;</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator it = serverConfig.<a class="code" href="struct_server_config.html#aaae77a23b19cb0194f52c28aed213861">locations</a>.begin(); it != serverConfig.<a class="code" href="struct_server_config.html#aaae77a23b19cb0194f52c28aed213861">locations</a>.end();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;         ++it)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        ostream &lt;&lt; *it;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
 <div class="ttc" id="astruct_server_config_html_a520a0e5f537c59fb3c34c5ba3f16b60a"><div class="ttname"><a href="struct_server_config.html#a520a0e5f537c59fb3c34c5ba3f16b60a">ServerConfig::port</a></div><div class="ttdeci">unsigned short port</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00029">ConfigFile.hpp:29</a></div></div>
 <div class="ttc" id="astruct_server_config_html_a6b262ac00408bae685692673fa91c696"><div class="ttname"><a href="struct_server_config.html#a6b262ac00408bae685692673fa91c696">ServerConfig::maxBodySize</a></div><div class="ttdeci">unsigned long maxBodySize</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00030">ConfigFile.hpp:30</a></div></div>
 <div class="ttc" id="astruct_server_config_html_a84d0c21c9d0b86da2d15c0da8c1b439b"><div class="ttname"><a href="struct_server_config.html#a84d0c21c9d0b86da2d15c0da8c1b439b">ServerConfig::errorPage</a></div><div class="ttdeci">std::map&lt; unsigned short, std::string &gt; errorPage</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00031">ConfigFile.hpp:31</a></div></div>
@@ -378,14 +378,14 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00072">72</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Config file:\n&quot;</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;ServerConfig&gt;::const_iterator it = configFile.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>.begin();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;         it != configFile.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>.end(); ++it)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        ostream &lt;&lt; *it;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00074">74</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    ostream &lt;&lt; <span class="stringliteral">&quot;Config file:\n&quot;</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;ServerConfig&gt;::const_iterator it = configFile.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>.begin();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;         it != configFile.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>.end(); ++it)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        ostream &lt;&lt; *it;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
 <div class="ttc" id="astruct_config_file_html_aa8d67488c32158bb0ffa47260071b18f"><div class="ttname"><a href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">ConfigFile::serverConfigs</a></div><div class="ttdeci">std::vector&lt; ServerConfig &gt; serverConfigs</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00036">ConfigFile.hpp:36</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -426,26 +426,26 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00092">92</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    assert(method &gt;= <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a> &amp;&amp; method &lt;= <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">switch</span> (method) {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;GET&quot;</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>:</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;POST&quot;</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>:</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>:</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;enum MethodCount&quot;</span>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00094">94</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    assert(method &gt;= <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a> &amp;&amp; method &lt;= <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">switch</span> (method) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;GET&quot;</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>:</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;POST&quot;</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>:</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="_config_file_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>:</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        ostream &lt;&lt; <span class="stringliteral">&quot;enum MethodCount&quot;</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">return</span> ostream;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['server_259',['Server',['../class_server.html',1,'']]],
-  ['serverconfig_260',['ServerConfig',['../struct_server_config.html',1,'']]]
+  ['ostreaminserterstest_391',['OstreamInsertersTest',['../class_ostream_inserters_test.html',1,'']]]
 ];

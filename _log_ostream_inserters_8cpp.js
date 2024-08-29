@@ -7,5 +7,8 @@ var _log_ostream_inserters_8cpp =
     [ "operator<<", "_log_ostream_inserters_8cpp.html#ae82a3a6d4c05ac5fa5534cd8e5adf09a", null ],
     [ "operator<<", "_log_ostream_inserters_8cpp.html#a85b7fa054c7461d5bf00328cfb6bf086", null ],
     [ "operator<<", "_log_ostream_inserters_8cpp.html#a3dde1e582c31db20d97fbae0965e45d0", null ],
-    [ "operator<<", "_log_ostream_inserters_8cpp.html#a90ce26113503360cc1b49959f236d9ac", null ]
+    [ "operator<<", "_log_ostream_inserters_8cpp.html#a90ce26113503360cc1b49959f236d9ac", null ],
+    [ "operator<<", "_log_ostream_inserters_8cpp.html#a09e4c7c91142b4ce6b9b7753d944ff73", null ],
+    [ "operator<<", "_log_ostream_inserters_8cpp.html#a4d5899a5b7b13efafc30a1420327ba4c", null ],
+    [ "operator<<", "_log_ostream_inserters_8cpp.html#ad4c883f103b460a448b75180ecc8b8bf", null ]
 ];
