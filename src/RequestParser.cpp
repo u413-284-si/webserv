@@ -587,6 +587,16 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 	return (requestLine.substr(++index));
 }
 
+/**
+ * @brief Parses the body of an HTTP request.
+ *
+ * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
+ * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
+ * is chunked or non-chunked.
+ *
+ * @param bodyString The string representation of the request body.
+ * @param request The HTTPRequest object to populate with the parsed data.
+ */
 void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
 	m_requestStream.str(bodyString);
