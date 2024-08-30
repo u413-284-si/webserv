@@ -680,23 +680,23 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
 	std::string body;
-	// long length = 0;
+	long length = 0;
 
 	while (!std::getline(m_requestStream, body).fail()) {
 		if (body[body.size() - 1] == '\r') {
 			body.erase(body.size() - 1);
-			// length += 1;
+			length += 1;
 		}
 		if (!m_requestStream.eof())
 			body += '\n';
-		// length += static_cast<long>(body.size());
+		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	// const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
-	// if (contentLength != length) {
-	// 	request.httpStatus = StatusBadRequest;
-	// 	throw std::runtime_error(ERR_CONTENT_LENGTH);
-	// }
+	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+	if (contentLength != length) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_CONTENT_LENGTH);
+	}
 }
 
 /**
