@@ -589,12 +589,12 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 
 void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
-    m_requestStream.str(bodyString);
-    if (m_isChunked)
-        parseChunkedBody(request);
-    else
-        parseNonChunkedBody(request);
-    resetRequestStream();
+	m_requestStream.str(bodyString);
+	if (m_isChunked)
+		parseChunkedBody(request);
+	else
+		parseNonChunkedBody(request);
+	resetRequestStream();
 }
 
 /**
@@ -621,7 +621,7 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
  */
 void RequestParser::parseChunkedBody(HTTPRequest& request)
 {
-	// size_t length = 0;
+	size_t length = 0;
 	std::string strChunkSize;
 	std::string chunkData;
 	size_t numChunkSize = 0;
@@ -647,7 +647,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 			throw std::runtime_error(ERR_CHUNK_SIZE);
 		}
 		request.body += chunkData;
-		// length += numChunkSize;
+		length += numChunkSize;
 	} while (numChunkSize > 0);
 	std::stringstream sstream;
 	sstream << length;
