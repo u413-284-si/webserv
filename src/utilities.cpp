@@ -1,5 +1,7 @@
 #include "utilities.hpp"
 #include "StatusCode.hpp"
+
+#include <cassert>
 #include <cctype>
 #include <sys/socket.h>
 
@@ -131,12 +133,14 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 /**
  * @brief Returns reason phrase for a given status code.
  *
- * @param status Status code.
+ * @param statusCode Status code.
  * @return std::string Reason phrase.
  */
-std::string statusCodeToReasonPhrase(statusCode status)
+std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
-	switch (status) {
+	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+
+	switch (statusCode) {
 	case StatusOK:
 		return "OK";
 	case StatusMovedPermanently:
@@ -151,21 +155,32 @@ std::string statusCodeToReasonPhrase(statusCode status)
 		return "Request Entity Too Large";
 	case StatusMethodNotAllowed:
 		return "Method Not Allowed";
+	case StatusRequestTimeout:
+		return "Request Timeout";
+	case StatusRequestHeaderFieldsTooLarge:
+		return "Request Header Fields Too Large";
 	case StatusInternalServerError:
 		return "Internal Server Error";
-	default:
-		return "Unknown";
+	case StatusMethodNotImplemented:
+		return "Not Implemented";
+	case StatusNonSupportedVersion:
+		return "HTTP Version Not Supported";
 	}
+
+	assert(false && "Unhandled enum value");
+	return "";
 }
 
 /**
  * @brief Get Default Error Page for a given status code.
  *
- * @param status Status code.
+ * @param statusCode Status code.
  * @return std::string Default error page.
  */
-std::string getDefaultErrorPage(statusCode status)
+std::string getDefaultErrorPage(statusCode statusCode)
 {
+	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+
 	static const char* error301Page = "<html>\r\n"
 									  "<head><title>301 Moved permanently</title></head>\r\n"
 									  "<body>\r\n"
@@ -191,10 +206,15 @@ std::string getDefaultErrorPage(statusCode status)
 									  "<body>\r\n"
 									  "<center><h1>405 Method not allowed</h1></center>\r\n";
 
-	static const char* error413Page = "<html>\r\n"
-									  "<head><title>413 Request Entity Too Large</title></head>\r\n"
+	static const char* error408Page = "<html>\r\n"
+									  "<head><title>408 Request timeout</title></head>\r\n"
 									  "<body>\r\n"
-									  "<center><h1>413 Request Entity Too Large</h1></center>\r\n";
+									  "<center><h1>408 Request timeout</h1></center>\r\n";
+
+	static const char* error431Page = "<html>\r\n"
+									  "<head><title>431 Request header fields too large</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>431 Request header fields too large</h1></center>\r\n";
 
 	static const char* error500page = "<html>\r\n"
 									  "<head><title>500 Internal server error</title></head>\r\n"
@@ -217,7 +237,7 @@ std::string getDefaultErrorPage(statusCode status)
 
 	std::string ret;
 
-	switch (status) {
+	switch (statusCode) {
 	case StatusOK:
 		return ("");
 	case StatusMovedPermanently:
@@ -237,6 +257,12 @@ std::string getDefaultErrorPage(statusCode status)
 		break;
 	case StatusMethodNotAllowed:
 		ret = error405Page;
+		break;
+	case StatusRequestTimeout:
+		ret = error408Page;
+		break;
+	case StatusRequestHeaderFieldsTooLarge:
+		ret = error431Page;
 		break;
 	case StatusInternalServerError:
 		ret = error500page;

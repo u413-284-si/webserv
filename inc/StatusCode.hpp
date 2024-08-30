@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 enum statusCode {
 	StatusOK = 200,
 	StatusMovedPermanently = 301,
@@ -7,8 +9,11 @@ enum statusCode {
 	StatusForbidden = 403,
 	StatusNotFound = 404,
 	StatusMethodNotAllowed = 405,
-	StatusRequestTooLarge = 413,
+	StatusRequestTimeout = 408,
+	StatusRequestHeaderFieldsTooLarge = 431,
 	StatusInternalServerError = 500,
 	StatusMethodNotImplemented = 501,
 	StatusNonSupportedVersion = 505
 };
+
+std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);
