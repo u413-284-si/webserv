@@ -55,12 +55,16 @@ class InitVirtualServersTest : public ::testing::Test {
 
 TEST_F(InitVirtualServersTest, ServerInitSuccess)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
+	struct sockaddr* addr2 = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = nullptr
 	};
 	*addrinfo2 = {
+		.ai_addr = addr2,
 		.ai_next = nullptr
 	};
 

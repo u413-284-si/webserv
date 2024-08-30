@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <sys/socket.h>
 
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
@@ -32,8 +33,10 @@ class CreateVirtualServerTest : public ::testing::Test {
 
 TEST_F(CreateVirtualServerTest, ServerAddSuccess)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = nullptr
 	};
 
@@ -67,8 +70,10 @@ TEST_F(CreateVirtualServerTest, resolveListeningAddressesFails)
 
 TEST_F(CreateVirtualServerTest, createListeningSocketFails)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = nullptr
 	};
 
@@ -86,8 +91,10 @@ TEST_F(CreateVirtualServerTest, createListeningSocketFails)
 
 TEST_F(CreateVirtualServerTest, retrieveSocketInfoFails)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = nullptr
 	};
 
@@ -109,8 +116,10 @@ TEST_F(CreateVirtualServerTest, retrieveSocketInfoFails)
 
 TEST_F(CreateVirtualServerTest, registerVirtualServerFails)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = nullptr
 	};
 
@@ -136,12 +145,16 @@ TEST_F(CreateVirtualServerTest, registerVirtualServerFails)
 
 TEST_F(CreateVirtualServerTest, FirstFailsSecondSuccess)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
+	struct sockaddr* addr2 = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = addrinfo2
 	};
 	*addrinfo2 = {
+		.ai_addr = addr2,
 		.ai_next = nullptr
 	};
 
@@ -166,12 +179,16 @@ TEST_F(CreateVirtualServerTest, FirstFailsSecondSuccess)
 
 TEST_F(CreateVirtualServerTest, FirstSuccessSecondFail)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
+	struct sockaddr* addr2 = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = addrinfo2
 	};
 	*addrinfo2 = {
+		.ai_addr = addr2,
 		.ai_next = nullptr
 	};
 
@@ -197,16 +214,22 @@ TEST_F(CreateVirtualServerTest, FirstSuccessSecondFail)
 
 TEST_F(CreateVirtualServerTest, AddThree)
 {
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
+	struct sockaddr* addr2 = (struct sockaddr*)malloc(sizeof(*addr));
+	struct sockaddr* addr3 = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
 	struct addrinfo* addrinfo3 = (struct addrinfo*)malloc(sizeof(*addrinfo3));
 	*addrinfo = {
+		.ai_addr = addr,
 		.ai_next = addrinfo2
 	};
 	*addrinfo2 = {
+		.ai_addr = addr2,
 		.ai_next = addrinfo3
 	};
 	*addrinfo3 = {
+		.ai_addr = addr3,
 		.ai_next = nullptr
 	};
 
