@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Log.hpp"
 #include "StatusCode.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -657,11 +658,11 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
 	if (bytesRead == -1) {
-		// Internal server error
+		LOG_DEBUG << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
-		// Connection closed by client
+		LOG_DEBUG << "Connection closed by client: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else {
@@ -707,6 +708,20 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
 }
 
+/**
+ * @brief Receives the body of a connection.
+ *
+ * This function is responsible for receiving the body of a connection from the client.
+ * It reads data from the socket and appends it to the connection's buffer.
+ * If the buffer size exceeds the maximum allowed client request body size, an error is logged
+ * and the connection's HTTP status is set to StatusRequestEntityTooLarge.
+ * If the complete request body is received, it is parsed and the connection's status is set to BuildResponse.
+ * If an exception occurs during parsing, an error is logged and the connection's status is set to BuildResponse.
+ *
+ * @param server The server object.
+ * @param clientFd The file descriptor of the client socket.
+ * @param connection The connection object.
+ */
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 {
 	LOG_DEBUG << "ReceiveBody for: " << connection.m_clientSocket;
@@ -715,11 +730,11 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, sizeof(buffer), 0);
 	if (bytesRead == -1) {
-		// Internal server error
+		LOG_DEBUG << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
-		// Connection closed by client
+		LOG_DEBUG << "Connection closed by client: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else {
