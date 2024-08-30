@@ -93,6 +93,7 @@ SRC:=	main.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
+		signalHandler.cpp \
 		SocketPolicy.cpp \
 		TargetResourceHandler.cpp \
 		utilities.cpp
