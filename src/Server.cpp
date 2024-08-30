@@ -724,22 +724,20 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_buffer += buffer;
+		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) { // FIXME: change to maxBodySize
+			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_status = Connection::BuildResponse;
+		}
 		try {
 			if (isCompleteBody(connection.m_buffer, connection.m_request)) {
 				LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
-                server.parseBody(connection.m_buffer, connection.m_request);
+				server.parseBody(connection.m_buffer, connection.m_request);
 				connection.m_status = Connection::BuildResponse;
 				server.modifyEvent(clientFd, EPOLLOUT);
 				connection.m_buffer.erase(0);
-			} else {
+			} else
 				LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
-				if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
-					LOG_ERROR << "Buffer full, didn't receive complete request header from "
-							  << connection.m_clientSocket;
-					connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
-					connection.m_status = Connection::BuildResponse;
-				}
-			}
 		} catch (std::exception& e) {
 			LOG_ERROR << "Error: " << e.what();
 			connection.m_status = Connection::BuildResponse;
