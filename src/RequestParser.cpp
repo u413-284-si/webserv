@@ -259,56 +259,21 @@ RequestParser::RequestParser()
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
- * @brief Parses the entire HTTP request from the given string and updates the HTTPRequest object.
+ * @brief Parses the header of an HTTP request.
  *
- * This function first attempts to find the end of the HTTP headers in the request string.
- * If the headers are found and the current status is set to parse request line and headers,
- * it parses the request line and headers. If the request includes a body, and the method is
- * allowed to have a body, the function transitions the parsing status to handle the body.
+ * This function takes a string representation of an HTTP request and parses its header.
+ * It extracts the request line and headers from the request string and populates the
+ * provided HTTPRequest object with the parsed data.
  *
- * Once the headers are parsed, the function extracts the body portion of the request and
- * checks if the body is complete. If the body is complete, it is then parsed according to
- * whether it's chunked or not.
- *
- * @param requestString The HTTP request as a string.
- * @param request The HTTPRequest object to be populated with parsed data.
- *
- * @throw std::runtime_error If the request line is missing, if an unexpected body is encountered,
- * or if other parsing errors occur (e.g., invalid headers, body issues).
+ * @param requestString The string representation of the HTTP request.
+ * @param request The HTTPRequest object to populate with the parsed data.
  */
-void RequestParser::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
+void RequestParser::parseHeader(const std::string& requestString, HTTPRequest& request)
 {
-	const std::string headerEndString = "\r\n\r\n";
-	const size_t headerEndPos = requestString.find(headerEndString);
-
-	if (headerEndPos == std::string::npos)
-		return;
-
-	if (m_status == ParseRequestLineAndHeaders) {
-		m_requestStream.str(requestString);
-		parseRequestLine(request);
-		parseHeaders(request);
-		if (m_hasBody) {
-			if (!checkMethodCanHaveBody(request)) {
-				request.httpStatus = StatusBadRequest;
-				throw std::runtime_error(ERR_UNEXPECTED_BODY);
-			}
-			setStatus(ParseBody);
-		} else
-			setStatus(ParsingComplete);
-	}
-
-	const std::string bodyString = requestString.substr(headerEndPos + headerEndString.size());
-	if (m_status == ParseBody && checkForCompleteBody(bodyString, request)) {
-		resetRequestStream();
-		m_requestStream.str(bodyString);
-		if (m_chunked)
-			parseChunkedBody(request);
-		else
-			parseNonChunkedBody(request);
-		LOG_DEBUG << "Parsed body: " << request.body;
-		setStatus(ParsingComplete);
-	}
+	m_requestStream.str(requestString);
+	parseRequestLine(request);
+	parseHeaders(request);
+    resetRequestStream();
 }
 
 /**

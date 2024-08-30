@@ -24,7 +24,7 @@ class RequestParser {
 public:
 	RequestParser();
 
-	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
+	void parseHeader(const std::string& requestString, HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void clearParser();
 
