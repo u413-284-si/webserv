@@ -1,46 +1,64 @@
-#include "gtest/gtest.h"
 #include "RequestParser.hpp"
+#include "gtest/gtest.h"
 
 // VALID BODY TEST SUITE
 
-TEST(RequestParser_ValidBody, ChunkedBody) {
-	RequestParser	p;
-	HTTPRequest		request;
+TEST(RequestParser_ValidBody, ChunkedBody)
+{
+	RequestParser p;
+	HTTPRequest request;
 
-	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
+	p.parseHeader("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+				  "www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n",
+		request);
+	p.parseBody("6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
 	EXPECT_EQ(request.body, "hello world!");
 }
 
-TEST(RequestParser_ValidBody, NoBodyTrigger) {
-	RequestParser	p;
-	HTTPRequest		request;
+TEST(RequestParser_ValidBody, NoBodyTrigger)
+{
+	RequestParser p;
+	HTTPRequest request;
 
-	p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n", request);
-	EXPECT_EQ(request.body, "");
+	p.parseHeader("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+				  "www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n",
+		request);
+	EXPECT_FALSE(p.hasBody());
 }
 
-TEST(RequestParser_ValidBody, NonChunkedBody) {
-	RequestParser	p;
-	HTTPRequest		request;
+TEST(RequestParser_ValidBody, NonChunkedBody)
+{
+	RequestParser p;
+	HTTPRequest request;
 
-	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello \r\nworld!", request);
+	p.parseHeader("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+				  "www.example.com\r\nContent-Length: 14\r\n\r\n",
+		request);
+	p.parseBody("hello \r\nworld!", request);
 	EXPECT_EQ(request.body, "hello \nworld!");
-    p.clearRequest(request);
+	p.clearRequest(request);
 	p.clearParser();
-	p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n", request);
+	p.parseHeader("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+				  "www.example.com\r\nContent-Length: 16\r\n\r\n",
+		request);
+	p.parseBody("hello \r\nworld!\r\n", request);
 	EXPECT_EQ(request.body, "hello \nworld!\n");
 }
 
 // INVALID BODY TEST SUITE
 
-TEST(RequestParser_NonValidBody, DifferingChunkSize) {
-	RequestParser	p;
-    HTTPRequest request;
+TEST(RequestParser_NonValidBody, DifferingChunkSize)
+{
+	RequestParser p;
+	HTTPRequest request;
 
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHeader("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+							  "www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n",
+					request);
+				p.parseBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
 				throw;
@@ -49,30 +67,39 @@ TEST(RequestParser_NonValidBody, DifferingChunkSize) {
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidBody, DifferingContentLength) {
-	RequestParser	p;
-    HTTPRequest request;
+TEST(RequestParser_NonValidBody, DifferingContentLength)
+{
+	RequestParser p;
+	HTTPRequest request;
 
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n", request);
+				p.parseHeader("DELETE /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+							  "www.example.com\r\nContent-Length: 3\r\n\r\n",
+					request);
+				p.parseBody("hello \r\nworld!\r\n", request);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: Indicated content length different than actual body size", e.what());
+				EXPECT_STREQ(
+					"Invalid HTTP request: Indicated content length different than actual body size", e.what());
 				throw;
 			}
 		},
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidBody, MissingCRLFInChunk) {
-	RequestParser	p;
-    HTTPRequest request;
+TEST(RequestParser_NonValidBody, MissingCRLFInChunk)
+{
+	RequestParser p;
+	HTTPRequest request;
 
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHeader("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+							  "www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n",
+					request);
+				p.parseBody("6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
 				throw;
@@ -81,14 +108,18 @@ TEST(RequestParser_NonValidBody, MissingCRLFInChunk) {
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidBody, MissingCRInChunk) {
-	RequestParser	p;
-    HTTPRequest request;
+TEST(RequestParser_NonValidBody, MissingCRInChunk)
+{
+	RequestParser p;
+	HTTPRequest request;
 
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHeader("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+							  "www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n",
+					request);
+				p.parseBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
 				throw;
@@ -97,14 +128,18 @@ TEST(RequestParser_NonValidBody, MissingCRInChunk) {
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidBody, UnexpectedBody) {
-	RequestParser	p;
-    HTTPRequest request;
+TEST(RequestParser_NonValidBody, UnexpectedBody)
+{
+	RequestParser p;
+	HTTPRequest request;
 
 	EXPECT_THROW(
 		{
 			try {
-				p.parseHttpRequest("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+							  "www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n",
+					request);
+				p.parseBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Method should not have a body", e.what());
 				throw;
@@ -128,7 +163,7 @@ TEST(RequestParser_NonValidBody, UnexpectedBody) {
 // 			std::string		body;
 
 // 			request = p.parseHttpRequest(tests[i].first);
-			
+
 // 			// Check body string
 // 			if (request.body == tests[i].second)
 // 				std::cout << "SUCCESS - Body: " << request.body << "\n";
@@ -140,20 +175,20 @@ TEST(RequestParser_NonValidBody, UnexpectedBody) {
 // 		catch (std::exception& e) {
 // 			std::cerr << "Error: " << e.what() << std::endl;
 // 		}
-// 	} 
+// 	}
 // }
 
 // void	testValidBody()
 // {
 // 	std::pair<std::string, std::string>	tests[] = {
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n"
-// 			, "hello world!"),
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n"
-// 			, ""),
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello \r\nworld!"
-// 			, "hello \nworld!"),
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n"
-// 			, "hello \nworld!\n"),
+// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:
+// www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n" 			, "hello
+// world!"), 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:
+// www.example.com\r\nTransfer-Encoding: gzip\r\n\r\nhello \r\nworld!\r\n" 			, ""), 		std::make_pair("GET
+// /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 14\r\n\r\nhello
+// \r\nworld!" 			, "hello \nworld!"), 		std::make_pair("GET /search?query=openai&year=2024#conclusion
+// HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 16\r\n\r\nhello \r\nworld!\r\n" 			, "hello
+// \nworld!\n"),
 
 // 	};
 // 	runBodyTests("VALID BODY", sizeof(tests) / sizeof(tests[0]), tests);
@@ -162,14 +197,14 @@ TEST(RequestParser_NonValidBody, UnexpectedBody) {
 // void	testInvalidBody()
 // {
 // 	std::pair<std::string, std::string>	tests[] = {
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n"
-// 			, "hello world!"),
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n"
-// 			, "hello \nworld!"),
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n"
-// 			, "hello world!"),
-// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n"
-// 			, "hello world!"),
+// 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:
+// www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n1\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n" 			, "hello
+// world!"), 		std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:
+// www.example.com\r\nContent-Length: 3\r\n\r\nhello \r\nworld!\r\n" 			, "hello \nworld!"),
+// std::make_pair("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding:
+// gzip, chunked\r\n\r\n6\r\nhello 6\r\nworld!\r\n0\r\n\r\n" 			, "hello world!"), 		std::make_pair("GET
+// /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\nTransfer-Encoding: gzip,
+// chunked\r\n\r\n6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n" 			, "hello world!"),
 // 	};
 // 	runBodyTests("INVALID BODY", sizeof(tests) / sizeof(tests[0]), tests);
 // }
