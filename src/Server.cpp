@@ -739,7 +739,7 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_buffer += buffer;
-		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) { // FIXME: change to maxBodySize
+		if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
