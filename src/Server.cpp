@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Log.hpp"
+#include "RequestParser.hpp"
 #include "StatusCode.hpp"
 #include "error.hpp"
 
@@ -766,9 +767,10 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 /**
  * @brief Checks if the connection buffer contains a complete request body.
  *
- * A complete request body is determined by the presence of the "Content-Length" header or the "Transfer-Encoding" header.
- * If the "Content-Length" header is present, the function checks if the size of the connection buffer matches the specified content length.
- * If the "Transfer-Encoding" header is present, the function checks if the connection buffer contains the end marker "0\r\n\r\n".
+ * A complete request body is determined by the presence of the "Content-Length" header or the "Transfer-Encoding"
+ * header. If the "Content-Length" header is present, the function checks if the size of the connection buffer matches
+ * the specified content length. If the "Transfer-Encoding" header is present, the function checks if the connection
+ * buffer contains the end marker "0\r\n\r\n".
  *
  * @param connectionBuffer The buffer to check for a complete request body.
  * @param request The HTTPRequest object containing the request headers.
@@ -776,19 +778,20 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
  */
 bool isCompleteBody(const std::string& connectionBuffer, HTTPRequest& request)
 {
-    std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
-    std::map<std::string, std::string>::const_iterator transferEncodingIterator = request.headers.find("Transfer-Encoding");
+	std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
+	std::map<std::string, std::string>::const_iterator transferEncodingIterator
+		= request.headers.find("Transfer-Encoding");
 
-    if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
-        unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, 10);
-        if (contentLength < connectionBuffer.size()) {
-            request.httpStatus = StatusBadRequest;
-            throw std::runtime_error(ERR_CONTENT_LENGTH);
-        }
-        if (contentLength == connectionBuffer.size())
-            return true;
-    }
-    return transferEncodingIterator != request.headers.end() && connectionBuffer.find("0\r\n\r\n") != std::string::npos;
+	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
+		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
+		if (contentLength < connectionBuffer.size()) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_CONTENT_LENGTH);
+		}
+		if (contentLength == connectionBuffer.size())
+			return true;
+	}
+	return transferEncodingIterator != request.headers.end() && connectionBuffer.find("0\r\n\r\n") != std::string::npos;
 }
 
 /**
