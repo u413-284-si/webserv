@@ -149,6 +149,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 	case StatusRequestTimeout:
 		ostream << "408 Request Timeout";
 		break;
+    case StatusRequestEntityTooLarge:
+        ostream << "413 Request Entity Too Large";
+        break;
 	case StatusRequestHeaderFieldsTooLarge:
 		ostream << "431 Request Header Fields Too Large";
 		break;

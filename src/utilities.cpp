@@ -151,7 +151,7 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 		return "Forbidden";
 	case StatusNotFound:
 		return "Not Found";
-	case StatusRequestTooLarge:
+	case StatusRequestEntityTooLarge:
 		return "Request Entity Too Large";
 	case StatusMethodNotAllowed:
 		return "Method Not Allowed";
@@ -211,6 +211,11 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<body>\r\n"
 									  "<center><h1>408 Request timeout</h1></center>\r\n";
 
+	static const char* error413Page = "<html>\r\n"
+									  "<head><title>413 Request entity too large</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>413 Request entity too large</h1></center>\r\n";
+
 	static const char* error431Page = "<html>\r\n"
 									  "<head><title>431 Request header fields too large</title></head>\r\n"
 									  "<body>\r\n"
@@ -252,7 +257,7 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	case StatusNotFound:
 		ret = error404Page;
 		break;
-	case StatusRequestTooLarge:
+	case StatusRequestEntityTooLarge:
 		ret = error413Page;
 		break;
 	case StatusMethodNotAllowed:
