@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include <cassert>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -228,8 +229,10 @@ struct addrinfo* Server::resolveListeningAddresses(const std::string& host, cons
  * @param backlog The maximum length to which the queue of pending connections may grow.
  * @return int The file descriptor of the listening socket.
  */
-int Server::createListeningSocket(const struct addrinfo& addrinfo, int backlog) const
+int Server::createListeningSocket(const struct addrinfo* addrinfo, int backlog) const
 {
+	assert(addrinfo != NULL);
+
 	return m_socketPolicy.createListeningSocket(addrinfo, backlog);
 }
 
@@ -240,8 +243,10 @@ int Server::createListeningSocket(const struct addrinfo& addrinfo, int backlog) 
  * @param socklen The length of the socket address.
  * @return Socket The socket information.
  */
-Socket Server::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const
+Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr, socklen_t socklen) const
 {
+	assert(sockaddr != NULL);
+
 	return m_socketPolicy.retrieveSocketInfo(sockaddr, socklen);
 }
 
@@ -255,6 +260,9 @@ Socket Server::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) 
  */
 int Server::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
+	assert(addr != NULL);
+	assert(addrlen != NULL);
+
 	return m_socketPolicy.acceptSingleConnection(sockfd, addr, addrlen);
 }
 
@@ -269,6 +277,8 @@ int Server::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t*
  */
 ssize_t Server::readFromSocket(int sockfd, char* buffer, size_t size, int flags) const
 {
+	assert(buffer != NULL);
+
 	return m_socketPolicy.readFromSocket(sockfd, buffer, size, flags);
 }
 
@@ -283,6 +293,8 @@ ssize_t Server::readFromSocket(int sockfd, char* buffer, size_t size, int flags)
  */
 ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const
 {
+	assert(buffer != NULL);
+
 	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
 }
 
@@ -421,11 +433,11 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
 	for (struct addrinfo* curr = list; curr != NULL; curr = curr->ai_next) {
 		LOG_DEBUG << countTryCreateSocket << ". try to create listening socket";
 
-		const int newFd = server.createListeningSocket(*curr, backlog);
+		const int newFd = server.createListeningSocket(curr, backlog);
 		if (newFd == -1)
 			continue;
 
-		const Socket serverSock = server.retrieveSocketInfo(*curr->ai_addr, curr->ai_addrlen);
+		const Socket serverSock = server.retrieveSocketInfo(curr->ai_addr, curr->ai_addrlen);
 		if (serverSock.host.empty() && serverSock.port.empty()) {
 			close(newFd);
 			continue;
@@ -535,7 +547,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		if (clientFd == -1)
 			continue; // Error accepting connection
 
-		const Socket clientSock = server.retrieveSocketInfo(*addrCast, clientLen);
+		const Socket clientSock = server.retrieveSocketInfo(addrCast, clientLen);
 		if (clientSock.host.empty() && clientSock.port.empty()) {
 			close(clientFd);
 			continue;

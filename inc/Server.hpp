@@ -15,6 +15,7 @@
 
 #include <algorithm>
 #include <bits/types/time_t.h>
+#include <cassert>
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -71,8 +72,8 @@ public:
 
 	// Dispatch to SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
-	int createListeningSocket(const struct addrinfo& addrinfo, int backlog) const;
-	Socket retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const;
+	int createListeningSocket(const struct addrinfo* addrinfo, int backlog) const;
+	Socket retrieveSocketInfo(struct sockaddr* sockaddr, socklen_t socklen) const;
 	int acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const;
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
