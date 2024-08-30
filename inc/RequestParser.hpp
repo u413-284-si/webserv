@@ -28,9 +28,12 @@ public:
 	static void clearRequest(HTTPRequest& request);
 	void clearParser();
 
+	bool hasBody() const;
+	bool isChunked() const;
+
 private:
 	bool m_hasBody;
-	bool m_chunked;
+	bool m_isChunked;
 	std::istringstream m_requestStream;
 
 	// RequestLine Parsing
@@ -53,7 +56,7 @@ private:
 	void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
 	void checkTransferEncoding(HTTPRequest& request);
 	static bool checkForCompleteBody(const std::string& bodyString, HTTPRequest& request);
-	static bool checkMethodCanHaveBody(HTTPRequest& request);
+	static bool checkIfMethodCanHaveBody(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);

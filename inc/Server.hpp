@@ -78,8 +78,10 @@ public:
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
 	// Dispatch to RequestParser
-	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
+	void parseHeader(const std::string& requestString, HTTPRequest& request);
 	void clearParser();
+    bool hasBody();
+    bool isChunked();
 
 	// Dispatch to ResponseBuilder
 	void buildResponse(const HTTPRequest& request);
@@ -117,6 +119,7 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
 
+bool checkMethodCanHaveBody(HTTPRequest& request);
 void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);

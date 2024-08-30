@@ -290,20 +290,34 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 /* ====== DISPATCH TO REQUESTPARSER ====== */
 
 /**
- * @brief Wrapper function to RequestParser::parseHttpRequest.
+ * @brief Wrapper function to RequestParser::parseHeader.
  *
  * @param requestString The request string to parse.
  * @param request The HTTPRequest object to store the parsed request.
  */
-void Server::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
+void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
 {
-	m_requestParser.parseHttpRequest(requestString, request);
+	m_requestParser.parseHeader(requestString, request);
 }
 
 /**
  * @brief Wrapper function to RequestParser::clearParser.
  */
 void Server::clearParser() { m_requestParser.clearParser(); }
+
+/**
+ * @brief Wrapper function to RequestParser::hasBody.
+ *
+ * @return bool True if the request has a body, false otherwise.
+ */
+bool Server::hasBody() { return m_requestParser.hasBody(); }
+
+/**
+ * @brief Wrapper function to RequestParser::isChunked.
+ *
+ * @return bool True if the request is chunked, false otherwise.
+ */
+bool Server::isChunked() { return m_requestParser.isChunked(); }
 
 /* ====== DISPATCH TO RESPONSEBUILDER ====== */
 
@@ -642,14 +656,17 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 		if (isCompleteRequestHeader(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
 			try {
-				server.parseHttpRequest(connection.m_buffer, connection.m_request);
-				server.clearParser();
+				server.parseHeader(connection.m_buffer, connection.m_request);
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
+			if (server.hasBody())
+				connection.m_status = Connection::ReceiveBody;
+			else {
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+			}
 			connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
 			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
@@ -680,6 +697,16 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 
 	(void)server;
 	(void)clientFd;
+	if (m_status == ParseBody && checkForCompleteBody(bodyString, request)) {
+
+		m_requestStream.str(bodyString);
+		if (m_chunked)
+			parseChunkedBody(request);
+		else
+			parseNonChunkedBody(request);
+		LOG_DEBUG << "Parsed body: " << request.body;
+		setStatus(ParsingComplete);
+	}
 }
 
 /**

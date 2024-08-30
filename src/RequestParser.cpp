@@ -232,7 +232,7 @@ void RequestParser::clearRequest(HTTPRequest& request)
 void RequestParser::clearParser()
 {
 	m_hasBody = false;
-	m_chunked = false;
+	m_isChunked = false;
 	resetRequestStream();
 }
 
@@ -252,9 +252,31 @@ void RequestParser::resetRequestStream()
  */
 RequestParser::RequestParser()
 	: m_hasBody(false)
-	, m_chunked(false)
+	, m_isChunked(false)
 {
 }
+
+/* ====== GETTERS/SETTERS ====== */
+
+/**
+ * @brief Checks if the request has a body.
+ *
+ * This method returns a boolean indicating whether the request
+ * contains a body.
+ *
+ * @return true if the request has a body, false otherwise.
+ */
+bool RequestParser::hasBody() const { return m_hasBody; }
+
+/**
+ * @brief Checks if the request is chunked.
+ *
+ * This function returns the value of the m_isChunked member variable,
+ * indicating whether the request is using chunked transfer encoding.
+ *
+ * @return true if the request is chunked, false otherwise.
+ */
+bool RequestParser::isChunked() const { return m_isChunked; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -273,7 +295,7 @@ void RequestParser::parseHeader(const std::string& requestString, HTTPRequest& r
 	m_requestStream.str(requestString);
 	parseRequestLine(request);
 	parseHeaders(request);
-    resetRequestStream();
+	resetRequestStream();
 }
 
 /**
@@ -320,8 +342,8 @@ void RequestParser::parseRequestLine(HTTPRequest& request)
  * @brief Parses the HTTP headers from the request stream.
  *
  * This function reads and parses the HTTP headers from the request stream until the end of the header section,
- * which is indicated by an empty line (`\r\n\r\n`). Each header is extracted, validated, and stored in the `request`
- * object.
+ * which is indicated by an empty line (`\r\n\r\n`). Each header is extracted, validated, and stored in the
+ * `request` object.
  *
  * - If a header line begins with a space or tab, it is considered obsolete line folding, and the function
  *   sets the HTTP status to `400 Bad Request` and throws an exception.
@@ -362,6 +384,10 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		}
 	}
 	checkTransferEncoding(request);
+	if (m_hasBody && !checkIfMethodCanHaveBody(request)) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_UNEXPECTED_BODY);
+	}
 }
 
 /**
@@ -752,7 +778,8 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
  *
  * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If the Transfer-Encoding header is missing or empty,
- *         or if the last encoding is not "chunked", an error is thrown and the error code is set to StatusBadRequest.
+ *         or if the last encoding is not "chunked", an error is thrown and the error code is set to
+ * StatusBadRequest.
  */
 void RequestParser::checkTransferEncoding(HTTPRequest& request)
 {
@@ -769,7 +796,7 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
 			}
-			m_chunked = true;
+			m_isChunked = true;
 			m_hasBody = true;
 		}
 	}
