@@ -384,7 +384,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		}
 	}
 	checkTransferEncoding(request);
-	if (m_hasBody && !checkIfMethodCanHaveBody(request)) {
+	if (m_hasBody && !isMethodAllowedToHaveBody(request)) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_UNEXPECTED_BODY);
 	}
@@ -836,7 +836,7 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
  * @note The function asserts that the method in the request is within the
  *       expected range (from MethodGet to MethodCount).
  */
-bool RequestParser::checkIfMethodCanHaveBody(HTTPRequest& request)
+bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 {
 	assert(request.method >= MethodGet && request.method <= MethodCount);
 

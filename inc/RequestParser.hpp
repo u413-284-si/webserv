@@ -25,7 +25,7 @@ public:
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
-    void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void parseBody(const std::string& bodyString, HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void clearParser();
 
@@ -56,8 +56,7 @@ private:
 	static void checkHeaderName(const std::string& headerName, HTTPRequest& request);
 	void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
 	void checkTransferEncoding(HTTPRequest& request);
-	static bool checkForCompleteBody(const std::string& bodyString, HTTPRequest& request);
-	static bool checkIfMethodCanHaveBody(HTTPRequest& request);
+	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
