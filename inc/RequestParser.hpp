@@ -24,18 +24,14 @@ class RequestParser {
 public:
 	RequestParser();
 
-	enum ParsingStatus { ParseRequestLineAndHeaders, ParseBody, ParsingComplete };
-
 	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void clearParser();
-	ParsingStatus getStatus() const;
 
 private:
 	bool m_hasBody;
 	bool m_chunked;
 	std::istringstream m_requestStream;
-	ParsingStatus m_status;
 
 	// RequestLine Parsing
 	void parseRequestLine(HTTPRequest& request);
@@ -58,8 +54,6 @@ private:
 	void checkTransferEncoding(HTTPRequest& request);
 	static bool checkForCompleteBody(const std::string& bodyString, HTTPRequest& request);
 	static bool checkMethodCanHaveBody(HTTPRequest& request);
-
-	void setStatus(ParsingStatus status);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);

@@ -233,7 +233,6 @@ void RequestParser::clearParser()
 {
 	m_hasBody = false;
 	m_chunked = false;
-	m_status = ParseRequestLineAndHeaders;
 	resetRequestStream();
 }
 
@@ -254,7 +253,6 @@ void RequestParser::resetRequestStream()
 RequestParser::RequestParser()
 	: m_hasBody(false)
 	, m_chunked(false)
-	, m_status(ParseRequestLineAndHeaders)
 {
 }
 
@@ -879,23 +877,3 @@ bool RequestParser::checkMethodCanHaveBody(HTTPRequest& request)
 	}
 	return false;
 }
-
-/**
- * @brief Gets the current parsing status of the RequestParser.
- *
- * This function returns the current status of the request parsing process.
- * The status indicates whether the parsing is still in progress or has completed successfully,
- *
- * @return RequestParser::ParsingStatus The current status of the parser.
- */
-RequestParser::ParsingStatus RequestParser::getStatus() const { return m_status; }
-
-/**
- * @brief Sets the parsing status of the RequestParser.
- *
- * This function updates the current parsing status of the RequestParser.
- * The status can indicate whether the parsing is ongoing or completed successfully,
- *
- * @param status The new parsing status to set.
- */
-void RequestParser::setStatus(ParsingStatus status) { m_status = status; }
