@@ -301,6 +301,20 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
 }
 
 /**
+ * @brief Parses the body of an HTTP request.
+ *
+ * This function is responsible for parsing the body of an HTTP request and populating the provided HTTPRequest object
+ * with the parsed data.
+ *
+ * @param bodyString The string representation of the request body.
+ * @param request The HTTPRequest object to be populated with the parsed data.
+ */
+void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
+{
+	m_requestParser.parseBody(bodyString, request);
+}
+
+/**
  * @brief Wrapper function to RequestParser::clearParser.
  */
 void Server::clearParser() { m_requestParser.clearParser(); }
@@ -659,6 +673,8 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 				server.parseHeader(connection.m_buffer, connection.m_request);
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
+				connection.m_status = Connection::BuildResponse;
+				return;
 			}
 			if (server.hasBody())
 				connection.m_status = Connection::ReceiveBody;
@@ -695,18 +711,60 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 {
 	LOG_DEBUG << "ReceiveBody for: " << connection.m_clientSocket;
 
-	(void)server;
-	(void)clientFd;
-	if (m_status == ParseBody && checkForCompleteBody(bodyString, request)) {
+	char buffer[Server::s_clientBodyBufferSize] = {};
 
-		m_requestStream.str(bodyString);
-		if (m_chunked)
-			parseChunkedBody(request);
-		else
-			parseNonChunkedBody(request);
-		LOG_DEBUG << "Parsed body: " << request.body;
-		setStatus(ParsingComplete);
+	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, sizeof(buffer), 0);
+	if (bytesRead == -1) {
+		// Internal server error
+		close(clientFd);
+		connection.m_status = Connection::Closed;
+	} else if (bytesRead == 0) {
+		// Connection closed by client
+		close(clientFd);
+		connection.m_status = Connection::Closed;
+	} else {
+		connection.m_buffer += buffer;
+		try {
+			if (isCompleteBody(connection.m_buffer, connection.m_request)) {
+				LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+                server.parseBody(connection.m_buffer, connection.m_request);
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+				connection.m_buffer.erase(0);
+			} else {
+				LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+				if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
+					LOG_ERROR << "Buffer full, didn't receive complete request header from "
+							  << connection.m_clientSocket;
+					connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+					connection.m_status = Connection::BuildResponse;
+				}
+			}
+		} catch (std::exception& e) {
+			LOG_ERROR << "Error: " << e.what();
+			connection.m_status = Connection::BuildResponse;
+			return;
+		}
 	}
+	connection.m_timeSinceLastEvent = std::time(0);
+}
+
+bool isCompleteBody(const std::string& connectionBuffer, HTTPRequest& request)
+{
+	std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
+	std::map<std::string, std::string>::const_iterator transferEncodingIterator
+		= request.headers.find("Transfer-Encoding");
+
+	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
+		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
+		if (contentLength < connectionBuffer.size()) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_CONTENT_LENGTH);
+		}
+		if (contentLength == connectionBuffer.size())
+			return true;
+	}
+	return transferEncodingIterator != request.headers.end() && connectionBuffer.find("0\r\n\r\n") != std::string::npos;
 }
 
 /**

@@ -283,16 +283,16 @@ bool RequestParser::isChunked() const { return m_isChunked; }
 /**
  * @brief Parses the header of an HTTP request.
  *
- * This function takes a string representation of an HTTP request and parses its header.
+ * This function takes a string representation of an HTTP request header.
  * It extracts the request line and headers from the request string and populates the
  * provided HTTPRequest object with the parsed data.
  *
- * @param requestString The string representation of the HTTP request.
+ * @param headerString The string representation of the HTTP request header.
  * @param request The HTTPRequest object to populate with the parsed data.
  */
-void RequestParser::parseHeader(const std::string& requestString, HTTPRequest& request)
+void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& request)
 {
-	m_requestStream.str(requestString);
+	m_requestStream.str(headerString);
 	parseRequestLine(request);
 	parseHeaders(request);
 	resetRequestStream();
@@ -587,6 +587,16 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 	return (requestLine.substr(++index));
 }
 
+void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
+{
+    m_requestStream.str(bodyString);
+    if (m_isChunked)
+        parseChunkedBody(request);
+    else
+        parseNonChunkedBody(request);
+    resetRequestStream();
+}
+
 /**
  * @brief Parses a chunked body from the provided input stream.
  *
@@ -803,45 +813,6 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 }
 
 /**
- * @brief Checks if the HTTP request body is complete based on headers.
- *
- * This function checks whether the HTTP request body is fully received
- * by examining the `Content-Length` and `Transfer-Encoding` headers.
- *
- * - If the `Content-Length` header is present and `Transfer-Encoding` is not,
- *   the function compares the actual body size with the specified content length.
- * - If the body size exceeds the specified `Content-Length`, it sets the
- *   HTTP status to `400 Bad Request` and throws an exception.
- * - If the `Transfer-Encoding` header is present, it checks for the presence
- *   of the termination sequence (`0\r\n\r\n`) to determine completeness.
- *
- * @param bodyString The actual body of the HTTP request received so far.
- * @param request The HTTP request object containing headers and status.
- *
- * @return true If the body is complete.
- * @return false If the body is not yet complete.
- *
- * @throws std::runtime_error If the body size exceeds the specified `Content-Length`.
- */
-bool RequestParser::checkForCompleteBody(const std::string& bodyString, HTTPRequest& request)
-{
-	std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
-	std::map<std::string, std::string>::const_iterator transferEncodingIterator
-		= request.headers.find("Transfer-Encoding");
-
-	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
-		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
-		if (contentLength < bodyString.size()) {
-			request.httpStatus = StatusBadRequest;
-			throw std::runtime_error(ERR_CONTENT_LENGTH);
-		}
-		if (contentLength == bodyString.size())
-			return true;
-	}
-	return transferEncodingIterator != request.headers.end() && bodyString.find("0\r\n\r\n") != std::string::npos;
-}
-
-/**
  * @brief Checks if the HTTP request method allows a body.
  *
  * This function determines whether the specified HTTP request method can have
@@ -855,7 +826,7 @@ bool RequestParser::checkForCompleteBody(const std::string& bodyString, HTTPRequ
  * @note The function asserts that the method in the request is within the
  *       expected range (from MethodGet to MethodCount).
  */
-bool RequestParser::checkMethodCanHaveBody(HTTPRequest& request)
+bool RequestParser::checkIfMethodCanHaveBody(HTTPRequest& request)
 {
 	assert(request.method >= MethodGet && request.method <= MethodCount);
 

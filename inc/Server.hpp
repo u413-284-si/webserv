@@ -46,6 +46,7 @@ public:
 	static const time_t s_clientTimeout = 60; /**< Default timeout for a Connection in seconds */
 	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
 	static const std::size_t s_clientHeaderBufferSize = 1000; /**< Default buffer size for request header in Bytes */
+	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
 
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
@@ -79,9 +80,10 @@ public:
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
+	void parseBody(const std::string& bodyString, HTTPRequest& request);
 	void clearParser();
-    bool hasBody();
-    bool isChunked();
+	bool hasBody();
+	bool isChunked();
 
 	// Dispatch to ResponseBuilder
 	void buildResponse(const HTTPRequest& request);
@@ -115,11 +117,11 @@ void handleConnection(Server& server, int clientFd, Connection& connection);
 void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
+bool isCompleteBody(const std::string& connectionBuffer, HTTPRequest& request);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
 
-bool checkMethodCanHaveBody(HTTPRequest& request);
 void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);
