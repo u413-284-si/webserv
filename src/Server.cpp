@@ -639,11 +639,11 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
 	if (bytesRead == -1) {
-		LOG_DEBUG << "Internal server error while reading from socket: " << connection.m_clientSocket;
+		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
-		LOG_DEBUG << "Connection closed by client: " << connection.m_clientSocket;
+		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else {
@@ -711,11 +711,11 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, sizeof(buffer), 0);
 	if (bytesRead == -1) {
-		LOG_DEBUG << "Internal server error while reading from socket: " << connection.m_clientSocket;
+		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
-		LOG_DEBUG << "Connection closed by client: " << connection.m_clientSocket;
+		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else {
