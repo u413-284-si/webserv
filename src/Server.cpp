@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "signalHandler.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -69,7 +70,7 @@ void Server::run()
 {
 	LOG_INFO << "Server started";
 
-	while (true) {
+	while (g_SignalStatus == 0) {
 		const int nfds = m_epollWrapper.waitForEvents();
 
 		for (std::vector<struct epoll_event>::const_iterator iter = m_epollWrapper.eventsBegin();
@@ -79,6 +80,9 @@ void Server::run()
 		checkForTimeout(*this);
 		cleanupClosedConnections(*this);
 	}
+	LOG_INFO << "Server shutdown with signal " << g_SignalStatus;
+	g_SignalStatus = 0;
+	serverShutdown(*this);
 }
 
 /* ====== GETTERS ====== */
@@ -652,11 +656,11 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
 	if (bytesRead == -1) {
-		// Internal server error
+		LOG_ERROR << "Internal server error";
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
-		// Connection closed by client
+		LOG_INFO << "Connection closed by client";
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else {
@@ -839,4 +843,41 @@ void cleanupClosedConnections(Server& server)
 		else
 			++iter;
 	}
+}
+
+/**
+ * @brief Shuts down the server.
+ *
+ * Closes all virtual servers, cleans up closed connections, and waits for all connections to finish.
+ *
+ * @param server The server object to shut down.
+ * @sa https://pkg.go.dev/net/http#Server.Shutdown
+ */
+void serverShutdown(Server& server)
+{
+	LOG_DEBUG << "Closing all virtual servers";
+	for (std::map<int, Socket>::iterator iter = server.getVirtualServers().begin(); iter != server.getVirtualServers().end(); ++iter) {
+		server.removeEvent(iter->first);
+		close(iter->first);
+	}
+	server.getVirtualServers().clear();
+
+	LOG_DEBUG << "Cleanup closed connections";
+	cleanupClosedConnections(server);
+
+	LOG_DEBUG << "Waiting for connections to finish";
+	while (g_SignalStatus == 0 && !server.getConnections().empty()) {
+		const int nfds = server.waitForEvents();
+
+		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
+			 iter != server.eventsBegin() + nfds; ++iter) {
+			handleEvent(server, *iter);
+		}
+		checkForTimeout(server);
+		cleanupClosedConnections(server);
+	}
+	if (g_SignalStatus != 0)
+		LOG_INFO << "Server shutdown interrupted with signal " << g_SignalStatus;
+	else
+		LOG_INFO << "Server shutdown";
 }

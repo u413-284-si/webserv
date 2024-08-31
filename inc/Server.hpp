@@ -9,6 +9,7 @@
 #include "Log.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
+#include "signalHandler.hpp"
 #include "Socket.hpp"
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
@@ -123,3 +124,5 @@ void connectionHandleTimeout(Server& server, int clientFd, Connection& connectio
 void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);
+
+void serverShutdown(Server& server);
