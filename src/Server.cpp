@@ -615,6 +615,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 	case (Connection::SendResponse):
 		connectionSendResponse(server, clientFd, connection);
 		break;
+	case (Connection::Idle):
+		connection.m_status = Connection::ReceiveHeader;
+		connectionReceiveHeader(server, clientFd, connection);
+		break;
 	case (Connection::Timeout):
 		connectionHandleTimeout(server, clientFd, connection);
 		break;
@@ -775,6 +779,7 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(clientFd, EPOLLIN);
 		clearConnection(connection);
+		connection.m_status = Connection::Idle;
 	}
 }
 
@@ -846,6 +851,28 @@ void cleanupClosedConnections(Server& server)
 }
 
 /**
+ * @brief Iterates through all connections, closes and removes idle ones.
+ *
+ * The for loop through the connections map has no increment statement because the
+ * iterator is incremented in the loop body. If .erase() is called on an iterator,
+ * it is invalidated.
+ *
+ * @param server The server object to cleanup idle connections for.
+ */
+void cleanupIdleConnections(Server& server)
+{
+	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
+		 iter != server.getConnections().end();
+		/* no iter*/) {
+		if (iter->second.m_status == Connection::Idle) {
+			close(iter->first);
+			server.getConnections().erase(iter++);
+		} else
+			++iter;
+	}
+}
+
+/**
  * @brief Shuts down the server.
  *
  * Closes all virtual servers, cleans up closed connections, and waits for all connections to finish.
@@ -856,13 +883,15 @@ void cleanupClosedConnections(Server& server)
 void serverShutdown(Server& server)
 {
 	LOG_DEBUG << "Closing all virtual servers";
-	for (std::map<int, Socket>::iterator iter = server.getVirtualServers().begin(); iter != server.getVirtualServers().end(); ++iter) {
+	for (std::map<int, Socket>::iterator iter = server.getVirtualServers().begin();
+		 iter != server.getVirtualServers().end(); ++iter) {
 		server.removeEvent(iter->first);
 		close(iter->first);
 	}
 	server.getVirtualServers().clear();
 
-	LOG_DEBUG << "Cleanup closed connections";
+	LOG_DEBUG << "Cleanup idle connections";
+	cleanupIdleConnections(server);
 	cleanupClosedConnections(server);
 
 	LOG_DEBUG << "Waiting for connections to finish";

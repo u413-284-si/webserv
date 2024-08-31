@@ -124,5 +124,6 @@ void connectionHandleTimeout(Server& server, int clientFd, Connection& connectio
 void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);
+void cleanupIdleConnections(Server& server);
 
 void serverShutdown(Server& server);

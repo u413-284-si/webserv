@@ -257,6 +257,9 @@ std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStat
 	case Connection::SendResponse:
 		ostream << "SendResponse";
 		break;
+	case Connection::Idle:
+		ostream << "Idle";
+		break;
 	case Connection::Timeout:
 		ostream << "Timeout";
 		break;
