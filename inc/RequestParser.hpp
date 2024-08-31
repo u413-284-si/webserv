@@ -29,12 +29,7 @@ public:
 	static void clearRequest(HTTPRequest& request);
 	void clearParser();
 
-	bool hasBody() const;
-	bool isChunked() const;
-
 private:
-	bool m_hasBody;
-	bool m_isChunked;
 	std::istringstream m_requestStream;
 
 	// RequestLine Parsing

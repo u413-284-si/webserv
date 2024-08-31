@@ -231,8 +231,6 @@ void RequestParser::clearRequest(HTTPRequest& request)
  */
 void RequestParser::clearParser()
 {
-	m_hasBody = false;
-	m_isChunked = false;
 	resetRequestStream();
 }
 
@@ -251,32 +249,9 @@ void RequestParser::resetRequestStream()
  * The `m_hasBody` member is set to `false` and the `m_chunked` member is set to `false`.
  */
 RequestParser::RequestParser()
-	: m_hasBody(false)
-	, m_isChunked(false)
-{
-}
+{}
 
 /* ====== GETTERS/SETTERS ====== */
-
-/**
- * @brief Checks if the request has a body.
- *
- * This method returns a boolean indicating whether the request
- * contains a body.
- *
- * @return true if the request has a body, false otherwise.
- */
-bool RequestParser::hasBody() const { return m_hasBody; }
-
-/**
- * @brief Checks if the request is chunked.
- *
- * This function returns the value of the m_isChunked member variable,
- * indicating whether the request is using chunked transfer encoding.
- *
- * @return true if the request is chunked, false otherwise.
- */
-bool RequestParser::isChunked() const { return m_isChunked; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -384,7 +359,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		}
 	}
 	checkTransferEncoding(request);
-	if (m_hasBody && !isMethodAllowedToHaveBody(request)) {
+	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_UNEXPECTED_BODY);
 	}
@@ -600,7 +575,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
 	m_requestStream.str(bodyString);
-	if (m_isChunked)
+	if (request.isChunked)
 		parseChunkedBody(request);
 	else
 		parseNonChunkedBody(request);
@@ -781,7 +756,7 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 			}
 		}
-		m_hasBody = true;
+		request.hasBody = true;
 		headerValue = strValues[0];
 	}
 }
@@ -816,8 +791,8 @@ void RequestParser::checkTransferEncoding(HTTPRequest& request)
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
 			}
-			m_isChunked = true;
-			m_hasBody = true;
+			request.isChunked = true;
+			request.hasBody = true;
 		}
 	}
 }

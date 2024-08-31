@@ -322,20 +322,6 @@ void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
  */
 void Server::clearParser() { m_requestParser.clearParser(); }
 
-/**
- * @brief Wrapper function to RequestParser::hasBody.
- *
- * @return bool True if the request has a body, false otherwise.
- */
-bool Server::hasBody() { return m_requestParser.hasBody(); }
-
-/**
- * @brief Wrapper function to RequestParser::isChunked.
- *
- * @return bool True if the request is chunked, false otherwise.
- */
-bool Server::isChunked() { return m_requestParser.isChunked(); }
-
 /* ====== DISPATCH TO RESPONSEBUILDER ====== */
 
 /**
@@ -679,7 +665,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 				connection.m_status = Connection::BuildResponse;
 				return;
 			}
-			if (server.hasBody())
+			if (connection.m_request.hasBody)
 				connection.m_status = Connection::ReceiveBody;
 			else {
 				connection.m_status = Connection::BuildResponse;
