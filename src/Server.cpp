@@ -82,6 +82,13 @@ void Server::run()
 /* ====== GETTERS ====== */
 
 /**
+ * @brief Getter for virtual servers.
+ *
+ * @return std::map<int, Socket>& Map of virtual servers.
+ */
+std::map<int, Socket>& Server::getVirtualServers() { return m_virtualServers; }
+
+/**
  * @brief Const Getter for virtual servers.
  *
  * @return const std::map<int, Socket>& Map of virtual servers.
@@ -181,6 +188,21 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 void Server::setClientTimeout(time_t clientTimeout) { m_clientTimeout = clientTimeout; }
 
 /* ====== DISPATCH TO EPOLLWRAPPER ====== */
+
+/**
+ * @brief Wrapper function to EpollWrapper::waitForEvents.
+ *
+ * @return int The number of events that were processed.
+ * @throws std::runtime_error if an error occurs during the epoll_wait call.
+ */
+int Server::waitForEvents() { return m_epollWrapper.waitForEvents(); }
+
+/**
+ * @brief Wrapper function to EpollWrapper::eventsBegin.
+ *
+ * @return std::vector<struct epoll_event>::const_iterator An iterator to the beginning of the events vector.
+ */
+std::vector<struct epoll_event>::const_iterator Server::eventsBegin() const { return m_epollWrapper.eventsBegin(); }
 
 /**
  * @brief Wrapper function to EpollWrapper::addEvent.

@@ -53,6 +53,7 @@ public:
 	void run();
 
 	// Getters
+	std::map<int, Socket>& getVirtualServers();
 	const std::map<int, Socket>& getVirtualServers() const;
 	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
@@ -65,6 +66,8 @@ public:
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper
+	int waitForEvents();
+	std::vector<struct epoll_event>::const_iterator eventsBegin() const;
 	bool addEvent(int newfd, uint32_t eventMask) const;
 	bool modifyEvent(int modfd, uint32_t eventMask) const;
 	void removeEvent(int delfd) const;
