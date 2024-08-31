@@ -264,6 +264,8 @@ RequestParser::RequestParser()
  *
  * @param headerString The string representation of the HTTP request header.
  * @param request The HTTPRequest object to populate with the parsed data.
+ *
+ * @throws std::runtime_error If the request line or the headers do not conform to the RFC standards.
  */
 void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& request)
 {
