@@ -41,8 +41,10 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
  */
 Server::~Server()
 {
-	for (std::map<int, Socket>::iterator iter = m_virtualServers.begin(); iter != m_virtualServers.end(); ++iter)
+	for (std::map<int, Socket>::iterator iter = m_virtualServers.begin(); iter != m_virtualServers.end(); ++iter) {
+		m_epollWrapper.removeEvent(iter->first);
 		close(iter->first);
+	}
 
 	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {
 		m_epollWrapper.removeEvent(iter->first);
