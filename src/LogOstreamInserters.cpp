@@ -47,10 +47,8 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)
 {
 	ostream << "Server name: " << configServer.serverName << '\n';
-	ostream << "Listen: " << '\n';
-	for (std::map<std::string, std::string>::const_iterator it = configServer.listen.begin();
-		 it != configServer.listen.end(); ++it)
-		ostream << "  " << it->first << ":" << it->second << '\n';
+	ostream << "Host: " << configServer.host << '\n';
+	ostream << "Port: " << configServer.port << '\n';
 	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
 	for (std::map<statusCode, std::string>::const_iterator it = configServer.errorPage.begin();

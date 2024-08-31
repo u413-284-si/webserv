@@ -254,8 +254,8 @@ TEST_F(ValidConfigFileTests, ValidFile)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/valid_config.conf"));
-	EXPECT_NE(configFile.servers[0].listen.find("127.0.0.1"), configFile.servers[0].listen.end());
-	EXPECT_EQ("80", configFile.servers[0].listen["127.0.0.1"]);
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("80", configFile.servers[0].port);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
 }
 
@@ -264,8 +264,8 @@ TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
 	ConfigFile configFile;
 	EXPECT_NO_THROW(
 		configFile = m_configFileParser.parseConfigFile("config_files/several_directives_on_one_line.conf"));
-	EXPECT_NE(configFile.servers[0].listen.find("127.0.0.1"), configFile.servers[0].listen.end());
-	EXPECT_EQ("80", configFile.servers[0].listen["127.0.0.1"]);
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("80", configFile.servers[0].port);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
 }
 
@@ -273,22 +273,22 @@ TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_ip.conf"));
-	EXPECT_NE(configFile.servers[0].listen.find("127.0.0.1"), configFile.servers[0].listen.end());
-	EXPECT_EQ("80", configFile.servers[0].listen["127.0.0.1"]);
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("80", configFile.servers[0].port);
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsOnlyPort)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_port.conf"));
-	EXPECT_NE(configFile.servers[0].listen.find("127.0.0.1"), configFile.servers[0].listen.end());
-	EXPECT_EQ("80", configFile.servers[0].listen["127.0.0.1"]);
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("80", configFile.servers[0].port);
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsIpAndPort)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_ip_and_port.conf"));
-	EXPECT_NE(configFile.servers[0].listen.find("127.0.0.1"), configFile.servers[0].listen.end());
-	EXPECT_EQ("80", configFile.servers[0].listen["127.0.0.1"]);
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("80", configFile.servers[0].port);
 }

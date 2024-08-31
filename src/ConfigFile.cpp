@@ -16,9 +16,10 @@
  */
 ConfigServer::ConfigServer(void)
 	: root("html")
+	, host("127.0.0.1")
+	, port("80")
 	, maxBodySize(1) // 1 MB
 {
-	listen.insert(std::make_pair("127.0.0.1", "80"));
 	errorPage = std::map<statusCode, std::string>();
 	locations = std::vector<Location>();
 }

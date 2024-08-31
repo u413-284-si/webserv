@@ -281,22 +281,22 @@ void ConfigFileParser::readSocket(const std::string& value)
 		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
 		if (!isPortValid(port))
 			throw std::runtime_error("Invalid port");
-
-		m_configFile.servers[m_serverIndex].listen.insert(std::make_pair(ipAddress, port));
 	} else {
 		if (dot == std::string::npos) {
 			std::string port = value.substr(0, semicolonIndex);
 			if (!isPortValid(value))
 				throw std::runtime_error("Invalid port");
 
-			m_configFile.servers[m_serverIndex].listen.insert(std::make_pair("127.0.0.1", port));
+			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+			m_configFile.servers[m_serverIndex].port = port;
 
 		} else {
 			std::string ipAddress = value.substr(0, semicolonIndex);
 			if (!isIpAddressValid(ipAddress))
 				throw std::runtime_error("Invalid ip address");
 
-			m_configFile.servers[m_serverIndex].listen.insert(std::make_pair(ipAddress, "80"));
+			m_configFile.servers[m_serverIndex].host = ipAddress;
+			m_configFile.servers[m_serverIndex].port = "80";
 		}
 	}
 }

@@ -36,7 +36,9 @@ public:
 
 	std::string serverName;
 	std::string root;
-	std::map<std::string, std::string> listen;
+	// std::map<std::string, std::string> listen;
+	std::string host;
+	std::string port;
 	unsigned long maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	std::vector<Location> locations;

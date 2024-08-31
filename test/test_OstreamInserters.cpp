@@ -86,6 +86,7 @@ TEST(OstreamInserters, ConnectionStatus)
 // sets default values for all struct which get printed
 class OstreamInsertersTest : public ::testing::Test {
 protected:
+	Connection m_connection = Connection(Socket { "127.0.0.1", "8080" }, Socket { "1.1.1.1", "1234" });
 	Location m_location;
 	ConfigServer m_server;
 	ConfigFile m_configFile;
@@ -111,7 +112,8 @@ protected:
 		m_uri.fragment = "fragment";
 
 		m_server.serverName = "localhost";
-		m_server.listen = { { "127.0.0.1", "80" } };
+		m_server.host = "127.0.0.1";
+		m_server.port = "80";
 		m_server.maxBodySize = 1024;
 		m_server.errorPage = { { StatusBadRequest, "BadRequest.html" }, { StatusForbidden, "Forbidden.html" } };
 		m_server.locations = { m_location };
@@ -132,6 +134,11 @@ protected:
 		m_httpRequest.body = "Hello, World!";
 		m_httpRequest.httpStatus = StatusOK;
 		m_httpRequest.shallCloseConnection = false;
+
+		m_connection.m_timeSinceLastEvent = 1234;
+		m_connection.m_buffer = "GET / HTTP/1.1";
+		m_connection.m_bytesReceived = 1024;
+		m_connection.m_request = m_httpRequest;
 	}
 };
 
@@ -165,8 +172,8 @@ TEST_F(OstreamInsertersTest, ServerConfig)
 
 	std::ostringstream expected;
 	expected << "Server name: localhost\n"
-				"Listen: \n"
-				"  127.0.0.1:80\n"
+				"Host: 127.0.0.1\n"
+				"Port: 80\n"
 				"Max body size: 1024\n"
 				"Error pages:\n"
 				"  400 Bad Request: BadRequest.html\n"

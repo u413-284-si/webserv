@@ -56,7 +56,7 @@ public:
 	const std::map<int, Socket>& getVirtualServers() const;
 	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
-	const std::vector<ServerConfig>& getServerConfigs() const;
+	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 
 	// Setters
@@ -101,7 +101,7 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs);
+bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigServer>& serverConfigs);
 bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
