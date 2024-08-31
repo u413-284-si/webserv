@@ -6,6 +6,7 @@
 #include "LogOutputterFile.hpp"
 #include "ResponseBuilder.hpp"
 #include "Server.hpp"
+#include "signalHandler.hpp"
 #include "SocketPolicy.hpp"
 #include <cerrno>
 
@@ -55,6 +56,11 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	static_cast<void>(argv);
+
+	if (std::signal(SIGINT, signalHandler) == SIG_ERR) {
+		LOG_ERROR << "failed to set signal handler: " << std::strerror(errno);
+		return 1;
+	}
 
 	ConfigFile configFile = createDummyConfig();
 
