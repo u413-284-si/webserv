@@ -1,4 +1,6 @@
 #include "Server.hpp"
+#include "Log.hpp"
+#include "error.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -649,6 +651,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 	} else {
 		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
+		connection.m_timeSinceLastEvent = std::time(0);
 		if (isCompleteRequestHeader(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
 			try {
@@ -656,6 +659,8 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 				return;
 			}
 			if (connection.m_request.hasBody)
@@ -671,10 +676,10 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
 			}
 		}
 	}
-	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 /**
@@ -720,27 +725,33 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_buffer += buffer;
+		connection.m_timeSinceLastEvent = std::time(0);
 		if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
-		}
-		try {
-			if (isCompleteBody(connection.m_buffer, connection.m_request)) {
-				LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
-				server.parseBody(connection.m_buffer, connection.m_request);
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-				connection.m_buffer.erase(0);
-			} else
-				LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
-		} catch (std::exception& e) {
-			LOG_ERROR << "Error: " << e.what();
-			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
+		if (isCompleteBody(connection)) {
+			LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+			try {
+				server.parseBody(connection.m_buffer, connection.m_request);
+			} catch (std::exception& e) {
+				LOG_ERROR << "Error: " << e.what();
+			}
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(clientFd, EPOLLOUT);
+			connection.m_buffer.erase(0);
+		} else {
+			LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+			if (connection.m_request.httpStatus == StatusBadRequest) {
+				LOG_ERROR << ERR_CONTENT_LENGTH;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+			}
+		}
 	}
-	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 /**
@@ -755,22 +766,25 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
  * @param request The HTTPRequest object containing the request headers.
  * @return true if the buffer contains a complete request body, false otherwise.
  */
-bool isCompleteBody(const std::string& connectionBuffer, HTTPRequest& request)
+bool isCompleteBody(Connection& connection)
 {
-	std::map<std::string, std::string>::const_iterator contentLengthIterator = request.headers.find("Content-Length");
+	std::map<std::string, std::string>::const_iterator contentLengthIterator
+		= connection.m_request.headers.find("Content-Length");
 	std::map<std::string, std::string>::const_iterator transferEncodingIterator
-		= request.headers.find("Transfer-Encoding");
+		= connection.m_request.headers.find("Transfer-Encoding");
 
-	if (contentLengthIterator != request.headers.end() && transferEncodingIterator == request.headers.end()) {
+	if (contentLengthIterator != connection.m_request.headers.end()
+		&& transferEncodingIterator == connection.m_request.headers.end()) {
 		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
-		if (contentLength < connectionBuffer.size()) {
-			request.httpStatus = StatusBadRequest;
-			throw std::runtime_error(ERR_CONTENT_LENGTH);
+		if (contentLength < connection.m_buffer.size()) {
+			connection.m_request.httpStatus = StatusBadRequest;
+			return false;
 		}
-		if (contentLength == connectionBuffer.size())
+		if (contentLength == connection.m_buffer.size())
 			return true;
 	}
-	return transferEncodingIterator != request.headers.end() && connectionBuffer.find("0\r\n\r\n") != std::string::npos;
+	return transferEncodingIterator != connection.m_request.headers.end()
+		&& connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
 }
 
 /**

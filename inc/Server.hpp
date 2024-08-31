@@ -119,7 +119,7 @@ void handleConnection(Server& server, int clientFd, Connection& connection);
 void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
-bool isCompleteBody(const std::string& connectionBuffer, HTTPRequest& request);
+bool isCompleteBody(Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
