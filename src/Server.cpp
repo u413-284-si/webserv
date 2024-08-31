@@ -1,8 +1,4 @@
 #include "Server.hpp"
-#include "Log.hpp"
-#include "RequestParser.hpp"
-#include "StatusCode.hpp"
-#include "error.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 

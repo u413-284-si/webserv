@@ -1,9 +1,4 @@
 #include "RequestParser.hpp"
-#include "ConfigFile.hpp"
-#include "HTTPRequest.hpp"
-#include "Log.hpp"
-#include "error.hpp"
-#include <cstddef>
 
 /* ====== HELPER FUNCTIONS ====== */
 
@@ -824,5 +819,6 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	case MethodDelete:
 		return true;
 	}
+	// this is never reached
 	return false;
 }

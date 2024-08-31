@@ -12,6 +12,7 @@
 #include "Socket.hpp"
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
+#include "error.hpp"
 
 #include <algorithm>
 #include <bits/types/time_t.h>
