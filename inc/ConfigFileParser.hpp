@@ -22,11 +22,8 @@ public:
 	const ConfigFile& parseConfigFile(const std::string& configFilePath);
 
 	ConfigFileParser(void);
-	~ConfigFileParser();
 
 private:
-	ConfigFileParser(const ConfigFileParser& ref);
-	ConfigFileParser& operator=(const ConfigFileParser& ref);
 
 	ConfigFile m_configFile;
 	std::ifstream m_stream;

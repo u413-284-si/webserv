@@ -30,12 +30,6 @@ ConfigFileParser::ConfigFileParser(void)
 }
 
 /**
- * @brief PUBLIC Destruct a Config File Parser:: Config File Parser object
- *
- */
-ConfigFileParser::~ConfigFileParser(void) { }
-
-/**
  * @brief Parses the config file into a ConfigFile object and returns this object
  *
  * The function checks also if the config file:
