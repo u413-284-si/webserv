@@ -300,13 +300,10 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
 }
 
 /**
- * @brief Parses the body of an HTTP request.
+ * @brief Wrapper function to RequestParser::parseBody.
  *
- * This function is responsible for parsing the body of an HTTP request and populating the provided HTTPRequest object
- * with the parsed data.
- *
- * @param bodyString The string representation of the request body.
- * @param request The HTTPRequest object to be populated with the parsed data.
+ * @param bodyString The body string to parse.
+ * @param request The HTTPRequest object to store the parsed body.
  */
 void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
