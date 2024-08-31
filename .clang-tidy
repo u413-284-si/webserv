@@ -36,6 +36,7 @@ CheckOptions:
 - { key: readability-identifier-naming.NamespaceCase, value: lower_case }
 - { key: readability-identifier-naming.StructCase,    value: CamelCase }
 - { key: readability-identifier-naming.EnumConstantCase, value: CamelCase }
+- { key: readability-identifier-naming.ClassConstantPrefix, value: s_ }
 - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true }
 - { key: cppcoreguidelines-macro-usage.CheckCapsOnly, value: true }
 - { key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true}
@@ -73,10 +74,11 @@ CheckOptions:
 # - { key: readability-identifier-naming.ClassCase,     value: CamelCase } : class names are CamelCase
 # - { key: readability-identifier-naming.MemberPrefix,  value: m_ } : member variables are prefixed with m_}
 # - { key: readability-identifier-naming.VariableCase,  value: camelBack } : variable names are camelBack
-# - readability-identifier-naming.FunctionCase,  value: camelBack } : function names are camelBack
-# - readability-identifier-naming.ParameterCase, value: camelBack } : parameter names are camelBack
-# - readability-identifier-naming.NamespaceCase, value: lower_case } : namespace names are lower_case
-# - readability-identifier-naming.StructCase,    value: CamelCase } : struct names are CamelCase
-# - readability-identifier-naming.EnumConstantCase, value: CamelCase } : enum constant names are CamelCase
-# - cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true } : allow missing move functions
-# - cppcoreguidelines-macro-usage.CheckCapsOnly, value: true } : check that macros are all caps only
+# - { key: readability-identifier-naming.FunctionCase,  value: camelBack } : function names are camelBack
+# - { key: readability-identifier-naming.ParameterCase, value: camelBack } : parameter names are camelBack
+# - { key: readability-identifier-naming.NamespaceCase, value: lower_case } : namespace names are lower_case
+# - { key: readability-identifier-naming.StructCase,    value: CamelCase } : struct names are CamelCase
+# - { key: readability-identifier-naming.EnumConstantCase, value: CamelCase } : enum constant names are CamelCase
+# - { key: readability-identifier-naming.ClassConstantPrefix, value: s_ } : class constant names are prefixed with s_
+# - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: true } : allow missing move functions
+# - { key: cppcoreguidelines-macro-usage.CheckCapsOnly, value: true } : check that macros are all caps only

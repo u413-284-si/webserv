@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "ConfigFile.hpp"
+#include "Connection.hpp"
 #include "HTTPRequest.hpp"
 #include "HTTPResponse.hpp"
+#include "Socket.hpp"
 #include "StatusCode.hpp"
 
 TEST(OstreamInserters, Method)
@@ -50,6 +52,35 @@ TEST(OstreamInserters, StatusCode)
 	ostream.str("");
 	ostream << StatusNonSupportedVersion;
 	EXPECT_EQ(ostream.str(), "505 HTTP Version Not Supported");
+}
+
+TEST(OstreamInserters, Socket)
+{
+	std::ostringstream ostream;
+	ostream << Socket { "127.0.0.1", "8080" };
+	EXPECT_EQ(ostream.str(), "127.0.0.1:8080");
+}
+
+TEST(OstreamInserters, ConnectionStatus)
+{
+	std::ostringstream ostream;
+	ostream << Connection::ReceiveHeader;
+	EXPECT_EQ(ostream.str(), "ReceiveHeader");
+	ostream.str("");
+	ostream << Connection::ReceiveBody;
+	EXPECT_EQ(ostream.str(), "ReceiveBody");
+	ostream.str("");
+	ostream << Connection::BuildResponse;
+	EXPECT_EQ(ostream.str(), "BuildResponse");
+	ostream.str("");
+	ostream << Connection::SendResponse;
+	EXPECT_EQ(ostream.str(), "SendResponse");
+	ostream.str("");
+	ostream << Connection::Timeout;
+	EXPECT_EQ(ostream.str(), "Timeout");
+	ostream.str("");
+	ostream << Connection::Closed;
+	EXPECT_EQ(ostream.str(), "Closed");
 }
 
 // sets default values for all struct which get printed
@@ -206,5 +237,26 @@ TEST_F(OstreamInsertersTest, HTTPResponse)
 			 << m_httpResponse.method
 			 << "\n"
 				"Autoindex: 1\n";
+	EXPECT_EQ(ostream.str(), expected.str());
+}
+
+TEST_F(OstreamInsertersTest, Connection)
+{
+	std::ostringstream ostream;
+	ostream << m_connection;
+
+	std::ostringstream expected;
+	expected << "Server: " << m_connection.m_serverSocket
+			 << "\n"
+				"Client: "
+			 << m_connection.m_clientSocket
+			 << "\n"
+				"Time since last event: 1234\n"
+				"Status: "
+			 << m_connection.m_status
+			 << "\n"
+				"Bytes received: 1024\n"
+				"Request:\n"
+			 << m_httpRequest << "Buffer:\nGET / HTTP/1.1\n";
 	EXPECT_EQ(ostream.str(), expected.str());
 }

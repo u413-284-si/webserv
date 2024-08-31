@@ -24,10 +24,8 @@ TEST(AutoindexHandler, ReadDirectoryThrow)
 	MockFileSystemPolicy fileSystemPolicy;
 	AutoindexHandler autoindexHandler(fileSystemPolicy);
 
-	DIR* dir = opendir("/proc/self/");
-
 	EXPECT_CALL(fileSystemPolicy, openDirectory)
-	.WillOnce(testing::Return(dir));
+	.WillOnce(testing::Return((DIR*)1));
 	EXPECT_CALL(fileSystemPolicy, readDirectory)
 	.WillOnce(testing::Throw(std::runtime_error("readDirectory failed")));
 	EXPECT_CALL(fileSystemPolicy, closeDirectory)

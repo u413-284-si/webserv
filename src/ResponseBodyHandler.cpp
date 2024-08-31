@@ -52,8 +52,6 @@ void ResponseBodyHandler::execute()
 /**
  * @brief Get the error page.
  *
- * @param status Status code.
- * @return std::string Error page.
  * @todo FIXME: Implement custom error pages.
  */
 void ResponseBodyHandler::handleErrorBody()

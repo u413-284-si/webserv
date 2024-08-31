@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sqiu <sqiu@student.42vienna.com>           +#+  +:+       +#+         #
+#    By: gwolf <gwolf@student.42vienna.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 13:03:05 by gwolf             #+#    #+#              #
-#    Updated: 2024/07/16 02:19:24 by sqiu             ###   ########.fr        #
+#    Updated: 2024/07/22 15:30:44 by gwolf            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ LOG_DIR := log
 
 CXX := c++
 CPPFLAGS := -I $(INC_DIR)
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -pedantic
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -pedantic -g
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
 COMPILE = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) -c
 POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
@@ -81,7 +81,9 @@ SRC:=	main.cpp \
 		AutoindexHandler.cpp \
 		ConfigFile.cpp \
 		ConfigFileParser.cpp \
+		Connection.cpp \
 		Directory.cpp \
+		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
 		LogData.cpp \
 		Logger.cpp \
@@ -93,6 +95,7 @@ SRC:=	main.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
+		SocketPolicy.cpp \
 		TargetResourceHandler.cpp \
 		utilities.cpp
 
@@ -100,11 +103,20 @@ SRC:=	main.cpp \
 # *     Test source files      *
 # ******************************
 
-TEST_SRC :=	test_AutoindexHandler.cpp \
-			test_ConfigFileParser.cpp \
+TEST_SRC :=	test_acceptConnections.cpp \
+			test_AutoindexHandler.cpp \
 			testBody.cpp \
+			test_checkForTimeout.cpp \
+      test_ConfigFileParser.cpp \
+			test_connectionReceiveHeader.cpp \
+			test_connectionSendResponse.cpp \
+			test_createVirtualServer.cpp \
 			testHeader.cpp \
+			test_initVirtualServers.cpp \
+			test_isDuplicateServer.cpp \
 			test_OstreamInserters.cpp \
+			test_registerConnection.cpp \
+			test_registerVirtualServer.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
 			test_TargetResourceHandler.cpp \
