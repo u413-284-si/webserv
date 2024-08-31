@@ -229,10 +229,7 @@ void RequestParser::clearRequest(HTTPRequest& request)
  * setting the flags `m_hasBody` and `m_chunked` to `false`, and
  * clearing the contents of the `m_requestStream` stringstream.
  */
-void RequestParser::clearParser()
-{
-	resetRequestStream();
-}
+void RequestParser::clearParser() { resetRequestStream(); }
 
 void RequestParser::resetRequestStream()
 {
@@ -248,8 +245,7 @@ void RequestParser::resetRequestStream()
  * This constructor initializes the RequestParser object with default values.
  * The `m_hasBody` member is set to `false` and the `m_chunked` member is set to `false`.
  */
-RequestParser::RequestParser()
-{}
+RequestParser::RequestParser() { }
 
 /* ====== GETTERS/SETTERS ====== */
 
@@ -573,6 +569,9 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
  *
  * @param bodyString The string representation of the request body.
  * @param request The HTTPRequest object to populate with the parsed data.
+ *
+ * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
+ * message.
  */
 void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
