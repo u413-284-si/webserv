@@ -49,8 +49,8 @@ private:
 
 	// Checks
 	static void checkHeaderName(const std::string& headerName, HTTPRequest& request);
-	void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
-	void checkTransferEncoding(HTTPRequest& request);
+	static void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
+	static void checkTransferEncoding(HTTPRequest& request);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 
 	// Helper functions
