@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <stdexcept>
 
 #include "MockFileSystemPolicy.hpp"
@@ -11,8 +11,26 @@
 #include "TargetResourceHandler.hpp"
 
 class TargetResourceHandlerTest : public ::testing::Test {
-	protected:
-	TargetResourceHandlerTest() {
+protected:
+	TargetResourceHandlerTest()
+	{
+		Location m_location1;
+		Location m_location2;
+		Location m_location3;
+		Location m_location4;
+
+		m_location1.path = "/";
+		m_location1.root = "/first/location";
+		m_location2.path = "/test";
+		m_location2.root = "/second/location";
+		m_location3.path = "/test/secret";
+		m_location3.root = "/third/location";
+		m_location3.indices.emplace_back("index.html");
+		m_location3.indices.emplace_back("index.htm");
+		m_location4.path = "/test/autoindex";
+		m_location4.root = "/fourth/location";
+		m_location4.isAutoindex = true;
+
 		m_locations.push_back(m_location3);
 		m_locations.push_back(m_location2);
 		m_locations.push_back(m_location4);
@@ -21,38 +39,14 @@ class TargetResourceHandlerTest : public ::testing::Test {
 	~TargetResourceHandlerTest() override { }
 
 	std::vector<Location> m_locations;
-	Location m_location1 = {
-		.path= "/",
-		.root= "/first/location" };
-	Location m_location2 = {
-		.path= "/test",
-		.root= "/second/location" };
-	Location m_location3 = {
-		.path= "/test/secret",
-		.root= "/third/location",
-		.index= "index.html" };
-	Location m_location4 = {
-		.path= "/test/autoindex",
-		.root= "/fourth/location",
-		.isAutoindex= true };
-	HTTPRequest m_request = {
-		.method = MethodGet,
-		.uri = {
-			.path = "/test"
-		}
-	};
-	HTTPResponse m_response = {
-		.status = StatusOK,
-		.isAutoindex = false
-	};
+	HTTPRequest m_request = { .method = MethodGet, .uri = { .path = "/test" } };
+	HTTPResponse m_response = { .status = StatusOK, .isAutoindex = false };
 	MockFileSystemPolicy m_fileSystemPolicy;
-
 };
 
 TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillRepeatedly(testing::Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillRepeatedly(testing::Return(FileSystemPolicy::FileRegular));
 
 	TargetResourceHandler targetResourceHandler(m_locations, m_request, m_response, m_fileSystemPolicy);
 	targetResourceHandler.execute();
@@ -60,25 +54,19 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 	EXPECT_EQ(m_response.status, StatusOK);
 
 	m_request.uri.path = "/test/secret";
-	m_response = {
-		.status = StatusOK
-	};
+	m_response = { .status = StatusOK };
 	targetResourceHandler.execute();
 	EXPECT_EQ(m_response.targetResource, "/third/location/test/secret");
 	EXPECT_EQ(m_response.status, StatusOK);
 
 	m_request.uri.path = "/test/secret/other";
-	m_response = {
-		.status = StatusOK
-	};
+	m_response = { .status = StatusOK };
 	targetResourceHandler.execute();
 	EXPECT_EQ(m_response.targetResource, "/third/location/test/secret/other");
 	EXPECT_EQ(m_response.status, StatusOK);
 
 	m_request.uri.path = "/";
-	m_response = {
-		.status = StatusOK
-	};
+	m_response = { .status = StatusOK };
 	targetResourceHandler.execute();
 	EXPECT_EQ(m_response.targetResource, "/first/location/");
 	EXPECT_EQ(m_response.status, StatusOK);
@@ -99,8 +87,7 @@ TEST_F(TargetResourceHandlerTest, LocationNotFound)
 
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
 
 	m_request.uri.path = "/test";
 
@@ -113,8 +100,7 @@ TEST_F(TargetResourceHandlerTest, FileNotFound)
 
 TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
 	m_request.uri.path = "/test";
 
@@ -128,8 +114,8 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
+		.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
+		.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
 
 	m_request.uri.path = "/test/secret/";
 
@@ -142,8 +128,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 
 TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
 	m_request.uri.path = "/test/autoindex/";
 
@@ -157,8 +142,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 
 TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
 	m_request.uri.path = "/test/";
 
@@ -172,8 +156,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 
 TEST_F(TargetResourceHandlerTest, ServerError)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Throw(std::runtime_error("Stat error")));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(testing::Throw(std::runtime_error("Stat error")));
 
 	m_request.uri.path = "/test/";
 
