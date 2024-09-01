@@ -630,9 +630,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
-	std::stringstream sstream;
-	sstream << length;
-	request.headers["Content-Length"] = sstream.str();
+	request.headers["Content-Length"] = webutils::toString(length);
 }
 
 /**
