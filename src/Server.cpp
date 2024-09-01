@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Log.hpp"
+#include "RequestParser.hpp"
 #include "error.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -772,7 +773,8 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 bool isCompleteBody(Connection& connection)
 {
 	if (!connection.m_request.isChunked) {
-		unsigned long contentLength = std::strtoul(connection.m_request.headers.at("Content-Length").c_str(), NULL, 10);
+		unsigned long contentLength
+			= std::strtoul(connection.m_request.headers.at("Content-Length").c_str(), NULL, decimalBase);
 		if (contentLength < connection.m_buffer.size()) {
 			connection.m_request.httpStatus = StatusBadRequest;
 			return false;
