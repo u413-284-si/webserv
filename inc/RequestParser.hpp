@@ -52,9 +52,9 @@ private:
 	void parseNonChunkedBody(HTTPRequest& request);
 
 	// Checks
-	static void checkHeaderName(const std::string& headerName, HTTPRequest& request);
-	static void checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
-	static void checkTransferEncoding(HTTPRequest& request);
+	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);
+	static void validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
+	static void validateTransferEncoding(HTTPRequest& request);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 
 	// Helper functions

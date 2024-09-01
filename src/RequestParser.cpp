@@ -339,19 +339,19 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		const std::size_t delimiterPos = headerLine.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
 			headerName = headerLine.substr(0, delimiterPos);
-			checkHeaderName(headerName, request);
+			validateHeaderName(headerName, request);
 			headerValue = headerLine.substr(delimiterPos + 1);
 			;
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
 			webutils::trimTrailingWhiteSpaces(headerValue);
-			checkContentLength(headerName, headerValue, request);
+			validateContentLength(headerName, headerValue, request);
 			request.headers[headerName] = headerValue;
 			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
 		}
 	}
-	checkTransferEncoding(request);
+	validateTransferEncoding(request);
 	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_UNEXPECTED_BODY);
@@ -693,7 +693,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
  * @throws std::runtime_error If the header name contains invalid characters or
  *         ends with whitespace, an error is thrown and the error code is set to StatusBadRequest.
  */
-void RequestParser::checkHeaderName(const std::string& headerName, HTTPRequest& request)
+void RequestParser::validateHeaderName(const std::string& headerName, HTTPRequest& request)
 {
 	if (isspace(headerName[headerName.size() - 1]) != 0) {
 		request.httpStatus = StatusBadRequest;
@@ -724,7 +724,7 @@ void RequestParser::checkHeaderName(const std::string& headerName, HTTPRequest& 
  *         headers or if the Content-Length value is invalid, an error is thrown
  *         and the error code is set to StatusBadRequest.
  */
-void RequestParser::checkContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request)
+void RequestParser::validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request)
 {
 	if (headerName == "Content-Length") {
 		if (headerValue.empty()) {
@@ -772,7 +772,7 @@ void RequestParser::checkContentLength(const std::string& headerName, std::strin
  *         or if the last encoding is not "chunked", an error is thrown and the error code is set to
  * StatusBadRequest.
  */
-void RequestParser::checkTransferEncoding(HTTPRequest& request)
+void RequestParser::validateTransferEncoding(HTTPRequest& request)
 {
 	if (request.headers.find("Transfer-Encoding") != request.headers.end()) {
 		if (request.headers.at("Transfer-Encoding").empty()) {
