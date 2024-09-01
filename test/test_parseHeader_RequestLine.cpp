@@ -1,14 +1,30 @@
 #include "RequestParser.hpp"
 #include "gtest/gtest.h"
 
-// VALID REQUEST LINE TEST SUITE
+class ParseRequestLineTest : public ::testing::Test {
+protected:
+	ParseRequestLineTest()
+		: request()
+	{
+		request.hasBody = false;
+		request.isChunked = false;
+	}
+	~ParseRequestLineTest() override { }
 
-TEST(RequestParser_ValidRequestLine, BasicRequestLine_GET)
-{
 	RequestParser p;
 	HTTPRequest request;
+};
 
+// VALID REQUEST LINE TEST SUITE
+
+TEST_F(ParseRequestLineTest, BasicRequestLine_GET)
+{
+	// Arrange
+
+	// Act
 	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
+
+	// Assert
 	EXPECT_EQ(request.method, MethodGet);
 	EXPECT_EQ(request.uri.path, "/search");
 	EXPECT_EQ(request.uri.query, "query=openai&year=2024");
@@ -16,12 +32,14 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_GET)
 	EXPECT_EQ(request.version, "1.1");
 }
 
-TEST(RequestParser_ValidRequestLine, BasicRequestLine_DELETE)
+TEST_F(ParseRequestLineTest, BasicRequestLine_DELETE)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act
 	p.parseHeader("DELETE /index.html HTTP/1.1\r\n\r\n", request);
+
+	// Assert
 	EXPECT_EQ(request.method, MethodDelete);
 	EXPECT_EQ(request.uri.path, "/index.html");
 	EXPECT_EQ(request.uri.query, "");
@@ -29,12 +47,14 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_DELETE)
 	EXPECT_EQ(request.version, "1.1");
 }
 
-TEST(RequestParser_ValidRequestLine, BasicRequestLine_POST)
+TEST_F(ParseRequestLineTest, BasicRequestLine_POST)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act
 	p.parseHeader("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\n\r\n", request);
+
+	// Assert
 	EXPECT_EQ(request.method, MethodPost);
 	EXPECT_EQ(request.uri.path, "/abracadabra/ipsum");
 	EXPECT_EQ(request.uri.query, "user=aziz&key=password");
@@ -42,12 +62,14 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_POST)
 	EXPECT_EQ(request.version, "1.1");
 }
 
-TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoQuery)
+TEST_F(ParseRequestLineTest, BasicRequestLine_NoQuery)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act
 	p.parseHeader("GET /search? HTTP/1.1\r\n\r\n", request);
+
+	// Assert
 	EXPECT_EQ(request.method, MethodGet);
 	EXPECT_EQ(request.uri.path, "/search");
 	EXPECT_EQ(request.uri.query, "");
@@ -55,12 +77,14 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoQuery)
 	EXPECT_EQ(request.version, "1.1");
 }
 
-TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoFragment)
+TEST_F(ParseRequestLineTest, BasicRequestLine_NoFragment)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act
 	p.parseHeader("GET /search?# HTTP/1.1\r\n\r\n", request);
+
+	// Assert
 	EXPECT_EQ(request.method, MethodGet);
 	EXPECT_EQ(request.uri.path, "/search");
 	EXPECT_EQ(request.uri.query, "");
@@ -68,12 +92,14 @@ TEST(RequestParser_ValidRequestLine, BasicRequestLine_NoFragment)
 	EXPECT_EQ(request.version, "1.1");
 }
 
-TEST(RequestParser_ValidRequestLine, Version1_0)
+TEST_F(ParseRequestLineTest, Version1_0)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act
 	p.parseHeader("GET /search?# HTTP/1.0\r\n\r\n", request);
+
+	// Assert
 	EXPECT_EQ(request.method, MethodGet);
 	EXPECT_EQ(request.uri.path, "/search");
 	EXPECT_EQ(request.uri.query, "");
@@ -83,11 +109,11 @@ TEST(RequestParser_ValidRequestLine, Version1_0)
 
 // INVALID REQUEST LINE TEST SUITE
 
-TEST(RequestParser_NonValidRequestLine, NotImplementedMethod)
+TEST_F(ParseRequestLineTest, NotImplementedMethod)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -100,11 +126,11 @@ TEST(RequestParser_NonValidRequestLine, NotImplementedMethod)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, LowerCaseMethod)
+TEST_F(ParseRequestLineTest, LowerCaseMethod)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -117,11 +143,11 @@ TEST(RequestParser_NonValidRequestLine, LowerCaseMethod)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, MissingSpace)
+TEST_F(ParseRequestLineTest, MissingSpace)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -134,11 +160,11 @@ TEST(RequestParser_NonValidRequestLine, MissingSpace)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, MissingSlash)
+TEST_F(ParseRequestLineTest, MissingSlash)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -151,11 +177,11 @@ TEST(RequestParser_NonValidRequestLine, MissingSlash)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, DoubleQuestionMark)
+TEST_F(ParseRequestLineTest, DoubleQuestionMark)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -168,11 +194,11 @@ TEST(RequestParser_NonValidRequestLine, DoubleQuestionMark)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, DoubleHash)
+TEST_F(ParseRequestLineTest, DoubleHash)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -185,11 +211,11 @@ TEST(RequestParser_NonValidRequestLine, DoubleHash)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, URI_InvalidChar)
+TEST_F(ParseRequestLineTest, URI_InvalidChar)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -202,11 +228,11 @@ TEST(RequestParser_NonValidRequestLine, URI_InvalidChar)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, URI_MissingSpace)
+TEST_F(ParseRequestLineTest, URI_MissingSpace)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -219,11 +245,11 @@ TEST(RequestParser_NonValidRequestLine, URI_MissingSpace)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_MissingH)
+TEST_F(ParseRequestLineTest, Version_MissingH)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -236,11 +262,11 @@ TEST(RequestParser_NonValidRequestLine, Version_MissingH)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_MissingSlash)
+TEST_F(ParseRequestLineTest, Version_MissingSlash)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -253,11 +279,11 @@ TEST(RequestParser_NonValidRequestLine, Version_MissingSlash)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_InvalidMajor)
+TEST_F(ParseRequestLineTest, Version_InvalidMajor)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -270,11 +296,11 @@ TEST(RequestParser_NonValidRequestLine, Version_InvalidMajor)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_MissingDot)
+TEST_F(ParseRequestLineTest, Version_MissingDot)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -287,11 +313,11 @@ TEST(RequestParser_NonValidRequestLine, Version_MissingDot)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_InvalidMinor)
+TEST_F(ParseRequestLineTest, Version_InvalidMinor)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -304,11 +330,11 @@ TEST(RequestParser_NonValidRequestLine, Version_InvalidMinor)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMajor)
+TEST_F(ParseRequestLineTest, Version_NonSupportedMajor)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
@@ -321,11 +347,11 @@ TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMajor)
 		std::runtime_error);
 }
 
-TEST(RequestParser_NonValidRequestLine, Version_NonSupportedMinor)
+TEST_F(ParseRequestLineTest, Version_NonSupportedMinor)
 {
-	RequestParser p;
-	HTTPRequest request;
+	// Arrange
 
+	// Act & Assert
 	EXPECT_THROW(
 		{
 			try {
