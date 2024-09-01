@@ -3,6 +3,7 @@ var dir_13e138d54eb8818da29c3992edef070a =
     [ "test_acceptConnections.cpp", "test__accept_connections_8cpp.html", "test__accept_connections_8cpp" ],
     [ "test_AutoindexHandler.cpp", "test___autoindex_handler_8cpp.html", "test___autoindex_handler_8cpp" ],
     [ "test_checkForTimeout.cpp", "test__check_for_timeout_8cpp.html", "test__check_for_timeout_8cpp" ],
+    [ "test_ConfigFileParser.cpp", "test___config_file_parser_8cpp.html", "test___config_file_parser_8cpp" ],
     [ "test_connectionReceiveHeader.cpp", "test__connection_receive_header_8cpp.html", "test__connection_receive_header_8cpp" ],
     [ "test_connectionSendResponse.cpp", "test__connection_send_response_8cpp.html", "test__connection_send_response_8cpp" ],
     [ "test_createVirtualServer.cpp", "test__create_virtual_server_8cpp.html", "test__create_virtual_server_8cpp" ],

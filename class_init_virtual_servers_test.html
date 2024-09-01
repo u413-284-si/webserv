@@ -157,16 +157,16 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a8e802f3c848fceadff0dd1f0c5bc04df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af86ad85aeb17ec6f118a49a41de9ee0d"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init_virtual_servers_test.html#af86ad85aeb17ec6f118a49a41de9ee0d">dummyFd</a> = 10</td></tr>
 <tr class="separator:af86ad85aeb17ec6f118a49a41de9ee0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cc31508c51059c24120886138c404fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init_virtual_servers_test.html#a4cc31508c51059c24120886138c404fb">serverSock1</a></td></tr>
+<tr class="memitem:a4cc31508c51059c24120886138c404fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init_virtual_servers_test.html#a4cc31508c51059c24120886138c404fb">serverSock1</a> = { &quot;127.0.0.1&quot;, &quot;8080&quot; }</td></tr>
 <tr class="separator:a4cc31508c51059c24120886138c404fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0d2bcbefe27d5bfb64bf377c2c0a279"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init_virtual_servers_test.html#aa0d2bcbefe27d5bfb64bf377c2c0a279">dummyFd2</a> = 11</td></tr>
 <tr class="separator:aa0d2bcbefe27d5bfb64bf377c2c0a279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bea7838ba6013d4c0b34c6e496ee628"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init_virtual_servers_test.html#a7bea7838ba6013d4c0b34c6e496ee628">serverSock2</a></td></tr>
+<tr class="memitem:a7bea7838ba6013d4c0b34c6e496ee628"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init_virtual_servers_test.html#a7bea7838ba6013d4c0b34c6e496ee628">serverSock2</a> = { &quot;localhost&quot;, &quot;7070&quot; }</td></tr>
 <tr class="separator:a7bea7838ba6013d4c0b34c6e496ee628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00011">11</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00012">12</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0d202f0702c427c89e7c196c9757386d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d202f0702c427c89e7c196c9757386d">&#9670;&nbsp;</a></span>InitVirtualServersTest()</h2>
@@ -191,33 +191,32 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00013">13</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="struct_server_config.html">ServerConfig</a> serverConfig;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        serverConfig.<a class="code" href="struct_server_config.html#aea03a861d1838d4a9e51c0944c0ed4aa">host</a> = <span class="stringliteral">&quot;127.0.0.1&quot;</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        serverConfig.<a class="code" href="struct_server_config.html#a520a0e5f537c59fb3c34c5ba3f16b60a">port</a> = 8080;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="struct_server_config.html">ServerConfig</a> serverConfig2;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        serverConfig2.<a class="code" href="struct_server_config.html#aea03a861d1838d4a9e51c0944c0ed4aa">host</a> = <span class="stringliteral">&quot;localhost&quot;</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        serverConfig2.<a class="code" href="struct_server_config.html#a520a0e5f537c59fb3c34c5ba3f16b60a">port</a> = 7070;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">configFile</a>.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>.push_back(serverConfig);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <a class="code" href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">configFile</a>.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>.push_back(serverConfig2);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf">server</a> = <span class="keyword">new</span> <a class="code" href="class_server.html">Server</a>(<a class="code" href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">configFile</a>, <a class="code" href="class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e">epollWrapper</a>, <a class="code" href="class_init_virtual_servers_test.html#ae5b7311eff34ab2fb0695ccb968eae5d">socketPolicy</a>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        ON_CALL(<a class="code" href="class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e">epollWrapper</a>, addEvent)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        .WillByDefault(Return(<span class="keyword">true</span>));</div>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00014">14</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="struct_config_server.html">ConfigServer</a> serverConfig;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        serverConfig.<a class="code" href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">host</a> = <span class="stringliteral">&quot;127.0.0.1&quot;</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        serverConfig.<a class="code" href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">port</a> = <span class="stringliteral">&quot;8080&quot;</span>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="struct_config_server.html">ConfigServer</a> serverConfig2;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        serverConfig2.<a class="code" href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">host</a> = <span class="stringliteral">&quot;localhost&quot;</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        serverConfig2.<a class="code" href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">port</a> = <span class="stringliteral">&quot;7070&quot;</span>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <a class="code" href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">configFile</a>.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.push_back(serverConfig);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">configFile</a>.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.push_back(serverConfig2);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <a class="code" href="class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf">server</a> = <span class="keyword">new</span> <a class="code" href="class_server.html">Server</a>(<a class="code" href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">configFile</a>, <a class="code" href="class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e">epollWrapper</a>, <a class="code" href="class_init_virtual_servers_test.html#ae5b7311eff34ab2fb0695ccb968eae5d">socketPolicy</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        ON_CALL(<a class="code" href="class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e">epollWrapper</a>, addEvent).WillByDefault(Return(<span class="keyword">true</span>));</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
-<div class="ttc" id="aclass_init_virtual_servers_test_html_a408b96bdf97a4a7824acec7f2980b2cf"><div class="ttname"><a href="class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf">InitVirtualServersTest::server</a></div><div class="ttdeci">Server * server</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00040">test_initVirtualServers.cpp:40</a></div></div>
-<div class="ttc" id="aclass_init_virtual_servers_test_html_ab35a3c7ae2e3a1767658b6ae6b05a64e"><div class="ttname"><a href="class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e">InitVirtualServersTest::epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00038">test_initVirtualServers.cpp:38</a></div></div>
-<div class="ttc" id="aclass_init_virtual_servers_test_html_ae5b7311eff34ab2fb0695ccb968eae5d"><div class="ttname"><a href="class_init_virtual_servers_test.html#ae5b7311eff34ab2fb0695ccb968eae5d">InitVirtualServersTest::socketPolicy</a></div><div class="ttdeci">MockSocketPolicy socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00039">test_initVirtualServers.cpp:39</a></div></div>
-<div class="ttc" id="aclass_init_virtual_servers_test_html_af3a12a23312b1f3f829a725af28a606d"><div class="ttname"><a href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">InitVirtualServersTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00037">test_initVirtualServers.cpp:37</a></div></div>
+<div class="ttc" id="aclass_init_virtual_servers_test_html_a408b96bdf97a4a7824acec7f2980b2cf"><div class="ttname"><a href="class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf">InitVirtualServersTest::server</a></div><div class="ttdeci">Server * server</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00037">test_initVirtualServers.cpp:37</a></div></div>
+<div class="ttc" id="aclass_init_virtual_servers_test_html_ab35a3c7ae2e3a1767658b6ae6b05a64e"><div class="ttname"><a href="class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e">InitVirtualServersTest::epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00035">test_initVirtualServers.cpp:35</a></div></div>
+<div class="ttc" id="aclass_init_virtual_servers_test_html_ae5b7311eff34ab2fb0695ccb968eae5d"><div class="ttname"><a href="class_init_virtual_servers_test.html#ae5b7311eff34ab2fb0695ccb968eae5d">InitVirtualServersTest::socketPolicy</a></div><div class="ttdeci">MockSocketPolicy socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00036">test_initVirtualServers.cpp:36</a></div></div>
+<div class="ttc" id="aclass_init_virtual_servers_test_html_af3a12a23312b1f3f829a725af28a606d"><div class="ttname"><a href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">InitVirtualServersTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00034">test_initVirtualServers.cpp:34</a></div></div>
 <div class="ttc" id="aclass_server_html"><div class="ttname"><a href="class_server.html">Server</a></div><div class="ttdoc">Main class of the HTTP server.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00043">Server.hpp:43</a></div></div>
-<div class="ttc" id="astruct_config_file_html_aa8d67488c32158bb0ffa47260071b18f"><div class="ttname"><a href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">ConfigFile::serverConfigs</a></div><div class="ttdeci">std::vector&lt; ServerConfig &gt; serverConfigs</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00036">ConfigFile.hpp:36</a></div></div>
-<div class="ttc" id="astruct_server_config_html"><div class="ttname"><a href="struct_server_config.html">ServerConfig</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00026">ConfigFile.hpp:26</a></div></div>
-<div class="ttc" id="astruct_server_config_html_a520a0e5f537c59fb3c34c5ba3f16b60a"><div class="ttname"><a href="struct_server_config.html#a520a0e5f537c59fb3c34c5ba3f16b60a">ServerConfig::port</a></div><div class="ttdeci">unsigned short port</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00029">ConfigFile.hpp:29</a></div></div>
-<div class="ttc" id="astruct_server_config_html_aea03a861d1838d4a9e51c0944c0ed4aa"><div class="ttname"><a href="struct_server_config.html#aea03a861d1838d4a9e51c0944c0ed4aa">ServerConfig::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00028">ConfigFile.hpp:28</a></div></div>
+<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
+<div class="ttc" id="astruct_config_server_html"><div class="ttname"><a href="struct_config_server.html">ConfigServer</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00032">ConfigFile.hpp:32</a></div></div>
+<div class="ttc" id="astruct_config_server_html_ab05a55795c20b46356d35adb3355c0ee"><div class="ttname"><a href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">ConfigServer::port</a></div><div class="ttdeci">std::string port</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00041">ConfigFile.hpp:41</a></div></div>
+<div class="ttc" id="astruct_config_server_html_af3382ae5512707639126d2eee3269b86"><div class="ttname"><a href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">ConfigServer::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00040">ConfigFile.hpp:40</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -245,9 +244,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00032">32</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">delete</span> <a class="code" href="class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf">server</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
+<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{ <span class="keyword">delete</span> <a class="code" href="class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf">server</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -272,7 +269,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00037">37</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00034">34</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -296,7 +293,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00038">38</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00035">35</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -320,7 +317,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00039">39</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00036">36</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -344,7 +341,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00040">40</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00037">37</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -368,7 +365,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00042">42</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00039">39</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -392,7 +389,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00044">44</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00041">41</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -406,7 +403,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_socket.html">Socket</a> InitVirtualServersTest::serverSock1</td>
+          <td class="memname"><a class="el" href="struct_socket.html">Socket</a> InitVirtualServersTest::serverSock1 = { &quot;127.0.0.1&quot;, &quot;8080&quot; }</td>
         </tr>
       </table>
   </td>
@@ -415,12 +412,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">        <span class="stringliteral">&quot;127.0.0.1&quot;</span>,</div>
-<div class="line">        <span class="stringliteral">&quot;8080&quot;</span></div>
-<div class="line">    }</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00045">45</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00042">42</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +437,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00049">49</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00043">43</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>
@@ -458,7 +451,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_socket.html">Socket</a> InitVirtualServersTest::serverSock2</td>
+          <td class="memname"><a class="el" href="struct_socket.html">Socket</a> InitVirtualServersTest::serverSock2 = { &quot;localhost&quot;, &quot;7070&quot; }</td>
         </tr>
       </table>
   </td>
@@ -467,12 +460,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">        <span class="stringliteral">&quot;localhost&quot;</span>,</div>
-<div class="line">        <span class="stringliteral">&quot;7070&quot;</span></div>
-<div class="line">    }</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00050">50</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00044">44</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 
 </div>
 </div>

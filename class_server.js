@@ -6,7 +6,7 @@ var class_server =
     [ "getVirtualServers", "class_server.html#a878b0cc2f9bc228dd12b250d95d61a75", null ],
     [ "getConnections", "class_server.html#aab1a7e57f49a0c7b7f1cea147d8bf9aa", null ],
     [ "getConnections", "class_server.html#a1f8929bed093f869374cb81da4d97505", null ],
-    [ "getServerConfigs", "class_server.html#aa60b5e63e5228755ac7b30c3dde5ae0c", null ],
+    [ "getServerConfigs", "class_server.html#a54745950beb9e321d9a56084501c18e9", null ],
     [ "getClientTimeout", "class_server.html#af8184a299847cca0789696048893bc48", null ],
     [ "registerVirtualServer", "class_server.html#aae8cc5a8fc07a6ce97d468d94cd08a6e", null ],
     [ "registerConnection", "class_server.html#ac145e9f668db85b10a66829bd2677746", null ],

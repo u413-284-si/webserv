@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['allow_601',['allow',['../struct_limit_except.html#a825ea15e10d8c6f4bf2a9d71f91f2361',1,'LimitExcept']]],
-  ['allowedmethods_602',['allowedMethods',['../struct_limit_except.html#afa29559246b97377a6f85c9bc209ef91',1,'LimitExcept']]]
+  ['allowedmethods_606',['allowedMethods',['../struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7',1,'Location']]]
 ];

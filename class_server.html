@@ -149,9 +149,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f8929bed093f869374cb81da4d97505"><td class="memItemLeft" align="right" valign="top">const std::map&lt; int, <a class="el" href="struct_connection.html">Connection</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a1f8929bed093f869374cb81da4d97505">getConnections</a> () const</td></tr>
 <tr class="memdesc:a1f8929bed093f869374cb81da4d97505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const Getter for connections.  <a href="class_server.html#a1f8929bed093f869374cb81da4d97505">More...</a><br /></td></tr>
 <tr class="separator:a1f8929bed093f869374cb81da4d97505"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa60b5e63e5228755ac7b30c3dde5ae0c"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="struct_server_config.html">ServerConfig</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#aa60b5e63e5228755ac7b30c3dde5ae0c">getServerConfigs</a> () const</td></tr>
-<tr class="memdesc:aa60b5e63e5228755ac7b30c3dde5ae0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const Getter for server configs.  <a href="class_server.html#aa60b5e63e5228755ac7b30c3dde5ae0c">More...</a><br /></td></tr>
-<tr class="separator:aa60b5e63e5228755ac7b30c3dde5ae0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54745950beb9e321d9a56084501c18e9"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="struct_config_server.html">ConfigServer</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a54745950beb9e321d9a56084501c18e9">getServerConfigs</a> () const</td></tr>
+<tr class="memdesc:a54745950beb9e321d9a56084501c18e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const Getter for server configs.  <a href="class_server.html#a54745950beb9e321d9a56084501c18e9">More...</a><br /></td></tr>
+<tr class="separator:a54745950beb9e321d9a56084501c18e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8184a299847cca0789696048893bc48"><td class="memItemLeft" align="right" valign="top">time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#af8184a299847cca0789696048893bc48">getClientTimeout</a> () const</td></tr>
 <tr class="memdesc:af8184a299847cca0789696048893bc48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const Getter for client timeout.  <a href="class_server.html#af8184a299847cca0789696048893bc48">More...</a><br /></td></tr>
 <tr class="separator:af8184a299847cca0789696048893bc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,17 +271,17 @@ Static Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Several variables are init to static ones, could be passed as parameters or set in config file. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>Several variables are init to static ones, could be passed as parameters or set in config file. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00021">21</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    : m_configFile(configFile)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    , m_epollWrapper(epollWrapper)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    , m_socketPolicy(socketPolicy)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    , m_backlog(<a class="code" href="class_server.html#adb14c88ee08be2313f70261a6e7338cb">s_backlog</a>)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    , m_clientTimeout(<a class="code" href="class_server.html#a35ccb2bc7eaf3bfd04eacdddd971568e">s_clientTimeout</a>)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    , m_responseBuilder(m_configFile, m_fileSystemPolicy)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00022">22</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    : m_configFile(configFile)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    , m_epollWrapper(epollWrapper)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    , m_socketPolicy(socketPolicy)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    , m_backlog(<a class="code" href="class_server.html#adb14c88ee08be2313f70261a6e7338cb">s_backlog</a>)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    , m_clientTimeout(<a class="code" href="class_server.html#a35ccb2bc7eaf3bfd04eacdddd971568e">s_clientTimeout</a>)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    , m_responseBuilder(m_configFile, m_fileSystemPolicy)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
 <div class="ttc" id="aclass_server_html_a35ccb2bc7eaf3bfd04eacdddd971568e"><div class="ttname"><a href="class_server.html#a35ccb2bc7eaf3bfd04eacdddd971568e">Server::s_clientTimeout</a></div><div class="ttdeci">static const time_t s_clientTimeout</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00046">Server.hpp:46</a></div></div>
 <div class="ttc" id="aclass_server_html_adb14c88ee08be2313f70261a6e7338cb"><div class="ttname"><a href="class_server.html#adb14c88ee08be2313f70261a6e7338cb">Server::s_backlog</a></div><div class="ttdeci">static const int s_backlog</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00045">Server.hpp:45</a></div></div>
 </div><!-- fragment -->
@@ -306,20 +306,20 @@ Static Public Attributes</h2></td></tr>
 <p>This destructor cleans up resources associated with the server instance by closing all open virtual server sockets, all open connections and the epoll instance.</p>
 <ol type="1">
 <li>Closes all virtual server sockets to release the bound port and stop accepting new connections.</li>
-<li>Closes all open connections to release associated resources. <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>Is it possible to send a last message to all connected clients to notify server shutdown? </dd></dl>
+<li>Closes all open connections to release associated resources. <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Is it possible to send a last message to all connected clients to notify server shutdown? </dd></dl>
 </li>
 </ol>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00042">42</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;int, Socket&gt;::iterator iter = m_virtualServers.begin(); iter != m_virtualServers.end(); ++iter)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        close(iter-&gt;first);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;int, Connection&gt;::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59">removeEvent</a>(iter-&gt;first);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        close(iter-&gt;first);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00043">43</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;int, Socket&gt;::iterator iter = m_virtualServers.begin(); iter != m_virtualServers.end(); ++iter)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        close(iter-&gt;first);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">for</span> (std::map&lt;int, Connection&gt;::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59">removeEvent</a>(iter-&gt;first);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        close(iter-&gt;first);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 <div class="ttc" id="aclass_epoll_wrapper_html_a30d7cd3090f8d8d0f10c2d9edb136d59"><div class="ttname"><a href="class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59">EpollWrapper::removeEvent</a></div><div class="ttdeci">virtual void removeEvent(int delfd) const</div><div class="ttdoc">Remove an event from the epoll instance.</div><div class="ttdef"><b>Definition:</b> <a href="_epoll_wrapper_8cpp_source.html#l00129">EpollWrapper.cpp:129</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -355,25 +355,25 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00066">66</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a> &lt;&lt; <span class="stringliteral">&quot;Server started&quot;</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> nfds = m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85">waitForEvents</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;struct epoll_event&gt;::const_iterator iter = m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185">eventsBegin</a>();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;             iter != m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185">eventsBegin</a>() + nfds; ++iter) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="_server_8cpp.html#af9f4479a6262c17deef89938118d27f4">handleEvent</a>(*<span class="keyword">this</span>, *iter);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db">cleanupClosedConnections</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00067">67</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a> &lt;&lt; <span class="stringliteral">&quot;Server started&quot;</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> nfds = m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85">waitForEvents</a>();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;struct epoll_event&gt;::const_iterator iter = m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185">eventsBegin</a>();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;             iter != m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185">eventsBegin</a>() + nfds; ++iter) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <a class="code" href="_server_8cpp.html#af9f4479a6262c17deef89938118d27f4">handleEvent</a>(*<span class="keyword">this</span>, *iter);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db">cleanupClosedConnections</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
 <div class="ttc" id="a_log_8hpp_html_aeb4f36db01bd128c7afeac5889dac311"><div class="ttname"><a href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a></div><div class="ttdeci">#define LOG_INFO</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00011">Log.hpp:11</a></div></div>
-<div class="ttc" id="a_server_8cpp_html_a28fd29ec48bd9459c678980cfccca4cf"><div class="ttname"><a href="_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a></div><div class="ttdeci">void checkForTimeout(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and checks if any have timed out.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00781">Server.cpp:781</a></div></div>
-<div class="ttc" id="a_server_8cpp_html_a9e2693ba11e20b84de090bcdd0b665db"><div class="ttname"><a href="_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db">cleanupClosedConnections</a></div><div class="ttdeci">void cleanupClosedConnections(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and removes closed ones.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00808">Server.cpp:808</a></div></div>
-<div class="ttc" id="a_server_8cpp_html_af9f4479a6262c17deef89938118d27f4"><div class="ttname"><a href="_server_8cpp.html#af9f4479a6262c17deef89938118d27f4">handleEvent</a></div><div class="ttdeci">void handleEvent(Server &amp;server, struct epoll_event event)</div><div class="ttdoc">Accepts new connections or handles existing ones.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00471">Server.cpp:471</a></div></div>
+<div class="ttc" id="a_server_8cpp_html_a28fd29ec48bd9459c678980cfccca4cf"><div class="ttname"><a href="_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a></div><div class="ttdeci">void checkForTimeout(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and checks if any have timed out.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00782">Server.cpp:782</a></div></div>
+<div class="ttc" id="a_server_8cpp_html_a9e2693ba11e20b84de090bcdd0b665db"><div class="ttname"><a href="_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db">cleanupClosedConnections</a></div><div class="ttdeci">void cleanupClosedConnections(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and removes closed ones.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00809">Server.cpp:809</a></div></div>
+<div class="ttc" id="a_server_8cpp_html_af9f4479a6262c17deef89938118d27f4"><div class="ttname"><a href="_server_8cpp.html#af9f4479a6262c17deef89938118d27f4">handleEvent</a></div><div class="ttdeci">void handleEvent(Server &amp;server, struct epoll_event event)</div><div class="ttdoc">Accepts new connections or handles existing ones.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00472">Server.cpp:472</a></div></div>
 <div class="ttc" id="aclass_epoll_wrapper_html_a311509445062f6333287f2957b8b2e85"><div class="ttname"><a href="class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85">EpollWrapper::waitForEvents</a></div><div class="ttdeci">virtual int waitForEvents()</div><div class="ttdoc">Wait for events on an epoll instance.</div><div class="ttdef"><b>Definition:</b> <a href="_epoll_wrapper_8cpp_source.html#l00043">EpollWrapper.cpp:43</a></div></div>
 <div class="ttc" id="aclass_epoll_wrapper_html_a351163f31995e5bab238fac131eb2185"><div class="ttname"><a href="class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185">EpollWrapper::eventsBegin</a></div><div class="ttdeci">virtual std::vector&lt; struct epoll_event &gt;::const_iterator eventsBegin() const</div><div class="ttdoc">Get the beginning of the events vector.</div><div class="ttdef"><b>Definition:</b> <a href="_epoll_wrapper_8cpp_source.html#l00066">EpollWrapper.cpp:66</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -409,8 +409,8 @@ Here is the caller graph for this function:</div>
 <p>Const Getter for virtual servers. </p>
 <dl class="section return"><dt>Returns</dt><dd>const std::map&lt;int, Socket&gt;&amp; Map of virtual servers. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00089">89</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{ <span class="keywordflow">return</span> m_virtualServers; }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00090">90</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{ <span class="keywordflow">return</span> m_virtualServers; }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -438,8 +438,8 @@ Here is the caller graph for this function:</div>
 <p>Getter for connections. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::map&lt;int, Connection&gt;&amp; Map of connections. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00096">96</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;{ <span class="keywordflow">return</span> m_connections; }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00097">97</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{ <span class="keywordflow">return</span> m_connections; }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -467,19 +467,19 @@ Here is the caller graph for this function:</div>
 <p>Const Getter for connections. </p>
 <dl class="section return"><dt>Returns</dt><dd>const std::map&lt;int, Connection&gt;&amp; Map of connections. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00103">103</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;{ <span class="keywordflow">return</span> m_connections; }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00104">104</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;{ <span class="keywordflow">return</span> m_connections; }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aa60b5e63e5228755ac7b30c3dde5ae0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa60b5e63e5228755ac7b30c3dde5ae0c">&#9670;&nbsp;</a></span>getServerConfigs()</h2>
+<a id="a54745950beb9e321d9a56084501c18e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54745950beb9e321d9a56084501c18e9">&#9670;&nbsp;</a></span>getServerConfigs()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt; <a class="el" href="struct_server_config.html">ServerConfig</a> &gt; &amp; Server::getServerConfigs </td>
+          <td class="memname">const std::vector&lt; <a class="el" href="struct_config_server.html">ConfigServer</a> &gt; &amp; Server::getServerConfigs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -491,13 +491,13 @@ Here is the caller graph for this function:</div>
 <p>Returns the vector of server configs from the configuration file.</p>
 <dl class="section return"><dt>Returns</dt><dd>const std::vector&lt;ServerConfig&gt;&amp; Vector of server configs. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00112">112</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;{ <span class="keywordflow">return</span> m_configFile.<a class="code" href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">serverConfigs</a>; }</div>
-<div class="ttc" id="astruct_config_file_html_aa8d67488c32158bb0ffa47260071b18f"><div class="ttname"><a href="struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f">ConfigFile::serverConfigs</a></div><div class="ttdeci">std::vector&lt; ServerConfig &gt; serverConfigs</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00036">ConfigFile.hpp:36</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00113">113</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;{ <span class="keywordflow">return</span> m_configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>; }</div>
+<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_server_aa60b5e63e5228755ac7b30c3dde5ae0c_icgraph.svg" width="296" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_server_a54745950beb9e321d9a56084501c18e9_icgraph.svg" width="296" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -521,8 +521,8 @@ Here is the caller graph for this function:</div>
 <p>Const Getter for client timeout. </p>
 <dl class="section return"><dt>Returns</dt><dd>time_t Client timeout in seconds. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00119">119</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;{ <span class="keywordflow">return</span> m_clientTimeout; }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00120">120</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;{ <span class="keywordflow">return</span> m_clientTimeout; }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -568,19 +568,19 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the virtual server was successfully registered, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00135">135</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;{</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordflow">if</span> (!m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">addEvent</a>(serverFd, EPOLLIN | EPOLLET)) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        close(serverFd);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;Failed to add event for &quot;</span> &lt;&lt; serverSock;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    m_virtualServers[serverFd] = serverSock;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <a class="code" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a> &lt;&lt; <span class="stringliteral">&quot;New virtual server: &quot;</span> &lt;&lt; serverSock;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00136">136</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;{</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordflow">if</span> (!m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">addEvent</a>(serverFd, EPOLLIN | EPOLLET)) {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        close(serverFd);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;Failed to add event for &quot;</span> &lt;&lt; serverSock;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    m_virtualServers[serverFd] = serverSock;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a> &lt;&lt; <span class="stringliteral">&quot;New virtual server: &quot;</span> &lt;&lt; serverSock;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;}</div>
 <div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00013">Log.hpp:13</a></div></div>
 <div class="ttc" id="aclass_epoll_wrapper_html_ace2a6009a6c647babfc667c27df05354"><div class="ttname"><a href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">EpollWrapper::addEvent</a></div><div class="ttdeci">virtual bool addEvent(int newfd, uint32_t eventMask) const</div><div class="ttdoc">Add an event to the epoll instance.</div><div class="ttdef"><b>Definition:</b> <a href="_epoll_wrapper_8cpp_source.html#l00080">EpollWrapper.cpp:80</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -641,19 +641,19 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the connection was successfully registered, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00162">162</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;{</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">if</span> (!m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">addEvent</a>(clientFd, EPOLLIN)) {</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        close(clientFd);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;Failed to add event for &quot;</span> &lt;&lt; clientSock;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    }</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    m_connections[clientFd] = <a class="code" href="struct_connection.html">Connection</a>(serverSock, clientSock);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <a class="code" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a> &lt;&lt; <span class="stringliteral">&quot;New Connection: &quot;</span> &lt;&lt; clientSock &lt;&lt; <span class="stringliteral">&quot; for server: &quot;</span> &lt;&lt; serverSock;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00163">163</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;{</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">if</span> (!m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">addEvent</a>(clientFd, EPOLLIN)) {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        close(clientFd);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;Failed to add event for &quot;</span> &lt;&lt; clientSock;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    m_connections[clientFd] = <a class="code" href="struct_connection.html">Connection</a>(serverSock, clientSock);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <a class="code" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a> &lt;&lt; <span class="stringliteral">&quot;New Connection: &quot;</span> &lt;&lt; clientSock &lt;&lt; <span class="stringliteral">&quot; for server: &quot;</span> &lt;&lt; serverSock;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
 <div class="ttc" id="astruct_connection_html"><div class="ttname"><a href="struct_connection.html">Connection</a></div><div class="ttdoc">Represents a connection between a server and a client.</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00014">Connection.hpp:14</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -694,8 +694,8 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00181">181</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;{ m_clientTimeout = clientTimeout; }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00182">182</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;{ m_clientTimeout = clientTimeout; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -735,8 +735,8 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the event was successfully added, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00192">192</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;{ <span class="keywordflow">return</span> m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">addEvent</a>(newfd, eventMask); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00193">193</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;{ <span class="keywordflow">return</span> m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354">addEvent</a>(newfd, eventMask); }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -782,8 +782,8 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the event was successfully modified, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00201">201</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;{ <span class="keywordflow">return</span> m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a">modifyEvent</a>(modfd, eventMask); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00202">202</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;{ <span class="keywordflow">return</span> m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a">modifyEvent</a>(modfd, eventMask); }</div>
 <div class="ttc" id="aclass_epoll_wrapper_html_ac97945725185999837a6d0d53f91df1a"><div class="ttname"><a href="class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a">EpollWrapper::modifyEvent</a></div><div class="ttdeci">virtual bool modifyEvent(int modfd, uint32_t eventMask) const</div><div class="ttdoc">Modify an event in the epoll instance.</div><div class="ttdef"><b>Definition:</b> <a href="_epoll_wrapper_8cpp_source.html#l00107">EpollWrapper.cpp:107</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -824,8 +824,8 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00208">208</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;{ m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59">removeEvent</a>(delfd); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00209">209</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;{ m_epollWrapper.<a class="code" href="class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59">removeEvent</a>(delfd); }</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -871,10 +871,10 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>struct addrinfo* A pointer to the address information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00219">219</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;{</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a5dc6880ff55223d8ecee64a414d1f652">resolveListeningAddresses</a>(host, port);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00220">220</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;{</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a5dc6880ff55223d8ecee64a414d1f652">resolveListeningAddresses</a>(host, port);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;}</div>
 <div class="ttc" id="aclass_socket_policy_html_a5dc6880ff55223d8ecee64a414d1f652"><div class="ttname"><a href="class_socket_policy.html#a5dc6880ff55223d8ecee64a414d1f652">SocketPolicy::resolveListeningAddresses</a></div><div class="ttdeci">virtual struct addrinfo * resolveListeningAddresses(const std::string &amp;host, const std::string &amp;port) const</div><div class="ttdoc">Resolves the passed host and port to a list of addresses suitable for listening.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00034">SocketPolicy.cpp:34</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -927,10 +927,10 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int The file descriptor of the listening socket. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00231">231</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;{</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#af73a0ea98be3e6bedba97a8d8da156ab">createListeningSocket</a>(addrinfo, backlog);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00232">232</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;{</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#af73a0ea98be3e6bedba97a8d8da156ab">createListeningSocket</a>(addrinfo, backlog);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
 <div class="ttc" id="aclass_socket_policy_html_af73a0ea98be3e6bedba97a8d8da156ab"><div class="ttname"><a href="class_socket_policy.html#af73a0ea98be3e6bedba97a8d8da156ab">SocketPolicy::createListeningSocket</a></div><div class="ttdeci">virtual int createListeningSocket(const struct addrinfo &amp;addrinfo, int backlog) const</div><div class="ttdoc">Create a listening socket.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00073">SocketPolicy.cpp:73</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -983,10 +983,10 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> The socket information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00243">243</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;{</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#ac4dedf41caea77a2d8f9c4009b2d7c16">retrieveSocketInfo</a>(sockaddr, socklen);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00244">244</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#ac4dedf41caea77a2d8f9c4009b2d7c16">retrieveSocketInfo</a>(sockaddr, socklen);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;}</div>
 <div class="ttc" id="aclass_socket_policy_html_ac4dedf41caea77a2d8f9c4009b2d7c16"><div class="ttname"><a href="class_socket_policy.html#ac4dedf41caea77a2d8f9c4009b2d7c16">SocketPolicy::retrieveSocketInfo</a></div><div class="ttdeci">virtual Socket retrieveSocketInfo(struct sockaddr &amp;sockaddr, socklen_t socklen) const</div><div class="ttdoc">Retrieve socket information.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00115">SocketPolicy.cpp:115</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1046,10 +1046,10 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int The file descriptor of the accepted socket. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00256">256</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;{</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">acceptSingleConnection</a>(sockfd, addr, addrlen);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00257">257</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;{</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">acceptSingleConnection</a>(sockfd, addr, addrlen);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;}</div>
 <div class="ttc" id="aclass_socket_policy_html_a63228ebffc41e3739677715bcd43a477"><div class="ttname"><a href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">SocketPolicy::acceptSingleConnection</a></div><div class="ttdeci">virtual int acceptSingleConnection(int sockfd, struct sockaddr *addr, socklen_t *addrlen) const</div><div class="ttdoc">Accept a connection on a socket.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00147">SocketPolicy.cpp:147</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1116,10 +1116,10 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ssize_t The number of bytes read. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00270">270</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;{</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca">readFromSocket</a>(sockfd, buffer, size, flags);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00271">271</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;{</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca">readFromSocket</a>(sockfd, buffer, size, flags);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;}</div>
 <div class="ttc" id="aclass_socket_policy_html_a6f6c04c36c6be0d95b1d3e4a872ea7ca"><div class="ttname"><a href="class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca">SocketPolicy::readFromSocket</a></div><div class="ttdeci">virtual ssize_t readFromSocket(int sockfd, char *buffer, size_t size, int flags) const</div><div class="ttdoc">Read from a socket.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00171">SocketPolicy.cpp:171</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1186,10 +1186,10 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ssize_t The number of bytes written. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00284">284</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;{</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1">writeToSocket</a>(sockfd, buffer, size, flags);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00285">285</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;{</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordflow">return</span> m_socketPolicy.<a class="code" href="class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1">writeToSocket</a>(sockfd, buffer, size, flags);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;}</div>
 <div class="ttc" id="aclass_socket_policy_html_a2be07593236ccf70a7ddd7fc8d8b0af1"><div class="ttname"><a href="class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1">SocketPolicy::writeToSocket</a></div><div class="ttdeci">virtual ssize_t writeToSocket(int sockfd, const char *buffer, size_t size, int flags) const</div><div class="ttdoc">Write to a socket.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00193">SocketPolicy.cpp:193</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1241,10 +1241,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00297">297</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;{</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    m_requestParser.<a class="code" href="class_request_parser.html#a8e0a311661699efacd6aaaf25ddc6043">parseHttpRequest</a>(requestString, request);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00298">298</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;{</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    m_requestParser.<a class="code" href="class_request_parser.html#a8e0a311661699efacd6aaaf25ddc6043">parseHttpRequest</a>(requestString, request);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;}</div>
 <div class="ttc" id="aclass_request_parser_html_a8e0a311661699efacd6aaaf25ddc6043"><div class="ttname"><a href="class_request_parser.html#a8e0a311661699efacd6aaaf25ddc6043">RequestParser::parseHttpRequest</a></div><div class="ttdeci">void parseHttpRequest(const std::string &amp;requestString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses an HTTP request string into an HTTPRequest object.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00269">RequestParser.cpp:269</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1278,8 +1278,8 @@ Here is the caller graph for this function:</div>
 
 <p>Wrapper function to <a class="el" href="class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472" title="Clears the internal state of the RequestParser object.">RequestParser::clearParser</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00305">305</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;{ m_requestParser.<a class="code" href="class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472">clearParser</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00306">306</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;{ m_requestParser.<a class="code" href="class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472">clearParser</a>(); }</div>
 <div class="ttc" id="aclass_request_parser_html_a8ee441b50aa49dc6ea80708ae079f472"><div class="ttname"><a href="class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472">RequestParser::clearParser</a></div><div class="ttdeci">void clearParser()</div><div class="ttdoc">Clears the internal state of the RequestParser object.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00229">RequestParser.cpp:229</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1320,9 +1320,9 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00314">314</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;{ m_responseBuilder.<a class="code" href="class_response_builder.html#a168279f2329e9055e3aa38f08f67c26f">buildResponse</a>(request); }</div>
-<div class="ttc" id="aclass_response_builder_html_a168279f2329e9055e3aa38f08f67c26f"><div class="ttname"><a href="class_response_builder.html#a168279f2329e9055e3aa38f08f67c26f">ResponseBuilder::buildResponse</a></div><div class="ttdeci">void buildResponse(const HTTPRequest &amp;request)</div><div class="ttdoc">Build the response for a given request.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00050">ResponseBuilder.cpp:50</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00315">315</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;{ m_responseBuilder.<a class="code" href="class_response_builder.html#a168279f2329e9055e3aa38f08f67c26f">buildResponse</a>(request); }</div>
+<div class="ttc" id="aclass_response_builder_html_a168279f2329e9055e3aa38f08f67c26f"><div class="ttname"><a href="class_response_builder.html#a168279f2329e9055e3aa38f08f67c26f">ResponseBuilder::buildResponse</a></div><div class="ttdeci">void buildResponse(const HTTPRequest &amp;request)</div><div class="ttdoc">Build the response for a given request.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00052">ResponseBuilder.cpp:52</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1356,9 +1356,9 @@ Here is the caller graph for this function:</div>
 <p>Wrapper function to <a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response.">ResponseBuilder::getResponse</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::string The response string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00321">321</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
-<div class="ttc" id="aclass_response_builder_html_adf7d2f0fbb7f5b6866eb884fb2c17e88"><div class="ttname"><a href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">ResponseBuilder::getResponse</a></div><div class="ttdeci">std::string getResponse() const</div><div class="ttdoc">Get the built response.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00037">ResponseBuilder.cpp:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00322">322</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
+<div class="ttc" id="aclass_response_builder_html_adf7d2f0fbb7f5b6866eb884fb2c17e88"><div class="ttname"><a href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">ResponseBuilder::getResponse</a></div><div class="ttdeci">std::string getResponse() const</div><div class="ttdoc">Get the built response.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00039">ResponseBuilder.cpp:39</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

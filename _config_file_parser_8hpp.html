@@ -116,16 +116,30 @@ $(document).ready(function(){initNavTree('_config_file_parser_8hpp.html',''); in
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">ConfigFileParser.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;set&gt;</code><br />
+<code>#include &lt;stack&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ConfigFileParser.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_config_file_parser_8hpp__incl.svg" width="254" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_config_file_parser_8hpp__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_config_file_parser_8hpp__dep__incl.svg" width="554" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -135,7 +149,38 @@ Include dependency graph for ConfigFileParser.hpp:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_file_parser.html">ConfigFileParser</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ae91cb3afd79e6de887cf19fcca7a8c4a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a> { <a class="el" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>
+, <a class="el" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>
+ }</td></tr>
+<tr class="separator:ae91cb3afd79e6de887cf19fcca7a8c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ae91cb3afd79e6de887cf19fcca7a8c4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae91cb3afd79e6de887cf19fcca7a8c4a">&#9670;&nbsp;</a></span>Block</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760"></a>ServerBlock&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"></a>LocationBlock&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00016">16</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{ <a class="code" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, <a class="code" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a> };</div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a></div><div class="ttdeci">@ LocationBlock</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_parser_8hpp_source.html#l00016">ConfigFileParser.hpp:16</a></div></div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a></div><div class="ttdeci">@ ServerBlock</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_parser_8hpp_source.html#l00016">ConfigFileParser.hpp:16</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

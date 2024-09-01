@@ -127,17 +127,19 @@ $(document).ready(function(){initNavTree('class_config_file_parser.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af73467cc3f90ac840df4221f8b4a20ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_file_parser.html#af73467cc3f90ac840df4221f8b4a20ff">ConfigFileParser</a> (std::string configFile)</td></tr>
-<tr class="separator:af73467cc3f90ac840df4221f8b4a20ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13154b1c92a5ef3433f0e200001a7d56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_file_parser.html#a13154b1c92a5ef3433f0e200001a7d56">~ConfigFileParser</a> ()</td></tr>
-<tr class="separator:a13154b1c92a5ef3433f0e200001a7d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfa2bf960814acd72729a07539bacfb3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_config_file.html">ConfigFile</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_file_parser.html#adfa2bf960814acd72729a07539bacfb3">parseConfigFile</a> (const std::string &amp;configFilePath)</td></tr>
+<tr class="memdesc:adfa2bf960814acd72729a07539bacfb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the config file into a <a class="el" href="struct_config_file.html">ConfigFile</a> object and returns this object.  <a href="class_config_file_parser.html#adfa2bf960814acd72729a07539bacfb3">More...</a><br /></td></tr>
+<tr class="separator:adfa2bf960814acd72729a07539bacfb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d119a482318309adc5c06efb97b10b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_file_parser.html#a2d119a482318309adc5c06efb97b10b6">ConfigFileParser</a> (void)</td></tr>
+<tr class="memdesc:a2d119a482318309adc5c06efb97b10b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">PUBLIC Construct a new <a class="el" href="class_config_file_parser.html">ConfigFileParser</a>:: <a class="el" href="class_config_file_parser.html">ConfigFileParser</a> object.  <a href="class_config_file_parser.html#a2d119a482318309adc5c06efb97b10b6">More...</a><br /></td></tr>
+<tr class="separator:a2d119a482318309adc5c06efb97b10b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00005">5</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00020">20</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af73467cc3f90ac840df4221f8b4a20ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af73467cc3f90ac840df4221f8b4a20ff">&#9670;&nbsp;</a></span>ConfigFileParser()</h2>
+<a id="a2d119a482318309adc5c06efb97b10b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d119a482318309adc5c06efb97b10b6">&#9670;&nbsp;</a></span>ConfigFileParser()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,34 +147,112 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">ConfigFileParser::ConfigFileParser </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>configFile</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a13154b1c92a5ef3433f0e200001a7d56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13154b1c92a5ef3433f0e200001a7d56">&#9670;&nbsp;</a></span>~ConfigFileParser()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ConfigFileParser::~ConfigFileParser </td>
-          <td>(</td>
+          <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>PUBLIC Construct a new <a class="el" href="class_config_file_parser.html">ConfigFileParser</a>:: <a class="el" href="class_config_file_parser.html">ConfigFileParser</a> object. </p>
+
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8cpp_source.html#l00010">10</a> of file <a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    : m_configFile()</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    , m_serverIndex(0)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    , m_locationIndex(0)</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* validServerDirectiveNames[]</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        = { <span class="stringliteral">&quot;server_name&quot;</span>, <span class="stringliteral">&quot;listen&quot;</span>, <span class="stringliteral">&quot;host&quot;</span>, <span class="stringliteral">&quot;client_max_body_size&quot;</span>, <span class="stringliteral">&quot;error_page&quot;</span>, <span class="stringliteral">&quot;location&quot;</span>, <span class="stringliteral">&quot;root&quot;</span> };</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> validServerDirectiveNamesSize = <span class="keyword">sizeof</span>(validServerDirectiveNames) / <span class="keyword">sizeof</span>(validServerDirectiveNames[0]);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* validLocationDirectiveNames[] = { <span class="stringliteral">&quot;root&quot;</span>, <span class="stringliteral">&quot;index&quot;</span>, <span class="stringliteral">&quot;cgi_ext&quot;</span>, <span class="stringliteral">&quot;cgi_path&quot;</span>, <span class="stringliteral">&quot;client_max_body_size&quot;</span>,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="stringliteral">&quot;autoindex&quot;</span>, <span class="stringliteral">&quot;limit_except&quot;</span>, <span class="stringliteral">&quot;location&quot;</span>, <span class="stringliteral">&quot;return&quot;</span> };</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> validLocationDirectiveNamesSize</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        = <span class="keyword">sizeof</span>(validLocationDirectiveNames) / <span class="keyword">sizeof</span>(validLocationDirectiveNames[0]);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    m_validServerDirectives = std::vector&lt;std::string&gt;(validServerDirectiveNames,</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        validServerDirectiveNames</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            + validServerDirectiveNamesSize); <span class="comment">// NOLINT: no good alternative for pointer arithmetic</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    m_validLocationDirectives = std::vector&lt;std::string&gt;(validLocationDirectiveNames,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        validLocationDirectiveNames</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            + validLocationDirectiveNamesSize); <span class="comment">// NOLINT: no good alternative for pointer arithmetic</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+</div><!-- fragment -->
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="adfa2bf960814acd72729a07539bacfb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfa2bf960814acd72729a07539bacfb3">&#9670;&nbsp;</a></span>parseConfigFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_config_file.html">ConfigFile</a> &amp; ConfigFileParser::parseConfigFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>configFilePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses the config file into a <a class="el" href="struct_config_file.html">ConfigFile</a> object and returns this object. </p>
+<p>The function checks also if the config file:</p><ol type="1">
+<li>Can be opened</li>
+<li>Is not empty</li>
+<li>Does not contain open brackets</li>
+<li>Starts with 'http {'</li>
+<li>Contains minimum one server</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">configFilePath</td><td>Path to the config file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>const <a class="el" href="struct_config_file.html">ConfigFile</a>&amp; Created <a class="el" href="struct_config_file.html">ConfigFile</a> object </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8cpp_source.html#l00045">45</a> of file <a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    m_stream.open(configFilePath.c_str());</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">if</span> (!m_stream.is_open())</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to open config file&quot;</span>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (m_stream.peek() == std::ifstream::traits_type::eof())</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Config file is empty&quot;</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (isBracketOpen(configFilePath))</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Open bracket(s) in config file&quot;</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    readAndTrimLine();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (m_currentLine != <span class="stringliteral">&quot;http {&quot;</span>)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Config file does not start with &#39;http {&#39;&quot;</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">for</span> (readAndTrimLine(); m_currentLine != <span class="stringliteral">&quot;}&quot;</span>; readAndTrimLine()) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span> (m_currentLine == <span class="stringliteral">&quot;server {&quot;</span>) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">for</span> (readAndTrimLine(); m_currentLine != <span class="stringliteral">&quot;}&quot;</span>; readAndTrimLine())</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                readServerConfigLine();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            m_serverIndex++;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (m_configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.empty())</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;No server(s) in config file&quot;</span>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> m_configFile;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_config_file_parser_adfa2bf960814acd72729a07539bacfb3_icgraph.svg" width="348" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>inc/<a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a></li>
+<li>src/<a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

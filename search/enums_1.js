@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filetype_686',['fileType',['../class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765',1,'FileSystemPolicy']]]
+  ['connectionstatus_684',['ConnectionStatus',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7',1,'Connection']]]
 ];

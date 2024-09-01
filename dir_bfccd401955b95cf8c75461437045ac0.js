@@ -7,9 +7,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
       [ "AutoindexHandler", "class_autoindex_handler.html", "class_autoindex_handler" ]
     ] ],
     [ "ConfigFile.hpp", "_config_file_8hpp.html", "_config_file_8hpp" ],
-    [ "ConfigFileParser.hpp", "_config_file_parser_8hpp.html", [
-      [ "ConfigFileParser", "class_config_file_parser.html", "class_config_file_parser" ]
-    ] ],
+    [ "ConfigFileParser.hpp", "_config_file_parser_8hpp.html", "_config_file_parser_8hpp" ],
     [ "Connection.hpp", "_connection_8hpp.html", "_connection_8hpp" ],
     [ "Directory.hpp", "_directory_8hpp.html", [
       [ "Directory", "class_directory.html", "class_directory" ]
@@ -34,6 +32,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "LogOutputterFile.hpp", "_log_outputter_file_8hpp.html", [
       [ "LogOutputterFile", "classweblog_1_1_log_outputter_file.html", "classweblog_1_1_log_outputter_file" ]
     ] ],
+    [ "Method.hpp", "_method_8hpp.html", "_method_8hpp" ],
     [ "MockEpollWrapper.hpp", "_mock_epoll_wrapper_8hpp.html", [
       [ "MockEpollWrapper", "class_mock_epoll_wrapper.html", "class_mock_epoll_wrapper" ]
     ] ],

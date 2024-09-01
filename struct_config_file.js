@@ -1,4 +1,4 @@
 var struct_config_file =
 [
-    [ "serverConfigs", "struct_config_file.html#aa8d67488c32158bb0ffa47260071b18f", null ]
+    [ "servers", "struct_config_file.html#a100482324c74f5a4635cba3187b9fec7", null ]
 ];

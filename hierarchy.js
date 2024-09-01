@@ -7,6 +7,7 @@ var hierarchy =
     [ "AutoindexHandler", "class_autoindex_handler.html", null ],
     [ "ConfigFile", "struct_config_file.html", null ],
     [ "ConfigFileParser", "class_config_file_parser.html", null ],
+    [ "ConfigServer", "struct_config_server.html", null ],
     [ "Connection", "struct_connection.html", null ],
     [ "Directory", "class_directory.html", null ],
     [ "EpollWrapper", "class_epoll_wrapper.html", [
@@ -17,7 +18,6 @@ var hierarchy =
     ] ],
     [ "HTTPRequest", "struct_h_t_t_p_request.html", null ],
     [ "HTTPResponse", "struct_h_t_t_p_response.html", null ],
-    [ "LimitExcept", "struct_limit_except.html", null ],
     [ "Location", "struct_location.html", null ],
     [ "weblog::LogData", "classweblog_1_1_log_data.html", null ],
     [ "weblog::Logger", "classweblog_1_1_logger.html", null ],
@@ -25,7 +25,6 @@ var hierarchy =
     [ "ResponseBodyHandler", "class_response_body_handler.html", null ],
     [ "ResponseBuilder", "class_response_builder.html", null ],
     [ "Server", "class_server.html", null ],
-    [ "ServerConfig", "struct_server_config.html", null ],
     [ "Socket", "struct_socket.html", null ],
     [ "SocketPolicy", "class_socket_policy.html", [
       [ "MockSocketPolicy", "class_mock_socket_policy.html", null ]
@@ -38,11 +37,13 @@ var hierarchy =
       [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", null ],
       [ "CreateVirtualServerTest", "class_create_virtual_server_test.html", null ],
       [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", null ],
+      [ "InvalidConfigFileTests", "class_invalid_config_file_tests.html", null ],
       [ "OstreamInsertersTest", "class_ostream_inserters_test.html", null ],
       [ "RegisterConnectionTest", "class_register_connection_test.html", null ],
       [ "RegisterVirtualServerTest", "class_register_virtual_server_test.html", null ],
       [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", null ],
       [ "TargetResourceHandlerTest", "class_target_resource_handler_test.html", null ],
+      [ "ValidConfigFileTests", "class_valid_config_file_tests.html", null ],
       [ "isDuplicateServerTest", "classis_duplicate_server_test.html", null ]
     ] ],
     [ "URI", "struct_u_r_i.html", null ]

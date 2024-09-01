@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['connectionstatus_685',['ConnectionStatus',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7',1,'Connection']]]
+  ['block_683',['Block',['../_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a',1,'ConfigFileParser.hpp']]]
 ];

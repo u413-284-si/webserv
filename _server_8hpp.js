@@ -1,7 +1,7 @@
 var _server_8hpp =
 [
     [ "Server", "class_server.html", "class_server" ],
-    [ "initVirtualServers", "_server_8hpp.html#a46aa031e2a3f5155f10b988cca3fbb39", null ],
+    [ "initVirtualServers", "_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a", null ],
     [ "isDuplicateServer", "_server_8hpp.html#a4f6456b9a16154a6d320ae8b370285d6", null ],
     [ "createVirtualServer", "_server_8hpp.html#aa6ca6a0179cbb661c05aa6b2758f5389", null ],
     [ "handleEvent", "_server_8hpp.html#a4211c4d6b958979b39b3dfc8148c801a", null ],

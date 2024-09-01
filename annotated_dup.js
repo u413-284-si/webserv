@@ -12,6 +12,7 @@ var annotated_dup =
     [ "CheckForTimeoutTest", "class_check_for_timeout_test.html", "class_check_for_timeout_test" ],
     [ "ConfigFile", "struct_config_file.html", "struct_config_file" ],
     [ "ConfigFileParser", "class_config_file_parser.html", "class_config_file_parser" ],
+    [ "ConfigServer", "struct_config_server.html", "struct_config_server" ],
     [ "Connection", "struct_connection.html", "struct_connection" ],
     [ "ConnectionReceiveHeaderTest", "class_connection_receive_header_test.html", "class_connection_receive_header_test" ],
     [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", "class_connection_send_response_test" ],
@@ -22,8 +23,8 @@ var annotated_dup =
     [ "HTTPRequest", "struct_h_t_t_p_request.html", "struct_h_t_t_p_request" ],
     [ "HTTPResponse", "struct_h_t_t_p_response.html", "struct_h_t_t_p_response" ],
     [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", "class_init_virtual_servers_test" ],
+    [ "InvalidConfigFileTests", "class_invalid_config_file_tests.html", "class_invalid_config_file_tests" ],
     [ "isDuplicateServerTest", "classis_duplicate_server_test.html", "classis_duplicate_server_test" ],
-    [ "LimitExcept", "struct_limit_except.html", "struct_limit_except" ],
     [ "Location", "struct_location.html", "struct_location" ],
     [ "MockEpollWrapper", "class_mock_epoll_wrapper.html", "class_mock_epoll_wrapper" ],
     [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", "class_mock_file_system_policy" ],
@@ -36,10 +37,10 @@ var annotated_dup =
     [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", "class_response_body_handler_test" ],
     [ "ResponseBuilder", "class_response_builder.html", "class_response_builder" ],
     [ "Server", "class_server.html", "class_server" ],
-    [ "ServerConfig", "struct_server_config.html", "struct_server_config" ],
     [ "Socket", "struct_socket.html", "struct_socket" ],
     [ "SocketPolicy", "class_socket_policy.html", "class_socket_policy" ],
     [ "TargetResourceHandler", "class_target_resource_handler.html", "class_target_resource_handler" ],
     [ "TargetResourceHandlerTest", "class_target_resource_handler_test.html", "class_target_resource_handler_test" ],
-    [ "URI", "struct_u_r_i.html", "struct_u_r_i" ]
+    [ "URI", "struct_u_r_i.html", "struct_u_r_i" ],
+    [ "ValidConfigFileTests", "class_valid_config_file_tests.html", "class_valid_config_file_tests" ]
 ];
