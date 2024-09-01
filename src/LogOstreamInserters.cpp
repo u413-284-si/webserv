@@ -242,9 +242,12 @@ std::ostream& operator<<(std::ostream& ostream, const Socket& socket)
  */
 std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status)
 {
-	assert(status >= Connection::ReceiveHeader && status <= Connection::Closed);
+	assert(status >= Connection::Idle && status <= Connection::Closed);
 
 	switch (status) {
+	case Connection::Idle:
+		ostream << "Idle";
+		break;
 	case Connection::ReceiveHeader:
 		ostream << "ReceiveHeader";
 		break;
@@ -256,9 +259,6 @@ std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStat
 		break;
 	case Connection::SendResponse:
 		ostream << "SendResponse";
-		break;
-	case Connection::Idle:
-		ostream << "Idle";
 		break;
 	case Connection::Timeout:
 		ostream << "Timeout";

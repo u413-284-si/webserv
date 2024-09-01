@@ -580,19 +580,23 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  * After epoll reports an event on a client socket, this function is called to handle the connection. The event from the
  * client can either be incoming (EPOLLIN) or outgoing (EPOLLOUT).
  * This function dispatches to the correct subfunction depending on the connection state:
- * 1. Connection::ReceiveHeader (in): every new connection starts in this state. connectionReceiveHeader() reads the
+ * 1. Connection::Idle (in): every new connection starts in this state after it connects. Also if the connection is
+ * kept alive, it is in this state. When the client wants to send a request it changes the state to
+ * Connection::ReceiveHeader.
+ * 2. Connection::ReceiveHeader (in): every new connection starts in this state. connectionReceiveHeader() reads the
  * request header from the client and parses it. If the request header is complete, it changes the state to
  * Connection::ReceiveBody or Connection::BuildResponse.
- * 2. Connection::ReceiveBody (in): if the request header indicates a body, connectionReceiveBody() reads the body from
+ * 3. Connection::ReceiveBody (in): if the request header indicates a body, connectionReceiveBody() reads the body from
  * the client. If the body is complete, it changes the state to Connection::BuildResponse.
- * 3. Connection::BuildResponse (out): after a complete request (header and optional body) is received
+ * 4. Connection::BuildResponse (out): after a complete request (header and optional body) is received
  * connectionBuildResponse() builds the response for the client. It then changes the state to Connection::SendResponse
  * and also calls connectionSendResponse() to try to immediatly send the response to the client.
- * 4. Connection::SendResponse (out): connectionSendResponse() sends the response to the client. This dispatch happens
+ * 5. Connection::SendResponse (out): connectionSendResponse() sends the response to the client. This dispatch happens
  * only if the response is not completely sent the first time.
- * 5. Connection::Timeout (out): if the connection has timed out, connectionHandleTimeout() sets the request status to
+ * 6. Connection::Timeout (out): if the connection has timed out, connectionHandleTimeout() sets the request status to
  * timeout. Then it calls connectionBuildResponse() to build the error message, which then gets sent with
  * connectionSendResponse().
+ * 7. Connection::Closed (not reached): the connection is closed and can be cleaned. This case should not be reached.
  *
  * @param server The server object to handle the connection for.
  * @param clientFd The file descriptor of the client.
@@ -603,6 +607,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " for server: " << connection.m_serverSocket;
 
 	switch (connection.m_status) {
+	case (Connection::Idle):
+		connection.m_status = Connection::ReceiveHeader;
+		connectionReceiveHeader(server, clientFd, connection);
+		break;
 	case (Connection::ReceiveHeader):
 		connectionReceiveHeader(server, clientFd, connection);
 		break;
@@ -614,10 +622,6 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 		break;
 	case (Connection::SendResponse):
 		connectionSendResponse(server, clientFd, connection);
-		break;
-	case (Connection::Idle):
-		connection.m_status = Connection::ReceiveHeader;
-		connectionReceiveHeader(server, clientFd, connection);
 		break;
 	case (Connection::Timeout):
 		connectionHandleTimeout(server, clientFd, connection);

@@ -17,11 +17,11 @@ public:
 	Connection(const Socket& server, const Socket& client);
 
 	enum ConnectionStatus {
+		Idle, /**< Connection is connected, but no action is taken yet */
 		ReceiveHeader, /**< Client wants to send request header */
 		ReceiveBody, /**< Client wants to send request body */
 		BuildResponse, /**< Full request received, Server can build response */
 		SendResponse, /**< Server sends response */
-		Idle, /**< Connection is kept alive after response was received */
 		Timeout, /**< Timeout was reached after nothing happened in connection */
 		Closed /**< Connection resources can be released */
 		};
