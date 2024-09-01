@@ -755,27 +755,22 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 }
 
 /**
- * @brief Checks if the connection buffer contains a complete request body.
+ * @brief Checks if the HTTP request body has been completely received.
  *
- * A complete request body is determined by the presence of the "Content-Length" header or the "Transfer-Encoding"
- * header. If the "Content-Length" header is present, the function checks if the size of the connection buffer matches
- * the specified content length. If the "Transfer-Encoding" header is present, the function checks if the connection
- * buffer contains the end marker "0\r\n\r\n".
+ * This function determines whether the HTTP request body in the given connection
+ * has been completely received. If the request is not chunked, it checks whether
+ * the content length matches the buffer size. In case the buffer size is larger than
+ * the content length, the request status is set to StatusBadRequest.
+ * If the request is chunked, it checks for the presence of the chunked transfer
+ * termination sequence ("0\r\n\r\n").
  *
- * @param connectionBuffer The buffer to check for a complete request body.
- * @param request The HTTPRequest object containing the request headers.
- * @return true if the buffer contains a complete request body, false otherwise.
+ * @param connection A reference to the Connection object representing the current HTTP connection.
+ * @return true if the request body has been completely received, false otherwise.
  */
 bool isCompleteBody(Connection& connection)
 {
-	std::map<std::string, std::string>::const_iterator contentLengthIterator
-		= connection.m_request.headers.find("Content-Length");
-	std::map<std::string, std::string>::const_iterator transferEncodingIterator
-		= connection.m_request.headers.find("Transfer-Encoding");
-
-	if (contentLengthIterator != connection.m_request.headers.end()
-		&& transferEncodingIterator == connection.m_request.headers.end()) {
-		unsigned long contentLength = std::strtoul(contentLengthIterator->second.c_str(), NULL, decimalBase);
+	if (!connection.m_request.isChunked) {
+		unsigned long contentLength = std::strtoul(connection.m_request.headers.at("Content-Length").c_str(), NULL, 10);
 		if (contentLength < connection.m_buffer.size()) {
 			connection.m_request.httpStatus = StatusBadRequest;
 			return false;
@@ -783,8 +778,7 @@ bool isCompleteBody(Connection& connection)
 		if (contentLength == connection.m_buffer.size())
 			return true;
 	}
-	return transferEncodingIterator != connection.m_request.headers.end()
-		&& connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
+	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
 }
 
 /**
