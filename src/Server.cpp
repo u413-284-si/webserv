@@ -651,7 +651,6 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 	} else {
 		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
-		connection.m_timeSinceLastEvent = std::time(0);
 		if (isCompleteRequestHeader(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
 			try {
@@ -661,6 +660,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 				connection.m_status = Connection::BuildResponse;
 				server.modifyEvent(clientFd, EPOLLOUT);
 				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+				connection.m_timeSinceLastEvent = std::time(0);
 				return;
 			}
 			if (connection.m_request.hasBody)
@@ -680,6 +680,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 			}
 		}
 	}
+	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 /**
@@ -725,12 +726,12 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_buffer += buffer;
-		connection.m_timeSinceLastEvent = std::time(0);
 		if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
+			connection.m_timeSinceLastEvent = std::time(0);
 			return;
 		}
 		if (isCompleteBody(connection)) {
@@ -752,6 +753,7 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 			}
 		}
 	}
+	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 /**
