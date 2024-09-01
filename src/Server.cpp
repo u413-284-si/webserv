@@ -316,7 +316,7 @@ void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
 /**
  * @brief Wrapper function to RequestParser::clearParser.
  */
-void Server::clearParser() { m_requestParser.clearParser(); }
+void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
 
 /* ====== DISPATCH TO RESPONSEBUILDER ====== */
 

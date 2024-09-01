@@ -31,7 +31,7 @@ public:
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
 	void parseBody(const std::string& bodyString, HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
-	void clearParser();
+	void resetRequestStream();
 
 private:
 	std::istringstream m_requestStream;
@@ -63,5 +63,4 @@ private:
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
 	static size_t convertHex(const std::string& chunkSize);
-	void resetRequestStream();
 };

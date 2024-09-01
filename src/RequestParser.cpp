@@ -218,14 +218,11 @@ void RequestParser::clearRequest(HTTPRequest& request)
 }
 
 /**
- * @brief Clears the internal state of the RequestParser object.
+ * @brief Clears the contents of the RequestParser object.
  *
- * This function resets the internal state of the RequestParser by
- * setting the flags `m_hasBody` and `m_chunked` to `false`, and
- * clearing the contents of the `m_requestStream` stringstream.
+ * This function resets the internal request stream of the RequestParser object
+ * by clearing the stream and setting the stream's internal string to an empty string.
  */
-void RequestParser::clearParser() { resetRequestStream(); }
-
 void RequestParser::resetRequestStream()
 {
 	m_requestStream.clear();

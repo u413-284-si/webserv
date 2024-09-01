@@ -83,9 +83,7 @@ public:
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
 	void parseBody(const std::string& bodyString, HTTPRequest& request);
-	void clearParser();
-	bool hasBody();
-	bool isChunked();
+	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
 	void buildResponse(const HTTPRequest& request);
