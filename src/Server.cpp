@@ -79,7 +79,7 @@ void Server::run()
 		checkForTimeout(*this);
 		cleanupClosedConnections(*this);
 	}
-	LOG_INFO << "Server shutdown with signal " << g_SignalStatus;
+	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_SignalStatus);
 	g_SignalStatus = 0;
 	serverShutdown(*this);
 }
