@@ -339,10 +339,10 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 
-		if (isDuplicateServer(server, iter->host, webutils::toString(iter->port)))
+		if (isDuplicateServer(server, iter->host, iter->port))
 			continue;
 
-		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port)))
+		if (!createVirtualServer(server, iter->host, backlog, iter->port))
 			LOG_DEBUG << "Failed to add virtual server: " << iter->serverName;
 	}
 
