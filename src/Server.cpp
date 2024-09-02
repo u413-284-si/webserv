@@ -472,7 +472,7 @@ void runServer(Server& server)
 {
 	LOG_INFO << "Server started";
 
-	while (g_SignalStatus == 0) {
+	while (g_signalStatus == 0) {
 		const int nfds = server.waitForEvents();
 
 		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
@@ -482,8 +482,8 @@ void runServer(Server& server)
 		checkForTimeout(server);
 		cleanupClosedConnections(server);
 	}
-	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_SignalStatus);
-	g_SignalStatus = 0;
+	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_signalStatus);
+	g_signalStatus = 0;
 	serverShutdown(server);
 }
 
@@ -1002,7 +1002,7 @@ void serverShutdown(Server& server)
 	cleanupClosedConnections(server);
 
 	LOG_DEBUG << "Waiting for connections to finish";
-	while (g_SignalStatus == 0 && !server.getConnections().empty()) {
+	while (g_signalStatus == 0 && !server.getConnections().empty()) {
 		const int nfds = server.waitForEvents();
 
 		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
@@ -1013,8 +1013,8 @@ void serverShutdown(Server& server)
 		cleanupIdleConnections(server);
 		cleanupClosedConnections(server);
 	}
-	if (g_SignalStatus != 0)
-		LOG_INFO << "Server shutdown interrupted with signal " << g_SignalStatus;
+	if (g_signalStatus != 0)
+		LOG_INFO << "Server shutdown interrupted with signal " << g_signalStatus;
 	else
 		LOG_INFO << "Server shutdown";
 }

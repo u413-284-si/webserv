@@ -1,16 +1,18 @@
 #include "signalHandler.hpp"
 
-//NOLINTNEXTLINE: This is a global variable used in signalHandler
-volatile std::sig_atomic_t g_SignalStatus = 0;
+// NOLINTNEXTLINE: This is a global variable used in signalHandler
+volatile std::sig_atomic_t g_signalStatus = 0;
 
-void signalHandler(int signal)
-{
-	g_SignalStatus = signal;
-}
+/**
+ * @brief Simple signal handler that sets the global variable g_signalStatus to the signal number.
+ *
+ * @param signal The signal number.
+ */
+void signalHandler(int signal) { g_signalStatus = signal; }
 
 std::string signalNumToName(int signum)
 {
-	switch(signum) {
+	switch (signum) {
 	case SIGHUP:
 		return "SIGHUP";
 	case SIGINT:

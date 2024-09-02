@@ -76,7 +76,7 @@ TEST_F(ServerShutdownTest, InterruptedBySignal)
 
 	server.getConnections().at(dummyFd).m_status = Connection::ReceiveHeader;
 
-	g_SignalStatus = SIGINT;
+	g_signalStatus = SIGINT;
 
 	serverShutdown(server);
 
