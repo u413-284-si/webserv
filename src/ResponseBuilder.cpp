@@ -8,8 +8,7 @@
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
-	: m_configFile(configFile)
-	, m_activeServer(configFile.servers.begin())
+	: m_activeServer(configFile.servers.begin())
 	, m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {
@@ -178,7 +177,7 @@ void ResponseBuilder::initMIMETypes()
  */
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-	std::map<std::basic_string<char>, std::basic_string<char> >::const_iterator iter = m_mimeTypes.find(extension);
+		std::map<std::basic_string<char>, std::basic_string<char> >::const_iterator iter = m_mimeTypes.find(extension);
 	if (iter != m_mimeTypes.end()) {
 		return iter->second;
 	}
