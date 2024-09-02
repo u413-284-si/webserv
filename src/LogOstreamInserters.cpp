@@ -6,6 +6,7 @@
 #include "StatusCode.hpp"
 
 #include <cassert>
+#include <vector>
 
 /**
  * @brief Overload << operator to append a Location.
@@ -18,23 +19,19 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 {
 	ostream << "Path: " << location.path << '\n';
 	ostream << "Root: " << location.root << '\n';
-	ostream << "Index: " << location.index << '\n';
+	ostream << "Indices: " << '\n';
+	for (std::vector<std::string>::const_iterator it = location.indices.begin(); it != location.indices.end(); ++it)
+		ostream << "  " << *it << '\n';
 	ostream << "CGI extension: " << location.cgiExt << '\n';
 	ostream << "CGI path: " << location.cgiPath << '\n';
 	ostream << "Autoindex: " << location.isAutoindex << '\n';
-	ostream << "LimitExcept:\n";
-	ostream << "  Allowed methods:\n";
-	for (int i = 0; i < MethodCount; ++i) {
-		// NOLINTNEXTLINE: The bool array allowedMethods can never be out of bounds, since it has the same size as
-		// MethodCount.
-		if (location.limitExcept.allowedMethods[i])
-			ostream << "    " << static_cast<Method>(i) << '\n';
-	}
-	ostream << "  Allow: " << location.limitExcept.allow << '\n';
-	ostream << "  Deny: " << location.limitExcept.deny << '\n';
+	ostream << "Allowed methods:\n";
+	ostream << "  GET: " << location.allowedMethods[0] << '\n';
+	ostream << "  POST: " << location.allowedMethods[1] << '\n';
+	ostream << "  DELETE: " << location.allowedMethods[2] << '\n';
 	ostream << "Returns:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = location.returns.begin();
-		 it != location.returns.end(); ++it) {
+	for (std::map<statusCode, std::string>::const_iterator it = location.returns.begin(); it != location.returns.end();
+		 ++it) {
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	}
 	return ostream;
@@ -44,21 +41,21 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  * @brief Overload << operator to append a ServerConfig.
  *
  * @param ostream The output stream.
- * @param serverConfig The ServerConfig object.
+ * @param configServer The configServer object.
  * @return std::ostream& The output stream.
  */
-std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig)
+std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)
 {
-	ostream << "Server name: " << serverConfig.serverName << '\n';
-	ostream << "Host: " << serverConfig.host << '\n';
-	ostream << "Port: " << serverConfig.port << '\n';
-	ostream << "Max body size: " << serverConfig.maxBodySize << '\n';
+	ostream << "Server name: " << configServer.serverName << '\n';
+	ostream << "Host: " << configServer.host << '\n';
+	ostream << "Port: " << configServer.port << '\n';
+	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
-	for (std::map<unsigned short, std::string>::const_iterator it = serverConfig.errorPage.begin();
-		 it != serverConfig.errorPage.end(); ++it)
+	for (std::map<statusCode, std::string>::const_iterator it = configServer.errorPage.begin();
+		 it != configServer.errorPage.end(); ++it)
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	ostream << "Locations:\n";
-	for (std::vector<Location>::const_iterator it = serverConfig.locations.begin(); it != serverConfig.locations.end();
+	for (std::vector<Location>::const_iterator it = configServer.locations.begin(); it != configServer.locations.end();
 		 ++it)
 		ostream << *it;
 	return ostream;
@@ -74,8 +71,8 @@ std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile)
 {
 	ostream << "Config file:\n";
-	for (std::vector<ServerConfig>::const_iterator it = configFile.serverConfigs.begin();
-		 it != configFile.serverConfigs.end(); ++it)
+	for (std::vector<ConfigServer>::const_iterator it = configFile.servers.begin(); it != configFile.servers.end();
+		 ++it)
 		ostream << *it;
 	return ostream;
 }
@@ -148,6 +145,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 		break;
 	case StatusRequestTimeout:
 		ostream << "408 Request Timeout";
+		break;
+	case StatusRequestEntityTooLarge:
+		ostream << "413 Request Entity Too Large";
 		break;
 	case StatusRequestHeaderFieldsTooLarge:
 		ostream << "431 Request Header Fields Too Large";

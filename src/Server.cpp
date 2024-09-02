@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include <cassert>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -110,7 +109,7 @@ const std::map<int, Connection>& Server::getConnections() const { return m_conne
  *
  * @return const std::vector<ServerConfig>& Vector of server configs.
  */
-const std::vector<ServerConfig>& Server::getServerConfigs() const { return m_configFile.serverConfigs; }
+const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_configFile.servers; }
 
 /**
  * @brief Const Getter for client timeout.
@@ -301,20 +300,31 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 /* ====== DISPATCH TO REQUESTPARSER ====== */
 
 /**
- * @brief Wrapper function to RequestParser::parseHttpRequest.
+ * @brief Wrapper function to RequestParser::parseHeader.
  *
  * @param requestString The request string to parse.
  * @param request The HTTPRequest object to store the parsed request.
  */
-void Server::parseHttpRequest(const std::string& requestString, HTTPRequest& request)
+void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
 {
-	m_requestParser.parseHttpRequest(requestString, request);
+	m_requestParser.parseHeader(requestString, request);
+}
+
+/**
+ * @brief Wrapper function to RequestParser::parseBody.
+ *
+ * @param bodyString The body string to parse.
+ * @param request The HTTPRequest object to store the parsed body.
+ */
+void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
+{
+	m_requestParser.parseBody(bodyString, request);
 }
 
 /**
  * @brief Wrapper function to RequestParser::clearParser.
  */
-void Server::clearParser() { m_requestParser.clearParser(); }
+void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
 
 /* ====== DISPATCH TO RESPONSEBUILDER ====== */
 
@@ -348,11 +358,11 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @return true if at least one virtual server was added, false otherwise.
  */
-bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs)
+bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigServer>& serverConfigs)
 {
 	LOG_INFO << "Initializing virtual servers";
 
-	for (std::vector<ServerConfig>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 
@@ -640,11 +650,11 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 
 	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
 	if (bytesRead == -1) {
-		// Internal server error
+		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
-		// Connection closed by client
+		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(clientFd);
 		connection.m_status = Connection::Closed;
 	} else {
@@ -653,20 +663,29 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 		if (isCompleteRequestHeader(connection.m_buffer)) {
 			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
 			try {
-				server.parseHttpRequest(connection.m_buffer, connection.m_request);
-				server.clearParser();
+				server.parseHeader(connection.m_buffer, connection.m_request);
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+				connection.m_timeSinceLastEvent = std::time(0);
+				return;
+			}
+			if (connection.m_request.hasBody)
+				connection.m_status = Connection::ReceiveBody;
+			else {
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
 			}
 			connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
 			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
 				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
 			}
 		}
 	}
@@ -685,12 +704,93 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
 }
 
+/**
+ * @brief Receives the body of a connection.
+ *
+ * This function is responsible for receiving the body of a connection from the client.
+ * It reads data from the socket and appends it to the connection's buffer.
+ * If the buffer size exceeds the maximum allowed client request body size, an error is logged
+ * and the connection's HTTP status is set to StatusRequestEntityTooLarge.
+ * If the complete request body is received, it is parsed and the connection's status is set to BuildResponse.
+ * If an exception occurs during parsing, an error is logged and the connection's status is set to BuildResponse.
+ *
+ * @param server The server object.
+ * @param clientFd The file descriptor of the client socket.
+ * @param connection The connection object.
+ */
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 {
 	LOG_DEBUG << "ReceiveBody for: " << connection.m_clientSocket;
 
-	(void)server;
-	(void)clientFd;
+	char buffer[Server::s_clientBodyBufferSize] = {};
+
+	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, sizeof(buffer), 0);
+	if (bytesRead == -1) {
+		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
+		close(clientFd);
+		connection.m_status = Connection::Closed;
+	} else if (bytesRead == 0) {
+		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
+		close(clientFd);
+		connection.m_status = Connection::Closed;
+	} else {
+		connection.m_buffer += buffer;
+		if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
+			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(clientFd, EPOLLOUT);
+			connection.m_timeSinceLastEvent = std::time(0);
+			return;
+		}
+		if (isCompleteBody(connection)) {
+			LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+			try {
+				server.parseBody(connection.m_buffer, connection.m_request);
+			} catch (std::exception& e) {
+				LOG_ERROR << "Error: " << e.what();
+			}
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(clientFd, EPOLLOUT);
+			connection.m_buffer.erase(0);
+		} else {
+			LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+			if (connection.m_request.httpStatus == StatusBadRequest) {
+				LOG_ERROR << ERR_CONTENT_LENGTH;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+			}
+		}
+	}
+	connection.m_timeSinceLastEvent = std::time(0);
+}
+
+/**
+ * @brief Checks if the HTTP request body has been completely received.
+ *
+ * This function determines whether the HTTP request body in the given connection
+ * has been completely received. If the request is not chunked, it checks whether
+ * the content length matches the buffer size. In case the buffer size is larger than
+ * the content length, the request status is set to StatusBadRequest.
+ * If the request is chunked, it checks for the presence of the chunked transfer
+ * termination sequence ("0\r\n\r\n").
+ *
+ * @param connection A reference to the Connection object representing the current HTTP connection.
+ * @return true if the request body has been completely received, false otherwise.
+ */
+bool isCompleteBody(Connection& connection)
+{
+	if (!connection.m_request.isChunked) {
+		unsigned long contentLength
+			= std::strtoul(connection.m_request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+		if (contentLength < connection.m_buffer.size()) {
+			connection.m_request.httpStatus = StatusBadRequest;
+			return false;
+		}
+		if (contentLength == connection.m_buffer.size())
+			return true;
+	}
+	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
 }
 
 /**

@@ -25,7 +25,7 @@ public:
 
 	void buildResponse(const HTTPRequest& request);
 	std::string getResponse() const;
-	void setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer);
+	void setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer);
 
 private:
 	void appendStatusLine(const HTTPResponse& response);
@@ -36,7 +36,7 @@ private:
 	void resetStream();
 
 	std::map<std::string, std::string> m_mimeTypes;
-	std::vector<ServerConfig>::const_iterator m_activeServer;
+	std::vector<ConfigServer>::const_iterator m_activeServer;
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_responseStream;
 	bool m_isFirstTime;

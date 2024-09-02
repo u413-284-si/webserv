@@ -1,4 +1,5 @@
 #include "ConfigFile.hpp"
+#include "ConfigFileParser.hpp"
 #include "EpollWrapper.hpp"
 #include "Log.hpp"
 #include "LogData.hpp"
@@ -11,38 +12,38 @@
 
 ConfigFile createDummyConfig()
 {
-	Location location1 = {};
+	Location location1;
 	location1.path = "/";
 	location1.root = "/workspaces/webserv";
-	location1.index = "index.html";
+	location1.indices.push_back("index.htm");
 
-	ServerConfig serverConfig8080;
+	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
-	serverConfig8080.port = 8080;
 	serverConfig8080.host = "127.0.0.1";
+	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "root";
 
-	Location location2 = {};
+	Location location2;
 	location2.path = "/";
 	location2.root = "/workspaces/webserv/doc";
-	location2.index = "index.html";
+	location2.indices.push_back("index.htm");
 
-	ServerConfig serverConfig8090;
+	ConfigServer serverConfig8090;
 	serverConfig8090.locations.push_back(location2);
-	serverConfig8090.port = 8090;
 	serverConfig8090.host = "127.0.0.1";
+	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
 
-	ServerConfig serverConfig8090dupl;
+	ConfigServer serverConfig8090dupl;
 	serverConfig8090dupl.locations.push_back(location2);
-	serverConfig8090dupl.port = 8090;
 	serverConfig8090dupl.host = "127.0.0.1";
+	serverConfig8090dupl.port = "8090";
 	serverConfig8090dupl.serverName = "duplicate";
 
 	ConfigFile configFile;
-	configFile.serverConfigs.push_back(serverConfig8080);
-	configFile.serverConfigs.push_back(serverConfig8090);
-	configFile.serverConfigs.push_back(serverConfig8090dupl);
+	configFile.servers.push_back(serverConfig8080);
+	configFile.servers.push_back(serverConfig8090);
+	configFile.servers.push_back(serverConfig8090dupl);
 
 	return configFile;
 }
@@ -64,6 +65,8 @@ int main(int argc, char** argv)
 		SocketPolicy socketPolicy;
 		Server server(configFile, epollWrapper, socketPolicy);
 		initVirtualServers(server, 10, server.getServerConfigs());
+		ConfigFileParser parser;
+		parser.parseConfigFile(argv[1]);
 		server.run();
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();

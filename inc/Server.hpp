@@ -12,6 +12,7 @@
 #include "Socket.hpp"
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
+#include "error.hpp"
 
 #include <algorithm>
 #include <bits/types/time_t.h>
@@ -47,6 +48,8 @@ public:
 	static const time_t s_clientTimeout = 60; /**< Default timeout for a Connection in seconds */
 	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
 	static const std::size_t s_clientHeaderBufferSize = 1000; /**< Default buffer size for request header in Bytes */
+	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
+	static const std::size_t s_clientMaxBodySize = 1000000; /**< Default max size for request body in Bytes */
 
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
@@ -57,7 +60,7 @@ public:
 	const std::map<int, Socket>& getVirtualServers() const;
 	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
-	const std::vector<ServerConfig>& getServerConfigs() const;
+	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 
 	// Setters
@@ -79,8 +82,9 @@ public:
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
 	// Dispatch to RequestParser
-	void parseHttpRequest(const std::string& requestString, HTTPRequest& request);
-	void clearParser();
+	void parseHeader(const std::string& requestString, HTTPRequest& request);
+	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
 	void buildResponse(const HTTPRequest& request);
@@ -102,7 +106,7 @@ private:
 	Server& operator=(const Server& ref);
 };
 
-bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs);
+bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigServer>& serverConfigs);
 bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
@@ -114,6 +118,7 @@ void handleConnection(Server& server, int clientFd, Connection& connection);
 void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
+bool isCompleteBody(Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
