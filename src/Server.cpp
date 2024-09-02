@@ -907,6 +907,7 @@ void serverShutdown(Server& server)
 			handleEvent(server, *iter);
 		}
 		checkForTimeout(server);
+		cleanupIdleConnections(server);
 		cleanupClosedConnections(server);
 	}
 	if (g_SignalStatus != 0)
