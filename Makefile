@@ -126,7 +126,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			test_checkForTimeout.cpp \
-      test_ConfigFileParser.cpp \
+			test_ConfigFileParser.cpp \
 			test_connectionReceiveHeader.cpp \
 			test_connectionSendResponse.cpp \
 			test_createVirtualServer.cpp \
@@ -138,6 +138,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_registerVirtualServer.cpp \
 			testRequestLine.cpp \
 			test_ResponseBodyHandler.cpp \
+			test_serverShutdown.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
