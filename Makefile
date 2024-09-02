@@ -97,6 +97,8 @@ POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		ConfigFile.cpp \
+		ConfigFileParser.cpp \
 		Connection.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
@@ -124,6 +126,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_AutoindexHandler.cpp \
 			testBody.cpp \
 			test_checkForTimeout.cpp \
+      test_ConfigFileParser.cpp \
 			test_connectionReceiveHeader.cpp \
 			test_connectionSendResponse.cpp \
 			test_createVirtualServer.cpp \
