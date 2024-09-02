@@ -1,7 +1,5 @@
 #include "Server.hpp"
-#include "Log.hpp"
-#include "RequestParser.hpp"
-#include "error.hpp"
+#include "ConfigFile.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -112,7 +110,7 @@ const std::map<int, Connection>& Server::getConnections() const { return m_conne
  *
  * @return const std::vector<ServerConfig>& Vector of server configs.
  */
-const std::vector<ServerConfig>& Server::getServerConfigs() const { return m_configFile.serverConfigs; }
+const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_configFile.servers; }
 
 /**
  * @brief Const Getter for client timeout.
@@ -350,11 +348,11 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @return true if at least one virtual server was added, false otherwise.
  */
-bool initVirtualServers(Server& server, int backlog, const std::vector<ServerConfig>& serverConfigs)
+bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigServer>& serverConfigs)
 {
 	LOG_INFO << "Initializing virtual servers";
 
-	for (std::vector<ServerConfig>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 

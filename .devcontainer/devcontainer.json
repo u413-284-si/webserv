@@ -10,8 +10,22 @@
 			"extensions": [
 				"ms-vscode.cpptools-extension-pack",
 				"llvm-vs-code-extensions.vscode-clangd",
-				"cschlosser.doxdocgen"
-			]
+				"cschlosser.doxdocgen",
+				"ryanluker.vscode-coverage-gutters"
+			],
+			"settings": {
+				"coverage-gutters.coverageFileNames": [
+					"lcov.info",
+					"cov.xml",
+					"coverage.xml",
+					"jacoco.xml",
+					"coverage.cobertura.xml"
+				],
+				"coverage-gutters.showLineCoverage": true,
+				"coverage-gutters.showRulerCoverage": true,
+				"coverage-gutters.coverageReportFileName": "index.html",
+				"coverage-gutters.coverageBaseDir": ".vscode/coverage"
+			}
 		}
 	}
 

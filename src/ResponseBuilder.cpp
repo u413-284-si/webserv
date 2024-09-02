@@ -1,4 +1,5 @@
 #include "ResponseBuilder.hpp"
+#include "ConfigFile.hpp"
 
 /**
  * @brief Construct a new ResponseBuilder object
@@ -7,7 +8,8 @@
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
-	: m_activeServer(configFile.serverConfigs.begin())
+	: m_configFile(configFile)
+	, m_activeServer(configFile.servers.begin())
 	, m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {
@@ -20,7 +22,7 @@ ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemP
  * The active server is used for location searching.
  * @param activeServer Server to be set as active.
  */
-void ResponseBuilder::setActiveServer(const std::vector<ServerConfig>::const_iterator& activeServer)
+void ResponseBuilder::setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer)
 {
 	m_activeServer = activeServer;
 }
@@ -112,7 +114,8 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
  */
 void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
 {
-	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status) << "\r\n";
+	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status)
+					 << "\r\n";
 }
 
 /**
