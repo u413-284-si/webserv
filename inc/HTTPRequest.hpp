@@ -24,6 +24,8 @@ struct HTTPRequest {
 	std::string body;
 	statusCode httpStatus;
 	bool shallCloseConnection;
+	bool hasBody;
+	bool isChunked;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
