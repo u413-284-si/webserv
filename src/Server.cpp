@@ -978,9 +978,11 @@ void cleanupIdleConnections(Server& server)
 }
 
 /**
- * @brief Shuts down the server.
+ * @brief Performs a gracefule shutdown of the server.
  *
- * Closes all virtual servers, cleans up closed connections, and waits for all connections to finish.
+ * Closes all virtual servers, cleans up idle and closed connections. Then enters another event loop with an additional
+ * condition: as long as active connections exist. This second loop always cleans up idle connections. It can also
+ * be interrupted with another signal, which aborts the graceful shutdown.
  *
  * @param server The server object to shut down.
  * @sa https://pkg.go.dev/net/http#Server.Shutdown
