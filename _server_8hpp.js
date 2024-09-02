@@ -10,6 +10,7 @@ var _server_8hpp =
     [ "connectionReceiveHeader", "_server_8hpp.html#a06d0cb066f08d5567ea6ba4ef2897927", null ],
     [ "isCompleteRequestHeader", "_server_8hpp.html#a172c400277e73261d212c33f66226090", null ],
     [ "connectionReceiveBody", "_server_8hpp.html#a3f930db051b00ade521e2633cee948bd", null ],
+    [ "isCompleteBody", "_server_8hpp.html#a14a0c5a1227276017a19d9b52141c13a", null ],
     [ "connectionBuildResponse", "_server_8hpp.html#ac98878a19797a7f939c3a5ea1e028e56", null ],
     [ "connectionSendResponse", "_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f", null ],
     [ "connectionHandleTimeout", "_server_8hpp.html#abb21ebec72f9526fbba446f7d566117e", null ],

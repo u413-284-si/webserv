@@ -20,8 +20,9 @@ var class_server =
     [ "acceptSingleConnection", "class_server.html#ad8823ad2d9c9a94cfafb40e8e0653865", null ],
     [ "readFromSocket", "class_server.html#ae94e3d4b5743580a6fbe3228d58af423", null ],
     [ "writeToSocket", "class_server.html#a8bf2a41e8ddcccd54b5832b58211a283", null ],
-    [ "parseHttpRequest", "class_server.html#a66f581067167090977c733bd8823104f", null ],
-    [ "clearParser", "class_server.html#a1a35df1abb19d8504b05b890cc277333", null ],
+    [ "parseHeader", "class_server.html#a34bc61299318fe1918293b1d656ee5f9", null ],
+    [ "parseBody", "class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a", null ],
+    [ "resetRequestStream", "class_server.html#a99dea29de3836364c5191afe48f11ded", null ],
     [ "buildResponse", "class_server.html#a54550078a1a4dfdc827a1f39c01ca4e4", null ],
     [ "getResponse", "class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63", null ]
 ];

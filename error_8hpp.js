@@ -23,5 +23,6 @@ var error_8hpp =
     [ "ERR_CONVERSION_STRING_TO_HEX", "error_8hpp.html#a4ef1196daa4be81bd22cadb5d75314d6", null ],
     [ "ERR_CHUNK_SIZE", "error_8hpp.html#a748a4b4ee61f82715386b37db4de124b", null ],
     [ "ERR_CONVERSION_STRING_TO_SIZE_T", "error_8hpp.html#aac96487ebb5bcb2269002646865153ab", null ],
-    [ "ERR_CONTENT_LENGTH", "error_8hpp.html#a683508ef2f2400bcd0f5f5e02dfd85c5", null ]
+    [ "ERR_CONTENT_LENGTH", "error_8hpp.html#a683508ef2f2400bcd0f5f5e02dfd85c5", null ],
+    [ "ERR_UNEXPECTED_BODY", "error_8hpp.html#afef097336b6960957a448f3b0c632802", null ]
 ];

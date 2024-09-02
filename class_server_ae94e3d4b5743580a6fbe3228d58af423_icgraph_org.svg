@@ -20,17 +20,32 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="_server_8hpp.html#a06d0cb066f08d5567ea6ba4ef2897927" target="_top" xlink:title="Receive request header from a client.">
-<polygon fill="none" stroke="black" points="436,-19.5 436,-38.5 580,-38.5 580,-19.5 436,-19.5"/>
-<text text-anchor="middle" x="508" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveHeader</text>
+<g id="a_node2"><a xlink:href="_server_8hpp.html#a3f930db051b00ade521e2633cee948bd" target="_top" xlink:title="Receives the body of a connection.">
+<polygon fill="none" stroke="black" points="441,-38.5 441,-57.5 575,-57.5 575,-38.5 441,-38.5"/>
+<text text-anchor="middle" x="508" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveBody</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M605.61,-29C597.19,-29 588.63,-29 580.27,-29"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="605.79,-32.5 615.79,-29 605.79,-25.5 605.79,-32.5"/>
+<path fill="none" stroke="midnightblue" d="M605.69,-37.35C595.49,-38.47 585.1,-39.62 575.1,-40.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="606.24,-40.81 615.79,-36.24 605.47,-33.85 606.24,-40.81"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="_server_8hpp.html#a06d0cb066f08d5567ea6ba4ef2897927" target="_top" xlink:title="Receive request header from a client.">
+<polygon fill="none" stroke="black" points="436,-0.5 436,-19.5 580,-19.5 580,-0.5 436,-0.5"/>
+<text text-anchor="middle" x="508" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveHeader</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node1&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M605.61,-20.64C597.19,-19.71 588.63,-18.77 580.27,-17.85"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="605.47,-24.15 615.79,-21.76 606.24,-17.19 605.47,-24.15"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -44,23 +59,8 @@
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M425.73,-38.77C417.1,-39.81 408.51,-40.84 400.36,-41.82"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="426.35,-42.22 435.86,-37.56 425.51,-35.27 426.35,-42.22"/>
-</g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="test__connection_receive_header_8cpp.html#ae40546436ca5ae6d8af1f754dfff4a98" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="black" points="322,-0.5 322,-19.5 374,-19.5 374,-0.5 322,-0.5"/>
-<text text-anchor="middle" x="348" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">TEST_F</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node7 -->
-<g id="edge6" class="edge">
-<title>Node2&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M425.72,-19.23C406.89,-16.96 388.25,-14.72 374.05,-13.01"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="425.51,-22.73 435.86,-20.44 426.35,-15.78 425.51,-22.73"/>
+<path fill="none" stroke="midnightblue" d="M430.69,-48C420.42,-48 410.1,-48 400.41,-48"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="430.91,-51.5 440.91,-48 430.91,-44.5 430.91,-51.5"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
@@ -106,6 +106,27 @@
 <title>Node5&#45;&gt;Node6</title>
 <path fill="none" stroke="midnightblue" d="M66.85,-48C57.87,-48 48.85,-48 41.24,-48"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="66.91,-51.5 76.91,-48 66.91,-44.5 66.91,-51.5"/>
+</g>
+<!-- Node7&#45;&gt;Node3 -->
+<g id="edge7" class="edge">
+<title>Node7&#45;&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M457.24,-21.97C435.1,-27.29 409.39,-33.48 388.58,-38.48"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="458.23,-25.33 467.13,-19.59 456.59,-18.52 458.23,-25.33"/>
+</g>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="test__connection_receive_header_8cpp.html#ae40546436ca5ae6d8af1f754dfff4a98" target="_top" xlink:title=" ">
+<polygon fill="none" stroke="black" points="322,-0.5 322,-19.5 374,-19.5 374,-0.5 322,-0.5"/>
+<text text-anchor="middle" x="348" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">TEST_F</text>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node8 -->
+<g id="edge8" class="edge">
+<title>Node7&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M425.72,-10C406.89,-10 388.25,-10 374.05,-10"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="425.86,-13.5 435.86,-10 425.86,-6.5 425.86,-13.5"/>
 </g>
 </g>
 </svg>

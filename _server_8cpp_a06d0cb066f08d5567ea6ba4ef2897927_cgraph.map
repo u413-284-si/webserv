@@ -1,14 +1,11 @@
 <map id="connectionReceiveHeader" name="connectionReceiveHeader">
-<area shape="rect" id="node1" title="Receive request header from a client." alt="" coords="5,107,197,133"/>
-<area shape="rect" id="node2" href="$class_server.html#a1a35df1abb19d8504b05b890cc277333" title="Wrapper function to RequestParser::clearParser." alt="" coords="271,5,415,32"/>
-<area shape="rect" id="node4" href="$_server_8cpp.html#a172c400277e73261d212c33f66226090" title="Checks if the connection buffer contains a request header." alt="" coords="245,56,441,83"/>
-<area shape="rect" id="node5" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="266,107,421,133"/>
-<area shape="rect" id="node7" href="$class_server.html#a66f581067167090977c733bd8823104f" title="Wrapper function to RequestParser::parseHttpRequest." alt="" coords="249,157,438,184"/>
-<area shape="rect" id="node11" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="255,212,432,239"/>
-<area shape="rect" id="node3" href="$class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472" title="Clears the internal state of the RequestParser object." alt="" coords="500,5,695,32"/>
-<area shape="rect" id="node6" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="498,99,697,125"/>
-<area shape="rect" id="node8" href="$class_request_parser.html#a8e0a311661699efacd6aaaf25ddc6043" title="Parses an HTTP request string into an HTTPRequest object." alt="" coords="504,150,691,191"/>
-<area shape="rect" id="node9" href="$namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9" title="Removes leading whitespaces from a given string." alt="" coords="753,128,1000,155"/>
-<area shape="rect" id="node10" href="$namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c" title="Trims trailing white spaces from a string." alt="" coords="778,179,975,221"/>
-<area shape="rect" id="node12" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="489,216,705,243"/>
+<area shape="rect" id="node1" title="Receive request header from a client." alt="" coords="5,81,197,108"/>
+<area shape="rect" id="node2" href="$_server_8cpp.html#a172c400277e73261d212c33f66226090" title="Checks if the connection buffer contains a request header." alt="" coords="245,5,441,32"/>
+<area shape="rect" id="node3" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="266,56,421,83"/>
+<area shape="rect" id="node5" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="266,107,421,133"/>
+<area shape="rect" id="node8" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="255,157,432,184"/>
+<area shape="rect" id="node4" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="498,56,697,83"/>
+<area shape="rect" id="node6" href="$class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" title="Parses the header of an HTTP request." alt="" coords="494,107,701,133"/>
+<area shape="rect" id="node7" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="753,99,963,141"/>
+<area shape="rect" id="node9" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="489,157,705,184"/>
 </map>

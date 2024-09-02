@@ -131,12 +131,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8fb6cbc48d21effd4c63cff921f5c697"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request_parser.html#a8fb6cbc48d21effd4c63cff921f5c697">RequestParser</a> ()</td></tr>
 <tr class="memdesc:a8fb6cbc48d21effd4c63cff921f5c697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="class_request_parser.html">RequestParser</a> object.  <a href="class_request_parser.html#a8fb6cbc48d21effd4c63cff921f5c697">More...</a><br /></td></tr>
 <tr class="separator:a8fb6cbc48d21effd4c63cff921f5c697"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e0a311661699efacd6aaaf25ddc6043"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request_parser.html#a8e0a311661699efacd6aaaf25ddc6043">parseHttpRequest</a> (const std::string &amp;requestString, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
-<tr class="memdesc:a8e0a311661699efacd6aaaf25ddc6043"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an HTTP request string into an <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object.  <a href="class_request_parser.html#a8e0a311661699efacd6aaaf25ddc6043">More...</a><br /></td></tr>
-<tr class="separator:a8e0a311661699efacd6aaaf25ddc6043"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ee441b50aa49dc6ea80708ae079f472"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472">clearParser</a> ()</td></tr>
-<tr class="memdesc:a8ee441b50aa49dc6ea80708ae079f472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the internal state of the <a class="el" href="class_request_parser.html">RequestParser</a> object.  <a href="class_request_parser.html#a8ee441b50aa49dc6ea80708ae079f472">More...</a><br /></td></tr>
-<tr class="separator:a8ee441b50aa49dc6ea80708ae079f472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a933b43673d0b7b99d6cc310f5c03a865"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">parseHeader</a> (const std::string &amp;headerString, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
+<tr class="memdesc:a933b43673d0b7b99d6cc310f5c03a865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the header of an HTTP request.  <a href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">More...</a><br /></td></tr>
+<tr class="separator:a933b43673d0b7b99d6cc310f5c03a865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5111f16124d227775d963e6ca24ddca0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request_parser.html#a5111f16124d227775d963e6ca24ddca0">parseBody</a> (const std::string &amp;bodyString, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
+<tr class="memdesc:a5111f16124d227775d963e6ca24ddca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the body of an HTTP request.  <a href="class_request_parser.html#a5111f16124d227775d963e6ca24ddca0">More...</a><br /></td></tr>
+<tr class="separator:a5111f16124d227775d963e6ca24ddca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e0fc22eb113d78140e257f002df666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">resetRequestStream</a> ()</td></tr>
+<tr class="memdesc:ad8e0fc22eb113d78140e257f002df666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the contents of the <a class="el" href="class_request_parser.html">RequestParser</a> object.  <a href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">More...</a><br /></td></tr>
+<tr class="separator:ad8e0fc22eb113d78140e257f002df666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -146,7 +149,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_request_parser_8hpp_source.html#l00022">22</a> of file <a class="el" href="_request_parser_8hpp_source.html">RequestParser.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_request_parser_8hpp_source.html#l00027">27</a> of file <a class="el" href="_request_parser_8hpp_source.html">RequestParser.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8fb6cbc48d21effd4c63cff921f5c697"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8fb6cbc48d21effd4c63cff921f5c697">&#9670;&nbsp;</a></span>RequestParser()</h2>
@@ -166,26 +169,23 @@ Static Public Member Functions</h2></td></tr>
 <p>Constructs a new <a class="el" href="class_request_parser.html">RequestParser</a> object. </p>
 <p>This constructor initializes the <a class="el" href="class_request_parser.html">RequestParser</a> object with default values. The <code>m_hasBody</code> member is set to <code>false</code> and the <code>m_chunked</code> member is set to <code>false</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00245">245</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    : m_hasBody(<span class="keyword">false</span>)</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    , m_chunked(<span class="keyword">false</span>)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00240">240</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8e0a311661699efacd6aaaf25ddc6043"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e0a311661699efacd6aaaf25ddc6043">&#9670;&nbsp;</a></span>parseHttpRequest()</h2>
+<a id="a933b43673d0b7b99d6cc310f5c03a865"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a933b43673d0b7b99d6cc310f5c03a865">&#9670;&nbsp;</a></span>parseHeader()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void RequestParser::parseHttpRequest </td>
+          <td class="memname">void RequestParser::parseHeader </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>requestString</em>, </td>
+          <td class="paramname"><em>headerString</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -201,114 +201,107 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parses an HTTP request string into an <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object. </p>
-<p>This function takes a raw HTTP request string and parses it into an <code><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a></code> object. The parsing process involves several steps:</p><ol type="1">
-<li>Parsing the request line (method, <a class="el" href="struct_u_r_i.html">URI</a>, and version).</li>
-<li>Parsing the headers.</li>
-<li>Parsing the body (if any).</li>
-</ol>
-<p>If any errors are encountered during parsing, an appropriate error code is set, and a <code>std::runtime_error</code> is thrown.</p>
+<p>Parses the header of an HTTP request. </p>
+<p>This function takes a string representation of an HTTP request header. It extracts the request line and headers from the request string and populates the provided <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object with the parsed data.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">requestString</td><td>The raw HTTP request string to be parsed. </td></tr>
-    <tr><td class="paramname">request</td><td>The HTTP request object to be filled. </td></tr>
+    <tr><td class="paramname">headerString</td><td>The string representation of the HTTP request header. </td></tr>
+    <tr><td class="paramname">request</td><td>The <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object to populate with the parsed data.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>If there is any error during parsing. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>If the request line or the headers do not conform to the RFC standards. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00269">269</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;{</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    m_requestStream.str(requestString);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="comment">// Step 1: Parse the request-line</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    std::string requestLine;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keywordflow">if</span> (!std::getline(m_requestStream, requestLine) || requestLine.empty()) {</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<a class="code" href="error_8hpp.html#a47ad454679e145a82462de3256ebb3b1">ERR_MISS_REQUEST_LINE</a>);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    requestLine = parseMethod(requestLine, request);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    requestLine = checkForSpace(requestLine, request);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    requestLine = parseUri(requestLine, request);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    requestLine = checkForSpace(requestLine, request);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    requestLine = parseVersion(requestLine, request);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    checkForCRLF(requestLine, request);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Parsed method: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a>;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Parsed URI: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a146c27ea8ef0e7887872df7a8181761a">query</a> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#aa9e91efbeac254de6ed01466a1529e9c">fragment</a>;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Parsed version: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a43bc8f1491f1e18d513426ee581a35fa">version</a>;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// Step 2: Parse headers</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    std::string headerLine;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="comment">// The end of the headers section is marked by an empty line (\r\n\r\n).</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordflow">while</span> (!std::getline(m_requestStream, headerLine).fail() &amp;&amp; headerLine != <span class="stringliteral">&quot;\r&quot;</span> &amp;&amp; !headerLine.empty()) {</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">if</span> (headerLine[0] == <span class="charliteral">&#39; &#39;</span> || headerLine[0] == <span class="charliteral">&#39;\t&#39;</span>) {</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <span class="keywordflow">throw</span> std::runtime_error(<a class="code" href="error_8hpp.html#acd2321beeb370570a6a3898a9949d936">ERR_OBSOLETE_LINE_FOLDING</a>);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        std::string headerName;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        std::string headerValue;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keyword">const</span> std::size_t delimiterPos = headerLine.find_first_of(<span class="charliteral">&#39;:&#39;</span>);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">if</span> (delimiterPos != std::string::npos) {</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            headerName = headerLine.substr(0, delimiterPos);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            checkHeaderName(headerName, request);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            headerValue = headerLine.substr(delimiterPos + 1);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            ;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            <span class="keywordflow">if</span> (headerValue[headerValue.size() - 1] == <span class="charliteral">&#39;\r&#39;</span>)</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                headerValue.erase(headerValue.size() - 1);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            headerValue = <a class="code" href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a>(headerValue);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            <a class="code" href="namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c">webutils::trimTrailingWhiteSpaces</a>(headerValue);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            checkContentLength(headerName, headerValue, request);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            request.<a class="code" href="struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf">headers</a>[headerName] = headerValue;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Parsed header: &quot;</span> &lt;&lt; headerName &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; headerValue;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    }</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    checkTransferEncoding(request);</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keywordflow">if</span> (headerLine != <span class="stringliteral">&quot;\r&quot;</span>) {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<a class="code" href="error_8hpp.html#aaffe3522c8d576bf82765bd70b45f9ec">ERR_MISS_CRLF</a>);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    }</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="comment">// Step 3: Parse body (if any)</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">if</span> (m_hasBody) {</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="keywordflow">if</span> (m_chunked)</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            parseChunkedBody(request);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            parseNonChunkedBody(request);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Parsed body: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">body</a>;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
-<div class="ttc" id="a_log_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00010">Log.hpp:10</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a></div><div class="ttdeci">@ StatusBadRequest</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
-<div class="ttc" id="aerror_8hpp_html_a47ad454679e145a82462de3256ebb3b1"><div class="ttname"><a href="error_8hpp.html#a47ad454679e145a82462de3256ebb3b1">ERR_MISS_REQUEST_LINE</a></div><div class="ttdeci">#define ERR_MISS_REQUEST_LINE</div><div class="ttdef"><b>Definition:</b> <a href="error_8hpp_source.html#l00008">error.hpp:8</a></div></div>
-<div class="ttc" id="aerror_8hpp_html_aaffe3522c8d576bf82765bd70b45f9ec"><div class="ttname"><a href="error_8hpp.html#aaffe3522c8d576bf82765bd70b45f9ec">ERR_MISS_CRLF</a></div><div class="ttdeci">#define ERR_MISS_CRLF</div><div class="ttdef"><b>Definition:</b> <a href="error_8hpp_source.html#l00007">error.hpp:7</a></div></div>
-<div class="ttc" id="aerror_8hpp_html_acd2321beeb370570a6a3898a9949d936"><div class="ttname"><a href="error_8hpp.html#acd2321beeb370570a6a3898a9949d936">ERR_OBSOLETE_LINE_FOLDING</a></div><div class="ttdeci">#define ERR_OBSOLETE_LINE_FOLDING</div><div class="ttdef"><b>Definition:</b> <a href="error_8hpp_source.html#l00009">error.hpp:9</a></div></div>
-<div class="ttc" id="anamespacewebutils_html_a1f12db3d349c3e715f7eee3cbb035c3c"><div class="ttname"><a href="namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c">webutils::trimTrailingWhiteSpaces</a></div><div class="ttdeci">void trimTrailingWhiteSpaces(std::string &amp;str)</div><div class="ttdoc">Trims trailing white spaces from a string.</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8cpp_source.html#l00041">utilities.cpp:41</a></div></div>
-<div class="ttc" id="anamespacewebutils_html_a63365cb0853efe9bea46d8a83fe463e9"><div class="ttname"><a href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a></div><div class="ttdeci">std::string trimLeadingWhitespaces(const std::string &amp;str)</div><div class="ttdoc">Removes leading whitespaces from a given string.</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8cpp_source.html#l00020">utilities.cpp:20</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_a43bc8f1491f1e18d513426ee581a35fa"><div class="ttname"><a href="struct_h_t_t_p_request.html#a43bc8f1491f1e18d513426ee581a35fa">HTTPRequest::version</a></div><div class="ttdeci">std::string version</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00022">HTTPRequest.hpp:22</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_a4ab3aefab7679eeb2b4e97f7043bdff3"><div class="ttname"><a href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">HTTPRequest::httpStatus</a></div><div class="ttdeci">statusCode httpStatus</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00025">HTTPRequest.hpp:25</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_a67c428c2e03ff5e9e3fc4403ba9377a9"><div class="ttname"><a href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">HTTPRequest::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00020">HTTPRequest.hpp:20</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_a7f295acd62075df13848bd3103c89bbf"><div class="ttname"><a href="struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf">HTTPRequest::headers</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; headers</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00023">HTTPRequest.hpp:23</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00021">HTTPRequest.hpp:21</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_aca4c75c911f0de6d36648d3c519d396b"><div class="ttname"><a href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">HTTPRequest::body</a></div><div class="ttdeci">std::string body</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00024">HTTPRequest.hpp:24</a></div></div>
-<div class="ttc" id="astruct_u_r_i_html_a146c27ea8ef0e7887872df7a8181761a"><div class="ttname"><a href="struct_u_r_i.html#a146c27ea8ef0e7887872df7a8181761a">URI::query</a></div><div class="ttdeci">std::string query</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00015">HTTPRequest.hpp:15</a></div></div>
-<div class="ttc" id="astruct_u_r_i_html_a18b7b6f3328197824e58dc4cf46301df"><div class="ttname"><a href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">URI::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00014">HTTPRequest.hpp:14</a></div></div>
-<div class="ttc" id="astruct_u_r_i_html_aa9e91efbeac254de6ed01466a1529e9c"><div class="ttname"><a href="struct_u_r_i.html#aa9e91efbeac254de6ed01466a1529e9c">URI::fragment</a></div><div class="ttdeci">std::string fragment</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00016">HTTPRequest.hpp:16</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00258">258</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;{</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    m_requestStream.str(headerString);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    parseRequestLine(request);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    parseHeaders(request);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">resetRequestStream</a>();</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;}</div>
+<div class="ttc" id="aclass_request_parser_html_ad8e0fc22eb113d78140e257f002df666"><div class="ttname"><a href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">RequestParser::resetRequestStream</a></div><div class="ttdeci">void resetRequestStream()</div><div class="ttdoc">Clears the contents of the RequestParser object.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00226">RequestParser.cpp:226</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_request_parser_a8e0a311661699efacd6aaaf25ddc6043_cgraph.svg" width="492" height="104"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_request_parser_a933b43673d0b7b99d6cc310f5c03a865_cgraph.svg" width="475" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_request_parser_a8e0a311661699efacd6aaaf25ddc6043_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_request_parser_a933b43673d0b7b99d6cc310f5c03a865_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a5111f16124d227775d963e6ca24ddca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5111f16124d227775d963e6ca24ddca0">&#9670;&nbsp;</a></span>parseBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RequestParser::parseBody </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bodyString</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses the body of an HTTP request. </p>
+<p>This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body and populates the provided <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object with the parsed data. The parsing logic depends on whether the request is chunked or non-chunked.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bodyString</td><td>The string representation of the request body. </td></tr>
+    <tr><td class="paramname">request</td><td>The <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object to populate with the parsed data.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>If there is an error parsing the body, an exception is thrown with an appropriate error message. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00568">568</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;{</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    m_requestStream.str(bodyString);</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <span class="keywordflow">if</span> (request.<a class="code" href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">isChunked</a>)</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        parseChunkedBody(request);</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        parseNonChunkedBody(request);</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    <a class="code" href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">resetRequestStream</a>();</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;}</div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_ac894099e690bcad5b4c6423c00b75017"><div class="ttname"><a href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">HTTPRequest::isChunked</a></div><div class="ttdeci">bool isChunked</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00028">HTTPRequest.hpp:28</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_request_parser_a5111f16124d227775d963e6ca24ddca0_cgraph.svg" width="460" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_request_parser_a5111f16124d227775d963e6ca24ddca0_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -347,38 +340,41 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00209">209</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;{</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a> = <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#aa9e91efbeac254de6ed01466a1529e9c">fragment</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a146c27ea8ef0e7887872df7a8181761a">query</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a43bc8f1491f1e18d513426ee581a35fa">version</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf">headers</a>.clear();</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">body</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4">shallCloseConnection</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00207">207</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;{</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a> = <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#aa9e91efbeac254de6ed01466a1529e9c">fragment</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a146c27ea8ef0e7887872df7a8181761a">query</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a43bc8f1491f1e18d513426ee581a35fa">version</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf">headers</a>.clear();</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">body</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    request.<a class="code" href="struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4">shallCloseConnection</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;}</div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a></div><div class="ttdeci">@ MethodCount</div><div class="ttdef"><b>Definition:</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a43bc8f1491f1e18d513426ee581a35fa"><div class="ttname"><a href="struct_h_t_t_p_request.html#a43bc8f1491f1e18d513426ee581a35fa">HTTPRequest::version</a></div><div class="ttdeci">std::string version</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00022">HTTPRequest.hpp:22</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a4ab3aefab7679eeb2b4e97f7043bdff3"><div class="ttname"><a href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">HTTPRequest::httpStatus</a></div><div class="ttdeci">statusCode httpStatus</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00025">HTTPRequest.hpp:25</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a67c428c2e03ff5e9e3fc4403ba9377a9"><div class="ttname"><a href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">HTTPRequest::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00020">HTTPRequest.hpp:20</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a7f295acd62075df13848bd3103c89bbf"><div class="ttname"><a href="struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf">HTTPRequest::headers</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; headers</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00023">HTTPRequest.hpp:23</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00021">HTTPRequest.hpp:21</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_aca4c75c911f0de6d36648d3c519d396b"><div class="ttname"><a href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">HTTPRequest::body</a></div><div class="ttdeci">std::string body</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00024">HTTPRequest.hpp:24</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_afc0f4c6d53b455a67ea264dbfc3be0e4"><div class="ttname"><a href="struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4">HTTPRequest::shallCloseConnection</a></div><div class="ttdeci">bool shallCloseConnection</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00026">HTTPRequest.hpp:26</a></div></div>
-</div><!-- fragment --><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_request_parser_a9383bdfff36571b0351a90e968288b62_icgraph.svg" width="322" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="ttc" id="astruct_u_r_i_html_a146c27ea8ef0e7887872df7a8181761a"><div class="ttname"><a href="struct_u_r_i.html#a146c27ea8ef0e7887872df7a8181761a">URI::query</a></div><div class="ttdeci">std::string query</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00015">HTTPRequest.hpp:15</a></div></div>
+<div class="ttc" id="astruct_u_r_i_html_a18b7b6f3328197824e58dc4cf46301df"><div class="ttname"><a href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">URI::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00014">HTTPRequest.hpp:14</a></div></div>
+<div class="ttc" id="astruct_u_r_i_html_aa9e91efbeac254de6ed01466a1529e9c"><div class="ttname"><a href="struct_u_r_i.html#aa9e91efbeac254de6ed01466a1529e9c">URI::fragment</a></div><div class="ttdeci">std::string fragment</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00016">HTTPRequest.hpp:16</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-
-</div>
-</div>
-<a id="a8ee441b50aa49dc6ea80708ae079f472"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ee441b50aa49dc6ea80708ae079f472">&#9670;&nbsp;</a></span>clearParser()</h2>
+<a id="ad8e0fc22eb113d78140e257f002df666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8e0fc22eb113d78140e257f002df666">&#9670;&nbsp;</a></span>resetRequestStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void RequestParser::clearParser </td>
+          <td class="memname">void RequestParser::resetRequestStream </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -386,20 +382,18 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Clears the internal state of the <a class="el" href="class_request_parser.html">RequestParser</a> object. </p>
-<p>This function resets the internal state of the <a class="el" href="class_request_parser.html">RequestParser</a> by setting the flags <code>m_hasBody</code> and <code>m_chunked</code> to <code>false</code>, and clearing the contents of the <code>m_requestStream</code> stringstream. </p>
+<p>Clears the contents of the <a class="el" href="class_request_parser.html">RequestParser</a> object. </p>
+<p>This function resets the internal request stream of the <a class="el" href="class_request_parser.html">RequestParser</a> object by clearing the stream and setting the stream's internal string to an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00229">229</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;{</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    m_hasBody = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    m_chunked = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    m_requestStream.clear();</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    m_requestStream.str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_request_parser_8cpp_source.html#l00226">226</a> of file <a class="el" href="_request_parser_8cpp_source.html">RequestParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;{</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    m_requestStream.clear();</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    m_requestStream.str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_request_parser_a8ee441b50aa49dc6ea80708ae079f472_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_request_parser_ad8e0fc22eb113d78140e257f002df666_icgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
