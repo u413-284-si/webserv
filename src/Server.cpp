@@ -52,38 +52,6 @@ Server::~Server()
 	}
 }
 
-/* ====== MEMBER FUNCTIONS ====== */
-
-/**
- * @brief Runs the main event loop.
- *
- * This functions enters a continuous loop to handle incoming events == connections.
- * It waits for events with the EpollWrapper.
- * If a vector of events is returned it processes all of them via handleEvent().
- * When events are processed or the waitForEvents() timeout happens checks for connection timeouts with
- * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
- *
- * @throws std::runtime_error if waitForEvents() encounters an error.
- */
-void Server::run()
-{
-	LOG_INFO << "Server started";
-
-	while (g_SignalStatus == 0) {
-		const int nfds = m_epollWrapper.waitForEvents();
-
-		for (std::vector<struct epoll_event>::const_iterator iter = m_epollWrapper.eventsBegin();
-			 iter != m_epollWrapper.eventsBegin() + nfds; ++iter) {
-			handleEvent(*this, *iter);
-		}
-		checkForTimeout(*this);
-		cleanupClosedConnections(*this);
-	}
-	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_SignalStatus);
-	g_SignalStatus = 0;
-	serverShutdown(*this);
-}
-
 /* ====== GETTERS ====== */
 
 /**
@@ -474,6 +442,39 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
 }
 
 /* ====== EVENT HANDLING ====== */
+
+/**
+ * @brief Runs the main event loop with a server object.
+ *
+ * This functions enters a continuous loop to handle incoming events == connections.
+ * It waits for events with the EpollWrapper.
+ * If a vector of events is returned it processes all of them via handleEvent().
+ * When events are processed or the server.waitForEvents() timeout happens checks for connection timeouts with
+ * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
+ * The loop continues until a signal is received and saved in g_SignalStatus. It then logs the signal and calls
+ * serverShutdown().
+ *
+ * @param server The server object to run the event loop for.
+ * @throws std::runtime_error if waitForEvents() encounters an error.
+ */
+void runServer(Server& server)
+{
+	LOG_INFO << "Server started";
+
+	while (g_SignalStatus == 0) {
+		const int nfds = server.waitForEvents();
+
+		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
+			 iter != server.eventsBegin() + nfds; ++iter) {
+			handleEvent(server, *iter);
+		}
+		checkForTimeout(server);
+		cleanupClosedConnections(server);
+	}
+	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_SignalStatus);
+	g_SignalStatus = 0;
+	serverShutdown(server);
+}
 
 /**
  * @brief Accepts new connections or handles existing ones

@@ -51,8 +51,6 @@ public:
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
 
-	void run();
-
 	// Getters
 	std::map<int, Socket>& getVirtualServers();
 	const std::map<int, Socket>& getVirtualServers() const;
@@ -109,6 +107,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
+void runServer(Server& server);
 void handleEvent(Server& server, struct epoll_event);
 
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
