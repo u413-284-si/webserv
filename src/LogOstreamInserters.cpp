@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  * @brief Overload << operator to append a ServerConfig.
  *
  * @param ostream The output stream.
- * @param serverConfig The ServerConfig object.
+ * @param configServer The ServerConfig object.
  * @return std::ostream& The output stream.
  */
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)

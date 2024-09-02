@@ -161,7 +161,7 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block bloc
  * 2. The number of dots must be 3
  * 3. The numbers within the ip address can not be smaller than 0 or greater than 255
  *
- * @param ip The ip address to check
+ * @param ipAddress The ip address to check
  * @return true If the ip address is valid
  * @return false If the ip address is not valid
  */
