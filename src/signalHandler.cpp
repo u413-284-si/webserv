@@ -10,6 +10,12 @@ volatile std::sig_atomic_t g_signalStatus = 0;
  */
 void signalHandler(int signal) { g_signalStatus = signal; }
 
+/**
+ * @brief Converts a signal number to its name.
+ *
+ * @param signum The signal number.
+ * @return std::string The signal name.
+ */
 std::string signalNumToName(int signum)
 {
 	switch (signum) {
