@@ -54,11 +54,11 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		throw std::runtime_error("Open bracket(s) in config file");
 
 	readAndTrimLine();
-	if (m_currentLine != "http {")
+	if (getDirective(m_currentLine) != "http")
 		throw std::runtime_error("Config file does not start with 'http {'");
 
 	for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine()) {
-		if (m_currentLine == "server {") {
+		if (getDirective(m_currentLine) == "server") {
 			ConfigServer server;
 			m_configFile.servers.push_back(server);
 			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
