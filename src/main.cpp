@@ -1,15 +1,6 @@
-#include "ConfigFile.hpp"
 #include "ConfigFileParser.hpp"
-#include "EpollWrapper.hpp"
 #include "Log.hpp"
-#include "LogData.hpp"
-#include "LogOutputterConsole.hpp"
-#include "LogOutputterFile.hpp"
-#include "ResponseBuilder.hpp"
 #include "Server.hpp"
-#include "SocketPolicy.hpp"
-#include "signalHandler.hpp"
-#include <cerrno>
 
 int main(int argc, char** argv)
 {
@@ -18,6 +9,11 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	// Return of SIG_ERR in case of failure of std::signal() is specified in man page.
+	// This line generates two errors: C-Style cast and downcast impacts.
+	// 1. Reinterpret_cast would generate another error, so just deactivated.
+	// 2. There is no performance lost by downcasting, since its a simple check.
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
 	if (std::signal(SIGINT, signalHandler) == SIG_ERR) {
 		std::cerr << "error: failed to set signal handler: " << std::strerror(errno);
 		return 1;
