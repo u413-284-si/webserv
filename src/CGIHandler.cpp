@@ -15,7 +15,13 @@
 CGIHandler::CGIHandler(const std::string& cgipath, const std::string& cgiExt)
 	: m_cgiPath(cgipath)
 	, m_cgiExt(cgiExt)
+	, m_pipeIn()
+	, m_pipeOut()
 {
+	m_pipeIn[0] = -1;
+	m_pipeIn[1] = -1;
+	m_pipeOut[0] = -1;
+	m_pipeOut[1] = -1;
 }
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
@@ -110,7 +116,7 @@ void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 		}
 	}
 	close(m_pipeIn[0]); // Close read end of input pipe in parent process
-	close(m_pipeOut[1]); // Close write end of output pipe in parent process 
+	close(m_pipeOut[1]); // Close write end of output pipe in parent process
 
 	// if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
 	// 	close(pipeIn[0]);
