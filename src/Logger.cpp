@@ -14,32 +14,11 @@ Logger::Logger()
 }
 
 /**
- * @brief PRIVATE Construct a new Logger:: Logger object with copy.
+ * @brief PRIVATE Destroy the Logger:: Logger object
  *
- * The copy constructor is private to prevent copying the instance.
- * @param ref The Logger object to copy.
+ * The destructor is private to prevent direct object deletion.
  */
-Logger::Logger(const Logger& ref)
-	: m_logLevel(ref.getLevel())
-{
-	static_cast<void>(ref);
-}
-
-/**
- * @brief PRIVATE Overload the assignment operator.
- *
- * The assignment operator is private to prevent copying the instance.
- * @param ref The Logger object to assign.
- * @return Logger& The Logger object.
- */
-Logger& Logger::operator=(const Logger& ref)
-{
-	if (this == &ref) {
-		return *this;
-	}
-	m_logLevel = ref.getLevel();
-	return *this;
-}
+Logger::~Logger() {}
 
 /**
  * @brief Get the Logger object instance.

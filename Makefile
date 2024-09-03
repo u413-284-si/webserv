@@ -214,6 +214,12 @@ test_sani: LDFLAGS = -fsanitize=address,undefined
 test_sani: LDLIBS = -lpthread -lgtest -lgmock -lgtest_main
 test_sani: $(TEST_SANI)
 
+# This target uses the file valid_config.conf as argument to run the program.
+.PHONY: run
+run: $(NAME)
+	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
+	./webserv config_files/standard_config.conf
+
 # This target uses perf for profiling.
 .PHONY: profile
 profile: check_perf_installed $(NAME) | $(LOG_DIR)

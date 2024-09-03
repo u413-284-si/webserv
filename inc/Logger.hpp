@@ -33,11 +33,12 @@ public:
 private:
 	// private constructor to prevent direct object creation
 	Logger();
+	// private destructor to prevent direct object deletion
+	~Logger();
 
 	// disallow copying the instance
 	Logger(const Logger& ref);
 	Logger& operator=(const Logger& ref);
-	~Logger() {};
 
 	LogLevel m_logLevel;
 	std::vector<ALogOutputter*> m_outputters;

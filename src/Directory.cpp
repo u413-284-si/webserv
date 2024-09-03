@@ -13,31 +13,6 @@ Directory::Directory(const FileSystemPolicy& fileSystemPolicy, const std::string
 }
 
 /**
- * @brief Copy construct a new Directory object
- *
- * Is private, should not be used.
- * @param ref Directory object to copy.
- */
-Directory::Directory(const Directory& ref) : m_fileSystemPolicy(ref.m_fileSystemPolicy), m_directory(ref.m_directory)
-{
-}
-
-/**
- * @brief Copy assign a Directory object
- *
- * Is private, should not be used.
- * @param ref Directory object to copy.
- * @return Directory& Reference to this object.
- */
-Directory& Directory::operator=(const Directory& ref)
-{
-	if (this == &ref)
-		return *this;
-	m_directory = ref.m_directory;
-	return *this;
-}
-
-/**
  * @brief Destroy Directory object
  *
  * Closes the directory.
