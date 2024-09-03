@@ -70,12 +70,14 @@ struct addrinfo* SocketPolicy::resolveListeningAddresses(const std::string& host
  *
  * @return The file descriptor of the new socket if successful, -1 otherwise.
  */
-int SocketPolicy::createListeningSocket(const struct addrinfo& addrinfo, int backlog) const
+int SocketPolicy::createListeningSocket(const struct addrinfo* addrinfo, int backlog) const
 {
-	unsigned int socktype = addrinfo.ai_socktype;
+	assert(addrinfo != NULL);
+
+	unsigned int socktype = addrinfo->ai_socktype;
 	socktype |= SOCK_NONBLOCK;
 
-	const int newFd = socket(addrinfo.ai_family, static_cast<int>(socktype), addrinfo.ai_protocol);
+	const int newFd = socket(addrinfo->ai_family, static_cast<int>(socktype), addrinfo->ai_protocol);
 	if (newFd == -1) {
 		LOG_DEBUG << "socket(): " << strerror(errno);
 		return -1;
@@ -88,7 +90,7 @@ int SocketPolicy::createListeningSocket(const struct addrinfo& addrinfo, int bac
 		return -1;
 	}
 
-	if (-1 == bind(newFd, addrinfo.ai_addr, addrinfo.ai_addrlen)) {
+	if (-1 == bind(newFd, addrinfo->ai_addr, addrinfo->ai_addrlen)) {
 		close(newFd);
 		LOG_DEBUG << "bind(): " << strerror(errno);
 		return -1;
@@ -112,13 +114,15 @@ int SocketPolicy::createListeningSocket(const struct addrinfo& addrinfo, int bac
  *
  * @return A Socket object containing the host and port information.
  */
-Socket SocketPolicy::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t socklen) const
+Socket SocketPolicy::retrieveSocketInfo(struct sockaddr* sockaddr, socklen_t socklen) const
 {
-	char bufferHost[NI_MAXHOST];
-	char bufferPort[NI_MAXSERV];
+	assert(sockaddr != NULL);
+
+	char bufferHost[NI_MAXHOST] = {};
+	char bufferPort[NI_MAXSERV] = {};
 
 	const int ret = getnameinfo(
-		&sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
+		sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
 	if (ret != 0) {
 		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
 		const Socket errSock = { "", "" };
@@ -146,6 +150,9 @@ Socket SocketPolicy::retrieveSocketInfo(struct sockaddr& sockaddr, socklen_t soc
  */
 int SocketPolicy::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
+	assert(addr != NULL);
+	assert(addrlen != NULL);
+
 	const int newFd = ::accept(sockfd, addr, addrlen);
 	if (newFd == -1) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
@@ -170,6 +177,8 @@ int SocketPolicy::acceptSingleConnection(int sockfd, struct sockaddr* addr, sock
  */
 ssize_t SocketPolicy::readFromSocket(int sockfd, char* buffer, size_t size, int flags) const
 {
+	assert(buffer != NULL);
+
 	const ssize_t bytesRead = recv(sockfd, buffer, size, flags);
 	if (bytesRead == -1) {
 		LOG_ERROR << "recv(): " << strerror(errno);
@@ -192,6 +201,8 @@ ssize_t SocketPolicy::readFromSocket(int sockfd, char* buffer, size_t size, int 
  */
 ssize_t SocketPolicy::writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const
 {
+	assert(buffer != NULL);
+	
 	const ssize_t bytesWritten = send(sockfd, buffer, size, flags);
 	if (bytesWritten == -1) {
 		LOG_ERROR << "send(): " << strerror(errno);
