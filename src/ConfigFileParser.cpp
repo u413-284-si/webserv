@@ -106,7 +106,12 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 }
 
 /**
- * @brief Checks if the line contains a semicolon, except for the directive "location"
+ * @brief Checks if the line contains a semicolon
+ *
+ * Exception:
+ * - Line contains the directive "location"
+ * - Line contains only "{"
+ * - Line contains only "}"
  *
  * @param line The current line to be checked
  * @return true If the line does not contain a semicolon and is not the directive "location"
@@ -114,7 +119,8 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
  */
 bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
 {
-	return line.find(';') == std::string::npos && getDirective(line) != "location";
+	return line.find(';') == std::string::npos && getDirective(line) != "location" && getDirective(line) != "{"
+		&& getDirective(line) != "}";
 }
 
 /**
@@ -330,8 +336,13 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 std::string ConfigFileParser::getDirective(const std::string& line) const
 {
+	std::string directive;
+
 	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
-	std::string directive = line.substr(0, firstWhiteSpaceIndex);
+	if (firstWhiteSpaceIndex == std::string::npos)
+		directive = line;
+	else
+		directive = line.substr(0, firstWhiteSpaceIndex);
 
 	directive = webutils::trimLeadingWhitespaces(directive);
 	webutils::trimTrailingWhiteSpaces(directive);
@@ -348,9 +359,13 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
 std::string ConfigFileParser::getValue(const std::string& line) const
 {
 	const size_t semicolonIndex = line.find(';');
+	std::string value;
 
 	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
-	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
+	if (firstWhiteSpaceIndex == std::string::npos)
+		value = line.substr(0, semicolonIndex);
+	else
+		value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
 	webutils::trimTrailingWhiteSpaces(value);
@@ -396,6 +411,8 @@ void ConfigFileParser::readServerConfigLine(void)
 			throw std::runtime_error("Semicolon missing");
 
 		const std::string directive = getDirective(line);
+		if (directive == "{" || directive == "}")
+			break;
 		if (directive == "location") {
 			Location location;
 			m_configFile.servers[m_serverIndex].locations.push_back(location);
@@ -404,8 +421,8 @@ void ConfigFileParser::readServerConfigLine(void)
 			m_locationIndex++;
 			break;
 		}
-		const std::string value = getValue(line);
 
+		const std::string value = getValue(line);
 		if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
@@ -439,8 +456,10 @@ void ConfigFileParser::readLocationConfigLine(void)
 			throw std::runtime_error("Semicolon missing");
 
 		const std::string directive = getDirective(line);
-		const std::string value = getValue(line);
+		if (directive == "{" || directive == "}")
+			break;
 
+		const std::string value = getValue(line);
 		if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
