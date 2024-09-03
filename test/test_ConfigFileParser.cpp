@@ -292,3 +292,36 @@ TEST_F(ValidConfigFileTests, ListenContainsIpAndPort)
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 }
+
+TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/bracket_under_server.conf"));
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("8080", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, BracketUnderLocationDirective)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/bracket_under_location.conf"));
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("8080", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, WhiteSpacesBetweenServerDirectiveAndBracket)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/whitespaces_between_server_bracket.conf"));
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("8080", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, DirectiveAndBracketOnSameLine)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/directive_bracket_same_line.conf"));
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("8080", configFile.servers[0].port);
+}
