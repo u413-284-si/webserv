@@ -55,7 +55,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 
 	readAndTrimLine();
 	if (getDirective(m_currentLine) != "http")
-		throw std::runtime_error("Config file does not start with 'http {'");
+		throw std::runtime_error("Config file does not start with http");
 
 	for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine()) {
 		if (getDirective(m_currentLine) == "server") {

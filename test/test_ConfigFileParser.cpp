@@ -93,7 +93,7 @@ TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 			try {
 				m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("Config file does not start with 'http {'", e.what());
+				EXPECT_STREQ("Config file does not start with http", e.what());
 				throw;
 			}
 		},
