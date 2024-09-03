@@ -222,7 +222,7 @@ $(document).ready(function(){initNavTree('_response_builder_8cpp_source.html',''
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;std::string ResponseBuilder::getMIMEType(<span class="keyword">const</span> std::string&amp; extension)</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;{</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    std::map&lt;std::basic_string&lt;char&gt;, std::basic_string&lt;char&gt; &gt;::const_iterator iter = m_mimeTypes.find(extension);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        std::map&lt;std::string, std::string &gt;::const_iterator iter = m_mimeTypes.find(extension);</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">if</span> (iter != m_mimeTypes.end()) {</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">return</span> iter-&gt;second;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
