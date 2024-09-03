@@ -88,7 +88,11 @@ TEST_F(InitVirtualServersTest, OneDuplicateServer)
 	configFile.servers[1] = configFile.servers[0];
 
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
-	*addrinfo = { .ai_next = nullptr };
+	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
+	*addrinfo = {
+		.ai_addr = addr,
+		.ai_next = nullptr
+	};
 
 	EXPECT_CALL(socketPolicy, resolveListeningAddresses)
 		.Times(1)
