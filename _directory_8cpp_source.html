@@ -127,39 +127,26 @@ $(document).ready(function(){initNavTree('_directory_8cpp_source.html',''); init
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<a class="code" href="class_directory.html#ac888976354ff6a2cbf2daa4fa42d0871">Directory::Directory</a>(<span class="keyword">const</span> <a class="code" href="class_directory.html">Directory</a>&amp; ref) : m_fileSystemPolicy(ref.m_fileSystemPolicy), m_directory(ref.m_directory)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_directory.html#affbde8714685c61601421097d621341d">   20</a></span>&#160;<a class="code" href="class_directory.html#affbde8714685c61601421097d621341d">Directory::~Directory</a>()</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#ab26568344bc9f550116c68499f01c8d5">closeDirectory</a>(m_directory);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="class_directory.html">Directory</a>&amp; Directory::operator=(<span class="keyword">const</span> <a class="code" href="class_directory.html">Directory</a>&amp; ref)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">this</span> == &amp;ref)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    m_directory = ref.m_directory;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="class_directory.html#affbde8714685c61601421097d621341d">   45</a></span>&#160;<a class="code" href="class_directory.html#affbde8714685c61601421097d621341d">Directory::~Directory</a>()</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#ab26568344bc9f550116c68499f01c8d5">closeDirectory</a>(m_directory);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8">   56</a></span>&#160;std::vector&lt;std::string&gt; <a class="code" href="class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8">Directory::getEntries</a>()</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::vector&lt;std::string&gt; files;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">struct </span>dirent* entry = m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469">readDirectory</a>(m_directory);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">while</span> (entry != NULL) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        files.push_back(entry-&gt;d_name);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        entry = m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469">readDirectory</a>(m_directory);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    std::sort(files.begin(), files.end());</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> files;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8">   31</a></span>&#160;std::vector&lt;std::string&gt; <a class="code" href="class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8">Directory::getEntries</a>()</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    std::vector&lt;std::string&gt; files;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">struct </span>dirent* entry = m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469">readDirectory</a>(m_directory);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">while</span> (entry != NULL) {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        files.push_back(entry-&gt;d_name);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        entry = m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469">readDirectory</a>(m_directory);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::sort(files.begin(), files.end());</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> files;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
 <div class="ttc" id="a_directory_8hpp_html"><div class="ttname"><a href="_directory_8hpp.html">Directory.hpp</a></div></div>
-<div class="ttc" id="aclass_directory_html"><div class="ttname"><a href="class_directory.html">Directory</a></div><div class="ttdoc">Wrapper class for DIR pointer.</div><div class="ttdef"><b>Definition:</b> <a href="_directory_8hpp_source.html#l00014">Directory.hpp:14</a></div></div>
-<div class="ttc" id="aclass_directory_html_a09da8cd603ddb22990c5bb8165e14ea8"><div class="ttname"><a href="class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8">Directory::getEntries</a></div><div class="ttdeci">std::vector&lt; std::string &gt; getEntries()</div><div class="ttdoc">Get the entries in the directory.</div><div class="ttdef"><b>Definition:</b> <a href="_directory_8cpp_source.html#l00056">Directory.cpp:56</a></div></div>
+<div class="ttc" id="aclass_directory_html_a09da8cd603ddb22990c5bb8165e14ea8"><div class="ttname"><a href="class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8">Directory::getEntries</a></div><div class="ttdeci">std::vector&lt; std::string &gt; getEntries()</div><div class="ttdoc">Get the entries in the directory.</div><div class="ttdef"><b>Definition:</b> <a href="_directory_8cpp_source.html#l00031">Directory.cpp:31</a></div></div>
 <div class="ttc" id="aclass_directory_html_ac888976354ff6a2cbf2daa4fa42d0871"><div class="ttname"><a href="class_directory.html#ac888976354ff6a2cbf2daa4fa42d0871">Directory::Directory</a></div><div class="ttdeci">Directory(const FileSystemPolicy &amp;fileSystemPolicy, const std::string &amp;path)</div><div class="ttdoc">Construct a new Directory object.</div><div class="ttdef"><b>Definition:</b> <a href="_directory_8cpp_source.html#l00009">Directory.cpp:9</a></div></div>
-<div class="ttc" id="aclass_directory_html_affbde8714685c61601421097d621341d"><div class="ttname"><a href="class_directory.html#affbde8714685c61601421097d621341d">Directory::~Directory</a></div><div class="ttdeci">~Directory()</div><div class="ttdoc">Destroy Directory object.</div><div class="ttdef"><b>Definition:</b> <a href="_directory_8cpp_source.html#l00045">Directory.cpp:45</a></div></div>
+<div class="ttc" id="aclass_directory_html_affbde8714685c61601421097d621341d"><div class="ttname"><a href="class_directory.html#affbde8714685c61601421097d621341d">Directory::~Directory</a></div><div class="ttdeci">~Directory()</div><div class="ttdoc">Destroy Directory object.</div><div class="ttdef"><b>Definition:</b> <a href="_directory_8cpp_source.html#l00020">Directory.cpp:20</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html"><div class="ttname"><a href="class_file_system_policy.html">FileSystemPolicy</a></div><div class="ttdoc">Class for C functions on the file system.</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8hpp_source.html#l00019">FileSystemPolicy.hpp:19</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ab26568344bc9f550116c68499f01c8d5"><div class="ttname"><a href="class_file_system_policy.html#ab26568344bc9f550116c68499f01c8d5">FileSystemPolicy::closeDirectory</a></div><div class="ttdeci">virtual int closeDirectory(DIR *dir) const</div><div class="ttdoc">Closes a directory.</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8cpp_source.html#l00115">FileSystemPolicy.cpp:115</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ad23fadf21355a78cce6e905f61611469"><div class="ttname"><a href="class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469">FileSystemPolicy::readDirectory</a></div><div class="ttdeci">virtual struct dirent * readDirectory(DIR *dir) const</div><div class="ttdoc">Reads a directory.</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8cpp_source.html#l00100">FileSystemPolicy.cpp:100</a></div></div>

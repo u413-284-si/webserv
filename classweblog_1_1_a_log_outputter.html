@@ -252,17 +252,17 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string The formatted message. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_a_log_outputter_8cpp_source.html#l00057">57</a> of file <a class="el" href="_a_log_outputter_8cpp_source.html">ALogOutputter.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    std::stringstream message;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    message &lt;&lt; logData.getFormattedTime();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    message &lt;&lt; <span class="stringliteral">&quot; [&quot;</span> &lt;&lt; <a class="code" href="classweblog_1_1_log_data.html#a558c41ae966801658a1e67b8691f838e">LogData::levelToString</a>(logData.getLevel()) &lt;&lt; <span class="stringliteral">&quot;] &quot;</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (logData.getLevel() == <a class="code" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162">LevelDebug</a>)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        message &lt;&lt; <span class="stringliteral">&quot;&lt;&quot;</span> &lt;&lt; logData.getFunction() &lt;&lt; <span class="stringliteral">&quot;&gt;(&quot;</span> &lt;&lt; logData.getFile() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; logData.getLine() &lt;&lt; <span class="stringliteral">&quot;): &quot;</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    message &lt;&lt; logData.getMessage();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> message.str();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_a_log_outputter_8cpp_source.html#l00033">33</a> of file <a class="el" href="_a_log_outputter_8cpp_source.html">ALogOutputter.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::stringstream message;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    message &lt;&lt; logData.getFormattedTime();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    message &lt;&lt; <span class="stringliteral">&quot; [&quot;</span> &lt;&lt; <a class="code" href="classweblog_1_1_log_data.html#a558c41ae966801658a1e67b8691f838e">LogData::levelToString</a>(logData.getLevel()) &lt;&lt; <span class="stringliteral">&quot;] &quot;</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">if</span> (logData.getLevel() == <a class="code" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162">LevelDebug</a>)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        message &lt;&lt; <span class="stringliteral">&quot;&lt;&quot;</span> &lt;&lt; logData.getFunction() &lt;&lt; <span class="stringliteral">&quot;&gt;(&quot;</span> &lt;&lt; logData.getFile() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; logData.getLine() &lt;&lt; <span class="stringliteral">&quot;): &quot;</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    message &lt;&lt; logData.getMessage();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span> message.str();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 <div class="ttc" id="aclassweblog_1_1_log_data_html_a558c41ae966801658a1e67b8691f838e"><div class="ttname"><a href="classweblog_1_1_log_data.html#a558c41ae966801658a1e67b8691f838e">weblog::LogData::levelToString</a></div><div class="ttdeci">static const char * levelToString(LogLevel level)</div><div class="ttdoc">Convert the log level to a string.</div><div class="ttdef"><b>Definition:</b> <a href="_log_data_8cpp_source.html#l00044">LogData.cpp:44</a></div></div>
 <div class="ttc" id="anamespaceweblog_html_aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162"><div class="ttname"><a href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162">weblog::LevelDebug</a></div><div class="ttdeci">@ LevelDebug</div><div class="ttdef"><b>Definition:</b> <a href="_log_data_8hpp_source.html#l00009">LogData.hpp:9</a></div></div>
 </div><!-- fragment --><div class="dynheader">

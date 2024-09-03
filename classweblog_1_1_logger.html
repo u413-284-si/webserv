@@ -185,11 +185,11 @@ Static Public Member Functions</h2></td></tr>
 <p>Get the <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object instance. </p>
 <p>The <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object is a Singleton, so it can be accessed from anywhere in the code. The <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object is created the first time this function is called (lazy initialization). </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a>&amp; The <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00051">51</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static</span> Logger instance;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">return</span> instance;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00030">30</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">static</span> Logger instance;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> instance;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -218,11 +218,11 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a>&amp; The <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00064">64</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    m_outputters.push_back(outputter);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00043">43</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    m_outputters.push_back(outputter);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -256,14 +256,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00113">113</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">if</span> (logData.getLevel() &gt;= <a class="code" href="classweblog_1_1_logger.html#a65f86069ba5f6bb7a89347cca36fe6cc">getLevel</a>()) {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;ALogOutputter*&gt;::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            (*it)-&gt;log(logData);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
-<div class="ttc" id="aclassweblog_1_1_logger_html_a65f86069ba5f6bb7a89347cca36fe6cc"><div class="ttname"><a href="classweblog_1_1_logger.html#a65f86069ba5f6bb7a89347cca36fe6cc">weblog::Logger::getLevel</a></div><div class="ttdeci">LogLevel getLevel() const</div><div class="ttdoc">Get the log level of the Logger object.</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8cpp_source.html#l00091">Logger.cpp:91</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00092">92</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">if</span> (logData.getLevel() &gt;= <a class="code" href="classweblog_1_1_logger.html#a65f86069ba5f6bb7a89347cca36fe6cc">getLevel</a>()) {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;ALogOutputter*&gt;::const_iterator it = m_outputters.begin(); it != m_outputters.end(); ++it)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            (*it)-&gt;log(logData);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="ttc" id="aclassweblog_1_1_logger_html_a65f86069ba5f6bb7a89347cca36fe6cc"><div class="ttname"><a href="classweblog_1_1_logger.html#a65f86069ba5f6bb7a89347cca36fe6cc">weblog::Logger::getLevel</a></div><div class="ttdeci">LogLevel getLevel() const</div><div class="ttdoc">Get the log level of the Logger object.</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8cpp_source.html#l00070">Logger.cpp:70</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -317,15 +317,15 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a>&amp; The <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00077">77</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    Logger&amp; logger = <a class="code" href="classweblog_1_1_logger.html#a637a190cca7d8dfa8872bb86fbdf5af9">Logger::getInstance</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    logger.setLevel(level);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span> (outputter != NULL)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        logger.addLogOutputter(outputter);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">return</span> logger;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="ttc" id="aclassweblog_1_1_logger_html_a637a190cca7d8dfa8872bb86fbdf5af9"><div class="ttname"><a href="classweblog_1_1_logger.html#a637a190cca7d8dfa8872bb86fbdf5af9">weblog::Logger::getInstance</a></div><div class="ttdeci">static Logger &amp; getInstance()</div><div class="ttdoc">Get the Logger object instance.</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8cpp_source.html#l00051">Logger.cpp:51</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00056">56</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    Logger&amp; logger = <a class="code" href="classweblog_1_1_logger.html#a637a190cca7d8dfa8872bb86fbdf5af9">Logger::getInstance</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    logger.setLevel(level);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (outputter != NULL)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        logger.addLogOutputter(outputter);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> logger;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="ttc" id="aclassweblog_1_1_logger_html_a637a190cca7d8dfa8872bb86fbdf5af9"><div class="ttname"><a href="classweblog_1_1_logger.html#a637a190cca7d8dfa8872bb86fbdf5af9">weblog::Logger::getInstance</a></div><div class="ttdeci">static Logger &amp; getInstance()</div><div class="ttdoc">Get the Logger object instance.</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8cpp_source.html#l00030">Logger.cpp:30</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -359,8 +359,8 @@ Here is the caller graph for this function:</div>
 <p>Get the log level of the <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object. </p>
 <dl class="section return"><dt>Returns</dt><dd>LogLevel The log level. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00091">91</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;{ <span class="keywordflow">return</span> m_logLevel; }</div>
+<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00070">70</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{ <span class="keywordflow">return</span> m_logLevel; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -389,11 +389,11 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a>&amp; The <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00099">99</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    m_logLevel = level;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_logger_8cpp_source.html#l00078">78</a> of file <a class="el" href="_logger_8cpp_source.html">Logger.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    m_logLevel = level;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
