@@ -74,17 +74,15 @@ void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 		argv.push_back(&(*iter).at(0));
 	argv.push_back(endptr);
 
-	int pipeIn[2]; // Pipe for passing input from server to CGI program
-	int pipeOut[2]; // Pipe for passing output from CGI program to server
-	if (pipe(pipeIn) == -1) {
-		LOG_ERROR << "Error: pipe(): pipeIn: " + std::string(std::strerror(errno));
+	if (pipe(m_pipeIn) == -1) {
+		LOG_ERROR << "Error: pipe(): m_pipeIn: " + std::string(std::strerror(errno));
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
-	if (pipe(pipeOut) == -1) {
+	if (pipe(m_pipeOut) == -1) {
 		LOG_ERROR << "Error: pipe(): pipeOut: " + std::string(std::strerror(errno));
-		close(pipeIn[0]);
-		close(pipeIn[1]);
+		close(m_pipeIn[0]);
+		close(m_pipeIn[1]);
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
@@ -92,27 +90,27 @@ void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 	pid_t cgiPid = fork();
 	if (cgiPid == -1) {
 		LOG_ERROR << "Error: fork(): " + std::string(std::strerror(errno));
-		close(pipeIn[0]);
-		close(pipeIn[1]);
-		close(pipeOut[0]);
-		close(pipeOut[1]);
+		close(m_pipeIn[0]);
+		close(m_pipeIn[1]);
+		close(m_pipeOut[0]);
+		close(m_pipeOut[1]);
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
 	if (cgiPid == 0) {
-		dup2(pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
-		dup2(pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
-		close(pipeIn[0]); // Can be closed as the read connection to server exists in stdin now
-		close(pipeIn[1]);
-		close(pipeOut[0]);
-		close(pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
+		dup2(m_pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
+		dup2(m_pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
+		close(m_pipeIn[0]); // Can be closed as the read connection to server exists in stdin now
+		close(m_pipeIn[1]);
+		close(m_pipeOut[0]);
+		close(m_pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
 		if (execve(argv[0], argv.data(), envp.data()) == -1) {
 			std::string error = "Status: 500\r\n\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
 		}
 	}
-	close(pipeIn[0]); /**< Close read end of input pipe in parent process */
-	close(pipeOut[1]); /**< Close write end of output pipe in parent process */
+	close(m_pipeIn[0]); // Close read end of input pipe in parent process
+	close(m_pipeOut[1]); // Close write end of output pipe in parent process 
 
 	// if (sendDataToCGIProcess(pipeIn[1], request) != StatusOK) {
 	// 	close(pipeIn[0]);

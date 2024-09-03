@@ -34,12 +34,21 @@ public:
 		const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
 	void execute(HTTPRequest& request, std::string& newBody);
 
+	// Getter/Setter functions
+	int getPipeInReadEnd() const { return m_pipeIn[0]; }
+	int getPipeInWriteEnd() const { return m_pipeIn[1]; }
+	int getPipeOutWriteEnd() const { return m_pipeOut[1]; }
+	int getPipeOutReadEnd() const { return m_pipeOut[0]; }
+
+
 private:
     static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
     
 	std::string m_cgiPath; /**< URL until CGI script extension */
 	std::string m_cgiExt;
 	std::map<std::string, std::string> m_env;
+	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */
+	int m_pipeOut[2]; /**< Pipe for passing output from CGI program to server */
 
 	CGIHandler(const CGIHandler& ref);
 	CGIHandler& operator=(const CGIHandler& rhs);
