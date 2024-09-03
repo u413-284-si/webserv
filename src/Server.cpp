@@ -1027,5 +1027,5 @@ void serverShutdown(Server& server)
 	if (g_signalStatus != 0)
 		LOG_INFO << "Server shutdown interrupted with signal " << g_signalStatus;
 	else
-		LOG_INFO << "Server shutdown";
+		LOG_INFO << "Server shutdown successfully";
 }
