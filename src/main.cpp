@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 		initVirtualServers(server, 10, server.getServerConfigs());
 		ConfigFileParser parser;
 		parser.parseConfigFile(argv[1]);
-		server.run();
+		runServer(server);
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
 		return 1;
