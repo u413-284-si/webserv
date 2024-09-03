@@ -255,8 +255,8 @@ TEST_F(ValidConfigFileTests, ValidFile)
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/valid_config.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
-	EXPECT_EQ("8080", configFile.servers[0].port);
-	EXPECT_EQ("/workspaces/webserv", configFile.servers[0].root);
+	EXPECT_EQ("80", configFile.servers[0].port);
+	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
 }
 
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
