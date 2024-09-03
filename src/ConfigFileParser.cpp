@@ -36,7 +36,7 @@ ConfigFileParser::ConfigFileParser(void)
  * 1. Can be opened
  * 2. Is not empty
  * 3. Does not contain open brackets
- * 4. Starts with 'http {'
+ * 4. Starts with http
  * 5. Contains minimum one server
  *
  * @param configFilePath Path to the config file
@@ -61,8 +61,10 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		if (getDirective(m_currentLine) == "server") {
 			ConfigServer server;
 			m_configFile.servers.push_back(server);
-			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
+			while (m_currentLine != "}") {
+				readAndTrimLine();
 				readServerConfigLine();
+			}
 			m_serverIndex++;
 		}
 	}
@@ -106,12 +108,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 }
 
 /**
- * @brief Checks if the line contains a semicolon
- *
- * Exception:
- * - Line contains the directive "location"
- * - Line contains only "{"
- * - Line contains only "}"
+ * @brief Checks if the line contains a semicolon, except if the line contains the directive "location"
  *
  * @param line The current line to be checked
  * @return true If the line does not contain a semicolon and is not the directive "location"
@@ -119,8 +116,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
  */
 bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
 {
-	return line.find(';') == std::string::npos && getDirective(line) != "location" && getDirective(line) != "{"
-		&& getDirective(line) != "}";
+	return line.find(';') == std::string::npos && getDirective(line) != "location";
 }
 
 /**
@@ -379,16 +375,28 @@ std::string ConfigFileParser::getValue(const std::string& line) const
  * It can be the case that multiple directives are in the same line.
  * Therefore the line must still get read until all directives got processed.
  *
- * If the line still contains more than one directive, the already processed directive gets skipped.
- * If the line does not contain any more directives, the line gets cleared.
+ * If the line does NOT contain a semicolon, the line and the current line get cleared.
+ *
+ * If the line contains a semicolon, the line and the current line get cleared until the semicolon.
+ * Which means:
+ * For the case that the line contains more than one directive, the already processed directive gets skipped.
+ * For the case the line does not contain any more directives, the line gets cleared.
  *
  * @param line The current line
  */
-void ConfigFileParser::processRemainingLine(std::string& line) const
+void ConfigFileParser::processRemainingLine(std::string& line)
 {
-	line.erase(0, line.find(';') + 1);
+	size_t semicolonIndex = line.find(';');
+	if (semicolonIndex == std::string::npos) {
+		line = "";
+		m_currentLine = line;
+		return;
+	}
+
+	line.erase(0, semicolonIndex + 1);
 	line = webutils::trimLeadingWhitespaces(line);
 	webutils::trimTrailingWhiteSpaces(line);
+	m_currentLine = line;
 }
 
 /**
@@ -406,20 +414,21 @@ void ConfigFileParser::readServerConfigLine(void)
 {
 	std::string line = m_currentLine;
 
-	while (!line.empty()) {
+	while (!line.empty() && line != "{" && line != "}") {
 		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 
 		const std::string directive = getDirective(line);
-		if (directive == "{" || directive == "}")
-			break;
 		if (directive == "location") {
 			Location location;
 			m_configFile.servers[m_serverIndex].locations.push_back(location);
-			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
+			while (m_currentLine != "}") {
+				readAndTrimLine();
 				readLocationConfigLine();
+			}
 			m_locationIndex++;
-			break;
+			processRemainingLine(line);
+			continue;
 		}
 
 		const std::string value = getValue(line);
@@ -451,15 +460,13 @@ void ConfigFileParser::readLocationConfigLine(void)
 {
 	std::string line = m_currentLine;
 
-	while (!line.empty()) {
+	while (!line.empty() && line != "{" && line != "}") {
 		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 
 		const std::string directive = getDirective(line);
-		if (directive == "{" || directive == "}")
-			break;
-
 		const std::string value = getValue(line);
+
 		if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
