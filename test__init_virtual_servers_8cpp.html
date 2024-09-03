@@ -176,28 +176,36 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00047">47</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 <div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">struct </span>addrinfo* addrinfo = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo));</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">struct </span>addrinfo* addrinfo2 = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo2));</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    *addrinfo = { .ai_next = <span class="keyword">nullptr</span> };</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    *addrinfo2 = { .ai_next = <span class="keyword">nullptr</span> };</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    EXPECT_CALL(socketPolicy, resolveListeningAddresses)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        .Times(2)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        .WillOnce(Return(addrinfo))</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        .WillOnce(Return(addrinfo2));</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    EXPECT_CALL(socketPolicy, createListeningSocket).Times(2).WillOnce(Return(dummyFd)).WillOnce(Return(dummyFd2));</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(2).WillOnce(Return(serverSock1)).WillOnce(Return(serverSock2));</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    EXPECT_EQ(<a class="code" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(*server, backlog, server-&gt;getServerConfigs()), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().size(), 2);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd).port, <a class="code" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a>(configFile.servers[0].port));</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd2).port, <a class="code" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a>(configFile.servers[1].port));</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="ttc" id="a_server_8hpp_html_a35359f61d42dbd6561a07c12009ca45a"><div class="ttname"><a href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a></div><div class="ttdeci">bool initVirtualServers(Server &amp;server, int backlog, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Initialize virtual servers.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00351">Server.cpp:351</a></div></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">struct </span>sockaddr* addr = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">struct </span>sockaddr* addr2 = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">struct </span>addrinfo* addrinfo = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">struct </span>addrinfo* addrinfo2 = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo2));</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    *addrinfo = {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        .ai_addr = addr,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        .ai_next = <span class="keyword">nullptr</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    };</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    *addrinfo2 = {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        .ai_addr = addr2,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        .ai_next = <span class="keyword">nullptr</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    EXPECT_CALL(socketPolicy, resolveListeningAddresses)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        .Times(2)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        .WillOnce(Return(addrinfo))</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        .WillOnce(Return(addrinfo2));</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    EXPECT_CALL(socketPolicy, createListeningSocket).Times(2).WillOnce(Return(dummyFd)).WillOnce(Return(dummyFd2));</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(2).WillOnce(Return(serverSock1)).WillOnce(Return(serverSock2));</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    EXPECT_EQ(<a class="code" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(*server, backlog, server-&gt;getServerConfigs()), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().size(), 2);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd).port, <a class="code" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a>(configFile.servers[0].port));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    EXPECT_EQ(server-&gt;getVirtualServers().at(dummyFd2).port, <a class="code" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a>(configFile.servers[1].port));</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="ttc" id="a_server_8hpp_html_a35359f61d42dbd6561a07c12009ca45a"><div class="ttname"><a href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a></div><div class="ttdeci">bool initVirtualServers(Server &amp;server, int backlog, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Initialize virtual servers.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00361">Server.cpp:361</a></div></div>
 <div class="ttc" id="anamespacewebutils_html_afd1710fd588c15830d10aef146da8ddb"><div class="ttname"><a href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a></div><div class="ttdeci">std::string toString(const Type &amp;type)</div><div class="ttdoc">Convert a type to a string.</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8hpp_source.html#l00037">utilities.hpp:37</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

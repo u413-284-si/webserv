@@ -24,7 +24,7 @@ var searchData=
   ['responsebuilder_261',['ResponseBuilder',['../class_response_builder.html',1,'ResponseBuilder'],['../class_response_builder.html#a24735d9181cbd1b7f38c2a259de3adc5',1,'ResponseBuilder::ResponseBuilder()']]],
   ['responsebuilder_2ecpp_262',['ResponseBuilder.cpp',['../_response_builder_8cpp.html',1,'']]],
   ['responsebuilder_2ehpp_263',['ResponseBuilder.hpp',['../_response_builder_8hpp.html',1,'']]],
-  ['retrievesocketinfo_264',['retrieveSocketInfo',['../class_server.html#a4915bdc5e654a3319fddc120c8656019',1,'Server::retrieveSocketInfo()'],['../class_socket_policy.html#ac4dedf41caea77a2d8f9c4009b2d7c16',1,'SocketPolicy::retrieveSocketInfo()']]],
+  ['retrievesocketinfo_264',['retrieveSocketInfo',['../class_server.html#ac951fb1326dfadeff690fd646e0b7e8f',1,'Server::retrieveSocketInfo()'],['../class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a',1,'SocketPolicy::retrieveSocketInfo()']]],
   ['returns_265',['returns',['../struct_location.html#ac0784739243de5d60bcd6730d7e63786',1,'Location']]],
   ['root_266',['root',['../struct_location.html#abcb6a2cd9887a166063ea4ce40794c22',1,'Location::root()'],['../struct_config_server.html#a5e009062715fcfaf77c8a5078e31f656',1,'ConfigServer::root()']]],
   ['run_267',['run',['../class_server.html#abb27d30b40a94326e3fd629d3b30b7d5',1,'Server']]]

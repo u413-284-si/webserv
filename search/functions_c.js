@@ -13,6 +13,6 @@ var searchData=
   ['responsebodyhandler_591',['ResponseBodyHandler',['../class_response_body_handler.html#a2806c3aee65798c7ff644320a1205067',1,'ResponseBodyHandler']]],
   ['responsebodyhandlertest_592',['ResponseBodyHandlerTest',['../class_response_body_handler_test.html#abd4bf046a7f5bc4beb8cfb9773f7e811',1,'ResponseBodyHandlerTest']]],
   ['responsebuilder_593',['ResponseBuilder',['../class_response_builder.html#a24735d9181cbd1b7f38c2a259de3adc5',1,'ResponseBuilder']]],
-  ['retrievesocketinfo_594',['retrieveSocketInfo',['../class_server.html#a4915bdc5e654a3319fddc120c8656019',1,'Server::retrieveSocketInfo()'],['../class_socket_policy.html#ac4dedf41caea77a2d8f9c4009b2d7c16',1,'SocketPolicy::retrieveSocketInfo()']]],
+  ['retrievesocketinfo_594',['retrieveSocketInfo',['../class_server.html#ac951fb1326dfadeff690fd646e0b7e8f',1,'Server::retrieveSocketInfo()'],['../class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a',1,'SocketPolicy::retrieveSocketInfo()']]],
   ['run_595',['run',['../class_server.html#abb27d30b40a94326e3fd629d3b30b7d5',1,'Server']]]
 ];
