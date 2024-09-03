@@ -30,4 +30,19 @@ std::string getDefaultErrorPage(statusCode status);
 
 std::string methodToString(Method method);
 
+/**
+ * @brief Convert a type to a string
+ *
+ * @tparam Type The type to convert
+ * @param type The type to convert
+ * @return std::string The string representation of the type
+ * @todo Delete if not needed anymore
+ */
+template <typename Type> std::string toString(const Type& type)
+{
+	std::stringstream stream;
+	stream << type;
+	return stream.str();
+}
+
 } // webutils

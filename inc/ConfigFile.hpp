@@ -1,41 +1,54 @@
 #pragma once
 
+/* ====== LIBRARIES ====== */
+
+#include "Method.hpp"
+#include "StatusCode.hpp"
+#include <fstream>
 #include <iostream>
 #include <map>
+#include <string>
 #include <vector>
 
-enum Method { MethodGet, MethodPost, MethodDelete, MethodCount };
-
-struct LimitExcept {
-	bool allowedMethods[MethodCount];
-	std::string allow;
-	std::string deny;
-};
+/* ====== DEFINITIONS ====== */
 
 struct Location {
+
+public:
+	Location(void);
+
 	std::string path;
 	std::string root;
-	std::string index;
+	std::vector<std::string> indices;
 	std::string cgiExt;
 	std::string cgiPath;
 	bool isAutoindex;
-	LimitExcept limitExcept;
-	std::map<unsigned short, std::string> returns;
+	unsigned long maxBodySize;
+	std::map<statusCode, std::string> errorPage;
+	bool allowedMethods[MethodCount];
+	std::map<statusCode, std::string> returns;
 };
 
-struct ServerConfig {
+struct ConfigServer {
+
+public:
+	ConfigServer(void);
+
 	std::string serverName;
+	std::string root;
+	// std::map<std::string, std::string> listen;
 	std::string host;
-	unsigned short port;
+	std::string port;
 	unsigned long maxBodySize;
-	std::map<unsigned short, std::string> errorPage;
+	std::map<statusCode, std::string> errorPage;
 	std::vector<Location> locations;
 };
 
 struct ConfigFile {
-	std::vector<ServerConfig> serverConfigs;
+	std::vector<ConfigServer> servers;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const Location& location);
-std::ostream& operator<<(std::ostream& ostream, const ServerConfig& serverConfig);
+std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer);
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile);
+std::ostream& operator<<(std::ostream& ostream, Method method);

@@ -19,30 +19,6 @@ ALogOutputter::ALogOutputter() { }
 ALogOutputter::~ALogOutputter() { }
 
 /**
- * @brief PRIVATE copy constructor.
- *
- * Prevts copying.
- *
- * @param ref The reference object to copy.
- */
-ALogOutputter::ALogOutputter(const ALogOutputter& ref) { (void)ref; }
-
-/**
- * @brief PRIVATE copy assignment operator.
- *
- * Prevents copying.
- * NOLINT to prevent clang-tidy warning about self-assignment (cert-oop54-cpp).
- *
- * @param rhs The right-hand side object to copy.
- * @return ALogOutputter& The copied object.
- */
-ALogOutputter& ALogOutputter::operator=(const ALogOutputter& rhs) //NOLINT
-{
-	(void)rhs;
-	return *this;
-}
-
-/**
  * @brief Format a message out of the logData object.
  *
  * The message is formatted with

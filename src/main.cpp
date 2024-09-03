@@ -1,8 +1,13 @@
+#include "ConfigFile.hpp"
+#include "ConfigFileParser.hpp"
+#include "EpollWrapper.hpp"
+#include "Log.hpp"
+#include "LogData.hpp"
 #include "LogOutputterConsole.hpp"
 #include "LogOutputterFile.hpp"
+#include "ResponseBuilder.hpp"
 #include "Server.hpp"
-#include "Log.hpp"
-#include "ConfigFile.hpp"
+#include "SocketPolicy.hpp"
 #include <cerrno>
 
 int main(int argc, char** argv)
@@ -12,14 +17,20 @@ int main(int argc, char** argv)
 		std::cerr << program_invocation_name << " <config file>\n";
 		return 1;
 	}
-	static_cast<void>(argv);
+
 	weblog::initConsole(weblog::LevelDebug);
 	try {
-		Server webserv;
-		LOG_INFO << "Starting server";
-		webserv.run();
+		EpollWrapper epollWrapper(10, -1);
+		SocketPolicy socketPolicy;
+
+		ConfigFileParser parser;
+		ConfigFile configFile = parser.parseConfigFile(argv[1]);
+
+		Server server(configFile, epollWrapper, socketPolicy);
+		initVirtualServers(server, 10, server.getServerConfigs());
+		server.run();
 	} catch (std::exception& e) {
-		std::cerr << "error: " << e.what() << std::endl;
+		LOG_ERROR << e.what();
 		return 1;
 	}
 	return 0;
