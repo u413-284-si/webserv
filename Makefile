@@ -215,7 +215,7 @@ test_sani: $(TEST_SANI)
 # This target uses the file valid_config.conf as argument to run the program.
 .PHONY: run
 run: $(NAME)
-	@printf "$(YELLOW)$(BOLD)Run with valid_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
 	./webserv config_files/standard_config.conf
 
 # This target uses perf for profiling.
