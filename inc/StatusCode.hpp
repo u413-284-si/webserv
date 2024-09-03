@@ -10,6 +10,7 @@ enum statusCode {
 	StatusNotFound = 404,
 	StatusMethodNotAllowed = 405,
 	StatusRequestTimeout = 408,
+	StatusRequestEntityTooLarge = 413,
 	StatusRequestHeaderFieldsTooLarge = 431,
 	StatusInternalServerError = 500,
 	StatusMethodNotImplemented = 501,

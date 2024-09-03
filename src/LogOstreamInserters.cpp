@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
  * @brief Overload << operator to append a ServerConfig.
  *
  * @param ostream The output stream.
- * @param configServer The ServerConfig object.
+ * @param configServer The configServer object.
  * @return std::ostream& The output stream.
  */
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer)
@@ -145,6 +145,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 		break;
 	case StatusRequestTimeout:
 		ostream << "408 Request Timeout";
+		break;
+	case StatusRequestEntityTooLarge:
+		ostream << "413 Request Entity Too Large";
 		break;
 	case StatusRequestHeaderFieldsTooLarge:
 		ostream << "431 Request Header Fields Too Large";
