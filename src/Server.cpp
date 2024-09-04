@@ -605,7 +605,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  * 1. Connection::Idle (in): every new connection starts in this state after it connects. Also if the connection is
  * kept alive, it is in this state. When the client wants to send a request it changes the state to
  * Connection::ReceiveHeader.
- * 2. Connection::ReceiveHeader (in): every new connection starts in this state. connectionReceiveHeader() reads the
+ * 2. Connection::ReceiveHeader (in): when the connection wants to send a request. connectionReceiveHeader() reads the
  * request header from the client and parses it. If the request header is complete, it changes the state to
  * Connection::ReceiveBody or Connection::BuildResponse.
  * 3. Connection::ReceiveBody (in): if the request header indicates a body, connectionReceiveBody() reads the body from
