@@ -299,6 +299,8 @@ TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/bracket_under_server.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("8080", configFile.servers[0].port);
+	EXPECT_EQ("127.0.0.1", configFile.servers[1].host);
+	EXPECT_EQ("9090", configFile.servers[1].port);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderLocationDirective)
