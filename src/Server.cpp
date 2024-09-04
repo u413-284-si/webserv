@@ -928,3 +928,69 @@ void cleanupClosedConnections(Server& server)
 			++iter;
 	}
 }
+
+std::vector<ConfigServer>::const_iterator selectServerConfig(
+	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock)
+{
+	std::vector<std::vector<ConfigServer>::const_iterator> matches;
+	const std::string wildcard = "0.0.0.0";
+
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+		if (iter->host == serverSock.host && iter->port == serverSock.port) {
+			matches.push_back(iter);
+		}
+	}
+
+	if (matches.empty()) {
+		for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end();
+			 ++iter) {
+			if (iter->host == wildcard && iter->port == serverSock.port) {
+				matches.push_back(iter);
+			}
+		}
+	}
+
+	if (matches.size() == 1)
+		return matches[0];
+
+	if (matches.empty())
+		throw std::runtime_error("No matching server config found");
+
+	return matches[0];
+}
+
+std::vector<ConfigServer>::const_iterator selectServerConfig(
+	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock, const std::string& host)
+{
+	std::vector<std::vector<ConfigServer>::const_iterator> matches;
+	const std::string wildcard = "0.0.0.0";
+
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+		if (iter->host == serverSock.host && iter->port == serverSock.port) {
+			matches.push_back(iter);
+		}
+	}
+
+	if (matches.empty()) {
+		for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end();
+			 ++iter) {
+			if (iter->host == wildcard && iter->port == serverSock.port) {
+				matches.push_back(iter);
+			}
+		}
+	}
+
+	if (matches.size() == 1)
+		return matches[0];
+
+	if (matches.empty())
+		throw std::runtime_error("No matching server config found");
+
+	for (std::vector<std::vector<ConfigServer>::const_iterator>::const_iterator iter = matches.begin();
+		 iter != matches.end(); ++iter) {
+		if ((*iter)->serverName == host)
+			return *iter;
+	}
+
+	return matches[0];
+}
