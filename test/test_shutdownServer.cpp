@@ -51,7 +51,7 @@ TEST_F(ServerShutdownTest, OnlyClosedAndIdleConnections)
 	server.getConnections().at(dummyFd3).m_status = Connection::Closed;
 	server.getConnections().at(dummyFd4).m_status = Connection::Idle;
 
-	serverShutdown(server);
+	shutdownServer(server);
 
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
@@ -65,7 +65,7 @@ TEST_F(ServerShutdownTest, NonIdleConnection)
 	EXPECT_CALL(epollWrapper, waitForEvents).WillOnce(Return(1));
 	EXPECT_CALL(socketPolicy, readFromSocket).WillOnce(Return(0));
 
-	serverShutdown(server);
+	shutdownServer(server);
 
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
@@ -78,7 +78,7 @@ TEST_F(ServerShutdownTest, InterruptedBySignal)
 
 	g_signalStatus = SIGINT;
 
-	serverShutdown(server);
+	shutdownServer(server);
 
 	EXPECT_EQ(server.getConnections().size(), 1);
 }

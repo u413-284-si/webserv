@@ -9,11 +9,11 @@
 #include "Log.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
-#include "signalHandler.hpp"
 #include "Socket.hpp"
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
 #include "error.hpp"
+#include "signalHandler.hpp"
 
 #include <algorithm>
 #include <bits/types/time_t.h>
@@ -131,4 +131,4 @@ void checkForTimeout(Server& server);
 void cleanupClosedConnections(Server& server);
 void cleanupIdleConnections(Server& server);
 
-void serverShutdown(Server& server);
+void shutdownServer(Server& server);

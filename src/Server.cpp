@@ -495,7 +495,7 @@ void runServer(Server& server)
 	}
 	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_signalStatus);
 	g_signalStatus = 0;
-	serverShutdown(server);
+	shutdownServer(server);
 }
 
 /**
@@ -998,7 +998,7 @@ void cleanupIdleConnections(Server& server)
  * @param server The server object to shut down.
  * @sa https://pkg.go.dev/net/http#Server.Shutdown
  */
-void serverShutdown(Server& server)
+void shutdownServer(Server& server)
 {
 	LOG_DEBUG << "Closing all virtual servers";
 	for (std::map<int, Socket>::iterator iter = server.getVirtualServers().begin();
