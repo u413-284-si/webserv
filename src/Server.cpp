@@ -347,10 +347,10 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
 /**
  * @brief Initialize virtual servers.
  *
- * Initializes virtual servers by iterating through the serverConfigs
- * vector in the configuration file and opening a socket for each virtual server.
- * It checks for duplicate servers using isDuplicateServer() and
- * skips opening the socket server if it already exists.
+ * First initializes all wildcard servers (0.0.0.0) in the configuration file by opening a socket for them. They need to
+ * be initialized first because any already initialized socket on the same port would block the wildcard server. Then
+ * initializes the remaining virtual servers.
+ * It checks for duplicate servers using isDuplicateServer() and skips opening the socket server if it already exists.
  *
  * @param server The server object to initialize virtual servers for.
  * @param backlog The maximum length to which the queue of pending connections for the virtual server may grow.
@@ -362,15 +362,33 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 {
 	LOG_INFO << "Initializing virtual servers";
 
+	LOG_DEBUG << "Check for wildcard servers";
+	const std::string wildcard = "0.0.0.0";
+
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+		if (iter->host == wildcard) {
+
+			LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
+
+			if (isDuplicateServer(server, iter->host, iter->port))
+				continue;
+
+			if (!createVirtualServer(server, iter->host, backlog, iter->port))
+				LOG_DEBUG << "Failed to add virtual server: " << iter->host << ":" << iter->port;
+		}
+	}
+
+	LOG_DEBUG << "Add remaining virtual servers";
+
 	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
 
-		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
+		LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
 
 		if (isDuplicateServer(server, iter->host, webutils::toString(iter->port)))
 			continue;
 
 		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port)))
-			LOG_DEBUG << "Failed to add virtual server: " << iter->serverName;
+			LOG_DEBUG << "Failed to add virtual server: " << iter->host << ":" << iter->port;
 	}
 
 	if (server.getVirtualServers().empty())
@@ -385,6 +403,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
  *
  * Checks if a virtual server with the provided host and port already exists in the virtual servers map.
  * If the host is "localhost", it checks for a virtual server with the host address "127.0.0.1" or "::1".
+ * If the existing server is a wildcard server (0.0.0.0) only the port needs to match.
  *
  * @param server The server object to check for duplicate virtual servers.
  * @param host The host address of the virtual server.
@@ -394,10 +413,13 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
  */
 bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port)
 {
+	const std::string wildcard = "0.0.0.0";
+
 	if (host == "localhost") {
 		for (std::map<int, Socket>::const_iterator iter = server.getVirtualServers().begin();
 			 iter != server.getVirtualServers().end(); ++iter) {
-			if ((iter->second.host == "127.0.0.1" || iter->second.host == "::1") && iter->second.port == port) {
+			if ((iter->second.host == wildcard || iter->second.host == "127.0.0.1" || iter->second.host == "::1")
+				&& iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
 			}
@@ -405,7 +427,7 @@ bool isDuplicateServer(const Server& server, const std::string& host, const std:
 	} else {
 		for (std::map<int, Socket>::const_iterator iter = server.getVirtualServers().begin();
 			 iter != server.getVirtualServers().end(); ++iter) {
-			if (iter->second.host == host && iter->second.port == port) {
+			if ((iter->second.host == wildcard || iter->second.host == host) && iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
 			}
