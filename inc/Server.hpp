@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "CGIHandler.hpp"
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "EpollWrapper.hpp"
@@ -100,6 +101,7 @@ private:
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
+	CGIHandler m_cgiHandler; /**< Handles CGI execution */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 
 	Server(const Server& ref);
@@ -119,6 +121,8 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
+void connectionSendToCGI(int pipeInWriteEnd, HTTPRequest& request);
+void connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
