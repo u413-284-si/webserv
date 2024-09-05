@@ -16,7 +16,16 @@ public:
 	Connection();
 	Connection(const Socket& server, const Socket& client);
 
-	enum ConnectionStatus { ReceiveHeader, ReceiveBody, BuildResponse, SendResponse, Timeout, Closed };
+	enum ConnectionStatus {
+		ReceiveHeader,
+		ReceiveBody,
+		SendToCGI,
+		ReceiveFromCGI,
+		BuildResponse,
+		SendResponse,
+		Timeout,
+		Closed
+	};
 
 	Socket m_serverSocket; /**< Server socket associated with connection */
 	Socket m_clientSocket; /**< Client socket associated with connection */
