@@ -28,7 +28,7 @@
 
 class CGIHandler {
 public:
-	explicit CGIHandler(const std::string& cgipath, const std::string& cgiExt);
+	explicit CGIHandler();
 
 	void init(
 		const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
@@ -63,8 +63,6 @@ private:
 	const std::map<std::string, std::string>& getEnv() const;
 
 	void setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const;
-	static void sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request);
-	static void receiveDataFromCGIProcess(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request);
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);

@@ -143,59 +143,6 @@ void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<cha
 		envp.push_back(&(*iter).at(0)); // FIXME: remove reference to pointer value?
 }
 
-void CGIHandler::sendDataToCGIProcess(int pipeInWriteEnd, HTTPRequest& request)
-{
-	if (request.body.empty()) {
-		close(pipeInWriteEnd);
-		return;
-	}
-
-	long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
-
-	if (bytesSent == -1) {
-		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
-		request.httpStatus = StatusInternalServerError;
-		close(pipeInWriteEnd);
-		return;
-	}
-	if (bytesSent == static_cast<long>(request.body.size())) {
-		close(pipeInWriteEnd);
-		return;
-	}
-	request.body = request.body.substr(bytesSent);
-}
-
-void CGIHandler::receiveDataFromCGIProcess(
-	int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request)
-{
-	char buffer[CGIHandler::s_cgiBodyBufferSize] = {};
-	long bytesRead = read(pipeOutReadEnd, buffer, sizeof(buffer));
-
-	if (bytesRead == -1) {
-		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
-		request.httpStatus = StatusInternalServerError;
-		return;
-	}
-	if (bytesRead == 0) {
-		int status = 0;
-		if (waitpid(cgiPid, &status, 0) == -1) {
-			LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
-			request.httpStatus = StatusInternalServerError;
-			return;
-		}
-		// NOLINTNEXTLINE misinterpretation by HIC++ standard
-		if (WEXITSTATUS(status)
-			!= 0) { /**< Any child exit status unequal to 0 indicates unsuccessful completion of the process */
-			LOG_ERROR << "Error: child returned with: "
-					  // NOLINTNEXTLINE misinterpretation by HIC++ standard
-					  << WEXITSTATUS(status);
-			request.httpStatus = StatusInternalServerError;
-			return;
-		}
-	}
-	newBody.append(buffer, bytesRead);
-}
-
 // HELPER FUNCTIONS
 
 std::string CGIHandler::extractPathInfo(const std::string& path)
