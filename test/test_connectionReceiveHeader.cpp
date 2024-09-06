@@ -26,7 +26,7 @@ protected:
 	MockSocketPolicy socketPolicy;
 	Server server;
 
-	Connection connection;
+	Connection connection = Connection(Socket(), Socket());
 
 	const int dummyFd = 10;
 };

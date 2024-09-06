@@ -13,7 +13,6 @@
  */
 struct Connection {
 public:
-	Connection();
 	Connection(const Socket& server, const Socket& client);
 
 	enum ConnectionStatus { ReceiveHeader, ReceiveBody, BuildResponse, SendResponse, Timeout, Closed };
