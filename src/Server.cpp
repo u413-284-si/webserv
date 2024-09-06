@@ -249,6 +249,14 @@ Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr) const
 }
 
 /**
+ * @brief Wrapper function to SocketPolicy::retrieveBoundSocketInfo.
+ *
+ * @param sockfd The socket fd which is bound to a socket.
+ * @return Socket The socket information of the bound socket.
+ */
+Socket Server::retrieveBoundSocketInfo(int sockfd) const { return m_socketPolicy.retrieveBoundSocketInfo(sockfd); }
+
+/**
  * @brief Wrapper function to SocketPolicy::acceptSingleConnection().
  *
  * @param sockfd The file descriptor of the socket.
@@ -565,6 +573,8 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		return;
 	}
 
+	const bool isWildcardServer = (serverSock.host == "0.0.0.0");
+
 	while (true) {
 		struct sockaddr_storage clientAddr = {};
 		socklen_t clientLen = sizeof(clientAddr);
@@ -584,7 +594,13 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 			continue;
 		}
 
-		if (!server.registerConnection(serverSock, clientFd, clientSock))
+		const Socket boundSock = isWildcardServer ? server.retrieveBoundSocketInfo(clientFd) : serverSock;
+		if (boundSock.host.empty() && boundSock.port.empty()) {
+			close(clientFd);
+			continue;
+		}
+
+		if (!server.registerConnection(boundSock, clientFd, clientSock))
 			continue;
 	}
 }
