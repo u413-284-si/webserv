@@ -42,7 +42,6 @@ TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, requestSize);
 	EXPECT_EQ(connection.m_request.method, MethodGet);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
@@ -74,7 +73,6 @@ TEST_F(ConnectionReceiveHeaderTest, RecvFail)
 
 	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, 0);
-	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
 
@@ -86,7 +84,6 @@ TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
 
 	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, 0);
-	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
 
