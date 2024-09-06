@@ -13,8 +13,8 @@
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
-CGIHandler::CGIHandler(const std::string& cgipath, const std::string& cgiExt)
-	: m_cgiPath(cgipath)
+CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
+	: m_cgiPath(cgiPath)
 	, m_cgiExt(cgiExt)
 	, m_pipeIn()
 	, m_pipeOut()

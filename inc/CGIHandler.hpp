@@ -29,7 +29,7 @@
 
 class CGIHandler {
 public:
-	explicit CGIHandler(const std::string& cgipath, const std::string& cgiExt);
+	explicit CGIHandler(const std::string& cgiPath, const std::string& cgiExt);
 
 	void init(
 		const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
