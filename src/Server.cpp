@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "HTTPResponse.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -25,7 +26,6 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
-	, m_cgiHandler(configFile, const std::string &cgiExt)
 {
 }
 
@@ -171,6 +171,30 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 	m_connections[clientFd] = Connection(serverSock, clientSock);
 
 	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
+	return true;
+}
+
+/**
+ * @brief Registers a CGI process with the server.
+ *
+ * This function adds the specified pipe file descriptor to the epoll event loop
+ * with the given event mask. If the addition is successful, the function returns
+ * true. Otherwise, it closes the pipe file descriptor, logs an error message,
+ * and returns false.
+ *
+ * @param pipeFd The file descriptor of the pipe to register.
+ * @param eventMask The event mask to associate with the pipe file descriptor.
+ * @return True if the registration is successful, false otherwise.
+ */
+bool Server::registerCGIProcess(int pipeFd, uint32_t eventMask)
+{
+	if (!m_epollWrapper.addEvent(pipeFd, eventMask)) {
+		close(pipeFd);
+		LOG_ERROR << "Failed to add event for " << pipeFd;
+		return false;
+	}
+
+	LOG_INFO << "New CGIProcess: " << pipeFd << " registered.";
 	return true;
 }
 
@@ -334,7 +358,10 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param request The HTTPRequest object to build the response for.
  */
-void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
+void Server::buildResponse(const HTTPRequest& request, HTTPResponse& response)
+{
+	m_responseBuilder.buildResponse(request, response);
+}
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -606,7 +633,6 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 		break;
 	case (Connection::SendToCGI):
 		connectionSendToCGI(int pipeInWriteEnd, connection.m_request);
-		;
 		break;
 	case (Connection::ReceiveFromCGI):
 		connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, connection.m_request);
@@ -869,10 +895,10 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 {
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
-	server.buildResponse(connection.m_request);
-	connection.m_buffer = server.getResponse();
+	server.buildResponse(connection.m_request, connection.m_response);
+	connection.m_buffer = server.getResponse(); // could become superfluos
 	connection.m_status = Connection::SendResponse;
-	connectionSendResponse(server, clientFd, connection);
+	connectionSendResponse(server, clientFd, connection); // send response instead of buffer
 }
 
 /**

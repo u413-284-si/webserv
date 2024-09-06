@@ -67,6 +67,7 @@ public:
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
+	bool registerCGIProcess(int pipeFd, uint32_t eventMask);
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper
@@ -88,7 +89,7 @@ public:
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
-	void buildResponse(const HTTPRequest& request);
+	void buildResponse(const HTTPRequest& request, HTTPResponse& response);
 	std::string getResponse();
 
 private:
@@ -101,7 +102,6 @@ private:
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
-	CGIHandler m_cgiHandler; /**< Handles CGI execution */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 
 	Server(const Server& ref);
