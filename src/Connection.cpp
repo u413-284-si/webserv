@@ -1,6 +1,4 @@
 #include "Connection.hpp"
-#include "ConfigFile.hpp"
-#include "StatusCode.hpp"
 
 /**
  * @brief Construct a new Connection:: Connection object
