@@ -242,11 +242,11 @@ int Server::createListeningSocket(const struct addrinfo* addrinfo, int backlog) 
  * @param socklen The length of the socket address.
  * @return Socket The socket information.
  */
-Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr, socklen_t socklen) const
+Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr) const
 {
 	assert(sockaddr != NULL);
 
-	return m_socketPolicy.retrieveSocketInfo(sockaddr, socklen);
+	return m_socketPolicy.retrieveSocketInfo(sockaddr);
 }
 
 /**
@@ -469,7 +469,7 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
 		if (newFd == -1)
 			continue;
 
-		const Socket serverSock = server.retrieveSocketInfo(curr->ai_addr, curr->ai_addrlen);
+		const Socket serverSock = server.retrieveSocketInfo(curr->ai_addr);
 		if (serverSock.host.empty() && serverSock.port.empty()) {
 			close(newFd);
 			continue;
@@ -579,7 +579,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		if (clientFd == -1)
 			continue; // Error accepting connection
 
-		const Socket clientSock = server.retrieveSocketInfo(addrCast, clientLen);
+		const Socket clientSock = server.retrieveSocketInfo(addrCast);
 		if (clientSock.host.empty() && clientSock.port.empty()) {
 			close(clientFd);
 			continue;
