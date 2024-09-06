@@ -171,7 +171,8 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 
 	Connection newConnection(serverSock, clientSock);
 	newConnection.m_request.activeServer = selectServerConfig(m_configFile.servers, serverSock);
-	std::pair<std::map<int,Connection>::iterator, bool> ret = m_connections.insert( std::pair<int,Connection>(clientFd, newConnection) );
+	std::pair<std::map<int, Connection>::iterator, bool> ret
+		= m_connections.insert(std::pair<int, Connection>(clientFd, newConnection));
 	if (!ret.second) {
 		close(clientFd);
 		LOG_ERROR << "Failed to add connection for " << clientSock << ": it already exists";
@@ -718,6 +719,12 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 				connection.m_timeSinceLastEvent = std::time(0);
 				return;
 			}
+
+			std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
+			if (iter != connection.m_request.headers.end())
+				connection.m_request.activeServer
+					= selectServerConfig(server.getServerConfigs(), connection.m_serverSocket, iter->second);
+
 			if (connection.m_request.hasBody)
 				connection.m_status = Connection::ReceiveBody;
 			else {
@@ -856,6 +863,7 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection.m_request);
+	connection.m_buffer.clear();
 	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;
 	connectionSendResponse(server, clientFd, connection);

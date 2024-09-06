@@ -57,7 +57,7 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request)
 	HTTPResponse response = initHTTPResponse(request);
 
 	if (response.status == StatusOK) {
-		TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
+		TargetResourceHandler targetResourceHandler(response.server->locations, request, response, m_fileSystemPolicy);
 		targetResourceHandler.execute();
 	}
 
@@ -100,6 +100,7 @@ HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
 	response.status = request.httpStatus;
 	response.method = request.method;
 	response.isAutoindex = false;
+	response.server = request.activeServer;
 
 	return response;
 }

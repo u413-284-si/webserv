@@ -23,12 +23,13 @@ Connection::Connection(const Socket& server, const Socket& client)
 void clearConnection(Connection& connection)
 {
 	connection.m_status = Connection::ReceiveHeader;
+	connection.m_request = HTTPRequest();
 	connection.m_request.method = MethodCount;
 	connection.m_request.httpStatus = StatusOK;
 	connection.m_request.shallCloseConnection = false;
 	connection.	m_request.hasBody = false;
 	connection.m_request.isChunked = false;
-	connection.m_buffer = "";
+	connection.m_buffer.clear();
 	connection.m_bytesReceived = 0;
 	connection.m_timeSinceLastEvent = std::time(0);
 }
