@@ -13,8 +13,13 @@ class RegisterConnectionTest : public ::testing::Test {
 	protected:
 	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy)
 	{
+		ConfigServer serverConfig;
+		serverConfig.host = serverSock.host;
+		serverConfig.port = serverSock.port;
+		configFile.servers.push_back(serverConfig);
+
 		ON_CALL(epollWrapper, addEvent)
-		.WillByDefault(Return(true));
+			.WillByDefault(Return(true));
 	}
 	~RegisterConnectionTest() override { }
 
@@ -52,24 +57,21 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
-TEST_F(RegisterConnectionTest, OverwriteOldConnection)
+TEST_F(RegisterConnectionTest, CantOverwriteExistingConnection)
 {
-	Socket oldServerSock = {
-		"0.0.0.0",
-		"0" };
 	Socket oldClientSocket = {
 		"1.1.1.1",
 		"11111" };
 
-	EXPECT_EQ(server.registerConnection(oldServerSock, dummyFd, oldClientSocket), true);
+	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, oldClientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 
-	// reuse the same dummyFd
-	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), true);
-	EXPECT_EQ(server.getConnections().size(), 1);
+	// try to add connection with same fd
+	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), false);
 
+	EXPECT_EQ(server.getConnections().size(), 1);
 	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);
 	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, oldClientSocket.host);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, oldClientSocket.port);
 }

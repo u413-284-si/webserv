@@ -167,7 +167,14 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 		return false;
 	}
 
-	m_connections[clientFd] = Connection(serverSock, clientSock);
+	Connection newConnection(serverSock, clientSock);
+	newConnection.m_request.activeServer = selectServerConfig(m_configFile.servers, serverSock);
+	std::pair<std::map<int,Connection>::iterator, bool> ret = m_connections.insert( std::pair<int,Connection>(clientFd, newConnection) );
+	if (!ret.second) {
+		close(clientFd);
+		LOG_ERROR << "Failed to add connection for " << clientSock << ": it already exists";
+		return false;
+	}
 
 	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
 	return true;

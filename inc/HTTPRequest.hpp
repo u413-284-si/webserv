@@ -26,6 +26,8 @@ struct HTTPRequest {
 	bool shallCloseConnection;
 	bool hasBody;
 	bool isChunked;
+	std::vector<ConfigServer>::const_iterator activeServer;
+	std::vector<Location>::const_iterator activeLocation;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);

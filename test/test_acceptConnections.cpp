@@ -13,7 +13,13 @@ protected:
 	AcceptConnectionsTest()
 		: server(configFile, epollWrapper, socketPolicy)
 	{
-		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
+		ConfigServer serverConfig;
+		serverConfig.host = serverSock.host;
+		serverConfig.port = serverSock.port;
+		configFile.servers.push_back(serverConfig);
+
+		ON_CALL(epollWrapper, addEvent)
+			.WillByDefault(Return(true));
 	}
 	~AcceptConnectionsTest() override { }
 
