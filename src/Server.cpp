@@ -151,12 +151,14 @@ bool Server::registerVirtualServer(int serverFd, const Socket& serverSock)
  *
  * Registers a client fd with addEvent().
  * If it fails to add the event, it logs an error and closes the client socket.
- * If the connection is successfully registered, adds the connection to map m_connections.
- * The []-operator creates a new entry in the map if the key does not exist or overwrites an existing one.
+ * If the connection is successfully registered, create a new struct Connection with serverSock and clientSock.
+ * The active server of the connectionis selected with selectServerConfig().
+ * Then adds the Connection to map m_connections via std::map::insert(). If it couldn't insert the connection, it logs
+ * an error and closes the client socket.
  *
  * @param serverSock The socket of the server that the connection is associated with.
+ * @param clientFd The file descriptor of the client connection to register.
  * @param clientSock The socket of the client connection to register.
- *
  * @return true if the connection was successfully registered, false otherwise.
  */
 bool Server::registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock)
