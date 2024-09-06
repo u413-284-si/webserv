@@ -1031,6 +1031,7 @@ std::vector<std::vector<ConfigServer>::const_iterator> findMatchingServerConfigs
  * Finds possible server configurations by calling findMatchingServerConfigs().
  * If no matching server configuration is found, returns false.
  * If more than one matching server is found, sets the first one found.
+ * Also sets the first location of the found server configuration.
  *
  * @param connection The connection object to select the server configuration for.
  * @param serverConfigs The vector of server configurations.
@@ -1045,6 +1046,7 @@ bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer
 		return (false);
 
 	connection.m_request.activeServer = matches[0];
+	connection.m_request.activeLocation = matches[0]->locations.begin();
 
 	return (true);
 }
@@ -1053,8 +1055,9 @@ bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer
  * @brief Overload for hasValidServerConfig() to aditionally check a server configuration for host.
  *
  * Works similar to hasValidServerConfig(). If after finding all matching server configurations more than one match was
- * found, it iterates through the matches and checks if the server name matches the host. If it does, sets the found
- * server config. If no server name matches the host, the first found match is kept as matching server.
+ * found, it iterates through the matches and checks if the server name matches the host.
+ * If it does, sets the found server config. Also sets the first location of the found server configuration.
+ * If no server name matches the host, the first found match is kept as matching server.
  *
  * @param connection The connection object to select the server configuration for.
  * @param serverConfigs The vector of server configurations.
@@ -1071,6 +1074,7 @@ bool hasValidServerConfig(
 		return (false);
 
 	connection.m_request.activeServer = matches[0];
+	connection.m_request.activeLocation = matches[0]->locations.begin();
 	if (matches.size() == 1)
 		return (true);
 
@@ -1078,6 +1082,7 @@ bool hasValidServerConfig(
 		 iter != matches.end(); ++iter) {
 		if ((*iter)->serverName == host) {
 			connection.m_request.activeServer = *iter;
+			connection.m_request.activeLocation = (*iter)->locations.begin();
 			return (true);
 		}
 	}
