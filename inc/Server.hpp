@@ -128,7 +128,6 @@ void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);
 
-std::vector<ConfigServer>::const_iterator selectServerConfig(
-	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock);
-std::vector<ConfigServer>::const_iterator selectServerConfig(
-	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock, const std::string& host);
+bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer>& serverConfigs);
+bool hasValidServerConfig(
+	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host);

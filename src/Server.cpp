@@ -170,7 +170,12 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 	}
 
 	Connection newConnection(serverSock, clientSock);
-	newConnection.m_request.activeServer = selectServerConfig(m_configFile.servers, serverSock);
+	if (!hasValidServerConfig(newConnection, m_configFile.servers)) {
+		close(clientFd);
+		LOG_ERROR << "Failed to set active server for " << clientSock;
+		return false;
+	}
+
 	std::pair<std::map<int, Connection>::iterator, bool> ret
 		= m_connections.insert(std::pair<int, Connection>(clientFd, newConnection));
 	if (!ret.second) {
@@ -723,9 +728,13 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 			}
 
 			std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
-			if (iter != connection.m_request.headers.end())
-				connection.m_request.activeServer
-					= selectServerConfig(server.getServerConfigs(), connection.m_serverSocket, iter->second);
+			if (iter != connection.m_request.headers.end()) {
+				if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
+					LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
+					close(clientFd);
+					connection.m_status = Connection::Closed;
+				}
+			}
 
 			if (connection.m_request.hasBody) {
 				connection.m_status = Connection::ReceiveBody;
@@ -1017,59 +1026,61 @@ std::vector<std::vector<ConfigServer>::const_iterator> findMatchingServerConfigs
 }
 
 /**
- * @brief Selects a server configuration for a server socket.
+ * @brief Selects the server configuration for a connection.
  *
- * Selects a server configuration for a server socket by calling findMatchingServerConfigs().
- * If no matching server is found, it throws a runtime error.
- * If more than one matching server is found, returns the first one found.
+ * Finds possible server configurations by calling findMatchingServerConfigs().
+ * If no matching server configuration is found, returns false.
+ * If more than one matching server is found, sets the first one found.
  *
+ * @param connection The connection object to select the server configuration for.
  * @param serverConfigs The vector of server configurations.
- * @param serverSock The server socket to find a matching server configuration for.
- * @return std::vector<ConfigServer>::const_iterator An iterator to the selected server configuration.
- * @throws std::runtime_error if no matching server configuration is found.
+ * @return true if a valid server configuration is found, false otherwise.
  */
-std::vector<ConfigServer>::const_iterator selectServerConfig(
-	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock)
+bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
 {
 	std::vector<std::vector<ConfigServer>::const_iterator> matches
-		= findMatchingServerConfigs(serverConfigs, serverSock);
+		= findMatchingServerConfigs(serverConfigs, connection.m_serverSocket);
 
 	if (matches.empty())
-		throw std::runtime_error("No matching server config found");
+		return (false);
 
-	return matches[0];
+	connection.m_request.activeServer = matches[0];
+
+	return (true);
 }
 
 /**
- * @brief Overload for selectServerConfig() to select a server configuration by host.
+ * @brief Overload for hasValidServerConfig() to aditionally check a server configuration for host.
  *
- * After finding all matching server configurations, it iterates through them and checks if the server name matches the
- * host. If it does, it returns the server configuration. If no server name matches the host, it returns the first
- * matching server configuration.
+ * Works similar to hasValidServerConfig(). If after finding all matching server configurations more than one match was
+ * found, it iterates through the matches and checks if the server name matches the host. If it does, sets the found
+ * server config. If no server name matches the host, the first found match is kept as matching server.
  *
+ * @param connection The connection object to select the server configuration for.
  * @param serverConfigs The vector of server configurations.
- * @param serverSock The server socket to find a matching server configuration for.
  * @param host The host name to match with the server name.
- * @return std::vector<ConfigServer>::const_iterator An iterator to the selected server configuration.
- * @throws std::runtime_error if no matching server configuration is found.
+ * @return true if a valid server configuration is found, false otherwise.
  */
-std::vector<ConfigServer>::const_iterator selectServerConfig(
-	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock, const std::string& host)
+bool hasValidServerConfig(
+	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host)
 {
 	std::vector<std::vector<ConfigServer>::const_iterator> matches
-		= findMatchingServerConfigs(serverConfigs, serverSock);
+		= findMatchingServerConfigs(serverConfigs, connection.m_serverSocket);
 
 	if (matches.empty())
-		throw std::runtime_error("No matching server config found");
+		return (false);
 
+	connection.m_request.activeServer = matches[0];
 	if (matches.size() == 1)
-		return matches[0];
+		return (true);
 
 	for (std::vector<std::vector<ConfigServer>::const_iterator>::const_iterator iter = matches.begin();
 		 iter != matches.end(); ++iter) {
-		if ((*iter)->serverName == host)
-			return *iter;
+		if ((*iter)->serverName == host) {
+			connection.m_request.activeServer = *iter;
+			return (true);
+		}
 	}
 
-	return matches[0];
+	return (true);
 }

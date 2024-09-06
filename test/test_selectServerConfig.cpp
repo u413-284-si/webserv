@@ -18,6 +18,11 @@ class selectServerConfigTest : public ::testing::Test {
 		.host = "127.0.0.1",
 		.port = "8080"
 	};
+	Socket clientSock = {
+		.host = "1.1.1.1",
+		.port = "1234"
+	};
+	Connection connection = Connection(serverSock, clientSock);
 };
 
 TEST_F(selectServerConfigTest, OneServer)
@@ -28,7 +33,8 @@ TEST_F(selectServerConfigTest, OneServer)
 
 	configFile.servers.push_back(serverConfig);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock), configFile.servers.begin());
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin());
 }
 
 TEST_F(selectServerConfigTest, OneServerWildcard)
@@ -39,7 +45,8 @@ TEST_F(selectServerConfigTest, OneServerWildcard)
 
 	configFile.servers.push_back(serverConfig);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock), configFile.servers.begin());
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin());
 }
 
 TEST_F(selectServerConfigTest, MultipleServers)
@@ -60,7 +67,8 @@ TEST_F(selectServerConfigTest, MultipleServers)
 	configFile.servers.push_back(serverConfig2);
 	configFile.servers.push_back(serverConfig3);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock), configFile.servers.begin() + 1);
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin() + 1);
 }
 
 TEST_F(selectServerConfigTest, MultipleServersOneWildcard)
@@ -81,7 +89,8 @@ TEST_F(selectServerConfigTest, MultipleServersOneWildcard)
 	configFile.servers.push_back(serverConfig2);
 	configFile.servers.push_back(serverConfig3);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock), configFile.servers.begin() + 2);
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin() + 2);
 }
 
 TEST_F(selectServerConfigTest, MultipleMatchesNoHost)
@@ -102,7 +111,8 @@ TEST_F(selectServerConfigTest, MultipleMatchesNoHost)
 	configFile.servers.push_back(serverConfig2);
 	configFile.servers.push_back(serverConfig3);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock), configFile.servers.begin());
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin());
 }
 
 TEST_F(selectServerConfigTest, MultipleMatchesWithHost)
@@ -126,7 +136,8 @@ TEST_F(selectServerConfigTest, MultipleMatchesWithHost)
 	configFile.servers.push_back(serverConfig2);
 	configFile.servers.push_back(serverConfig3);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock, "server3"), configFile.servers.begin() + 2);
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers, "server3"), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin() + 2);
 }
 
 TEST_F(selectServerConfigTest, SingleMatchWrongHost)
@@ -150,7 +161,8 @@ TEST_F(selectServerConfigTest, SingleMatchWrongHost)
 	configFile.servers.push_back(serverConfig2);
 	configFile.servers.push_back(serverConfig3);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock, "wrong"), configFile.servers.begin() + 1);
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers, "wrong"), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin() + 1);
 }
 
 TEST_F(selectServerConfigTest, MultipleMatchesWithNotMatchingHost)
@@ -174,7 +186,8 @@ TEST_F(selectServerConfigTest, MultipleMatchesWithNotMatchingHost)
 	configFile.servers.push_back(serverConfig2);
 	configFile.servers.push_back(serverConfig3);
 
-	EXPECT_EQ(selectServerConfig(configFile.servers, serverSock, "wrong"), configFile.servers.begin());
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers, "wrong"), true);
+	EXPECT_EQ(connection.m_request.activeServer, configFile.servers.begin());
 }
 
 TEST_F(selectServerConfigTest, NoMatch)
@@ -186,7 +199,7 @@ TEST_F(selectServerConfigTest, NoMatch)
 
 	configFile.servers.push_back(serverConfig1);
 
-	EXPECT_THROW(selectServerConfig(configFile.servers, serverSock), std::runtime_error);
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers), false);
 }
 
 TEST_F(selectServerConfigTest, NoMatchWithHost)
@@ -198,5 +211,5 @@ TEST_F(selectServerConfigTest, NoMatchWithHost)
 
 	configFile.servers.push_back(serverConfig1);
 
-	EXPECT_THROW(selectServerConfig(configFile.servers, serverSock, "wrong"), std::runtime_error);
+	EXPECT_EQ(hasValidServerConfig(connection, configFile.servers, "wrong"), false);
 }
