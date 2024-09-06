@@ -239,7 +239,6 @@ int Server::createListeningSocket(const struct addrinfo* addrinfo, int backlog) 
  * @brief Wrapper function to SocketPolicy::retrieveSocketInfo.
  *
  * @param sockaddr The socket address.
- * @param socklen The length of the socket address.
  * @return Socket The socket information.
  */
 Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr) const
