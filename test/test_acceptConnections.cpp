@@ -1,8 +1,6 @@
 #include "gmock/gmock.h"
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
@@ -26,6 +24,8 @@ protected:
 
 	const int dummyServerFd = 10;
 	Socket serverSock = { "127.0.0.1", "8080" };
+
+	Socket wildcardSock = {"0.0.0.0", "1234"};
 
 	const int dummyClientFd = 11;
 	std::string host = "1.1.1.1";
@@ -107,7 +107,10 @@ TEST_F(AcceptConnectionsTest, acceptConnectionFail)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(-1)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection)
+		.Times(2)
+		.WillOnce(Return(-1))
+		.WillOnce(Return(-2));
 
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
@@ -118,9 +121,14 @@ TEST_F(AcceptConnectionsTest, retrieveSocketInfoFail)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection)
+		.Times(2)
+		.WillOnce(Return(dummyClientFd))
+		.WillOnce(Return(-2));
 
-	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(Socket { "", "" }));
+	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
+		.Times(1)
+		.WillOnce(Return(Socket { "", "" }));
 
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
 
@@ -131,13 +139,68 @@ TEST_F(AcceptConnectionsTest, registerConnectionFail)
 {
 	uint32_t eventMask = EPOLLIN;
 
-	EXPECT_CALL(socketPolicy, acceptSingleConnection).Times(2).WillOnce(Return(dummyClientFd)).WillOnce(Return(-2));
+	EXPECT_CALL(socketPolicy, acceptSingleConnection)
+		.Times(2)
+		.WillOnce(Return(dummyClientFd))
+		.WillOnce(Return(-2));
 
-	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(Socket { host, port }));
+	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
+		.Times(1)
+		.WillOnce(Return(Socket { host, port }));
 
-	EXPECT_CALL(epollWrapper, addEvent).Times(1).WillOnce(Return(false));
+	EXPECT_CALL(epollWrapper, addEvent)
+		.Times(1)
+		.WillOnce(Return(false));
 
 	acceptConnections(server, dummyServerFd, serverSock, eventMask);
+
+	EXPECT_EQ(server.getConnections().size(), 0);
+}
+
+TEST_F(AcceptConnectionsTest, AcceptConnectionsOnWildcardServer)
+{
+	uint32_t eventMask = EPOLLIN;
+
+	EXPECT_CALL(socketPolicy, acceptSingleConnection)
+		.Times(2)
+		.WillOnce(Return(dummyClientFd))
+		.WillOnce(Return(-2));
+
+	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
+		.Times(1)
+		.WillOnce(Return(Socket { host, port }));
+
+	EXPECT_CALL(socketPolicy, retrieveBoundSocketInfo)
+		.Times(1)
+		.WillOnce(Return(serverSock));
+
+	acceptConnections(server, dummyServerFd, wildcardSock, eventMask);
+
+	EXPECT_EQ(server.getConnections().size(), 1);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_clientSocket.host, host);
+	EXPECT_EQ(server.getConnections().at(dummyClientFd).m_clientSocket.port, port);
+}
+
+TEST_F(AcceptConnectionsTest, retrieveBoundSocketInfoFail)
+{
+	uint32_t eventMask = EPOLLIN;
+
+	EXPECT_CALL(socketPolicy, acceptSingleConnection)
+		.Times(2)
+		.WillOnce(Return(dummyClientFd))
+		.WillOnce(Return(-2));
+
+	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
+		.Times(1)
+		.WillOnce(Return(Socket { host, port }));
+
+	EXPECT_CALL(socketPolicy, retrieveBoundSocketInfo)
+		.Times(1)
+		.WillOnce(Return(Socket()));
+
+	acceptConnections(server, dummyServerFd, wildcardSock, eventMask);
 
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
