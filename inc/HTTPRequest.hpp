@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "Method.hpp"
 #include "StatusCode.hpp"
 #include <iostream>
 #include <map>
@@ -17,6 +18,8 @@ struct URI {
 };
 
 struct HTTPRequest {
+	HTTPRequest();
+	
 	Method method;
 	URI uri;
 	std::string version;

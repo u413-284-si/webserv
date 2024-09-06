@@ -103,6 +103,7 @@ SRC:=	main.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
+		HTTPRequest.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
@@ -253,7 +254,6 @@ valgr: $(NAME) | $(LOG_DIR)
 comp: check_bear_installed clean
 	@printf "$(YELLOW)$(BOLD)Creating compile_commands.json$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)bear -- make -j --no-print-directory
-	$(SILENT)bear --append -- make -j --no-print-directory test
 
 # Check if bear is installed. If not exit with error.
 .PHONY: check_bear_installed

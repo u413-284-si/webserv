@@ -35,11 +35,14 @@ protected:
 		m_locations.push_back(m_location2);
 		m_locations.push_back(m_location4);
 		m_locations.push_back(m_location1);
+
+		m_request.method = MethodGet;
+		m_request.uri.path = "/test";
 	}
 	~TargetResourceHandlerTest() override { }
 
 	std::vector<Location> m_locations;
-	HTTPRequest m_request = { .method = MethodGet, .uri = { .path = "/test" } };
+	HTTPRequest m_request;
 	HTTPResponse m_response = { .status = StatusOK, .isAutoindex = false };
 	MockFileSystemPolicy m_fileSystemPolicy;
 };
