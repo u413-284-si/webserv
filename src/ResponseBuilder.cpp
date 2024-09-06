@@ -64,6 +64,15 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request, HTTPResponse& re
 
 	LOG_DEBUG << "Target resource: " << response.targetResource;
 
+	// Take cgi path and find in target resource
+	if (!response.location->cgiPath.empty() && request.uri.path.find(response.location->cgiPath) != std::string::npos) {
+
+		// CGIHandler cgiHandler(response, m_fileSystemPolicy);
+		// cgiHandler.execute();
+		response.isCGI = true;
+	}
+	// Iterate through the possible cgi extensions and find in target resource
+
 	ResponseBodyHandler responseBodyHandler(response, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
@@ -99,7 +108,7 @@ void ResponseBuilder::initHTTPResponse(const HTTPRequest& request, HTTPResponse&
 	response.status = request.httpStatus;
 	response.method = request.method;
 	response.isAutoindex = false;
-	response.isCGI = request.isCGI;
+	response.isCGI = false;
 }
 
 /**
@@ -175,7 +184,7 @@ void ResponseBuilder::initMIMETypes()
  */
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-		std::map<std::string, std::string >::const_iterator iter = m_mimeTypes.find(extension);
+	std::map<std::string, std::string>::const_iterator iter = m_mimeTypes.find(extension);
 	if (iter != m_mimeTypes.end()) {
 		return iter->second;
 	}

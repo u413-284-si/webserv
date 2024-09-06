@@ -26,7 +26,6 @@ struct HTTPRequest {
 	bool shallCloseConnection;
 	bool hasBody;
 	bool isChunked;
-	bool isCGI;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
