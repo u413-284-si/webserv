@@ -28,6 +28,11 @@ void ResponseBodyHandler::execute()
 	if (m_response.status != StatusOK) {
 		handleErrorBody();
 	}
+	else if (m_response.isCGI) {
+		CGIHandler cgiHandler(m_response.location->cgiPath, m_response.location->cgiExt);
+		cgiHandler.execute(m_response);
+		// register the CGI pipe ends
+	}
 	else if (m_response.isAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_response.body = autoindexHandler.execute(m_response.targetResource);

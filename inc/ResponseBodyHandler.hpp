@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CGIHandler.hpp"
 #include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
 #include "AutoindexHandler.hpp"
