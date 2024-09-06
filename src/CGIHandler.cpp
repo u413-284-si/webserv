@@ -1,6 +1,7 @@
 #include "CGIHandler.hpp"
 #include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
+#include "HTTPResponse.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
 #include "utilities.hpp"
@@ -64,7 +65,7 @@ void CGIHandler::init(
 		m_env["CONTENT_TYPE"] = request.headers["Content-Type"];
 }
 
-void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
+void CGIHandler::execute(HTTPResponse& response)
 {
 	std::vector<std::string> envComposite;
 	std::vector<std::string> argvAsStrings;
@@ -82,14 +83,14 @@ void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 
 	if (pipe(m_pipeIn) == -1) {
 		LOG_ERROR << "Error: pipe(): m_pipeIn: " + std::string(std::strerror(errno));
-		request.httpStatus = StatusInternalServerError;
+		response.status = StatusInternalServerError;
 		return;
 	}
 	if (pipe(m_pipeOut) == -1) {
 		LOG_ERROR << "Error: pipe(): pipeOut: " + std::string(std::strerror(errno));
 		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
-		request.httpStatus = StatusInternalServerError;
+		response.status = StatusInternalServerError;
 		return;
 	}
 
@@ -100,7 +101,7 @@ void CGIHandler::execute(HTTPRequest& request, std::string& newBody)
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
 		close(m_pipeOut[1]);
-		request.httpStatus = StatusInternalServerError;
+		response.status = StatusInternalServerError;
 		return;
 	}
 	if (cgiPid == 0) {

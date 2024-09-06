@@ -4,6 +4,7 @@
 
 #include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
+#include "HTTPResponse.hpp"
 #include "StatusCode.hpp"
 #include "utilities.hpp"
 
@@ -28,11 +29,11 @@
 
 class CGIHandler {
 public:
-	explicit CGIHandler();
+	explicit CGIHandler(const std::string& cgipath, const std::string& cgiExt);
 
 	void init(
 		const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
-	void execute(HTTPRequest& request, std::string& newBody);
+	void execute(HTTPResponse& response);
 
 	// Getter/Setter functions
 	int getPipeInReadEnd() const { return m_pipeIn[0]; }
@@ -49,10 +50,6 @@ private:
 	std::map<std::string, std::string> m_env;
 	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */
 	int m_pipeOut[2]; /**< Pipe for passing output from CGI program to server */
-
-	CGIHandler(const CGIHandler& ref);
-	CGIHandler& operator=(const CGIHandler& rhs);
-	~CGIHandler();
 
 	// Getter/Setter functions
 	void setCGIPid(pid_t cgiPid);
