@@ -1,6 +1,7 @@
 #pragma once
 
 #include "HTTPRequest.hpp"
+#include "HTTPResponse.hpp"
 #include "Socket.hpp"
 #include <cstddef>
 #include <cstdio>
@@ -34,6 +35,9 @@ public:
 	std::string m_buffer; /**< Bytes received from client */
 	ssize_t m_bytesReceived; /**< Number of bytes received from client */
 	HTTPRequest m_request; /**< Request of the client */
+	HTTPResponse m_response; /**< Response to be sent to the client */
+	int m_pipeToCGIWriteEnd; /**< Write end of the pipe to the CGI process */
+	int m_pipeFromCGIReadEnd; /**< Read end of the pipe to the CGI process */
 };
 
 void clearConnection(Connection& connection);

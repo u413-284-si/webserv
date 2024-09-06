@@ -23,7 +23,7 @@ class ResponseBuilder {
 public:
 	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy);
 
-	void buildResponse(const HTTPRequest& request);
+	void buildResponse(const HTTPRequest& request, HTTPResponse& response);
 	std::string getResponse() const;
 	void setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer);
 
@@ -32,7 +32,7 @@ private:
 	void appendHeaders(const HTTPResponse& response);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
-	static HTTPResponse initHTTPResponse(const HTTPRequest& request);
+	static void initHTTPResponse(const HTTPRequest& request, HTTPResponse& response);
 	void resetStream();
 
 	std::map<std::string, std::string> m_mimeTypes;

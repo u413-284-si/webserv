@@ -1,5 +1,6 @@
 #include "ResponseBuilder.hpp"
 #include "ConfigFile.hpp"
+#include "HTTPResponse.hpp"
 
 /**
  * @brief Construct a new ResponseBuilder object
@@ -48,13 +49,13 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
  * Build the response by appending the status line, headers and body.
  * @param request HTTP request.
  */
-void ResponseBuilder::buildResponse(const HTTPRequest& request)
+void ResponseBuilder::buildResponse(const HTTPRequest& request, HTTPResponse& response)
 {
 	resetStream();
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	HTTPResponse response = initHTTPResponse(request);
+	initHTTPResponse(request, response);
 
 	if (response.status == StatusOK) {
 		TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
@@ -91,17 +92,14 @@ void ResponseBuilder::resetStream()
  * @brief Init the HTTP Response object with data from the request.
  *
  * @param request HTTP request.
- * @return HTTPResponse Constructed HTTP response.
+ * @param response HTTP response.
  */
-HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
+void ResponseBuilder::initHTTPResponse(const HTTPRequest& request, HTTPResponse& response)
 {
-	HTTPResponse response;
-
 	response.status = request.httpStatus;
 	response.method = request.method;
 	response.isAutoindex = false;
-
-	return response;
+	response.isCGI = request.isCGI;
 }
 
 /**
