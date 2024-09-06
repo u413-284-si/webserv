@@ -152,6 +152,34 @@ Socket SocketPolicy::retrieveSocketInfo(struct sockaddr* sockaddr) const
 }
 
 /**
+ * @brief Retrieves info of socket to which sockfd is bound.
+ *
+ * Uses getsockname() to retrieve the current address to which the socket sockfd is bound.
+ * Then uses SocketPolicy::retrieveSocketInfo to convert this information into a Socket struct.
+ * On error returns an empty Socket.
+ *
+ * @param sockfd The socket fd which is bound to a socket.
+ * @return Socket The socket information of the bound socket.
+ */
+Socket SocketPolicy::retrieveBoundSocketInfo(int sockfd) const
+{
+	struct sockaddr_storage boundAddr = {};
+	socklen_t boundLen = sizeof(boundAddr);
+
+	// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
+	struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&boundAddr);
+
+	if (-1 == ::getsockname(sockfd, addrCast, &boundLen)) {
+		LOG_ERROR << "getsockname(): " << strerror(errno);
+		return (Socket());
+	}
+
+	Socket boundSock = retrieveSocketInfo(addrCast);
+
+	return(boundSock);
+}
+
+/**
  * @brief Accept a connection on a socket.
  *
  * Accepts a connection using accept(2) on the provided socket file descriptor and retrieves the address information of
