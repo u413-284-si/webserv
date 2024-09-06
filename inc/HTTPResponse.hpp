@@ -11,6 +11,7 @@ struct HTTPResponse {
 	std::vector<Location>::const_iterator location;
 	Method method;
 	bool isAutoindex;
+	bool isCGI;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPResponse& httpResponse);
