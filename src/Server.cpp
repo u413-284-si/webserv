@@ -680,10 +680,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * EPOLLOUT.
  * After parsing the header, tries to find the "Host" header field in the request headers. If it exists, it rechecks the
  * server configuration for the active server.
- * If the request has a body, the connection status is set to ReceiveBody and the request header is deleted from the buffer.
- * Else the connection is set to BuildResponse and the event is modified to listen to EPOLLOUT.
- * If no complete request was received and the received bytes match the buffer size, sets HTTP status code to 413
- * Request Header Fields Too Large and status to BuildResponse, since the request header was too big.
+ * If the request has a body, the connection status is set to ReceiveBody and the request header is deleted from the
+ * buffer. Else the connection is set to BuildResponse and the event is modified to listen to EPOLLOUT. If no complete
+ * request was received and the received bytes match the buffer size, sets HTTP status code to 413 Request Header Fields
+ * Too Large and status to BuildResponse, since the request header was too big.
  *
  * @param server The server object which handles the connection.
  * @param clientFd The file descriptor of the client.
@@ -730,8 +730,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 			if (connection.m_request.hasBody) {
 				connection.m_status = Connection::ReceiveBody;
 				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-			}
-			else {
+			} else {
 				connection.m_status = Connection::BuildResponse;
 				server.modifyEvent(clientFd, EPOLLOUT);
 			}
@@ -983,11 +982,20 @@ void cleanupClosedConnections(Server& server)
 	}
 }
 
+/**
+ * @brief Find matching server configurations for a server socket.
+ *
+ * Iterates through all server configurations and checks if the host and port match the server socket.
+ * If no matching server is found, it tries to match the host with a wildcard server ("0.0.0.0"), the port must match.
+ *
+ * @param serverConfigs The vector of server configurations.
+ * @param serverSock The server socket to find a matching server configuration for.
+ * @return std::vector<std::vector<ConfigServer>::const_iterator> A vector of matching server configurations.
+ */
 std::vector<std::vector<ConfigServer>::const_iterator> findMatchingServerConfigs(
 	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock)
 {
 	std::vector<std::vector<ConfigServer>::const_iterator> matches;
-	const std::string wildcard = "0.0.0.0";
 
 	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
 		if (iter->host == serverSock.host && iter->port == serverSock.port) {
@@ -995,18 +1003,31 @@ std::vector<std::vector<ConfigServer>::const_iterator> findMatchingServerConfigs
 		}
 	}
 
-	if (matches.empty()) {
-		for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end();
-			 ++iter) {
-			if (iter->host == wildcard && iter->port == serverSock.port) {
-				matches.push_back(iter);
-			}
+	if (!matches.empty())
+		return matches;
+
+	const std::string wildcard = "0.0.0.0";
+
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+		if (iter->host == wildcard && iter->port == serverSock.port) {
+			matches.push_back(iter);
 		}
 	}
-
 	return matches;
 }
 
+/**
+ * @brief Selects a server configuration for a server socket.
+ *
+ * Selects a server configuration for a server socket by calling findMatchingServerConfigs().
+ * If no matching server is found, it throws a runtime error.
+ * If more than one matching server is found, returns the first one found.
+ *
+ * @param serverConfigs The vector of server configurations.
+ * @param serverSock The server socket to find a matching server configuration for.
+ * @return std::vector<ConfigServer>::const_iterator An iterator to the selected server configuration.
+ * @throws std::runtime_error if no matching server configuration is found.
+ */
 std::vector<ConfigServer>::const_iterator selectServerConfig(
 	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock)
 {
@@ -1019,6 +1040,19 @@ std::vector<ConfigServer>::const_iterator selectServerConfig(
 	return matches[0];
 }
 
+/**
+ * @brief Overload for selectServerConfig() to select a server configuration by host.
+ *
+ * After finding all matching server configurations, it iterates through them and checks if the server name matches the
+ * host. If it does, it returns the server configuration. If no server name matches the host, it returns the first
+ * matching server configuration.
+ *
+ * @param serverConfigs The vector of server configurations.
+ * @param serverSock The server socket to find a matching server configuration for.
+ * @param host The host name to match with the server name.
+ * @return std::vector<ConfigServer>::const_iterator An iterator to the selected server configuration.
+ * @throws std::runtime_error if no matching server configuration is found.
+ */
 std::vector<ConfigServer>::const_iterator selectServerConfig(
 	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock, const std::string& host)
 {
