@@ -1,4 +1,6 @@
 #include "Server.hpp"
+#include "Connection.hpp"
+#include "TargetResourceHandler.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -25,6 +27,7 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
+	, m_targetResourceHandler(m_fileSystemPolicy)
 {
 }
 
@@ -169,8 +172,8 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 		return false;
 	}
 
-	Connection newConnection(serverSock, clientSock);
-	if (!hasValidServerConfig(newConnection, m_configFile.servers)) {
+	Connection newConnection(serverSock, clientSock, m_configFile.servers);
+	if (newConnection.m_status == Connection::Closed) {
 		close(clientFd);
 		LOG_ERROR << "Failed to set active server for " << clientSock;
 		return false;
@@ -355,7 +358,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param request The HTTPRequest object to build the response for.
  */
-void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
+void Server::buildResponse(HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -363,6 +366,19 @@ void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.build
  * @return std::string The response string.
  */
 std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
+
+/* ====== DISPATCH TO TARGETRESOURCEHANDLER ====== */
+
+/**
+ * @brief Wrapper function to TargetResourceHandler::execute.
+ *
+ * @param connection The Connection object to handle the target resource for.
+ * @param request The HTTPRequest object to handle the target resource for.
+ */
+void Server::findTargetResource(Connection& connection, HTTPRequest& request)
+{
+	m_targetResourceHandler.execute(connection, request);
+}
 
 /* ====== INITIALIZATION ====== */
 
@@ -737,6 +753,8 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 				}
 			}
 
+			server.findTargetResource(connection, connection.m_request);
+
 			if (connection.m_request.hasBody) {
 				connection.m_status = Connection::ReceiveBody;
 				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
@@ -921,7 +939,7 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 	} else {
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(clientFd, EPOLLIN);
-		clearConnection(connection);
+		clearConnection(connection, server.getServerConfigs());
 	}
 }
 
@@ -990,103 +1008,4 @@ void cleanupClosedConnections(Server& server)
 		else
 			++iter;
 	}
-}
-
-/**
- * @brief Find matching server configurations for a server socket.
- *
- * Iterates through all server configurations and checks if the host and port match the server socket.
- * If no matching server is found, it tries to match the host with a wildcard server ("0.0.0.0"), the port must match.
- *
- * @param serverConfigs The vector of server configurations.
- * @param serverSock The server socket to find a matching server configuration for.
- * @return std::vector<std::vector<ConfigServer>::const_iterator> A vector of matching server configurations.
- */
-std::vector<std::vector<ConfigServer>::const_iterator> findMatchingServerConfigs(
-	const std::vector<ConfigServer>& serverConfigs, const Socket& serverSock)
-{
-	std::vector<std::vector<ConfigServer>::const_iterator> matches;
-
-	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
-		if (iter->host == serverSock.host && iter->port == serverSock.port) {
-			matches.push_back(iter);
-		}
-	}
-
-	if (!matches.empty())
-		return matches;
-
-	const std::string wildcard = "0.0.0.0";
-
-	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
-		if (iter->host == wildcard && iter->port == serverSock.port) {
-			matches.push_back(iter);
-		}
-	}
-	return matches;
-}
-
-/**
- * @brief Selects the server configuration for a connection.
- *
- * Finds possible server configurations by calling findMatchingServerConfigs().
- * If no matching server configuration is found, returns false.
- * If more than one matching server is found, sets the first one found.
- * Also sets the first location of the found server configuration.
- *
- * @param connection The connection object to select the server configuration for.
- * @param serverConfigs The vector of server configurations.
- * @return true if a valid server configuration is found, false otherwise.
- */
-bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
-{
-	std::vector<std::vector<ConfigServer>::const_iterator> matches
-		= findMatchingServerConfigs(serverConfigs, connection.m_serverSocket);
-
-	if (matches.empty())
-		return (false);
-
-	connection.m_request.activeServer = matches[0];
-	connection.m_request.activeLocation = matches[0]->locations.begin();
-
-	return (true);
-}
-
-/**
- * @brief Overload for hasValidServerConfig() to aditionally check a server configuration for host.
- *
- * Works similar to hasValidServerConfig(). If after finding all matching server configurations more than one match was
- * found, it iterates through the matches and checks if the server name matches the host.
- * If it does, sets the found server config. Also sets the first location of the found server configuration.
- * If no server name matches the host, the first found match is kept as matching server.
- *
- * @param connection The connection object to select the server configuration for.
- * @param serverConfigs The vector of server configurations.
- * @param host The host name to match with the server name.
- * @return true if a valid server configuration is found, false otherwise.
- */
-bool hasValidServerConfig(
-	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host)
-{
-	std::vector<std::vector<ConfigServer>::const_iterator> matches
-		= findMatchingServerConfigs(serverConfigs, connection.m_serverSocket);
-
-	if (matches.empty())
-		return (false);
-
-	connection.m_request.activeServer = matches[0];
-	connection.m_request.activeLocation = matches[0]->locations.begin();
-	if (matches.size() == 1)
-		return (true);
-
-	for (std::vector<std::vector<ConfigServer>::const_iterator>::const_iterator iter = matches.begin();
-		 iter != matches.end(); ++iter) {
-		if ((*iter)->serverName == host) {
-			connection.m_request.activeServer = *iter;
-			connection.m_request.activeLocation = (*iter)->locations.begin();
-			return (true);
-		}
-	}
-
-	return (true);
 }

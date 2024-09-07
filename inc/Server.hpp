@@ -12,6 +12,7 @@
 #include "Socket.hpp"
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
+#include "TargetResourceHandler.hpp"
 #include "error.hpp"
 
 #include <algorithm>
@@ -88,8 +89,11 @@ public:
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
-	void buildResponse(const HTTPRequest& request);
+	void buildResponse(HTTPRequest& request);
 	std::string getResponse();
+
+	// Dispatch to TargetResourceHandler
+	void findTargetResource(Connection& connection, HTTPRequest& request);
 
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
@@ -102,6 +106,7 @@ private:
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
+	TargetResourceHandler m_targetResourceHandler; /**< Handles target resource of request */
 
 	Server(const Server& ref);
 	Server& operator=(const Server& ref);
@@ -127,7 +132,3 @@ void connectionHandleTimeout(Server& server, int clientFd, Connection& connectio
 void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);
-
-bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer>& serverConfigs);
-bool hasValidServerConfig(
-	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host);
