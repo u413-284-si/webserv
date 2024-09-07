@@ -41,3 +41,5 @@ private:
 	std::stringstream m_responseStream;
 	bool m_isFirstTime;
 };
+
+bool isCGIRequested(const HTTPRequest& request, const HTTPResponse& response);

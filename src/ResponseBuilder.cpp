@@ -1,6 +1,7 @@
 #include "ResponseBuilder.hpp"
 #include "ConfigFile.hpp"
 #include "HTTPResponse.hpp"
+#include <cstddef>
 
 /**
  * @brief Construct a new ResponseBuilder object
@@ -64,14 +65,8 @@ void ResponseBuilder::buildResponse(const HTTPRequest& request, HTTPResponse& re
 
 	LOG_DEBUG << "Target resource: " << response.targetResource;
 
-	// Take cgi path and find in target resource
-	if (!response.location->cgiPath.empty() && request.uri.path.find(response.location->cgiPath) != std::string::npos) {
-
-		// CGIHandler cgiHandler(response, m_fileSystemPolicy);
-		// cgiHandler.execute();
+	if (isCGIRequested(request, response))
 		response.isCGI = true;
-	}
-	// Iterate through the possible cgi extensions and find in target resource
 
 	ResponseBodyHandler responseBodyHandler(response, m_fileSystemPolicy);
 	responseBodyHandler.execute();
@@ -189,4 +184,32 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 		return iter->second;
 	}
 	return m_mimeTypes.at("default");
+}
+
+/**
+ * @brief Checks if CGI execution is requested for the given HTTP request and response.
+ *
+ * This function checks if CGI execution is requested based on the provided HTTP request and response.
+ * It checks if the CGI path and extension are specified in the response location, and if the request URI path
+ * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a slash,
+ * it returns true indicating that CGI execution is requested. Otherwise, it returns false.
+ *
+ * @param request The HTTP request object.
+ * @param response The HTTP response object.
+ * @return true if CGI execution is requested, false otherwise.
+ */
+bool isCGIRequested(const HTTPRequest& request, const HTTPResponse& response)
+{
+	// FIXME: May need to iterate through multiple paths and extensions
+	if (!response.location->cgiPath.empty() && request.uri.path.find(response.location->cgiPath) != std::string::npos
+		&& !response.location->cgiExt.empty()) {
+		size_t extPos = request.uri.path.find(response.location->cgiExt);
+
+		// If extension is found and is at the end of the path or followed by a slash
+		if (extPos != std::string::npos
+			&& (extPos + response.location->cgiExt.size() == request.uri.path.size()
+				|| request.uri.path.at(extPos + response.location->cgiExt.size()) == '/'))
+			return true;
+	}
+	return false;
 }
