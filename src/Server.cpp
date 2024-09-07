@@ -895,11 +895,13 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection);
+	// FIXME: add check to only set at start of CGI process -> CGI state?
 	if (connection.m_response.isCGI) {
 		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
 		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
 	}
-	connection.m_buffer = server.getResponse(); // could become superfluos
+	connection.m_buffer = server.getResponse(); // could become superfluos -> build final response in m_response, can
+												// remove responsestream in ResponseBuilder
 	connection.m_status = Connection::SendResponse;
 	connectionSendResponse(server, clientFd, connection); // send response instead of buffer
 }
