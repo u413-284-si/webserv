@@ -696,15 +696,9 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * In both cases the clientFd is closed and the connection status is set to Closed.
  * If bytes read is greater than 0, the bytes received are added to the connection buffer and the bytes received of the
  * connection are updated as well as time since the last event is updated to the current time.
- * If the buffer contains a complete request header, it parses the header with Server::parseHeader.
- * An error while parsing the header sets the connection status to BuildResponse and modifies the event to listen to
- * EPOLLOUT.
- * After parsing the header, tries to find the "Host" header field in the request headers. If it exists, it rechecks the
- * server configuration for the active server.
- * If the request has a body, the connection status is set to ReceiveBody and the request header is deleted from the
- * buffer. Else the connection is set to BuildResponse and the event is modified to listen to EPOLLOUT. If no complete
- * request was received and the received bytes match the buffer size, sets HTTP status code to 413 Request Header Fields
- * Too Large and status to BuildResponse, since the request header was too big.
+ * If the buffer contains a complete request header, the function handleCompleteRequestHeader() is called.
+ * If no complete request was received and the received bytes match the buffer size, sets HTTP status code to 413
+ * Request Header Fields Too Large and status to BuildResponse, since the request header was too big.
  *
  * @param server The server object which handles the connection.
  * @param clientFd The file descriptor of the client.
@@ -733,35 +727,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 		connection.m_buffer += buffer;
 		connection.m_timeSinceLastEvent = std::time(0);
 		if (isCompleteRequestHeader(connection.m_buffer)) {
-			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
-			try {
-				server.parseHeader(connection.m_buffer, connection.m_request);
-			} catch (std::exception& e) {
-				LOG_ERROR << "Error: " << e.what();
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-				return;
-			}
-
-			std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
-			if (iter != connection.m_request.headers.end()) {
-				if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
-					LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
-					close(clientFd);
-					connection.m_status = Connection::Closed;
-					return;
-				}
-			}
-
-			server.findTargetResource(connection, connection.m_request);
-
-			if (connection.m_request.hasBody) {
-				connection.m_status = Connection::ReceiveBody;
-				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-			} else {
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-			}
+			handleCompleteRequestHeader(server, clientFd, connection);
 		} else {
 			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
 			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
@@ -784,6 +750,57 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 bool isCompleteRequestHeader(const std::string& connectionBuffer)
 {
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
+}
+
+/**
+ * @brief Handles a received complete request header.
+ *
+ * This function is called when a complete request header has been received from the client.
+ * It parses the request header with Server::parseHeader().
+ * An error while parsing the header sets Connection::BuildResponse and modifies the event to listen to
+ * EPOLLOUT.
+ * After parsing the header, tries to find the "Host" header field in the request headers. If it exists, it rechecks the
+ * server configuration for the connection.
+ * Then it tries to find the target resource for the request with Server::findTargetResource().
+ * If no Status is still OK, and the request has a body, set to Connection::ReceiveBody and the received request header
+ * is deleted from the buffer.
+ * Else sets to Connection::BuildResponse and the event is modified to listen to EPOLLOUT.
+ * @param server The server object.
+ * @param clientFd The file descriptor of the client socket.
+ * @param connection The connection object.
+ */
+void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
+
+	try {
+		server.parseHeader(connection.m_buffer, connection.m_request);
+	} catch (std::exception& e) {
+		LOG_ERROR << "Error: " << e.what();
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
+	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
+	if (iter != connection.m_request.headers.end()) {
+		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
+			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
+			close(clientFd);
+			connection.m_status = Connection::Closed;
+			return;
+		}
+	}
+
+	server.findTargetResource(connection, connection.m_request);
+
+	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
+		connection.m_status = Connection::ReceiveBody;
+		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+	} else {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+	}
 }
 
 /**

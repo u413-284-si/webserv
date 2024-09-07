@@ -123,6 +123,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 void handleConnection(Server& server, int clientFd, Connection& connection);
 void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
+void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
