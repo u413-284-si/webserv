@@ -16,6 +16,8 @@ Connection::Connection()
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
+    , m_pipeToCGIWriteEnd(-1)
+    , m_pipeFromCGIReadEnd(-1)
     , m_cgiPid(-1)
 {
 	m_request.method = MethodCount;
@@ -41,7 +43,10 @@ Connection::Connection(const Socket& server, const Socket& client)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
+    , m_pipeToCGIWriteEnd(-1)
+    , m_pipeFromCGIReadEnd(-1)
     , m_cgiPid(-1)
+    
 {
 	m_request.method = MethodCount;
 	m_request.httpStatus = StatusOK;
@@ -62,7 +67,14 @@ void clearConnection(Connection& connection)
 	connection.m_request.shallCloseConnection = false;
 	connection.m_request.hasBody = false;
 	connection.m_request.isChunked = false;
+    connection.m_response.status = StatusOK;
+	connection.m_response.method = MethodCount;
+	connection.m_response.isAutoindex = false;
+	connection.m_response.isCGI = false;
 	connection.m_buffer = "";
 	connection.m_bytesReceived = 0;
+    connection.m_pipeToCGIWriteEnd = -1;
+    connection.m_pipeFromCGIReadEnd = -1;
+    connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
 }
