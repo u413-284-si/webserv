@@ -733,6 +733,7 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 					LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
 					close(clientFd);
 					connection.m_status = Connection::Closed;
+					return;
 				}
 			}
 
