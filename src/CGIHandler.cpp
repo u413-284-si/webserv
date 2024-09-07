@@ -18,6 +18,7 @@ CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
 	, m_cgiExt(cgiExt)
 	, m_pipeIn()
 	, m_pipeOut()
+    , m_cgiPid(-1)
 {
 	m_pipeIn[0] = -1;
 	m_pipeIn[1] = -1;
@@ -27,11 +28,11 @@ CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
 
-void CGIHandler::setCGIPath(const std::string& cgiPath) { m_cgiPath = cgiPath; }
+int CGIHandler::getPipeInWriteEnd() const { return m_pipeIn[1]; }
 
-const std::string& CGIHandler::getCGIPath() const { return m_cgiPath; }
+int CGIHandler::getPipeOutReadEnd() const { return m_pipeOut[0]; }
 
-const std::map<std::string, std::string>& CGIHandler::getEnv() const { return m_env; }
+const pid_t& CGIHandler::getCGIPid() const { return m_cgiPid; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -94,8 +95,8 @@ void CGIHandler::execute(HTTPResponse& response)
 		return;
 	}
 
-	pid_t cgiPid = fork();
-	if (cgiPid == -1) {
+	m_cgiPid = fork();
+	if (m_cgiPid == -1) {
 		LOG_ERROR << "Error: fork(): " + std::string(std::strerror(errno));
 		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
@@ -104,7 +105,7 @@ void CGIHandler::execute(HTTPResponse& response)
 		response.status = StatusInternalServerError;
 		return;
 	}
-	if (cgiPid == 0) {
+	if (m_cgiPid == 0) {
 		dup2(m_pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
 		dup2(m_pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
 		close(m_pipeIn[0]); // Can be closed as the read connection to server exists in stdin now

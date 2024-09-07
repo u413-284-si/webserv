@@ -36,10 +36,10 @@ public:
 	void execute(HTTPResponse& response);
 
 	// Getter/Setter functions
-	int getPipeInReadEnd() const { return m_pipeIn[0]; }
-	int getPipeInWriteEnd() const { return m_pipeIn[1]; }
-	int getPipeOutWriteEnd() const { return m_pipeOut[1]; }
-	int getPipeOutReadEnd() const { return m_pipeOut[0]; }
+	int getPipeInWriteEnd() const;
+	int getPipeOutReadEnd() const;
+    const pid_t& getCGIPid() const;
+	void setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const;
 
 
 private:
@@ -50,16 +50,7 @@ private:
 	std::map<std::string, std::string> m_env;
 	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */
 	int m_pipeOut[2]; /**< Pipe for passing output from CGI program to server */
-
-	// Getter/Setter functions
-	void setCGIPid(pid_t cgiPid);
-	void setCGIPath(const std::string& cgiPath);
-
-	const pid_t& getCGIPid() const;
-	const std::string& getCGIPath() const;
-	const std::map<std::string, std::string>& getEnv() const;
-
-	void setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const;
+    pid_t m_cgiPid; /**< Process ID of the CGI process */
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
