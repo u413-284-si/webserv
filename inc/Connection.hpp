@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
+#include <sched.h>
 #include <string>
 #include <unistd.h>
 
@@ -38,6 +39,7 @@ public:
 	HTTPResponse m_response; /**< Response to be sent to the client */
 	int m_pipeToCGIWriteEnd; /**< Write end of the pipe to the CGI process */
 	int m_pipeFromCGIReadEnd; /**< Read end of the pipe to the CGI process */
+    pid_t m_cgiPid; /**< Process ID of the CGI process */
 };
 
 void clearConnection(Connection& connection);

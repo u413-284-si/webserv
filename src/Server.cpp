@@ -359,10 +359,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param request The HTTPRequest object to build the response for.
  */
-void Server::buildResponse(Connection& connection)
-{
-    m_responseBuilder.buildResponse(connection);
-}
+void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -633,10 +630,11 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 		connectionReceiveBody(server, clientFd, connection);
 		break;
 	case (Connection::SendToCGI):
-		connectionSendToCGI(int pipeInWriteEnd, connection.m_request);
+		connectionSendToCGI(connection.m_pipeToCGIWriteEnd, connection.m_request);
 		break;
 	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, connection.m_request);
+		connectionReceiveFromCGI(
+			connection.m_pipeFromCGIReadEnd, connection.m_cgiPid, connection.m_response.body, connection.m_request);
 		break;
 	case (Connection::BuildResponse):
 		connectionBuildResponse(server, clientFd, connection);
@@ -897,10 +895,10 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection);
-    if (connection.m_response.isCGI) {
-        server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
-        server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
-    }
+	if (connection.m_response.isCGI) {
+		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
+		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
+	}
 	connection.m_buffer = server.getResponse(); // could become superfluos
 	connection.m_status = Connection::SendResponse;
 	connectionSendResponse(server, clientFd, connection); // send response instead of buffer

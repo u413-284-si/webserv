@@ -71,7 +71,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 		connection.m_response.isCGI = true;
 
 	ResponseBodyHandler responseBodyHandler(connection.m_response, m_fileSystemPolicy);
-	responseBodyHandler.execute();
+	responseBodyHandler.execute(connection);
 
 	LOG_DEBUG << "Response body: " << connection.m_response.body;
 

@@ -34,6 +34,7 @@ void ResponseBodyHandler::execute(Connection& connection)
 		cgiHandler.execute(m_response);
         connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
         connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
+        connection.m_cgiPid = cgiHandler.getCGIPid();
 	}
 	else if (m_response.isAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);

@@ -16,6 +16,7 @@ Connection::Connection()
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
+    , m_cgiPid(-1)
 {
 	m_request.method = MethodCount;
 	m_request.httpStatus = StatusOK;
@@ -40,6 +41,7 @@ Connection::Connection(const Socket& server, const Socket& client)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
+    , m_cgiPid(-1)
 {
 	m_request.method = MethodCount;
 	m_request.httpStatus = StatusOK;
