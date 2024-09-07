@@ -3,7 +3,6 @@
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "HTTPRequest.hpp"
-#include "HTTPResponse.hpp"
 #include "Socket.hpp"
 #include "StatusCode.hpp"
 
@@ -86,12 +85,11 @@ TEST(OstreamInserters, ConnectionStatus)
 // sets default values for all struct which get printed
 class OstreamInsertersTest : public ::testing::Test {
 protected:
-	Connection m_connection = Connection(Socket { "127.0.0.1", "8080" }, Socket { "1.1.1.1", "1234" });
 	Location m_location;
 	ConfigServer m_server;
 	ConfigFile m_configFile;
+	Connection m_connection = Connection(Socket { "127.0.0.1", "8080" }, Socket { "1.1.1.1", "1234" }, m_configFile.servers);
 	URI m_uri;
-	HTTPResponse m_httpResponse;
 	HTTPRequest m_httpRequest;
 
 	OstreamInsertersTest()
@@ -119,13 +117,6 @@ protected:
 		m_server.locations = { m_location };
 
 		m_configFile.servers = { m_server };
-
-		m_httpResponse.status = StatusOK;
-		m_httpResponse.targetResource = "/path/to/resource";
-		m_httpResponse.body = "<html><body><h1>Hello, World!</h1></body></html>";
-		m_httpResponse.location = m_server.locations.begin();
-		m_httpResponse.method = MethodGet;
-		m_httpResponse.isAutoindex = true;
 
 		m_httpRequest.method = MethodGet;
 		m_httpRequest.uri = m_uri;
@@ -224,26 +215,6 @@ TEST_F(OstreamInsertersTest, HTTPRequest)
 			 << m_httpRequest.httpStatus
 			 << "\n"
 				"Shall close connection: 0\n";
-	EXPECT_EQ(ostream.str(), expected.str());
-}
-
-TEST_F(OstreamInsertersTest, HTTPResponse)
-{
-	std::ostringstream ostream;
-	ostream << m_httpResponse;
-
-	std::ostringstream expected;
-	expected << "Status code: " << m_httpResponse.status
-			 << "\n"
-				"Target resource: /path/to/resource\n"
-				"Body: <html><body><h1>Hello, World!</h1></body></html>\n"
-				"Location:\n"
-			 << m_location
-			 << "\n"
-				"Method: "
-			 << m_httpResponse.method
-			 << "\n"
-				"Autoindex: 1\n";
 	EXPECT_EQ(ostream.str(), expected.str());
 }
 

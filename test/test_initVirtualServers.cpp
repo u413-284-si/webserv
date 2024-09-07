@@ -74,4 +74,7 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	EXPECT_EQ(server->getVirtualServers().at(dummyFd).port, webutils::toString(configFile.servers[0].port));
 	EXPECT_EQ(server->getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);
 	EXPECT_EQ(server->getVirtualServers().at(dummyFd2).port, webutils::toString(configFile.servers[1].port));
+
+	free(addr);
+	free(addr2);
 }

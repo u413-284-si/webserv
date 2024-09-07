@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
@@ -15,18 +16,23 @@ protected:
 	ConnectionReceiveHeaderTest()
 		: server(configFile, epollWrapper, socketPolicy)
 	{
-		ON_CALL(epollWrapper, modifyEvent).WillByDefault(Return(true));
+		ON_CALL(epollWrapper, modifyEvent)
+			.WillByDefault(Return(true));
 
 		connection.m_timeSinceLastEvent = 0;
 	}
 	~ConnectionReceiveHeaderTest() override { }
 
-	ConfigFile configFile;
+	ConfigFile configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
+	Socket m_serverSock = {
+		.host = "127.0.0.1",
+		.port = "8080"
+	};
 
-	Connection connection = Connection(Socket(), Socket());
+	Connection connection = Connection(m_serverSock, Socket(), configFile.servers);
 
 	const int dummyFd = 10;
 };
