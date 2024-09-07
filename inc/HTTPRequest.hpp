@@ -2,7 +2,6 @@
 
 /* ====== LIBRARIES ====== */
 
-#include "ConfigFile.hpp"
 #include "Method.hpp"
 #include "StatusCode.hpp"
 #include <iostream>
@@ -19,7 +18,7 @@ struct URI {
 
 struct HTTPRequest {
 	HTTPRequest();
-	
+
 	Method method;
 	URI uri;
 	std::string version;
@@ -29,8 +28,8 @@ struct HTTPRequest {
 	bool shallCloseConnection;
 	bool hasBody;
 	bool isChunked;
-	std::vector<ConfigServer>::const_iterator activeServer;
-	std::vector<Location>::const_iterator activeLocation;
+	std::string targetResource;
+	bool hasAutoindex;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);

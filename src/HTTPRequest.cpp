@@ -6,5 +6,6 @@ HTTPRequest::HTTPRequest()
 	, shallCloseConnection(false)
 	, hasBody(false)
 	, isChunked(false)
+	, hasAutoindex(false)
 {
 }
