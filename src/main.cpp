@@ -26,6 +26,8 @@ int main(int argc, char** argv)
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(argv[1]);
 
+		configFile = createDummyConfig();
+
 		Server server(configFile, epollWrapper, socketPolicy);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		server.run();
