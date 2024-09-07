@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CGIHandler.hpp"
+#include "Connection.hpp"
 #include "FileSystemPolicy.hpp"
 #include "HTTPResponse.hpp"
 #include "AutoindexHandler.hpp"
@@ -16,7 +17,7 @@
 class ResponseBodyHandler {
 public:
 	explicit ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy);
-	void execute();
+	void execute(Connection& connection);
 
 private:
 	void handleErrorBody();

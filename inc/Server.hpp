@@ -89,7 +89,7 @@ public:
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
-	void buildResponse(const HTTPRequest& request, HTTPResponse& response);
+	void buildResponse(Connection& connection);
 	std::string getResponse();
 
 private:

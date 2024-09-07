@@ -23,15 +23,17 @@ ResponseBodyHandler::ResponseBodyHandler(HTTPResponse& response, const FileSyste
  * If the target resource is a file, the file contents will be read and set as the body.
  * @todo FIXME: Implement other methods than GET.
  */
-void ResponseBodyHandler::execute()
+void ResponseBodyHandler::execute(Connection& connection)
 {
 	if (m_response.status != StatusOK) {
 		handleErrorBody();
 	}
 	else if (m_response.isCGI) {
 		CGIHandler cgiHandler(m_response.location->cgiPath, m_response.location->cgiExt);
+        cgiHandler.init(const int &clientSocket, HTTPRequest &request, const Location &location, const unsigned short &serverPort);
 		cgiHandler.execute(m_response);
-		// register the CGI pipe ends
+        connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
+        connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 	}
 	else if (m_response.isAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);

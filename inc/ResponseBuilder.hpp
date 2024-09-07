@@ -23,7 +23,7 @@ class ResponseBuilder {
 public:
 	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy);
 
-	void buildResponse(const HTTPRequest& request, HTTPResponse& response);
+	void buildResponse(Connection& connection);
 	std::string getResponse() const;
 	void setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer);
 

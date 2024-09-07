@@ -50,32 +50,34 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
  * Build the response by appending the status line, headers and body.
  * @param request HTTP request.
  */
-void ResponseBuilder::buildResponse(const HTTPRequest& request, HTTPResponse& response)
+void ResponseBuilder::buildResponse(Connection& connection)
 {
 	resetStream();
 
-	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
+	LOG_DEBUG << "Building response for request: " << connection.m_request.method << " "
+			  << connection.m_request.uri.path;
 
-	initHTTPResponse(request, response);
+	initHTTPResponse(connection.m_request, connection.m_response);
 
-	if (response.status == StatusOK) {
-		TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
+	if (connection.m_response.status == StatusOK) {
+		TargetResourceHandler targetResourceHandler(
+			m_activeServer->locations, connection.m_request, connection.m_response, m_fileSystemPolicy);
 		targetResourceHandler.execute();
 	}
 
-	LOG_DEBUG << "Target resource: " << response.targetResource;
+	LOG_DEBUG << "Target resource: " << connection.m_response.targetResource;
 
-	if (isCGIRequested(request, response))
-		response.isCGI = true;
+	if (isCGIRequested(connection.m_request, connection.m_response))
+		connection.m_response.isCGI = true;
 
-	ResponseBodyHandler responseBodyHandler(response, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection.m_response, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
-	LOG_DEBUG << "Response body: " << response.body;
+	LOG_DEBUG << "Response body: " << connection.m_response.body;
 
-	appendStatusLine(response);
-	appendHeaders(response);
-	m_responseStream << response.body << "\r\n";
+	appendStatusLine(connection.m_response);
+	appendHeaders(connection.m_response);
+	m_responseStream << connection.m_response.body << "\r\n";
 }
 
 /**

@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Connection.hpp"
 #include "HTTPResponse.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -358,9 +359,9 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param request The HTTPRequest object to build the response for.
  */
-void Server::buildResponse(const HTTPRequest& request, HTTPResponse& response)
+void Server::buildResponse(Connection& connection)
 {
-	m_responseBuilder.buildResponse(request, response);
+    m_responseBuilder.buildResponse(connection);
 }
 
 /**
@@ -895,7 +896,11 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 {
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
-	server.buildResponse(connection.m_request, connection.m_response);
+	server.buildResponse(connection);
+    if (connection.m_response.isCGI) {
+        server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
+        server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
+    }
 	connection.m_buffer = server.getResponse(); // could become superfluos
 	connection.m_status = Connection::SendResponse;
 	connectionSendResponse(server, clientFd, connection); // send response instead of buffer
