@@ -8,12 +8,8 @@
  * @param response Response to be filled.
  * @param fileSystemPolicy File system policy to be used.
  */
-TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locations, const HTTPRequest& request,
-	HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy)
-	: m_locations(locations)
-	, m_request(request)
-	, m_response(response)
-	, m_fileSystemPolicy(fileSystemPolicy)
+TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
@@ -33,28 +29,28 @@ TargetResourceHandler::TargetResourceHandler(const std::vector<Location>& locati
  * If internalRedirect is true, repeat the process.
  * If stat fails, set Status to StatusInternalServerError.
  */
-void TargetResourceHandler::execute()
+void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request)
 {
 	bool internalRedirect = false;
 
 	do {
 		// Check which location block matches the path
-		m_response.location = matchLocation(m_request.uri.path);
+		connection.location = matchLocation(connection.serverConfig->locations, request.uri.path);
 
 		// No location found > do we also set a default location to not make extra check?
-		if (m_response.location == m_locations.end()) {
-			m_response.status = StatusNotFound;
+		if (connection.location == connection.serverConfig->locations.end()) {
+			request.httpStatus = StatusNotFound;
 			break;
 		}
 
 		// construct target resource
 		if (!internalRedirect)
-			m_response.targetResource = m_response.location->root + m_request.uri.path;
+			request.targetResource = connection.location->root + request.uri.path;
 		internalRedirect = false;
 
 		// what type is it
 		try {
-			FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(m_response.targetResource);
+			FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(request.targetResource);
 
 			switch (fileType) {
 
@@ -62,32 +58,34 @@ void TargetResourceHandler::execute()
 				break;
 
 			case FileSystemPolicy::FileDirectory:
-				if (m_response.targetResource.at(m_response.targetResource.length() - 1) != '/') {
-					m_response.targetResource += "/";
-					m_response.status = StatusMovedPermanently;
-				} else if (!m_response.location->indices.empty()) {
-					m_response.targetResource += m_response.location->indices[0];
+				if (request.targetResource.at(request.targetResource.length() - 1) != '/') {
+					request.targetResource += "/";
+					request.httpStatus = StatusMovedPermanently;
+				} else if (!connection.location->indices.empty()) {
+					request.targetResource += connection.location->indices[0];
 					internalRedirect = true;
-				} else if (m_response.location->isAutoindex) {
-					m_response.isAutoindex = true;
+				} else if (connection.location->isAutoindex) {
+					request.hasAutoindex = true;
 				} else
-					m_response.status = StatusForbidden;
+					request.httpStatus = StatusForbidden;
 				break;
 
 			case FileSystemPolicy::FileNotExist:
-				m_response.status = StatusNotFound;
+				request.httpStatus = StatusNotFound;
 				break;
 
 			case FileSystemPolicy::FileOther:
-				m_response.status = StatusForbidden;
+				request.httpStatus = StatusForbidden;
 				break;
 			}
 		} catch (const std::runtime_error& e) {
 			std::cerr << "Stat error: " << e.what() << std::endl;
-			m_response.status = StatusInternalServerError;
+			request.httpStatus = StatusInternalServerError;
 			break;
 		}
 	} while (internalRedirect);
+
+	LOG_DEBUG << "Target resource: " << request.targetResource;
 }
 
 /**
@@ -98,12 +96,12 @@ void TargetResourceHandler::execute()
  * @param path String representing the path to be matched.
  * @return Constant_iterator to the location that has the longest matching path with input.
  */
-std::vector<Location>::const_iterator TargetResourceHandler::matchLocation(const std::string& path)
+std::vector<Location>::const_iterator matchLocation(const std::vector<Location>& locations, const std::string& path)
 {
 	std::size_t longestMatch = 0;
-	std::vector<Location>::const_iterator locationMatch = m_locations.end();
+	std::vector<Location>::const_iterator locationMatch = locations.end();
 
-	for (std::vector<Location>::const_iterator it = m_locations.begin(); it != m_locations.end(); ++it) {
+	for (std::vector<Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
 		if (path.find(it->path) == 0) {
 			if (it->path.length() > longestMatch) {
 				longestMatch = it->path.length();
