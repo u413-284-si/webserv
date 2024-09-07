@@ -3,10 +3,7 @@
 /**
  * @brief Construct a new TargetResourceHandler object
  *
- * @param locations Vector of Location objects of current server block.
- * @param request Request to handle.
- * @param response Response to be filled.
- * @param fileSystemPolicy File system policy to be used.
+ * @param fileSystemPolicy File system policy to be used. Can be mocked if needed.
  */
 TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
@@ -28,6 +25,8 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
  * FileOther: set Status to StatusForbidden.
  * If internalRedirect is true, repeat the process.
  * If stat fails, set Status to StatusInternalServerError.
+ * @param connection Connection object.
+ * @param request HTTP request.
  */
 void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request)
 {
@@ -93,6 +92,7 @@ void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request
  *
  * The longest matching path is the one that has the most characters in common with the input path.
  * If no match is found, the function returns an iterator pointing to the end of the vector.
+ * @param locations Vector of Location objects.
  * @param path String representing the path to be matched.
  * @return Constant_iterator to the location that has the longest matching path with input.
  */

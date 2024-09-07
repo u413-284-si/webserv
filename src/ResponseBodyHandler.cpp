@@ -3,7 +3,8 @@
 /**
  * @brief Construct a new ResponseBodyHandler object
  *
- * @param response HTTP response.
+ * @param request The HTTP request.
+ * @param responseBody Saves the response body.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
@@ -16,7 +17,7 @@ ResponseBodyHandler::ResponseBodyHandler(HTTPRequest& request, std::string& resp
 /**
  * @brief Create the response body.
  *
- * Depending on the HTTP Response object status, the body will be created.
+ * Depending on the HTTP Request status, the body will be created.
  * If the status is not OK, an error page will be created.
  * If the status is OK, the body will be created based on the target resource.
  * If the target resource is a directory, and autoindex is on an autoindex will be created.

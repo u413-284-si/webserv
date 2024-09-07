@@ -40,9 +40,6 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
  * @brief Build the response for a given request.
  *
  * Reset the stream, to clear possible beforehand built response.
- * Init the HTTP Response object with data from the request.
- * If StatusCode is StatusOK: Execute target resource handler to get the target resource.
- * Else skip this step.
  * Execute response body handler to get the response body.
  * Build the response by appending the status line, headers and body.
  * @param request HTTP request.
@@ -83,7 +80,7 @@ void ResponseBuilder::resetStream()
  *
  * The status line is appended in the following format:
  * HTTP/1.1 <status code> <reason phrase>
- * @param response HTTP response.
+ * @param request HTTP request.
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
@@ -101,7 +98,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  * Date: Current date in GMT.
  * Location: Target resource if status is StatusMovedPermanently.
  * Delimiter.
- * @param response HTTP response.
+ * @param request HTTP request.
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
