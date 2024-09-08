@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include "Connection.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -810,8 +809,18 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	}
 
 	server.findTargetResource(connection, connection.m_request);
-	if (isCGIRequested(connection))
+	if (isCGIRequested(connection)) {
 		connection.m_request.isCGI = true;
+		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
+		cgiHandler.init(
+			const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
+		cgiHandler.execute(connection.m_request);
+		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
+		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
+		connection.m_cgiPid = cgiHandler.getCGIPid();
+		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
+		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
+	}
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
@@ -848,7 +857,8 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
 bool isCGIRequested(const Connection& connection)
 {
 	// FIXME: May need to iterate through multiple paths and extensions
-	if (!connection.location->cgiPath.empty() && connection.m_request.uri.path.find(connection.location->cgiPath) != std::string::npos
+	if (!connection.location->cgiPath.empty()
+		&& connection.m_request.uri.path.find(connection.location->cgiPath) != std::string::npos
 		&& !connection.location->cgiExt.empty()) {
 		size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
 
@@ -1018,15 +1028,9 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 
 	server.buildResponse(connection);
 	connection.m_buffer.clear();
-	// FIXME: add check to only set at start of CGI process -> CGI state?
-	if (connection.m_request.isCGI) {
-		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
-		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
-	}
-	connection.m_buffer = server.getResponse(); // could become superfluos -> build final response in m_response, can
-												// remove responsestream in ResponseBuilder
+	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;
-	connectionSendResponse(server, clientFd, connection); // send response instead of buffer
+	connectionSendResponse(server, clientFd, connection);
 }
 
 /**

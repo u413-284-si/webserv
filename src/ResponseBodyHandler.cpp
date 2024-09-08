@@ -30,14 +30,6 @@ void ResponseBodyHandler::execute(Connection& connection)
 {
 	if (m_request.httpStatus != StatusOK) {
 		handleErrorBody();
-	} else if (m_request.isCGI) {
-		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
-		cgiHandler.init(
-			const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
-		cgiHandler.execute(m_request);
-		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
-		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
-		connection.m_cgiPid = cgiHandler.getCGIPid();
 	} else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
