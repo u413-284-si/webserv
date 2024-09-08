@@ -52,6 +52,7 @@ public:
 	static const std::size_t s_clientHeaderBufferSize = 1000; /**< Default buffer size for request header in Bytes */
 	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
 	static const std::size_t s_clientMaxBodySize = 1000000; /**< Default max size for request body in Bytes */
+	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
@@ -129,8 +130,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCGIRequested(const Connection& connection);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
-void connectionSendToCGI(int pipeInWriteEnd, HTTPRequest& request);
-void connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request);
+void connectionSendToCGI(Connection& connection);
+void connectionReceiveFromCGI(Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);

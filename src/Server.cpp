@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Log.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -966,7 +967,12 @@ bool isCompleteBody(Connection& connection)
 void connectionSendToCGI(Connection& connection)
 {
 	if (connection.m_request.body.empty()) {
+		LOG_ERROR << "Error: empty body: can't send to CGI";
+		connection.m_status = Connection::BuildResponse;
+		connection.m_request.httpStatus = StatusInternalServerError;
+		// unregister the pipe from the epoll
 		close(connection.m_pipeToCGIWriteEnd);
+		close(connection.m_pipeFromCGIReadEnd);
 		return;
 	}
 
@@ -975,48 +981,59 @@ void connectionSendToCGI(Connection& connection)
 
 	if (bytesSent == -1) {
 		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
+		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
+		// unregister the pipe from the epoll
 		close(connection.m_pipeToCGIWriteEnd);
+		close(connection.m_pipeFromCGIReadEnd);
 		return;
 	}
 	if (bytesSent == static_cast<long>(connection.m_request.body.size())) {
+		LOG_DEBUG << "CGI: Full body sent";
 		connection.m_status = Connection::ReceiveFromCGI;
+		connection.m_request.body.clear();
+		// unregister the pipe from the epoll
 		close(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	connection.m_request.body = connection.m_request.body.substr(bytesSent);
 }
 
-void connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request)
+void connectionReceiveFromCGI(Connection& connection)
 {
-	char buffer[CGIHandler::s_cgiBodyBufferSize] = {};
-	long bytesRead = read(pipeOutReadEnd, buffer, sizeof(buffer));
+	char buffer[Server::s_cgiBodyBufferSize] = {};
+	long bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
-		request.httpStatus = StatusInternalServerError;
+		connection.m_status = Connection::BuildResponse;
+		connection.m_request.httpStatus = StatusInternalServerError;
+		// unregister the pipe from the epoll
+		close(connection.m_pipeFromCGIReadEnd);
 		return;
 	}
 	if (bytesRead == 0) {
+		LOG_DEBUG << "CGI: Full body received";
+		connection.m_status = Connection::BuildResponse;
+		// unregister the pipe from the epoll
+		close(connection.m_pipeFromCGIReadEnd);
 		int status = 0;
-		if (waitpid(cgiPid, &status, 0) == -1) {
+		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
 			LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
-			request.httpStatus = StatusInternalServerError;
+			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
+		// Any child exit status unequal to 0 indicates unsuccessful completion of the process
 		// NOLINTNEXTLINE misinterpretation by HIC++ standard
-		if (WEXITSTATUS(status)
-			!= 0) { /**< Any child exit status unequal to 0 indicates unsuccessful completion of the process */
+		if (WEXITSTATUS(status) != 0) {
 			LOG_ERROR << "Error: child returned with: "
 					  // NOLINTNEXTLINE misinterpretation by HIC++ standard
 					  << WEXITSTATUS(status);
-			request.httpStatus = StatusInternalServerError;
+			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
 	}
-	newBody.append(buffer, bytesRead);
-	// Determine when CGI is done sending data
-	connection.m_status = Connection::BuildResponse;
+	connection.m_request.body.append(buffer, bytesRead);
 }
 
 /**

@@ -43,8 +43,6 @@ public:
 
 
 private:
-    static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
-    
 	std::string m_cgiPath; /**< URL until CGI script extension */
 	std::string m_cgiExt;
 	std::map<std::string, std::string> m_env;
