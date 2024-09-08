@@ -825,7 +825,9 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-	} else {
+	} else if (connection.m_request.isCGI)
+		connection.m_status = Connection::ReceiveFromCGI;
+	else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 	}
@@ -917,7 +919,10 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
-			connection.m_status = Connection::BuildResponse;
+			if (connection.m_request.isCGI)
+				connection.m_status = Connection::SendToCGI;
+			else
+				connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
@@ -958,26 +963,28 @@ bool isCompleteBody(Connection& connection)
 	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
 }
 
-void connectionSendToCGI(int pipeInWriteEnd, HTTPRequest& request)
+void connectionSendToCGI(Connection& connection)
 {
-	if (request.body.empty()) {
-		close(pipeInWriteEnd);
+	if (connection.m_request.body.empty()) {
+		close(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 
-	long bytesSent = write(pipeInWriteEnd, request.body.c_str(), request.body.size());
+	long bytesSent
+		= write(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
 
 	if (bytesSent == -1) {
 		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
-		request.httpStatus = StatusInternalServerError;
-		close(pipeInWriteEnd);
+		connection.m_request.httpStatus = StatusInternalServerError;
+		close(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
-	if (bytesSent == static_cast<long>(request.body.size())) {
-		close(pipeInWriteEnd);
+	if (bytesSent == static_cast<long>(connection.m_request.body.size())) {
+		connection.m_status = Connection::ReceiveFromCGI;
+		close(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
-	request.body = request.body.substr(bytesSent);
+	connection.m_request.body = connection.m_request.body.substr(bytesSent);
 }
 
 void connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& newBody, HTTPRequest& request)
@@ -1008,6 +1015,8 @@ void connectionReceiveFromCGI(int pipeOutReadEnd, pid_t& cgiPid, std::string& ne
 		}
 	}
 	newBody.append(buffer, bytesRead);
+	// Determine when CGI is done sending data
+	connection.m_status = Connection::BuildResponse;
 }
 
 /**
