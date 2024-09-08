@@ -108,30 +108,75 @@ int SocketPolicy::createListeningSocket(const struct addrinfo* addrinfo, int bac
  * @brief Retrieve socket information.
  *
  * Retrieves the host and port information from a socket and returns it as a Socket object.
+ * Depending on the address family of the socket, the function casts the sockaddr structure to the appropriate type.
+ * - IPv4: the address of sockaddr_in, which consists of 4 bytes, is cast to an array of unsigned char. Then each of the
+ * four bytes is converted to a string using a stringstream and concatenated to form the host address. The port is
+ * converted from network to host with ntohs() and then to a string using webutils::toString().
+ * - IPv6: Not supported. Logs an error message and returns an empty Socket object.
+ * - Unknown address family: logs an error message and returns an empty Socket object.
  *
  * @param sockaddr The socket address structure.
- * @param socklen The length of the socket address structure.
  *
  * @return A Socket object containing the host and port information.
  */
-Socket SocketPolicy::retrieveSocketInfo(struct sockaddr* sockaddr, socklen_t socklen) const
+Socket SocketPolicy::retrieveSocketInfo(struct sockaddr* sockaddr) const
 {
 	assert(sockaddr != NULL);
 
-	char bufferHost[NI_MAXHOST] = {};
-	char bufferPort[NI_MAXSERV] = {};
+	switch (sockaddr->sa_family) {
+	case AF_INET: {
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+		struct sockaddr_in* sockaddrCast = reinterpret_cast<struct sockaddr_in*>(sockaddr);
 
-	const int ret = getnameinfo(
-		sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-	if (ret != 0) {
-		LOG_ERROR << "getnameinfo(): " << gai_strerror(ret);
-		const Socket errSock = { "", "" };
-		return (errSock);
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+		unsigned char* addr = reinterpret_cast<unsigned char*>(&sockaddrCast->sin_addr);
+
+		std::ostringstream temp;
+
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+		temp << static_cast<int>(addr[0]) << '.' << static_cast<int>(addr[1]) << '.' << static_cast<int>(addr[2]) << '.'
+			 << static_cast<int>(addr[3]); // NOLINT
+
+		Socket newSock = { temp.str(), webutils::toString(ntohs(sockaddrCast->sin_port)) };
+
+		return (newSock);
+	}
+	case AF_INET6: {
+		LOG_ERROR << "Address family IPv6 is not supported";
+	}
+	default:
+		LOG_ERROR << "Unknown address family: " << sockaddr->sa_family;
+	}
+	Socket errSock = {};
+	return (errSock);
+}
+
+/**
+ * @brief Retrieves info of socket to which sockfd is bound.
+ *
+ * Uses getsockname() to retrieve the current address to which the socket sockfd is bound.
+ * Then uses SocketPolicy::retrieveSocketInfo to convert this information into a Socket struct.
+ * On error returns an empty Socket.
+ *
+ * @param sockfd The socket fd which is bound to a socket.
+ * @return Socket The socket information of the bound socket.
+ */
+Socket SocketPolicy::retrieveBoundSocketInfo(int sockfd) const
+{
+	struct sockaddr_storage boundAddr = {};
+	socklen_t boundLen = sizeof(boundAddr);
+
+	// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr
+	struct sockaddr* addrCast = reinterpret_cast<struct sockaddr*>(&boundAddr);
+
+	if (-1 == ::getsockname(sockfd, addrCast, &boundLen)) {
+		LOG_ERROR << "getsockname(): " << strerror(errno);
+		return (Socket());
 	}
 
-	const Socket newSock = { bufferHost, bufferPort };
+	Socket boundSock = retrieveSocketInfo(addrCast);
 
-	return (newSock);
+	return (boundSock);
 }
 
 /**
@@ -202,7 +247,7 @@ ssize_t SocketPolicy::readFromSocket(int sockfd, char* buffer, size_t size, int 
 ssize_t SocketPolicy::writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const
 {
 	assert(buffer != NULL);
-	
+
 	const ssize_t bytesWritten = send(sockfd, buffer, size, flags);
 	if (bytesWritten == -1) {
 		LOG_ERROR << "send(): " << strerror(errno);
