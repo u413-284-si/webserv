@@ -4,11 +4,14 @@
 /**
  * @brief Construct a new ResponseBodyHandler object
  *
- * @param response HTTP response.
+ * @param request The HTTP request.
+ * @param responseBody Saves the response body.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBodyHandler::ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy)
-	: m_response(response)
+ResponseBodyHandler::ResponseBodyHandler(
+	HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+	: m_request(request)
+	, m_responseBody(responseBody)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
 }
@@ -16,7 +19,7 @@ ResponseBodyHandler::ResponseBodyHandler(HTTPResponse& response, const FileSyste
 /**
  * @brief Create the response body.
  *
- * Depending on the HTTP Response object status, the body will be created.
+ * Depending on the HTTP Request status, the body will be created.
  * If the status is not OK, an error page will be created.
  * If the status is OK, the body will be created based on the target resource.
  * If the target resource is a directory, and autoindex is on an autoindex will be created.
@@ -25,33 +28,31 @@ ResponseBodyHandler::ResponseBodyHandler(HTTPResponse& response, const FileSyste
  */
 void ResponseBodyHandler::execute(Connection& connection)
 {
-	if (m_response.status != StatusOK) {
+	if (m_request.httpStatus != StatusOK) {
 		handleErrorBody();
-	}
-	else if (m_response.isCGI) {
-		CGIHandler cgiHandler(m_response.location->cgiPath, m_response.location->cgiExt);
-        cgiHandler.init(const int &clientSocket, HTTPRequest &request, const Location &location, const unsigned short &serverPort);
-		cgiHandler.execute(m_response);
-        connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
-        connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
-        connection.m_cgiPid = cgiHandler.getCGIPid();
-	}
-	else if (m_response.isAutoindex) {
+	} else if (m_request.isCGI) {
+		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
+		cgiHandler.init(
+			const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
+		cgiHandler.execute(m_request);
+		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
+		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
+		connection.m_cgiPid = cgiHandler.getCGIPid();
+	} else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
-		m_response.body = autoindexHandler.execute(m_response.targetResource);
-		if (m_response.body.empty()) {
-			m_response.status = StatusInternalServerError;
+		m_responseBody = autoindexHandler.execute(m_request.targetResource);
+		if (m_responseBody.empty()) {
+			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
-			return ;
+			return;
 		}
-		m_response.status = StatusOK;
-		m_response.targetResource += "autoindex.html";
-	}
-	else if (m_response.method == MethodGet) {
+		m_request.httpStatus = StatusOK;
+		m_request.targetResource += "autoindex.html";
+	} else if (m_request.method == MethodGet) {
 		try {
-			m_response.body = m_fileSystemPolicy.getFileContents(m_response.targetResource.c_str());
+			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		} catch (std::exception& e) {
-			m_response.status = StatusInternalServerError;
+			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
 	}
@@ -64,7 +65,7 @@ void ResponseBodyHandler::execute(Connection& connection)
  */
 void ResponseBodyHandler::handleErrorBody()
 {
-	m_response.body = webutils::getDefaultErrorPage(m_response.status);
+	m_responseBody = webutils::getDefaultErrorPage(m_request.httpStatus);
 	// This is just to get the right extension. Could be put into its own data field of HTML struct.
-	m_response.targetResource = "error.html";
+	m_request.targetResource = "error.html";
 }
