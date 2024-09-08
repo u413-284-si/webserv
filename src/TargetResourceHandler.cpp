@@ -78,7 +78,7 @@ void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request
 				break;
 			}
 		} catch (const std::runtime_error& e) {
-			std::cerr << "Stat error: " << e.what() << std::endl;
+			LOG_ERROR << e.what();
 			request.httpStatus = StatusInternalServerError;
 			break;
 		}

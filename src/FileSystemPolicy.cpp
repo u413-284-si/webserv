@@ -25,7 +25,7 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 	if (stat(path.c_str(), &fileStat) == -1) {
 		if (errno == ENOENT)
 			return FileNotExist;
-		throw std::runtime_error(strerror(errno));
+		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	}
 	if (S_ISREG(fileStat.st_mode))
 		return FileRegular;
@@ -64,7 +64,7 @@ std::string FileSystemPolicy::getFileContents(const char* filename) const
 	errno = 0;
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
 	if (!fileStream.good()) {
-		throw std::runtime_error(strerror(errno));
+		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
 	}
 	std::string contents;
 	fileStream.seekg(0, std::ios::end);
@@ -86,7 +86,7 @@ DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 	errno = 0;
 	DIR *dir = opendir(path.c_str());
 	if (dir == NULL)
-		throw std::runtime_error(strerror(errno));
+		throw std::runtime_error("opendir(): " + std::string(strerror(errno)));
 	return dir;
 }
 
@@ -102,7 +102,7 @@ struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 	errno = 0;
 	struct dirent *entry = readdir(dir);
 	if (entry == NULL && errno != 0)
-		throw std::runtime_error(strerror(errno));
+		throw std::runtime_error("readdir(): " + std::string(strerror(errno)));
 	return entry;
 }
 
@@ -132,6 +132,6 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
 	struct stat fileStat = {};
 	errno = 0;
 	if (stat(path.c_str(), &fileStat) == -1)
-		throw std::runtime_error(strerror(errno));
+		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	return fileStat;
 }
