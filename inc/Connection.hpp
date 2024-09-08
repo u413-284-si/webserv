@@ -1,8 +1,9 @@
 #pragma once
 
+#include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
-#include "HTTPResponse.hpp"
 #include "Socket.hpp"
+
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
@@ -15,8 +16,7 @@
  */
 struct Connection {
 public:
-	Connection();
-	Connection(const Socket& server, const Socket& client);
+	Connection(const Socket& server, const Socket& client, const std::vector<ConfigServer>& serverConfigs);
 
 	enum ConnectionStatus {
 		ReceiveHeader,
@@ -36,13 +36,18 @@ public:
 	std::string m_buffer; /**< Bytes received from client */
 	ssize_t m_bytesReceived; /**< Number of bytes received from client */
 	HTTPRequest m_request; /**< Request of the client */
-	HTTPResponse m_response; /**< Response to be sent to the client */
+	std::vector<ConfigServer>::const_iterator serverConfig; /**< Server configuration associated with connection */
+	std::vector<Location>::const_iterator location; /**< Location configuration associated with connection */
 	int m_pipeToCGIWriteEnd; /**< Write end of the pipe to the CGI process */
 	int m_pipeFromCGIReadEnd; /**< Read end of the pipe to the CGI process */
-    pid_t m_cgiPid; /**< Process ID of the CGI process */
+	pid_t m_cgiPid; /**< Process ID of the CGI process */
 };
 
-void clearConnection(Connection& connection);
+bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs);
+
+bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer>& serverConfigs);
+bool hasValidServerConfig(
+	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host);
 
 std::ostream& operator<<(std::ostream& ostream, const Connection& connection);
 std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status);
