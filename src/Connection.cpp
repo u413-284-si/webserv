@@ -21,14 +21,6 @@ Connection::Connection(const Socket& server, const Socket& client, const std::ve
 {
 	if (!hasValidServerConfig(*this, serverConfigs))
 		m_status = Closed;
-	m_request.method = MethodCount;
-	m_request.httpStatus = StatusOK;
-	m_request.shallCloseConnection = false;
-	m_request.hasBody = false;
-	m_request.isChunked = false;
-
-	m_response.isAutoindex = false;
-	m_response.isCGI = false;
 }
 
 bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
@@ -41,6 +33,7 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_pipeFromCGIReadEnd = -1;
 	connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
+	return (hasValidServerConfig(connection, serverConfigs));
 }
 
 /**
