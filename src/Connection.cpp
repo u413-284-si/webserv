@@ -29,7 +29,13 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
 	connection.m_bytesReceived = 0;
+	// NOLINTNEXTLINE: required to check if file descriptor is still open
+	if (fcntl(connection.m_pipeToCGIWriteEnd, F_GETFD) != -1)
+		close(connection.m_pipeToCGIWriteEnd);
 	connection.m_pipeToCGIWriteEnd = -1;
+	// NOLINTNEXTLINE: required to check if file descriptor is still open
+	if (fcntl(connection.m_pipeFromCGIReadEnd, F_GETFD) != -1)
+		close(connection.m_pipeFromCGIReadEnd);
 	connection.m_pipeFromCGIReadEnd = -1;
 	connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
