@@ -19,11 +19,10 @@
  */
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy);
 
 	void buildResponse(HTTPRequest& request);
 	std::string getResponse() const;
-	void setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer);
 
 private:
 	void appendStatusLine(const HTTPRequest& request);
@@ -33,7 +32,6 @@ private:
 	void resetStream();
 
 	std::map<std::string, std::string> m_mimeTypes;
-	std::vector<ConfigServer>::const_iterator m_activeServer;
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_responseStream;
 	std::string m_responseBody;

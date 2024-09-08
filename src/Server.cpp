@@ -26,7 +26,7 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_socketPolicy(socketPolicy)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
-	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
+	, m_responseBuilder(m_fileSystemPolicy)
 	, m_targetResourceHandler(m_fileSystemPolicy)
 {
 }

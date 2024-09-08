@@ -3,26 +3,13 @@
 /**
  * @brief Construct a new ResponseBuilder object
  *
- * @param configFile Configuration file.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
-	: m_activeServer(configFile.servers.begin())
-	, m_fileSystemPolicy(fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {
 	initMIMETypes();
-}
-
-/**
- * @brief Set the active server.
- *
- * The active server is used for location searching.
- * @param activeServer Server to be set as active.
- */
-void ResponseBuilder::setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer)
-{
-	m_activeServer = activeServer;
 }
 
 /**
