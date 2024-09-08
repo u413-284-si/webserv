@@ -42,17 +42,6 @@ void ResponseBuilder::buildResponse(Connection& connection)
 	LOG_DEBUG << "Building response for request: " << connection.m_request.method << " "
 			  << connection.m_request.uri.path;
 
-	// if (connection.m_response.status == StatusOK) {
-	// 	TargetResourceHandler targetResourceHandler(
-	// 		m_activeServer->locations, connection.m_request, connection.m_response, m_fileSystemPolicy);
-	// 	targetResourceHandler.execute();
-	// }
-
-	// LOG_DEBUG << "Target resource: " << connection.m_response.targetResource;
-
-	// if (isCGIRequested(connection.m_request, connection.m_response))
-	// 	connection.m_response.isCGI = true;
-
 	ResponseBodyHandler responseBodyHandler(connection.m_request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute(connection);
 
@@ -156,32 +145,4 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 		return iter->second;
 	}
 	return m_mimeTypes.at("default");
-}
-
-/**
- * @brief Checks if CGI execution is requested for the given HTTP request and response.
- *
- * This function checks if CGI execution is requested based on the provided HTTP request and response.
- * It checks if the CGI path and extension are specified in the response location, and if the request URI path
- * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a slash,
- * it returns true indicating that CGI execution is requested. Otherwise, it returns false.
- *
- * @param request The HTTP request object.
- * @param response The HTTP response object.
- * @return true if CGI execution is requested, false otherwise.
- */
-bool isCGIRequested(const HTTPRequest& request, const HTTPResponse& response)
-{
-	// FIXME: May need to iterate through multiple paths and extensions
-	if (!response.location->cgiPath.empty() && request.uri.path.find(response.location->cgiPath) != std::string::npos
-		&& !response.location->cgiExt.empty()) {
-		size_t extPos = request.uri.path.find(response.location->cgiExt);
-
-		// If extension is found and is at the end of the path or followed by a slash
-		if (extPos != std::string::npos
-			&& (extPos + response.location->cgiExt.size() == request.uri.path.size()
-				|| request.uri.path.at(extPos + response.location->cgiExt.size()) == '/'))
-			return true;
-	}
-	return false;
 }

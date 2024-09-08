@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Connection.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -768,7 +769,6 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 	}
 }
 
-
 /**
  * @brief Handles a received complete request header.
  *
@@ -810,6 +810,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	}
 
 	server.findTargetResource(connection, connection.m_request);
+	if (isCGIRequested(connection))
+		connection.m_request.isCGI = true;
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
@@ -830,6 +832,33 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCompleteRequestHeader(const std::string& connectionBuffer)
 {
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
+}
+
+/**
+ * @brief Checks if CGI execution is requested for the given HTTP request and response.
+ *
+ * This function checks if CGI execution is requested based on the provided HTTP request and response.
+ * It checks if the CGI path and extension are specified in the response location, and if the request URI path
+ * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a slash,
+ * it returns true indicating that CGI execution is requested. Otherwise, it returns false.
+ *
+ * @param request The HTTP request object.
+ * @return true if CGI execution is requested, false otherwise.
+ */
+bool isCGIRequested(const Connection& connection)
+{
+	// FIXME: May need to iterate through multiple paths and extensions
+	if (!connection.location->cgiPath.empty() && connection.m_request.uri.path.find(connection.location->cgiPath) != std::string::npos
+		&& !connection.location->cgiExt.empty()) {
+		size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
+
+		// If extension is found and is at the end of the path or followed by a slash
+		if (extPos != std::string::npos
+			&& (extPos + connection.location->cgiExt.size() == connection.m_request.uri.path.size()
+				|| connection.m_request.uri.path.at(extPos + connection.location->cgiExt.size()) == '/'))
+			return true;
+	}
+	return false;
 }
 
 /**
