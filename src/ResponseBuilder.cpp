@@ -43,7 +43,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 			  << connection.m_request.uri.path;
 
 	ResponseBodyHandler responseBodyHandler(connection.m_request, m_responseBody, m_fileSystemPolicy);
-	responseBodyHandler.execute(connection);
+	responseBodyHandler.execute();
 
 	LOG_DEBUG << "Response body: " << m_responseBody;
 

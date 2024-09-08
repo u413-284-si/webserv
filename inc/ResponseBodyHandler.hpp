@@ -17,7 +17,7 @@
 class ResponseBodyHandler {
 public:
 	explicit ResponseBodyHandler(HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy);
-	void execute(Connection& connection);
+	void execute();
 
 private:
 	void handleErrorBody();

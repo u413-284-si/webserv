@@ -26,7 +26,7 @@ ResponseBodyHandler::ResponseBodyHandler(
  * If the target resource is a file, the file contents will be read and set as the body.
  * @todo FIXME: Implement other methods than GET.
  */
-void ResponseBodyHandler::execute(Connection& connection)
+void ResponseBodyHandler::execute()
 {
 	if (m_request.httpStatus != StatusOK) {
 		handleErrorBody();
