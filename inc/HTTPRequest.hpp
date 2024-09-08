@@ -17,6 +17,8 @@ struct URI {
 };
 
 struct HTTPRequest {
+	HTTPRequest();
+
 	Method method;
 	URI uri;
 	std::string version;
@@ -26,6 +28,9 @@ struct HTTPRequest {
 	bool shallCloseConnection;
 	bool hasBody;
 	bool isChunked;
+	std::string targetResource;
+	bool hasAutoindex;
+	bool isCGI;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
