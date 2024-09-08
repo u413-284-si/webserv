@@ -9,23 +9,11 @@
  * @param configFile Configuration file.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
-	: m_activeServer(configFile.servers.begin())
-	, m_fileSystemPolicy(fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {
 	initMIMETypes();
-}
-
-/**
- * @brief Set the active server.
- *
- * The active server is used for location searching.
- * @param activeServer Server to be set as active.
- */
-void ResponseBuilder::setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer)
-{
-	m_activeServer = activeServer;
 }
 
 /**
@@ -43,9 +31,6 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
  * @brief Build the response for a given request.
  *
  * Reset the stream, to clear possible beforehand built response.
- * Init the HTTP Response object with data from the request.
- * If StatusCode is StatusOK: Execute target resource handler to get the target resource.
- * Else skip this step.
  * Execute response body handler to get the response body.
  * Build the response by appending the status line, headers and body.
  * @param request HTTP request.
@@ -57,27 +42,26 @@ void ResponseBuilder::buildResponse(Connection& connection)
 	LOG_DEBUG << "Building response for request: " << connection.m_request.method << " "
 			  << connection.m_request.uri.path;
 
-	initHTTPResponse(connection.m_request, connection.m_response);
+	// if (connection.m_response.status == StatusOK) {
+	// 	TargetResourceHandler targetResourceHandler(
+	// 		m_activeServer->locations, connection.m_request, connection.m_response, m_fileSystemPolicy);
+	// 	targetResourceHandler.execute();
+	// }
 
-	if (connection.m_response.status == StatusOK) {
-		TargetResourceHandler targetResourceHandler(
-			m_activeServer->locations, connection.m_request, connection.m_response, m_fileSystemPolicy);
-		targetResourceHandler.execute();
-	}
+	// LOG_DEBUG << "Target resource: " << connection.m_response.targetResource;
 
-	LOG_DEBUG << "Target resource: " << connection.m_response.targetResource;
+	// if (isCGIRequested(connection.m_request, connection.m_response))
+	// 	connection.m_response.isCGI = true;
 
-	if (isCGIRequested(connection.m_request, connection.m_response))
-		connection.m_response.isCGI = true;
-
-	ResponseBodyHandler responseBodyHandler(connection.m_response, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection.m_request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute(connection);
 
-	LOG_DEBUG << "Response body: " << connection.m_response.body;
+	LOG_DEBUG << "Response body: " << m_responseBody;
 
-	appendStatusLine(connection.m_response);
-	appendHeaders(connection.m_response);
-	m_responseStream << connection.m_response.body << "\r\n";
+	appendStatusLine(connection.m_request);
+	appendHeaders(connection.m_request);
+	m_responseStream << m_responseBody << "\r\n";
+	m_responseBody.clear();
 }
 
 /**
@@ -95,30 +79,16 @@ void ResponseBuilder::resetStream()
 }
 
 /**
- * @brief Init the HTTP Response object with data from the request.
- *
- * @param request HTTP request.
- * @param response HTTP response.
- */
-void ResponseBuilder::initHTTPResponse(const HTTPRequest& request, HTTPResponse& response)
-{
-	response.status = request.httpStatus;
-	response.method = request.method;
-	response.isAutoindex = false;
-	response.isCGI = false;
-}
-
-/**
  * @brief Append status line to the response.
  *
  * The status line is appended in the following format:
  * HTTP/1.1 <status code> <reason phrase>
- * @param response HTTP response.
+ * @param request HTTP request.
  */
-void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
+void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status)
-					 << "\r\n";
+	m_responseStream << "HTTP/1.1 " << request.httpStatus << ' '
+					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
@@ -131,21 +101,21 @@ void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
  * Date: Current date in GMT.
  * Location: Target resource if status is StatusMovedPermanently.
  * Delimiter.
- * @param response HTTP response.
+ * @param request HTTP request.
  */
-void ResponseBuilder::appendHeaders(const HTTPResponse& response)
+void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(response.targetResource)) << "\r\n";
+	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
-	m_responseStream << "Content-Length: " << response.body.length() << "\r\n";
+	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
 	m_responseStream << "Server: TriHard\r\n";
 	// Date
 	m_responseStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
-	if (response.status == StatusMovedPermanently) {
-		m_responseStream << "Location: " << response.targetResource << "\r\n";
+	if (request.httpStatus == StatusMovedPermanently) {
+		m_responseStream << "Location: " << request.targetResource << "\r\n";
 	}
 	// Delimiter
 	m_responseStream << "\r\n";

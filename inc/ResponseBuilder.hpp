@@ -2,7 +2,7 @@
 
 #include "ConfigFile.hpp"
 #include "FileSystemPolicy.hpp"
-#include "HTTPResponse.hpp"
+#include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBodyHandler.hpp"
@@ -21,24 +21,24 @@
  */
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy);
 
 	void buildResponse(Connection& connection);
 	std::string getResponse() const;
 	void setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer);
 
 private:
-	void appendStatusLine(const HTTPResponse& response);
-	void appendHeaders(const HTTPResponse& response);
+	void appendStatusLine(const HTTPRequest& request);
+	void appendHeaders(const HTTPRequest& request);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
-	static void initHTTPResponse(const HTTPRequest& request, HTTPResponse& response);
 	void resetStream();
 
 	std::map<std::string, std::string> m_mimeTypes;
 	std::vector<ConfigServer>::const_iterator m_activeServer;
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_responseStream;
+	std::string m_responseBody;
 	bool m_isFirstTime;
 };
 
