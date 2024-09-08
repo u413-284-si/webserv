@@ -33,7 +33,7 @@ public:
 
 	void init(
 		const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
-	void execute(HTTPResponse& response);
+	void execute(HTTPRequest& request);
 
 	// Getter/Setter functions
 	int getPipeInWriteEnd() const;
