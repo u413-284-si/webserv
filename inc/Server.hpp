@@ -69,7 +69,7 @@ public:
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
-	bool registerCGIProcess(int pipeFd, uint32_t eventMask);
+	bool registerCGIProcess(int pipeFd, uint32_t eventMask, Connection& connection);
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper
@@ -130,8 +130,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCGIRequested(const Connection& connection);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
-void connectionSendToCGI(Connection& connection);
-void connectionReceiveFromCGI(Connection& connection);
+void connectionSendToCGI(Server& server, Connection& connection);
+void connectionReceiveFromCGI(Server& server, Connection& connection);
 void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
 void connectionSendResponse(Server& server, int clientFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);

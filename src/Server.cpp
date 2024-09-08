@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Connection.hpp"
 #include "Log.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -202,11 +203,19 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
  * @param eventMask The event mask to associate with the pipe file descriptor.
  * @return True if the registration is successful, false otherwise.
  */
-bool Server::registerCGIProcess(int pipeFd, uint32_t eventMask)
+bool Server::registerCGIProcess(int pipeFd, uint32_t eventMask, Connection& connection)
 {
 	if (!m_epollWrapper.addEvent(pipeFd, eventMask)) {
 		close(pipeFd);
 		LOG_ERROR << "Failed to add event for " << pipeFd;
+		return false;
+	}
+
+	std::pair<std::map<int, Connection>::iterator, bool> ret
+		= m_connections.insert(std::pair<int, Connection>(pipeFd, connection));
+	if (!ret.second) {
+		close(pipeFd);
+		LOG_ERROR << "Failed to add connection for " << pipeFd << ": it already exists";
 		return false;
 	}
 
@@ -694,11 +703,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 		connectionReceiveBody(server, clientFd, connection);
 		break;
 	case (Connection::SendToCGI):
-		connectionSendToCGI(connection.m_pipeToCGIWriteEnd, connection.m_request);
+		connectionSendToCGI(connection);
 		break;
 	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(
-			connection.m_pipeFromCGIReadEnd, connection.m_cgiPid, connection.m_response.body, connection.m_request);
+		connectionReceiveFromCGI(connection);
 		break;
 	case (Connection::BuildResponse):
 		connectionBuildResponse(server, clientFd, connection);
@@ -819,8 +827,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();
-		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT);
-		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN);
+		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection);
+		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection);
 	}
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
@@ -964,13 +972,14 @@ bool isCompleteBody(Connection& connection)
 	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
 }
 
-void connectionSendToCGI(Connection& connection)
+void connectionSendToCGI(Server& server, Connection& connection)
 {
 	if (connection.m_request.body.empty()) {
 		LOG_ERROR << "Error: empty body: can't send to CGI";
 		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
-		// unregister the pipe from the epoll
+		server.removeEvent(connection.m_pipeToCGIWriteEnd);
+		server.getConnections().erase(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeFromCGIReadEnd);
 		return;
@@ -983,7 +992,8 @@ void connectionSendToCGI(Connection& connection)
 		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
 		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
-		// unregister the pipe from the epoll
+		server.removeEvent(connection.m_pipeToCGIWriteEnd);
+		server.getConnections().erase(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeFromCGIReadEnd);
 		return;
@@ -992,14 +1002,15 @@ void connectionSendToCGI(Connection& connection)
 		LOG_DEBUG << "CGI: Full body sent";
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
-		// unregister the pipe from the epoll
+		server.removeEvent(connection.m_pipeToCGIWriteEnd);
+		server.getConnections().erase(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	connection.m_request.body = connection.m_request.body.substr(bytesSent);
 }
 
-void connectionReceiveFromCGI(Connection& connection)
+void connectionReceiveFromCGI(Server& server, Connection& connection)
 {
 	char buffer[Server::s_cgiBodyBufferSize] = {};
 	long bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
@@ -1008,14 +1019,16 @@ void connectionReceiveFromCGI(Connection& connection)
 		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
 		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
-		// unregister the pipe from the epoll
+		server.removeEvent(connection.m_pipeFromCGIReadEnd);
+		server.getConnections().erase(connection.m_pipeFromCGIReadEnd);
 		close(connection.m_pipeFromCGIReadEnd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
-		// unregister the pipe from the epoll
+		server.removeEvent(connection.m_pipeFromCGIReadEnd);
+		server.getConnections().erase(connection.m_pipeFromCGIReadEnd);
 		close(connection.m_pipeFromCGIReadEnd);
 		int status = 0;
 		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
