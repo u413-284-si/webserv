@@ -390,7 +390,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param request The HTTPRequest object to build the response for.
  */
-void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
+void Server::buildResponse(HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -703,10 +703,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 		connectionReceiveBody(server, clientFd, connection);
 		break;
 	case (Connection::SendToCGI):
-		connectionSendToCGI(connection);
+		connectionSendToCGI(server, connection);
 		break;
 	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(connection);
+		connectionReceiveFromCGI(server, connection);
 		break;
 	case (Connection::BuildResponse):
 		connectionBuildResponse(server, clientFd, connection);
@@ -1065,7 +1065,7 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 {
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
-	server.buildResponse(connection);
+	server.buildResponse(connection.m_request);
 	connection.m_buffer.clear();
 	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;

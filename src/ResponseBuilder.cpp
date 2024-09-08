@@ -35,20 +35,20 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
  * Build the response by appending the status line, headers and body.
  * @param request HTTP request.
  */
-void ResponseBuilder::buildResponse(Connection& connection)
+void ResponseBuilder::buildResponse(HTTPRequest& request)
 {
 	resetStream();
 
-	LOG_DEBUG << "Building response for request: " << connection.m_request.method << " "
-			  << connection.m_request.uri.path;
+	LOG_DEBUG << "Building response for request: " << request.method << " "
+			  << request.uri.path;
 
-	ResponseBodyHandler responseBodyHandler(connection.m_request, m_responseBody, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
 	LOG_DEBUG << "Response body: " << m_responseBody;
 
-	appendStatusLine(connection.m_request);
-	appendHeaders(connection.m_request);
+	appendStatusLine(request);
+	appendHeaders(request);
 	m_responseStream << m_responseBody << "\r\n";
 	m_responseBody.clear();
 }
