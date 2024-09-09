@@ -232,6 +232,12 @@ std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStat
 	case Connection::ReceiveBody:
 		ostream << "ReceiveBody";
 		break;
+	case Connection::SendToCGI:
+		ostream << "SendToCGI";
+		break;
+	case Connection::ReceiveFromCGI:
+		ostream << "ReceiveFromCGI";
+		break;
 	case Connection::BuildResponse:
 		ostream << "BuildResponse";
 		break;
