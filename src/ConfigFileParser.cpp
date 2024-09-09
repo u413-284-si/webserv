@@ -61,9 +61,12 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		if (getDirective(m_currentLine) == "server") {
 			ConfigServer server;
 			m_configFile.servers.push_back(server);
+			size_t bracketIndex = m_currentLine.find('{');
+			if (bracketIndex != std::string::npos)
+				m_currentLine = m_currentLine.substr(bracketIndex + 1, m_currentLine.length());
 			while (m_currentLine != "}") {
-				readAndTrimLine();
 				readServerConfigLine();
+				readAndTrimLine();
 			}
 			m_serverIndex++;
 		}
@@ -140,6 +143,7 @@ void ConfigFileParser::readAndTrimLine(void)
 
 bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block block) const
 {
+	std::cout << "directive: " << directive << std::endl;
 	if (block == ServerBlock) {
 		if (std::find(m_validServerDirectives.begin(), m_validServerDirectives.end(), directive)
 			== m_validServerDirectives.end())
