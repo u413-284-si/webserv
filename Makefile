@@ -97,6 +97,7 @@ POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		CGIHandler.cpp \
 		ConfigFile.cpp \
 		ConfigFileParser.cpp \
 		Connection.cpp \
