@@ -110,7 +110,7 @@ void CGIHandler::execute(HTTPRequest& request)
 		close(m_pipeOut[0]);
 		close(m_pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
 		if (execve(argv[0], argv.data(), envp.data()) == -1) {
-			std::string error = "Status: 500\r\n\r\n";
+			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
 		}
 	}
