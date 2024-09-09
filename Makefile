@@ -104,6 +104,7 @@ SRC:=	main.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
+		HTTPRequest.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
