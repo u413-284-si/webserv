@@ -62,14 +62,23 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 			ConfigServer server;
 			m_configFile.servers.push_back(server);
 			size_t bracketIndex = m_currentLine.find('{');
+
 			if (bracketIndex != std::string::npos)
 				m_currentLine = m_currentLine.substr(bracketIndex + 1, m_currentLine.length());
+			else
+				readAndTrimLine();
+
 			while (m_currentLine != "}") {
 				readServerConfigLine();
+				if (m_currentLine == "}")
+					break;
 				readAndTrimLine();
 			}
 			m_serverIndex++;
-		}
+		} else if (getDirective(m_currentLine).empty())
+			continue;
+		else
+			throw std::runtime_error("Invalid directive");
 	}
 	if (m_configFile.servers.empty())
 		throw std::runtime_error("No server(s) in config file");
@@ -143,7 +152,6 @@ void ConfigFileParser::readAndTrimLine(void)
 
 bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block block) const
 {
-	std::cout << "directive: " << directive << std::endl;
 	if (block == ServerBlock) {
 		if (std::find(m_validServerDirectives.begin(), m_validServerDirectives.end(), directive)
 			== m_validServerDirectives.end())
