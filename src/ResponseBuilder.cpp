@@ -39,8 +39,7 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
 {
 	resetStream();
 
-	LOG_DEBUG << "Building response for request: " << request.method << " "
-			  << request.uri.path;
+	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
 	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
@@ -76,6 +75,8 @@ void ResponseBuilder::resetStream()
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
+	if (request.isCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
+		return;
 	m_responseStream << "HTTP/1.1 " << request.httpStatus << ' '
 					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
@@ -95,7 +96,9 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+	if (!request.isCGI && (m_responseBody.find("Content-Type: ") == std::string::npos))
+		m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
+						 << "\r\n";
 	// Content-Length
 	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
