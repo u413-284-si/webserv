@@ -821,8 +821,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (isCGIRequested(connection)) {
 		connection.m_request.isCGI = true;
 		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
-		cgiHandler.init(
-			const int& clientSocket, HTTPRequest& request, const Location& location, const unsigned short& serverPort);
+		cgiHandler.init(connection.m_clientSocket, connection.m_serverSocket, connection.m_request, connection.location);
 		cgiHandler.execute(connection.m_request);
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
