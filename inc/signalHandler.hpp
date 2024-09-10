@@ -1,7 +1,10 @@
 #pragma once
 
+#include "utilities.hpp"
+
 #include <csignal>
 #include <string>
+
 
 // NOLINTNEXTLINE: This is a global variable used in signalHandler
 extern volatile std::sig_atomic_t g_signalStatus;
