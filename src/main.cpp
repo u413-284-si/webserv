@@ -12,21 +12,23 @@
 
 int main(int argc, char** argv)
 {
-	if (argc != 2) {
-		std::cerr << "error: arguments invalid\nexpected: ";
-		std::cerr << program_invocation_name << " <config file>\n";
-		return 1;
-	}
+	// if (argc != 2) {
+	// 	std::cerr << "error: arguments invalid\nexpected: ";
+	// 	std::cerr << program_invocation_name << " <config file>\n";
+	// 	return 1;
+	// }
+	(void)argc;
+	(void)argv;
 
 	weblog::initConsole(weblog::LevelDebug);
 	try {
 		EpollWrapper epollWrapper(10, -1);
 		SocketPolicy socketPolicy;
 
-		ConfigFileParser parser;
-		ConfigFile configFile = parser.parseConfigFile(argv[1]);
+		// ConfigFileParser parser;
+		// ConfigFile configFile = parser.parseConfigFile(argv[1]);
 
-		configFile = createDummyConfig();
+		ConfigFile configFile = createDummyConfig();
 
 		Server server(configFile, epollWrapper, socketPolicy);
 		initVirtualServers(server, 10, server.getServerConfigs());
