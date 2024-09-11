@@ -79,6 +79,18 @@ ConfigFile createDummyConfig()
 	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
 
+	Location location3;
+	location3.path = "/cgi-bin";
+	location3.root = "/workspaces/webserv/cgi-bin";
+	location3.cgiPath = "/cgi-bin";
+	location3.cgiExt = ".cgi";
+
+	ConfigServer serverConfig8081;
+	serverConfig8090.locations.push_back(location3);
+	serverConfig8090.host = "127.0.0.1";
+	serverConfig8090.port = "8081";
+	serverConfig8090.serverName = "cgi";
+
 	ConfigServer serverConfig8090dupl;
 	serverConfig8090dupl.locations.push_back(location2);
 	serverConfig8090dupl.host = "127.0.0.1";
@@ -89,6 +101,7 @@ ConfigFile createDummyConfig()
 	configFile.servers.push_back(serverConfig8080);
 	configFile.servers.push_back(serverConfig8090);
 	configFile.servers.push_back(serverConfig8090dupl);
+	configFile.servers.push_back(serverConfig8081);
 
 	return configFile;
 }
