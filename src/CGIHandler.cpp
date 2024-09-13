@@ -74,7 +74,6 @@ void CGIHandler::execute(HTTPRequest& request)
 	setEnvp(envComposite, envp);
 
 	argvAsStrings.push_back(m_env["SCRIPT_FILENAME"]);
-	argvAsStrings.push_back(m_env["SCRIPT_NAME"]);
 	for (std::vector<std::string>::iterator iter = argvAsStrings.begin(); iter != argvAsStrings.end(); iter++)
 		argv.push_back(&(*iter).at(0));
 	argv.push_back(endptr);
@@ -102,6 +101,10 @@ void CGIHandler::execute(HTTPRequest& request)
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
+	LOG_DEBUG << "argv[0]: " << argv[0];
+	LOG_DEBUG << "argv[1]: " << argv[1];
+	LOG_DEBUG << "argv.data: " << *argv.data();
+	LOG_DEBUG << "envp[0]: " << *envp.data();
 	if (m_cgiPid == 0) {
 		dup2(m_pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
 		dup2(m_pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
@@ -109,7 +112,10 @@ void CGIHandler::execute(HTTPRequest& request)
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
 		close(m_pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
-		if (execve(argv[0], argv.data(), envp.data()) == -1) {
+		int ret = 0;
+		ret = execve(argv[0], argv.data(), envp.data());
+		LOG_ERROR << "Error: execve(): " + std::string(std::strerror(errno));
+		if (ret == -1) {
 			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
 		}
@@ -126,6 +132,7 @@ void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<cha
 	}
 	for (std::vector<std::string>::iterator iter = envComposite.begin(); iter != envComposite.end(); iter++)
 		envp.push_back(&(*iter).at(0)); // FIXME: remove reference to pointer value?
+	envp.push_back(NULL);
 }
 
 // HELPER FUNCTIONS
