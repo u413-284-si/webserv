@@ -81,8 +81,8 @@ ConfigFile createDummyConfig()
 
 	Location location3;
 	location3.path = "/cgi-bin";
-	location3.root = "/workspaces/webserv/cgi-bin";
-	location3.cgiPath = "/cgi-bin";
+	location3.root = "/workspaces/webserv";
+	location3.cgiPath = "/cgi-bin/helloWorld.cgi";
 	location3.cgiExt = ".cgi";
 
 	ConfigServer serverConfig8081;
