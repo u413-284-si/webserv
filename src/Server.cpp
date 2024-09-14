@@ -473,8 +473,8 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
  * If a vector of events is returned it processes all of them via handleEvent().
  * When events are processed or the server.waitForEvents() timeout happens checks for connection timeouts with
  * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
- * The loop continues until a signal is received and saved in g_SignalStatus. It then logs the signal and calls
- * serverShutdown().
+ * The loop continues until a signal is received and saved in g_SignalStatus. It then logs the signal.
+ * If the signal is SIGQUIT it performs a graceful shutdown with shutdownServer().
  *
  * @param server The server object to run the event loop for.
  * @throws std::runtime_error if waitForEvents() encounters an error.
@@ -493,9 +493,9 @@ void runServer(Server& server)
 		checkForTimeout(server);
 		cleanupClosedConnections(server);
 	}
-	LOG_INFO << "Server shutdown with signal " << signalNumToName(g_signalStatus);
-	g_signalStatus = 0;
-	shutdownServer(server);
+	LOG_INFO << "Received signal " << signalNumToName(g_signalStatus);
+	if (g_signalStatus == SIGQUIT)
+		shutdownServer(server);
 }
 
 /**
@@ -989,11 +989,14 @@ void cleanupIdleConnections(Server& server)
 }
 
 /**
- * @brief Performs a gracefule shutdown of the server.
+ * @brief Performs a graceful shutdown of the server.
  *
- * Closes all virtual servers, cleans up idle and closed connections. Then enters another event loop with an additional
- * condition: as long as active connections exist. This second loop always cleans up idle connections. It can also
- * be interrupted with another signal, which aborts the graceful shutdown.
+ * Closes all virtual servers, cleans up idle and closed connections.
+ * Then enters another event loop with two conditions:
+ * 1. last signal received is SIGQUIT (which initiated graceful shutdown)
+ * 2. as long as active connections exist.
+ * This second loop always cleans up idle connections. It can also be interrupted with another signal, which aborts the
+ * graceful shutdown.
  *
  * @param server The server object to shut down.
  * @sa https://pkg.go.dev/net/http#Server.Shutdown
@@ -1013,7 +1016,7 @@ void shutdownServer(Server& server)
 	cleanupClosedConnections(server);
 
 	LOG_DEBUG << "Waiting for connections to finish";
-	while (g_signalStatus == 0 && !server.getConnections().empty()) {
+	while (g_signalStatus == SIGQUIT && !server.getConnections().empty()) {
 		const int nfds = server.waitForEvents();
 
 		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
@@ -1024,8 +1027,8 @@ void shutdownServer(Server& server)
 		cleanupIdleConnections(server);
 		cleanupClosedConnections(server);
 	}
-	if (g_signalStatus != 0)
-		LOG_INFO << "Server shutdown interrupted with signal " << g_signalStatus;
+	if (g_signalStatus != SIGQUIT)
+		LOG_INFO << "Graceful shutdown interrupted with signal " << g_signalStatus;
 	else
-		LOG_INFO << "Server shutdown successfully";
+		LOG_INFO << "Server shutdown gracefully";
 }
