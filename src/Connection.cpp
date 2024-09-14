@@ -24,20 +24,32 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
 		m_status = Closed;
 }
 
+/**
+ * @brief Clears the state of a given Connection object and resets its attributes.
+ *
+ * This function resets the status, request, buffer, and other attributes of the 
+ * provided Connection object. It also closes any open file descriptors associated 
+ * with CGI communication and resets the CGI process ID. Finally, it updates the 
+ * time since the last event and checks if the connection has a valid server configuration.
+ *
+ * @param connection The Connection object to be cleared and reset.
+ * @param serverConfigs A vector of ConfigServer objects to validate the connection against.
+ * @return true if the connection has a valid server configuration, false otherwise.
+ */
 bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
 {
 	connection.m_status = Connection::ReceiveHeader;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
 	connection.m_bytesReceived = 0;
-	// NOLINTNEXTLINE: required to check if file descriptor is still open
-	if (fcntl(connection.m_pipeToCGIWriteEnd, F_GETFD) != -1)
+	if (connection.m_pipeToCGIWriteEnd!= -1) {
 		close(connection.m_pipeToCGIWriteEnd);
-	connection.m_pipeToCGIWriteEnd = -1;
-	// NOLINTNEXTLINE: required to check if file descriptor is still open
-	if (fcntl(connection.m_pipeFromCGIReadEnd, F_GETFD) != -1)
+		connection.m_pipeToCGIWriteEnd = -1;
+	}
+	if (connection.m_pipeFromCGIReadEnd != -1) {
 		close(connection.m_pipeFromCGIReadEnd);
-	connection.m_pipeFromCGIReadEnd = -1;
+		connection.m_pipeFromCGIReadEnd = -1;
+	}
 	connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
 	return (hasValidServerConfig(connection, serverConfigs));

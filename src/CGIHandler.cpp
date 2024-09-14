@@ -13,6 +13,15 @@
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
+/**
+ * @brief Constructs a CGIHandler object with the specified CGI path and extension.
+ *
+ * This constructor initializes the CGIHandler with the provided CGI path and extension.
+ * It also initializes the pipe file descriptors and the CGI process ID.
+ *
+ * @param cgiPath The path to the CGI executable.
+ * @param cgiExt The file extension associated with the CGI script.
+ */
 CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
 	: m_cgiPath(cgiPath)
 	, m_cgiExt(cgiExt)
@@ -28,14 +37,50 @@ CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
 
+/**
+ * @brief Retrieves the write end of the input pipe for the CGI handler.
+ *
+ * This function returns the file descriptor for the write end of the input pipe
+ * (`m_pipeIn`), which is used to send data to the CGI process.
+ *
+ * @return int The file descriptor corresponding to the write end of the input pipe.
+ */
 int CGIHandler::getPipeInWriteEnd() const { return m_pipeIn[1]; }
 
+/**
+ * @brief Retrieves the read end of the output pipe for the CGI handler.
+ *
+ * This function returns the file descriptor for the read end of the output pipe
+ * (`m_pipeOut`), which is used to read data from the CGI process.
+ *
+ * @return int The file descriptor corresponding to the read end of the output pipe.
+ */
 int CGIHandler::getPipeOutReadEnd() const { return m_pipeOut[0]; }
 
+/**
+ * @brief Retrieves the process ID (PID) of the CGI handler.
+ *
+ * This function returns a constant reference to the process ID (`pid_t`) of the CGI process.
+ * The PID uniquely identifies the running CGI process.
+ *
+ * @return const pid_t& A constant reference to the process ID of the CGI process.
+ */
 const pid_t& CGIHandler::getCGIPid() const { return m_cgiPid; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
+/**
+ * @brief Initializes the CGI environment variables for the CGIHandler.
+ *
+ * This function sets up the necessary environment variables required for
+ * executing a CGI script based on the provided client socket, server socket,
+ * HTTP request, and location configuration.
+ *
+ * @param clientSocket The socket representing the client connection.
+ * @param serverSocket The socket representing the server connection.
+ * @param request The HTTP request containing headers and URI information.
+ * @param location An iterator to the location configuration in the server settings.
+ */
 void CGIHandler::init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request,
 	const std::vector<Location>::const_iterator& location)
 {
@@ -63,20 +108,39 @@ void CGIHandler::init(const Socket& clientSocket, const Socket& serverSocket, co
 	m_env["SYSTEM_ROOT"] = location->root;
 }
 
+/**
+ * @brief Executes the CGI script for the given HTTP request.
+ *
+ * This function sets up the environment and argument vectors for the CGI script,
+ * creates pipes for inter-process communication, and forks a child process to
+ * execute the CGI script. The parent process handles the communication with the
+ * child process through the pipes.
+ *
+ * The function performs the following steps:
+ * 1. Sets up the environment and argument vectors.
+ * 2. Creates pipes for communication between the parent and child processes.
+ * 3. Forks a child process.
+ * 4. In the child process:
+ *    - Redirects stdin and stdout to the appropriate pipe ends.
+ *    - Closes unused pipe ends.
+ *    - Executes the CGI script using execve().
+ *    - If execve() fails, writes an HTTP 500 Internal Server Error response.
+ * 5. In the parent process:
+ *    - Closes unused pipe ends.
+ *
+ * If any error occurs during the setup or execution, the function logs the error
+ * and sets the HTTP status of the request to 500 Internal Server Error.
+ * @param request The HTTP request to be processed by the CGI script.
+ */
 void CGIHandler::execute(HTTPRequest& request)
 {
-	std::vector<std::string> envComposite;
-	std::vector<std::string> argvAsStrings;
+	std::vector<std::string> bufferEnv;
+	std::vector<std::string> bufferArgv;
 	std::vector<char*> envp;
 	std::vector<char*> argv;
-	char* endptr = NULL;
 
-	setEnvp(envComposite, envp);
-
-	argvAsStrings.push_back(m_env["SCRIPT_FILENAME"]);
-	for (std::vector<std::string>::iterator iter = argvAsStrings.begin(); iter != argvAsStrings.end(); iter++)
-		argv.push_back(&(*iter).at(0));
-	argv.push_back(endptr);
+	setEnvp(bufferEnv, envp);
+	setArgv(bufferArgv, argv);
 
 	if (pipe(m_pipeIn) == -1) {
 		LOG_ERROR << "Error: pipe(): m_pipeIn: " + std::string(std::strerror(errno));
@@ -120,19 +184,65 @@ void CGIHandler::execute(HTTPRequest& request)
 	close(m_pipeOut[1]); // Close write end of output pipe in parent process
 }
 
-void CGIHandler::setEnvp(std::vector<std::string>& envComposite, std::vector<char*>& envp) const
+/**
+ * @brief Sets up the environment variables for the CGI script.
+ *
+ * This function takes the environment variables stored in the member variable `m_env`,
+ * formats them as one string, and stores them in the provided `bufferEnv` vector. It then
+ * converts these strings to character pointers and stores them in the `envp` vector,
+ * which is used by the CGI script.  It also ensures that the last element
+ * of envp is a NULL pointer, as required by exec family functions.
+ *
+ * @param bufferEnv A reference to a vector of strings where the formatted environment
+ *                  variables are stored.
+ * @param envp A reference to a vector of character pointers where the addresses of the
+ *             formatted environment variables are stored. This vector is used
+ *             by the CGI script.
+ */
+void CGIHandler::setEnvp(std::vector<std::string>& bufferEnv, std::vector<char*>& envp) const
 {
 	for (std::map<std::string, std::string>::const_iterator citer = m_env.begin(); citer != m_env.end(); citer++) {
 		std::string tmp = citer->first + '=' + citer->second;
-		envComposite.push_back(tmp);
+		bufferEnv.push_back(tmp);
 	}
-	for (std::vector<std::string>::iterator iter = envComposite.begin(); iter != envComposite.end(); iter++)
-		envp.push_back(&(*iter).at(0)); // FIXME: remove reference to pointer value?
+	for (std::vector<std::string>::iterator iter = bufferEnv.begin(); iter != bufferEnv.end(); iter++)
+		envp.push_back(&(*iter).at(0));
 	envp.push_back(NULL);
+}
+
+/**
+ * @brief Sets up the argument vector (argv) for the CGI script execution.
+ *
+ * This function populates the provided argv vector with pointers to the
+ * strings in the bufferArgv vector. It also ensures that the last element
+ * of argv is a NULL pointer, as required by exec family functions.
+ *
+ * @param bufferArgv A reference to a vector of strings that is used
+ *                   to populate the argv vector.
+ * @param argv A reference to a vector of char pointers that is
+ *             populated with pointers to the strings in bufferArgv.
+ */
+void CGIHandler::setArgv(std::vector<std::string>& bufferArgv, std::vector<char*>& argv)
+{
+	bufferArgv.push_back(m_env["SCRIPT_FILENAME"]);
+	for (std::vector<std::string>::iterator iter = bufferArgv.begin(); iter != bufferArgv.end(); iter++)
+		argv.push_back(&(*iter).at(0));
+	argv.push_back(NULL);
 }
 
 // HELPER FUNCTIONS
 
+/**
+ * @brief Extracts the path information from a given path based on the CGI extension.
+ *
+ * This function searches for the CGI extension within the provided path. If the extension
+ * is found, it then looks for the first occurrence of a '/' character after the extension.
+ * The substring starting from this '/' character is considered the path information and is returned.
+ * If the CGI extension or the '/' character is not found, an empty string is returned.
+ *
+ * @param path The full path from which to extract the path information.
+ * @return A string containing the path information if found, otherwise an empty string.
+ */
 std::string CGIHandler::extractPathInfo(const std::string& path)
 {
 	size_t extensionStart = path.find(m_cgiExt);
