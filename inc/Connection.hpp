@@ -17,7 +17,7 @@
  */
 struct Connection {
 public:
-	Connection(const Socket& server, const Socket& client, const std::vector<ConfigServer>& serverConfigs);
+	Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs);
 
 	enum ConnectionStatus {
 		ReceiveHeader,
@@ -32,6 +32,7 @@ public:
 
 	Socket m_serverSocket; /**< Server socket associated with connection */
 	Socket m_clientSocket; /**< Client socket associated with connection */
+	int m_clientFd; /**< File descriptor of the client socket */
 	time_t m_timeSinceLastEvent; /**< Time elapsed since last action on this connection */
 	ConnectionStatus m_status; /**< Current status of the connection */
 	std::string m_buffer; /**< Bytes received from client */

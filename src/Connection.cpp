@@ -8,9 +8,10 @@
  * @param server Server socket associated with connection
  * @param client Client socket associated with connection
  */
-Connection::Connection(const Socket& server, const Socket& client, const std::vector<ConfigServer>& serverConfigs)
+Connection::Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs)
 	: m_serverSocket(server)
 	, m_clientSocket(client)
+	, m_clientFd(clientFd)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(ReceiveHeader)
 	, m_bytesReceived(0)
