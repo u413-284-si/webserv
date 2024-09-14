@@ -101,10 +101,6 @@ void CGIHandler::execute(HTTPRequest& request)
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
-	LOG_DEBUG << "argv[0]: " << argv[0];
-	LOG_DEBUG << "argv[1]: " << argv[1];
-	LOG_DEBUG << "argv.data: " << *argv.data();
-	LOG_DEBUG << "envp[0]: " << *envp.data();
 	if (m_cgiPid == 0) {
 		dup2(m_pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
 		dup2(m_pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
