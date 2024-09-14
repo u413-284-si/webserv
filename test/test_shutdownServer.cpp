@@ -23,6 +23,8 @@ protected:
 		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 		ON_CALL(epollWrapper, waitForEvents).WillByDefault(Return(0));
 		ON_CALL(epollWrapper, eventsBegin).WillByDefault(Return((dummyEventsVector.begin())));
+
+		g_signalStatus = SIGQUIT;
 	}
 	~ServerShutdownTest() override { }
 
