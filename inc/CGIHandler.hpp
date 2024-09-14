@@ -35,10 +35,11 @@ public:
 	void init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request, const std::vector<Location>::const_iterator& location);
 	void execute(HTTPRequest& request);
 
-	// Getter/Setter functions
+	// Getter functions
 	int getPipeInWriteEnd() const;
 	int getPipeOutReadEnd() const;
 	const pid_t& getCGIPid() const;
+
 	void setEnvp(std::vector<std::string>& bufferEnv, std::vector<char*>& envp) const;
 	void setArgv(std::vector<std::string>& bufferArgv, std::vector<char*>& argv);
 
