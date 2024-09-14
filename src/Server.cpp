@@ -840,6 +840,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();
+		server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection);
+		server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection);
 	}
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
@@ -850,11 +852,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
-	}
-
-	if (connection.m_request.isCGI) {
-		server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection);
-		server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection);
 	}
 }
 
