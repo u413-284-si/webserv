@@ -61,15 +61,17 @@ public:
 
 	// Getters
 	const std::map<int, Socket>& getVirtualServers() const;
-	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
+	std::map<int, Connection>& getConnections();
+	std::map<int, Connection&>& getCGIConnections();
 	time_t getClientTimeout() const;
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
-	bool registerCGIProcess(int pipeFd, uint32_t eventMask, Connection& connection);
+	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper
@@ -106,6 +108,7 @@ private:
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
+	std::map<int, Connection&> m_cgiConnections; /**< Connections that are currently handling CGI */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */

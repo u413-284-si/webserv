@@ -1,6 +1,7 @@
 #include "Server.hpp"
 #include "Connection.hpp"
 #include "Log.hpp"
+#include <map>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -99,6 +100,13 @@ const std::map<int, Socket>& Server::getVirtualServers() const { return m_virtua
 std::map<int, Connection>& Server::getConnections() { return m_connections; }
 
 /**
+ * @brief Getter for cgiConnections.
+ *
+ * @return std::map<int, Connection&>& Map of cgiConnections.
+ */
+std::map<int, Connection&>& Server::getCGIConnections() { return m_cgiConnections; }
+
+/**
  * @brief Const Getter for connections.
  *
  * @return const std::map<int, Connection>& Map of connections.
@@ -172,7 +180,7 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 		return false;
 	}
 
-	Connection newConnection(serverSock, clientSock, m_configFile.servers);
+	Connection newConnection(serverSock, clientSock, clientFd, m_configFile.servers);
 	if (newConnection.m_status == Connection::Closed) {
 		close(clientFd);
 		LOG_ERROR << "Failed to set active server for " << clientSock;
@@ -192,18 +200,20 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 }
 
 /**
- * @brief Registers a CGI process with the server.
+ * @brief Register a CGI file descriptor.
  *
- * This function adds the specified pipe file descriptor to the epoll event loop
- * with the given event mask. If the addition is successful, the function returns
- * true. Otherwise, it closes the pipe file descriptor, logs an error message,
- * and returns false.
+ * Registers a pipe fd with addEvent().
+ * If it fails to add the event, it logs an error and closes the pipe.
+ * If the fd is successfully registered, adds it togther with the belonging
+ * connection to map m_connections.
  *
  * @param pipeFd The file descriptor of the pipe to register.
- * @param eventMask The event mask to associate with the pipe file descriptor.
- * @return True if the registration is successful, false otherwise.
+ * @param eventMask The event mask to register the pipe with.
+ * @param connection The connection to register the pipe for.
+ *
+ * @return true if the CGI file descriptor was successfully registered, false otherwise.
  */
-bool Server::registerCGIProcess(int pipeFd, uint32_t eventMask, Connection& connection)
+bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection)
 {
 	if (!m_epollWrapper.addEvent(pipeFd, eventMask)) {
 		close(pipeFd);
@@ -211,15 +221,15 @@ bool Server::registerCGIProcess(int pipeFd, uint32_t eventMask, Connection& conn
 		return false;
 	}
 
-	std::pair<std::map<int, Connection>::iterator, bool> ret
-		= m_connections.insert(std::pair<int, Connection>(pipeFd, connection));
+	std::pair<std::map<int, Connection&>::iterator, bool> ret
+		= m_cgiConnections.insert(std::pair<int, Connection&>(pipeFd, connection));
 	if (!ret.second) {
 		close(pipeFd);
 		LOG_ERROR << "Failed to add connection for " << pipeFd << ": it already exists";
 		return false;
 	}
 
-	LOG_INFO << "New CGIProcess: " << pipeFd << " registered.";
+	LOG_DEBUG << "New CGI File Descriptor: " << pipeFd << " registered for " << connection.m_clientSocket;
 	return true;
 }
 
@@ -587,6 +597,7 @@ void handleEvent(Server& server, struct epoll_event event)
 	uint32_t eventMask = event.events;
 
 	std::map<int, Socket>::const_iterator iter = server.getVirtualServers().find(event.data.fd);
+	std::map<int, Connection&>::iterator cgiIter = server.getCGIConnections().find(event.data.fd);
 	if (iter != server.getVirtualServers().end()) {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_ERROR << "Error condition happened on the associated file descriptor of " << iter->second;
@@ -594,6 +605,8 @@ void handleEvent(Server& server, struct epoll_event event)
 			return;
 		}
 		acceptConnections(server, iter->first, iter->second, eventMask);
+	} else if (cgiIter != server.getCGIConnections().end()) {
+		handleConnection(server, cgiIter->first, cgiIter->second);
 	} else {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_DEBUG << "epoll_wait: EPOLLERR";
@@ -821,13 +834,12 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (isCGIRequested(connection)) {
 		connection.m_request.isCGI = true;
 		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
-		cgiHandler.init(connection.m_clientSocket, connection.m_serverSocket, connection.m_request, connection.location);
+		cgiHandler.init(
+			connection.m_clientSocket, connection.m_serverSocket, connection.m_request, connection.location);
 		cgiHandler.execute(connection.m_request);
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();
-		server.registerCGIProcess(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection);
-		server.registerCGIProcess(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection);
 	}
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
@@ -838,6 +850,11 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
+	}
+
+	if (connection.m_request.isCGI) {
+		server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection);
+		server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection);
 	}
 }
 
@@ -978,7 +995,7 @@ void connectionSendToCGI(Server& server, Connection& connection)
 		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
 		server.removeEvent(connection.m_pipeToCGIWriteEnd);
-		server.getConnections().erase(connection.m_pipeToCGIWriteEnd);
+		server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeFromCGIReadEnd);
 		return;
@@ -992,9 +1009,13 @@ void connectionSendToCGI(Server& server, Connection& connection)
 		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
 		server.removeEvent(connection.m_pipeToCGIWriteEnd);
-		server.getConnections().erase(connection.m_pipeToCGIWriteEnd);
+		server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
+		server.removeEvent(connection.m_pipeFromCGIReadEnd);
+		server.getCGIConnections().erase(connection.m_pipeFromCGIReadEnd);
 		close(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeFromCGIReadEnd);
+		connection.m_pipeToCGIWriteEnd = -1;
+		connection.m_pipeFromCGIReadEnd = -1;
 		return;
 	}
 	if (bytesSent == static_cast<long>(connection.m_request.body.size())) {
@@ -1002,8 +1023,9 @@ void connectionSendToCGI(Server& server, Connection& connection)
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
 		server.removeEvent(connection.m_pipeToCGIWriteEnd);
-		server.getConnections().erase(connection.m_pipeToCGIWriteEnd);
+		server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
 		close(connection.m_pipeToCGIWriteEnd);
+		connection.m_pipeToCGIWriteEnd = -1;
 		return;
 	}
 	connection.m_request.body = connection.m_request.body.substr(bytesSent);
@@ -1016,19 +1038,35 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
-		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeEvent(connection.m_pipeFromCGIReadEnd);
-		server.getConnections().erase(connection.m_pipeFromCGIReadEnd);
+		server.getCGIConnections().erase(connection.m_pipeFromCGIReadEnd);
 		close(connection.m_pipeFromCGIReadEnd);
+		connection.m_pipeFromCGIReadEnd = -1;
+		if (connection.m_pipeToCGIWriteEnd != -1) {
+			server.removeEvent(connection.m_pipeToCGIWriteEnd);
+			server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
+			close(connection.m_pipeToCGIWriteEnd);
+			connection.m_pipeToCGIWriteEnd = -1;
+		}
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeEvent(connection.m_pipeFromCGIReadEnd);
-		server.getConnections().erase(connection.m_pipeFromCGIReadEnd);
+		server.getCGIConnections().erase(connection.m_pipeFromCGIReadEnd);
 		close(connection.m_pipeFromCGIReadEnd);
+		connection.m_pipeFromCGIReadEnd = -1;
+		if (connection.m_pipeToCGIWriteEnd != -1) {
+			server.removeEvent(connection.m_pipeToCGIWriteEnd);
+			server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
+			close(connection.m_pipeToCGIWriteEnd);
+			connection.m_pipeToCGIWriteEnd = -1;
+		}
 		int status = 0;
 		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
 			LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
@@ -1089,7 +1127,7 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
  */
 void connectionSendResponse(Server& server, int clientFd, Connection& connection)
 {
-	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket;
+	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << clientFd;
 
 	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());
 	const ssize_t sentBytes = server.writeToSocket(clientFd, connection.m_buffer.c_str(), bytesToSend, 0);
