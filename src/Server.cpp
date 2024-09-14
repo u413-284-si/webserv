@@ -233,6 +233,13 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 	return true;
 }
 
+void Server::removeCGIFileDescriptor(Server& server, int& delfd) {
+	server.removeEvent(delfd);
+	server.getCGIConnections().erase(delfd);
+	close(delfd);
+	delfd = -1;
+}
+
 /**
  * @brief Setter for client timeout.
  *
@@ -992,12 +999,11 @@ void connectionSendToCGI(Server& server, Connection& connection)
 {
 	if (connection.m_request.body.empty()) {
 		LOG_ERROR << "Error: empty body: can't send to CGI";
-		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
-		server.removeEvent(connection.m_pipeToCGIWriteEnd);
-		server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
-		close(connection.m_pipeToCGIWriteEnd);
-		close(connection.m_pipeFromCGIReadEnd);
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
+		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 
@@ -1006,26 +1012,18 @@ void connectionSendToCGI(Server& server, Connection& connection)
 
 	if (bytesSent == -1) {
 		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
-		connection.m_status = Connection::BuildResponse;
 		connection.m_request.httpStatus = StatusInternalServerError;
-		server.removeEvent(connection.m_pipeToCGIWriteEnd);
-		server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
-		server.removeEvent(connection.m_pipeFromCGIReadEnd);
-		server.getCGIConnections().erase(connection.m_pipeFromCGIReadEnd);
-		close(connection.m_pipeToCGIWriteEnd);
-		close(connection.m_pipeFromCGIReadEnd);
-		connection.m_pipeToCGIWriteEnd = -1;
-		connection.m_pipeFromCGIReadEnd = -1;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
+		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	if (bytesSent == static_cast<long>(connection.m_request.body.size())) {
 		LOG_DEBUG << "CGI: Full body sent";
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
-		server.removeEvent(connection.m_pipeToCGIWriteEnd);
-		server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
-		close(connection.m_pipeToCGIWriteEnd);
-		connection.m_pipeToCGIWriteEnd = -1;
+		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	connection.m_request.body = connection.m_request.body.substr(bytesSent);
@@ -1041,32 +1039,18 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeEvent(connection.m_pipeFromCGIReadEnd);
-		server.getCGIConnections().erase(connection.m_pipeFromCGIReadEnd);
-		close(connection.m_pipeFromCGIReadEnd);
-		connection.m_pipeFromCGIReadEnd = -1;
-		if (connection.m_pipeToCGIWriteEnd != -1) {
-			server.removeEvent(connection.m_pipeToCGIWriteEnd);
-			server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
-			close(connection.m_pipeToCGIWriteEnd);
-			connection.m_pipeToCGIWriteEnd = -1;
-		}
+		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
+		if (connection.m_pipeToCGIWriteEnd != -1)
+			server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeEvent(connection.m_pipeFromCGIReadEnd);
-		server.getCGIConnections().erase(connection.m_pipeFromCGIReadEnd);
-		close(connection.m_pipeFromCGIReadEnd);
-		connection.m_pipeFromCGIReadEnd = -1;
-		if (connection.m_pipeToCGIWriteEnd != -1) {
-			server.removeEvent(connection.m_pipeToCGIWriteEnd);
-			server.getCGIConnections().erase(connection.m_pipeToCGIWriteEnd);
-			close(connection.m_pipeToCGIWriteEnd);
-			connection.m_pipeToCGIWriteEnd = -1;
-		}
+		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
+		if (connection.m_pipeToCGIWriteEnd != -1)
+			server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		int status = 0;
 		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
 			LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
