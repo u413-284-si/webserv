@@ -77,8 +77,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
 	if (request.isCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
 		return;
-	m_responseStream << "HTTP/1.1 " << request.httpStatus << ' '
-					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+	m_responseStream << "HTTP/1.1 " << request.httpStatus << " \r\n";
 }
 
 /**
