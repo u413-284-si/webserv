@@ -627,7 +627,8 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
-	request.headers["Content-Length"] = webutils::toString(length);
+	if (request.headers.find("Content-Length") != request.headers.end())
+		request.headers["Content-Length"] = webutils::toString(length);
 }
 
 /**
