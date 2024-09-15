@@ -3,8 +3,8 @@
 /**
  * @brief Construct a new Connection:: Connection object
  *
- * Tries to find a valid server configuration for the connection. If no valid server configuration is found, the
- * connection state is Connection::Closed.
+ * Tries to find a valid server configuration for the connection with hasValidServerConfig().
+ * If no valid server configuration is found, the connection state is Connection::Closed.
  *
  * @param server Server socket associated with connection
  * @param client Client socket associated with connection
