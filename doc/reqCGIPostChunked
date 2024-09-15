@@ -1,0 +1,14 @@
+POST /cgi-bin/upper.cgi HTTP/1.1
+Host: 127.0.0.1
+Content-Type: text/plain
+Transfer-Encoding: chunked
+
+4
+This
+5
+ is a
+6
+ chunk
+8
+ed body.
+0
