@@ -320,10 +320,11 @@ TEST_F(ValidConfigFileTests, WhiteSpacesBetweenServerDirectiveAndBracket)
 	EXPECT_EQ("8080", configFile.servers[0].port);
 }
 
-TEST_F(ValidConfigFileTests, DirectiveAndBracketOnSameLine)
+TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLine)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/directive_bracket_same_line.conf"));
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/directive_close_bracket_same_line.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("8080", configFile.servers[0].port);
 }
