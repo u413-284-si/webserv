@@ -11,7 +11,6 @@
  */
 ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
-	, m_isFirstTime(true)
 {
 	initMIMETypes();
 }
@@ -38,7 +37,7 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
 void ResponseBuilder::buildResponse(HTTPRequest& request)
 {
 	resetStream();
-
+	
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
 	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
@@ -53,17 +52,15 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
 }
 
 /**
- * @brief Reset the stream to the beginning.
+ * @brief Clears the contents of the ResponseStream.
  *
- * If it is not the first time, the stream is reset to the beginning.
- * This is done to clear the stream from the previous response.
+ * This function resets the internal response stream to an empty state
+ * by clearing the stream and setting the stream's internal string to an empty string.
  */
 void ResponseBuilder::resetStream()
 {
-	if (!m_isFirstTime)
-		m_responseStream.seekp(std::ios::beg);
-
-	m_isFirstTime = false;
+	m_responseStream.clear();
+	m_responseStream.str("");
 }
 
 /**

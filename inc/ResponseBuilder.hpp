@@ -39,5 +39,4 @@ private:
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_responseStream;
 	std::string m_responseBody;
-	bool m_isFirstTime;
 };
