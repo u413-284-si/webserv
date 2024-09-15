@@ -202,7 +202,7 @@ Public Member Functions</h2></td></tr>
 <li>Can be opened</li>
 <li>Is not empty</li>
 <li>Does not contain open brackets</li>
-<li>Starts with 'http {'</li>
+<li>Starts with http</li>
 <li>Contains minimum one server</li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -225,23 +225,42 @@ Public Member Functions</h2></td></tr>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Open bracket(s) in config file&quot;</span>);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    readAndTrimLine();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (m_currentLine != <span class="stringliteral">&quot;http {&quot;</span>)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Config file does not start with &#39;http {&#39;&quot;</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (getDirective(m_currentLine) != <span class="stringliteral">&quot;http&quot;</span>)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Config file does not start with http&quot;</span>);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">for</span> (readAndTrimLine(); m_currentLine != <span class="stringliteral">&quot;}&quot;</span>; readAndTrimLine()) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span> (m_currentLine == <span class="stringliteral">&quot;server {&quot;</span>) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span> (getDirective(m_currentLine) == <span class="stringliteral">&quot;server&quot;</span>) {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <a class="code" href="struct_config_server.html">ConfigServer</a> server;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            m_configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.push_back(server);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">for</span> (readAndTrimLine(); m_currentLine != <span class="stringliteral">&quot;}&quot;</span>; readAndTrimLine())</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                readServerConfigLine();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            m_serverIndex++;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (m_configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.empty())</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;No server(s) in config file&quot;</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">return</span> m_configFile;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordtype">size_t</span> bracketIndex = m_currentLine.find(<span class="charliteral">&#39;{&#39;</span>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">if</span> (bracketIndex != std::string::npos) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                std::string withoutBracket = m_currentLine.substr(bracketIndex + 1, m_currentLine.length());</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="keywordtype">size_t</span> firstNotWhiteSpaceIndex = withoutBracket.find_first_not_of(whitespace);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keywordflow">if</span> (firstNotWhiteSpaceIndex == std::string::npos) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    readAndTrimLine();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                } <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    m_currentLine = withoutBracket.substr(firstNotWhiteSpaceIndex, withoutBracket.length());</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            } <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                readAndTrimLine();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">while</span> (m_currentLine != <span class="stringliteral">&quot;}&quot;</span>) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                readServerConfigLine();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">if</span> (m_currentLine == <span class="stringliteral">&quot;}&quot;</span>)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                readAndTrimLine();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            m_serverIndex++;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (getDirective(m_currentLine).empty())</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid directive&quot;</span>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span> (m_configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.empty())</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;No server(s) in config file&quot;</span>);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">return</span> m_configFile;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
 <div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
 <div class="ttc" id="astruct_config_server_html"><div class="ttname"><a href="struct_config_server.html">ConfigServer</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00032">ConfigFile.hpp:32</a></div></div>
 </div><!-- fragment --><div class="dynheader">
