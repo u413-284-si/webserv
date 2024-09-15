@@ -11,7 +11,19 @@
 # **************************************************************************** #
 
 # ******************************
-# *     Verbosity              *
+# *     Targets                *
+# ******************************
+
+NAME := webserv
+
+TEST := unittest
+
+NAME_SANI := $(NAME)_sani
+
+TEST_SANI := $(TEST)_sani
+
+# ******************************
+# *     Variables              *
 # ******************************
 
 # Set VERBOSE=1 to echo all commands
@@ -19,6 +31,13 @@ ifeq ($(VERBOSE),1)
 	SILENT =
 else
 	SILENT = @
+endif
+
+# Set SANI=1 to enable sanitizers
+ifeq ($(SANI),1)
+	ASAN = -fsanitize=address,undefined
+else
+	ASAN =
 endif
 
 # ******************************
@@ -34,16 +53,6 @@ RED := \033[31m
 BLUE := \033[34m
 
 # ******************************
-# *     Targets                *
-# ******************************
-
-NAME := webserv
-
-TEST := unittest
-
-TEST_SANI := unittest_sani
-
-# ******************************
 # *     Directories            *
 # ******************************
 
@@ -54,22 +63,22 @@ TEST_DIR := test
 # Base directory for object files
 BASE_OBJ_DIR = obj
 
-# If condition to check target and set object directory accordingly
-ifeq ($(MAKECMDGOALS),test)
-	OBJ_DIR := $(BASE_OBJ_DIR)/$(TEST)
-else ifeq ($(MAKECMDGOALS),test_sani)
-	OBJ_DIR := $(BASE_OBJ_DIR)/$(TEST_SANI)
-else ifeq ($(MAKECMDGOALS),doxycheck)
-	OBJ_DIR := $(BASE_OBJ_DIR)/doxycheck
+# Changes object directory and target names when SANI=1
+# This ensures, that the correct object files are linked object and
+# files are not overwritten when switching between builds.
+ifeq ($(SANI),1)
+	OBJ_DIR := $(BASE_OBJ_DIR)/sani
+	NAME := $(NAME_SANI)
+	TEST := $(TEST_SANI)
 else
-	OBJ_DIR := $(BASE_OBJ_DIR)/$(NAME)
+	OBJ_DIR := $(BASE_OBJ_DIR)/default
 endif
 
 # Subdirectory for header files
 INC_DIR := inc
 
 # Subdirectories for dependency files
-DEP_DIR := $(OBJ_DIR)/dep
+DEP_DIR := $(BASE_OBJ_DIR)/dep
 
 # Subdirectory for log files
 LOG_DIR := log
@@ -77,18 +86,26 @@ LOG_DIR := log
 # Directory for coverage report
 COV_DIR := .vscode/coverage
 
+# Directory for configuration files
+CONFIG_DIR := config_files
+
 # ******************************
 # *     Vars for compiling     *
 # ******************************
 
 CXX := c++
 CPPFLAGS := -I $(INC_DIR)
-CXXFLAGS = -std=c++98 -Wall -Werror -Wextra -Wpedantic -g
+WARNINGS := -Wall -Wextra -Werror -Wpedantic -Wdocumentation
+CXXFLAGS = -std=c++98 $(WARNINGS) $(ASAN) -g
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
-LDFLAGS =
+LDFLAGS = $(ASAN)
 LDLIBS =
 COMPILE = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) -c
 POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
+
+# Special variables for compiling test files
+CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) -g
+COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
 
 # ******************************
 # *     Source files           *
@@ -148,15 +165,12 @@ TEST_SRC :=	test_acceptConnections.cpp \
 
 PROG_OBJS := $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 
+# All tests files + program files. Filters out main.o from PROG_OBJS to use unittest main
 TEST_OBJS :=	$(addprefix $(OBJ_DIR)/, $(TEST_SRC:.cpp=.o)) \
 				$(filter-out $(OBJ_DIR)/main.o, $(PROG_OBJS))
 
-# If condition to check target and set objects accordingly
-ifeq ($(findstring test, $(MAKECMDGOALS)),test)
-	OBJS := $(TEST_OBJS)
-else
-	OBJS := $(PROG_OBJS)
-endif
+# OBJS is defaulted to PROG_OBJS
+OBJS := $(PROG_OBJS)
 
 # ******************************
 # *     Dependency files       *
@@ -185,13 +199,9 @@ all: $(NAME)
 # *     Link target            *
 # ******************************
 
-# Linking targets
-# NAME
-# TEST
-# TEST_SANI
-$(NAME) $(TEST) $(TEST_SANI): $(OBJS)
+$(NAME): $(PROG_OBJS)
 	@printf "$(YELLOW)$(BOLD)link binary$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)$(CXX) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $@
+	$(SILENT)$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
 
@@ -201,24 +211,22 @@ $(NAME) $(TEST) $(TEST_SANI): $(OBJS)
 
 # Alias for creating unittests
 .PHONY: test
-# Reconfigure flags for linking with gtest
-test: CXXFLAGS = -Wall -Werror -Wextra -g
-test: LDLIBS = -lpthread -lgtest -lgmock -lgtest_main
 test: $(TEST)
+# Reconfigure flags for linking with gtest
+$(TEST): LDLIBS := -pthread -lgtest -lgmock -lgtest_main
+$(TEST): OBJS := $(TEST_OBJS)
+# Link the test binary
+$(TEST): $(TEST_OBJS)
+	@printf "$(YELLOW)$(BOLD)link binary$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
 
-# Alias for creating unittests with sanitizers enabled
-.PHONY: test_sani
-# Reconfigure flags for linking with gtest and sanitizers
-test_sani: CXXFLAGS = -Wall -Werror -Wextra -g -fsanitize=address,undefined
-test_sani: LDFLAGS = -fsanitize=address,undefined
-test_sani: LDLIBS = -lpthread -lgtest -lgmock -lgtest_main
-test_sani: $(TEST_SANI)
-
-# This target uses the file valid_config.conf as argument to run the program.
+# This target uses the file standard_config.conf as argument to run the program.
 .PHONY: run
 run: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
-	./webserv config_files/standard_config.conf
+	./webserv $(CONFIG_DIR)/standard_config.conf
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -252,8 +260,7 @@ valgr: $(NAME) | $(LOG_DIR)
 .PHONY: comp
 comp: check_bear_installed clean
 	@printf "$(YELLOW)$(BOLD)Creating compile_commands.json$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)bear -- make -j --no-print-directory
-	$(SILENT)bear --append -- make -j --no-print-directory test
+	$(SILENT)bear -- make -j --no-print-directory test
 
 # Check if bear is installed. If not exit with error.
 .PHONY: check_bear_installed
@@ -265,15 +272,11 @@ check_bear_installed:
 # Create coverage report to display with coverage gutter
 EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 .PHONY: coverage
-coverage: | $(COV_DIR)
+coverage: $(TEST) | $(COV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov $(EXCL_PATH) $(COV_DIR) ./$(TEST)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov $(EXCL_PATH) --cobertura-only $(COV_DIR) ./$(TEST)
-
-.PHONY: doxycheck
-doxycheck: CXXFLAGS += -Wdocumentation
-doxycheck: $(NAME)
 
 # ******************************
 # *     Object compiling and   *
@@ -281,7 +284,7 @@ doxycheck: $(NAME)
 # ******************************
 
 # File counter for status output
-TOTAL_FILES := $(words $(OBJS))
+TOTAL_FILES = $(words $(OBJS))
 CURRENT_FILE := 0
 
 # Create object and dependency files
@@ -292,17 +295,17 @@ CURRENT_FILE := 0
 # $(eval ...) =		Increment file counter.
 # $(POSTCOMPILE) =	Move temp dependency file and touch object to ensure right timestamps.
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE) $< -o $@
 	$(SILENT)$(POSTCOMPILE)
 
-# Similar target for testfiles
-$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR)
+# Similar target for testfiles; uses different compile flags
+$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
-	$(SILENT)$(COMPILE) $< -o $@
+	$(SILENT)$(COMPILE_TEST) $< -o $@
 	$(SILENT)$(POSTCOMPILE)
 
 # Print message only if there are objects to compile
@@ -311,7 +314,7 @@ message:
 	@printf "$(YELLOW)$(BOLD)compile objects$(RESET) [$(BLUE)$@$(RESET)]\n"
 
 # Create subdirectory if it doesn't exist
-$(DEP_DIR) $(LOG_DIR) $(COV_DIR):
+$(DEP_DIR) $(LOG_DIR) $(COV_DIR) $(OBJ_DIR):
 	@printf "$(YELLOW)$(BOLD)create subdir$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@echo $@
 	$(SILENT)mkdir -p $@
@@ -333,8 +336,8 @@ clean:
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
 fclean: clean
-	@rm -rf $(NAME) $(TEST) $(TEST_SANI)
-	@printf "$(RED)removed binaries $(NAME) $(TEST) $(TEST_SANI)$(RESET)\n"
+	@rm -rf $(NAME) $(TEST) $(NAME_SANI) $(TEST_SANI)
+	@printf "$(RED)removed binaries $(NAME)* $(TEST)*$(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@rm -rf $(COV_DIR)
@@ -379,6 +382,7 @@ help:
 	@echo ""
 	@echo "$(YELLOW)Variables:$(RESET)"
 	@echo "  VERBOSE=1   - Echoes all commands if set to 1."
+	@echo "  SANI=1      - Enables sanitizers if set to 1."
 	@echo ""
 	@echo "$(YELLOW)Examples:$(RESET)"
 	@echo "  make all VERBOSE=1   - Compiles the default target with command echoing."
