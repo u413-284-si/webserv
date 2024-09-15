@@ -20,7 +20,9 @@ int main(int argc, char** argv)
 	(void)argc;
 	(void)argv;
 
+	// const char* logFile = "webserver.log";
 	weblog::initConsole(weblog::LevelDebug);
+	// weblog::initFile(weblog::LevelDebug, logFile);
 	try {
 		EpollWrapper epollWrapper(10, -1);
 		SocketPolicy socketPolicy;
