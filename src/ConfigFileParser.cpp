@@ -68,7 +68,6 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 				size_t firstNotWhiteSpaceIndex = withoutBracket.find_first_not_of(whitespace);
 				if (firstNotWhiteSpaceIndex == std::string::npos) {
 					readAndTrimLine();
-					std::cout << "m_currentLine: " << m_currentLine << std::endl;
 				} else
 					m_currentLine = withoutBracket.substr(firstNotWhiteSpaceIndex, withoutBracket.length());
 			} else
