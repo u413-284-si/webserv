@@ -127,6 +127,8 @@ void handleEvent(Server& server, struct epoll_event);
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
 void handleConnection(Server& server, int clientFd, Connection& connection);
+void handleCGIConnection(Server& server, int clientFd, Connection& connection);
+
 void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection);
