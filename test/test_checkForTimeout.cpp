@@ -14,6 +14,9 @@ protected:
 		: server(configFile, epollWrapper, socketPolicy)
 	{
 		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
+		serverConfig.host = "1.1.1.1";
+		serverConfig.port = "8080";
+		configFile.servers.push_back(serverConfig);
 	}
 	~CheckForTimeoutTest() override { }
 
@@ -21,6 +24,7 @@ protected:
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
+	ConfigServer serverConfig;
 
 	const int dummyFd = 10;
 	const int dummyFd2 = 20;
