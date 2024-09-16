@@ -1,24 +1,5 @@
 var searchData=
 [
-  ['_7eacceptconnectionstest_634',['~AcceptConnectionsTest',['../class_accept_connections_test.html#ac37d87ca1350fc5f22d5e8f684a8e8e6',1,'AcceptConnectionsTest']]],
-  ['_7ealogoutputter_635',['~ALogOutputter',['../classweblog_1_1_a_log_outputter.html#a2bfc855f809373b08cb9433347f66894',1,'weblog::ALogOutputter']]],
-  ['_7echeckfortimeouttest_636',['~CheckForTimeoutTest',['../class_check_for_timeout_test.html#aeb4982b6a847096658e24eaf902b40f0',1,'CheckForTimeoutTest']]],
-  ['_7econnectionreceiveheadertest_637',['~ConnectionReceiveHeaderTest',['../class_connection_receive_header_test.html#a5ebe4ef677869199d9f7e760743a5411',1,'ConnectionReceiveHeaderTest']]],
-  ['_7econnectionsendresponsetest_638',['~ConnectionSendResponseTest',['../class_connection_send_response_test.html#a95b1595e033083f7305c42dd8419e285',1,'ConnectionSendResponseTest']]],
-  ['_7ecreatevirtualservertest_639',['~CreateVirtualServerTest',['../class_create_virtual_server_test.html#a6d8992a18d2f216688fda58d82762b19',1,'CreateVirtualServerTest']]],
-  ['_7edirectory_640',['~Directory',['../class_directory.html#affbde8714685c61601421097d621341d',1,'Directory']]],
-  ['_7eepollwrapper_641',['~EpollWrapper',['../class_epoll_wrapper.html#a8fe7c99f138f7bbcf9c09c2d7a570d51',1,'EpollWrapper']]],
-  ['_7efilesystempolicy_642',['~FileSystemPolicy',['../class_file_system_policy.html#ade44af8bb4f3947b7b95424c7b159f64',1,'FileSystemPolicy']]],
-  ['_7einitvirtualserverstest_643',['~InitVirtualServersTest',['../class_init_virtual_servers_test.html#ae27db2ab3f355015fb13ee0637b39736',1,'InitVirtualServersTest']]],
-  ['_7eisduplicateservertest_644',['~isDuplicateServerTest',['../classis_duplicate_server_test.html#a5495b31fc6ab1998539eddfa22ceb45a',1,'isDuplicateServerTest']]],
-  ['_7eparsebodytest_645',['~ParseBodyTest',['../class_parse_body_test.html#a6485ce2df143c632abca071cd9a59085',1,'ParseBodyTest']]],
-  ['_7eparseheaderstest_646',['~ParseHeadersTest',['../class_parse_headers_test.html#a2fde74a6b9db02a0d84ad1e47ae8a004',1,'ParseHeadersTest']]],
-  ['_7eparserequestlinetest_647',['~ParseRequestLineTest',['../class_parse_request_line_test.html#af0e508b056c54c101db6ac46f70444d4',1,'ParseRequestLineTest']]],
-  ['_7eregisterconnectiontest_648',['~RegisterConnectionTest',['../class_register_connection_test.html#a6f34baf843b7b99385e1b894a58596cf',1,'RegisterConnectionTest']]],
-  ['_7eregistervirtualservertest_649',['~RegisterVirtualServerTest',['../class_register_virtual_server_test.html#a2d45cf38153fc02f241ea2e7ee4694dd',1,'RegisterVirtualServerTest']]],
-  ['_7eresponsebodyhandlertest_650',['~ResponseBodyHandlerTest',['../class_response_body_handler_test.html#af4304e63847ddee60140c7d58a7e5f03',1,'ResponseBodyHandlerTest']]],
-  ['_7eserver_651',['~Server',['../class_server.html#a4b3aa2579cb1c8cd1d069582c14d0fa6',1,'Server']]],
-  ['_7eservershutdowntest_652',['~ServerShutdownTest',['../class_server_shutdown_test.html#a6cbbb9fd496475a838f8b1c51ec2830a',1,'ServerShutdownTest']]],
-  ['_7esocketpolicy_653',['~SocketPolicy',['../class_socket_policy.html#a4bd020bec4585bf4119a4ac23baa7143',1,'SocketPolicy']]],
-  ['_7etargetresourcehandlertest_654',['~TargetResourceHandlerTest',['../class_target_resource_handler_test.html#a7d0b324d1a508723187ad6bf666a8688',1,'TargetResourceHandlerTest']]]
+  ['waitforevents_661',['waitForEvents',['../class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85',1,'EpollWrapper::waitForEvents()'],['../class_server.html#acbcbebe2c30446acc9a90f40f9986b62',1,'Server::waitForEvents()']]],
+  ['writetosocket_662',['writeToSocket',['../class_server.html#a8bf2a41e8ddcccd54b5832b58211a283',1,'Server::writeToSocket()'],['../class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1',1,'SocketPolicy::writeToSocket()']]]
 ];

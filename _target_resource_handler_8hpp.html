@@ -116,7 +116,8 @@ $(document).ready(function(){initNavTree('_target_resource_handler_8hpp.html',''
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">TargetResourceHandler.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -124,9 +125,10 @@ $(document).ready(function(){initNavTree('_target_resource_handler_8hpp.html',''
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_file_system_policy_8hpp_source.html">FileSystemPolicy.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_h_t_t_p_response_8hpp_source.html">HTTPResponse.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_request_parser_8hpp_source.html">RequestParser.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_log_8hpp_source.html">Log.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_status_code_8hpp_source.html">StatusCode.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for TargetResourceHandler.hpp:</div>
@@ -137,7 +139,7 @@ Include dependency graph for TargetResourceHandler.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_target_resource_handler_8hpp__dep__incl.svg" width="100%" height="518"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_target_resource_handler_8hpp__dep__incl.svg" width="100%" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div>
@@ -148,7 +150,74 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler.html">TargetResourceHandler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to handle the target resource of a HTTP Request.  <a href="class_target_resource_handler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a3bd08192e5875b2c101b6f9aa2a99a5c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_target_resource_handler_8hpp.html#a3bd08192e5875b2c101b6f9aa2a99a5c">matchLocation</a> (const std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;locations, const std::string &amp;path)</td></tr>
+<tr class="memdesc:a3bd08192e5875b2c101b6f9aa2a99a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate through <a class="el" href="struct_location.html">Location</a> objects to find longest matching path based on a given input path.  <a href="_target_resource_handler_8hpp.html#a3bd08192e5875b2c101b6f9aa2a99a5c">More...</a><br /></td></tr>
+<tr class="separator:a3bd08192e5875b2c101b6f9aa2a99a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a3bd08192e5875b2c101b6f9aa2a99a5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd08192e5875b2c101b6f9aa2a99a5c">&#9670;&nbsp;</a></span>matchLocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="struct_location.html">Location</a>&gt;::const_iterator matchLocation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>locations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Iterate through <a class="el" href="struct_location.html">Location</a> objects to find longest matching path based on a given input path. </p>
+<p>The longest matching path is the one that has the most characters in common with the input path. If no match is found, the function returns an iterator pointing to the end of the vector. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">locations</td><td>Vector of <a class="el" href="struct_location.html">Location</a> objects. </td></tr>
+    <tr><td class="paramname">path</td><td>String representing the path to be matched. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Constant_iterator to the location that has the longest matching path with input. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00099">99</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    std::size_t longestMatch = 0;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    std::vector&lt;Location&gt;::const_iterator locationMatch = locations.end();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator it = locations.begin(); it != locations.end(); ++it) {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">if</span> (path.find(it-&gt;path) == 0) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">if</span> (it-&gt;path.length() &gt; longestMatch) {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                longestMatch = it-&gt;path.length();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                locationMatch = it;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">return</span> locationMatch;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_target_resource_handler_8hpp_a3bd08192e5875b2c101b6f9aa2a99a5c_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

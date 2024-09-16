@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('_file_system_policy_8cpp_source.html',
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span> (stat(path.c_str(), &amp;fileStat) == -1) {</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">if</span> (errno == ENOENT)</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a9ef115d8182ffe784d7929bf19e49fa9">FileNotExist</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(strerror(errno));</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;stat(): &quot;</span> + std::string(strerror(errno)));</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">if</span> (S_ISREG(fileStat.st_mode))</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileRegular</a>;</div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('_file_system_policy_8cpp_source.html',
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    errno = 0;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::ifstream fileStream(filename, std::ios::in | std::ios::binary);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (!fileStream.good()) {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(strerror(errno));</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;std::ifstream: &quot;</span> + std::string(strerror(errno)));</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::string contents;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    fileStream.seekg(0, std::ios::end);</div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('_file_system_policy_8cpp_source.html',
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    errno = 0;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    DIR *dir = opendir(path.c_str());</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span> (dir == NULL)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(strerror(errno));</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;opendir(): &quot;</span> + std::string(strerror(errno)));</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> dir;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('_file_system_policy_8cpp_source.html',
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    errno = 0;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">struct </span>dirent *entry = readdir(dir);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">if</span> (entry == NULL &amp;&amp; errno != 0)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(strerror(errno));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;readdir(): &quot;</span> + std::string(strerror(errno)));</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">return</span> entry;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('_file_system_policy_8cpp_source.html',
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keyword">struct </span>stat fileStat = {};</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    errno = 0;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">if</span> (stat(path.c_str(), &amp;fileStat) == -1)</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(strerror(errno));</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;stat(): &quot;</span> + std::string(strerror(errno)));</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordflow">return</span> fileStat;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
 <div class="ttc" id="a_file_system_policy_8hpp_html"><div class="ttname"><a href="_file_system_policy_8hpp.html">FileSystemPolicy.hpp</a></div></div>

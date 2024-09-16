@@ -20,7 +20,6 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
       [ "FileSystemPolicy", "class_file_system_policy.html", "class_file_system_policy" ]
     ] ],
     [ "HTTPRequest.hpp", "_h_t_t_p_request_8hpp.html", "_h_t_t_p_request_8hpp" ],
-    [ "HTTPResponse.hpp", "_h_t_t_p_response_8hpp.html", "_h_t_t_p_response_8hpp" ],
     [ "Log.hpp", "_log_8hpp.html", "_log_8hpp" ],
     [ "LogData.hpp", "_log_data_8hpp.html", "_log_data_8hpp" ],
     [ "Logger.hpp", "_logger_8hpp.html", [
@@ -56,8 +55,6 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
       [ "SocketPolicy", "class_socket_policy.html", "class_socket_policy" ]
     ] ],
     [ "StatusCode.hpp", "_status_code_8hpp.html", "_status_code_8hpp" ],
-    [ "TargetResourceHandler.hpp", "_target_resource_handler_8hpp.html", [
-      [ "TargetResourceHandler", "class_target_resource_handler.html", "class_target_resource_handler" ]
-    ] ],
+    [ "TargetResourceHandler.hpp", "_target_resource_handler_8hpp.html", "_target_resource_handler_8hpp" ],
     [ "utilities.hpp", "utilities_8hpp.html", "utilities_8hpp" ]
 ];

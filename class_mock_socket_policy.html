@@ -146,8 +146,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acd4db8d0cde301f9345bd71c38075ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c62c1d7fbc605b2ee66447b4dfeaa5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mock_socket_policy.html#ac2c62c1d7fbc605b2ee66447b4dfeaa5">MOCK_METHOD</a> (int, <a class="el" href="class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd">createListeningSocket</a>,(const struct addrinfo *, int),(const, override))</td></tr>
 <tr class="separator:ac2c62c1d7fbc605b2ee66447b4dfeaa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9daa6597d80228e2d3b5a00aa479be"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mock_socket_policy.html#a9d9daa6597d80228e2d3b5a00aa479be">MOCK_METHOD</a> (<a class="el" href="struct_socket.html">Socket</a>, <a class="el" href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a">retrieveSocketInfo</a>,(struct sockaddr *, socklen_t),(const, override))</td></tr>
-<tr class="separator:a9d9daa6597d80228e2d3b5a00aa479be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eee4e8e062a49ce1715b1885162a728"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mock_socket_policy.html#a1eee4e8e062a49ce1715b1885162a728">MOCK_METHOD</a> (<a class="el" href="struct_socket.html">Socket</a>, <a class="el" href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">retrieveSocketInfo</a>,(struct sockaddr *),(const, override))</td></tr>
+<tr class="separator:a1eee4e8e062a49ce1715b1885162a728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a376ab8282d8c3a9ae5143aad890615ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mock_socket_policy.html#a376ab8282d8c3a9ae5143aad890615ab">MOCK_METHOD</a> (<a class="el" href="struct_socket.html">Socket</a>, <a class="el" href="class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33">retrieveBoundSocketInfo</a>,(int),(const, override))</td></tr>
+<tr class="separator:a376ab8282d8c3a9ae5143aad890615ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a211c9b86122d58401251d575032d3871"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mock_socket_policy.html#a211c9b86122d58401251d575032d3871">MOCK_METHOD</a> (int, <a class="el" href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">acceptSingleConnection</a>,(int, struct sockaddr *, socklen_t *),(const, override))</td></tr>
 <tr class="separator:a211c9b86122d58401251d575032d3871"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5a135d65c4f5aec0f568fabde03afeb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mock_socket_policy.html#ac5a135d65c4f5aec0f568fabde03afeb">MOCK_METHOD</a> (ssize_t, <a class="el" href="class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca">readFromSocket</a>,(int, char *, size_t, int),(const, override))</td></tr>
@@ -165,9 +167,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a39e0eea05ab4986261bff0fe9d5497bd inherit pub_methods_class_socket_policy"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd">createListeningSocket</a> (const struct addrinfo *addrinfo, int backlog) const</td></tr>
 <tr class="memdesc:a39e0eea05ab4986261bff0fe9d5497bd inherit pub_methods_class_socket_policy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a listening socket.  <a href="class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd">More...</a><br /></td></tr>
 <tr class="separator:a39e0eea05ab4986261bff0fe9d5497bd inherit pub_methods_class_socket_policy"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a874932fbf0a16f6d0de145f686eed49a inherit pub_methods_class_socket_policy"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a">retrieveSocketInfo</a> (struct sockaddr *sockaddr, socklen_t socklen) const</td></tr>
-<tr class="memdesc:a874932fbf0a16f6d0de145f686eed49a inherit pub_methods_class_socket_policy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve socket information.  <a href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a">More...</a><br /></td></tr>
-<tr class="separator:a874932fbf0a16f6d0de145f686eed49a inherit pub_methods_class_socket_policy"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97b8a28bbe5d9e9ee637a3258a359b98 inherit pub_methods_class_socket_policy"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">retrieveSocketInfo</a> (struct sockaddr *sockaddr) const</td></tr>
+<tr class="memdesc:a97b8a28bbe5d9e9ee637a3258a359b98 inherit pub_methods_class_socket_policy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve socket information.  <a href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">More...</a><br /></td></tr>
+<tr class="separator:a97b8a28bbe5d9e9ee637a3258a359b98 inherit pub_methods_class_socket_policy"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8aacc8e631653c24d321c38f6c0f33 inherit pub_methods_class_socket_policy"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33">retrieveBoundSocketInfo</a> (int sockfd) const</td></tr>
+<tr class="memdesc:a0e8aacc8e631653c24d321c38f6c0f33 inherit pub_methods_class_socket_policy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves info of socket to which sockfd is bound.  <a href="class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33">More...</a><br /></td></tr>
+<tr class="separator:a0e8aacc8e631653c24d321c38f6c0f33 inherit pub_methods_class_socket_policy"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63228ebffc41e3739677715bcd43a477 inherit pub_methods_class_socket_policy"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">acceptSingleConnection</a> (int sockfd, struct sockaddr *addr, socklen_t *addrlen) const</td></tr>
 <tr class="memdesc:a63228ebffc41e3739677715bcd43a477 inherit pub_methods_class_socket_policy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accept a connection on a socket.  <a href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">More...</a><br /></td></tr>
 <tr class="separator:a63228ebffc41e3739677715bcd43a477 inherit pub_methods_class_socket_policy"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,7 +189,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_mock_socket_policy_8hpp_source.html#l00012">12</a> of file <a class="el" href="_mock_socket_policy_8hpp_source.html">MockSocketPolicy.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="acd4db8d0cde301f9345bd71c38075ae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd4db8d0cde301f9345bd71c38075ae6">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acd4db8d0cde301f9345bd71c38075ae6">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,7 +229,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ac2c62c1d7fbc605b2ee66447b4dfeaa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2c62c1d7fbc605b2ee66447b4dfeaa5">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2c62c1d7fbc605b2ee66447b4dfeaa5">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,8 +268,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9d9daa6597d80228e2d3b5a00aa479be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d9daa6597d80228e2d3b5a00aa479be">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[3/6]</span></h2>
+<a id="a1eee4e8e062a49ce1715b1885162a728"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eee4e8e062a49ce1715b1885162a728">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,13 +283,53 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a">retrieveSocketInfo</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">retrieveSocketInfo</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">(struct sockaddr *, socklen_t)&#160;</td>
+          <td class="paramtype">(struct sockaddr *)&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">(const, override)&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a376ab8282d8c3a9ae5143aad890615ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a376ab8282d8c3a9ae5143aad890615ab">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[4/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MockSocketPolicy::MOCK_METHOD </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_socket.html">Socket</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33">retrieveBoundSocketInfo</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">(int)&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -304,7 +349,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a211c9b86122d58401251d575032d3871"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a211c9b86122d58401251d575032d3871">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a211c9b86122d58401251d575032d3871">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -344,7 +389,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ac5a135d65c4f5aec0f568fabde03afeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5a135d65c4f5aec0f568fabde03afeb">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5a135d65c4f5aec0f568fabde03afeb">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -384,7 +429,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a4fe2157b6b7ac825e68ca0d8ae71a3c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fe2157b6b7ac825e68ca0d8ae71a3c2">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe2157b6b7ac825e68ca0d8ae71a3c2">&#9670;&nbsp;</a></span>MOCK_METHOD() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

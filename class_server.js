@@ -18,13 +18,15 @@ var class_server =
     [ "removeEvent", "class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1", null ],
     [ "resolveListeningAddresses", "class_server.html#abf1dc68ec7f88650ad80e93f56e14e5c", null ],
     [ "createListeningSocket", "class_server.html#a4e98a13498a791a2f3639e67e5b849e0", null ],
-    [ "retrieveSocketInfo", "class_server.html#ac951fb1326dfadeff690fd646e0b7e8f", null ],
+    [ "retrieveSocketInfo", "class_server.html#ae4900f55d072ebbe26a92c14b17de396", null ],
+    [ "retrieveBoundSocketInfo", "class_server.html#a65c2f3dc363bdb70a98895686826e5e8", null ],
     [ "acceptSingleConnection", "class_server.html#ad8823ad2d9c9a94cfafb40e8e0653865", null ],
     [ "readFromSocket", "class_server.html#ae94e3d4b5743580a6fbe3228d58af423", null ],
     [ "writeToSocket", "class_server.html#a8bf2a41e8ddcccd54b5832b58211a283", null ],
     [ "parseHeader", "class_server.html#a34bc61299318fe1918293b1d656ee5f9", null ],
     [ "parseBody", "class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a", null ],
     [ "resetRequestStream", "class_server.html#a99dea29de3836364c5191afe48f11ded", null ],
-    [ "buildResponse", "class_server.html#a54550078a1a4dfdc827a1f39c01ca4e4", null ],
-    [ "getResponse", "class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63", null ]
+    [ "buildResponse", "class_server.html#a4f36a7046be8e574b53ad3820216faef", null ],
+    [ "getResponse", "class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63", null ],
+    [ "findTargetResource", "class_server.html#a79e42d429f816514a89b11c729875797", null ]
 ];

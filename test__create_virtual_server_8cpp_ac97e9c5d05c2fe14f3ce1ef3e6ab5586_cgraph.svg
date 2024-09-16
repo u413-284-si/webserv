@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 613;
+var viewWidth = 751;
 var viewHeight = 166;
 var sectionId = 'dynsection-7';
 </script>
@@ -127,7 +127,7 @@ var sectionId = 'dynsection-7';
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="class_server.html#ac951fb1326dfadeff690fd646e0b7e8f" target="_top" xlink:title="Wrapper function to SocketPolicy::retrieveSocketInfo.">
+<g id="a_node9"><a xlink:href="class_server.html#ae4900f55d072ebbe26a92c14b17de396" target="_top" xlink:title="Wrapper function to SocketPolicy::retrieveSocketInfo.">
 <polygon fill="none" stroke="black" points="244,-0.5 244,-19.5 387,-19.5 387,-0.5 244,-0.5"/>
 <text text-anchor="middle" x="315.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::retrieveSocketInfo</text>
 </a>
@@ -189,7 +189,7 @@ var sectionId = 'dynsection-7';
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a" target="_top" xlink:title="Retrieve socket information.">
+<g id="a_node10"><a xlink:href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" target="_top" xlink:title="Retrieve socket information.">
 <polygon fill="none" stroke="black" points="432,-0.5 432,-19.5 605,-19.5 605,-0.5 432,-0.5"/>
 <text text-anchor="middle" x="518.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">SocketPolicy::retrieveSocketInfo</text>
 </a>
@@ -200,6 +200,21 @@ var sectionId = 'dynsection-7';
 <title>Node9&#45;&gt;Node10</title>
 <path fill="none" stroke="midnightblue" d="M387.08,-10C398.28,-10 410.03,-10 421.68,-10"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="421.89,-13.5 431.89,-10 421.89,-6.5 421.89,-13.5"/>
+</g>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" target="_top" xlink:title="Convert a type to a string.">
+<polygon fill="none" stroke="black" points="641,-0.5 641,-19.5 743,-19.5 743,-0.5 641,-0.5"/>
+<text text-anchor="middle" x="692" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">webutils::toString</text>
+</a>
+</g>
+</g>
+<!-- Node10&#45;&gt;Node11 -->
+<g id="edge10" class="edge">
+<title>Node10&#45;&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M605.25,-10C613.85,-10 622.44,-10 630.69,-10"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="630.93,-13.5 640.93,-10 630.93,-6.5 630.93,-13.5"/>
 </g>
 </g>
 </svg>

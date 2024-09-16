@@ -1,5 +1,6 @@
 var struct_h_t_t_p_request =
 [
+    [ "HTTPRequest", "struct_h_t_t_p_request.html#a7c53a92689eb5cee6b069a3db3c327ae", null ],
     [ "method", "struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9", null ],
     [ "uri", "struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69", null ],
     [ "version", "struct_h_t_t_p_request.html#a43bc8f1491f1e18d513426ee581a35fa", null ],
@@ -8,5 +9,7 @@ var struct_h_t_t_p_request =
     [ "httpStatus", "struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3", null ],
     [ "shallCloseConnection", "struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4", null ],
     [ "hasBody", "struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff", null ],
-    [ "isChunked", "struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017", null ]
+    [ "isChunked", "struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017", null ],
+    [ "targetResource", "struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3", null ],
+    [ "hasAutoindex", "struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0", null ]
 ];

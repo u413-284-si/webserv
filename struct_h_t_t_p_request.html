@@ -116,6 +116,7 @@ $(document).ready(function(){initNavTree('struct_h_t_t_p_request.html',''); init
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="struct_h_t_t_p_request-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -131,6 +132,11 @@ Collaboration diagram for HTTPRequest:</div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a7c53a92689eb5cee6b069a3db3c327ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_t_t_p_request.html#a7c53a92689eb5cee6b069a3db3c327ae">HTTPRequest</a> ()</td></tr>
+<tr class="separator:a7c53a92689eb5cee6b069a3db3c327ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a67c428c2e03ff5e9e3fc4403ba9377a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0f">Method</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a></td></tr>
@@ -151,11 +157,51 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab3f30f449eb8a8b6df63cd67986961ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac894099e690bcad5b4c6423c00b75017"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">isChunked</a></td></tr>
 <tr class="separator:ac894099e690bcad5b4c6423c00b75017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac522679ff584409d63f47fbe40f2b5f3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a></td></tr>
+<tr class="separator:ac522679ff584409d63f47fbe40f2b5f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745c64e106ae20b1404a86e579ad94f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0">hasAutoindex</a></td></tr>
+<tr class="separator:a745c64e106ae20b1404a86e579ad94f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00019">19</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7c53a92689eb5cee6b069a3db3c327ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c53a92689eb5cee6b069a3db3c327ae">&#9670;&nbsp;</a></span>HTTPRequest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HTTPRequest::HTTPRequest </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00003">3</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    : <a class="code" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a>(<a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>)</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    , <a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a>(<a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>)</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    , <a class="code" href="struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4">shallCloseConnection</a>(<span class="keyword">false</span>)</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    , <a class="code" href="struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff">hasBody</a>(<span class="keyword">false</span>)</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    , <a class="code" href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">isChunked</a>(<span class="keyword">false</span>)</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    , <a class="code" href="struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0">hasAutoindex</a>(<span class="keyword">false</span>)</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
+<div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a></div><div class="ttdeci">@ MethodCount</div><div class="ttdef"><b>Definition:</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a4ab3aefab7679eeb2b4e97f7043bdff3"><div class="ttname"><a href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">HTTPRequest::httpStatus</a></div><div class="ttdeci">statusCode httpStatus</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00027">HTTPRequest.hpp:27</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a67c428c2e03ff5e9e3fc4403ba9377a9"><div class="ttname"><a href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">HTTPRequest::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00022">HTTPRequest.hpp:22</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a745c64e106ae20b1404a86e579ad94f0"><div class="ttname"><a href="struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0">HTTPRequest::hasAutoindex</a></div><div class="ttdeci">bool hasAutoindex</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00032">HTTPRequest.hpp:32</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_ab3f30f449eb8a8b6df63cd67986961ff"><div class="ttname"><a href="struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff">HTTPRequest::hasBody</a></div><div class="ttdeci">bool hasBody</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00029">HTTPRequest.hpp:29</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_ac894099e690bcad5b4c6423c00b75017"><div class="ttname"><a href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">HTTPRequest::isChunked</a></div><div class="ttdeci">bool isChunked</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00030">HTTPRequest.hpp:30</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_afc0f4c6d53b455a67ea264dbfc3be0e4"><div class="ttname"><a href="struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4">HTTPRequest::shallCloseConnection</a></div><div class="ttdeci">bool shallCloseConnection</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00028">HTTPRequest.hpp:28</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="a67c428c2e03ff5e9e3fc4403ba9377a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67c428c2e03ff5e9e3fc4403ba9377a9">&#9670;&nbsp;</a></span>method</h2>
 
@@ -168,7 +214,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00020">20</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00022">22</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -184,7 +230,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00021">21</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00023">23</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -200,7 +246,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00022">22</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00024">24</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -216,7 +262,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00023">23</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00025">25</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +278,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00024">24</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00026">26</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -248,7 +294,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00025">25</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00027">27</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -264,7 +310,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00026">26</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00028">28</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -280,7 +326,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00027">27</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00029">29</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
@@ -296,12 +342,45 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00028">28</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00030">30</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a id="ac522679ff584409d63f47fbe40f2b5f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac522679ff584409d63f47fbe40f2b5f3">&#9670;&nbsp;</a></span>targetResource</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string HTTPRequest::targetResource</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00031">31</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a745c64e106ae20b1404a86e579ad94f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a745c64e106ae20b1404a86e579ad94f0">&#9670;&nbsp;</a></span>hasAutoindex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool HTTPRequest::hasAutoindex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8hpp_source.html#l00032">32</a> of file <a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>inc/<a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a></li>
+<li>src/<a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

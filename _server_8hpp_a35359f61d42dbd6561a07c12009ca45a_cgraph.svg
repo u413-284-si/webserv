@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 662;
+var viewWidth = 800;
 var viewHeight = 204;
 var sectionId = 'dynsection-2';
 </script>
@@ -78,33 +78,33 @@ var sectionId = 'dynsection-2';
 <path fill="none" stroke="midnightblue" d="M81.88,-57.55C102.24,-63.95 129.28,-72.44 151.4,-79.4"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="150.59,-82.81 161.18,-82.47 152.69,-76.13 150.59,-82.81"/>
 </g>
-<!-- Node11 -->
-<g id="node11" class="node">
-<title>Node11</title>
-<g id="a_node11"><a xlink:href="class_server.html#ad5228a2a917b01adff3b89007c036ec4" target="_top" xlink:title="Getter for virtual servers.">
-<polygon fill="none" stroke="black" points="295,-0.5 295,-19.5 434,-19.5 434,-0.5 295,-0.5"/>
-<text text-anchor="middle" x="364.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getVirtualServers</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node11 -->
-<g id="edge10" class="edge">
-<title>Node1&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M101.27,-44.11C141.06,-40.78 198.21,-35.49 248,-29 264.85,-26.8 283.02,-24.01 299.85,-21.25"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="300.84,-24.63 310.13,-19.54 299.69,-17.73 300.84,-24.63"/>
-</g>
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="_server_8cpp.html#a4f6456b9a16154a6d320ae8b370285d6" target="_top" xlink:title="Check for duplicate virtual servers.">
-<polygon fill="none" stroke="black" points="141,-0.5 141,-19.5 244,-19.5 244,-0.5 141,-0.5"/>
-<text text-anchor="middle" x="192.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">isDuplicateServer</text>
+<g id="a_node12"><a xlink:href="class_server.html#ad5228a2a917b01adff3b89007c036ec4" target="_top" xlink:title="Getter for virtual servers.">
+<polygon fill="none" stroke="black" points="295,-0.5 295,-19.5 434,-19.5 434,-0.5 295,-0.5"/>
+<text text-anchor="middle" x="364.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getVirtualServers</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node12 -->
 <g id="edge11" class="edge">
 <title>Node1&#45;&gt;Node12</title>
+<path fill="none" stroke="midnightblue" d="M101.27,-44.11C141.06,-40.78 198.21,-35.49 248,-29 264.85,-26.8 283.02,-24.01 299.85,-21.25"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="300.84,-24.63 310.13,-19.54 299.69,-17.73 300.84,-24.63"/>
+</g>
+<!-- Node13 -->
+<g id="node13" class="node">
+<title>Node13</title>
+<g id="a_node13"><a xlink:href="_server_8cpp.html#a4f6456b9a16154a6d320ae8b370285d6" target="_top" xlink:title="Check for duplicate virtual servers.">
+<polygon fill="none" stroke="black" points="141,-0.5 141,-19.5 244,-19.5 244,-0.5 141,-0.5"/>
+<text text-anchor="middle" x="192.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">isDuplicateServer</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node13 -->
+<g id="edge12" class="edge">
+<title>Node1&#45;&gt;Node13</title>
 <path fill="none" stroke="midnightblue" d="M86.83,-38.41C104.9,-33.51 127.1,-27.48 146.39,-22.24"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="147.45,-25.58 156.18,-19.59 145.62,-18.83 147.45,-25.58"/>
 </g>
@@ -157,7 +157,7 @@ var sectionId = 'dynsection-2';
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="class_server.html#ac951fb1326dfadeff690fd646e0b7e8f" target="_top" xlink:title="Wrapper function to SocketPolicy::retrieveSocketInfo.">
+<g id="a_node9"><a xlink:href="class_server.html#ae4900f55d072ebbe26a92c14b17de396" target="_top" xlink:title="Wrapper function to SocketPolicy::retrieveSocketInfo.">
 <polygon fill="none" stroke="black" points="293,-38.5 293,-57.5 436,-57.5 436,-38.5 293,-38.5"/>
 <text text-anchor="middle" x="364.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::retrieveSocketInfo</text>
 </a>
@@ -219,7 +219,7 @@ var sectionId = 'dynsection-2';
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a" target="_top" xlink:title="Retrieve socket information.">
+<g id="a_node10"><a xlink:href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" target="_top" xlink:title="Retrieve socket information.">
 <polygon fill="none" stroke="black" points="481,-38.5 481,-57.5 654,-57.5 654,-38.5 481,-38.5"/>
 <text text-anchor="middle" x="567.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">SocketPolicy::retrieveSocketInfo</text>
 </a>
@@ -231,9 +231,24 @@ var sectionId = 'dynsection-2';
 <path fill="none" stroke="midnightblue" d="M436.08,-48C447.28,-48 459.03,-48 470.68,-48"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="470.89,-51.5 480.89,-48 470.89,-44.5 470.89,-51.5"/>
 </g>
-<!-- Node12&#45;&gt;Node11 -->
-<g id="edge12" class="edge">
-<title>Node12&#45;&gt;Node11</title>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" target="_top" xlink:title="Convert a type to a string.">
+<polygon fill="none" stroke="black" points="690,-38.5 690,-57.5 792,-57.5 792,-38.5 690,-38.5"/>
+<text text-anchor="middle" x="741" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">webutils::toString</text>
+</a>
+</g>
+</g>
+<!-- Node10&#45;&gt;Node11 -->
+<g id="edge10" class="edge">
+<title>Node10&#45;&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M654.25,-48C662.85,-48 671.44,-48 679.69,-48"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="679.93,-51.5 689.93,-48 679.93,-44.5 679.93,-51.5"/>
+</g>
+<!-- Node13&#45;&gt;Node12 -->
+<g id="edge13" class="edge">
+<title>Node13&#45;&gt;Node12</title>
 <path fill="none" stroke="midnightblue" d="M244.05,-10C256.88,-10 270.98,-10 284.86,-10"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="284.9,-13.5 294.9,-10 284.9,-6.5 284.9,-13.5"/>
 </g>

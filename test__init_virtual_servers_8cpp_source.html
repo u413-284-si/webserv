@@ -202,49 +202,54 @@ $(document).ready(function(){initNavTree('test__init_virtual_servers_8cpp_source
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd2).port, configFile.servers[1].port);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="test__init_virtual_servers_8cpp.html#abfe6d5b03727d62dd703c623ad463968">   86</a></span>&#160;<a class="code" href="test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790">TEST_F</a>(<a class="code" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, OneDuplicateServer)</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    configFile.servers[1] = configFile.servers[0];</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">struct </span>addrinfo* addrinfo = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo));</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">struct </span>sockaddr* addr = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    *addrinfo = {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        .ai_addr = addr,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        .ai_next = <span class="keyword">nullptr</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    };</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    EXPECT_CALL(socketPolicy, resolveListeningAddresses)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        .Times(1)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        .WillOnce(Return(addrinfo));</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    EXPECT_CALL(socketPolicy, createListeningSocket)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        .Times(1)</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        .WillOnce(Return(dummyFd));</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    EXPECT_CALL(socketPolicy, retrieveSocketInfo)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        .Times(1)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        .WillOnce(Return(serverSock1));</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    EXPECT_EQ(<a class="code" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    EXPECT_EQ(server.getVirtualServers().size(), 1);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="test__init_virtual_servers_8cpp.html#a898cd8e5a6bc1ea3ad534ebccca37541">  115</a></span>&#160;<a class="code" href="test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790">TEST_F</a>(<a class="code" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, NoServers)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    configFile.servers.clear();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    EXPECT_EQ(<a class="code" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    EXPECT_EQ(server.getVirtualServers().size(), 0);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    free(addr);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    free(addr2);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="test__init_virtual_servers_8cpp.html#abfe6d5b03727d62dd703c623ad463968">   89</a></span>&#160;<a class="code" href="test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790">TEST_F</a>(<a class="code" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, OneDuplicateServer)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    configFile.servers[1] = configFile.servers[0];</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">struct </span>addrinfo* addrinfo = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo));</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">struct </span>sockaddr* addr = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    *addrinfo = {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        .ai_addr = addr,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        .ai_next = <span class="keyword">nullptr</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    EXPECT_CALL(socketPolicy, resolveListeningAddresses)</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        .Times(1)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        .WillOnce(Return(addrinfo));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    EXPECT_CALL(socketPolicy, createListeningSocket)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        .Times(1)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        .WillOnce(Return(dummyFd));</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    EXPECT_CALL(socketPolicy, retrieveSocketInfo)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        .Times(1)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        .WillOnce(Return(serverSock1));</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    EXPECT_EQ(<a class="code" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    EXPECT_EQ(server.getVirtualServers().size(), 1);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    free(addr);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="test__init_virtual_servers_8cpp.html#a898cd8e5a6bc1ea3ad534ebccca37541">  120</a></span>&#160;<a class="code" href="test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790">TEST_F</a>(<a class="code" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, NoServers)</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;{</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    configFile.servers.clear();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    EXPECT_EQ(<a class="code" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    EXPECT_EQ(server.getVirtualServers().size(), 0);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
 <div class="ttc" id="a_config_file_8hpp_html"><div class="ttname"><a href="_config_file_8hpp.html">ConfigFile.hpp</a></div></div>
 <div class="ttc" id="a_mock_epoll_wrapper_8hpp_html"><div class="ttname"><a href="_mock_epoll_wrapper_8hpp.html">MockEpollWrapper.hpp</a></div></div>
 <div class="ttc" id="a_mock_socket_policy_8hpp_html"><div class="ttname"><a href="_mock_socket_policy_8hpp.html">MockSocketPolicy.hpp</a></div></div>
 <div class="ttc" id="a_server_8hpp_html"><div class="ttname"><a href="_server_8hpp.html">Server.hpp</a></div></div>
-<div class="ttc" id="a_server_8hpp_html_a35359f61d42dbd6561a07c12009ca45a"><div class="ttname"><a href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a></div><div class="ttdeci">bool initVirtualServers(Server &amp;server, int backlog, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Initialize virtual servers.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00356">Server.cpp:356</a></div></div>
+<div class="ttc" id="a_server_8hpp_html_a35359f61d42dbd6561a07c12009ca45a"><div class="ttname"><a href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a></div><div class="ttdeci">bool initVirtualServers(Server &amp;server, int backlog, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Initialize virtual servers.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00393">Server.cpp:393</a></div></div>
 <div class="ttc" id="aclass_init_virtual_servers_test_html"><div class="ttname"><a href="class_init_virtual_servers_test.html">InitVirtualServersTest</a></div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00012">test_initVirtualServers.cpp:12</a></div></div>
 <div class="ttc" id="aclass_init_virtual_servers_test_html_a0d202f0702c427c89e7c196c9757386d"><div class="ttname"><a href="class_init_virtual_servers_test.html#a0d202f0702c427c89e7c196c9757386d">InitVirtualServersTest::InitVirtualServersTest</a></div><div class="ttdeci">InitVirtualServersTest()</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00014">test_initVirtualServers.cpp:14</a></div></div>
 <div class="ttc" id="aclass_init_virtual_servers_test_html_a4cc31508c51059c24120886138c404fb"><div class="ttname"><a href="class_init_virtual_servers_test.html#a4cc31508c51059c24120886138c404fb">InitVirtualServersTest::serverSock1</a></div><div class="ttdeci">Socket serverSock1</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00041">test_initVirtualServers.cpp:41</a></div></div>
@@ -258,7 +263,7 @@ $(document).ready(function(){initNavTree('test__init_virtual_servers_8cpp_source
 <div class="ttc" id="aclass_init_virtual_servers_test_html_af3a12a23312b1f3f829a725af28a606d"><div class="ttname"><a href="class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d">InitVirtualServersTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00033">test_initVirtualServers.cpp:33</a></div></div>
 <div class="ttc" id="aclass_init_virtual_servers_test_html_af86ad85aeb17ec6f118a49a41de9ee0d"><div class="ttname"><a href="class_init_virtual_servers_test.html#af86ad85aeb17ec6f118a49a41de9ee0d">InitVirtualServersTest::dummyFd</a></div><div class="ttdeci">const int dummyFd</div><div class="ttdef"><b>Definition:</b> <a href="test__init_virtual_servers_8cpp_source.html#l00040">test_initVirtualServers.cpp:40</a></div></div>
 <div class="ttc" id="aclass_mock_socket_policy_html"><div class="ttname"><a href="class_mock_socket_policy.html">MockSocketPolicy</a></div><div class="ttdoc">Mock class for SocketPolicy.</div><div class="ttdef"><b>Definition:</b> <a href="_mock_socket_policy_8hpp_source.html#l00012">MockSocketPolicy.hpp:12</a></div></div>
-<div class="ttc" id="aclass_server_html"><div class="ttname"><a href="class_server.html">Server</a></div><div class="ttdoc">Main class of the HTTP server.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00046">Server.hpp:46</a></div></div>
+<div class="ttc" id="aclass_server_html"><div class="ttname"><a href="class_server.html">Server</a></div><div class="ttdoc">Main class of the HTTP server.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00047">Server.hpp:47</a></div></div>
 <div class="ttc" id="astruct_config_file_html"><div class="ttname"><a href="struct_config_file.html">ConfigFile</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00047">ConfigFile.hpp:47</a></div></div>
 <div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
 <div class="ttc" id="astruct_config_server_html"><div class="ttname"><a href="struct_config_server.html">ConfigServer</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00032">ConfigFile.hpp:32</a></div></div>

@@ -130,48 +130,76 @@ $(document).ready(function(){initNavTree('class_target_resource_handler.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa55f30126211c8fdb6a0953c55256cf3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler.html#aa55f30126211c8fdb6a0953c55256cf3">TargetResourceHandler</a> (const std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;locations, const <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;fileSystemPolicy)</td></tr>
-<tr class="memdesc:aa55f30126211c8fdb6a0953c55256cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_target_resource_handler.html" title="Class to handle the target resource of a HTTP Request.">TargetResourceHandler</a> object.  <a href="class_target_resource_handler.html#aa55f30126211c8fdb6a0953c55256cf3">More...</a><br /></td></tr>
-<tr class="separator:aa55f30126211c8fdb6a0953c55256cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2571a910d63ee660e93a64fccf515306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler.html#a2571a910d63ee660e93a64fccf515306">execute</a> ()</td></tr>
-<tr class="memdesc:a2571a910d63ee660e93a64fccf515306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine target resource based on the request path and handle different file types and statuses accordingly.  <a href="class_target_resource_handler.html#a2571a910d63ee660e93a64fccf515306">More...</a><br /></td></tr>
-<tr class="separator:a2571a910d63ee660e93a64fccf515306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae423b7676a4f78d900a3138420891caa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler.html#ae423b7676a4f78d900a3138420891caa">TargetResourceHandler</a> (const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;fileSystemPolicy)</td></tr>
+<tr class="memdesc:ae423b7676a4f78d900a3138420891caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_target_resource_handler.html" title="Class to handle the target resource of a HTTP Request.">TargetResourceHandler</a> object.  <a href="class_target_resource_handler.html#ae423b7676a4f78d900a3138420891caa">More...</a><br /></td></tr>
+<tr class="separator:ae423b7676a4f78d900a3138420891caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaa54e6f6f23de3c3e5ff256f43079a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7">execute</a> (<a class="el" href="struct_connection.html">Connection</a> &amp;connection, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
+<tr class="memdesc:adaa54e6f6f23de3c3e5ff256f43079a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine target resource based on the request path and handle different file types and statuses accordingly.  <a href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7">More...</a><br /></td></tr>
+<tr class="separator:adaa54e6f6f23de3c3e5ff256f43079a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to handle the target resource of a HTTP Request. </p>
 <p>The <a class="el" href="class_file_system_policy.html" title="Class for C functions on the file system.">FileSystemPolicy</a> passed in the constructor needs to outlive this class. A mock of <a class="el" href="class_file_system_policy.html" title="Class for C functions on the file system.">FileSystemPolicy</a> can be used for testing. </p>
 
-<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8hpp_source.html#l00018">18</a> of file <a class="el" href="_target_resource_handler_8hpp_source.html">TargetResourceHandler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8hpp_source.html#l00019">19</a> of file <a class="el" href="_target_resource_handler_8hpp_source.html">TargetResourceHandler.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa55f30126211c8fdb6a0953c55256cf3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa55f30126211c8fdb6a0953c55256cf3">&#9670;&nbsp;</a></span>TargetResourceHandler()</h2>
+<a id="ae423b7676a4f78d900a3138420891caa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae423b7676a4f78d900a3138420891caa">&#9670;&nbsp;</a></span>TargetResourceHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TargetResourceHandler::TargetResourceHandler </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;&#160;</td>
+          <td class="paramname"><em>fileSystemPolicy</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct a new <a class="el" href="class_target_resource_handler.html" title="Class to handle the target resource of a HTTP Request.">TargetResourceHandler</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileSystemPolicy</td><td>File system policy to be used. Can be mocked if needed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00008">8</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    : m_fileSystemPolicy(fileSystemPolicy)</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="adaa54e6f6f23de3c3e5ff256f43079a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaa54e6f6f23de3c3e5ff256f43079a7">&#9670;&nbsp;</a></span>execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TargetResourceHandler::TargetResourceHandler </td>
+          <td class="memname">void TargetResourceHandler::execute </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>locations</em>, </td>
+          <td class="paramtype"><a class="el" href="struct_connection.html">Connection</a> &amp;&#160;</td>
+          <td class="paramname"><em>connection</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="struct_h_t_t_p_response.html">HTTPResponse</a> &amp;&#160;</td>
-          <td class="paramname"><em>response</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;&#160;</td>
-          <td class="paramname"><em>fileSystemPolicy</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -181,128 +209,103 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Construct a new <a class="el" href="class_target_resource_handler.html" title="Class to handle the target resource of a HTTP Request.">TargetResourceHandler</a> object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Determine target resource based on the request path and handle different file types and statuses accordingly. </p>
+<p>Finds a matching location block. If no match is found set Status to StatusNotFound. Set the targetResource as location.root + request.uri.path and check file type. RegularFile: break, nothing more to do. <a class="el" href="class_directory.html" title="Wrapper class for DIR pointer.">Directory</a>: if no trailing slash, add it and set Status to StatusMovedPermanently. if index file is set, add it to the path and set internalRedirect to true. if autoindex is set, set autoindex to true. else set Status to StatusForbidden. FileNotExist: set Status to StatusNotFound. FileOther: set Status to StatusForbidden. If internalRedirect is true, repeat the process. If stat fails, set Status to StatusInternalServerError. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">locations</td><td>Vector of <a class="el" href="struct_location.html">Location</a> objects of current server block. </td></tr>
-    <tr><td class="paramname">request</td><td>Request to handle. </td></tr>
-    <tr><td class="paramname">response</td><td>Response to be filled. </td></tr>
-    <tr><td class="paramname">fileSystemPolicy</td><td>File system policy to be used. </td></tr>
+    <tr><td class="paramname">connection</td><td><a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> object. </td></tr>
+    <tr><td class="paramname">request</td><td>HTTP request. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00011">11</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    : m_locations(locations)</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    , m_request(request)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    , m_response(response)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    , m_fileSystemPolicy(fileSystemPolicy)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2571a910d63ee660e93a64fccf515306"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2571a910d63ee660e93a64fccf515306">&#9670;&nbsp;</a></span>execute()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TargetResourceHandler::execute </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determine target resource based on the request path and handle different file types and statuses accordingly. </p>
-<p>Finds a matching location block. If no match is found set Status to StatusNotFound. Set the targetResource as location.root + request.uri.path and check file type. RegularFile: break, nothing more to do. <a class="el" href="class_directory.html" title="Wrapper class for DIR pointer.">Directory</a>: if no trailing slash, add it and set Status to StatusMovedPermanently. if index file is set, add it to the path and set internalRedirect to true. if autoindex is set, set autoindex to true. else set Status to StatusForbidden. FileNotExist: set Status to StatusNotFound. FileOther: set Status to StatusForbidden. If internalRedirect is true, repeat the process. If stat fails, set Status to StatusInternalServerError. </p>
-
-<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00036">36</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">bool</span> internalRedirect = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="comment">// Check which location block matches the path</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        m_response.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a> = matchLocation(m_request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="comment">// No location found &gt; do we also set a default location to not make extra check?</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">if</span> (m_response.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a> == m_locations.end()) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            m_response.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        }</div>
+<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00031">31</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">bool</span> internalRedirect = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="comment">// Check which location block matches the path</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        connection.<a class="code" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a> = <a class="code" href="_target_resource_handler_8cpp.html#a3bd08192e5875b2c101b6f9aa2a99a5c">matchLocation</a>(connection.<a class="code" href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">serverConfig</a>-&gt;locations, request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="comment">// No location found &gt; do we also set a default location to not make extra check?</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">if</span> (connection.<a class="code" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a> == connection.<a class="code" href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">serverConfig</a>-&gt;locations.end()) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="comment">// construct target resource</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">if</span> (!internalRedirect)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a> = connection.<a class="code" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a>-&gt;root + request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        internalRedirect = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="comment">// construct target resource</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">if</span> (!internalRedirect)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            m_response.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a> = m_response.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a>-&gt;root + m_request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        internalRedirect = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="comment">// what type is it</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765">FileSystemPolicy::fileType</a> fileType = m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71">checkFileType</a>(m_response.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="comment">// what type is it</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765">FileSystemPolicy::fileType</a> fileType = m_fileSystemPolicy.<a class="code" href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71">checkFileType</a>(request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">switch</span> (fileType) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">switch</span> (fileType) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed">FileSystemPolicy::FileDirectory</a>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span> (m_response.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a>.at(m_response.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a>.length() - 1) != <span class="charliteral">&#39;/&#39;</span>) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    m_response.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    m_response.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!m_response.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a>-&gt;indices.empty()) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    m_response.<a class="code" href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">targetResource</a> += m_response.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a>-&gt;indices[0];</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    internalRedirect = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (m_response.<a class="code" href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">location</a>-&gt;isAutoindex) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    m_response.<a class="code" href="struct_h_t_t_p_response.html#a2a0f9b7fbdaa2b7cd8c3cfab3c6744da">isAutoindex</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                } <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    m_response.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a9ef115d8182ffe784d7929bf19e49fa9">FileSystemPolicy::FileNotExist</a>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                m_response.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a>:</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                m_response.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; e) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Stat error: &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            m_response.<a class="code" href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">status</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    } <span class="keywordflow">while</span> (internalRedirect);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed">FileSystemPolicy::FileDirectory</a>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">if</span> (request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>.at(request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>.length() - 1) != <span class="charliteral">&#39;/&#39;</span>) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!connection.<a class="code" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a>-&gt;indices.empty()) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a> += connection.<a class="code" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a>-&gt;indices[0];</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    internalRedirect = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (connection.<a class="code" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a>-&gt;isAutoindex) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    request.<a class="code" href="struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0">hasAutoindex</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                } <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a9ef115d8182ffe784d7929bf19e49fa9">FileSystemPolicy::FileNotExist</a>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a>:</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; e) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; e.what();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    } <span class="keywordflow">while</span> (internalRedirect);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Target resource: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="ttc" id="a_log_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00010">Log.hpp:10</a></div></div>
+<div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00013">Log.hpp:13</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00007">StatusCode.hpp:7</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00015">StatusCode.hpp:15</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00010">StatusCode.hpp:10</a></div></div>
+<div class="ttc" id="a_target_resource_handler_8cpp_html_a3bd08192e5875b2c101b6f9aa2a99a5c"><div class="ttname"><a href="_target_resource_handler_8cpp.html#a3bd08192e5875b2c101b6f9aa2a99a5c">matchLocation</a></div><div class="ttdeci">std::vector&lt; Location &gt;::const_iterator matchLocation(const std::vector&lt; Location &gt; &amp;locations, const std::string &amp;path)</div><div class="ttdoc">Iterate through Location objects to find longest matching path based on a given input path.</div><div class="ttdef"><b>Definition:</b> <a href="_target_resource_handler_8cpp_source.html#l00099">TargetResourceHandler.cpp:99</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_a6fa9dbd0b2ea4656d86bbe4dc966bf71"><div class="ttname"><a href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71">FileSystemPolicy::checkFileType</a></div><div class="ttdeci">virtual fileType checkFileType(const std::string &amp;path) const</div><div class="ttdoc">Check the file type of a given path.</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8cpp_source.html#l00021">FileSystemPolicy.cpp:21</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765">FileSystemPolicy::fileType</a></div><div class="ttdeci">fileType</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8hpp_source.html#l00024">FileSystemPolicy.hpp:24</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed">FileSystemPolicy::FileDirectory</a></div><div class="ttdeci">@ FileDirectory</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8hpp_source.html#l00024">FileSystemPolicy.hpp:24</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a></div><div class="ttdeci">@ FileRegular</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8hpp_source.html#l00024">FileSystemPolicy.hpp:24</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a></div><div class="ttdeci">@ FileOther</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8hpp_source.html#l00024">FileSystemPolicy.hpp:24</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a9ef115d8182ffe784d7929bf19e49fa9"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a9ef115d8182ffe784d7929bf19e49fa9">FileSystemPolicy::FileNotExist</a></div><div class="ttdeci">@ FileNotExist</div><div class="ttdef"><b>Definition:</b> <a href="_file_system_policy_8hpp_source.html#l00024">FileSystemPolicy.hpp:24</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00021">HTTPRequest.hpp:21</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_response_html_a0c84b69a9a87836404f133b63ba913ff"><div class="ttname"><a href="struct_h_t_t_p_response.html#a0c84b69a9a87836404f133b63ba913ff">HTTPResponse::location</a></div><div class="ttdeci">std::vector&lt; Location &gt;::const_iterator location</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00011">HTTPResponse.hpp:11</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_response_html_a2a0f9b7fbdaa2b7cd8c3cfab3c6744da"><div class="ttname"><a href="struct_h_t_t_p_response.html#a2a0f9b7fbdaa2b7cd8c3cfab3c6744da">HTTPResponse::isAutoindex</a></div><div class="ttdeci">bool isAutoindex</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00013">HTTPResponse.hpp:13</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_response_html_abb1f67a89da83fe7933c065a4303d123"><div class="ttname"><a href="struct_h_t_t_p_response.html#abb1f67a89da83fe7933c065a4303d123">HTTPResponse::status</a></div><div class="ttdeci">statusCode status</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00008">HTTPResponse.hpp:8</a></div></div>
-<div class="ttc" id="astruct_h_t_t_p_response_html_ae63067d4d65191ed345dee9e1d873e31"><div class="ttname"><a href="struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31">HTTPResponse::targetResource</a></div><div class="ttdeci">std::string targetResource</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8hpp_source.html#l00009">HTTPResponse.hpp:9</a></div></div>
+<div class="ttc" id="astruct_connection_html_ab46ab3763ce344bbbeb9de1fec5faf7f"><div class="ttname"><a href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">Connection::serverConfig</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt;::const_iterator serverConfig</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00037">Connection.hpp:37</a></div></div>
+<div class="ttc" id="astruct_connection_html_afff86c74740618d83bab5af4f34d10af"><div class="ttname"><a href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">Connection::location</a></div><div class="ttdeci">std::vector&lt; Location &gt;::const_iterator location</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00038">Connection.hpp:38</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a4ab3aefab7679eeb2b4e97f7043bdff3"><div class="ttname"><a href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">HTTPRequest::httpStatus</a></div><div class="ttdeci">statusCode httpStatus</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00027">HTTPRequest.hpp:27</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a745c64e106ae20b1404a86e579ad94f0"><div class="ttname"><a href="struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0">HTTPRequest::hasAutoindex</a></div><div class="ttdeci">bool hasAutoindex</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00032">HTTPRequest.hpp:32</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00023">HTTPRequest.hpp:23</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_ac522679ff584409d63f47fbe40f2b5f3"><div class="ttname"><a href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">HTTPRequest::targetResource</a></div><div class="ttdeci">std::string targetResource</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00031">HTTPRequest.hpp:31</a></div></div>
 <div class="ttc" id="astruct_u_r_i_html_a18b7b6f3328197824e58dc4cf46301df"><div class="ttname"><a href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">URI::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00014">HTTPRequest.hpp:14</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_target_resource_handler_a2571a910d63ee660e93a64fccf515306_cgraph.svg" width="463" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_target_resource_handler_adaa54e6f6f23de3c3e5ff256f43079a7_cgraph.svg" width="463" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_target_resource_handler_a2571a910d63ee660e93a64fccf515306_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_target_resource_handler_adaa54e6f6f23de3c3e5ff256f43079a7_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 

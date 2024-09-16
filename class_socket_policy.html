@@ -146,9 +146,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a39e0eea05ab4986261bff0fe9d5497bd"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd">createListeningSocket</a> (const struct addrinfo *addrinfo, int backlog) const</td></tr>
 <tr class="memdesc:a39e0eea05ab4986261bff0fe9d5497bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a listening socket.  <a href="class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd">More...</a><br /></td></tr>
 <tr class="separator:a39e0eea05ab4986261bff0fe9d5497bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a874932fbf0a16f6d0de145f686eed49a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a">retrieveSocketInfo</a> (struct sockaddr *sockaddr, socklen_t socklen) const</td></tr>
-<tr class="memdesc:a874932fbf0a16f6d0de145f686eed49a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve socket information.  <a href="class_socket_policy.html#a874932fbf0a16f6d0de145f686eed49a">More...</a><br /></td></tr>
-<tr class="separator:a874932fbf0a16f6d0de145f686eed49a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97b8a28bbe5d9e9ee637a3258a359b98"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">retrieveSocketInfo</a> (struct sockaddr *sockaddr) const</td></tr>
+<tr class="memdesc:a97b8a28bbe5d9e9ee637a3258a359b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve socket information.  <a href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">More...</a><br /></td></tr>
+<tr class="separator:a97b8a28bbe5d9e9ee637a3258a359b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8aacc8e631653c24d321c38f6c0f33"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33">retrieveBoundSocketInfo</a> (int sockfd) const</td></tr>
+<tr class="memdesc:a0e8aacc8e631653c24d321c38f6c0f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves info of socket to which sockfd is bound.  <a href="class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33">More...</a><br /></td></tr>
+<tr class="separator:a0e8aacc8e631653c24d321c38f6c0f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63228ebffc41e3739677715bcd43a477"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">acceptSingleConnection</a> (int sockfd, struct sockaddr *addr, socklen_t *addrlen) const</td></tr>
 <tr class="memdesc:a63228ebffc41e3739677715bcd43a477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accept a connection on a socket.  <a href="class_socket_policy.html#a63228ebffc41e3739677715bcd43a477">More...</a><br /></td></tr>
 <tr class="separator:a63228ebffc41e3739677715bcd43a477"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +166,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Policy class for socket functions. </p>
 <p>This class provides wrappers for functions regarding sockets. It provides functions to create a socket, bind a socket to an address and port, listen on a socket and accept a connection on a socket. It can also be mocked for testing purposes. </p>
 
-<p class="definition">Definition at line <a class="el" href="_socket_policy_8hpp_source.html#l00022">22</a> of file <a class="el" href="_socket_policy_8hpp_source.html">SocketPolicy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_socket_policy_8hpp_source.html#l00023">23</a> of file <a class="el" href="_socket_policy_8hpp_source.html">SocketPolicy.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9f904f94411982a2c958e3fd89e6085a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f904f94411982a2c958e3fd89e6085a">&#9670;&nbsp;</a></span>SocketPolicy()</h2>
@@ -396,8 +399,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a874932fbf0a16f6d0de145f686eed49a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a874932fbf0a16f6d0de145f686eed49a">&#9670;&nbsp;</a></span>retrieveSocketInfo()</h2>
+<a id="a97b8a28bbe5d9e9ee637a3258a359b98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97b8a28bbe5d9e9ee637a3258a359b98">&#9670;&nbsp;</a></span>retrieveSocketInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -409,18 +412,8 @@ Here is the caller graph for this function:</div>
           <td class="memname"><a class="el" href="struct_socket.html">Socket</a> SocketPolicy::retrieveSocketInfo </td>
           <td>(</td>
           <td class="paramtype">struct sockaddr *&#160;</td>
-          <td class="paramname"><em>sockaddr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">socklen_t&#160;</td>
-          <td class="paramname"><em>socklen</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramname"><em>sockaddr</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -431,40 +424,129 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Retrieve socket information. </p>
-<p>Retrieves the host and port information from a socket and returns it as a <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> object.</p>
+<p>Retrieves the host and port information from a socket and returns it as a <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> object. Depending on the address family of the socket, the function casts the sockaddr structure to the appropriate type.</p><ul>
+<li>IPv4: the address of sockaddr_in, which consists of 4 bytes, is cast to an array of unsigned char. Then each of the four bytes is converted to a string using a stringstream and concatenated to form the host address. The port is converted from network to host with ntohs() and then to a string using <a class="el" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string.">webutils::toString()</a>.</li>
+<li>IPv6: Not supported. Logs an error message and returns an empty <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> object.</li>
+<li>Unknown address family: logs an error message and returns an empty <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> object.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sockaddr</td><td>The socket address structure. </td></tr>
-    <tr><td class="paramname">socklen</td><td>The length of the socket address structure.</td></tr>
+    <tr><td class="paramname">sockaddr</td><td>The socket address structure.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> object containing the host and port information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00117">117</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    assert(sockaddr != NULL);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">char</span> bufferHost[NI_MAXHOST] = {};</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">char</span> bufferPort[NI_MAXSERV] = {};</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> ret = getnameinfo(</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        sockaddr, socklen, bufferHost, NI_MAXHOST, bufferPort, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">if</span> (ret != 0) {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;getnameinfo(): &quot;</span> &lt;&lt; gai_strerror(ret);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keyword">const</span> <a class="code" href="struct_socket.html">Socket</a> errSock = { <span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span> };</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> (errSock);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_socket.html">Socket</a> newSock = { bufferHost, bufferPort };</div>
+<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00122">122</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    assert(sockaddr != NULL);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">switch</span> (sockaddr-&gt;sa_family) {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">case</span> AF_INET: {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="comment">// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keyword">struct </span>sockaddr_in* sockaddrCast = <span class="keyword">reinterpret_cast&lt;</span>struct sockaddr_in*<span class="keyword">&gt;</span>(sockaddr);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment">// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* addr = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>*<span class="keyword">&gt;</span>(&amp;sockaddrCast-&gt;sin_addr);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">return</span> (newSock);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        std::ostringstream temp;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="comment">// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        temp &lt;&lt; static_cast&lt;int&gt;(addr[0]) &lt;&lt; <span class="charliteral">&#39;.&#39;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(addr[1]) &lt;&lt; <span class="charliteral">&#39;.&#39;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(addr[2]) &lt;&lt; <span class="charliteral">&#39;.&#39;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;             &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(addr[3]); <span class="comment">// NOLINT</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <a class="code" href="struct_socket.html">Socket</a> newSock = { temp.str(), <a class="code" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a>(ntohs(sockaddrCast-&gt;sin_port)) };</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">return</span> (newSock);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordflow">case</span> AF_INET6: {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;Address family IPv6 is not supported&quot;</span>;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;Unknown address family: &quot;</span> &lt;&lt; sockaddr-&gt;sa_family;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <a class="code" href="struct_socket.html">Socket</a> errSock = {};</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">return</span> (errSock);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;}</div>
+<div class="ttc" id="anamespacewebutils_html_afd1710fd588c15830d10aef146da8ddb"><div class="ttname"><a href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">webutils::toString</a></div><div class="ttdeci">std::string toString(const Type &amp;type)</div><div class="ttdoc">Convert a type to a string.</div><div class="ttdef"><b>Definition:</b> <a href="utilities_8hpp_source.html#l00037">utilities.hpp:37</a></div></div>
 <div class="ttc" id="astruct_socket_html"><div class="ttname"><a href="struct_socket.html">Socket</a></div><div class="ttdoc">Represent a socket connection.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_8hpp_source.html#l00008">Socket.hpp:8</a></div></div>
 </div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_socket_policy_a97b8a28bbe5d9e9ee637a3258a359b98_cgraph.svg" width="426" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_socket_policy_a874932fbf0a16f6d0de145f686eed49a_icgraph.svg" width="100%" height="461"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_socket_policy_a97b8a28bbe5d9e9ee637a3258a359b98_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a0e8aacc8e631653c24d321c38f6c0f33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e8aacc8e631653c24d321c38f6c0f33">&#9670;&nbsp;</a></span>retrieveBoundSocketInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_socket.html">Socket</a> SocketPolicy::retrieveBoundSocketInfo </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>sockfd</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves info of socket to which sockfd is bound. </p>
+<p>Uses getsockname() to retrieve the current address to which the socket sockfd is bound. Then uses <a class="el" href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information.">SocketPolicy::retrieveSocketInfo</a> to convert this information into a <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> struct. On error returns an empty <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sockfd</td><td>The socket fd which is bound to a socket. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a> The socket information of the bound socket. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00164">164</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;{</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keyword">struct </span>sockaddr_storage boundAddr = {};</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    socklen_t boundLen = <span class="keyword">sizeof</span>(boundAddr);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">// NOLINTNEXTLINE: we need to use reinterpret_cast to convert sockaddr_storage to sockaddr</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">struct </span>sockaddr* addrCast = <span class="keyword">reinterpret_cast&lt;</span>struct sockaddr*<span class="keyword">&gt;</span>(&amp;boundAddr);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">if</span> (-1 == ::getsockname(sockfd, addrCast, &amp;boundLen)) {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;getsockname(): &quot;</span> &lt;&lt; strerror(errno);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="struct_socket.html">Socket</a>());</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <a class="code" href="struct_socket.html">Socket</a> boundSock = <a class="code" href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">retrieveSocketInfo</a>(addrCast);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">return</span>(boundSock);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
+<div class="ttc" id="aclass_socket_policy_html_a97b8a28bbe5d9e9ee637a3258a359b98"><div class="ttname"><a href="class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98">SocketPolicy::retrieveSocketInfo</a></div><div class="ttdeci">virtual Socket retrieveSocketInfo(struct sockaddr *sockaddr) const</div><div class="ttdoc">Retrieve socket information.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_policy_8cpp_source.html#l00122">SocketPolicy.cpp:122</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_socket_policy_a0e8aacc8e631653c24d321c38f6c0f33_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_socket_policy_a0e8aacc8e631653c24d321c38f6c0f33_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -529,20 +611,20 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>-2 No more pending connections. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00151">151</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    assert(addr != NULL);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    assert(addrlen != NULL);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> newFd = ::accept(sockfd, addr, addrlen);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">if</span> (newFd == -1) {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">if</span> (errno == EAGAIN || errno == EWOULDBLOCK)</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="keywordflow">return</span> (-2); <span class="comment">// No more pending connections</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;accept(): &quot;</span> &lt;&lt; strerror(errno);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">return</span> newFd;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00196">196</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;{</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    assert(addr != NULL);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    assert(addrlen != NULL);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> newFd = ::accept(sockfd, addr, addrlen);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">if</span> (newFd == -1) {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">if</span> (errno == EAGAIN || errno == EWOULDBLOCK)</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            <span class="keywordflow">return</span> (-2); <span class="comment">// No more pending connections</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;accept(): &quot;</span> &lt;&lt; strerror(errno);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">return</span> newFd;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -616,17 +698,17 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00178">178</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;{</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    assert(buffer != NULL);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keyword">const</span> ssize_t bytesRead = recv(sockfd, buffer, size, flags);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">if</span> (bytesRead == -1) {</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;recv(): &quot;</span> &lt;&lt; strerror(errno);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">return</span> bytesRead;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00223">223</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;{</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    assert(buffer != NULL);</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">const</span> ssize_t bytesRead = recv(sockfd, buffer, size, flags);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (bytesRead == -1) {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;recv(): &quot;</span> &lt;&lt; strerror(errno);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordflow">return</span> bytesRead;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -700,17 +782,17 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00202">202</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;{</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    assert(buffer != NULL);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">const</span> ssize_t bytesWritten = send(sockfd, buffer, size, flags);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">if</span> (bytesWritten == -1) {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;send(): &quot;</span> &lt;&lt; strerror(errno);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">return</span> bytesWritten;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_socket_policy_8cpp_source.html#l00247">247</a> of file <a class="el" href="_socket_policy_8cpp_source.html">SocketPolicy.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    assert(buffer != NULL);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">const</span> ssize_t bytesWritten = send(sockfd, buffer, size, flags);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordflow">if</span> (bytesWritten == -1) {</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <a class="code" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;send(): &quot;</span> &lt;&lt; strerror(errno);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    }</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordflow">return</span> bytesWritten;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

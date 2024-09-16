@@ -8,6 +8,7 @@ var class_accept_connections_test =
     [ "server", "class_accept_connections_test.html#a506459ada721e5f514ddceafba4190b6", null ],
     [ "dummyServerFd", "class_accept_connections_test.html#a8c1e8faa91229327ecb0e0dd0dc6a153", null ],
     [ "serverSock", "class_accept_connections_test.html#a6f93edda966f6c4531e0bc08ba61f0ca", null ],
+    [ "wildcardSock", "class_accept_connections_test.html#aab96aad568ad1be61502710ea22d4120", null ],
     [ "dummyClientFd", "class_accept_connections_test.html#ae5f4b6f4d38b41d356c7739e125330eb", null ],
     [ "host", "class_accept_connections_test.html#a900bd399a9b71df896dd947509c17a8a", null ],
     [ "port", "class_accept_connections_test.html#ab2095c4f2c07f25392584bab5e38a816", null ],

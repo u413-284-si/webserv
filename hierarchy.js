@@ -17,7 +17,6 @@ var hierarchy =
       [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", null ]
     ] ],
     [ "HTTPRequest", "struct_h_t_t_p_request.html", null ],
-    [ "HTTPResponse", "struct_h_t_t_p_response.html", null ],
     [ "Location", "struct_location.html", null ],
     [ "weblog::LogData", "classweblog_1_1_log_data.html", null ],
     [ "weblog::Logger", "classweblog_1_1_logger.html", null ],
@@ -45,10 +44,11 @@ var hierarchy =
       [ "RegisterConnectionTest", "class_register_connection_test.html", null ],
       [ "RegisterVirtualServerTest", "class_register_virtual_server_test.html", null ],
       [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", null ],
-      [ "ServerShutdownTest", "class_server_shutdown_test.html", null ],
+      [ "ShutdownServerTest", "class_shutdown_server_test.html", null ],
       [ "TargetResourceHandlerTest", "class_target_resource_handler_test.html", null ],
       [ "ValidConfigFileTests", "class_valid_config_file_tests.html", null ],
-      [ "isDuplicateServerTest", "classis_duplicate_server_test.html", null ]
+      [ "isDuplicateServerTest", "classis_duplicate_server_test.html", null ],
+      [ "selectServerConfigTest", "classselect_server_config_test.html", null ]
     ] ],
     [ "URI", "struct_u_r_i.html", null ]
 ];

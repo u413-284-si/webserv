@@ -1,25 +1,26 @@
 <map id="connectionHandleTimeout" name="connectionHandleTimeout">
-<area shape="rect" id="node1" title="Handles a timeout for a client connection." alt="" coords="5,281,199,308"/>
-<area shape="rect" id="node2" href="$_server_8cpp.html#ac98878a19797a7f939c3a5ea1e028e56" title="Builds the response for a client connection." alt="" coords="247,281,436,308"/>
-<area shape="rect" id="node3" href="$class_server.html#a54550078a1a4dfdc827a1f39c01ca4e4" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="495,205,661,232"/>
-<area shape="rect" id="node16" href="$_server_8cpp.html#adcf8118ac987f6afae3aec0c54cc5f9f" title="Sends the response to a client connection." alt="" coords="484,281,672,308"/>
-<area shape="rect" id="node22" href="$class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63" title="Wrapper function to ResponseBuilder::getResponse." alt="" coords="500,357,656,384"/>
-<area shape="rect" id="node4" href="$class_response_builder.html#a168279f2329e9055e3aa38f08f67c26f" title="Build the response for a given request." alt="" coords="720,180,955,207"/>
-<area shape="rect" id="node5" href="$class_response_body_handler.html#a0660b57e440e2c519761817d178818c0" title="Create the response body." alt="" coords="1019,129,1188,170"/>
-<area shape="rect" id="node14" href="$class_target_resource_handler.html#a2571a910d63ee660e93a64fccf515306" title="Determine target resource based on the request path and handle different file types and statuses acco..." alt="" coords="1017,194,1190,235"/>
-<area shape="rect" id="node6" href="$class_autoindex_handler.html#a4ad00ccbce16e8913e108e9bf1114c3f" title="Execute the autoindex handler." alt="" coords="1268,81,1467,108"/>
-<area shape="rect" id="node13" href="$class_file_system_policy.html#a700e01137b08674976427c869e078cc9" title="Gets the contents of a file." alt="" coords="1275,133,1459,174"/>
-<area shape="rect" id="node7" href="$class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8" title="Get the entries in the directory." alt="" coords="1559,5,1713,32"/>
-<area shape="rect" id="node9" href="$_autoindex_handler_8cpp.html#aa1cdc5b5774ab502cc67a723e7634b3f" title="Get the file size of a file." alt="" coords="1589,56,1683,83"/>
-<area shape="rect" id="node10" href="$class_file_system_policy.html#ad2571bc684c5f8db457d8e282729f832" title="Gets the file status of a path." alt="" coords="1531,107,1741,133"/>
-<area shape="rect" id="node11" href="$_autoindex_handler_8cpp.html#a1ca36f6cd35dba3c07da2bc0e3380cf1" title="Get the last modified time of a file." alt="" coords="1557,157,1715,184"/>
-<area shape="rect" id="node8" href="$class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469" title="Reads a directory." alt="" coords="1789,5,2019,32"/>
-<area shape="rect" id="node12" href="$namespacewebutils.html#ab6119b08526700518f576bb78554be59" title="Returns localtime string in provided format." alt="" coords="1800,157,2008,184"/>
-<area shape="rect" id="node15" href="$class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71" title="Check the file type of a given path." alt="" coords="1252,201,1483,228"/>
-<area shape="rect" id="node17" href="$_connection_8hpp.html#a5cde791aba7932d764243fd191c0d1bb" title=" " alt="" coords="774,231,901,257"/>
-<area shape="rect" id="node18" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="760,281,915,308"/>
-<area shape="rect" id="node20" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="756,332,919,359"/>
-<area shape="rect" id="node19" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="1004,281,1203,308"/>
-<area shape="rect" id="node21" href="$class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1" title="Write to a socket." alt="" coords="1003,332,1204,359"/>
-<area shape="rect" id="node23" href="$class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response." alt="" coords="726,383,949,409"/>
+<area shape="rect" id="node1" title="Handles a timeout for a client connection." alt="" coords="5,272,199,299"/>
+<area shape="rect" id="node2" href="$_server_8cpp.html#ac98878a19797a7f939c3a5ea1e028e56" title="Builds the response for a client connection." alt="" coords="247,272,436,299"/>
+<area shape="rect" id="node3" href="$class_server.html#a4f36a7046be8e574b53ad3820216faef" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="495,171,661,197"/>
+<area shape="rect" id="node14" href="$_server_8cpp.html#adcf8118ac987f6afae3aec0c54cc5f9f" title="Sends the response to a client connection." alt="" coords="484,272,672,299"/>
+<area shape="rect" id="node23" href="$class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63" title="Wrapper function to ResponseBuilder::getResponse." alt="" coords="500,348,656,375"/>
+<area shape="rect" id="node4" href="$class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0" title="Build the response for a given request." alt="" coords="720,141,955,168"/>
+<area shape="rect" id="node5" href="$class_response_body_handler.html#a0660b57e440e2c519761817d178818c0" title="Create the response body." alt="" coords="1019,133,1188,174"/>
+<area shape="rect" id="node6" href="$class_autoindex_handler.html#a4ad00ccbce16e8913e108e9bf1114c3f" title="Execute the autoindex handler." alt="" coords="1252,81,1451,108"/>
+<area shape="rect" id="node13" href="$class_file_system_policy.html#a700e01137b08674976427c869e078cc9" title="Gets the contents of a file." alt="" coords="1259,133,1443,174"/>
+<area shape="rect" id="node7" href="$class_directory.html#a09da8cd603ddb22990c5bb8165e14ea8" title="Get the entries in the directory." alt="" coords="1527,5,1681,32"/>
+<area shape="rect" id="node9" href="$_autoindex_handler_8cpp.html#aa1cdc5b5774ab502cc67a723e7634b3f" title="Get the file size of a file." alt="" coords="1557,56,1651,83"/>
+<area shape="rect" id="node10" href="$class_file_system_policy.html#ad2571bc684c5f8db457d8e282729f832" title="Gets the file status of a path." alt="" coords="1499,107,1709,133"/>
+<area shape="rect" id="node11" href="$_autoindex_handler_8cpp.html#a1ca36f6cd35dba3c07da2bc0e3380cf1" title="Get the last modified time of a file." alt="" coords="1525,157,1683,184"/>
+<area shape="rect" id="node8" href="$class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469" title="Reads a directory." alt="" coords="1757,5,1987,32"/>
+<area shape="rect" id="node12" href="$namespacewebutils.html#ab6119b08526700518f576bb78554be59" title="Returns localtime string in provided format." alt="" coords="1768,157,1976,184"/>
+<area shape="rect" id="node15" href="$_connection_8hpp.html#a1787b72853fa3a6146cea621fa1d0d65" title=" " alt="" coords="774,196,901,223"/>
+<area shape="rect" id="node18" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="746,247,929,273"/>
+<area shape="rect" id="node19" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="760,297,915,324"/>
+<area shape="rect" id="node21" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="756,348,919,375"/>
+<area shape="rect" id="node16" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="1023,199,1183,225"/>
+<area shape="rect" id="node17" href="$_connection_8cpp.html#ac4fdfd0273b5ff94aefbdc973ac49ead" title="Find matching server configurations for a server socket." alt="" coords="1253,199,1449,225"/>
+<area shape="rect" id="node20" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="1004,297,1203,324"/>
+<area shape="rect" id="node22" href="$class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1" title="Write to a socket." alt="" coords="1003,348,1204,375"/>
+<area shape="rect" id="node24" href="$class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response." alt="" coords="726,399,949,425"/>
 </map>
