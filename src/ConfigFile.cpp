@@ -92,7 +92,7 @@ ConfigFile createDummyConfig()
 	location4.cgiExt = ".py";
 
 	ConfigServer serverConfig8081;
-	serverConfig8081.locations.push_back(location3);
+	serverConfig8081.locations.push_back(location4);
 	serverConfig8081.host = "127.0.0.1";
 	serverConfig8081.port = "8081";
 	serverConfig8081.serverName = "cgi";
