@@ -132,7 +132,7 @@ void handleCGIConnection(Server& server, int pipeFd, Connection& connection);
 void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection);
-bool isCGIRequested(const Connection& connection);
+bool isCGIRequested(Connection& connection);
 void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
 void connectionSendToCGI(Server& server, Connection& connection);

@@ -80,20 +80,19 @@ ConfigFile createDummyConfig()
 	serverConfig8090.serverName = "doc";
 
 	Location location3;
-	location3.path = "/cgi-bin/helloWorld";
+	location3.path = "/cgi-bin";
 	location3.root = "/workspaces/webserv";
-	location3.cgiPath = "/cgi-bin/helloWorld/helloWorld.cgi";
-	location3.cgiExt = ".cgi";
+	location3.cgiPath = "/usr/bin/bash";
+	location3.cgiExt = ".sh";
 
 	Location location4;
-	location4.path = "/cgi-bin/upperCase";
+	location4.path = "/cgi-bin";
 	location4.root = "/workspaces/webserv";
-	location4.cgiPath = "/cgi-bin/upperCase/upper.cgi";
-	location4.cgiExt = ".cgi";
+	location4.cgiPath = "/usr/bin/python3";
+	location4.cgiExt = ".py";
 
 	ConfigServer serverConfig8081;
 	serverConfig8081.locations.push_back(location3);
-	serverConfig8081.locations.push_back(location4);
 	serverConfig8081.host = "127.0.0.1";
 	serverConfig8081.port = "8081";
 	serverConfig8081.serverName = "cgi";

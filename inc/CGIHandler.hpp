@@ -53,5 +53,5 @@ private:
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
-	std::string extractClientIP(const int& clientSocket, HTTPRequest& request);
+	std::string extractScriptPath(const std::string& path);
 };

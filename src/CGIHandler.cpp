@@ -19,7 +19,7 @@
  * This constructor initializes the CGIHandler with the provided CGI path and extension.
  * It also initializes the pipe file descriptors and the CGI process ID.
  *
- * @param cgiPath The path to the CGI executable.
+ * @param cgiPath The path to the CGI interpreter.
  * @param cgiExt The file extension associated with the CGI script.
  */
 CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
@@ -98,8 +98,9 @@ void CGIHandler::init(const Socket& clientSocket, const Socket& serverSocket, co
 	m_env["REMOTE_PORT"] = clientSocket.port; // port of the client
 	m_env["REQUEST_METHOD"] = webutils::methodToString(request.method);
 	m_env["REQUEST_URI"] = request.uri.path + '?' + request.uri.query;
-	m_env["SCRIPT_FILENAME"] = location->root + m_cgiPath; // actual file system path of the CGI script being executed
-	m_env["SCRIPT_NAME"] = m_cgiPath; // URI path of the CGI script until the script extension
+	m_env["SCRIPT_NAME"] = extractScriptPath(request.uri.path); // URI path of the CGI script until the script extension
+	m_env["SCRIPT_FILENAME"]
+		= location->root + m_env["SCRIPT_NAME"]; // actual file system path of the CGI script being executed
 	m_env["SERVER_ADDR"] = serverSocket.host; // IP address of the server
 	m_env["SERVER_NAME"] = serverSocket.host; // name of the server
 	m_env["SERVER_PORT"] = serverSocket.port; // port of the server
@@ -224,6 +225,7 @@ void CGIHandler::setEnvp(std::vector<std::string>& bufferEnv, std::vector<char*>
  */
 void CGIHandler::setArgv(std::vector<std::string>& bufferArgv, std::vector<char*>& argv)
 {
+	bufferArgv.push_back(m_cgiPath);
 	bufferArgv.push_back(m_env["SCRIPT_FILENAME"]);
 	for (std::vector<std::string>::iterator iter = bufferArgv.begin(); iter != bufferArgv.end(); iter++)
 		argv.push_back(&(*iter).at(0));
@@ -253,4 +255,22 @@ std::string CGIHandler::extractPathInfo(const std::string& path)
 	if (pathInfoStart == std::string::npos)
 		return "";
 	return tmp.substr(pathInfoStart);
+}
+
+/**
+ * @brief Extracts the script path from the given path based on the CGI extension.
+ * 
+ * This function searches for the CGI extension within the provided path and 
+ * returns the substring from the beginning of the path up to and including the 
+ * CGI extension. If the CGI extension is not found, an empty string is returned.
+ * 
+ * @param path The full path from which to extract the script path.
+ * @return std::string The extracted script path or an empty string if the CGI extension is not found.
+ */
+std::string CGIHandler::extractScriptPath(const std::string& path)
+{
+	size_t extensionStart = path.find(m_cgiExt);
+	if (extensionStart == std::string::npos)
+		return "";
+	return path.substr(0, extensionStart + m_cgiExt.size());
 }

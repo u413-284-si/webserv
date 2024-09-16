@@ -704,22 +704,23 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 
 /**
  * @brief Handles the processing of CGI connections for a given client and server.
- * 
+ *
  * This function handles the current status of a connection that involves
  * CGI processing. Depending on the connection's status, it performs actions
  * such as sending data to the CGI script or receiving data from the CGI script.
- * 
+ *
  * @param server The server object handling the connection.
  * @param clientFd The file descriptor of the pipe end.
  * @param connection The connection object representing the state of the CGI communication.
- * 
+ *
  * The function takes different actions based on the current status of the connection:
  * - Connection::ReceiveHeader: No action is taken for receiving headers in this function.
  * - Connection::ReceiveBody: No action is taken for receiving the body in this function.
  * - Connection::SendToCGI: Calls `connectionSendToCGI()` to send the request to the CGI process.
  * - Connection::ReceiveFromCGI: Calls `connectionReceiveFromCGI()` to receive the response from the CGI process.
- * - Connection::BuildResponse, Connection::SendResponse, Connection::Timeout, Connection::Closed: No action is taken for these states.
- * 
+ * - Connection::BuildResponse, Connection::SendResponse, Connection::Timeout, Connection::Closed: No action is taken
+ * for these states.
+ *
  * This function logs the handling of the CGI connection and switches between the different
  * statuses based on the state of the connection.
  */
@@ -961,21 +962,19 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
  * @param request The HTTP request object.
  * @return true if CGI execution is requested, false otherwise.
  */
-bool isCGIRequested(const Connection& connection)
+bool isCGIRequested(Connection& connection)
 {
 	// FIXME: May need to iterate through multiple paths and extensions
-	if (!connection.location->cgiPath.empty()
-		&& connection.m_request.uri.path.find(connection.location->cgiPath) != std::string::npos
-		&& !connection.location->cgiExt.empty()) {
-		size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
-
-		// If extension is found and is at the end of the path or followed by a slash
-		if (extPos != std::string::npos
-			&& (extPos + connection.location->cgiExt.size() == connection.m_request.uri.path.size()
-				|| connection.m_request.uri.path.at(extPos + connection.location->cgiExt.size()) == '/'))
-			return true;
+	if (connection.location->cgiPath.empty() || connection.location->cgiExt.empty()) {
+		LOG_ERROR << "CGI path or extension not specified in location: " << connection.location->path;
+		connection.m_request.httpStatus = StatusInternalServerError;
+		return false;
 	}
-	return false;
+	size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
+
+	// If extension is found and is at the end of the path or followed by a slash
+	return (extPos != std::string::npos	&& (extPos + connection.location->cgiExt.size() == connection.m_request.uri.path.size()
+		|| connection.m_request.uri.path.at(extPos + connection.location->cgiExt.size()) == '/'));
 }
 
 /**
