@@ -36,7 +36,7 @@ ConfigFileParser::ConfigFileParser(void)
  * 1. Can be opened
  * 2. Is not empty
  * 3. Does not contain open brackets
- * 4. Starts with 'http {'
+ * 4. Starts with http
  * 5. Contains minimum one server
  *
  * @param configFilePath Path to the config file
@@ -54,17 +54,36 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		throw std::runtime_error("Open bracket(s) in config file");
 
 	readAndTrimLine();
-	if (m_currentLine != "http {")
-		throw std::runtime_error("Config file does not start with 'http {'");
+	if (getDirective(m_currentLine) != "http")
+		throw std::runtime_error("Config file does not start with http");
 
 	for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine()) {
-		if (m_currentLine == "server {") {
+		if (getDirective(m_currentLine) == "server") {
 			ConfigServer server;
 			m_configFile.servers.push_back(server);
-			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
+			size_t bracketIndex = m_currentLine.find('{');
+
+			if (bracketIndex != std::string::npos) {
+				std::string withoutBracket = m_currentLine.substr(bracketIndex + 1, m_currentLine.length());
+				size_t firstNotWhiteSpaceIndex = withoutBracket.find_first_not_of(whitespace);
+				if (firstNotWhiteSpaceIndex == std::string::npos) {
+					readAndTrimLine();
+				} else
+					m_currentLine = withoutBracket.substr(firstNotWhiteSpaceIndex, withoutBracket.length());
+			} else
+				readAndTrimLine();
+
+			while (m_currentLine != "}") {
 				readServerConfigLine();
+				if (m_currentLine == "}")
+					break;
+				readAndTrimLine();
+			}
 			m_serverIndex++;
-		}
+		} else if (getDirective(m_currentLine).empty())
+			continue;
+		else
+			throw std::runtime_error("Invalid directive");
 	}
 	if (m_configFile.servers.empty())
 		throw std::runtime_error("No server(s) in config file");
@@ -106,7 +125,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 }
 
 /**
- * @brief Checks if the line contains a semicolon, except for the directive "location"
+ * @brief Checks if the line contains a semicolon, except if the line contains the directive "location"
  *
  * @param line The current line to be checked
  * @return true If the line does not contain a semicolon and is not the directive "location"
@@ -330,8 +349,13 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 std::string ConfigFileParser::getDirective(const std::string& line) const
 {
+	std::string directive;
+
 	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
-	std::string directive = line.substr(0, firstWhiteSpaceIndex);
+	if (firstWhiteSpaceIndex == std::string::npos)
+		directive = line;
+	else
+		directive = line.substr(0, firstWhiteSpaceIndex);
 
 	directive = webutils::trimLeadingWhitespaces(directive);
 	webutils::trimTrailingWhiteSpaces(directive);
@@ -348,9 +372,13 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
 std::string ConfigFileParser::getValue(const std::string& line) const
 {
 	const size_t semicolonIndex = line.find(';');
+	std::string value;
 
 	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
-	std::string value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
+	if (firstWhiteSpaceIndex == std::string::npos)
+		value = line.substr(0, semicolonIndex);
+	else
+		value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
 	webutils::trimTrailingWhiteSpaces(value);
@@ -364,16 +392,28 @@ std::string ConfigFileParser::getValue(const std::string& line) const
  * It can be the case that multiple directives are in the same line.
  * Therefore the line must still get read until all directives got processed.
  *
- * If the line still contains more than one directive, the already processed directive gets skipped.
- * If the line does not contain any more directives, the line gets cleared.
+ * If the line does NOT contain a semicolon, the line and the current line get cleared.
+ *
+ * If the line contains a semicolon, the line and the current line get cleared until the semicolon.
+ * Which means:
+ * For the case that the line contains more than one directive, the already processed directive gets skipped.
+ * For the case the line does not contain any more directives, the line gets cleared.
  *
  * @param line The current line
  */
-void ConfigFileParser::processRemainingLine(std::string& line) const
+void ConfigFileParser::processRemainingLine(std::string& line)
 {
-	line.erase(0, line.find(';') + 1);
+	size_t semicolonIndex = line.find(';');
+	if (semicolonIndex == std::string::npos) {
+		line = "";
+		m_currentLine = line;
+		return;
+	}
+
+	line.erase(0, semicolonIndex + 1);
 	line = webutils::trimLeadingWhitespaces(line);
 	webutils::trimTrailingWhiteSpaces(line);
+	m_currentLine = line;
 }
 
 /**
@@ -391,7 +431,7 @@ void ConfigFileParser::readServerConfigLine(void)
 {
 	std::string line = m_currentLine;
 
-	while (!line.empty()) {
+	while (!line.empty() && line != "{" && line != "}") {
 		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 
@@ -399,13 +439,16 @@ void ConfigFileParser::readServerConfigLine(void)
 		if (directive == "location") {
 			Location location;
 			m_configFile.servers[m_serverIndex].locations.push_back(location);
-			for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine())
+			while (m_currentLine != "}") {
+				readAndTrimLine();
 				readLocationConfigLine();
+			}
 			m_locationIndex++;
-			break;
+			processRemainingLine(line);
+			continue;
 		}
-		const std::string value = getValue(line);
 
+		const std::string value = getValue(line);
 		if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
@@ -434,7 +477,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 {
 	std::string line = m_currentLine;
 
-	while (!line.empty()) {
+	while (!line.empty() && line != "{" && line != "}") {
 		if (isSemicolonMissing(line))
 			throw std::runtime_error("Semicolon missing");
 

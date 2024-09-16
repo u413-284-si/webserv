@@ -24,7 +24,6 @@ public:
 	ConfigFileParser(void);
 
 private:
-
 	ConfigFile m_configFile;
 	std::ifstream m_stream;
 	std::string m_currentLine;
@@ -54,5 +53,5 @@ private:
 
 	// Helper functions
 	void readAndTrimLine(void);
-	void processRemainingLine(std::string& line) const;
+	void processRemainingLine(std::string& line);
 };
