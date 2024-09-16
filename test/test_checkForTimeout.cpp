@@ -55,7 +55,7 @@ TEST_F(CheckForTimeoutTest, NoTimeout)
 
 	checkForTimeout(server);
 
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::ReceiveHeader);
+	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::Idle);
 }
 
 TEST_F(CheckForTimeoutTest, MultipleTimeouts)

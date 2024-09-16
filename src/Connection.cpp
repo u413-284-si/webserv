@@ -3,6 +3,8 @@
 /**
  * @brief Construct a new Connection:: Connection object
  *
+ * The time since last event is initialized to the current time.
+ * The status is initialized to Idle.
  * Tries to find a valid server configuration for the connection with hasValidServerConfig().
  * If no valid server configuration is found, the connection state is Connection::Closed.
  *
@@ -13,7 +15,7 @@ Connection::Connection(const Socket& server, const Socket& client, const std::ve
 	: m_serverSocket(server)
 	, m_clientSocket(client)
 	, m_timeSinceLastEvent(std::time(0))
-	, m_status(ReceiveHeader)
+	, m_status(Idle)
 	, m_bytesReceived(0)
 {
 	if (!hasValidServerConfig(*this, serverConfigs)) {
@@ -23,7 +25,7 @@ Connection::Connection(const Socket& server, const Socket& client, const std::ve
 
 bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
 {
-	connection.m_status = Connection::ReceiveHeader;
+	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
 	connection.m_bytesReceived = 0;
