@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>File Upload</title>
+	<link rel="stylesheet" href="css/upload.css">
+</head>
+<body>
+	<header>
+		<h1>File Upload</h1>
+		<p>Select a file to upload to the server.</p>
+	</header>
+
+	<main>
+		<section class="form-section">
+			<h2>Upload a File</h2>
+			<!-- Form for file upload -->
+			<form action="php/upload_file.php" method="POST" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="file">Choose a file:</label>
+					<input type="file" id="file" name="file" required>
+				</div>
+
+				<button type="submit">Upload File</button>
+			</form>
+		</section>
+	</main>
+
+	<!-- Back to Home Link -->
+	<footer>
+		<div class="back-link">
+			<a href="index.html">Back to Home</a>
+		</div>
+	</footer>
+</body>
+</html>
