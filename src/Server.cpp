@@ -41,8 +41,10 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
  */
 Server::~Server()
 {
-	for (std::map<int, Socket>::iterator iter = m_virtualServers.begin(); iter != m_virtualServers.end(); ++iter)
+	for (std::map<int, Socket>::iterator iter = m_virtualServers.begin(); iter != m_virtualServers.end(); ++iter) {
+		m_epollWrapper.removeEvent(iter->first);
 		close(iter->first);
+	}
 
 	for (std::map<int, Connection>::iterator iter = m_connections.begin(); iter != m_connections.end(); ++iter) {
 		m_epollWrapper.removeEvent(iter->first);
@@ -50,36 +52,14 @@ Server::~Server()
 	}
 }
 
-/* ====== MEMBER FUNCTIONS ====== */
+/* ====== GETTERS ====== */
 
 /**
- * @brief Runs the main event loop.
+ * @brief Getter for virtual servers.
  *
- * This functions enters a continuous loop to handle incoming events == connections.
- * It waits for events with the EpollWrapper.
- * If a vector of events is returned it processes all of them via handleEvent().
- * When events are processed or the waitForEvents() timeout happens checks for connection timeouts with
- * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
- *
- * @throws std::runtime_error if waitForEvents() encounters an error.
+ * @return std::map<int, Socket>& Map of virtual servers.
  */
-void Server::run()
-{
-	LOG_INFO << "Server started";
-
-	while (true) {
-		const int nfds = m_epollWrapper.waitForEvents();
-
-		for (std::vector<struct epoll_event>::const_iterator iter = m_epollWrapper.eventsBegin();
-			 iter != m_epollWrapper.eventsBegin() + nfds; ++iter) {
-			handleEvent(*this, *iter);
-		}
-		checkForTimeout(*this);
-		cleanupClosedConnections(*this);
-	}
-}
-
-/* ====== GETTERS ====== */
+std::map<int, Socket>& Server::getVirtualServers() { return m_virtualServers; }
 
 /**
  * @brief Const Getter for virtual servers.
@@ -181,6 +161,21 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 void Server::setClientTimeout(time_t clientTimeout) { m_clientTimeout = clientTimeout; }
 
 /* ====== DISPATCH TO EPOLLWRAPPER ====== */
+
+/**
+ * @brief Wrapper function to EpollWrapper::waitForEvents.
+ *
+ * @return int The number of events that were processed.
+ * @throws std::runtime_error if an error occurs during the epoll_wait call.
+ */
+int Server::waitForEvents() { return m_epollWrapper.waitForEvents(); }
+
+/**
+ * @brief Wrapper function to EpollWrapper::eventsBegin.
+ *
+ * @return std::vector<struct epoll_event>::const_iterator An iterator to the beginning of the events vector.
+ */
+std::vector<struct epoll_event>::const_iterator Server::eventsBegin() const { return m_epollWrapper.eventsBegin(); }
 
 /**
  * @brief Wrapper function to EpollWrapper::addEvent.
@@ -366,10 +361,10 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 
 		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
 
-		if (isDuplicateServer(server, iter->host, webutils::toString(iter->port)))
+		if (isDuplicateServer(server, iter->host, iter->port))
 			continue;
 
-		if (!createVirtualServer(server, iter->host, backlog, webutils::toString(iter->port)))
+		if (!createVirtualServer(server, iter->host, backlog, iter->port))
 			LOG_DEBUG << "Failed to add virtual server: " << iter->serverName;
 	}
 
@@ -469,6 +464,39 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
 }
 
 /* ====== EVENT HANDLING ====== */
+
+/**
+ * @brief Runs the main event loop with a server object.
+ *
+ * This functions enters a continuous loop to handle incoming events == connections.
+ * It waits for events with the EpollWrapper.
+ * If a vector of events is returned it processes all of them via handleEvent().
+ * When events are processed or the server.waitForEvents() timeout happens checks for connection timeouts with
+ * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
+ * The loop continues until a signal is received and saved in g_SignalStatus. It then logs the signal.
+ * If the signal is SIGQUIT it performs a graceful shutdown with shutdownServer().
+ *
+ * @param server The server object to run the event loop for.
+ * @throws std::runtime_error if waitForEvents() encounters an error.
+ */
+void runServer(Server& server)
+{
+	LOG_INFO << "Server started";
+
+	while (g_signalStatus == 0) {
+		const int nfds = server.waitForEvents();
+
+		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
+			 iter != server.eventsBegin() + nfds; ++iter) {
+			handleEvent(server, *iter);
+		}
+		checkForTimeout(server);
+		cleanupClosedConnections(server);
+	}
+	LOG_INFO << "Received signal " << signalNumToName(g_signalStatus);
+	if (g_signalStatus == SIGQUIT)
+		shutdownServer(server);
+}
 
 /**
  * @brief Accepts new connections or handles existing ones
@@ -574,19 +602,23 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  * After epoll reports an event on a client socket, this function is called to handle the connection. The event from the
  * client can either be incoming (EPOLLIN) or outgoing (EPOLLOUT).
  * This function dispatches to the correct subfunction depending on the connection state:
- * 1. Connection::ReceiveHeader (in): every new connection starts in this state. connectionReceiveHeader() reads the
+ * 1. Connection::Idle (in): every new connection starts in this state after it connects. Also if the connection is
+ * kept alive, it is in this state. When the client wants to send a request it changes the state to
+ * Connection::ReceiveHeader.
+ * 2. Connection::ReceiveHeader (in): when the connection wants to send a request. connectionReceiveHeader() reads the
  * request header from the client and parses it. If the request header is complete, it changes the state to
  * Connection::ReceiveBody or Connection::BuildResponse.
- * 2. Connection::ReceiveBody (in): if the request header indicates a body, connectionReceiveBody() reads the body from
+ * 3. Connection::ReceiveBody (in): if the request header indicates a body, connectionReceiveBody() reads the body from
  * the client. If the body is complete, it changes the state to Connection::BuildResponse.
- * 3. Connection::BuildResponse (out): after a complete request (header and optional body) is received
+ * 4. Connection::BuildResponse (out): after a complete request (header and optional body) is received
  * connectionBuildResponse() builds the response for the client. It then changes the state to Connection::SendResponse
  * and also calls connectionSendResponse() to try to immediatly send the response to the client.
- * 4. Connection::SendResponse (out): connectionSendResponse() sends the response to the client. This dispatch happens
+ * 5. Connection::SendResponse (out): connectionSendResponse() sends the response to the client. This dispatch happens
  * only if the response is not completely sent the first time.
- * 5. Connection::Timeout (out): if the connection has timed out, connectionHandleTimeout() sets the request status to
+ * 6. Connection::Timeout (out): if the connection has timed out, connectionHandleTimeout() sets the request status to
  * timeout. Then it calls connectionBuildResponse() to build the error message, which then gets sent with
  * connectionSendResponse().
+ * 7. Connection::Closed (not reached): the connection is closed and can be cleaned. This case should not be reached.
  *
  * @param server The server object to handle the connection for.
  * @param clientFd The file descriptor of the client.
@@ -597,6 +629,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
 	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " for server: " << connection.m_serverSocket;
 
 	switch (connection.m_status) {
+	case (Connection::Idle):
+		connection.m_status = Connection::ReceiveHeader;
+		connectionReceiveHeader(server, clientFd, connection);
+		break;
 	case (Connection::ReceiveHeader):
 		connectionReceiveHeader(server, clientFd, connection);
 		break;
@@ -859,6 +895,7 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(clientFd, EPOLLIN);
 		clearConnection(connection);
+		connection.m_status = Connection::Idle;
 	}
 }
 
@@ -927,4 +964,71 @@ void cleanupClosedConnections(Server& server)
 		else
 			++iter;
 	}
+}
+
+/**
+ * @brief Iterates through all connections, closes and removes idle ones.
+ *
+ * The for loop through the connections map has no increment statement because the
+ * iterator is incremented in the loop body. If .erase() is called on an iterator,
+ * it is invalidated.
+ *
+ * @param server The server object to cleanup idle connections for.
+ */
+void cleanupIdleConnections(Server& server)
+{
+	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
+		 iter != server.getConnections().end();
+		/* no iter*/) {
+		if (iter->second.m_status == Connection::Idle) {
+			close(iter->first);
+			server.getConnections().erase(iter++);
+		} else
+			++iter;
+	}
+}
+
+/**
+ * @brief Performs a graceful shutdown of the server.
+ *
+ * Closes all virtual servers, cleans up idle and closed connections.
+ * Then enters another event loop with two conditions:
+ * 1. last signal received is SIGQUIT (which initiated graceful shutdown)
+ * 2. as long as active connections exist.
+ * This second loop always cleans up idle connections. It can also be interrupted with another signal, which aborts the
+ * graceful shutdown.
+ *
+ * @param server The server object to shut down.
+ * @sa https://pkg.go.dev/net/http#Server.Shutdown
+ */
+void shutdownServer(Server& server)
+{
+	LOG_DEBUG << "Closing all virtual servers";
+	for (std::map<int, Socket>::iterator iter = server.getVirtualServers().begin();
+		 iter != server.getVirtualServers().end(); ++iter) {
+		server.removeEvent(iter->first);
+		close(iter->first);
+	}
+	server.getVirtualServers().clear();
+
+	LOG_DEBUG << "Cleanup idle connections";
+	cleanupIdleConnections(server);
+	cleanupClosedConnections(server);
+
+	LOG_DEBUG << "Waiting for connections to finish";
+	while (g_signalStatus == SIGQUIT && !server.getConnections().empty()) {
+		const int nfds = server.waitForEvents();
+
+		for (std::vector<struct epoll_event>::const_iterator iter = server.eventsBegin();
+			 iter != server.eventsBegin() + nfds; ++iter) {
+			handleEvent(server, *iter);
+		}
+		checkForTimeout(server);
+		cleanupIdleConnections(server);
+		cleanupClosedConnections(server);
+	}
+	if (g_signalStatus != SIGQUIT)
+		LOG_INFO << "Graceful shutdown interrupted with signal " << g_signalStatus;
+	else
+		LOG_INFO << "Server shutdown gracefully";
 }

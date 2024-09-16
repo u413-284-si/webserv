@@ -44,7 +44,7 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseKeepAlive)
 	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, 0);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));
-	EXPECT_EQ(connection.m_status, Connection::ReceiveHeader);
+	EXPECT_EQ(connection.m_status, Connection::Idle);
 }
 
 TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
