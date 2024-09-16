@@ -4,11 +4,54 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CGI Test</title>
+	<link rel="stylesheet" href="css/cgi.css">
 </head>
 <body>
-	<h1>Run CGI Script</h1>
-	<form action="cgi-bin/hello.cgi" method="get">
-		<input type="submit" value="Run CGI Script">
-	</form>
+	<header>
+		<h1>CGI Test</h1>
+		<p>Run a CGI script on the server.</p>
+	</header>
+
+	<main>
+		<section class="form-section">
+			<h2>Script Hello World</h2>
+			<p>This script just returns Hello World</p>
+			<br>
+			<!-- Form for running CGI script -->
+			<form action="/cgi-bin/hello-world.cgi" method="GET">
+				<button type="submit">Run CGI Script</button>
+			</form>
+		</section>
+
+		<section class="form-section">
+			<h2>Script Environment Variables</h2>
+			<p>This script returns the environment variables</p>
+			<br>
+			<!-- Form for running CGI script -->
+			<form action="/cgi-bin/environment-variables.cgi" method="GET">
+				<button type="submit">Run CGI Script</button>
+			</form>
+		</section>
+
+		<section class="form-section">
+			<h2>Script Upload</h2>
+			<p>Select a file to upload to the server.</p>
+			<!-- Form for file upload -->
+			<form action="cgi-bin/upload.cgi" method="POST" enctype="multipart/form-data">
+				<div class="form-group">
+					<input type="file" id="file" name="file" required>
+				</div>
+
+				<button type="submit">Run CGI Script</button>
+			</form>
+		</section>
+	</main>
+
+	<!-- Back to Home Link -->
+	<footer>
+		<div class="back-link">
+			<a href="index.html">Back to Home</a>
+		</div>
+	</footer>
 </body>
 </html>
