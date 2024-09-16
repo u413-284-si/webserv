@@ -1,29 +1,15 @@
 #include "ResponseBuilder.hpp"
-#include "ConfigFile.hpp"
 
 /**
  * @brief Construct a new ResponseBuilder object
  *
- * @param configFile Configuration file.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const ConfigFile& configFile, const FileSystemPolicy& fileSystemPolicy)
-	: m_activeServer(configFile.servers.begin())
-	, m_fileSystemPolicy(fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 	, m_isFirstTime(true)
 {
 	initMIMETypes();
-}
-
-/**
- * @brief Set the active server.
- *
- * The active server is used for location searching.
- * @param activeServer Server to be set as active.
- */
-void ResponseBuilder::setActiveServer(const std::vector<ConfigServer>::const_iterator& activeServer)
-{
-	m_activeServer = activeServer;
 }
 
 /**
@@ -41,36 +27,25 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
  * @brief Build the response for a given request.
  *
  * Reset the stream, to clear possible beforehand built response.
- * Init the HTTP Response object with data from the request.
- * If StatusCode is StatusOK: Execute target resource handler to get the target resource.
- * Else skip this step.
  * Execute response body handler to get the response body.
  * Build the response by appending the status line, headers and body.
  * @param request HTTP request.
  */
-void ResponseBuilder::buildResponse(const HTTPRequest& request)
+void ResponseBuilder::buildResponse(HTTPRequest& request)
 {
 	resetStream();
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	HTTPResponse response = initHTTPResponse(request);
-
-	if (response.status == StatusOK) {
-		TargetResourceHandler targetResourceHandler(m_activeServer->locations, request, response, m_fileSystemPolicy);
-		targetResourceHandler.execute();
-	}
-
-	LOG_DEBUG << "Target resource: " << response.targetResource;
-
-	ResponseBodyHandler responseBodyHandler(response, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
-	LOG_DEBUG << "Response body: " << response.body;
+	LOG_DEBUG << "Response body: \n" << m_responseBody;
 
-	appendStatusLine(response);
-	appendHeaders(response);
-	m_responseStream << response.body << "\r\n";
+	appendStatusLine(request);
+	appendHeaders(request);
+	m_responseStream << m_responseBody << "\r\n";
+	m_responseBody.clear();
 }
 
 /**
@@ -88,33 +63,16 @@ void ResponseBuilder::resetStream()
 }
 
 /**
- * @brief Init the HTTP Response object with data from the request.
- *
- * @param request HTTP request.
- * @return HTTPResponse Constructed HTTP response.
- */
-HTTPResponse ResponseBuilder::initHTTPResponse(const HTTPRequest& request)
-{
-	HTTPResponse response;
-
-	response.status = request.httpStatus;
-	response.method = request.method;
-	response.isAutoindex = false;
-
-	return response;
-}
-
-/**
  * @brief Append status line to the response.
  *
  * The status line is appended in the following format:
  * HTTP/1.1 <status code> <reason phrase>
- * @param response HTTP response.
+ * @param request HTTP request.
  */
-void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
+void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	m_responseStream << "HTTP/1.1 " << response.status << ' ' << webutils::statusCodeToReasonPhrase(response.status)
-					 << "\r\n";
+	m_responseStream << "HTTP/1.1 " << request.httpStatus << ' '
+					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
@@ -127,21 +85,21 @@ void ResponseBuilder::appendStatusLine(const HTTPResponse& response)
  * Date: Current date in GMT.
  * Location: Target resource if status is StatusMovedPermanently.
  * Delimiter.
- * @param response HTTP response.
+ * @param request HTTP request.
  */
-void ResponseBuilder::appendHeaders(const HTTPResponse& response)
+void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(response.targetResource)) << "\r\n";
+	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
-	m_responseStream << "Content-Length: " << response.body.length() << "\r\n";
+	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
 	m_responseStream << "Server: TriHard\r\n";
 	// Date
 	m_responseStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
-	if (response.status == StatusMovedPermanently) {
-		m_responseStream << "Location: " << response.targetResource << "\r\n";
+	if (request.httpStatus == StatusMovedPermanently) {
+		m_responseStream << "Location: " << request.targetResource << "\r\n";
 	}
 	// Delimiter
 	m_responseStream << "\r\n";
@@ -177,7 +135,7 @@ void ResponseBuilder::initMIMETypes()
  */
 std::string ResponseBuilder::getMIMEType(const std::string& extension)
 {
-		std::map<std::string, std::string >::const_iterator iter = m_mimeTypes.find(extension);
+	std::map<std::string, std::string>::const_iterator iter = m_mimeTypes.find(extension);
 	if (iter != m_mimeTypes.end()) {
 		return iter->second;
 	}

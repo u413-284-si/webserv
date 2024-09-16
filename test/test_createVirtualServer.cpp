@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sys/socket.h>
@@ -56,6 +57,8 @@ TEST_F(CreateVirtualServerTest, ServerAddSuccess)
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
+
+	free(addr);
 }
 
 TEST_F(CreateVirtualServerTest, resolveListeningAddressesFails)
@@ -87,6 +90,8 @@ TEST_F(CreateVirtualServerTest, createListeningSocketFails)
 
 	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
+
+	free(addr);
 }
 
 TEST_F(CreateVirtualServerTest, retrieveSocketInfoFails)
@@ -112,6 +117,8 @@ TEST_F(CreateVirtualServerTest, retrieveSocketInfoFails)
 
 	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
+
+	free(addr);
 }
 
 TEST_F(CreateVirtualServerTest, registerVirtualServerFails)
@@ -141,6 +148,8 @@ TEST_F(CreateVirtualServerTest, registerVirtualServerFails)
 
 	EXPECT_EQ(createVirtualServer(server, host, backlog, port), false);
 	EXPECT_EQ(server.getVirtualServers().size(), 0);
+
+	free(addr);
 }
 
 TEST_F(CreateVirtualServerTest, FirstFailsSecondSuccess)
@@ -175,6 +184,9 @@ TEST_F(CreateVirtualServerTest, FirstFailsSecondSuccess)
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
+
+	free(addr);
+	free(addr2);
 }
 
 TEST_F(CreateVirtualServerTest, FirstSuccessSecondFail)
@@ -210,6 +222,9 @@ TEST_F(CreateVirtualServerTest, FirstSuccessSecondFail)
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, port);
+
+	free(addr);
+	free(addr2);
 }
 
 TEST_F(CreateVirtualServerTest, AddThree)
@@ -255,4 +270,8 @@ TEST_F(CreateVirtualServerTest, AddThree)
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd2).port, port);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd3).host, host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd3).port, port);
+
+	free(addr);
+	free(addr2);
+	free(addr3);
 }

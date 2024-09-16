@@ -120,6 +120,7 @@ SRC:=	main.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
+		HTTPRequest.cpp \
 		LogData.cpp \
 		Logger.cpp \
 		LogInit.cpp \
@@ -155,6 +156,8 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \
 			test_ResponseBodyHandler.cpp \
+			test_selectServerConfig.cpp \
+			test_SocketPolicy_retrieveSocketInfo.cpp \
 			test_shutdownServer.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp

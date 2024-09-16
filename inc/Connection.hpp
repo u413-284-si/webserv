@@ -1,20 +1,21 @@
 #pragma once
 
-#include "HTTPRequest.hpp"
-#include "Socket.hpp"
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
 #include <string>
 #include <unistd.h>
 
+#include "ConfigFile.hpp"
+#include "HTTPRequest.hpp"
+#include "Socket.hpp"
+
 /**
  * @brief Represents a connection between a server and a client.
  */
 struct Connection {
 public:
-	Connection();
-	Connection(const Socket& server, const Socket& client);
+	Connection(const Socket& server, const Socket& client, const std::vector<ConfigServer>& serverConfigs);
 
 	enum ConnectionStatus {
 		Idle, /**< Connection is connected, but no action is taken yet */
@@ -33,9 +34,15 @@ public:
 	std::string m_buffer; /**< Bytes received from client */
 	ssize_t m_bytesReceived; /**< Number of bytes received from client */
 	HTTPRequest m_request; /**< Request of the client */
+	std::vector<ConfigServer>::const_iterator serverConfig; /**< Server configuration associated with connection */
+	std::vector<Location>::const_iterator location; /**< Location configuration associated with connection */
 };
 
-void clearConnection(Connection& connection);
+bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs);
+
+bool hasValidServerConfig(Connection& connection, const std::vector<ConfigServer>& serverConfigs);
+bool hasValidServerConfig(
+	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host);
 
 std::ostream& operator<<(std::ostream& ostream, const Connection& connection);
-std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status);
+std::ostream& operator<<(std::ostream& ostream, Connection::ConnectionStatus status);

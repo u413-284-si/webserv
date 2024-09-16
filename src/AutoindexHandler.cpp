@@ -1,4 +1,5 @@
 #include "AutoindexHandler.hpp"
+#include "Log.hpp"
 
 /**
  * @brief Construct a new AutoindexHandler object
@@ -77,7 +78,7 @@ std::string AutoindexHandler::execute(const std::string& path)
 		m_response << "</table>\n</body>\n</html>";
 		return m_response.str();
 	} catch (std::runtime_error& e) {
-		std::cerr << "error: " << e.what() << "\n";
+		LOG_ERROR << e.what();
 		return "";
 	}
 }

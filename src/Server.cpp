@@ -1,4 +1,6 @@
 #include "Server.hpp"
+#include "Connection.hpp"
+#include "TargetResourceHandler.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -24,7 +26,8 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_socketPolicy(socketPolicy)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
-	, m_responseBuilder(m_configFile, m_fileSystemPolicy)
+	, m_responseBuilder(m_fileSystemPolicy)
+	, m_targetResourceHandler(m_fileSystemPolicy)
 {
 }
 
@@ -131,12 +134,13 @@ bool Server::registerVirtualServer(int serverFd, const Socket& serverSock)
  *
  * Registers a client fd with addEvent().
  * If it fails to add the event, it logs an error and closes the client socket.
- * If the connection is successfully registered, adds the connection to map m_connections.
- * The []-operator creates a new entry in the map if the key does not exist or overwrites an existing one.
+ * If the client fd is successfully registered, creates a new struct Connection with serverSock and clientSock.
+ * Then adds the Connection to map m_connections via std::map::insert().
+ * If it couldn't insert the connection, it logs an error and closes the client socket.
  *
  * @param serverSock The socket of the server that the connection is associated with.
+ * @param clientFd The file descriptor of the client connection to register.
  * @param clientSock The socket of the client connection to register.
- *
  * @return true if the connection was successfully registered, false otherwise.
  */
 bool Server::registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock)
@@ -147,7 +151,20 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 		return false;
 	}
 
-	m_connections[clientFd] = Connection(serverSock, clientSock);
+	Connection newConnection(serverSock, clientSock, m_configFile.servers);
+	if (newConnection.m_status == Connection::Closed) {
+		close(clientFd);
+		LOG_ERROR << "Failed to set active server for " << clientSock;
+		return false;
+	}
+
+	std::pair<std::map<int, Connection>::iterator, bool> ret
+		= m_connections.insert(std::pair<int, Connection>(clientFd, newConnection));
+	if (!ret.second) {
+		close(clientFd);
+		LOG_ERROR << "Failed to add connection for " << clientSock << ": it already exists";
+		return false;
+	}
 
 	LOG_INFO << "New Connection: " << clientSock << " for server: " << serverSock;
 	return true;
@@ -234,15 +251,22 @@ int Server::createListeningSocket(const struct addrinfo* addrinfo, int backlog) 
  * @brief Wrapper function to SocketPolicy::retrieveSocketInfo.
  *
  * @param sockaddr The socket address.
- * @param socklen The length of the socket address.
  * @return Socket The socket information.
  */
-Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr, socklen_t socklen) const
+Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr) const
 {
 	assert(sockaddr != NULL);
 
-	return m_socketPolicy.retrieveSocketInfo(sockaddr, socklen);
+	return m_socketPolicy.retrieveSocketInfo(sockaddr);
 }
+
+/**
+ * @brief Wrapper function to SocketPolicy::retrieveBoundSocketInfo.
+ *
+ * @param sockfd The socket fd which is bound to a socket.
+ * @return Socket The socket information of the bound socket.
+ */
+Socket Server::retrieveBoundSocketInfo(int sockfd) const { return m_socketPolicy.retrieveBoundSocketInfo(sockfd); }
 
 /**
  * @brief Wrapper function to SocketPolicy::acceptSingleConnection().
@@ -328,7 +352,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param request The HTTPRequest object to build the response for.
  */
-void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
+void Server::buildResponse(HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -337,15 +361,28 @@ void Server::buildResponse(const HTTPRequest& request) { m_responseBuilder.build
  */
 std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
 
+/* ====== DISPATCH TO TARGETRESOURCEHANDLER ====== */
+
+/**
+ * @brief Wrapper function to TargetResourceHandler::execute.
+ *
+ * @param connection The Connection object to handle the target resource for.
+ * @param request The HTTPRequest object to handle the target resource for.
+ */
+void Server::findTargetResource(Connection& connection, HTTPRequest& request)
+{
+	m_targetResourceHandler.execute(connection, request);
+}
+
 /* ====== INITIALIZATION ====== */
 
 /**
  * @brief Initialize virtual servers.
  *
- * Initializes virtual servers by iterating through the serverConfigs
- * vector in the configuration file and opening a socket for each virtual server.
- * It checks for duplicate servers using isDuplicateServer() and
- * skips opening the socket server if it already exists.
+ * First initializes all wildcard servers (0.0.0.0) in the configuration file by opening a socket for them. They need to
+ * be initialized first because any already initialized socket on the same port would block the wildcard server. Then
+ * initializes the remaining virtual servers.
+ * It checks for duplicate servers using isDuplicateServer() and skips opening the socket server if it already exists.
  *
  * @param server The server object to initialize virtual servers for.
  * @param backlog The maximum length to which the queue of pending connections for the virtual server may grow.
@@ -357,9 +394,27 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 {
 	LOG_INFO << "Initializing virtual servers";
 
+	LOG_DEBUG << "Check for wildcard servers";
+	const std::string wildcard = "0.0.0.0";
+
+	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+		if (iter->host == wildcard) {
+
+			LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
+
+			if (isDuplicateServer(server, iter->host, iter->port))
+				continue;
+
+			if (!createVirtualServer(server, iter->host, backlog, iter->port))
+				LOG_DEBUG << "Failed to add virtual server: " << iter->host << ":" << iter->port;
+		}
+	}
+
+	LOG_DEBUG << "Add remaining virtual servers";
+
 	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
 
-		LOG_DEBUG << "Adding virtual server: " << iter->serverName << " on " << iter->host << ":" << iter->port;
+		LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
 
 		if (isDuplicateServer(server, iter->host, iter->port))
 			continue;
@@ -380,6 +435,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
  *
  * Checks if a virtual server with the provided host and port already exists in the virtual servers map.
  * If the host is "localhost", it checks for a virtual server with the host address "127.0.0.1" or "::1".
+ * If the existing server is a wildcard server (0.0.0.0) only the port needs to match.
  *
  * @param server The server object to check for duplicate virtual servers.
  * @param host The host address of the virtual server.
@@ -389,10 +445,13 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
  */
 bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port)
 {
+	const std::string wildcard = "0.0.0.0";
+
 	if (host == "localhost") {
 		for (std::map<int, Socket>::const_iterator iter = server.getVirtualServers().begin();
 			 iter != server.getVirtualServers().end(); ++iter) {
-			if ((iter->second.host == "127.0.0.1" || iter->second.host == "::1") && iter->second.port == port) {
+			if ((iter->second.host == wildcard || iter->second.host == "127.0.0.1" || iter->second.host == "::1")
+				&& iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
 			}
@@ -400,7 +459,7 @@ bool isDuplicateServer(const Server& server, const std::string& host, const std:
 	} else {
 		for (std::map<int, Socket>::const_iterator iter = server.getVirtualServers().begin();
 			 iter != server.getVirtualServers().end(); ++iter) {
-			if (iter->second.host == host && iter->second.port == port) {
+			if ((iter->second.host == wildcard || iter->second.host == host) && iter->second.port == port) {
 				LOG_DEBUG << "Virtual server already exists: " << iter->second;
 				return true;
 			}
@@ -442,7 +501,7 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
 		if (newFd == -1)
 			continue;
 
-		const Socket serverSock = server.retrieveSocketInfo(curr->ai_addr, curr->ai_addrlen);
+		const Socket serverSock = server.retrieveSocketInfo(curr->ai_addr);
 		if (serverSock.host.empty() && serverSock.port.empty()) {
 			close(newFd);
 			continue;
@@ -572,6 +631,8 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		return;
 	}
 
+	const bool isWildcardServer = (serverSock.host == "0.0.0.0");
+
 	while (true) {
 		struct sockaddr_storage clientAddr = {};
 		socklen_t clientLen = sizeof(clientAddr);
@@ -585,13 +646,19 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		if (clientFd == -1)
 			continue; // Error accepting connection
 
-		const Socket clientSock = server.retrieveSocketInfo(addrCast, clientLen);
+		const Socket clientSock = server.retrieveSocketInfo(addrCast);
 		if (clientSock.host.empty() && clientSock.port.empty()) {
 			close(clientFd);
 			continue;
 		}
 
-		if (!server.registerConnection(serverSock, clientFd, clientSock))
+		const Socket boundSock = isWildcardServer ? server.retrieveBoundSocketInfo(clientFd) : serverSock;
+		if (boundSock.host.empty() && boundSock.port.empty()) {
+			close(clientFd);
+			continue;
+		}
+
+		if (!server.registerConnection(boundSock, clientFd, clientSock))
 			continue;
 	}
 }
@@ -663,13 +730,10 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * - If bytes read is 0, it indicates that the connection has been closed by the client
  * In both cases the clientFd is closed and the connection status is set to Closed.
  * If bytes read is greater than 0, the bytes received are added to the connection buffer and the bytes received of the
- * connection are updated.
- * If the buffer contains a complete request, it parses the request. Then the request is removed from the client buffer,
- * the connection is set to BuildResponse state and the event is modified to listen to EPOLLOUT.
+ * connection are updated as well as time since the last event is updated to the current time.
+ * If the buffer contains a complete request header, the function handleCompleteRequestHeader() is called.
  * If no complete request was received and the received bytes match the buffer size, sets HTTP status code to 413
  * Request Header Fields Too Large and status to BuildResponse, since the request header was too big.
- *
- * In any case the time since the last event is updated to the current time.
  *
  * @param server The server object which handles the connection.
  * @param clientFd The file descriptor of the client.
@@ -696,25 +760,9 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 	} else {
 		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
+		connection.m_timeSinceLastEvent = std::time(0);
 		if (isCompleteRequestHeader(connection.m_buffer)) {
-			LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
-			try {
-				server.parseHeader(connection.m_buffer, connection.m_request);
-			} catch (std::exception& e) {
-				LOG_ERROR << "Error: " << e.what();
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-				connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-				connection.m_timeSinceLastEvent = std::time(0);
-				return;
-			}
-			if (connection.m_request.hasBody)
-				connection.m_status = Connection::ReceiveBody;
-			else {
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-			}
-			connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+			handleCompleteRequestHeader(server, clientFd, connection);
 		} else {
 			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
 			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
@@ -725,7 +773,6 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 			}
 		}
 	}
-	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 /**
@@ -738,6 +785,57 @@ void connectionReceiveHeader(Server& server, int clientFd, Connection& connectio
 bool isCompleteRequestHeader(const std::string& connectionBuffer)
 {
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
+}
+
+/**
+ * @brief Handles a received complete request header.
+ *
+ * This function is called when a complete request header has been received from the client.
+ * It parses the request header with Server::parseHeader().
+ * An error while parsing the header sets Connection::BuildResponse and modifies the event to listen to
+ * EPOLLOUT.
+ * After parsing the header, tries to find the "Host" header field in the request headers. If it exists, it rechecks the
+ * server configuration for the connection.
+ * Then it tries to find the target resource for the request with Server::findTargetResource().
+ * If no Status is still OK, and the request has a body, set to Connection::ReceiveBody and the received request header
+ * is deleted from the buffer.
+ * Else sets to Connection::BuildResponse and the event is modified to listen to EPOLLOUT.
+ * @param server The server object.
+ * @param clientFd The file descriptor of the client socket.
+ * @param connection The connection object.
+ */
+void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection)
+{
+	LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
+
+	try {
+		server.parseHeader(connection.m_buffer, connection.m_request);
+	} catch (std::exception& e) {
+		LOG_ERROR << "Error: " << e.what();
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
+	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
+	if (iter != connection.m_request.headers.end()) {
+		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
+			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
+			close(clientFd);
+			connection.m_status = Connection::Closed;
+			return;
+		}
+	}
+
+	server.findTargetResource(connection, connection.m_request);
+
+	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
+		connection.m_status = Connection::ReceiveBody;
+		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+	} else {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+	}
 }
 
 /**
@@ -771,12 +869,12 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_buffer += buffer;
+		connection.m_timeSinceLastEvent = std::time(0);
 		if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
-			connection.m_timeSinceLastEvent = std::time(0);
 			return;
 		}
 		if (isCompleteBody(connection)) {
@@ -788,7 +886,6 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 			}
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
-			connection.m_buffer.erase(0);
 		} else {
 			LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
 			if (connection.m_request.httpStatus == StatusBadRequest) {
@@ -798,7 +895,6 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 			}
 		}
 	}
-	connection.m_timeSinceLastEvent = std::time(0);
 }
 
 /**
@@ -846,6 +942,7 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection.m_request);
+	connection.m_buffer.clear();
 	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;
 	connectionSendResponse(server, clientFd, connection);
@@ -894,8 +991,7 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 	} else {
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(clientFd, EPOLLIN);
-		clearConnection(connection);
-		connection.m_status = Connection::Idle;
+		clearConnection(connection, server.getServerConfigs());
 	}
 }
 
