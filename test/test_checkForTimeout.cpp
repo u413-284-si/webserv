@@ -13,7 +13,13 @@ protected:
 	CheckForTimeoutTest()
 		: server(configFile, epollWrapper, socketPolicy)
 	{
-		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
+		ConfigServer serverConfig;
+		serverConfig.host = serverSock.host;
+		serverConfig.port = serverSock.port;
+		configFile.servers.push_back(serverConfig);
+
+		ON_CALL(epollWrapper, addEvent)
+			.WillByDefault(Return(true));
 	}
 	~CheckForTimeoutTest() override { }
 
@@ -26,6 +32,7 @@ protected:
 	const int dummyFd2 = 20;
 	const int dummyFd3 = 30;
 
+	const Socket serverSock = { "127.0.0.1", "8080" };
 	const Socket dummySocket = { "1.1.1.1", "8080" };
 };
 
@@ -33,7 +40,7 @@ TEST_F(CheckForTimeoutTest, Timeout)
 {
 	server.setClientTimeout(-1);
 
-	server.registerConnection(dummySocket, dummyFd, dummySocket);
+	server.registerConnection(serverSock, dummyFd, dummySocket);
 
 	checkForTimeout(server);
 
@@ -44,7 +51,7 @@ TEST_F(CheckForTimeoutTest, NoTimeout)
 {
 	server.setClientTimeout(100);
 
-	server.registerConnection(dummySocket, dummyFd, dummySocket);
+	server.registerConnection(serverSock, dummyFd, dummySocket);
 
 	checkForTimeout(server);
 
@@ -55,9 +62,9 @@ TEST_F(CheckForTimeoutTest, MultipleTimeouts)
 {
 	server.setClientTimeout(-1);
 
-	server.registerConnection(dummySocket, dummyFd, dummySocket);
-	server.registerConnection(dummySocket, dummyFd2, dummySocket);
-	server.registerConnection(dummySocket, dummyFd3, dummySocket);
+	server.registerConnection(serverSock, dummyFd, dummySocket);
+	server.registerConnection(serverSock, dummyFd2, dummySocket);
+	server.registerConnection(serverSock, dummyFd3, dummySocket);
 
 	checkForTimeout(server);
 

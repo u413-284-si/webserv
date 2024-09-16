@@ -29,7 +29,7 @@ protected:
 	MockSocketPolicy socketPolicy;
 	Server server;
 
-	Connection connection;
+	Connection connection = Connection(Socket(), Socket(), configFile.servers);
 	std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nABCD";
 
 	const int dummyFd = 10;

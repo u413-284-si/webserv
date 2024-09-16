@@ -81,6 +81,9 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd2).port, configFile.servers[1].port);
+
+	free(addr);
+	free(addr2);
 }
 
 TEST_F(InitVirtualServersTest, OneDuplicateServer)
@@ -110,6 +113,8 @@ TEST_F(InitVirtualServersTest, OneDuplicateServer)
 	EXPECT_EQ(server.getVirtualServers().size(), 1);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);
 	EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);
+
+	free(addr);
 }
 
 TEST_F(InitVirtualServersTest, NoServers)

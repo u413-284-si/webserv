@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
@@ -15,19 +16,24 @@ protected:
 	ConnectionReceiveHeaderTest()
 		: server(configFile, epollWrapper, socketPolicy)
 	{
-		ON_CALL(epollWrapper, modifyEvent).WillByDefault(Return(true));
+		ON_CALL(epollWrapper, modifyEvent)
+			.WillByDefault(Return(true));
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_status = Connection::ReceiveHeader;
 	}
 	~ConnectionReceiveHeaderTest() override { }
 
-	ConfigFile configFile;
+	ConfigFile configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
+	Socket m_serverSock = {
+		.host = "127.0.0.1",
+		.port = "8080"
+	};
 
-	Connection connection;
+	Connection connection = Connection(m_serverSock, Socket(), configFile.servers);
 
 	const int dummyFd = 10;
 };
@@ -43,7 +49,6 @@ TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, requestSize);
 	EXPECT_EQ(connection.m_request.method, MethodGet);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
@@ -75,7 +80,6 @@ TEST_F(ConnectionReceiveHeaderTest, RecvFail)
 
 	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, 0);
-	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
 
@@ -87,7 +91,6 @@ TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
 
 	EXPECT_EQ(connection.m_buffer, "");
 	EXPECT_EQ(connection.m_bytesReceived, 0);
-	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
 

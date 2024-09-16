@@ -49,3 +49,46 @@ Location::Location(void)
 	allowedMethods[1] = false;
 	allowedMethods[2] = false;
 }
+
+/**
+ * @brief Create a Dummy Config object
+ *
+ * @return ConfigFile The dummy config object.
+ */
+ConfigFile createDummyConfig()
+{
+	Location location1;
+	location1.path = "/";
+	location1.root = "/workspaces/webserv";
+	location1.indices.push_back("index.htm");
+
+	ConfigServer serverConfig8080;
+	serverConfig8080.locations.push_back(location1);
+	serverConfig8080.host = "127.0.0.1";
+	serverConfig8080.port = "8080";
+	serverConfig8080.serverName = "root";
+
+	Location location2;
+	location2.path = "/";
+	location2.root = "/workspaces/webserv/doc";
+	location2.indices.push_back("index.htm");
+
+	ConfigServer serverConfig8090;
+	serverConfig8090.locations.push_back(location2);
+	serverConfig8090.host = "127.0.0.1";
+	serverConfig8090.port = "8090";
+	serverConfig8090.serverName = "doc";
+
+	ConfigServer serverConfig8090dupl;
+	serverConfig8090dupl.locations.push_back(location2);
+	serverConfig8090dupl.host = "127.0.0.1";
+	serverConfig8090dupl.port = "8090";
+	serverConfig8090dupl.serverName = "duplicate";
+
+	ConfigFile configFile;
+	configFile.servers.push_back(serverConfig8080);
+	configFile.servers.push_back(serverConfig8090);
+	configFile.servers.push_back(serverConfig8090dupl);
+
+	return configFile;
+}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FileSystemPolicy.hpp"
-#include "HTTPResponse.hpp"
+#include "HTTPRequest.hpp"
 #include "AutoindexHandler.hpp"
 #include "StatusCode.hpp"
 #include <exception>
@@ -14,12 +14,13 @@
  */
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(HTTPResponse& response, const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBodyHandler(HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:
 	void handleErrorBody();
 
-	HTTPResponse& m_response;
+	HTTPRequest& m_request;
+	std::string& m_responseBody;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };

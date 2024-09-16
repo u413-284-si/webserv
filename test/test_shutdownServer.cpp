@@ -1,18 +1,16 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <sys/epoll.h>
 
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
-#include "signalHandler.hpp"
 
 using ::testing::NiceMock;
 using ::testing::Return;
 
-class ServerShutdownTest : public ::testing::Test {
+class ShutdownServerTest : public ::testing::Test {
 protected:
-	ServerShutdownTest()
+	ShutdownServerTest()
 		: server(configFile, epollWrapper, socketPolicy)
 	{
 		struct epoll_event dummyEvent;
@@ -26,9 +24,9 @@ protected:
 
 		g_signalStatus = SIGQUIT;
 	}
-	~ServerShutdownTest() override { }
+	~ShutdownServerTest() override { }
 
-	ConfigFile configFile;
+	ConfigFile configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
@@ -39,15 +37,19 @@ protected:
 	const int dummyFd3 = 30;
 	const int dummyFd4 = 40;
 
-	const Socket dummySocket = { "1.1.1.1", "8080" };
+	const Socket serverSock = {
+		.host = configFile.servers[0].host,
+		.port = configFile.servers[0].port
+	};
+	const Socket clientSock = { "192.168.0.1", "1234" };
 };
 
-TEST_F(ServerShutdownTest, OnlyClosedAndIdleConnections)
+TEST_F(ShutdownServerTest, OnlyClosedAndIdleConnections)
 {
-	server.registerVirtualServer(dummyFd, dummySocket);
-	server.registerConnection(dummySocket, dummyFd2, dummySocket);
-	server.registerConnection(dummySocket, dummyFd3, dummySocket);
-	server.registerConnection(dummySocket, dummyFd4, dummySocket);
+	server.registerVirtualServer(dummyFd, clientSock);
+	server.registerConnection(serverSock, dummyFd2, clientSock);
+	server.registerConnection(serverSock, dummyFd3, clientSock);
+	server.registerConnection(serverSock, dummyFd4, clientSock);
 
 	server.getConnections().at(dummyFd2).m_status = Connection::Idle;
 	server.getConnections().at(dummyFd3).m_status = Connection::Closed;
@@ -58,9 +60,9 @@ TEST_F(ServerShutdownTest, OnlyClosedAndIdleConnections)
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
-TEST_F(ServerShutdownTest, NonIdleConnection)
+TEST_F(ShutdownServerTest, NonIdleConnection)
 {
-	server.registerConnection(dummySocket, dummyFd, dummySocket);
+	server.registerConnection(serverSock, dummyFd, clientSock);
 
 	server.getConnections().at(dummyFd).m_status = Connection::ReceiveHeader;
 
@@ -72,9 +74,9 @@ TEST_F(ServerShutdownTest, NonIdleConnection)
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
-TEST_F(ServerShutdownTest, InterruptedBySignal)
+TEST_F(ShutdownServerTest, InterruptedBySignal)
 {
-	server.registerConnection(dummySocket, dummyFd, dummySocket);
+	server.registerConnection(serverSock, dummyFd, clientSock);
 
 	server.getConnections().at(dummyFd).m_status = Connection::ReceiveHeader;
 

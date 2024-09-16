@@ -1,7 +1,6 @@
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "HTTPRequest.hpp"
-#include "HTTPResponse.hpp"
 #include "Socket.hpp"
 #include "StatusCode.hpp"
 
@@ -199,24 +198,6 @@ std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest)
 	ostream << "Body: " << httpRequest.body << '\n';
 	ostream << "HTTP status: " << httpRequest.httpStatus << '\n';
 	ostream << "Shall close connection: " << httpRequest.shallCloseConnection << '\n';
-	return ostream;
-}
-
-/**
- * @brief Overload << operator to append a HTTPResponse.
- *
- * @param ostream The output stream.
- * @param httpResponse The HTTPResponse object.
- * @return std::ostream& The output stream.
- */
-std::ostream& operator<<(std::ostream& ostream, const HTTPResponse& httpResponse)
-{
-	ostream << "Status code: " << httpResponse.status << '\n';
-	ostream << "Target resource: " << httpResponse.targetResource << '\n';
-	ostream << "Body: " << httpResponse.body << '\n';
-	ostream << "Location:\n" << *httpResponse.location << '\n';
-	ostream << "Method: " << httpResponse.method << '\n';
-	ostream << "Autoindex: " << httpResponse.isAutoindex << '\n';
 	return ostream;
 }
 
