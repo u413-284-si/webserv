@@ -7,6 +7,7 @@
 #include "Server.hpp"
 
 using ::testing::Return;
+using ::testing::NiceMock;
 
 class RegisterVirtualServerTest : public ::testing::Test {
 	protected:
@@ -14,7 +15,7 @@ class RegisterVirtualServerTest : public ::testing::Test {
 	~RegisterVirtualServerTest() override { }
 
 	ConfigFile configFile;
-	MockEpollWrapper epollWrapper;
+	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
 

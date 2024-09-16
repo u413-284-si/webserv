@@ -130,6 +130,7 @@ SRC:=	main.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
+		signalHandler.cpp \
 		SocketPolicy.cpp \
 		TargetResourceHandler.cpp \
 		utilities.cpp
@@ -154,6 +155,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \
 			test_ResponseBodyHandler.cpp \
+			test_shutdownServer.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
 
