@@ -1,6 +1,7 @@
 var struct_connection =
 [
     [ "ConnectionStatus", "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7", [
+      [ "Idle", "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c", null ],
       [ "ReceiveHeader", "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4", null ],
       [ "ReceiveBody", "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251", null ],
       [ "BuildResponse", "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952", null ],

@@ -188,10 +188,10 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    EXPECT_EQ(connection.m_buffer, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    EXPECT_EQ(connection.m_bytesReceived, 0);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="ttc" id="a_server_8hpp_html_adcf8118ac987f6afae3aec0c54cc5f9f"><div class="ttname"><a href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a></div><div class="ttdeci">void connectionSendResponse(Server &amp;server, int clientFd, Connection &amp;connection)</div><div class="ttdoc">Sends the response to a client connection.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00834">Server.cpp:834</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00019">Connection.hpp:19</a></div></div>
+<div class="ttc" id="a_server_8hpp_html_adcf8118ac987f6afae3aec0c54cc5f9f"><div class="ttname"><a href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a></div><div class="ttdeci">void connectionSendResponse(Server &amp;server, int clientFd, Connection &amp;connection)</div><div class="ttdoc">Sends the response to a client connection.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00870">Server.cpp:870</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00020">Connection.hpp:20</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -240,7 +240,7 @@ Here is the call graph for this function:</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, 0);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00019">Connection.hpp:19</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00027">Connection.hpp:26</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -291,7 +291,7 @@ Here is the call graph for this function:</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a>);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a></div><div class="ttdeci">@ SendResponse</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00019">Connection.hpp:19</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a></div><div class="ttdeci">@ SendResponse</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00024">Connection.hpp:24</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

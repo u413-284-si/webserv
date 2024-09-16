@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ostreaminserterstest_406',['OstreamInsertersTest',['../class_ostream_inserters_test.html',1,'']]]
+  ['ostreaminserterstest_418',['OstreamInsertersTest',['../class_ostream_inserters_test.html',1,'']]]
 ];

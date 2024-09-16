@@ -50,6 +50,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
       [ "ResponseBuilder", "class_response_builder.html", "class_response_builder" ]
     ] ],
     [ "Server.hpp", "_server_8hpp.html", "_server_8hpp" ],
+    [ "signalHandler.hpp", "signal_handler_8hpp.html", "signal_handler_8hpp" ],
     [ "Socket.hpp", "_socket_8hpp.html", "_socket_8hpp" ],
     [ "SocketPolicy.hpp", "_socket_policy_8hpp.html", [
       [ "SocketPolicy", "class_socket_policy.html", "class_socket_policy" ]

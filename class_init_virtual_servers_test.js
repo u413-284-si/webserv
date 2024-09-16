@@ -5,7 +5,7 @@ var class_init_virtual_servers_test =
     [ "configFile", "class_init_virtual_servers_test.html#af3a12a23312b1f3f829a725af28a606d", null ],
     [ "epollWrapper", "class_init_virtual_servers_test.html#ab35a3c7ae2e3a1767658b6ae6b05a64e", null ],
     [ "socketPolicy", "class_init_virtual_servers_test.html#ae5b7311eff34ab2fb0695ccb968eae5d", null ],
-    [ "server", "class_init_virtual_servers_test.html#a408b96bdf97a4a7824acec7f2980b2cf", null ],
+    [ "server", "class_init_virtual_servers_test.html#aca490e7f16a8dac95b1b30ca6a674843", null ],
     [ "backlog", "class_init_virtual_servers_test.html#a8e802f3c848fceadff0dd1f0c5bc04df", null ],
     [ "dummyFd", "class_init_virtual_servers_test.html#af86ad85aeb17ec6f118a49a41de9ee0d", null ],
     [ "serverSock1", "class_init_virtual_servers_test.html#a4cc31508c51059c24120886138c404fb", null ],

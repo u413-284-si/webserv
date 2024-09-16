@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['receivebody_736',['ReceiveBody',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251',1,'Connection']]],
-  ['receiveheader_737',['ReceiveHeader',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4',1,'Connection']]]
+  ['methodcount_759',['MethodCount',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce',1,'Method.hpp']]],
+  ['methoddelete_760',['MethodDelete',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703',1,'Method.hpp']]],
+  ['methodget_761',['MethodGet',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec',1,'Method.hpp']]],
+  ['methodpost_762',['MethodPost',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926',1,'Method.hpp']]]
 ];

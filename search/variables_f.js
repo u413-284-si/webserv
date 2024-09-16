@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['uri_713',['uri',['../struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69',1,'HTTPRequest']]]
+  ['targetresource_737',['targetResource',['../struct_h_t_t_p_response.html#ae63067d4d65191ed345dee9e1d873e31',1,'HTTPResponse']]],
+  ['timestringbuffer_738',['timeStringBuffer',['../namespacewebutils.html#a835d10ac34a533945ccd642c629a600c',1,'webutils']]]
 ];

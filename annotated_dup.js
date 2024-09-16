@@ -40,6 +40,7 @@ var annotated_dup =
     [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", "class_response_body_handler_test" ],
     [ "ResponseBuilder", "class_response_builder.html", "class_response_builder" ],
     [ "Server", "class_server.html", "class_server" ],
+    [ "ServerShutdownTest", "class_server_shutdown_test.html", "class_server_shutdown_test" ],
     [ "Socket", "struct_socket.html", "struct_socket" ],
     [ "SocketPolicy", "class_socket_policy.html", "class_socket_policy" ],
     [ "TargetResourceHandler", "class_target_resource_handler.html", "class_target_resource_handler" ],

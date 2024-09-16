@@ -4,6 +4,7 @@ var _server_8hpp =
     [ "initVirtualServers", "_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a", null ],
     [ "isDuplicateServer", "_server_8hpp.html#a4f6456b9a16154a6d320ae8b370285d6", null ],
     [ "createVirtualServer", "_server_8hpp.html#aa6ca6a0179cbb661c05aa6b2758f5389", null ],
+    [ "runServer", "_server_8hpp.html#ab66b27c2186daacb15a6b13dd43be31b", null ],
     [ "handleEvent", "_server_8hpp.html#a4211c4d6b958979b39b3dfc8148c801a", null ],
     [ "acceptConnections", "_server_8hpp.html#adb579f3d67061d752e882e6fb3ef6f18", null ],
     [ "handleConnection", "_server_8hpp.html#ac74673700d26f829e84f0b5011c35c94", null ],
@@ -15,5 +16,7 @@ var _server_8hpp =
     [ "connectionSendResponse", "_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f", null ],
     [ "connectionHandleTimeout", "_server_8hpp.html#abb21ebec72f9526fbba446f7d566117e", null ],
     [ "checkForTimeout", "_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf", null ],
-    [ "cleanupClosedConnections", "_server_8hpp.html#a9e2693ba11e20b84de090bcdd0b665db", null ]
+    [ "cleanupClosedConnections", "_server_8hpp.html#a9e2693ba11e20b84de090bcdd0b665db", null ],
+    [ "cleanupIdleConnections", "_server_8hpp.html#af2feae308a0fa968c84525fcdfb19251", null ],
+    [ "shutdownServer", "_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa", null ]
 ];

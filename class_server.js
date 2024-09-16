@@ -2,7 +2,7 @@ var class_server =
 [
     [ "Server", "class_server.html#a5d1d512e7c930519b273faff5bad7f18", null ],
     [ "~Server", "class_server.html#a4b3aa2579cb1c8cd1d069582c14d0fa6", null ],
-    [ "run", "class_server.html#abb27d30b40a94326e3fd629d3b30b7d5", null ],
+    [ "getVirtualServers", "class_server.html#ad5228a2a917b01adff3b89007c036ec4", null ],
     [ "getVirtualServers", "class_server.html#a878b0cc2f9bc228dd12b250d95d61a75", null ],
     [ "getConnections", "class_server.html#aab1a7e57f49a0c7b7f1cea147d8bf9aa", null ],
     [ "getConnections", "class_server.html#a1f8929bed093f869374cb81da4d97505", null ],
@@ -11,6 +11,8 @@ var class_server =
     [ "registerVirtualServer", "class_server.html#aae8cc5a8fc07a6ce97d468d94cd08a6e", null ],
     [ "registerConnection", "class_server.html#ac145e9f668db85b10a66829bd2677746", null ],
     [ "setClientTimeout", "class_server.html#a9dc90838b48fae329562928cdfd685ca", null ],
+    [ "waitForEvents", "class_server.html#acbcbebe2c30446acc9a90f40f9986b62", null ],
+    [ "eventsBegin", "class_server.html#a1768b6e65ed7b3205141698ca459ffd8", null ],
     [ "addEvent", "class_server.html#ae02283a176e4c6ffc9ff0efaf00074cf", null ],
     [ "modifyEvent", "class_server.html#afab1a4ec9e524b0dae8f60080642e7fe", null ],
     [ "removeEvent", "class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1", null ],

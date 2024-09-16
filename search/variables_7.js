@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['indices_658',['indices',['../struct_location.html#aa574c024f5d721f0c9d764c177ad98be',1,'Location']]],
-  ['isautoindex_659',['isAutoindex',['../struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5',1,'Location::isAutoindex()'],['../struct_h_t_t_p_response.html#a2a0f9b7fbdaa2b7cd8c3cfab3c6744da',1,'HTTPResponse::isAutoindex()']]],
-  ['ischunked_660',['isChunked',['../struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017',1,'HTTPRequest']]]
+  ['hasbody_678',['hasBody',['../struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff',1,'HTTPRequest']]],
+  ['headers_679',['headers',['../struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf',1,'HTTPRequest']]],
+  ['host_680',['host',['../struct_config_server.html#af3382ae5512707639126d2eee3269b86',1,'ConfigServer::host()'],['../struct_socket.html#a986f7cf6e2d3334e9ad91a35681c1f80',1,'Socket::host()'],['../class_accept_connections_test.html#a900bd399a9b71df896dd947509c17a8a',1,'AcceptConnectionsTest::host()'],['../class_create_virtual_server_test.html#a036e0fac97b2fa75af395ebd39651839',1,'CreateVirtualServerTest::host()']]],
+  ['host2_681',['host2',['../class_accept_connections_test.html#ad903d01584c90de700915212c46dff46',1,'AcceptConnectionsTest']]],
+  ['host3_682',['host3',['../class_accept_connections_test.html#aaa437a03d48667bcadcfff65cf053ae0',1,'AcceptConnectionsTest']]],
+  ['httpstatus_683',['httpStatus',['../struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3',1,'HTTPRequest']]]
 ];
