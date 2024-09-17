@@ -44,14 +44,20 @@ ConfigFileParser::ConfigFileParser(void)
  */
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
-	m_stream.open(configFilePath.c_str());
-	if (!m_stream.is_open())
+	std::ifstream fileStream(configFilePath.c_str());
+
+	if (!fileStream.is_open())
 		throw std::runtime_error("Failed to open config file");
-	if (m_stream.peek() == std::ifstream::traits_type::eof())
+	if (fileStream.peek() == std::ifstream::traits_type::eof())
 		throw std::runtime_error("Config file is empty");
+
+	m_stream << fileStream.rdbuf();
+	m_configFileContent = m_stream.str();
 
 	if (isBracketOpen(configFilePath))
 		throw std::runtime_error("Open bracket(s) in config file");
+
+	m_stream << m_configFileContent;
 
 	readAndTrimLine();
 	if (getDirective(m_currentLine) != "http")
@@ -99,20 +105,17 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
  *
  * At the end the stack should be empty. If not, there are open brackets
  *
- * @param configFilePath Path from the config file
+ * @param configFileContent Content of the config file
  * @return true If there is minimum one open bracket
  * @return false If there no open bracket
  */
-bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
+bool ConfigFileParser::isBracketOpen(const std::string& configFileContent)
 {
-	std::ifstream tmpStream;
-	std::string tmpLine;
+	m_stream << configFileContent;
 	std::stack<char> brackets;
 
-	tmpStream.open(configFilePath.c_str());
-
-	while (!(getline(tmpStream, tmpLine).fail())) {
-		for (std::string::const_iterator it = tmpLine.begin(); it != tmpLine.end(); ++it) {
+	while (!(getline(m_stream, m_currentLine).fail())) {
+		for (std::string::const_iterator it = m_currentLine.begin(); it != m_currentLine.end(); ++it) {
 			if (*it == '{')
 				brackets.push('{');
 			else if (*it == '}' && brackets.empty())
@@ -121,6 +124,7 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFilePath)
 				brackets.pop();
 		}
 	}
+	m_stream.clear();
 	return !brackets.empty();
 }
 

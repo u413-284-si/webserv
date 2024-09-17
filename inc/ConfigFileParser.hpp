@@ -25,7 +25,8 @@ public:
 
 private:
 	ConfigFile m_configFile;
-	std::ifstream m_stream;
+	std::string m_configFileContent;
+	std::stringstream m_stream;
 	std::string m_currentLine;
 	size_t m_serverIndex;
 	std::vector<std::string> m_validServerDirectives;
@@ -45,7 +46,7 @@ private:
 	void readRootPath(Block block, const std::string& value);
 
 	// Checker functions
-	static bool isBracketOpen(const std::string& configFilePath);
+	bool isBracketOpen(const std::string& configFileContent);
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, Block block) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
