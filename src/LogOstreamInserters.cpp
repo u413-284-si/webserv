@@ -264,7 +264,6 @@ std::ostream& operator<<(std::ostream& ostream, const Connection& connection)
 	ostream << "Client: " << connection.m_clientSocket << '\n';
 	ostream << "Time since last event: " << connection.m_timeSinceLastEvent << '\n';
 	ostream << "Status: " << connection.m_status << '\n';
-	ostream << "Bytes received: " << connection.m_bytesReceived << '\n';
 	ostream << "Request:\n" << connection.m_request;
 	ostream << "Buffer:\n" << connection.m_buffer << '\n';
 	return ostream;

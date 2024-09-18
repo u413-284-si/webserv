@@ -89,8 +89,7 @@ TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, "");
-	EXPECT_EQ(connection.m_bytesReceived, 0);
+	EXPECT_EQ(connection.m_buffer.size(), 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
 
