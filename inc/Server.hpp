@@ -63,6 +63,8 @@ public:
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
+	std::vector<char>& getClientHeaderBuffer();
+	std::vector<char>& getClientBodyBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
@@ -105,6 +107,8 @@ private:
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
+	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
+	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */

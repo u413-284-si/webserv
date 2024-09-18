@@ -49,7 +49,7 @@ TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_bytesReceived, requestSize);
+	EXPECT_EQ(connection.m_buffer.size(), requestSize);
 	EXPECT_EQ(connection.m_request.method, MethodGet);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
@@ -66,8 +66,8 @@ TEST_F(ConnectionReceiveHeaderTest, ReceivePartialRequest)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, request);
-	EXPECT_EQ(connection.m_bytesReceived, requestSize);
+	EXPECT_STREQ(connection.m_buffer.c_str(), request);
+	EXPECT_EQ(connection.m_buffer.size(), requestSize);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::ReceiveHeader);
 }
@@ -79,7 +79,7 @@ TEST_F(ConnectionReceiveHeaderTest, RecvFail)
 	connectionReceiveHeader(server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, "");
-	EXPECT_EQ(connection.m_bytesReceived, 0);
+	EXPECT_EQ(connection.m_buffer.size(), 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
 
@@ -100,7 +100,6 @@ TEST_F(ConnectionReceiveHeaderTest, RequestSizeTooBig)
 	const ssize_t requestSize = strlen(request) + 1;
 
 	connection.m_buffer = std::string(995, 'A');
-	connection.m_bytesReceived = 995;
 
 	EXPECT_CALL(socketPolicy, readFromSocket)
 		.Times(1)
@@ -108,7 +107,7 @@ TEST_F(ConnectionReceiveHeaderTest, RequestSizeTooBig)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_bytesReceived, 1000);
+	EXPECT_EQ(connection.m_buffer.size(), 1000);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
 	EXPECT_EQ(connection.m_request.httpStatus, StatusRequestHeaderFieldsTooLarge);
