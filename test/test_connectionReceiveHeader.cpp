@@ -20,6 +20,7 @@ protected:
 			.WillByDefault(Return(true));
 
 		connection.m_timeSinceLastEvent = 0;
+		connection.m_status = Connection::ReceiveHeader;
 	}
 	~ConnectionReceiveHeaderTest() override { }
 

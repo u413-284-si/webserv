@@ -15,6 +15,7 @@
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
 #include "error.hpp"
+#include "signalHandler.hpp"
 
 #include <algorithm>
 #include <bits/types/time_t.h>
@@ -57,9 +58,8 @@ public:
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
 
-	void run();
-
 	// Getters
+	std::map<int, Socket>& getVirtualServers();
 	const std::map<int, Socket>& getVirtualServers() const;
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
@@ -75,6 +75,8 @@ public:
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper
+	int waitForEvents();
+	std::vector<struct epoll_event>::const_iterator eventsBegin() const;
 	bool addEvent(int newfd, uint32_t eventMask) const;
 	bool modifyEvent(int modfd, uint32_t eventMask) const;
 	void removeEvent(int delfd) const;
@@ -122,6 +124,7 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 bool isDuplicateServer(const Server& server, const std::string& host, const std::string& port);
 bool createVirtualServer(Server& server, const std::string& host, int backlog, const std::string& port);
 
+void runServer(Server& server);
 void handleEvent(Server& server, struct epoll_event);
 
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
@@ -144,3 +147,6 @@ void connectionHandleTimeout(Server& server, int clientFd, Connection& connectio
 void checkForTimeout(Server& server);
 
 void cleanupClosedConnections(Server& server);
+void cleanupIdleConnections(Server& server);
+
+void shutdownServer(Server& server);

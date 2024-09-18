@@ -1,5 +1,4 @@
 #include "ResponseBodyHandler.hpp"
-#include "ConfigFile.hpp"
 
 /**
  * @brief Construct a new ResponseBodyHandler object

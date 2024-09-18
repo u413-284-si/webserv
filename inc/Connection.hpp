@@ -12,6 +12,10 @@
 #include <string>
 #include <unistd.h>
 
+#include "ConfigFile.hpp"
+#include "HTTPRequest.hpp"
+#include "Socket.hpp"
+
 /**
  * @brief Represents a connection between a server and a client.
  */
@@ -52,4 +56,4 @@ bool hasValidServerConfig(
 	Connection& connection, const std::vector<ConfigServer>& serverConfigs, const std::string& host);
 
 std::ostream& operator<<(std::ostream& ostream, const Connection& connection);
-std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStatus status);
+std::ostream& operator<<(std::ostream& ostream, Connection::ConnectionStatus status);

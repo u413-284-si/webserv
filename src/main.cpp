@@ -1,40 +1,31 @@
-#include "ConfigFile.hpp"
 #include "ConfigFileParser.hpp"
-#include "EpollWrapper.hpp"
-#include "Log.hpp"
-#include "LogData.hpp"
-#include "LogOutputterConsole.hpp"
-#include "LogOutputterFile.hpp"
-#include "ResponseBuilder.hpp"
 #include "Server.hpp"
-#include "SocketPolicy.hpp"
-#include <cerrno>
 
 int main(int argc, char** argv)
 {
-	// if (argc != 2) {
-	// 	std::cerr << "error: arguments invalid\nexpected: ";
-	// 	std::cerr << program_invocation_name << " <config file>\n";
-	// 	return 1;
-	// }
-	(void)argc;
-	(void)argv;
+	if (argc != 2) {
+		std::cerr << "error: arguments invalid\nexpected: " << program_invocation_name << " <config file>\n";
+		return 1;
+	}
 
-	// const char* logFile = "webserver.log";
 	weblog::initConsole(weblog::LevelDebug);
-	// weblog::initFile(weblog::LevelDebug, logFile);
+
+	if (!registerSignals()) {
+		return 1;
+	}
+
 	try {
 		EpollWrapper epollWrapper(10, -1);
 		SocketPolicy socketPolicy;
 
-		// ConfigFileParser parser;
-		// ConfigFile configFile = parser.parseConfigFile(argv[1]);
+		ConfigFileParser parser;
+		ConfigFile configFile = parser.parseConfigFile(argv[1]);
 
-		ConfigFile configFile = createDummyConfig();
+		configFile = createDummyConfig();
 
 		Server server(configFile, epollWrapper, socketPolicy);
 		initVirtualServers(server, 10, server.getServerConfigs());
-		server.run();
+		runServer(server);
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
 		return 1;

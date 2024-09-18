@@ -2,7 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
-#include "ConfigFile.hpp"
+#include "Method.hpp"
 #include "StatusCode.hpp"
 #include <iostream>
 #include <map>
@@ -17,6 +17,8 @@ struct URI {
 };
 
 struct HTTPRequest {
+	HTTPRequest();
+
 	HTTPRequest();
 
 	Method method;

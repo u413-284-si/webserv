@@ -1,16 +1,13 @@
 #include "ResponseBuilder.hpp"
-#include "ConfigFile.hpp"
-#include "HTTPResponse.hpp"
-#include <cstddef>
 
 /**
  * @brief Construct a new ResponseBuilder object
  *
- * @param configFile Configuration file.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
+	, m_isFirstTime(true)
 {
 	initMIMETypes();
 }
@@ -43,7 +40,7 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
 	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
-	LOG_DEBUG << "Response body: " << m_responseBody;
+	LOG_DEBUG << "Response body: \n" << m_responseBody;
 
 	appendStatusLine(request);
 	appendHeaders(request);
@@ -59,8 +56,10 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
  */
 void ResponseBuilder::resetStream()
 {
-	m_responseStream.clear();
-	m_responseStream.str("");
+	if (!m_isFirstTime)
+		m_responseStream.seekp(std::ios::beg);
+
+	m_isFirstTime = false;
 }
 
 /**

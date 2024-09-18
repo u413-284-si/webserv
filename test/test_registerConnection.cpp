@@ -13,6 +13,11 @@ class RegisterConnectionTest : public ::testing::Test {
 	protected:
 	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy)
 	{
+		ConfigServer serverConfig;
+		serverConfig.host = serverSock.host;
+		serverConfig.port = serverSock.port;
+		configFile.servers.push_back(serverConfig);
+
 		ON_CALL(epollWrapper, addEvent)
 		.WillByDefault(Return(true));
 		serverConfig.host = "127.0.0.1";
@@ -60,16 +65,13 @@ TEST_F(RegisterConnectionTest, ConnectionRegisterFail)
 	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
-TEST_F(RegisterConnectionTest, OverwriteOldConnection)
+TEST_F(RegisterConnectionTest, CantOverwriteExistingConnection)
 {
-	Socket oldServerSock = {
-		"0.0.0.0",
-		"0" };
 	Socket oldClientSocket = {
 		"1.1.1.1",
 		"11111" };
 
-	EXPECT_EQ(server.registerConnection(oldServerSock, dummyFd, oldClientSocket), true);
+	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, oldClientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 
 	// reuse the same dummyFd should fail as a connection with this fd already exists

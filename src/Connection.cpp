@@ -1,9 +1,12 @@
 #include "Connection.hpp"
-#include "ConfigFile.hpp"
-#include "StatusCode.hpp"
 
 /**
  * @brief Construct a new Connection:: Connection object
+ *
+ * The time since last event is initialized to the current time.
+ * The status is initialized to Idle.
+ * Tries to find a valid server configuration for the connection with hasValidServerConfig().
+ * If no valid server configuration is found, the connection state is Connection::Closed.
  *
  * @param server Server socket associated with connection
  * @param client Client socket associated with connection
@@ -13,7 +16,7 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
 	, m_clientSocket(client)
 	, m_clientFd(clientFd)
 	, m_timeSinceLastEvent(std::time(0))
-	, m_status(ReceiveHeader)
+	, m_status(Idle)
 	, m_bytesReceived(0)
 	, m_pipeToCGIWriteEnd(-1)
 	, m_pipeFromCGIReadEnd(-1)
