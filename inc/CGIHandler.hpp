@@ -4,7 +4,7 @@
 
 #include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
-#include "HTTPResponse.hpp"
+#include "Log.hpp"
 #include "Socket.hpp"
 #include "StatusCode.hpp"
 #include "utilities.hpp"
@@ -32,7 +32,8 @@ class CGIHandler {
 public:
 	explicit CGIHandler(const std::string& cgiPath, const std::string& cgiExt);
 
-	void init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request, const std::vector<Location>::const_iterator& location);
+	void init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request,
+		const std::vector<Location>::const_iterator& location);
 	void execute(HTTPRequest& request);
 
 	// Getter functions

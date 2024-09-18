@@ -728,10 +728,6 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 		if (!server.registerConnection(boundSock, clientFd, clientSock))
 			continue;
 		}
-
-		if (!server.registerConnection(boundSock, clientFd, clientSock))
-			continue;
-	}
 }
 
 /**
@@ -742,7 +738,7 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
  * such as sending data to the CGI script or receiving data from the CGI script.
  *
  * @param server The server object handling the connection.
- * @param clientFd The file descriptor of the pipe end.
+ * @param pipeFd The file descriptor of the pipe end.
  * @param connection The connection object representing the state of the CGI communication.
  *
  * The function takes different actions based on the current status of the connection:
@@ -762,6 +758,7 @@ void handleCGIConnection(Server& server, int pipeFd, Connection& connection)
 			  << " for server: " << connection.m_serverSocket;
 
 	switch (connection.m_status) {
+    case (Connection::Idle):
 	case (Connection::ReceiveHeader):
 	case (Connection::ReceiveBody):
 		break;
@@ -992,60 +989,6 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
 }
 
 /**
- * @brief Receives the body of a connection.
- *
- * This function is responsible for receiving the body of a connection from the client.
- * It reads data from the socket and appends it to the connection's buffer.
- * If the buffer size exceeds the maximum allowed client request body size, an error is logged
- * and the connection's HTTP status is set to StatusRequestEntityTooLarge.
- * If the complete request body is received, it is parsed and the connection's status is set to BuildResponse.
- * If an exception occurs during parsing, an error is logged and the connection's status is set to BuildResponse.
- *
- * @param server Reference to the Server instance handling the connection.
- * @param clientFd File descriptor of the client socket.
- * @param connection Reference to the Connection instance representing the client connection.
- *
- * @note If an error occurs while reading from the socket, the client connection is closed.
- * @note If the buffer size exceeds the maximum allowed client request body size, an error is logged
- * and the connection's HTTP status is set to StatusRequestEntityTooLarge.
- * @note If the request body is complete, it is parsed and the connection status is updated either to
- * Connection:SendToCGI or Connection::BuildResponse.
- */
-void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection)
-{
-	LOG_DEBUG << "Received complete request header: " << '\n' << connection.m_buffer;
-
-	try {
-		server.parseHeader(connection.m_buffer, connection.m_request);
-	} catch (std::exception& e) {
-		LOG_ERROR << "Error: " << e.what();
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-		return;
-	}
-
-	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
-	if (iter != connection.m_request.headers.end()) {
-		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
-			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
-			close(clientFd);
-			connection.m_status = Connection::Closed;
-			return;
-		}
-	}
-
-	server.findTargetResource(connection, connection.m_request);
-
-	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
-		connection.m_status = Connection::ReceiveBody;
-		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-	} else {
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-	}
-}
-
-/**
  * @brief Checks if CGI execution is requested for the given HTTP request and response.
  *
  * This function checks if CGI execution is requested based on the provided HTTP request and response.
@@ -1053,7 +996,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
  * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a slash,
  * it returns true indicating that CGI execution is requested. Otherwise, it returns false.
  *
- * @param request The HTTP request object.
+ * @param connection The Connection object.
  * @return true if CGI execution is requested, false otherwise.
  */
 bool isCGIRequested(Connection& connection)

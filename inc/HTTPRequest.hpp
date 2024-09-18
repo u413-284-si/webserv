@@ -19,8 +19,6 @@ struct URI {
 struct HTTPRequest {
 	HTTPRequest();
 
-	HTTPRequest();
-
 	Method method;
 	URI uri;
 	std::string version;

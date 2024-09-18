@@ -12,10 +12,6 @@
 #include <string>
 #include <unistd.h>
 
-#include "ConfigFile.hpp"
-#include "HTTPRequest.hpp"
-#include "Socket.hpp"
-
 /**
  * @brief Represents a connection between a server and a client.
  */
@@ -24,14 +20,15 @@ public:
 	Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs);
 
 	enum ConnectionStatus {
-		ReceiveHeader,
-		ReceiveBody,
-		SendToCGI,
-		ReceiveFromCGI,
-		BuildResponse,
-		SendResponse,
-		Timeout,
-		Closed
+        Idle, /**< Connection is connected, but no action is taken yet */
+		ReceiveHeader, /**< Client wants to send request header */
+		ReceiveBody, /**< Client wants to send request body */
+		SendToCGI, /**< Received body is being sent to CGI */
+		ReceiveFromCGI, /**< Message from CGI is being received */
+		BuildResponse, /**< Full request received, Server can build response */
+		SendResponse, /**< Server sends response */
+		Timeout, /**< Timeout was reached after nothing happened in connection */
+		Closed /**< Connection resources can be released */
 	};
 
 	Socket m_serverSocket; /**< Server socket associated with connection */

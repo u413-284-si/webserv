@@ -1,15 +1,4 @@
 #include "CGIHandler.hpp"
-#include "ConfigFile.hpp"
-#include "HTTPRequest.hpp"
-#include "HTTPResponse.hpp"
-#include "Log.hpp"
-#include "StatusCode.hpp"
-#include "utilities.hpp"
-#include <cstddef>
-#include <cstdlib>
-#include <sched.h>
-#include <unistd.h>
-#include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -259,11 +248,11 @@ std::string CGIHandler::extractPathInfo(const std::string& path)
 
 /**
  * @brief Extracts the script path from the given path based on the CGI extension.
- * 
- * This function searches for the CGI extension within the provided path and 
- * returns the substring from the beginning of the path up to and including the 
+ *
+ * This function searches for the CGI extension within the provided path and
+ * returns the substring from the beginning of the path up to and including the
  * CGI extension. If the CGI extension is not found, an empty string is returned.
- * 
+ *
  * @param path The full path from which to extract the script path.
  * @return std::string The extracted script path or an empty string if the CGI extension is not found.
  */

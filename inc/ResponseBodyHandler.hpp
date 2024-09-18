@@ -1,11 +1,10 @@
 #pragma once
 
-#include "CGIHandler.hpp"
 #include "Connection.hpp"
 #include "FileSystemPolicy.hpp"
-#include "HTTPRequest.hpp"
 #include "AutoindexHandler.hpp"
 #include "StatusCode.hpp"
+
 #include <exception>
 
 /**
