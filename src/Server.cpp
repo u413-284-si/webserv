@@ -1062,7 +1062,7 @@ bool isCompleteBody(Connection& connection)
 			= std::strtoul(connection.m_request.headers.at("Content-Length").c_str(), NULL, decimalBase);
 		if (contentLength < connection.m_buffer.size()) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
-			LOG_ERROR << "Content-Length: " << contentLength << "Buffer size: " << connection.m_buffer.size();
+			LOG_ERROR << "Content-Length: " << contentLength << ", Buffer size: " << connection.m_buffer.size();
 			connection.m_request.httpStatus = StatusBadRequest;
 			return false;
 		}
