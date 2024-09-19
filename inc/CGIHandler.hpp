@@ -40,6 +40,9 @@ public:
 	int getPipeInWriteEnd() const;
 	int getPipeOutReadEnd() const;
 	const pid_t& getCGIPid() const;
+	const std::string& getCGIPath() const;
+	const std::string& getCGIExt() const;
+	const std::map<std::string, std::string>& getEnv() const;
 
 	void setEnvp(std::vector<std::string>& bufferEnv, std::vector<char*>& envp) const;
 	void setArgv(std::vector<std::string>& bufferArgv, std::vector<char*>& argv);

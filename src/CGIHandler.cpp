@@ -56,6 +56,39 @@ int CGIHandler::getPipeOutReadEnd() const { return m_pipeOut[0]; }
  */
 const pid_t& CGIHandler::getCGIPid() const { return m_cgiPid; }
 
+/**
+ * @brief Retrieves the path to the CGI interpreter.
+ *
+ * This function returns a constant reference to the path of the CGI interpreter
+ * used by the CGI handler. The CGI interpreter is the program that executes the
+ * CGI script.
+ *
+ * @return const std::string& A constant reference to the path of the CGI interpreter.
+ */
+const std::string& CGIHandler::getCGIPath() const { return m_cgiPath; }
+
+/**
+ * @brief Retrieves the file extension associated with the CGI script.
+ *
+ * This function returns a constant reference to the file extension used to identify
+ * CGI scripts. The extension is typically used to determine how the server should
+ * handle the script.
+ *
+ * @return const std::string& A constant reference to the file extension associated with CGI scripts.
+ */
+const std::string& CGIHandler::getCGIExt() const { return m_cgiExt; }
+
+/**
+ * @brief Retrieves the environment variables set for the CGI script.
+ *
+ * This function returns a constant reference to the environment variables
+ * set for the CGI script. The environment variables are used to provide
+ * information and configuration to the CGI script during execution.
+ *
+ * @return const std::map<std::string, std::string>& A constant reference to the environment variables.
+ */
+const std::map<std::string, std::string>& CGIHandler::getEnv() const { return m_env; }
+
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
