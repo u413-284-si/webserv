@@ -34,7 +34,7 @@ public:
 
 	void init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request,
 		const std::vector<Location>::const_iterator& location);
-	void execute(HTTPRequest& request);
+	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location);
 
 	// Getter functions
 	int getPipeInWriteEnd() const;
@@ -45,7 +45,7 @@ public:
 	void setArgv(std::vector<std::string>& bufferArgv, std::vector<char*>& argv);
 
 private:
-	std::string m_cgiPath; /**< URL until CGI script extension */
+	std::string m_cgiPath; /**< Path to CGI interpreter */
 	std::string m_cgiExt; /**< CGI script extension */
 	std::map<std::string, std::string> m_env; /**< Environment variables for CGI script */
 	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */

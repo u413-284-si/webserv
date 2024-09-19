@@ -5,7 +5,7 @@ import sys
 from urllib.parse import parse_qs
 
 # Define the directory where the file will be saved
-save_dir = os.getcwd() + '/cgi-bin/tmp/'
+save_dir = os.getcwd() + '/tmp/'
 
 # Ensure the directory exists
 if not os.path.exists(save_dir):

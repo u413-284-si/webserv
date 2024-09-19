@@ -954,7 +954,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
 		cgiHandler.init(
 			connection.m_clientSocket, connection.m_serverSocket, connection.m_request, connection.location);
-		cgiHandler.execute(connection.m_request);
+		cgiHandler.execute(connection.m_request, connection.location);
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();

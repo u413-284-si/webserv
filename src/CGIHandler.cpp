@@ -122,7 +122,7 @@ void CGIHandler::init(const Socket& clientSocket, const Socket& serverSocket, co
  * and sets the HTTP status of the request to 500 Internal Server Error.
  * @param request The HTTP request to be processed by the CGI script.
  */
-void CGIHandler::execute(HTTPRequest& request)
+void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location)
 {
 	std::vector<std::string> bufferEnv;
 	std::vector<std::string> bufferArgv;
@@ -162,6 +162,12 @@ void CGIHandler::execute(HTTPRequest& request)
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
 		close(m_pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
+		std::string workingDir = location->root + location->path;
+		if (chdir(workingDir.c_str()) == -1) {
+			LOG_ERROR << "Error: chdir(): " + std::string(std::strerror(errno));
+			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
+			write(STDOUT_FILENO, error.c_str(), error.size());
+		}
 		int ret = 0;
 		ret = execve(argv[0], argv.data(), envp.data());
 		LOG_ERROR << "Error: execve(): " + std::string(std::strerror(errno));
