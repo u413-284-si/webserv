@@ -143,6 +143,7 @@ SRC:=	main.cpp \
 
 TEST_SRC :=	test_acceptConnections.cpp \
 			test_AutoindexHandler.cpp \
+			test_CGIHandler.cpp \
 			test_checkForTimeout.cpp \
 			test_ConfigFileParser.cpp \
 			test_connectionReceiveHeader.cpp \
