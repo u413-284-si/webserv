@@ -41,7 +41,7 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
  */
 bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
 {
-	connection.m_status = Connection::ReceiveHeader;
+	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
 	connection.m_bytesReceived = 0;
