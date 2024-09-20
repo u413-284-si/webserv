@@ -7,6 +7,7 @@
 #include "Log.hpp"
 #include "Socket.hpp"
 #include "StatusCode.hpp"
+#include "signalHandler.hpp"
 #include "utilities.hpp"
 
 #include <arpa/inet.h>
@@ -59,3 +60,5 @@ private:
 	std::string extractPathInfo(const std::string& path);
 	std::string extractScriptPath(const std::string& path);
 };
+
+bool registerChildSignals();

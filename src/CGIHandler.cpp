@@ -1,4 +1,6 @@
 #include "CGIHandler.hpp"
+#include "signalHandler.hpp"
+#include <cstdlib>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -189,24 +191,33 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 		return;
 	}
 	if (m_cgiPid == 0) {
+		if (!registerChildSignals()) {
+			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
+			write(STDOUT_FILENO, error.c_str(), error.size());
+			std::exit(EXIT_FAILURE);
+		}
 		dup2(m_pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
 		dup2(m_pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
 		close(m_pipeIn[0]); // Can be closed as the read connection to server exists in stdin now
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
 		close(m_pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
+
 		std::string workingDir = location->root + location->path;
 		if (chdir(workingDir.c_str()) == -1) {
 			LOG_ERROR << "Error: chdir(): " + std::string(std::strerror(errno));
 			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
+			std::exit(EXIT_FAILURE);
 		}
+
 		int ret = 0;
 		ret = execve(argv[0], argv.data(), envp.data());
 		LOG_ERROR << "Error: execve(): " + std::string(std::strerror(errno));
 		if (ret == -1) {
 			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
+			std::exit(EXIT_FAILURE);
 		}
 	}
 	close(m_pipeIn[0]); // Close read end of input pipe in parent process
@@ -301,4 +312,41 @@ std::string CGIHandler::extractScriptPath(const std::string& path)
 	if (extensionStart == std::string::npos)
 		return "";
 	return path.substr(0, extensionStart + m_cgiExt.size());
+}
+
+/**
+ * @brief Registers signal handlers for various signals.
+ *
+ * This function sets the default signal handlers for SIGINT, SIGTERM, and SIGQUIT,
+ * and ignores the SIGHUP signal. If any of the signal registrations fail, an error
+ * message is logged and the function returns false.
+ *
+ * @return true if all signal handlers are successfully registered, false otherwise.
+ */
+bool registerChildSignals()
+{
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
+	if (std::signal(SIGINT, SIG_DFL) == SIG_ERR) {
+		LOG_ERROR << "failed to register " << signalNumToName(SIGINT) << ": " << std::strerror(errno);
+		return (false);
+	}
+
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
+	if (std::signal(SIGTERM, SIG_DFL) == SIG_ERR) {
+		LOG_ERROR << "failed to register " << signalNumToName(SIGTERM) << ": " << std::strerror(errno);
+		return (false);
+	}
+
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
+	if (std::signal(SIGHUP, SIG_IGN) == SIG_ERR) {
+		LOG_ERROR << "failed to register " << signalNumToName(SIGHUP) << ": " << std::strerror(errno);
+		return (false);
+	}
+
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
+	if (std::signal(SIGQUIT, SIG_DFL) == SIG_ERR) {
+		LOG_ERROR << "failed to register " << signalNumToName(SIGQUIT) << ": " << std::strerror(errno);
+		return (false);
+	}
+	return (true);
 }
