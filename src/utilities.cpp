@@ -284,4 +284,79 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	return (ret);
 }
 
+/**
+ * @brief Checks if the provided ip address is valid and reads it if that is the case
+ *
+ * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if
+ * a colon is present. If no colon is present, the port or the ip address must be valid.
+ *
+ * The function makes sure that the ip address is valid in the following ways:
+ * 1. The ip address must not contain any character other than '0'-'9' or '.'
+ * 2. The number of dots must be 3
+ * 3. The numbers within the ip address can not be smaller than 0 or greater than 255
+ *
+ * @param ipAddress The ip address to check
+ * @return true If the ip address is valid
+ * @return false If the ip address is not valid
+ */
+bool isIpAddressValid(const std::string& ipAddress)
+{
+	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
+		return false;
+
+	const size_t firstDotIndex = ipAddress.find('.');
+	if (firstDotIndex == std::string::npos)
+		return false;
+	const size_t secondDotIndex = ipAddress.find('.', firstDotIndex + 1);
+	if (secondDotIndex == std::string::npos)
+		return false;
+	const size_t thirdDotIndex = ipAddress.find('.', secondDotIndex + 1);
+	if (thirdDotIndex == std::string::npos)
+		return false;
+
+	std::string firstOctetStr = ipAddress.substr(0, firstDotIndex);
+	std::string secondOctetStr = ipAddress.substr(firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
+	std::string thirdOctetStr = ipAddress.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
+	std::string fourthOctetStr = ipAddress.substr(thirdDotIndex + 1, ipAddress.length() - thirdDotIndex - 1);
+
+	const int base = 10;
+	const long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
+	const long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
+	const long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
+	const long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
+
+	const short maxIpValue = 255;
+	const short minIpValue = 0;
+	if (firstOctet > maxIpValue || secondOctet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
+		return false;
+	if (firstOctet < minIpValue || secondOctet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
+		return false;
+
+	return true;
+}
+
+/**
+ * @brief Checks if the port number of the listen directive is valid
+ *
+ * The function makes sure that the port is valid in the following ways:
+ * 1. The port must not contain a character other than '0'-'9'
+ * 2. The value of the port must be between 1-65535
+ *
+ * @param port The port to be checked
+ * @return true If the port is valid
+ * @return false If the port is invalid
+ */
+bool isPortValid(const std::string& port)
+{
+	if (port.find_first_not_of("0123456789") != std::string::npos)
+		return false;
+
+	const int base = 10;
+	const int maxPort = 65535;
+	const int minPort = 1;
+
+	const long portNum = std::strtol(port.c_str(), NULL, base);
+	return !(portNum <= minPort || portNum > maxPort);
+}
+
 } // webutils
