@@ -338,7 +338,6 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			headerName = headerLine.substr(0, delimiterPos);
 			validateHeaderName(headerName, request);
 			headerValue = headerLine.substr(delimiterPos + 1);
-			;
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
@@ -349,10 +348,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		}
 	}
 	validateTransferEncoding(request);
-	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_UNEXPECTED_BODY);
-	}
+	validateMethodWithBody(request);
 }
 
 /**
@@ -816,4 +812,25 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	}
 	// this is never reached
 	return false;
+}
+
+/**
+ * @brief Validates if the HTTP request method is allowed to have a body.
+ *
+ * This function checks if the HTTP request contains a body and whether the 
+ * method used in the request is allowed to have a body. If the request has a 
+ * body but the method is not allowed to have one, it sets the HTTP status to 
+ * Bad Request and throws a runtime error.
+ *
+ * @param request The HTTPRequest object to be validated.
+ *
+ * @throws std::runtime_error If the request has a body but the method is not 
+ *         allowed to have a body.
+ */
+void RequestParser::validateMethodWithBody(HTTPRequest& request)
+{
+	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_UNEXPECTED_BODY);
+	}
 }

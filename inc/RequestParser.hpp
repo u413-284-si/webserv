@@ -56,6 +56,7 @@ private:
 	static void validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
+	static void validateMethodWithBody(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
