@@ -1,4 +1,5 @@
 #include "RequestParser.hpp"
+#include "StatusCode.hpp"
 #include "error.hpp"
 #include <iostream>
 #include <map>
@@ -620,7 +621,7 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 void RequestParser::validateMethodWithBody(HTTPRequest& request)
 {
 	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
-		request.httpStatus = StatusBadRequest;
+		request.httpStatus = StatusMethodNotAllowed;
 		throw std::runtime_error(ERR_UNEXPECTED_BODY);
 	}
 }
