@@ -1,7 +1,4 @@
 #include "Server.hpp"
-#include "Connection.hpp"
-#include "Log.hpp"
-#include <map>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
