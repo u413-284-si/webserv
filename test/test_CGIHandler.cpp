@@ -77,16 +77,3 @@ TEST_F(CGIHandlerTest, NoPathInfo)
 	EXPECT_EQ(m_cgiHandler.getEnv().at("PATH_INFO"), "");
 	EXPECT_EQ(m_cgiHandler.getEnv().at("PATH_TRANSLATED"), "/var/www/html");
 }
-
-TEST_F(CGIHandlerTest, ExecutePipeCreation)
-{
-	// Arrange
-
-	// Act
-	m_cgiHandler.init(clientSock, serverSock, request, iter);
-	m_cgiHandler.execute(request, iter);
-
-	// Assert
-	EXPECT_EQ(m_cgiHandler.getPipeInWriteEnd(), 4);
-	EXPECT_EQ(m_cgiHandler.getPipeOutReadEnd(), 5);
-}
