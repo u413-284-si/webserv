@@ -605,36 +605,6 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 }
 
 /**
- * @brief Checks if the HTTP request method allows a body.
- *
- * This function determines whether the specified HTTP request method can have
- * a body. The methods POST and DELETE allow bodies, while method GET does not.
- *
- * @param request The HTTP request object containing the method to check.
- *
- * @return true If the method allows a body (e.g., POST, DELETE).
- * @return false If the method does not allow a body (e.g., GET).
- *
- * @note The function asserts that the method in the request is within the
- *       expected range (from MethodGet to MethodCount).
- */
-bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
-{
-	assert(request.method >= MethodGet && request.method <= MethodCount);
-
-	switch (request.method) {
-	case MethodGet:
-	case MethodCount:
-		return false;
-	case MethodPost:
-	case MethodDelete:
-		return true;
-	}
-	// this is never reached
-	return false;
-}
-
-/**
  * @brief Validates if the HTTP request method is allowed to have a body.
  *
  * This function checks if the HTTP request contains a body and whether the 
@@ -666,6 +636,11 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	if (iter->second.empty()) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
+	}
+
+	if (!isValidHostname(iter->second)) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_INVALID_HOSTNAME);
 	}
 }
 
@@ -737,7 +712,7 @@ void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
 /**
  * @brief Checks if a given character is a valid URI character.
  *
- * This function determines if the provided character `c` is a valid character in a URI.
+ * This function determines if the provided character `character` is a valid character in a URI.
  * It checks against both unreserved and reserved characters as per the URI specification.
  *
  * The unreserved characters include:
@@ -803,7 +778,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
 /**
  * @brief Checks if a given character is a valid HTTP header field name character.
  *
- * This function determines if the provided character `c` is valid for use in an HTTP header field name.
+ * This function determines if the provided character `character` is valid for use in an HTTP header field name.
  * According to the HTTP/1.1 specification, valid characters for header field names include alphanumeric
  * characters (letters and digits) and the following special characters:
  *
@@ -884,3 +859,103 @@ size_t RequestParser::convertHex(const std::string& chunkSize)
 	return value;
 }
 
+/**
+ * @brief Checks if the HTTP request method allows a body.
+ *
+ * This function determines whether the specified HTTP request method can have
+ * a body. The methods POST and DELETE allow bodies, while method GET does not.
+ *
+ * @param request The HTTP request object containing the method to check.
+ *
+ * @return true If the method allows a body (e.g., POST, DELETE).
+ * @return false If the method does not allow a body (e.g., GET).
+ *
+ * @note The function asserts that the method in the request is within the
+ *       expected range (from MethodGet to MethodCount).
+ */
+bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
+{
+	assert(request.method >= MethodGet && request.method <= MethodCount);
+
+	switch (request.method) {
+	case MethodGet:
+	case MethodCount:
+		return false;
+	case MethodPost:
+	case MethodDelete:
+		return true;
+	}
+	// this is never reached
+	return false;
+}
+
+/**
+ * @brief Checks if a character is valid in a hostname.
+ *
+ * This function determines if a given character is valid for use in a hostname.
+ * A valid hostname character is either an alphanumeric character or a hyphen ('-').
+ *
+ * @param character The character to be checked.
+ * @return true if the character is a valid hostname character, false otherwise.
+ */
+bool RequestParser::isValidHostnameChar(char character)
+{
+	return ((std::isalnum(character) != 0) || character == '-');
+}
+
+/**
+ * @brief Validates a label within a hostname.
+ *
+ * This function checks if a given label within a hostname is valid according to the following rules:
+ * - The label must not be empty and must not exceed the maximum label length (RFC 1035).
+ * - The label must not start or end with a hyphen ('-').
+ * - All characters in the label must be valid hostname characters (alphanumeric or hyphen).
+ *
+ * @param label The label string to be validated.
+ * @return true if the label is valid, false otherwise.
+ */
+bool RequestParser::isValidLabel(const std::string& label) {
+	if (label.empty() || label.length() > s_maxLabelLength)
+		return false;
+
+	// Label must not start or end with a hyphen
+	if (label.at(0) == '-' || label.at(label.length() - 1) == '-')
+		return false;
+
+	for (size_t i = 0; i < label.length(); ++i)
+		if (!isValidHostnameChar(label.at(i)))
+			return false;
+
+	return true;
+}
+
+
+/**
+ * @brief Validates if the given hostname is valid according to specific rules.
+ *
+ * This function checks if the hostname length does not exceed the maximum allowed length
+ * and if each label (substring between periods) within the hostname is valid.
+ *
+ * @param hostname The hostname to be validated.
+ * @return true if the hostname is valid, false otherwise.
+ */
+bool RequestParser::isValidHostname(const std::string& hostname) {
+    if (hostname.length() > s_maxHostNameLength)
+        return false;
+
+    size_t labelStart = 0;
+    size_t labelEnd = 0;
+
+    // Split hostname by periods and validate each label
+    while (labelEnd != std::string::npos) {
+        labelEnd = hostname.find('.', labelStart);
+
+        std::string label = (labelEnd == std::string::npos) 
+                            ? hostname.substr(labelStart) 
+                            : hostname.substr(labelStart, labelEnd - labelStart);
+        if (!isValidLabel(label))
+            return false;
+        labelStart = labelEnd + 1;
+    }
+    return true;
+}

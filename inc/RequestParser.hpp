@@ -26,6 +26,9 @@ const int decimalBase = 10;
 
 class RequestParser {
 public:
+	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
+	static const int s_maxHostNameLength = 255; /**< Maximum length for hostname */
+
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
@@ -57,7 +60,6 @@ private:
 	static void validateHostHeader(HTTPRequest& request);
 	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
-	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 	static void validateMethodWithBody(HTTPRequest& request);
 
 	// Helper functions
@@ -66,4 +68,8 @@ private:
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
 	static size_t convertHex(const std::string& chunkSize);
+	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
+	static bool isValidHostnameChar(char character);
+	static bool isValidLabel(const std::string& label);
+	static bool isValidHostname(const std::string& hostname);
 };
