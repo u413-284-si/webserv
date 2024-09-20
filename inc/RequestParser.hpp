@@ -55,6 +55,7 @@ private:
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);
 	static void validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
 	static void validateHostHeader(HTTPRequest& request);
+	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 	static void validateMethodWithBody(HTTPRequest& request);

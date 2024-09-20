@@ -344,3 +344,58 @@ TEST_F(ParseHeadersTest, UnexpectedBody)
 		},
 		std::runtime_error);
 }
+
+TEST_F(ParseHeadersTest, MissingHostHeader)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Missing host header", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, EmptyHostValue)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Missing host header value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, MultipleHostHeaders)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: example.com\r\n"
+					"SomeOtherHeader: random value\r\nHost: huhu.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Multiple host headers", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}

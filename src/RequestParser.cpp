@@ -1,4 +1,7 @@
 #include "RequestParser.hpp"
+#include "error.hpp"
+#include <iostream>
+#include <map>
 
 /* ====== HELPER FUNCTIONS ====== */
 
@@ -343,6 +346,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
 			webutils::trimTrailingWhiteSpaces(headerValue);
 			validateContentLength(headerName, headerValue, request);
+			validateNoMultipleHostHeaders(headerName, request);
 			request.headers[headerName] = headerValue;
 			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
 		}
@@ -838,8 +842,24 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
 
 void RequestParser::validateHostHeader(HTTPRequest& request)
 {
-	if (request.headers.find("Host") == request.headers.end()) {
+	std::map<std::string, std::string>::const_iterator iter = request.headers.find("Host");
+	if (iter == request.headers.end()) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
+	}
+	
+	if (iter->second.empty()) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
+	}
+}
+
+void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request)
+{
+	if (headerName == "Host") {
+		if (request.headers.find("Host") != request.headers.end()) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
+		}
 	}
 }
