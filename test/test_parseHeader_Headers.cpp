@@ -139,6 +139,17 @@ TEST_F(ParseHeadersTest, ValidHostnameAsIP)
 	EXPECT_EQ(request.headers["Host"], "127.0.0.1");
 }
 
+TEST_F(ParseHeadersTest, ValidHostnameAsIPWithPort)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65535\r\n\r\n",
+					request);
+
+	// Assert
+	EXPECT_EQ(request.headers["Host"], "177.3.1.1:65535");
+}
 
 // NON-VALID HEADERS TEST SUITE
 
@@ -559,10 +570,66 @@ TEST_F(ParseHeadersTest, HostnameAsIPInvalid)
 	EXPECT_THROW(
 		{
 			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.999\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+// not an actual IP and missing alphabetical character for hostname
+TEST_F(ParseHeadersTest, InvalidHostnameLikeIP)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
 				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.9999\r\n\r\n",
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+// not an actual IP and missing alphabetical character for hostname
+TEST_F(ParseHeadersTest, InvalidHostnameLikeIP2)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.3.43.1.1\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameAsIPWithInvalidPort)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65536\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP with port", e.what());
 				throw;
 			}
 		},
