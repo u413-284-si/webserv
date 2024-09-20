@@ -1,8 +1,11 @@
 #include "RequestParser.hpp"
 #include "StatusCode.hpp"
 #include "error.hpp"
+#include "utilities.hpp"
+#include <cstddef>
 #include <iostream>
 #include <map>
+#include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -483,7 +486,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
@@ -553,7 +556,7 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		std::vector<long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, decimalBase);
+			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, g_decimalBase);
 			if ((contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
@@ -608,14 +611,14 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 /**
  * @brief Validates if the HTTP request method is allowed to have a body.
  *
- * This function checks if the HTTP request contains a body and whether the 
- * method used in the request is allowed to have a body. If the request has a 
- * body but the method is not allowed to have one, it sets the HTTP status to 
+ * This function checks if the HTTP request contains a body and whether the
+ * method used in the request is allowed to have a body. If the request has a
+ * body but the method is not allowed to have one, it sets the HTTP status to
  * Bad Request and throws a runtime error.
  *
  * @param request The HTTPRequest object to be validated.
  *
- * @throws std::runtime_error If the request has a body but the method is not 
+ * @throws std::runtime_error If the request has a body but the method is not
  *         allowed to have a body.
  */
 void RequestParser::validateMethodWithBody(HTTPRequest& request)
@@ -626,6 +629,23 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
 	}
 }
 
+/**
+ * @brief Validates the "Host" header in the given HTTP request.
+ *
+ * This function checks if the "Host" header is present and non-empty in the HTTP request.
+ * It also validates the format of the host value, ensuring it is either a valid IP address
+ * (with or without a port) or a valid hostname.
+ *
+ * @param request The HTTP request object containing headers to be validated.
+ *
+ * @throws std::runtime_error If the "Host" header is missing, empty, or contains an invalid value.
+ * The specific error message thrown depends on the type of validation failure:
+ * - ERR_MISSING_HOST_HEADER: The "Host" header is missing.
+ * - ERR_EMPTY_HOST_VALUE: The "Host" header value is empty.
+ * - ERR_INVALID_IP_WITH_PORT: The "Host" header contains an invalid IP address with a port.
+ * - ERR_INVALID_IP: The "Host" header contains an invalid IP address.
+ * - ERR_INVALID_HOSTNAME: The "Host" header contains an invalid hostname.
+ */
 void RequestParser::validateHostHeader(HTTPRequest& request)
 {
 	std::map<std::string, std::string>::const_iterator iter = request.headers.find("Host");
@@ -633,15 +653,31 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
 	}
-	
+
 	if (iter->second.empty()) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
 	}
 
-	if (!isValidHostname(iter->second)) {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_INVALID_HOSTNAME);
+	bool hasPort = false;
+	if (isIPAddress(iter->second, hasPort)) {
+		if (hasPort) {
+			if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
+			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+				request.httpStatus = StatusBadRequest;
+				throw std::runtime_error(ERR_INVALID_IP_WITH_PORT);
+			}
+		} else {
+			if (!webutils::isIpAddressValid(iter->second)) {
+				request.httpStatus = StatusBadRequest;
+				throw std::runtime_error(ERR_INVALID_IP);
+			}
+		}
+	} else {
+		if (!isValidHostname(iter->second)) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_INVALID_HOSTNAME);
+		}
 	}
 }
 
@@ -649,7 +685,7 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
  * @brief Validates that there are no multiple "Host" headers in the HTTP request.
  *
  * This function checks if the provided header name is "Host". If it is, it then checks
- * if the "Host" header already exists in the request headers. If a "Host" header is 
+ * if the "Host" header already exists in the request headers. If a "Host" header is
  * found, it sets the HTTP status of the request to BadRequest and throws a runtime error.
  *
  * @param headerName The name of the header to validate.
@@ -890,17 +926,23 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	return false;
 }
 
+
 /**
- * @brief Checks if a character is valid in a hostname.
- *
- * This function determines if a given character is valid for use in a hostname.
+ * @brief Checks if a character is valid in a hostname and updates the alpha flag.
+ * 
+ * This function determines if the given character is a valid part of a hostname.
  * A valid hostname character is either an alphanumeric character or a hyphen ('-').
- *
+ * Additionally, if the character is an alphabetic character, the function sets the 
+ * hasAlpha flag to true.
+ * 
  * @param character The character to be checked.
+ * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
  * @return true if the character is a valid hostname character, false otherwise.
  */
-bool RequestParser::isValidHostnameChar(char character)
+bool RequestParser::isValidHostnameChar(char character, bool& hasAlpha)
 {
+	if (std::isalpha(character) != 0)
+		hasAlpha = true;
 	return ((std::isalnum(character) != 0) || character == '-');
 }
 
@@ -915,7 +957,8 @@ bool RequestParser::isValidHostnameChar(char character)
  * @param label The label string to be validated.
  * @return true if the label is valid, false otherwise.
  */
-bool RequestParser::isValidLabel(const std::string& label) {
+bool RequestParser::isValidLabel(const std::string& label, bool& hasAlpha)
+{
 	if (label.empty() || label.length() > s_maxLabelLength)
 		return false;
 
@@ -924,39 +967,83 @@ bool RequestParser::isValidLabel(const std::string& label) {
 		return false;
 
 	for (size_t i = 0; i < label.length(); ++i)
-		if (!isValidHostnameChar(label.at(i)))
+		if (!isValidHostnameChar(label.at(i), hasAlpha))
 			return false;
-
 	return true;
 }
-
 
 /**
  * @brief Validates if the given hostname is valid according to specific rules.
  *
  * This function checks if the hostname length does not exceed the maximum allowed length
  * and if each label (substring between periods) within the hostname is valid.
+ * Also verifies that the hostname has at least one alphabetic character.
  *
  * @param hostname The hostname to be validated.
  * @return true if the hostname is valid, false otherwise.
  */
-bool RequestParser::isValidHostname(const std::string& hostname) {
-    if (hostname.length() > s_maxHostNameLength)
-        return false;
+bool RequestParser::isValidHostname(const std::string& hostname)
+{
+	if (hostname.length() > s_maxHostNameLength)
+		return false;
 
-    size_t labelStart = 0;
-    size_t labelEnd = 0;
+	size_t labelStart = 0;
+	size_t labelEnd = 0;
+	bool hasAlpha = false;
 
-    // Split hostname by periods and validate each label
-    while (labelEnd != std::string::npos) {
-        labelEnd = hostname.find('.', labelStart);
+	// Split hostname by periods and validate each label
+	while (labelEnd != std::string::npos) {
+		labelEnd = hostname.find('.', labelStart);
 
-        std::string label = (labelEnd == std::string::npos) 
-                            ? hostname.substr(labelStart) 
-                            : hostname.substr(labelStart, labelEnd - labelStart);
-        if (!isValidLabel(label))
-            return false;
-        labelStart = labelEnd + 1;
-    }
-    return true;
+		std::string label = (labelEnd == std::string::npos) ? hostname.substr(labelStart)
+															: hostname.substr(labelStart, labelEnd - labelStart);
+		if (!isValidLabel(label, hasAlpha))
+			return false;
+		labelStart = labelEnd + 1;
+	}
+	return hasAlpha;
+}
+
+/**
+ * @brief Checks if the given host value is a valid IP address.
+ *
+ * This function parses the provided host value to determine if it is a valid
+ * IPv4 address. It also checks if the IP address includes a port number.
+ *
+ * @param hostvalue The host value to be checked.
+ * @param hasPort A reference to a boolean that will be set to true if the IP address includes a port number, false otherwise.
+ * @return true if the host value is a valid IP address, false otherwise.
+ */
+bool RequestParser::isIPAddress(const std::string& hostvalue, bool& hasPort)
+{
+	std::vector<std::string> segments;
+	size_t segmentStart = 0;
+	size_t segmentEnd = 0;
+
+	while (segmentEnd != std::string::npos) {
+		segmentEnd = hostvalue.find('.', segmentStart);
+		std::string segment = (segmentEnd == std::string::npos)
+			? hostvalue.substr(segmentStart)
+			: hostvalue.substr(segmentStart, segmentEnd - segmentStart);
+		segments.push_back(segment);
+		segmentStart = segmentEnd + 1;
+	}
+
+	if (segments.size() != 4)
+		return false;
+
+	size_t colonPos = segments.at(segments.size() - 1).find(':');
+	if (colonPos != std::string::npos) {
+		hasPort = true;
+		std::string newSegment = segments.at(segments.size() - 1).substr(0,colonPos);
+		segments.at(segments.size() - 1) = newSegment;
+	}
+
+	for (std::vector<std::string>::const_iterator citer = segments.begin(); citer != segments.end(); ++citer) {
+		if (citer->empty() || citer->size() > 3)
+			return false;
+		if (citer->find_first_not_of("0123456789") != std::string::npos)
+			return false;
+	}
+	return true;
 }

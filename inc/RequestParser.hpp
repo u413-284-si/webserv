@@ -20,7 +20,7 @@
 
 /* ====== DEFINITIONS ====== */
 
-const int decimalBase = 10;
+const int g_decimalBase = 10;
 
 /* ====== CLASS DECLARATION ====== */
 
@@ -69,7 +69,8 @@ private:
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
 	static size_t convertHex(const std::string& chunkSize);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
-	static bool isValidHostnameChar(char character);
-	static bool isValidLabel(const std::string& label);
+	static bool isValidHostnameChar(char character, bool& hasAlpha);
+	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
+	static bool isIPAddress(const std::string& hostvalue, bool& hasPort);
 };
