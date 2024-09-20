@@ -22,7 +22,7 @@ TEST_F(ParseRequestLineTest, BasicRequestLine_GET)
 	// Arrange
 
 	// Act
-	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
+	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodGet);
@@ -37,7 +37,7 @@ TEST_F(ParseRequestLineTest, BasicRequestLine_DELETE)
 	// Arrange
 
 	// Act
-	p.parseHeader("DELETE /index.html HTTP/1.1\r\n\r\n", request);
+	p.parseHeader("DELETE /index.html HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodDelete);
@@ -52,7 +52,7 @@ TEST_F(ParseRequestLineTest, BasicRequestLine_POST)
 	// Arrange
 
 	// Act
-	p.parseHeader("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\n\r\n", request);
+	p.parseHeader("POST /abracadabra/ipsum?user=aziz&key=password HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodPost);
@@ -67,7 +67,7 @@ TEST_F(ParseRequestLineTest, BasicRequestLine_NoQuery)
 	// Arrange
 
 	// Act
-	p.parseHeader("GET /search? HTTP/1.1\r\n\r\n", request);
+	p.parseHeader("GET /search? HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodGet);
@@ -82,7 +82,7 @@ TEST_F(ParseRequestLineTest, BasicRequestLine_NoFragment)
 	// Arrange
 
 	// Act
-	p.parseHeader("GET /search?# HTTP/1.1\r\n\r\n", request);
+	p.parseHeader("GET /search?# HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodGet);
@@ -97,7 +97,7 @@ TEST_F(ParseRequestLineTest, Version1_0)
 	// Arrange
 
 	// Act
-	p.parseHeader("GET /search?# HTTP/1.0\r\n\r\n", request);
+	p.parseHeader("GET /search?# HTTP/1.0\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodGet);

@@ -19,6 +19,7 @@
 // HTTP REQUEST HEADER ERRORS
 #define ERR_HEADER_COLON_WHITESPACE "Invalid HTTP request: Whitespace between header field-name and colon detected"
 #define ERR_HEADER_NAME_INVALID_CHAR "Invalid HTTP request: Invalid char in header field name"
+#define ERR_MISSING_HOST_HEADER "Invalid HTTP request: Missing host header"
 #define ERR_MULTIPLE_CONTENT_LENGTH_VALUES "Invalid HTTP request: Multiple differing content-length values"
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"

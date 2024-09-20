@@ -347,6 +347,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
 		}
 	}
+	validateHostHeader(request);
 	validateTransferEncoding(request);
 	validateMethodWithBody(request);
 }
@@ -832,5 +833,13 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
 	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_UNEXPECTED_BODY);
+	}
+}
+
+void RequestParser::validateHostHeader(HTTPRequest& request)
+{
+	if (request.headers.find("Host") == request.headers.end()) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
 	}
 }
