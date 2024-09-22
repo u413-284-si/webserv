@@ -16,7 +16,7 @@ ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
  *
  * If the response body is empty, only the response header is returned.
  * Otherwise, the response header and body are returned.
- * The response doesn't chnage until the next buildResponse() call.
+ * The response doesn't change until the next buildResponse() call.
  * @return std::string Response.
  */
 std::string ResponseBuilder::getResponse() const
