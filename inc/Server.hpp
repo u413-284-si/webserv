@@ -129,20 +129,19 @@ void handleEvent(Server& server, struct epoll_event);
 
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
-void handleConnection(Server& server, int clientFd, Connection& connection);
-void handleCGIConnection(Server& server, int pipeFd, Connection& connection);
+void handleConnection(Server& server, int activeFd, Connection& connection);
 
-void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
+void connectionReceiveHeader(Server& server, int activeFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection);
 bool isCGIRequested(Connection& connection);
-void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
+void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
-void connectionSendToCGI(Server& server, Connection& connection);
-void connectionReceiveFromCGI(Server& server, Connection& connection);
-void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
-void connectionSendResponse(Server& server, int clientFd, Connection& connection);
-void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
+void connectionSendToCGI(Server& server, int activeFd, Connection& connection);
+void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection);
+void connectionBuildResponse(Server& server, int activeFd, Connection& connection);
+void connectionSendResponse(Server& server, int activeFd, Connection& connection);
+void connectionHandleTimeout(Server& server, int activeFd, Connection& connection);
 
 void checkForTimeout(Server& server);
 

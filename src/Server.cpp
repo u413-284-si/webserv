@@ -652,7 +652,7 @@ void handleEvent(Server& server, struct epoll_event event)
 		}
 		acceptConnections(server, iter->first, iter->second, eventMask);
 	} else if (cgiIter != server.getCGIConnections().end()) {
-		handleCGIConnection(server, cgiIter->first, cgiIter->second);
+		handleConnection(server, cgiIter->first, cgiIter->second);
 	} else {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_DEBUG << "epoll_wait: EPOLLERR";
@@ -724,52 +724,6 @@ void acceptConnections(Server& server, int serverFd, const Socket& serverSock, u
 
 		if (!server.registerConnection(boundSock, clientFd, clientSock))
 			continue;
-		}
-}
-
-/**
- * @brief Handles the processing of CGI connections for a given client and server.
- *
- * This function handles the current status of a connection that involves
- * CGI processing. Depending on the connection's status, it performs actions
- * such as sending data to the CGI script or receiving data from the CGI script.
- *
- * @param server The server object handling the connection.
- * @param pipeFd The file descriptor of the pipe end.
- * @param connection The connection object representing the state of the CGI communication.
- *
- * The function takes different actions based on the current status of the connection:
- * - Connection::ReceiveHeader: No action is taken for receiving headers in this function.
- * - Connection::ReceiveBody: No action is taken for receiving the body in this function.
- * - Connection::SendToCGI: Calls `connectionSendToCGI()` to send the request to the CGI process.
- * - Connection::ReceiveFromCGI: Calls `connectionReceiveFromCGI()` to receive the response from the CGI process.
- * - Connection::BuildResponse, Connection::SendResponse, Connection::Timeout, Connection::Closed: No action is taken
- * for these states.
- *
- * This function logs the handling of the CGI connection and switches between the different
- * statuses based on the state of the connection.
- */
-void handleCGIConnection(Server& server, int pipeFd, Connection& connection)
-{
-	LOG_DEBUG << "Handling CGI connection: " << connection.m_clientSocket << " on fd: " << pipeFd
-			  << " for server: " << connection.m_serverSocket;
-
-	switch (connection.m_status) {
-    case (Connection::Idle):
-	case (Connection::ReceiveHeader):
-	case (Connection::ReceiveBody):
-		break;
-	case (Connection::SendToCGI):
-		connectionSendToCGI(server, connection);
-		break;
-	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(server, connection);
-		break;
-	case (Connection::BuildResponse):
-	case (Connection::SendResponse):
-	case (Connection::Timeout):
-	case (Connection::Closed):
-		break;
 	}
 }
 
@@ -802,36 +756,39 @@ void handleCGIConnection(Server& server, int pipeFd, Connection& connection)
  * 7. Connection::Closed (not reached): the connection is closed and can be cleaned. This case should not be reached.
  *
  * @param server The server object to handle the connection for.
- * @param clientFd The file descriptor of the client.
+ * @param activeFd The file descriptor being handled.
  * @param connection The connection object to handle.
  */
-void handleConnection(Server& server, const int clientFd, Connection& connection)
+void handleConnection(Server& server, const int activeFd, Connection& connection)
 {
-	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " on fd: " << clientFd
+	LOG_DEBUG << "Handling connection: " << connection.m_clientSocket << " on fd: " << activeFd
 			  << " for server: " << connection.m_serverSocket;
 
 	switch (connection.m_status) {
 	case (Connection::Idle):
 		connection.m_status = Connection::ReceiveHeader;
-		connectionReceiveHeader(server, clientFd, connection);
+		connectionReceiveHeader(server, activeFd, connection);
 		break;
 	case (Connection::ReceiveHeader):
-		connectionReceiveHeader(server, clientFd, connection);
+		connectionReceiveHeader(server, activeFd, connection);
 		break;
 	case (Connection::ReceiveBody):
-		connectionReceiveBody(server, clientFd, connection);
+		connectionReceiveBody(server, activeFd, connection);
 		break;
 	case (Connection::SendToCGI):
+		connectionSendToCGI(server, activeFd, connection);
+		break;
 	case (Connection::ReceiveFromCGI):
+		connectionReceiveFromCGI(server, activeFd, connection);
 		break;
 	case (Connection::BuildResponse):
-		connectionBuildResponse(server, clientFd, connection);
+		connectionBuildResponse(server, activeFd, connection);
 		break;
 	case (Connection::SendResponse):
-		connectionSendResponse(server, clientFd, connection);
+		connectionSendResponse(server, activeFd, connection);
 		break;
 	case (Connection::Timeout):
-		connectionHandleTimeout(server, clientFd, connection);
+		connectionHandleTimeout(server, activeFd, connection);
 		break;
 	case (Connection::Closed):
 		break;
@@ -842,52 +799,54 @@ void handleConnection(Server& server, const int clientFd, Connection& connection
  * @brief Receive request header from a client.
  *
  * This function reads data from the client socket using Server::readFromSocket().
- * The amount of bytes to read from the socket is determined by the bytes already received from the client. It can never
- * be bigger than the buffer size.
+ * The amount of bytes to read from the socket is determined by the bytes already received from the client. It can
+ * never be bigger than the buffer size.
  * - If bytes read is -1, it indicates an internal server error
  * - If bytes read is 0, it indicates that the connection has been closed by the client
  * In both cases the clientFd is closed and the connection status is set to Closed.
- * If bytes read is greater than 0, the bytes received are added to the connection buffer and the bytes received of the
- * connection are updated as well as time since the last event is updated to the current time.
- * If the buffer contains a complete request header, the function handleCompleteRequestHeader() is called.
- * If no complete request was received and the received bytes match the buffer size, sets HTTP status code to 413
- * Request Header Fields Too Large and status to BuildResponse, since the request header was too big.
+ * If bytes read is greater than 0, the bytes received are added to the connection buffer and the bytes received of
+ * the connection are updated as well as time since the last event is updated to the current time. If the buffer
+ * contains a complete request header, the function handleCompleteRequestHeader() is called. If no complete request
+ * was received and the received bytes match the buffer size, sets HTTP status code to 413 Request Header Fields Too
+ * Large and status to BuildResponse, since the request header was too big.
  *
  * @param server The server object which handles the connection.
- * @param clientFd The file descriptor of the client.
+ * @param activeFd The file descriptor being handled.
  * @param connection The connection object to receive the request for.
  * @todo Implement body handling.
  * @todo make clientHeaderBufferSize configurable.
  */
-void connectionReceiveHeader(Server& server, int clientFd, Connection& connection)
+void connectionReceiveHeader(Server& server, int activeFd, Connection& connection)
 {
+	if (activeFd != connection.m_clientFd)
+		return;
 	LOG_DEBUG << "Receive Request Header for: " << connection.m_clientSocket;
 
 	char buffer[Server::s_clientHeaderBufferSize] = {};
 	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_bytesReceived;
 
-	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, bytesToRead, 0);
+	const ssize_t bytesRead = server.readFromSocket(activeFd, buffer, bytesToRead, 0);
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(clientFd);
+		close(activeFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(clientFd);
+		close(activeFd);
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_bytesReceived += bytesRead;
 		connection.m_buffer += buffer;
 		connection.m_timeSinceLastEvent = std::time(0);
 		if (isCompleteRequestHeader(connection.m_buffer)) {
-			handleCompleteRequestHeader(server, clientFd, connection);
+			handleCompleteRequestHeader(server, activeFd, connection);
 		} else {
 			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
 			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
 				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
+				server.modifyEvent(activeFd, EPOLLOUT);
 			}
 		}
 	}
@@ -990,8 +949,8 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
  *
  * This function checks if CGI execution is requested based on the provided HTTP request and response.
  * It checks if the CGI path and extension are specified in the response location, and if the request URI path
- * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a slash,
- * it returns true indicating that CGI execution is requested. Otherwise, it returns false.
+ * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a
+ * slash, it returns true indicating that CGI execution is requested. Otherwise, it returns false.
  *
  * @param connection The Connection object.
  * @return true if CGI execution is requested, false otherwise.
@@ -1007,8 +966,9 @@ bool isCGIRequested(Connection& connection)
 	size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
 
 	// If extension is found and is at the end of the path or followed by a slash
-	return (extPos != std::string::npos	&& (extPos + connection.location->cgiExt.size() == connection.m_request.uri.path.size()
-		|| connection.m_request.uri.path.at(extPos + connection.location->cgiExt.size()) == '/'));
+	return (extPos != std::string::npos
+		&& (extPos + connection.location->cgiExt.size() == connection.m_request.uri.path.size()
+			|| connection.m_request.uri.path.at(extPos + connection.location->cgiExt.size()) == '/'));
 }
 
 /**
@@ -1020,7 +980,7 @@ bool isCGIRequested(Connection& connection)
  * it updates the connection status and modifies the event for the client socket.
  *
  * @param server Reference to the Server instance handling the connection.
- * @param clientFd File descriptor of the client socket.
+ * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection instance representing the client connection.
  *
  * @note If an error occurs while reading from the socket, the client connection is closed.
@@ -1029,20 +989,22 @@ bool isCGIRequested(Connection& connection)
  * @note If the request body is complete, it is parsed and the connection status is updated either to
  * Connection:SendToCGI or Connection::BuildResponse.
  */
-void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
+void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 {
+	if (activeFd != connection.m_clientFd)
+		return;
 	LOG_DEBUG << "Receive Body for: " << connection.m_clientSocket;
 
 	char buffer[Server::s_clientBodyBufferSize] = {};
 
-	const ssize_t bytesRead = server.readFromSocket(clientFd, buffer, sizeof(buffer), 0);
+	const ssize_t bytesRead = server.readFromSocket(activeFd, buffer, sizeof(buffer), 0);
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(clientFd);
+		close(activeFd);
 		connection.m_status = Connection::Closed;
 	} else if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(clientFd);
+		close(activeFd);
 		connection.m_status = Connection::Closed;
 	} else {
 		connection.m_buffer += buffer;
@@ -1051,7 +1013,7 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(clientFd, EPOLLOUT);
+			server.modifyEvent(activeFd, EPOLLOUT);
 			return;
 		}
 		if (isCompleteBody(connection)) {
@@ -1065,12 +1027,12 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 				connection.m_status = Connection::SendToCGI;
 			else
 				connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(clientFd, EPOLLOUT);
+			server.modifyEvent(activeFd, EPOLLOUT);
 		} else {
 			LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
 			if (connection.m_request.httpStatus == StatusBadRequest) {
 				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
+				server.modifyEvent(activeFd, EPOLLOUT);
 			}
 		}
 	}
@@ -1126,10 +1088,16 @@ bool isCompleteBody(Connection& connection)
  * If only part of the body is written, it updates the request body to contain the remaining data.
  *
  * @param server Reference to the Server object.
+ * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection object.
  */
-void connectionSendToCGI(Server& server, Connection& connection)
+void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 {
+	if (activeFd == connection.m_clientFd)
+		return;
+
+	LOG_DEBUG << "Send to CGI for: " << connection.m_clientSocket;
+
 	if (connection.m_request.body.empty()) {
 		LOG_ERROR << "Error: empty body: can't send to CGI";
 		connection.m_request.httpStatus = StatusInternalServerError;
@@ -1172,10 +1140,16 @@ void connectionSendToCGI(Server& server, Connection& connection)
  * associated file descriptors.
  *
  * @param server Reference to the Server instance managing the connection.
+ * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection instance representing the client connection.
  */
-void connectionReceiveFromCGI(Server& server, Connection& connection)
+void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection)
 {
+	if (activeFd == connection.m_clientFd)
+		return;
+
+	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
+
 	char buffer[Server::s_cgiBodyBufferSize] = {};
 	long bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
 
@@ -1224,18 +1198,21 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
  * connectionSendResponse().
  *
  * @param server The server object which handles the connection.
- * @param clientFd The file descriptor of the client.
+ * @param activeFd The file descriptor being handled.
  * @param connection The connection object to build the response for.
  */
-void connectionBuildResponse(Server& server, int clientFd, Connection& connection)
+void connectionBuildResponse(Server& server, int activeFd, Connection& connection)
 {
+    if (activeFd != connection.m_clientFd)
+		return;
+
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection.m_request);
 	connection.m_buffer.clear();
 	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;
-	connectionSendResponse(server, clientFd, connection);
+	connectionSendResponse(server, activeFd, connection);
 }
 
 /**
@@ -1251,18 +1228,21 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
  * If the response is completely sent and the connection is not set to close, the event is modified to listen to
  * EPOLLIN and the connection is cleared.
  * @param server The server object which handles the connection.
- * @param clientFd The file descriptor of the client.
+ * @param activeFd The file descriptor being handled.
  * @param connection The connection object to send the response for.
  */
-void connectionSendResponse(Server& server, int clientFd, Connection& connection)
+void connectionSendResponse(Server& server, int activeFd, Connection& connection)
 {
-	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << clientFd;
+    if (activeFd != connection.m_clientFd)
+		return;
+    
+	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << activeFd;
 
 	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());
-	const ssize_t sentBytes = server.writeToSocket(clientFd, connection.m_buffer.c_str(), bytesToSend, 0);
+	const ssize_t sentBytes = server.writeToSocket(activeFd, connection.m_buffer.c_str(), bytesToSend, 0);
 	if (sentBytes == -1) {
 		LOG_ERROR << "Internal server error";
-		close(clientFd);
+		close(activeFd);
 		connection.m_status = Connection::Closed;
 		return;
 	}
@@ -1276,11 +1256,11 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
 
 	if (connection.m_request.shallCloseConnection) {
 		LOG_DEBUG << "Closing connection";
-		close(clientFd);
+		close(activeFd);
 		connection.m_status = Connection::Closed;
 	} else {
 		LOG_DEBUG << "Connection alive";
-		server.modifyEvent(clientFd, EPOLLIN);
+		server.modifyEvent(activeFd, EPOLLIN);
 		clearConnection(connection, server.getServerConfigs());
 	}
 }
@@ -1292,17 +1272,20 @@ void connectionSendResponse(Server& server, int clientFd, Connection& connection
  * Then it builds the error message by calling connectionBuildResponse().
  *
  * @param server The server object which handles the connection.
- * @param clientFd The file descriptor of the client.
+ * @param activeFd The file descriptor being handled.
  * @param connection The connection object to handle the timeout for.
  */
-void connectionHandleTimeout(Server& server, int clientFd, Connection& connection)
+void connectionHandleTimeout(Server& server, int activeFd, Connection& connection)
 {
+    if (activeFd != connection.m_clientFd)
+		return;
+    
 	LOG_DEBUG << "Timeout for: " << connection.m_clientSocket;
 
 	connection.m_request.shallCloseConnection = true;
 	connection.m_request.httpStatus = StatusRequestTimeout;
 
-	connectionBuildResponse(server, clientFd, connection);
+	connectionBuildResponse(server, activeFd, connection);
 }
 
 /**
@@ -1381,8 +1364,8 @@ void cleanupIdleConnections(Server& server)
  * Then enters another event loop with two conditions:
  * 1. last signal received is SIGQUIT (which initiated graceful shutdown)
  * 2. as long as active connections exist.
- * This second loop always cleans up idle connections. It can also be interrupted with another signal, which aborts the
- * graceful shutdown.
+ * This second loop always cleans up idle connections. It can also be interrupted with another signal, which aborts
+ * the graceful shutdown.
  *
  * @param server The server object to shut down.
  * @sa https://pkg.go.dev/net/http#Server.Shutdown
