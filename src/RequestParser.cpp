@@ -607,7 +607,7 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
  * This function checks if the HTTP request contains a body and whether the
  * method used in the request is allowed to have a body. If the request has a
  * body but the method is not allowed to have one, it sets the HTTP status to
- * Bad Request and throws a runtime error.
+ * StatusMethodNotAllowed and throws a runtime error.
  *
  * @param request The HTTPRequest object to be validated.
  *
