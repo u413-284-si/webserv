@@ -27,7 +27,7 @@ const int g_decimalBase = 10;
 class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
-	static const int s_maxHostNameLength = 255; /**< Maximum length for hostname */
+	static const int s_maxHostNameLength = 253; /**< Maximum length for DNS hostname */
 
 	RequestParser();
 
