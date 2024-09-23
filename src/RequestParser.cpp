@@ -635,8 +635,8 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
  * The specific error message thrown depends on the type of validation failure:
  * - ERR_MISSING_HOST_HEADER: The "Host" header is missing.
  * - ERR_EMPTY_HOST_VALUE: The "Host" header value is empty.
- * - ERR_INVALID_IP_WITH_PORT: The "Host" header contains an invalid IP address with a port.
- * - ERR_INVALID_IP: The "Host" header contains an invalid IP address.
+ * - ERR_INVALID_HOST_IP_WITH_PORT: The "Host" header contains an invalid IP address with a port.
+ * - ERR_INVALID_HOST_IP: The "Host" header contains an invalid IP address.
  * - ERR_INVALID_HOSTNAME: The "Host" header contains an invalid hostname.
  */
 void RequestParser::validateHostHeader(HTTPRequest& request)
@@ -658,12 +658,12 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 			if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
 			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
 				request.httpStatus = StatusBadRequest;
-				throw std::runtime_error(ERR_INVALID_IP_WITH_PORT);
+				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
 			}
 		} else {
 			if (!webutils::isIpAddressValid(iter->second)) {
 				request.httpStatus = StatusBadRequest;
-				throw std::runtime_error(ERR_INVALID_IP);
+				throw std::runtime_error(ERR_INVALID_HOST_IP);
 			}
 		}
 	} else {
