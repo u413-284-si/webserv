@@ -284,54 +284,47 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	return (ret);
 }
 
+
 /**
- * @brief Checks if the provided ip address is valid and reads it if that is the case
+ * @brief Validates whether a given string is a valid IPv4 address.
  *
- * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if
- * a colon is present. If no colon is present, the port or the ip address must be valid.
+ * This function checks if the provided string is a valid IPv4 address.
+ * An IPv4 address consists of four decimal numbers, each ranging from 0 to 255,
+ * separated by dots (e.g., "192.168.0.1").
  *
- * The function makes sure that the ip address is valid in the following ways:
- * 1. The ip address must not contain any character other than '0'-'9' or '.'
- * 2. The number of dots must be 3
- * 3. The numbers within the ip address can not be smaller than 0 or greater than 255
- *
- * @param ipAddress The ip address to check
- * @return true If the ip address is valid
- * @return false If the ip address is not valid
+ * @param ipAddress The string representation of the IPv4 address to validate.
+ * @return true if the ipAddress is a valid IPv4 address, false otherwise.
  */
 bool isIpAddressValid(const std::string& ipAddress)
 {
 	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
 
-	const size_t firstDotIndex = ipAddress.find('.');
-	if (firstDotIndex == std::string::npos)
-		return false;
-	const size_t secondDotIndex = ipAddress.find('.', firstDotIndex + 1);
-	if (secondDotIndex == std::string::npos)
-		return false;
-	const size_t thirdDotIndex = ipAddress.find('.', secondDotIndex + 1);
-	if (thirdDotIndex == std::string::npos)
-		return false;
+	std::vector<std::string> segments;
+	size_t segmentStart = 0;
+	size_t segmentEnd = 0;
 
-	std::string firstOctetStr = ipAddress.substr(0, firstDotIndex);
-	std::string secondOctetStr = ipAddress.substr(firstDotIndex + 1, secondDotIndex - firstDotIndex - 1);
-	std::string thirdOctetStr = ipAddress.substr(secondDotIndex + 1, thirdDotIndex - secondDotIndex - 1);
-	std::string fourthOctetStr = ipAddress.substr(thirdDotIndex + 1, ipAddress.length() - thirdDotIndex - 1);
-
-	const int base = 10;
-	const long firstOctet = std::strtol(firstOctetStr.c_str(), NULL, base);
-	const long secondOctet = std::strtol(secondOctetStr.c_str(), NULL, base);
-	const long thirdOctet = std::strtol(thirdOctetStr.c_str(), NULL, base);
-	const long fourthOctet = std::strtol(fourthOctetStr.c_str(), NULL, base);
+	while (segmentEnd != std::string::npos) {
+		segmentEnd = ipAddress.find('.', segmentStart);
+		std::string segment = (segmentEnd == std::string::npos)
+			? ipAddress.substr(segmentStart)
+			: ipAddress.substr(segmentStart, segmentEnd - segmentStart);
+		segments.push_back(segment);
+		segmentStart = segmentEnd + 1;
+	}
+	if (segments.size() != 4)
+		return false;
 
 	const short maxIpValue = 255;
 	const short minIpValue = 0;
-	if (firstOctet > maxIpValue || secondOctet > maxIpValue || thirdOctet > maxIpValue || fourthOctet > maxIpValue)
-		return false;
-	if (firstOctet < minIpValue || secondOctet < minIpValue || thirdOctet < minIpValue || fourthOctet < minIpValue)
-		return false;
-
+	const int base = 10;
+	for (std::vector<std::string>::const_iterator citer = segments.begin(); citer != segments.end(); ++citer) {
+		if (citer->empty() || citer->size() > 3)
+			return false;
+		const long segmentValue = std::strtol(citer->c_str(), NULL, base);
+		if (segmentValue > maxIpValue || segmentValue < minIpValue)
+			return false;
+	}
 	return true;
 }
 

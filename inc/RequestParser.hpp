@@ -72,5 +72,4 @@ private:
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
-	static bool isIPAddress(const std::string& hostvalue, bool& hasPort);
 };

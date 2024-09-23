@@ -652,26 +652,23 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
 	}
 
-	bool hasPort = false;
-	if (isIPAddress(iter->second, hasPort)) {
-		if (hasPort) {
-			if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
+	if (iter->second.find(':') != std::string::npos) {
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
 			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
 				request.httpStatus = StatusBadRequest;
 				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
 			}
-		} else {
-			if (!webutils::isIpAddressValid(iter->second)) {
-				request.httpStatus = StatusBadRequest;
-				throw std::runtime_error(ERR_INVALID_HOST_IP);
-			}
+	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
-	} else {
+	 } else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
-	}
+	 }
 }
 
 /**
@@ -995,48 +992,4 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 		labelStart = labelEnd + 1;
 	}
 	return hasAlpha;
-}
-
-/**
- * @brief Checks if the given host value is a valid IP address.
- *
- * This function parses the provided host value to determine if it is a valid
- * IPv4 address. It also checks if the IP address includes a port number.
- *
- * @param hostvalue The host value to be checked.
- * @param hasPort A reference to a boolean that will be set to true if the IP address includes a port number, false otherwise.
- * @return true if the host value is a valid IP address, false otherwise.
- */
-bool RequestParser::isIPAddress(const std::string& hostvalue, bool& hasPort)
-{
-	std::vector<std::string> segments;
-	size_t segmentStart = 0;
-	size_t segmentEnd = 0;
-
-	while (segmentEnd != std::string::npos) {
-		segmentEnd = hostvalue.find('.', segmentStart);
-		std::string segment = (segmentEnd == std::string::npos)
-			? hostvalue.substr(segmentStart)
-			: hostvalue.substr(segmentStart, segmentEnd - segmentStart);
-		segments.push_back(segment);
-		segmentStart = segmentEnd + 1;
-	}
-
-	if (segments.size() != 4)
-		return false;
-
-	size_t colonPos = segments.at(segments.size() - 1).find(':');
-	if (colonPos != std::string::npos) {
-		hasPort = true;
-		std::string newSegment = segments.at(segments.size() - 1).substr(0,colonPos);
-		segments.at(segments.size() - 1) = newSegment;
-	}
-
-	for (std::vector<std::string>::const_iterator citer = segments.begin(); citer != segments.end(); ++citer) {
-		if (citer->empty() || citer->size() > 3)
-			return false;
-		if (citer->find_first_not_of("0123456789") != std::string::npos)
-			return false;
-	}
-	return true;
 }

@@ -592,7 +592,7 @@ TEST_F(ParseHeadersTest, InvalidHostnameLikeIP)
 				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.9999\r\n\r\n",
 					request);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
 				throw;
 			}
 		},
@@ -611,7 +611,7 @@ TEST_F(ParseHeadersTest, InvalidHostnameLikeIP2)
 				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.3.43.1.1\r\n\r\n",
 					request);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
 				throw;
 			}
 		},
