@@ -28,9 +28,9 @@ TEST_F(ParseHeadersTest, ValidHeaders)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["User-Agent"], "curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3");
-	EXPECT_EQ(request.headers["Accept-Language"], "en, mi");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["user-agent"], "curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3");
+	EXPECT_EQ(request.headers["accept-language"], "en, mi");
 }
 
 TEST_F(ParseHeadersTest, TrimWhiteSpaces)
@@ -43,7 +43,7 @@ TEST_F(ParseHeadersTest, TrimWhiteSpaces)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
 }
 
 TEST_F(ParseHeadersTest, ContentLength)
@@ -56,8 +56,8 @@ TEST_F(ParseHeadersTest, ContentLength)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Content-Length"], "23");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["content-length"], "23");
 }
 
 TEST_F(ParseHeadersTest, RepeatedEqualContentLength)
@@ -70,8 +70,8 @@ TEST_F(ParseHeadersTest, RepeatedEqualContentLength)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Content-Length"], "23");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["content-length"], "23");
 }
 
 TEST_F(ParseHeadersTest, TransferEncodingChunked)
@@ -84,8 +84,8 @@ TEST_F(ParseHeadersTest, TransferEncodingChunked)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Transfer-Encoding"], "gzip, chunked");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["transfer-encoding"], "gzip, chunked");
 }
 
 TEST_F(ParseHeadersTest, TransferEncodingNonChunked)
@@ -98,8 +98,8 @@ TEST_F(ParseHeadersTest, TransferEncodingNonChunked)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Transfer-Encoding"], "gzip");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["transfer-encoding"], "gzip");
 }
 
 TEST_F(ParseHeadersTest, NoBodyTrigger)
@@ -124,7 +124,7 @@ TEST_F(ParseHeadersTest, ValidHostname)
 					request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "this.is.my.domain.com");
+	EXPECT_EQ(request.headers["host"], "this.is.my.domain.com");
 }
 
 TEST_F(ParseHeadersTest, ValidHostnameAsIP)
@@ -136,7 +136,7 @@ TEST_F(ParseHeadersTest, ValidHostnameAsIP)
 					request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "127.0.0.1");
+	EXPECT_EQ(request.headers["host"], "127.0.0.1");
 }
 
 TEST_F(ParseHeadersTest, ValidHostnameAsIPWithPort)
@@ -148,7 +148,7 @@ TEST_F(ParseHeadersTest, ValidHostnameAsIPWithPort)
 					request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "177.3.1.1:65535");
+	EXPECT_EQ(request.headers["host"], "177.3.1.1:65535");
 }
 
 // NON-VALID HEADERS TEST SUITE

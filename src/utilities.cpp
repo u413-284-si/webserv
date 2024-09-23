@@ -284,7 +284,6 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	return (ret);
 }
 
-
 /**
  * @brief Validates whether a given string is a valid IPv4 address.
  *
@@ -351,5 +350,15 @@ bool isPortValid(const std::string& port)
 	const long portNum = std::strtol(port.c_str(), NULL, base);
 	return !(portNum <= minPort || portNum > maxPort);
 }
+
+/**
+ * @brief Converts all characters in a string to lowercase.
+ *
+ * This function takes a reference to a std::string and transforms all of its characters to lowercase using the
+ * std::transform algorithm and the ::tolower function.
+ *
+ * @param str The string to be converted to lowercase.
+ */
+void lowercase(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::tolower); }
 
 } // webutils

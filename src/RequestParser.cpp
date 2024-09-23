@@ -368,6 +368,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 		if (delimiterPos != std::string::npos) {
 			headerName = headerLine.substr(0, delimiterPos);
 			validateHeaderName(headerName, request);
+			webutils::lowercase(headerName);
 			headerValue = headerLine.substr(delimiterPos + 1);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
@@ -438,7 +439,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
-	request.headers["Content-Length"] = webutils::toString(length);
+	request.headers["content-length"] = webutils::toString(length);
 }
 
 /**
@@ -534,13 +535,13 @@ void RequestParser::validateHeaderName(const std::string& headerName, HTTPReques
  */
 void RequestParser::validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request)
 {
-	if (headerName == "Content-Length") {
+	if (headerName == "content-length") {
 		if (headerValue.empty()) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 		}
-		if (request.headers.find("Content-Length") != request.headers.end()
-			&& request.headers["Content-Length"] != headerValue) {
+		if (request.headers.find("content-length") != request.headers.end()
+			&& request.headers["content-length"] != headerValue) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
@@ -582,14 +583,14 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
  */
 void RequestParser::validateTransferEncoding(HTTPRequest& request)
 {
-	if (request.headers.find("Transfer-Encoding") != request.headers.end()) {
-		if (request.headers.at("Transfer-Encoding").empty()) {
+	if (request.headers.find("transfer-encoding") != request.headers.end()) {
+		if (request.headers.at("transfer-encoding").empty()) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
 
-		if (request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
-			std::vector<std::string> encodings = webutils::split(request.headers.at("Transfer-Encoding"), ", ");
+		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
+			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
@@ -641,7 +642,7 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
  */
 void RequestParser::validateHostHeader(HTTPRequest& request)
 {
-	std::map<std::string, std::string>::const_iterator iter = request.headers.find("Host");
+	std::map<std::string, std::string>::const_iterator iter = request.headers.find("host");
 	if (iter == request.headers.end()) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
@@ -685,8 +686,8 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
  */
 void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request)
 {
-	if (headerName == "Host") {
-		if (request.headers.find("Host") != request.headers.end()) {
+	if (headerName == "host") {
+		if (request.headers.find("host") != request.headers.end()) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
 		}
