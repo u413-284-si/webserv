@@ -111,7 +111,7 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
 /**
  * @brief Overload << operator to append a statusCode.
  *
- * Translates the Method enum to a string.
+ * Translates the enum statusCode to a string representing the number.
  * Since Method is an enum it should only contain valid values. On the off chance of memory bugs, it's asserted that the
  * value is in range of the enum.
  *
@@ -125,40 +125,40 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 
 	switch (statusCode) {
 	case StatusOK:
-		ostream << "200 OK";
+		ostream << "200";
 		break;
 	case StatusMovedPermanently:
-		ostream << "301 Moved Permanently";
+		ostream << "301";
 		break;
 	case StatusBadRequest:
-		ostream << "400 Bad Request";
+		ostream << "400";
 		break;
 	case StatusForbidden:
-		ostream << "403 Forbidden";
+		ostream << "403";
 		break;
 	case StatusNotFound:
-		ostream << "404 Not Found";
+		ostream << "404";
 		break;
 	case StatusMethodNotAllowed:
-		ostream << "405 Method Not Allowed";
+		ostream << "405";
 		break;
 	case StatusRequestTimeout:
-		ostream << "408 Request Timeout";
+		ostream << "408";
 		break;
 	case StatusRequestEntityTooLarge:
-		ostream << "413 Request Entity Too Large";
+		ostream << "413";
 		break;
 	case StatusRequestHeaderFieldsTooLarge:
-		ostream << "431 Request Header Fields Too Large";
+		ostream << "431";
 		break;
 	case StatusInternalServerError:
-		ostream << "500 Internal Server Error";
+		ostream << "500";
 		break;
 	case StatusMethodNotImplemented:
-		ostream << "501 Method Not Implemented";
+		ostream << "501";
 		break;
 	case StatusNonSupportedVersion:
-		ostream << "505 HTTP Version Not Supported";
+		ostream << "505";
 		break;
 	}
 	return ostream;
