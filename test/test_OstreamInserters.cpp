@@ -26,31 +26,31 @@ TEST(OstreamInserters, StatusCode)
 {
 	std::ostringstream ostream;
 	ostream << StatusOK;
-	EXPECT_EQ(ostream.str(), "200 OK");
+	EXPECT_EQ(ostream.str(), "200");
 	ostream.str("");
 	ostream << StatusMovedPermanently;
-	EXPECT_EQ(ostream.str(), "301 Moved Permanently");
+	EXPECT_EQ(ostream.str(), "301");
 	ostream.str("");
 	ostream << StatusBadRequest;
-	EXPECT_EQ(ostream.str(), "400 Bad Request");
+	EXPECT_EQ(ostream.str(), "400");
 	ostream.str("");
 	ostream << StatusForbidden;
-	EXPECT_EQ(ostream.str(), "403 Forbidden");
+	EXPECT_EQ(ostream.str(), "403");
 	ostream.str("");
 	ostream << StatusNotFound;
-	EXPECT_EQ(ostream.str(), "404 Not Found");
+	EXPECT_EQ(ostream.str(), "404");
 	ostream.str("");
 	ostream << StatusMethodNotAllowed;
-	EXPECT_EQ(ostream.str(), "405 Method Not Allowed");
+	EXPECT_EQ(ostream.str(), "405");
 	ostream.str("");
 	ostream << StatusInternalServerError;
-	EXPECT_EQ(ostream.str(), "500 Internal Server Error");
+	EXPECT_EQ(ostream.str(), "500");
 	ostream.str("");
 	ostream << StatusMethodNotImplemented;
-	EXPECT_EQ(ostream.str(), "501 Method Not Implemented");
+	EXPECT_EQ(ostream.str(), "501");
 	ostream.str("");
 	ostream << StatusNonSupportedVersion;
-	EXPECT_EQ(ostream.str(), "505 HTTP Version Not Supported");
+	EXPECT_EQ(ostream.str(), "505");
 }
 
 TEST(OstreamInserters, Socket)
@@ -149,8 +149,8 @@ TEST_F(OstreamInsertersTest, Location)
 								 "  POST: 0\n"
 								 "  DELETE: 0\n"
 								 "Returns:\n"
-								 "  200 OK: OK.html\n"
-								 "  400 Bad Request: BadRequest.html\n";
+								 "  200: OK.html\n"
+								 "  400: BadRequest.html\n";
 
 	EXPECT_EQ(ostream.str(), expected);
 }
@@ -166,8 +166,8 @@ TEST_F(OstreamInsertersTest, ServerConfig)
 				"Port: 80\n"
 				"Max body size: 1024\n"
 				"Error pages:\n"
-				"  400 Bad Request: BadRequest.html\n"
-				"  403 Forbidden: Forbidden.html\n"
+				"  400: BadRequest.html\n"
+				"  403: Forbidden.html\n"
 				"Locations:\n"
 			 << m_location;
 
