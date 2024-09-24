@@ -59,28 +59,29 @@ ConfigFile createDummyConfig()
 {
 	Location location1;
 	location1.path = "/";
-	location1.root = "/workspaces/webserv";
-	location1.indices.push_back("index.htm");
+	location1.root = "/workspaces/webserv/html";
+	location1.indices.push_back("index.html");
+
+	Location location2;
+	location2.path = "/directory/";
+	location2.root = "/workspaces/webserv/html";
+	location2.isAutoindex = true;
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
+	serverConfig8080.locations.push_back(location2);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
-	serverConfig8080.serverName = "root";
-
-	Location location2;
-	location2.path = "/";
-	location2.root = "/workspaces/webserv/doc";
-	location2.indices.push_back("index.htm");
+	serverConfig8080.serverName = "default";
 
 	ConfigServer serverConfig8090;
-	serverConfig8090.locations.push_back(location2);
+	serverConfig8090.locations.push_back(location1);
 	serverConfig8090.host = "127.0.0.1";
 	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
 
 	ConfigServer serverConfig8090dupl;
-	serverConfig8090dupl.locations.push_back(location2);
+	serverConfig8090dupl.locations.push_back(location1);
 	serverConfig8090dupl.host = "127.0.0.1";
 	serverConfig8090dupl.port = "8090";
 	serverConfig8090dupl.serverName = "duplicate";
