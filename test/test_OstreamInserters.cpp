@@ -128,7 +128,6 @@ protected:
 
 		m_connection.m_timeSinceLastEvent = 1234;
 		m_connection.m_buffer = "GET / HTTP/1.1";
-		m_connection.m_bytesReceived = 1024;
 		m_connection.m_request = m_httpRequest;
 	}
 };
@@ -233,7 +232,6 @@ TEST_F(OstreamInsertersTest, Connection)
 				"Status: "
 			 << m_connection.m_status
 			 << "\n"
-				"Bytes received: 1024\n"
 				"Request:\n"
 			 << m_httpRequest << "Buffer:\nGET / HTTP/1.1\n";
 	EXPECT_EQ(ostream.str(), expected.str());

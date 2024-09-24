@@ -7,7 +7,6 @@
  */
 ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
-	, m_isFirstTime(true)
 {
 	initMIMETypes();
 }
@@ -15,63 +14,69 @@ ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 /**
  * @brief Get the built response.
  *
- * The stream is returned as c_str() since it is reused.
- * The buffer is never cleared all the way, only reset to the beginning.
- * If str() would be returned, old parts of the stream would be included.
- * This works since every thing inserted into the string sets a new zero terminator.
+ * If the response body is empty, only the response header is returned.
+ * Otherwise, the response header and body are returned.
+ * The response doesn't change until the next buildResponse() call.
  * @return std::string Response.
  */
-std::string ResponseBuilder::getResponse() const { return m_responseStream.str().c_str(); } // NOLINT
+std::string ResponseBuilder::getResponse() const
+{
+	if (m_responseBody.empty())
+		return m_responseHeader.str();
+
+	return m_responseHeader.str() + m_responseBody;
+}
 
 /**
  * @brief Build the response for a given request.
  *
- * Reset the stream, to clear possible beforehand built response.
- * Execute response body handler to get the response body.
- * Build the response by appending the status line, headers and body.
+ * Reset the builder with resetBuilder(), to clear possible beforehand built response.
+ * Construct and execute a ResponseBodyHandler to construct the response body.
+ * Build the response header with appendStatusLine() and appendHeaders().
+ * The response is stored in m_responseHeader and m_responseBody. The response can be retrieved with getResponse().
  * @param request HTTP request.
  */
 void ResponseBuilder::buildResponse(HTTPRequest& request)
 {
-	resetStream();
+	resetBuilder();
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
 	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
-	LOG_DEBUG << "Response body: \n" << m_responseBody;
-
 	appendStatusLine(request);
 	appendHeaders(request);
-	m_responseStream << m_responseBody << "\r\n";
-	m_responseBody.clear();
+
+	LOG_DEBUG << "Response header: \n" << m_responseHeader.str();
+
+	// Response Body often contains binary data, so it is not logged.
+	// LOG_DEBUG << "Response body: \n" << m_responseBody;
 }
 
 /**
- * @brief Reset the stream to the beginning.
+ * @brief Reset the builder.
  *
- * If it is not the first time, the stream is reset to the beginning.
- * This is done to clear the stream from the previous response.
+ * The stringstream m_responseHeader is reset to an empty string and cleared to removed any potential error flags.
+ * The string m_responseBody is cleared.
  */
-void ResponseBuilder::resetStream()
+void ResponseBuilder::resetBuilder()
 {
-	if (!m_isFirstTime)
-		m_responseStream.seekp(std::ios::beg);
-
-	m_isFirstTime = false;
+	m_responseHeader.str(std::string());
+	m_responseHeader.clear();
+	m_responseBody.clear();
 }
 
 /**
  * @brief Append status line to the response.
  *
  * The status line is appended in the following format:
- * HTTP/1.1 <status code> <reason phrase>
+ * HTTP/1.1 <status code> <reason phrase> CRLF
  * @param request HTTP request.
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	m_responseStream << "HTTP/1.1 " << request.httpStatus << ' '
+	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
 					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
@@ -79,30 +84,30 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  * @brief Append headers to the response.
  *
  * The following headers are appended:
- * Content-Type: MIME type of the target resource.
- * Content-Length: Length of the response body.
- * Server: TriHard.
- * Date: Current date in GMT.
- * Location: Target resource if status is StatusMovedPermanently.
+ * - Content-Type: MIME type of the target resource.
+ * - Content-Length: Length of the response body.
+ * - Server: TriHard.
+ * - Date: Current date in GMT.
+ * - Location: Target resource if status is StatusMovedPermanently.
  * Delimiter.
  * @param request HTTP request.
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+	m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
-	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
+	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
-	m_responseStream << "Server: TriHard\r\n";
+	m_responseHeader << "Server: TriHard\r\n";
 	// Date
-	m_responseStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	if (request.httpStatus == StatusMovedPermanently) {
-		m_responseStream << "Location: " << request.targetResource << "\r\n";
+		m_responseHeader << "Location: " << request.targetResource << "\r\n";
 	}
 	// Delimiter
-	m_responseStream << "\r\n";
+	m_responseHeader << "\r\n";
 }
 
 /**

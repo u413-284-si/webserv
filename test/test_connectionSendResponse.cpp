@@ -19,7 +19,6 @@ protected:
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_buffer = response;
-		connection.m_bytesReceived = 123;
 		connection.m_status = Connection::SendResponse;
 	}
 	~ConnectionSendResponseTest() override { }
@@ -41,8 +40,7 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseKeepAlive)
 
 	connectionSendResponse(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, "");
-	EXPECT_EQ(connection.m_bytesReceived, 0);
+	EXPECT_EQ(connection.m_buffer.size(), 0);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));
 	EXPECT_EQ(connection.m_status, Connection::Idle);
 }
@@ -56,7 +54,6 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
 	connectionSendResponse(server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, response);
-	EXPECT_EQ(connection.m_bytesReceived, 123);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
@@ -72,7 +69,6 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 	connectionSendResponse(server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, partialResponse);
-	EXPECT_EQ(connection.m_bytesReceived, 123);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));
 	EXPECT_EQ(connection.m_status, Connection::SendResponse);
 }
@@ -84,7 +80,6 @@ TEST_F(ConnectionSendResponseTest, SendFail)
 	connectionSendResponse(server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, response);
-	EXPECT_EQ(connection.m_bytesReceived, 123);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(connection.m_status, Connection::Closed);
 }
