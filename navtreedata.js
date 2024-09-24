@@ -65,8 +65,8 @@ var NAVTREEINDEX =
 [
 "_a_log_outputter_8cpp.html",
 "class_connection_send_response_test.html",
-"classweblog_1_1_logger.html",
-"test___response_body_handler_8cpp_source.html"
+"classweblog_1_1_log_outputter_file.html#ad39210f52d407c82467b79acf329a69d",
+"test___response_body_handler_8cpp.html#a8cfaf0224efb053508b4bffbfb3e4458"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

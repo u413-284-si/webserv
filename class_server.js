@@ -8,6 +8,8 @@ var class_server =
     [ "getConnections", "class_server.html#a1f8929bed093f869374cb81da4d97505", null ],
     [ "getServerConfigs", "class_server.html#a54745950beb9e321d9a56084501c18e9", null ],
     [ "getClientTimeout", "class_server.html#af8184a299847cca0789696048893bc48", null ],
+    [ "getClientHeaderBuffer", "class_server.html#a45f1691489d81cdd6acc640d96d5046b", null ],
+    [ "getClientBodyBuffer", "class_server.html#a2092f68016c0cfaff0c9c0e1862eb009", null ],
     [ "registerVirtualServer", "class_server.html#aae8cc5a8fc07a6ce97d468d94cd08a6e", null ],
     [ "registerConnection", "class_server.html#ac145e9f668db85b10a66829bd2677746", null ],
     [ "setClientTimeout", "class_server.html#a9dc90838b48fae329562928cdfd685ca", null ],

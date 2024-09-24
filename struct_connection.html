@@ -169,8 +169,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:af433353beabb6990235b13b24c8b6bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4157497e77aed0e8b399a47eba498683"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#a4157497e77aed0e8b399a47eba498683">m_buffer</a></td></tr>
 <tr class="separator:a4157497e77aed0e8b399a47eba498683"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2510358c7ff2b930584453c33a2f4791"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#a2510358c7ff2b930584453c33a2f4791">m_bytesReceived</a></td></tr>
-<tr class="separator:a2510358c7ff2b930584453c33a2f4791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae94a8a88f07c64cf17ada17c7e670ada"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">m_request</a></td></tr>
 <tr class="separator:ae94a8a88f07c64cf17ada17c7e670ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab46ab3763ce344bbbeb9de1fec5faf7f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_config_server.html">ConfigServer</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">serverConfig</a></td></tr>
@@ -279,15 +277,13 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    , <a class="code" href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">m_clientSocket</a>(client)</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    , <a class="code" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a>(std::time(0))</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    , <a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a>(<a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Idle</a>)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    , <a class="code" href="struct_connection.html#a2510358c7ff2b930584453c33a2f4791">m_bytesReceived</a>(0)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a>(*<span class="keyword">this</span>, serverConfigs)) {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Closed</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
-<div class="ttc" id="a_connection_8cpp_html_a354192f8dd87ca049cf8b7e6de9000da"><div class="ttname"><a href="_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a></div><div class="ttdeci">bool hasValidServerConfig(Connection &amp;connection, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Selects the server configuration for a connection.</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8cpp_source.html#l00082">Connection.cpp:82</a></div></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a>(*<span class="keyword">this</span>, serverConfigs)) {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Closed</a>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
+<div class="ttc" id="a_connection_8cpp_html_a354192f8dd87ca049cf8b7e6de9000da"><div class="ttname"><a href="_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a></div><div class="ttdeci">bool hasValidServerConfig(Connection &amp;connection, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Selects the server configuration for a connection.</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8cpp_source.html#l00080">Connection.cpp:80</a></div></div>
 <div class="ttc" id="astruct_connection_html_a244c1b9870181fb1c847758d21e2c8b3"><div class="ttname"><a href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">Connection::m_clientSocket</a></div><div class="ttdeci">Socket m_clientSocket</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00031">Connection.hpp:31</a></div></div>
-<div class="ttc" id="astruct_connection_html_a2510358c7ff2b930584453c33a2f4791"><div class="ttname"><a href="struct_connection.html#a2510358c7ff2b930584453c33a2f4791">Connection::m_bytesReceived</a></div><div class="ttdeci">ssize_t m_bytesReceived</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00035">Connection.hpp:35</a></div></div>
 <div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00032">Connection.hpp:32</a></div></div>
 <div class="ttc" id="astruct_connection_html_ae9c64be721ccc3676197f3ebbb58fe18"><div class="ttname"><a href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">Connection::m_serverSocket</a></div><div class="ttdeci">Socket m_serverSocket</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00030">Connection.hpp:30</a></div></div>
 <div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00033">Connection.hpp:33</a></div></div>
@@ -386,23 +382,6 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a2510358c7ff2b930584453c33a2f4791"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2510358c7ff2b930584453c33a2f4791">&#9670;&nbsp;</a></span>m_bytesReceived</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ssize_t Connection::m_bytesReceived</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Number of bytes received from client </p>
-
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00035">35</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
-
-</div>
-</div>
 <a id="ae94a8a88f07c64cf17ada17c7e670ada"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae94a8a88f07c64cf17ada17c7e670ada">&#9670;&nbsp;</a></span>m_request</h2>
 
@@ -416,7 +395,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Request of the client </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00036">36</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00035">35</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -433,7 +412,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p><a class="el" href="class_server.html" title="Main class of the HTTP server.">Server</a> configuration associated with connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00037">37</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00036">36</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -450,7 +429,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p><a class="el" href="struct_location.html">Location</a> configuration associated with connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00038">38</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00037">37</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>

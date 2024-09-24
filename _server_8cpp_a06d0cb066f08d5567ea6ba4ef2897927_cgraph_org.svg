@@ -12,256 +12,271 @@
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Receive request header from a client.">
-<polygon fill="#bfbfbf" stroke="black" points="0,-57.5 0,-76.5 144,-76.5 144,-57.5 0,-57.5"/>
-<text text-anchor="middle" x="72" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveHeader</text>
+<polygon fill="#bfbfbf" stroke="black" points="0,-76.5 0,-95.5 144,-95.5 144,-76.5 0,-76.5"/>
+<text text-anchor="middle" x="72" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveHeader</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="_server_8cpp.html#a83350eae81b96dd7b301d1238268ffdb" target="_top" xlink:title="Handles a received complete request header.">
-<polygon fill="none" stroke="black" points="180,-114.5 180,-133.5 352,-133.5 352,-114.5 180,-114.5"/>
-<text text-anchor="middle" x="266" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleCompleteRequestHeader</text>
+<g id="a_node2"><a xlink:href="class_server.html#a45f1691489d81cdd6acc640d96d5046b" target="_top" xlink:title="Getter for client header buffer.">
+<polygon fill="none" stroke="black" points="184.5,-152.5 184.5,-171.5 347.5,-171.5 347.5,-152.5 184.5,-152.5"/>
+<text text-anchor="middle" x="266" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getClientHeaderBuffer</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M103.38,-76.58C124.77,-83.28 154.09,-92.35 180,-100 193.24,-103.91 207.69,-108.04 220.85,-111.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="220.05,-115.16 230.62,-114.49 221.94,-108.42 220.05,-115.16"/>
+<path fill="none" stroke="midnightblue" d="M87.98,-95.67C108.14,-108.27 145.46,-130.21 180,-143 187,-145.59 194.46,-147.89 201.95,-149.91"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="201.21,-153.34 211.76,-152.42 202.93,-146.55 201.21,-153.34"/>
 </g>
-<!-- Node10 -->
-<g id="node10" class="node">
-<title>Node10</title>
-<g id="a_node10"><a xlink:href="class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" target="_top" xlink:title="Wrapper function to EpollWrapper::modifyEvent.">
+<!-- Node3 -->
+<g id="node3" class="node">
+<title>Node3</title>
+<g id="a_node3"><a xlink:href="_server_8cpp.html#a83350eae81b96dd7b301d1238268ffdb" target="_top" xlink:title="Handles a received complete request header.">
+<polygon fill="none" stroke="black" points="180,-114.5 180,-133.5 352,-133.5 352,-114.5 180,-114.5"/>
+<text text-anchor="middle" x="266" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleCompleteRequestHeader</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node3 -->
+<g id="edge2" class="edge">
+<title>Node1&#45;&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M121.45,-95.59C147.47,-100.74 179.73,-107.12 207.07,-112.53"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="206.41,-115.97 216.9,-114.48 207.77,-109.1 206.41,-115.97"/>
+</g>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" target="_top" xlink:title="Wrapper function to EpollWrapper::modifyEvent.">
 <polygon fill="none" stroke="black" points="411,-57.5 411,-76.5 527,-76.5 527,-57.5 411,-57.5"/>
 <text text-anchor="middle" x="469" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::modifyEvent</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node10 -->
-<g id="edge15" class="edge">
-<title>Node1&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M144.07,-67C216.9,-67 329.29,-67 400.71,-67"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="400.94,-70.5 410.94,-67 400.94,-63.5 400.94,-70.5"/>
+<!-- Node1&#45;&gt;Node11 -->
+<g id="edge16" class="edge">
+<title>Node1&#45;&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M144.07,-82.58C216.9,-79.08 329.29,-73.67 400.71,-70.24"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="401.12,-73.72 410.94,-69.74 400.78,-66.73 401.12,-73.72"/>
 </g>
-<!-- Node15 -->
-<g id="node15" class="node">
-<title>Node15</title>
-<g id="a_node15"><a xlink:href="_server_8cpp.html#a172c400277e73261d212c33f66226090" target="_top" xlink:title="Checks if the connection buffer contains a request header.">
+<!-- Node16 -->
+<g id="node16" class="node">
+<title>Node16</title>
+<g id="a_node16"><a xlink:href="_server_8cpp.html#a172c400277e73261d212c33f66226090" target="_top" xlink:title="Checks if the connection buffer contains a request header.">
 <polygon fill="none" stroke="black" points="192.5,-38.5 192.5,-57.5 339.5,-57.5 339.5,-38.5 192.5,-38.5"/>
 <text text-anchor="middle" x="266" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">isCompleteRequestHeader</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node15 -->
-<g id="edge14" class="edge">
-<title>Node1&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M144.22,-59.95C156.6,-58.73 169.57,-57.44 182.22,-56.19"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="182.68,-59.66 192.29,-55.2 181.99,-52.7 182.68,-59.66"/>
+<!-- Node1&#45;&gt;Node16 -->
+<g id="edge15" class="edge">
+<title>Node1&#45;&gt;Node16</title>
+<path fill="none" stroke="midnightblue" d="M121.45,-76.41C147.47,-71.26 179.73,-64.88 207.07,-59.47"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="207.77,-62.9 216.9,-57.52 206.41,-56.03 207.77,-62.9"/>
 </g>
-<!-- Node16 -->
-<g id="node16" class="node">
-<title>Node16</title>
-<g id="a_node16"><a xlink:href="class_server.html#ae94e3d4b5743580a6fbe3228d58af423" target="_top" xlink:title="Wrapper function to SocketPolicy::readFromSocket.">
+<!-- Node17 -->
+<g id="node17" class="node">
+<title>Node17</title>
+<g id="a_node17"><a xlink:href="class_server.html#ae94e3d4b5743580a6fbe3228d58af423" target="_top" xlink:title="Wrapper function to SocketPolicy::readFromSocket.">
 <polygon fill="none" stroke="black" points="199.5,-0.5 199.5,-19.5 332.5,-19.5 332.5,-0.5 199.5,-0.5"/>
 <text text-anchor="middle" x="266" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::readFromSocket</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node16 -->
-<g id="edge16" class="edge">
-<title>Node1&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M97.37,-57.39C118.88,-49.14 151.21,-37.3 180,-29 188.86,-26.45 198.31,-24.03 207.58,-21.84"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="208.58,-25.2 217.53,-19.54 207,-18.38 208.58,-25.2"/>
-</g>
-<!-- Node3 -->
-<g id="node3" class="node">
-<title>Node3</title>
-<g id="a_node3"><a xlink:href="class_server.html#a79e42d429f816514a89b11c729875797" target="_top" xlink:title="Wrapper function to TargetResourceHandler::execute.">
-<polygon fill="none" stroke="black" points="395.5,-133.5 395.5,-152.5 542.5,-152.5 542.5,-133.5 395.5,-133.5"/>
-<text text-anchor="middle" x="469" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::findTargetResource</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
-<title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M352.24,-132.06C363.11,-133.08 374.22,-134.13 385.04,-135.16"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="385.04,-138.67 395.32,-136.13 385.7,-131.7 385.04,-138.67"/>
-</g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="class_server.html#a54745950beb9e321d9a56084501c18e9" target="_top" xlink:title="Const Getter for server configs.">
-<polygon fill="none" stroke="black" points="400.5,-95.5 400.5,-114.5 537.5,-114.5 537.5,-95.5 400.5,-95.5"/>
-<text text-anchor="middle" x="469" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getServerConfigs</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node7 -->
-<g id="edge6" class="edge">
-<title>Node2&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M352.24,-115.94C364.78,-114.76 377.64,-113.54 390.03,-112.37"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="390.67,-115.83 400.3,-111.4 390.01,-108.86 390.67,-115.83"/>
-</g>
-<!-- Node8 -->
-<g id="node8" class="node">
-<title>Node8</title>
-<g id="a_node8"><a xlink:href="_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da" target="_top" xlink:title="Selects the server configuration for a connection.">
-<polygon fill="none" stroke="black" points="409,-209.5 409,-228.5 529,-228.5 529,-209.5 409,-209.5"/>
-<text text-anchor="middle" x="469" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">hasValidServerConfig</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node8 -->
-<g id="edge7" class="edge">
-<title>Node2&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M279.31,-133.68C300.37,-149.78 345.22,-182.06 388,-200 394.1,-202.56 400.62,-204.81 407.2,-206.79"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="406.27,-210.17 416.84,-209.49 408.16,-203.43 406.27,-210.17"/>
-</g>
-<!-- Node2&#45;&gt;Node10 -->
-<g id="edge9" class="edge">
-<title>Node2&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M303.63,-114.48C318.71,-110.35 336.3,-105.26 352,-100 368.28,-94.55 371.61,-91.11 388,-86 396.03,-83.5 404.61,-81.14 413.05,-78.99"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="413.98,-82.37 422.85,-76.57 412.31,-75.57 413.98,-82.37"/>
-</g>
-<!-- Node12 -->
-<g id="node12" class="node">
-<title>Node12</title>
-<g id="a_node12"><a xlink:href="class_server.html#a34bc61299318fe1918293b1d656ee5f9" target="_top" xlink:title="Wrapper function to RequestParser::parseHeader.">
-<polygon fill="none" stroke="black" points="411,-171.5 411,-190.5 527,-190.5 527,-171.5 411,-171.5"/>
-<text text-anchor="middle" x="469" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::parseHeader</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node12 -->
-<g id="edge11" class="edge">
-<title>Node2&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M295.68,-133.64C320.09,-141.69 356.16,-153.23 388,-162 396.79,-164.42 406.18,-166.82 415.32,-169.05"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="414.55,-172.47 425.09,-171.4 416.19,-165.66 414.55,-172.47"/>
+<!-- Node1&#45;&gt;Node17 -->
+<g id="edge17" class="edge">
+<title>Node1&#45;&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M87.98,-76.33C108.14,-63.73 145.46,-41.79 180,-29 187,-26.41 194.46,-24.11 201.95,-22.09"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="202.93,-25.45 211.76,-19.58 201.21,-18.66 202.93,-25.45"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7" target="_top" xlink:title="Determine target resource based on the request path and handle different file types and statuses acco...">
-<polygon fill="none" stroke="black" points="598.5,-122 598.5,-152 728.5,-152 728.5,-122 598.5,-122"/>
-<text text-anchor="start" x="606.5" y="-140" font-family="Helvetica,sans-Serif" font-size="10.00">TargetResourceHandler</text>
-<text text-anchor="middle" x="663.5" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">::execute</text>
+<g id="a_node4"><a xlink:href="class_server.html#a79e42d429f816514a89b11c729875797" target="_top" xlink:title="Wrapper function to TargetResourceHandler::execute.">
+<polygon fill="none" stroke="black" points="395.5,-133.5 395.5,-152.5 542.5,-152.5 542.5,-133.5 395.5,-133.5"/>
+<text text-anchor="middle" x="469" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::findTargetResource</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M542.5,-140.74C557.4,-140.28 573.1,-139.79 588.06,-139.32"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="588.4,-142.81 598.28,-139 588.18,-135.81 588.4,-142.81"/>
+<path fill="none" stroke="midnightblue" d="M352.24,-132.06C363.11,-133.08 374.22,-134.13 385.04,-135.16"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="385.04,-138.67 395.32,-136.13 385.7,-131.7 385.04,-138.67"/>
+</g>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="class_server.html#a54745950beb9e321d9a56084501c18e9" target="_top" xlink:title="Const Getter for server configs.">
+<polygon fill="none" stroke="black" points="400.5,-95.5 400.5,-114.5 537.5,-114.5 537.5,-95.5 400.5,-95.5"/>
+<text text-anchor="middle" x="469" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getServerConfigs</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node8 -->
+<g id="edge7" class="edge">
+<title>Node3&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M352.24,-115.94C364.78,-114.76 377.64,-113.54 390.03,-112.37"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="390.67,-115.83 400.3,-111.4 390.01,-108.86 390.67,-115.83"/>
+</g>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da" target="_top" xlink:title="Selects the server configuration for a connection.">
+<polygon fill="none" stroke="black" points="409,-209.5 409,-228.5 529,-228.5 529,-209.5 409,-209.5"/>
+<text text-anchor="middle" x="469" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">hasValidServerConfig</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node9 -->
+<g id="edge8" class="edge">
+<title>Node3&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M334.14,-133.63C340.48,-136.09 346.56,-139.17 352,-143 376.5,-160.26 363.62,-182.58 388,-200 391.53,-202.52 395.35,-204.71 399.33,-206.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="398.31,-209.98 408.89,-210.55 400.98,-203.51 398.31,-209.98"/>
+</g>
+<!-- Node3&#45;&gt;Node11 -->
+<g id="edge10" class="edge">
+<title>Node3&#45;&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M303.63,-114.48C318.71,-110.35 336.3,-105.26 352,-100 368.28,-94.55 371.61,-91.11 388,-86 396.03,-83.5 404.61,-81.14 413.05,-78.99"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="413.98,-82.37 422.85,-76.57 412.31,-75.57 413.98,-82.37"/>
+</g>
+<!-- Node13 -->
+<g id="node13" class="node">
+<title>Node13</title>
+<g id="a_node13"><a xlink:href="class_server.html#a34bc61299318fe1918293b1d656ee5f9" target="_top" xlink:title="Wrapper function to RequestParser::parseHeader.">
+<polygon fill="none" stroke="black" points="411,-171.5 411,-190.5 527,-190.5 527,-171.5 411,-171.5"/>
+<text text-anchor="middle" x="469" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::parseHeader</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node13 -->
+<g id="edge12" class="edge">
+<title>Node3&#45;&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M319.78,-133.51C330.59,-136.09 341.78,-139.24 352,-143 368.98,-149.25 371.06,-155.64 388,-162 394.8,-164.55 402.05,-166.84 409.32,-168.87"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="408.62,-172.31 419.18,-171.48 410.41,-165.54 408.62,-172.31"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71" target="_top" xlink:title="Check the file type of a given path.">
-<polygon fill="none" stroke="black" points="777,-127.5 777,-146.5 950,-146.5 950,-127.5 777,-127.5"/>
-<text text-anchor="middle" x="863.5" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">FileSystemPolicy::checkFileType</text>
+<g id="a_node5"><a xlink:href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7" target="_top" xlink:title="Determine target resource based on the request path and handle different file types and statuses acco...">
+<polygon fill="none" stroke="black" points="598.5,-122 598.5,-152 728.5,-152 728.5,-122 598.5,-122"/>
+<text text-anchor="start" x="606.5" y="-140" font-family="Helvetica,sans-Serif" font-size="10.00">TargetResourceHandler</text>
+<text text-anchor="middle" x="663.5" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">::execute</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node4&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M728.51,-137C740.64,-137 753.56,-137 766.43,-137"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="766.71,-140.5 776.71,-137 766.71,-133.5 766.71,-140.5"/>
+<path fill="none" stroke="midnightblue" d="M542.5,-140.74C557.4,-140.28 573.1,-139.79 588.06,-139.32"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="588.4,-142.81 598.28,-139 588.18,-135.81 588.4,-142.81"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="_target_resource_handler_8cpp.html#a3bd08192e5875b2c101b6f9aa2a99a5c" target="_top" xlink:title="Iterate through Location objects to find longest matching path based on a given input path.">
+<g id="a_node6"><a xlink:href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71" target="_top" xlink:title="Check the file type of a given path.">
+<polygon fill="none" stroke="black" points="777,-127.5 777,-146.5 950,-146.5 950,-127.5 777,-127.5"/>
+<text text-anchor="middle" x="863.5" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">FileSystemPolicy::checkFileType</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node5&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M728.51,-137C740.64,-137 753.56,-137 766.43,-137"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="766.71,-140.5 776.71,-137 766.71,-133.5 766.71,-140.5"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="_target_resource_handler_8cpp.html#a3bd08192e5875b2c101b6f9aa2a99a5c" target="_top" xlink:title="Iterate through Location objects to find longest matching path based on a given input path.">
 <polygon fill="none" stroke="black" points="819,-89.5 819,-108.5 908,-108.5 908,-89.5 819,-89.5"/>
 <text text-anchor="middle" x="863.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">matchLocation</text>
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node4&#45;&gt;Node6</title>
+<!-- Node5&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node5&#45;&gt;Node7</title>
 <path fill="none" stroke="midnightblue" d="M728.51,-124.71C754.43,-119.74 784.02,-114.06 808.79,-109.31"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="809.57,-112.72 818.73,-107.4 808.25,-105.85 809.57,-112.72"/>
 </g>
-<!-- Node9 -->
-<g id="node9" class="node">
-<title>Node9</title>
-<g id="a_node9"><a xlink:href="_connection_8cpp.html#ac4fdfd0273b5ff94aefbdc973ac49ead" target="_top" xlink:title="Find matching server configurations for a server socket.">
+<!-- Node10 -->
+<g id="node10" class="node">
+<title>Node10</title>
+<g id="a_node10"><a xlink:href="_connection_8cpp.html#ac4fdfd0273b5ff94aefbdc973ac49ead" target="_top" xlink:title="Find matching server configurations for a server socket.">
 <polygon fill="none" stroke="black" points="590,-209.5 590,-228.5 737,-228.5 737,-209.5 590,-209.5"/>
 <text text-anchor="middle" x="663.5" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">findMatchingServerConfigs</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node9 -->
-<g id="edge8" class="edge">
-<title>Node8&#45;&gt;Node9</title>
+<!-- Node9&#45;&gt;Node10 -->
+<g id="edge9" class="edge">
+<title>Node9&#45;&gt;Node10</title>
 <path fill="none" stroke="midnightblue" d="M529.06,-219C544.99,-219 562.52,-219 579.49,-219"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="579.97,-222.5 589.97,-219 579.97,-215.5 579.97,-222.5"/>
 </g>
-<!-- Node11 -->
-<g id="node11" class="node">
-<title>Node11</title>
-<g id="a_node11"><a xlink:href="class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" target="_top" xlink:title="Modify an event in the epoll instance.">
+<!-- Node12 -->
+<g id="node12" class="node">
+<title>Node12</title>
+<g id="a_node12"><a xlink:href="class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" target="_top" xlink:title="Modify an event in the epoll instance.">
 <polygon fill="none" stroke="black" points="589,-57.5 589,-76.5 738,-76.5 738,-57.5 589,-57.5"/>
 <text text-anchor="middle" x="663.5" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00">EpollWrapper::modifyEvent</text>
 </a>
 </g>
 </g>
-<!-- Node10&#45;&gt;Node11 -->
-<g id="edge10" class="edge">
-<title>Node10&#45;&gt;Node11</title>
+<!-- Node11&#45;&gt;Node12 -->
+<g id="edge11" class="edge">
+<title>Node11&#45;&gt;Node12</title>
 <path fill="none" stroke="midnightblue" d="M527.24,-67C543.36,-67 561.23,-67 578.57,-67"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="578.7,-70.5 588.7,-67 578.7,-63.5 578.7,-70.5"/>
-</g>
-<!-- Node13 -->
-<g id="node13" class="node">
-<title>Node13</title>
-<g id="a_node13"><a xlink:href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" target="_top" xlink:title="Parses the header of an HTTP request.">
-<polygon fill="none" stroke="black" points="586,-171.5 586,-190.5 741,-190.5 741,-171.5 586,-171.5"/>
-<text text-anchor="middle" x="663.5" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">RequestParser::parseHeader</text>
-</a>
-</g>
-</g>
-<!-- Node12&#45;&gt;Node13 -->
-<g id="edge12" class="edge">
-<title>Node12&#45;&gt;Node13</title>
-<path fill="none" stroke="midnightblue" d="M527.24,-181C542.47,-181 559.28,-181 575.71,-181"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="575.88,-184.5 585.88,-181 575.88,-177.5 575.88,-184.5"/>
 </g>
 <!-- Node14 -->
 <g id="node14" class="node">
 <title>Node14</title>
-<g id="a_node14"><a xlink:href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" target="_top" xlink:title="Clears the contents of the RequestParser object.">
-<polygon fill="none" stroke="black" points="785,-166 785,-196 942,-196 942,-166 785,-166"/>
-<text text-anchor="start" x="793" y="-184" font-family="Helvetica,sans-Serif" font-size="10.00">RequestParser::resetRequest</text>
-<text text-anchor="middle" x="863.5" y="-173" font-family="Helvetica,sans-Serif" font-size="10.00">Stream</text>
+<g id="a_node14"><a xlink:href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" target="_top" xlink:title="Parses the header of an HTTP request.">
+<polygon fill="none" stroke="black" points="586,-171.5 586,-190.5 741,-190.5 741,-171.5 586,-171.5"/>
+<text text-anchor="middle" x="663.5" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">RequestParser::parseHeader</text>
 </a>
 </g>
 </g>
 <!-- Node13&#45;&gt;Node14 -->
 <g id="edge13" class="edge">
 <title>Node13&#45;&gt;Node14</title>
+<path fill="none" stroke="midnightblue" d="M527.24,-181C542.47,-181 559.28,-181 575.71,-181"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="575.88,-184.5 585.88,-181 575.88,-177.5 575.88,-184.5"/>
+</g>
+<!-- Node15 -->
+<g id="node15" class="node">
+<title>Node15</title>
+<g id="a_node15"><a xlink:href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" target="_top" xlink:title="Clears the contents of the RequestParser object.">
+<polygon fill="none" stroke="black" points="785,-166 785,-196 942,-196 942,-166 785,-166"/>
+<text text-anchor="start" x="793" y="-184" font-family="Helvetica,sans-Serif" font-size="10.00">RequestParser::resetRequest</text>
+<text text-anchor="middle" x="863.5" y="-173" font-family="Helvetica,sans-Serif" font-size="10.00">Stream</text>
+</a>
+</g>
+</g>
+<!-- Node14&#45;&gt;Node15 -->
+<g id="edge14" class="edge">
+<title>Node14&#45;&gt;Node15</title>
 <path fill="none" stroke="midnightblue" d="M741.05,-181C752.05,-181 763.44,-181 774.63,-181"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="774.84,-184.5 784.84,-181 774.84,-177.5 774.84,-184.5"/>
 </g>
-<!-- Node17 -->
-<g id="node17" class="node">
-<title>Node17</title>
-<g id="a_node17"><a xlink:href="class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" target="_top" xlink:title="Read from a socket.">
+<!-- Node18 -->
+<g id="node18" class="node">
+<title>Node18</title>
+<g id="a_node18"><a xlink:href="class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" target="_top" xlink:title="Read from a socket.">
 <polygon fill="none" stroke="black" points="388,-0.5 388,-19.5 550,-19.5 550,-0.5 388,-0.5"/>
 <text text-anchor="middle" x="469" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">SocketPolicy::readFromSocket</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node17 -->
-<g id="edge17" class="edge">
-<title>Node16&#45;&gt;Node17</title>
+<!-- Node17&#45;&gt;Node18 -->
+<g id="edge18" class="edge">
+<title>Node17&#45;&gt;Node18</title>
 <path fill="none" stroke="midnightblue" d="M332.54,-10C346.87,-10 362.29,-10 377.41,-10"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="377.81,-13.5 387.81,-10 377.81,-6.5 377.81,-13.5"/>
 </g>

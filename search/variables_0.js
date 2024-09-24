@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['allowedmethods_685',['allowedMethods',['../struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7',1,'Location']]]
+  ['allowedmethods_688',['allowedMethods',['../struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7',1,'Location']]]
 ];

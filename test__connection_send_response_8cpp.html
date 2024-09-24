@@ -179,18 +179,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00038">38</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    EXPECT_EQ(connection.m_buffer, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    EXPECT_EQ(connection.m_bytesReceived, 0);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="ttc" id="a_server_8hpp_html_adcf8118ac987f6afae3aec0c54cc5f9f"><div class="ttname"><a href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a></div><div class="ttdeci">void connectionSendResponse(Server &amp;server, int clientFd, Connection &amp;connection)</div><div class="ttdoc">Sends the response to a client connection.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00967">Server.cpp:967</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00037">37</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    EXPECT_EQ(connection.m_buffer.size(), 0);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="ttc" id="a_server_8hpp_html_adcf8118ac987f6afae3aec0c54cc5f9f"><div class="ttname"><a href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a></div><div class="ttdeci">void connectionSendResponse(Server &amp;server, int clientFd, Connection &amp;connection)</div><div class="ttdoc">Sends the response to a client connection.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00998">Server.cpp:998</a></div></div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00021">Connection.hpp:21</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -227,19 +226,18 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00050">50</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    connection.m_request.shallCloseConnection = <span class="keyword">true</span>;</div>
+<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00048">48</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    connection.m_request.shallCloseConnection = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    EXPECT_EQ(connection.m_buffer, response);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    EXPECT_EQ(connection.m_bytesReceived, 123);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, 0);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    EXPECT_EQ(connection.m_buffer, response);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, 0);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00028">Connection.hpp:27</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -276,21 +274,20 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00064">64</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::string partialResponse = <span class="stringliteral">&quot;ntent-Length: 4\r\n\r\nABCD&quot;</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        .Times(1)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        .WillOnce(Return(connection.m_buffer.size() - partialResponse.size()));</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    EXPECT_EQ(connection.m_buffer, partialResponse);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    EXPECT_EQ(connection.m_bytesReceived, 123);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00061">61</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::string partialResponse = <span class="stringliteral">&quot;ntent-Length: 4\r\n\r\nABCD&quot;</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        .Times(1)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        .WillOnce(Return(connection.m_buffer.size() - partialResponse.size()));</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    EXPECT_EQ(connection.m_buffer, partialResponse);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a></div><div class="ttdeci">@ SendResponse</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00025">Connection.hpp:25</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -327,17 +324,16 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00080">80</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(-1));</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    EXPECT_EQ(connection.m_buffer, response);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    EXPECT_EQ(connection.m_bytesReceived, 123);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, 0);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__connection_send_response_8cpp_source.html#l00076">76</a> of file <a class="el" href="test__connection_send_response_8cpp_source.html">test_connectionSendResponse.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(-1));</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f">connectionSendResponse</a>(server, dummyFd, connection);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    EXPECT_EQ(connection.m_buffer, response);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    EXPECT_EQ(connection.m_timeSinceLastEvent, 0);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    EXPECT_EQ(connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
