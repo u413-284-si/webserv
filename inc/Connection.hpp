@@ -7,8 +7,6 @@
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
-#include <fcntl.h>
-#include <sched.h>
 #include <string>
 #include <unistd.h>
 
