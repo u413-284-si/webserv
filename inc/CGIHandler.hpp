@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "Connection.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "Socket.hpp"
@@ -26,10 +27,8 @@
 
 class CGIHandler {
 public:
-	explicit CGIHandler(const std::string& cgiPath, const std::string& cgiExt);
+	explicit CGIHandler(Connection& connection);
 
-	void init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request,
-		const std::vector<Location>::const_iterator& location);
 	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location);
 
 	// Getter functions

@@ -2,26 +2,51 @@
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
-/**
- * @brief Constructs a CGIHandler object with the specified CGI path and extension.
- *
- * This constructor initializes the CGIHandler with the provided CGI path and extension.
- * It also initializes the pipe file descriptors and the CGI process ID.
- *
- * @param cgiPath The path to the CGI interpreter.
- * @param cgiExt The file extension associated with the CGI script.
- */
-CGIHandler::CGIHandler(const std::string& cgiPath, const std::string& cgiExt)
-	: m_cgiPath(cgiPath)
-	, m_cgiExt(cgiExt)
+
+CGIHandler::CGIHandler(Connection& connection)
+	: m_cgiPath(connection.location->cgiPath)
+	, m_cgiExt(connection.location->cgiExt)
 	, m_pipeIn()
 	, m_pipeOut()
 	, m_cgiPid(-1)
 {
-	m_pipeIn[0] = -1;
-	m_pipeIn[1] = -1;
-	m_pipeOut[0] = -1;
-	m_pipeOut[1] = -1;
+
+	// Set up environment variables for CGI script
+	if (connection.m_request.headers.find("Content-Length") != connection.m_request.headers.end())
+		m_env["CONTENT_LENGTH"] = connection.m_request.headers.at("Content-Length");
+	if (connection.m_request.headers.find("Content-Type") != connection.m_request.headers.end())
+		m_env["CONTENT_TYPE"] = connection.m_request.headers.at("Content-Type");
+	m_env["GATEWAY_INTERFACE"] = "CGI/1.1";
+	m_env["PATH_INFO"] = extractPathInfo(connection.m_request.uri.path); // additional path information following the script name
+	m_env["PATH_TRANSLATED"] = connection.location->root + m_env["PATH_INFO"]; // actual file system path of the PATH_INFO resource
+	m_env["QUERY_STRING"] = connection.m_request.uri.query;
+	m_env["REDIRECT_STATUS"]
+		= "200"; // indicates successfull internal redirection to the script; required for old PHP scripts
+	m_env["REMOTE_ADDR"] = connection.m_clientSocket.host; // IP address of the client
+	m_env["REMOTE_PORT"] = connection.m_clientSocket.port; // port of the client
+	m_env["REQUEST_METHOD"] = webutils::methodToString(connection.m_request.method);
+	m_env["REQUEST_URI"] = connection.m_request.uri.path + '?' + connection.m_request.uri.query;
+	m_env["SCRIPT_NAME"] = extractScriptPath(connection.m_request.uri.path); // URI path of the CGI script until the script extension
+	m_env["SCRIPT_FILENAME"]
+		= connection.location->root + m_env["SCRIPT_NAME"]; // actual file system path of the CGI script being executed
+	m_env["SERVER_ADDR"] = connection.m_serverSocket.host; // IP address of the server
+	m_env["SERVER_NAME"] = connection.m_serverSocket.host; // name of the server
+	m_env["SERVER_PORT"] = connection.m_serverSocket.port; // port of the server
+	m_env["SERVER_PROTOCOL"] = "HTTP/1.1";
+	m_env["SERVER_SOFTWARE"] = "Trihard/1.0.0";
+	m_env["SYSTEM_ROOT"] = connection.location->root;
+
+	// Create pipes for inter-process communication
+	if (pipe(m_pipeIn) == -1) {
+		LOG_ERROR << "pipe(): m_pipeIn: " + std::string(std::strerror(errno));
+		connection.m_request.httpStatus = StatusInternalServerError;
+	}
+	if (pipe(m_pipeOut) == -1) {
+		LOG_ERROR << "pipe(): pipeOut: " + std::string(std::strerror(errno));
+		close(m_pipeIn[0]);
+		close(m_pipeIn[1]);
+		connection.m_request.httpStatus = StatusInternalServerError;
+	}
 }
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
@@ -92,46 +117,6 @@ const std::map<std::string, std::string>& CGIHandler::getEnv() const { return m_
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
- * @brief Initializes the CGI environment variables for the CGIHandler.
- *
- * This function sets up the necessary environment variables required for
- * executing a CGI script based on the provided client socket, server socket,
- * HTTP request, and location configuration.
- *
- * @param clientSocket The socket representing the client connection.
- * @param serverSocket The socket representing the server connection.
- * @param request The HTTP request containing headers and URI information.
- * @param location An iterator to the location configuration in the server settings.
- */
-void CGIHandler::init(const Socket& clientSocket, const Socket& serverSocket, const HTTPRequest& request,
-	const std::vector<Location>::const_iterator& location)
-{
-	if (request.headers.find("Content-Length") != request.headers.end())
-		m_env["CONTENT_LENGTH"] = request.headers.at("Content-Length");
-	if (request.headers.find("Content-Type") != request.headers.end())
-		m_env["CONTENT_TYPE"] = request.headers.at("Content-Type");
-	m_env["GATEWAY_INTERFACE"] = "CGI/1.1";
-	m_env["PATH_INFO"] = extractPathInfo(request.uri.path); // additional path information following the script name
-	m_env["PATH_TRANSLATED"] = location->root + m_env["PATH_INFO"]; // actual file system path of the PATH_INFO resource
-	m_env["QUERY_STRING"] = request.uri.query;
-	m_env["REDIRECT_STATUS"]
-		= "200"; // indicates successfull internal redirection to the script; required for old PHP scripts
-	m_env["REMOTE_ADDR"] = clientSocket.host; // IP address of the client
-	m_env["REMOTE_PORT"] = clientSocket.port; // port of the client
-	m_env["REQUEST_METHOD"] = webutils::methodToString(request.method);
-	m_env["REQUEST_URI"] = request.uri.path + '?' + request.uri.query;
-	m_env["SCRIPT_NAME"] = extractScriptPath(request.uri.path); // URI path of the CGI script until the script extension
-	m_env["SCRIPT_FILENAME"]
-		= location->root + m_env["SCRIPT_NAME"]; // actual file system path of the CGI script being executed
-	m_env["SERVER_ADDR"] = serverSocket.host; // IP address of the server
-	m_env["SERVER_NAME"] = serverSocket.host; // name of the server
-	m_env["SERVER_PORT"] = serverSocket.port; // port of the server
-	m_env["SERVER_PROTOCOL"] = "HTTP/1.1";
-	m_env["SERVER_SOFTWARE"] = "Trihard/1.0.0";
-	m_env["SYSTEM_ROOT"] = location->root;
-}
-
-/**
  * @brief Executes the CGI script for the given HTTP request.
  *
  * This function sets up the environment and argument vectors for the CGI script,
@@ -164,19 +149,6 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 
 	setEnvp(bufferEnv, envp);
 	setArgv(bufferArgv, argv);
-
-	if (pipe(m_pipeIn) == -1) {
-		LOG_ERROR << "Error: pipe(): m_pipeIn: " + std::string(std::strerror(errno));
-		request.httpStatus = StatusInternalServerError;
-		return;
-	}
-	if (pipe(m_pipeOut) == -1) {
-		LOG_ERROR << "Error: pipe(): pipeOut: " + std::string(std::strerror(errno));
-		close(m_pipeIn[0]);
-		close(m_pipeIn[1]);
-		request.httpStatus = StatusInternalServerError;
-		return;
-	}
 
 	m_cgiPid = fork();
 	if (m_cgiPid == -1) {
