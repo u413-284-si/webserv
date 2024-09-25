@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Output the Content-Type header
-echo "Content-type: text/html"
-echo ""
+printf "Content-Type: text/plain\r\n"
+printf "\r\n"
 
 # Output the HTML content
 cat <<EOF
