@@ -300,18 +300,7 @@ bool isIpAddressValid(const std::string& ipAddress)
 	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
 
-	std::vector<std::string> segments;
-	size_t segmentStart = 0;
-	size_t segmentEnd = 0;
-
-	while (segmentEnd != std::string::npos) {
-		segmentEnd = ipAddress.find('.', segmentStart);
-		std::string segment = (segmentEnd == std::string::npos)
-			? ipAddress.substr(segmentStart)
-			: ipAddress.substr(segmentStart, segmentEnd - segmentStart);
-		segments.push_back(segment);
-		segmentStart = segmentEnd + 1;
-	}
+	const std::vector<std::string> segments = webutils::split(ipAddress, ".");
 	if (segments.size() != 4)
 		return false;
 
