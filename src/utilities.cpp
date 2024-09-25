@@ -1,5 +1,6 @@
 #include "utilities.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 
 #include <cassert>
 #include <cctype>
@@ -316,11 +317,10 @@ bool isIpAddressValid(const std::string& ipAddress)
 
 	const short maxIpValue = 255;
 	const short minIpValue = 0;
-	const int base = 10;
 	for (std::vector<std::string>::const_iterator citer = segments.begin(); citer != segments.end(); ++citer) {
 		if (citer->empty() || citer->size() > 3)
 			return false;
-		const long segmentValue = std::strtol(citer->c_str(), NULL, base);
+		const long segmentValue = std::strtol(citer->c_str(), NULL, constants::g_decimalBase);
 		if (segmentValue > maxIpValue || segmentValue < minIpValue)
 			return false;
 	}
@@ -343,11 +343,10 @@ bool isPortValid(const std::string& port)
 	if (port.find_first_not_of("0123456789") != std::string::npos)
 		return false;
 
-	const int base = 10;
 	const int maxPort = 65535;
 	const int minPort = 1;
 
-	const long portNum = std::strtol(port.c_str(), NULL, base);
+	const long portNum = std::strtol(port.c_str(), NULL, constants::g_decimalBase);
 	return !(portNum <= minPort || portNum > maxPort);
 }
 

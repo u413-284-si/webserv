@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "constants.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
@@ -19,8 +20,6 @@
 #include <vector>
 
 /* ====== DEFINITIONS ====== */
-
-const int g_decimalBase = 10;
 
 /* ====== CLASS DECLARATION ====== */
 

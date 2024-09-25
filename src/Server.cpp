@@ -1,6 +1,4 @@
 #include "Server.hpp"
-#include "Connection.hpp"
-#include "TargetResourceHandler.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -914,7 +912,7 @@ bool isCompleteBody(Connection& connection)
 {
 	if (!connection.m_request.isChunked) {
 		unsigned long contentLength
-			= std::strtoul(connection.m_request.headers.at("content-length").c_str(), NULL, g_decimalBase);
+			= std::strtoul(connection.m_request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 		if (contentLength < connection.m_buffer.size()) {
 			connection.m_request.httpStatus = StatusBadRequest;
 			return false;

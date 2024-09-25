@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "constants.hpp"
 #include "StatusCode.hpp"
 #include <algorithm>
 #include <ctime>

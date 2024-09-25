@@ -480,7 +480,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, g_decimalBase);
+	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
@@ -550,7 +550,7 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		std::vector<long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, g_decimalBase);
+			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, constants::g_decimalBase);
 			if ((contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
