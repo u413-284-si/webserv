@@ -80,11 +80,11 @@ CGIHandler::CGIHandler(Connection& connection)
 	/* ========= Create pipes for inter-process communication ========= */
 
 	if (pipe(m_pipeIn) == -1) {
-		LOG_ERROR << "pipe(): m_pipeIn: " + std::string(std::strerror(errno));
+		LOG_ERROR << "pipe(): m_pipeIn: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 	}
 	if (pipe(m_pipeOut) == -1) {
-		LOG_ERROR << "pipe(): pipeOut: " + std::string(std::strerror(errno));
+		LOG_ERROR << "pipe(): pipeOut: " << std::strerror(errno);
 		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
@@ -182,7 +182,7 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 {
 	m_cgiPid = fork();
 	if (m_cgiPid == -1) {
-		LOG_ERROR << "Error: fork(): " + std::string(std::strerror(errno));
+		LOG_ERROR << "fork(): " << std::strerror(errno);
 		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
@@ -205,7 +205,7 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 
 		std::string workingDir = location->root + location->path;
 		if (chdir(workingDir.c_str()) == -1) {
-			LOG_ERROR << "Error: chdir(): " + std::string(std::strerror(errno));
+			LOG_ERROR << "chdir(): " << std::strerror(errno);
 			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());
 			std::exit(EXIT_FAILURE);
@@ -213,7 +213,7 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 
 		int ret = 0;
 		ret = execve(m_argvp[0], m_argvp.data(), m_envp.data());
-		LOG_ERROR << "Error: execve(): " + std::string(std::strerror(errno));
+		LOG_ERROR << "execve(): " << std::strerror(errno);
 		if (ret == -1) {
 			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
 			write(STDOUT_FILENO, error.c_str(), error.size());

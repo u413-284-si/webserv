@@ -889,7 +889,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	try {
 		server.parseHeader(connection.m_buffer, connection.m_request);
 	} catch (std::exception& e) {
-		LOG_ERROR << "Error: " << e.what();
+		LOG_ERROR << e.what();
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 		return;
@@ -1025,7 +1025,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 			try {
 				server.parseBody(connection.m_buffer, connection.m_request);
 			} catch (std::exception& e) {
-				LOG_ERROR << "Error: " << e.what();
+				LOG_ERROR << e.what();
 			}
 			if (connection.m_request.hasCGI)
 				connection.m_status = Connection::SendToCGI;
@@ -1103,7 +1103,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 	LOG_DEBUG << "Send to CGI for: " << connection.m_clientSocket;
 
 	if (connection.m_request.body.empty()) {
-		LOG_ERROR << "Error: empty body: can't send to CGI";
+		LOG_ERROR << "empty body: can't send to CGI";
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
@@ -1116,7 +1116,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		= write(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
 
 	if (bytesSent == -1) {
-		LOG_ERROR << "Error: write(): can't send to CGI: " + std::string(std::strerror(errno));
+		LOG_ERROR << "write(): can't send to CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
@@ -1158,7 +1158,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 	long bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
 
 	if (bytesRead == -1) {
-		LOG_ERROR << "Error: read(): can't read from CGI: " + std::string(std::strerror(errno));
+		LOG_ERROR << "read(): can't read from CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
@@ -1176,14 +1176,14 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 			server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		int status = 0;
 		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
-			LOG_ERROR << "Error: waitpid(): " + std::string(std::strerror(errno));
+			LOG_ERROR << "waitpid(): " << std::strerror(errno);
 			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
 		// Any child exit status unequal to 0 indicates unsuccessful completion of the process
 		// NOLINTNEXTLINE misinterpretation by HIC++ standard
 		if (WEXITSTATUS(status) != 0) {
-			LOG_ERROR << "Error: child returned with: "
+			LOG_ERROR << "child returned with: "
 					  // NOLINTNEXTLINE misinterpretation by HIC++ standard
 					  << WEXITSTATUS(status);
 			connection.m_request.httpStatus = StatusInternalServerError;
