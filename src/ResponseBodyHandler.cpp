@@ -29,7 +29,7 @@ void ResponseBodyHandler::execute()
 {
 	if (m_request.httpStatus != StatusOK) {
 		handleErrorBody();
-	} else if (m_request.isCGI) {
+	} else if (m_request.hasCGI) {
 		m_responseBody = m_request.body;
 	} else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);

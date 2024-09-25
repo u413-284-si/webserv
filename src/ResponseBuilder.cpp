@@ -71,7 +71,7 @@ void ResponseBuilder::resetStream()
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	if (request.isCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
+	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
 		return;
 	m_responseStream << "HTTP/1.1 " << request.httpStatus << " \r\n";
 }
@@ -91,7 +91,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	if (!request.isCGI && (m_responseBody.find("Content-Type: ") == std::string::npos))
+	if (!request.hasCGI && (m_responseBody.find("Content-Type: ") == std::string::npos))
 		m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
 						 << "\r\n";
 	// Content-Length

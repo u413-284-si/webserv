@@ -906,7 +906,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	server.findTargetResource(connection, connection.m_request);
 	if (isCGIRequested(connection)) {
-		connection.m_request.isCGI = true;
+		connection.m_request.hasCGI = true;
 		CGIHandler cgiHandler(connection.location->cgiPath, connection.location->cgiExt);
 		cgiHandler.init(
 			connection.m_clientSocket, connection.m_serverSocket, connection.m_request, connection.location);
@@ -916,7 +916,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_cgiPid = cgiHandler.getCGIPid();
 		if (!server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
-			connection.m_request.isCGI = false;
+			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;
 		}
 	}
@@ -924,7 +924,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
-	} else if (connection.m_request.isCGI)
+	} else if (connection.m_request.hasCGI)
 		connection.m_status = Connection::ReceiveFromCGI;
 	else {
 		connection.m_status = Connection::BuildResponse;
@@ -1023,7 +1023,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 			} catch (std::exception& e) {
 				LOG_ERROR << "Error: " << e.what();
 			}
-			if (connection.m_request.isCGI)
+			if (connection.m_request.hasCGI)
 				connection.m_status = Connection::SendToCGI;
 			else
 				connection.m_status = Connection::BuildResponse;
@@ -1203,7 +1203,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
  */
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection)
 {
-    if (activeFd != connection.m_clientFd)
+	if (activeFd != connection.m_clientFd)
 		return;
 
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
@@ -1233,9 +1233,9 @@ void connectionBuildResponse(Server& server, int activeFd, Connection& connectio
  */
 void connectionSendResponse(Server& server, int activeFd, Connection& connection)
 {
-    if (activeFd != connection.m_clientFd)
+	if (activeFd != connection.m_clientFd)
 		return;
-    
+
 	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << activeFd;
 
 	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());
@@ -1277,9 +1277,9 @@ void connectionSendResponse(Server& server, int activeFd, Connection& connection
  */
 void connectionHandleTimeout(Server& server, int activeFd, Connection& connection)
 {
-    if (activeFd != connection.m_clientFd)
+	if (activeFd != connection.m_clientFd)
 		return;
-    
+
 	LOG_DEBUG << "Timeout for: " << connection.m_clientSocket;
 
 	connection.m_request.shallCloseConnection = true;

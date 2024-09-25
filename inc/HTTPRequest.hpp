@@ -30,7 +30,7 @@ struct HTTPRequest {
 	bool isChunked;
 	std::string targetResource;
 	bool hasAutoindex;
-	bool isCGI;
+	bool hasCGI;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
