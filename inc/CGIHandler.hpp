@@ -10,22 +10,17 @@
 #include "signalHandler.hpp"
 #include "utilities.hpp"
 
-#include <arpa/inet.h>
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <map>
-#include <netinet/in.h>
-#include <sched.h>
 #include <string>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
 
 /* ====== DEFINITIONS ====== */
-
-#define BUFFER_SIZE 50000000 // 50 Megabyte
 
 /* ====== CLASS DECLARATION ====== */
 
