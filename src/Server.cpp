@@ -815,7 +815,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		return;
 	}
 
-	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
+	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("host");
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
 			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
