@@ -37,18 +37,21 @@ public:
 	const pid_t& getCGIPid() const;
 	const std::string& getCGIPath() const;
 	const std::string& getCGIExt() const;
-	const std::map<std::string, std::string>& getEnv() const;
-
-	void setEnvp(std::vector<std::string>& bufferEnv, std::vector<char*>& envp) const;
-	void setArgv(std::vector<std::string>& bufferArgv, std::vector<char*>& argv);
+	const std::vector<std::string>& getEnv() const;
 
 private:
 	std::string m_cgiPath; /**< Path to CGI interpreter */
 	std::string m_cgiExt; /**< CGI script extension */
-	std::map<std::string, std::string> m_env; /**< Environment variables for CGI script */
+	std::vector<std::string> m_env; /**< Environment variables for CGI script */
+	std::vector<std::string> m_argv; /**< Arguments for CGI script */
+	std::vector<char*> m_envp; /**< Pointers to environment variables for CGI script */
+	std::vector<char*> m_argvp; /**< Pointers to arguments for CGI script */
 	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */
 	int m_pipeOut[2]; /**< Pipe for passing output from CGI program to server */
 	pid_t m_cgiPid; /**< Process ID of the CGI process */
+
+	void setEnvp();
+	void setArgv(const std::string& scriptFilename);
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
