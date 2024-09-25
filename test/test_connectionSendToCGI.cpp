@@ -31,6 +31,7 @@ protected:
 	Server server;
 	ConfigServer serverConfig;
 	const int dummyFd = 10;
+	const int dummyPipeFd = 11;
 
 	Socket serverSock = { "127.0.0.1", "8080" };
 	Socket clientSocket = { "192.168.0.1", "12345" };
@@ -43,7 +44,7 @@ TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_EmptyBody)
 	connection.m_request.body = "";
 
 	// Act
-	connectionSendToCGI(server, connection);
+	connectionSendToCGI(server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -55,9 +56,10 @@ TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_WriteError)
 	// Arrange
 	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
 	connection.m_request.body = "test body";
+	std::cout << "Clientfd: " << connection.m_clientFd << std::endl;
 
 	// Act
-	connectionSendToCGI(server, connection);
+	connectionSendToCGI(server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -74,7 +76,7 @@ TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_FullBodySent)
 	connection.m_request.body = "test body";
 
 	// Act
-	connectionSendToCGI(server, connection);
+	connectionSendToCGI(server, pipefd[1], connection);
 
 	// Assert
 	EXPECT_TRUE(connection.m_request.body.empty());

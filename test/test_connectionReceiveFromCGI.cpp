@@ -49,7 +49,7 @@ TEST_F(ConnectionReceiveFromCGITest, ConnectionReceiveFromCGI_ReadError)
 	close(pipefd[0]); // Simulate read error
 
 	// Act
-	connectionReceiveFromCGI(server, connection);
+	connectionReceiveFromCGI(server, pipefd[0], connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -67,7 +67,7 @@ TEST_F(ConnectionReceiveFromCGITest, ConnectionReceiveFromCGI_PartialRead)
 	write(pipefd[1], "CGI response", 12);
 
 	// Act
-	connectionReceiveFromCGI(server, connection);
+	connectionReceiveFromCGI(server, pipefd[0], connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.body, "CGI response");
