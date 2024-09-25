@@ -1,6 +1,4 @@
 #include "CGIHandler.hpp"
-#include "signalHandler.hpp"
-#include <cstdlib>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
