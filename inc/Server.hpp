@@ -59,14 +59,16 @@ public:
 	~Server();
 
 	// Getters
-	std::map<int, Socket>& getVirtualServers();
+	
 	const std::map<int, Socket>& getVirtualServers() const;
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
-	std::map<int, Connection>& getConnections();
-	std::map<int, Connection&>& getCGIConnections();
 	time_t getClientTimeout() const;
 
+	std::map<int, Socket>& getVirtualServers();
+	std::map<int, Connection>& getConnections();
+	std::map<int, Connection&>& getCGIConnections();
+	
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
