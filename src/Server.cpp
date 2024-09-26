@@ -832,24 +832,27 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(activeFd);
 		connection.m_status = Connection::Closed;
-	} else if (bytesRead == 0) {
+		return;
+	}
+	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(activeFd);
 		connection.m_status = Connection::Closed;
+		return;
+	}
+	
+	connection.m_bytesReceived += bytesRead;
+	connection.m_buffer += buffer;
+	connection.m_timeSinceLastEvent = std::time(0);
+	if (isCompleteRequestHeader(connection.m_buffer)) {
+		handleCompleteRequestHeader(server, activeFd, connection);
 	} else {
-		connection.m_bytesReceived += bytesRead;
-		connection.m_buffer += buffer;
-		connection.m_timeSinceLastEvent = std::time(0);
-		if (isCompleteRequestHeader(connection.m_buffer)) {
-			handleCompleteRequestHeader(server, activeFd, connection);
-		} else {
-			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-			if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
-				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
-				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(activeFd, EPOLLOUT);
-			}
+		LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
+		if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
+			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
+			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
 		}
 	}
 }
@@ -1008,38 +1011,41 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(activeFd);
 		connection.m_status = Connection::Closed;
-	} else if (bytesRead == 0) {
+		return;
+	}
+	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(activeFd);
 		connection.m_status = Connection::Closed;
+		return;
+	}
+
+	connection.m_buffer += buffer;
+	connection.m_timeSinceLastEvent = std::time(0);
+	if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
+		LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(activeFd, EPOLLOUT);
+		return;
+	}
+	if (isCompleteBody(connection)) {
+		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+		try {
+			server.parseBody(connection.m_buffer, connection.m_request);
+		} catch (std::exception& e) {
+			LOG_ERROR << e.what();
+		}
+		if (connection.m_request.hasCGI)
+			connection.m_status = Connection::SendToCGI;
+		else
+			connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(activeFd, EPOLLOUT);
 	} else {
-		connection.m_buffer += buffer;
-		connection.m_timeSinceLastEvent = std::time(0);
-		if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
-			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
-			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+		if (connection.m_request.httpStatus == StatusBadRequest) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-			return;
-		}
-		if (isCompleteBody(connection)) {
-			LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
-			try {
-				server.parseBody(connection.m_buffer, connection.m_request);
-			} catch (std::exception& e) {
-				LOG_ERROR << e.what();
-			}
-			if (connection.m_request.hasCGI)
-				connection.m_status = Connection::SendToCGI;
-			else
-				connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(activeFd, EPOLLOUT);
-		} else {
-			LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
-			if (connection.m_request.httpStatus == StatusBadRequest) {
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(activeFd, EPOLLOUT);
-			}
 		}
 	}
 }
