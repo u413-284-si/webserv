@@ -62,28 +62,29 @@ ConfigFile createDummyConfig()
 	location1.root = "/workspaces/webserv";
 	location1.indices.push_back("index.htm");
 
+	Location location2;
+	location2.path = "/cgi-bin";
+	location2.root = "/workspaces/webserv";
+	location2.cgiPath = "/usr/bin/bash";
+	location2.cgiExt = ".sh";
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
+	serverConfig8080.locations.push_back(location2);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "root";
 
-	Location location2;
-	location2.path = "/";
-	location2.root = "/workspaces/webserv/doc";
-	location2.indices.push_back("index.htm");
+	Location location3;
+	location3.path = "/";
+	location3.root = "/workspaces/webserv/doc";
+	location3.indices.push_back("index.htm");
 
 	ConfigServer serverConfig8090;
-	serverConfig8090.locations.push_back(location2);
+	serverConfig8090.locations.push_back(location3);
 	serverConfig8090.host = "127.0.0.1";
 	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
-
-	Location location3;
-	location3.path = "/cgi-bin";
-	location3.root = "/workspaces/webserv";
-	location3.cgiPath = "/usr/bin/bash";
-	location3.cgiExt = ".sh";
 
 	Location location4;
 	location4.path = "/cgi-bin";
