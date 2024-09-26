@@ -174,15 +174,6 @@ const std::vector<std::string>& CGIHandler::getEnv() const { return m_env; }
  */
 const std::vector<std::string>& CGIHandler::getArgv() const { return m_argv; }
 
-/**
- * @brief Sets the process ID (PID) of the CGI handler.
- *
- * This function sets the process ID (`pid_t`) of the CGI process to the provided value.
- * The PID uniquely identifies the running CGI process.
- *
- * @param pid The process ID of the CGI process.
- */
-void CGIHandler::setCGIPid(pid_t pid) { m_cgiPid = pid; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 

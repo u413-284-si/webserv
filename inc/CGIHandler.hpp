@@ -38,8 +38,6 @@ public:
 	const std::vector<std::string>& getEnv() const;
 	const std::vector<std::string>& getArgv() const;
 
-	void setCGIPid(pid_t pid);
-
 private:
 	std::string m_cgiPath; /**< Path to CGI interpreter */
 	std::string m_cgiExt; /**< CGI script extension */

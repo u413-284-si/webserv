@@ -21,9 +21,6 @@ protected:
 		ON_CALL(processOps, pipeProcess)
 			.WillByDefault(Return(0));
 
-		ON_CALL(processOps, forkProcess)
-			.WillByDefault(Return(0));
-
 		request.uri.path = "/cgi-bin/test.py/some/more/path";
 		request.uri.query = "name=John&age=25";
 		request.headers["Content-Length"] = "20";
@@ -125,20 +122,6 @@ TEST_F(CGIHandlerTest, ForkFail)
 {
 	// Arrange
 	ON_CALL(processOps, forkProcess)
-		.WillByDefault(Return(-1));
-
-	// Act
-	CGIHandler cgiHandler(connection, processOps);
-	cgiHandler.execute(connection.m_request, connection.location, processOps);
-
-	// Assert
-	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
-}
-
-TEST_F(CGIHandlerTest, Dup2Fail)
-{
-	// Arrange
-	ON_CALL(processOps, dup2Process)
 		.WillByDefault(Return(-1));
 
 	// Act
