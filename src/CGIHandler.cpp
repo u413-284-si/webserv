@@ -78,6 +78,11 @@ CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 	m_env.push_back("SERVER_SOFTWARE=Trihard/1.0.0");
 	m_env.push_back("SYSTEM_ROOT=" + connection.location->root);
 
+	/* ========= Set up arguments for CGI script ========= */
+
+	m_argv.push_back(m_cgiPath);
+	m_argv.push_back(connection.location->root + scriptPath);
+
 	/* ========= Create pipes for inter-process communication ========= */
 
 	if (processOps.pipeProcess(m_pipeIn) == -1)
@@ -90,7 +95,7 @@ CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 
 	/* ========= Create input parameters for execve ========= */
 	setEnvp();
-	setArgv(connection.location->root + scriptPath);
+	setArgv();
 }
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
@@ -158,6 +163,27 @@ const std::string& CGIHandler::getCGIExt() const { return m_cgiExt; }
  */
 const std::vector<std::string>& CGIHandler::getEnv() const { return m_env; }
 
+/**
+ * @brief Retrieves the arguments set for the CGI script.
+ *
+ * This function returns a constant reference to the arguments
+ * set for the CGI script. The arguments are used to provide
+ * the executable path and its arguments to the CGI script during execution.
+ *
+ * @return const std::vector<std::string>& A constant reference to the arguments.
+ */
+const std::vector<std::string>& CGIHandler::getArgv() const { return m_argv; }
+
+/**
+ * @brief Sets the process ID (PID) of the CGI handler.
+ *
+ * This function sets the process ID (`pid_t`) of the CGI process to the provided value.
+ * The PID uniquely identifies the running CGI process.
+ *
+ * @param pid The process ID of the CGI process.
+ */
+void CGIHandler::setCGIPid(pid_t pid) { m_cgiPid = pid; }
+
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
@@ -178,32 +204,28 @@ const std::vector<std::string>& CGIHandler::getEnv() const { return m_env; }
  */
 void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps)
 {
-	processOps.forkProcess(m_cgiPid);
-	if (m_cgiPid == -1) {
-		close(m_pipeIn[0]);
-		close(m_pipeIn[1]);
-		close(m_pipeOut[0]);
-		close(m_pipeOut[1]);
+	if (processOps.forkProcess(m_cgiPid) == -1) {
+		closePipes();
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
 	if (m_cgiPid == 0) {
-		if (!registerChildSignals())
+		if (!registerChildSignals()) {
+			closePipes();
 			std::exit(EXIT_FAILURE);
+		}
 
 		// Replace child stdin with read end of input pipe
-		if (processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1)
+		if (processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
+			closePipes();
 			std::exit(EXIT_FAILURE);
+		}
 		// Replace child stdout with write end of output pipe
-		if (processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1)
+		if (processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1) {
+			closePipes();
 			std::exit(EXIT_FAILURE);
-
-		// Can be closed as the read connection to server exists in stdin now
-		close(m_pipeIn[0]);
-		close(m_pipeIn[1]);
-		close(m_pipeOut[0]);
-		// Can be closed as the write connection to server exists in stdout now
-		close(m_pipeOut[1]);
+		}
+		closePipes();
 
 		std::string workingDir = location->root + location->path;
 		if (processOps.chdirProcess(workingDir.c_str()) == -1)
@@ -212,7 +234,7 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 		if (processOps.execProcess(m_argvp[0], m_argvp.data(), m_envp.data()) == -1)
 			std::exit(EXIT_FAILURE);
 	}
-	
+
 	// Close read end of input pipe in parent process
 	close(m_pipeIn[0]);
 	// Close write end of output pipe in parent process
@@ -238,18 +260,13 @@ void CGIHandler::setEnvp()
 /**
  * @brief Sets up the argument vector (argv) for the CGI script execution.
  *
- * This function initializes the argument vector (argv) for the CGI script by
- * pushing the CGI path and the script filename into the m_argv vector. It then
- * converts these arguments into a format suitable for exec family functions by
+ * This function converts argument vector (argv) for the CGI script into a format suitable for exec family functions by
  * storing pointers to the C-style strings in the m_argvp vector. A NULL pointer
  * is appended to m_argvp to mark the end of the arguments.
  *
- * @param scriptFilename The filename of the CGI script to be executed.
  */
-void CGIHandler::setArgv(const std::string& scriptFilename)
+void CGIHandler::setArgv()
 {
-	m_argv.push_back(m_cgiPath);
-	m_argv.push_back(scriptFilename);
 	for (std::vector<std::string>::iterator iter = m_argv.begin(); iter != m_argv.end(); iter++)
 		m_argvp.push_back(&(*iter).at(0));
 	m_argvp.push_back(NULL);
@@ -333,4 +350,20 @@ bool registerChildSignals()
 		return (false);
 	}
 	return (true);
+}
+
+/**
+ * @brief Closes the input and output pipes used by the CGI handler.
+ *
+ * This function closes both ends of the input and output pipes
+ * associated with the CGI handler. It ensures that all file
+ * descriptors related to the pipes are properly closed to prevent
+ * resource leaks.
+ */
+void CGIHandler::closePipes()
+{
+	close(m_pipeIn[0]);
+	close(m_pipeIn[1]);
+	close(m_pipeOut[0]);
+	close(m_pipeOut[1]);
 }

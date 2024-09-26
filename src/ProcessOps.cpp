@@ -20,7 +20,7 @@ ProcessOps::~ProcessOps() { }
  * @return int Returns 0 on success, or -1 if an error occurs. In case of an error, 
  * an error message is logged and the global variable `errno` is set to indicate the error.
  */
-int ProcessOps::pipeProcess(int pipefd[2])
+int ProcessOps::pipeProcess(int pipefd[2]) const
 {
 	if (pipe(pipefd) == -1) {
 		LOG_ERROR << "pipe(): " << std::strerror(errno);
@@ -39,7 +39,7 @@ int ProcessOps::pipeProcess(int pipefd[2])
  * @param newfd The file descriptor to duplicate to.
  * @return int Returns 0 on success, or -1 on failure.
  */
-int ProcessOps::dup2Process(int oldfd, int newfd)
+int ProcessOps::dup2Process(int oldfd, int newfd) const
 {
 	if (dup2(oldfd, newfd) == -1) {
 		LOG_ERROR << "dup2(): " << std::strerror(errno);
@@ -57,7 +57,7 @@ int ProcessOps::dup2Process(int oldfd, int newfd)
  * @param path The path to the directory to change to.
  * @return int Returns 0 on success, or -1 on failure.
  */
-int ProcessOps::chdirProcess(const char* path)
+int ProcessOps::chdirProcess(const char* path) const
 {
 	if (chdir(path) == -1) {
 		LOG_ERROR << "chdir(): " << std::strerror(errno);
@@ -74,12 +74,16 @@ int ProcessOps::chdirProcess(const char* path)
  * If the fork() call fails, an error message is logged.
  *
  * @param pid Reference to a pid_t variable where the process ID of the child process will be stored.
+ * @return int Returns 0 on success, or -1 on failure.
  */
-void ProcessOps::forkProcess(pid_t& pid)
+int ProcessOps::forkProcess(pid_t& pid) const
 {
 	pid = fork();
-	if (pid == -1)
+	if (pid == -1) {
 		LOG_ERROR << "fork(): " << std::strerror(errno);
+		return -1;
+	}
+	return 0;
 }
 
 /**
@@ -97,7 +101,7 @@ void ProcessOps::forkProcess(pid_t& pid)
  * @return Returns 0 on success. On failure, returns -1 and logs an error
  *         message with the reason for the failure.
  */
-int ProcessOps::execProcess(const char *pathname, char *const argv[], char *const envp[])
+int ProcessOps::execProcess(const char *pathname, char *const argv[], char *const envp[]) const
 {
 	if (execve(pathname, argv, envp) == -1) {
 		LOG_ERROR << "execve(): " << std::strerror(errno);

@@ -36,6 +36,9 @@ public:
 	const std::string& getCGIPath() const;
 	const std::string& getCGIExt() const;
 	const std::vector<std::string>& getEnv() const;
+	const std::vector<std::string>& getArgv() const;
+
+	void setCGIPid(pid_t pid);
 
 private:
 	std::string m_cgiPath; /**< Path to CGI interpreter */
@@ -49,11 +52,12 @@ private:
 	pid_t m_cgiPid; /**< Process ID of the CGI process */
 
 	void setEnvp();
-	void setArgv(const std::string& scriptFilename);
+	void setArgv();
 
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
 	std::string extractScriptPath(const std::string& path);
+	void closePipes();
 };
 
 bool registerChildSignals();

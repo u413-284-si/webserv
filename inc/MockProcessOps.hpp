@@ -1,0 +1,17 @@
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include "ProcessOps.hpp"
+
+/**
+ * @brief Mock class for ProcessOps.
+ *
+ */
+class MockProcessOps : public ProcessOps {
+public:
+	MOCK_METHOD(int, pipeProcess, (int pipefd[2]), (const, override));
+	MOCK_METHOD(int, dup2Process, (int oldfd, int newfd), (const, override));
+	MOCK_METHOD(int, chdirProcess, (const char* path), (const, override));
+	MOCK_METHOD(int, forkProcess, (pid_t & pid), (const, override));
+	MOCK_METHOD(int, execProcess, (const char* pathname, char* const argv[], char* const envp[]), (const, override));
+};
