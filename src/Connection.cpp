@@ -45,7 +45,7 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
 	connection.m_bytesReceived = 0;
-	if (connection.m_pipeToCGIWriteEnd!= -1) {
+	if (connection.m_pipeToCGIWriteEnd != -1) {
 		close(connection.m_pipeToCGIWriteEnd);
 		connection.m_pipeToCGIWriteEnd = -1;
 	}
