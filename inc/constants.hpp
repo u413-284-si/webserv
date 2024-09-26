@@ -5,6 +5,7 @@
 /* ====== DECLARATIONS ====== */
 
 namespace constants {
-    extern const int g_decimalBase;
+
+extern const int g_decimalBase;
 
 } // constants
