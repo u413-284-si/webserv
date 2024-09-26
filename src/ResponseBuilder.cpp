@@ -105,7 +105,8 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseStream << "Location: " << request.targetResource << "\r\n";
 	}
 	// Delimiter
-	m_responseStream << "\r\n";
+	if (!request.hasCGI && (m_responseBody.find("Content-Type: ") == std::string::npos))
+		m_responseStream << "\r\n";
 }
 
 /**
