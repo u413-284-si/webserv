@@ -6,6 +6,7 @@
 #include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
 #include "Method.hpp"
+#include "ProcessOps.hpp"
 #include "Socket.hpp"
 
 class CGIHandlerTest : public ::testing::Test {
@@ -43,12 +44,13 @@ protected:
 	Connection connection = Connection(serverSock, clientSock, dummyFd, configFile.servers);
 	ConfigServer serverConfig;
 	ConfigFile configFile;
+	ProcessOps processOps;
 };
 
 TEST_F(CGIHandlerTest, Ctor)
 {
 	// Arrange
-	CGIHandler cgiHandler(connection);
+	CGIHandler cgiHandler(connection, processOps);
 
 	// Act
 	const std::vector<std::string> env = cgiHandler.getEnv();
@@ -81,7 +83,7 @@ TEST_F(CGIHandlerTest, NoPathInfo)
 	// Arrange
 	request.uri.path = "/cgi-bin/test.py";
 	connection.m_request = request;
-	CGIHandler cgiHandler(connection);
+	CGIHandler cgiHandler(connection, processOps);
 
 	// Act
 	const std::vector<std::string> env = cgiHandler.getEnv();

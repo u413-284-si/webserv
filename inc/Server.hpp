@@ -8,6 +8,7 @@
 #include "EpollWrapper.hpp"
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"
+#include "ProcessOps.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
 #include "Socket.hpp"

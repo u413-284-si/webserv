@@ -128,6 +128,7 @@ SRC:=	main.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
 		LogOstreamInserters.cpp \
+		ProcessOps.cpp \
 		RequestParser.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \

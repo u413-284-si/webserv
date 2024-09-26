@@ -6,6 +6,7 @@
 #include "Connection.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
+#include "ProcessOps.hpp"
 #include "Socket.hpp"
 #include "StatusCode.hpp"
 #include "signalHandler.hpp"
@@ -15,10 +16,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <map>
 #include <string>
-#include <sys/wait.h>
-#include <unistd.h>
 #include <vector>
 
 /* ====== DEFINITIONS ====== */
@@ -27,9 +25,9 @@
 
 class CGIHandler {
 public:
-	explicit CGIHandler(Connection& connection);
+	explicit CGIHandler(Connection& connection, ProcessOps& processOps);
 
-	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location);
+	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps);
 
 	// Getter functions
 	int getPipeInWriteEnd() const;

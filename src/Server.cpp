@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "ProcessOps.hpp"
 #include "StatusCode.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -908,13 +909,14 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	server.findTargetResource(connection, connection.m_request);
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
-		CGIHandler cgiHandler(connection);
+		ProcessOps processOps;
+		CGIHandler cgiHandler(connection, processOps);
 		if (connection.m_request.httpStatus == StatusInternalServerError) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
-		cgiHandler.execute(connection.m_request, connection.location);
+		cgiHandler.execute(connection.m_request, connection.location, processOps);
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();

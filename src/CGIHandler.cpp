@@ -1,18 +1,19 @@
 #include "CGIHandler.hpp"
+#include "ProcessOps.hpp"
 #include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
-
 /**
  * @brief Constructs a CGIHandler object and sets up the environment for the CGI script.
- * 
+ *
  * This constructor initializes the CGIHandler with the provided connection object. It sets up
  * various environment variables required for the CGI script, creates pipes for inter-process
  * communication, and prepares input parameters for the execve system call.
- * 
+ *
  * @param connection Reference to a Connection object containing details about the current request and connection.
- * 
+ * @param processOps A reference to the ProcessOps object for handling process operations.
+ *
  * Environment variables set:
  * - CONTENT_LENGTH: Length of the content, if provided in the request headers.
  * - CONTENT_TYPE: Type of the content, if provided in the request headers.
@@ -33,17 +34,17 @@
  * - SERVER_PROTOCOL: Protocol used by the server.
  * - SERVER_SOFTWARE: Software name and version of the server.
  * - SYSTEM_ROOT: Root directory of the server.
- * 
+ *
  * Pipes created:
  * - m_pipeIn: Pipe for input communication.
  * - m_pipeOut: Pipe for output communication.
- * 
+ *
  * If pipe creation fails, the request's HTTP status is set to StatusInternalServerError.
- * 
+ *
  * The constructor also calls setEnvp() to set the environment variables and setArgv() to set the
  * arguments for the execve system call.
  */
-CGIHandler::CGIHandler(Connection& connection)
+CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 	: m_cgiPath(connection.location->cgiPath)
 	, m_cgiExt(connection.location->cgiExt)
 	, m_pipeIn()
@@ -79,12 +80,9 @@ CGIHandler::CGIHandler(Connection& connection)
 
 	/* ========= Create pipes for inter-process communication ========= */
 
-	if (pipe(m_pipeIn) == -1) {
-		LOG_ERROR << "pipe(): m_pipeIn: " << std::strerror(errno);
+	if (processOps.pipeProcess(m_pipeIn) == -1)
 		connection.m_request.httpStatus = StatusInternalServerError;
-	}
-	if (pipe(m_pipeOut) == -1) {
-		LOG_ERROR << "pipe(): pipeOut: " << std::strerror(errno);
+	if (processOps.pipeProcess(m_pipeOut) == -1) {
 		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
@@ -158,10 +156,9 @@ const std::string& CGIHandler::getCGIExt() const { return m_cgiExt; }
  *
  * @return const std::vector<std::string>& A constant reference to the environment variables.
  */
-const std::vector<std::string> & CGIHandler::getEnv() const { return m_env; }
+const std::vector<std::string>& CGIHandler::getEnv() const { return m_env; }
 
 /* ====== MEMBER FUNCTIONS ====== */
-
 
 /**
  * @brief Executes the CGI script for the given HTTP request.
@@ -172,17 +169,17 @@ const std::vector<std::string> & CGIHandler::getEnv() const { return m_env; }
  *
  * @param request The HTTP request to be processed.
  * @param location An iterator pointing to the location configuration for the request.
+ * @param processOps A reference to the ProcessOps object for handling process operations.
  *
  * @note If the fork operation fails, the function logs an error, closes the pipes, sets the HTTP status
  *       to internal server error, and returns. If the child process encounters an error while setting up
  *       signals, changing the directory, or executing the CGI script, it writes an HTTP 500 error to stdout
  *       and exits.
  */
-void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location)
+void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps)
 {
-	m_cgiPid = fork();
+	processOps.forkProcess(m_cgiPid);
 	if (m_cgiPid == -1) {
-		LOG_ERROR << "fork(): " << std::strerror(errno);
 		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
@@ -191,46 +188,44 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 		return;
 	}
 	if (m_cgiPid == 0) {
-		if (!registerChildSignals()) {
-			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
-			write(STDOUT_FILENO, error.c_str(), error.size());
+		if (!registerChildSignals())
 			std::exit(EXIT_FAILURE);
-		}
-		dup2(m_pipeIn[0], STDIN_FILENO); // Replace child stdin with read end of input pipe
-		dup2(m_pipeOut[1], STDOUT_FILENO); // Replace child stdout with write end of output pipe
-		close(m_pipeIn[0]); // Can be closed as the read connection to server exists in stdin now
+
+		// Replace child stdin with read end of input pipe
+		if (processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1)
+			std::exit(EXIT_FAILURE);
+		// Replace child stdout with write end of output pipe
+		if (processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1)
+			std::exit(EXIT_FAILURE);
+
+		// Can be closed as the read connection to server exists in stdin now
+		close(m_pipeIn[0]);
 		close(m_pipeIn[1]);
 		close(m_pipeOut[0]);
-		close(m_pipeOut[1]); // Can be closed as the write connection to server exists in stdout now
+		// Can be closed as the write connection to server exists in stdout now
+		close(m_pipeOut[1]);
 
 		std::string workingDir = location->root + location->path;
-		if (chdir(workingDir.c_str()) == -1) {
-			LOG_ERROR << "chdir(): " << std::strerror(errno);
-			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
-			write(STDOUT_FILENO, error.c_str(), error.size());
+		if (processOps.chdirProcess(workingDir.c_str()) == -1)
 			std::exit(EXIT_FAILURE);
-		}
 
-		int ret = 0;
-		ret = execve(m_argvp[0], m_argvp.data(), m_envp.data());
-		LOG_ERROR << "execve(): " << std::strerror(errno);
-		if (ret == -1) {
-			std::string error = "HTTP/1.1 500 Internal Server Error\r\n";
-			write(STDOUT_FILENO, error.c_str(), error.size());
+		if (processOps.execProcess(m_argvp[0], m_argvp.data(), m_envp.data()) == -1)
 			std::exit(EXIT_FAILURE);
-		}
 	}
-	close(m_pipeIn[0]); // Close read end of input pipe in parent process
-	close(m_pipeOut[1]); // Close write end of output pipe in parent process
+	
+	// Close read end of input pipe in parent process
+	close(m_pipeIn[0]);
+	// Close write end of output pipe in parent process
+	close(m_pipeOut[1]);
 }
 
 /**
  * @brief Sets up the environment variables for the CGI script.
- * 
- * This function converts the environment variables stored in the 
- * m_env vector to a format suitable for use with exec family of 
- * functions. It stores pointers to the C-style strings in the 
- * m_envp vector and appends a NULL pointer at the end to 
+ *
+ * This function converts the environment variables stored in the
+ * m_env vector to a format suitable for use with exec family of
+ * functions. It stores pointers to the C-style strings in the
+ * m_envp vector and appends a NULL pointer at the end to
  * indicate the end of the environment list.
  */
 void CGIHandler::setEnvp()
@@ -239,7 +234,6 @@ void CGIHandler::setEnvp()
 		m_envp.push_back(&(*iter).at(0));
 	m_envp.push_back(NULL);
 }
-
 
 /**
  * @brief Sets up the argument vector (argv) for the CGI script execution.
