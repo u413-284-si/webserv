@@ -1187,7 +1187,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
 	char buffer[Server::s_cgiBodyBufferSize] = {};
-	long bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
+	ssize_t bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "read(): can't read from CGI: " << std::strerror(errno);
