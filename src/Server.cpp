@@ -1163,7 +1163,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		return;
 	}
-	connection.m_request.body = connection.m_request.body.substr(bytesSent);
+	connection.m_request.body.erase(0, bytesSent);
 }
 
 /**
