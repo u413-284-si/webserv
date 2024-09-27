@@ -145,6 +145,8 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 		return "OK";
 	case StatusMovedPermanently:
 		return "Moved Permanently";
+	case StatusPermanentRedirect:
+		return "Permanent Redirect";
 	case StatusBadRequest:
 		return "Bad Request";
 	case StatusForbidden:
@@ -185,6 +187,12 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<head><title>301 Moved permanently</title></head>\r\n"
 									  "<body>\r\n"
 									  "<center><h1>301 Moved permanently</h1></center>\r\n";
+
+	static const char* error308Page = "<html>\r\n"
+									  "<head><title>308 Permanent redirect</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>308 Permanent redirect</h1></center>\r\n";
+
 
 	static const char* error400Page = "<html>\r\n"
 									  "<head><title>400 Bad request</title></head>\r\n"
@@ -247,6 +255,9 @@ std::string getDefaultErrorPage(statusCode statusCode)
 		return ("");
 	case StatusMovedPermanently:
 		ret = error301Page;
+		break;
+	case StatusPermanentRedirect:
+		ret = error308Page;
 		break;
 	case StatusBadRequest:
 		ret = error400Page;
