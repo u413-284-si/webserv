@@ -34,7 +34,7 @@ std::string ResponseBuilder::getResponse() const { return m_responseStream.str()
 void ResponseBuilder::buildResponse(HTTPRequest& request)
 {
 	resetStream();
-	
+
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
 	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
@@ -43,7 +43,10 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
 	LOG_DEBUG << "Response body: \n" << m_responseBody;
 
 	appendStatusLine(request);
-	appendHeaders(request);
+	if (request.hasCGI)
+		appendHeadersCGI(request);
+	else
+		appendHeaders(request);
 	m_responseStream << m_responseBody << "\r\n";
 	m_responseBody.clear();
 }
@@ -91,9 +94,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	if (!request.hasCGI && (m_responseBody.find("Content-Type: ") == std::string::npos))
-		m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
-						 << "\r\n";
+	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
 	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
@@ -105,8 +106,31 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseStream << "Location: " << request.targetResource << "\r\n";
 	}
 	// Delimiter
-	if (!request.hasCGI && (m_responseBody.find("Content-Type: ") == std::string::npos))
-		m_responseStream << "\r\n";
+	m_responseStream << "\r\n";
+}
+
+/**
+ * @brief Append headers to the response for CGI.
+ *
+ * The following headers are appended:
+ * Content-Length: Length of the response body.
+ * Server: TriHard.
+ * Date: Current date in GMT.
+ * Location: Target resource if status is StatusMovedPermanently.
+ * @param request HTTP request.
+ */
+void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
+{
+	// Content-Length
+	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
+	// Server
+	m_responseStream << "Server: TriHard\r\n";
+	// Date
+	m_responseStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	// Location
+	if (request.httpStatus == StatusMovedPermanently) {
+		m_responseStream << "Location: " << request.targetResource << "\r\n";
+	}
 }
 
 /**
