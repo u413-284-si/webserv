@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Log.hpp"
 #include <cstdio>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -120,6 +121,13 @@ std::vector<char>& Server::getClientHeaderBuffer() { return m_clientHeaderBuffer
  * @return std::vector<char>& Client body buffer.
  */
 std::vector<char>& Server::getClientBodyBuffer() { return m_clientBodyBuffer; }
+
+/**
+ * @brief Getter for CGI body buffer.
+ *
+ * @return std::vector<char>& CGI body buffer.
+ */
+std::vector<char>& Server::getCGIBodyBuffer() { return m_cgiBodyBuffer; }
 
 /* ====== SETTERS ====== */
 
@@ -1030,7 +1038,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
 
 	const ssize_t bytesRead = server.readFromSocket(activeFd, &buffer[0], bytesToRead, 0);
-	LOG_DEBUG << "Bytes read: " << bytesToRead;
+	LOG_DEBUG << "Bytes read: " << bytesRead;
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
@@ -1144,8 +1152,9 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		return;
 	}
 
-	ssize_t bytesSent
+	const ssize_t bytesSent
 		= write(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
+	LOG_DEBUG << "Bytes sent to CGI: " << bytesSent;
 
 	if (bytesSent == -1) {
 		LOG_ERROR << "write(): can't send to CGI: " << std::strerror(errno);
@@ -1186,8 +1195,13 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
-	char buffer[Server::s_cgiBodyBufferSize] = {};
-	ssize_t bytesRead = read(connection.m_pipeFromCGIReadEnd, buffer, sizeof(buffer));
+	std::vector<char>& buffer = server.getCGIBodyBuffer();
+	if (buffer.capacity() < Server::s_cgiBodyBufferSize)
+		buffer.resize(Server::s_cgiBodyBufferSize);
+	buffer.clear();
+
+	const ssize_t bytesRead = read(connection.m_pipeFromCGIReadEnd, &buffer[0], Server::s_cgiBodyBufferSize);
+	LOG_DEBUG << "Bytes read: " << bytesRead;
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "read(): can't read from CGI: " << std::strerror(errno);
@@ -1222,7 +1236,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 			return;
 		}
 	}
-	connection.m_request.body.append(buffer, bytesRead);
+	connection.m_request.body.append(buffer.begin(), buffer.begin() + bytesRead);
 }
 
 /**

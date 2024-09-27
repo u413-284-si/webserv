@@ -35,6 +35,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <utility>
+#include <vector>
 
 /* ====== CLASS DECLARATION ====== */
 
@@ -71,6 +72,7 @@ public:
 	std::map<int, Connection*>& getCGIConnections();
 	std::vector<char>& getClientHeaderBuffer();
 	std::vector<char>& getClientBodyBuffer();
+	std::vector<char>& getCGIBodyBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
@@ -118,6 +120,7 @@ private:
 	std::map<int, Connection*> m_cgiConnections; /**< Connections that are currently handling CGI */
 	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
 	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
+	std::vector<char> m_cgiBodyBuffer; /**< Buffer for reading CGI response body */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
