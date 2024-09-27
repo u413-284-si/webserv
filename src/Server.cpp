@@ -81,7 +81,7 @@ std::map<int, Connection>& Server::getConnections() { return m_connections; }
  *
  * @return std::map<int, Connection&>& Map of cgiConnections.
  */
-std::map<int, Connection&>& Server::getCGIConnections() { return m_cgiConnections; }
+std::map<int, Connection*>& Server::getCGIConnections() { return m_cgiConnections; }
 
 /**
  * @brief Const Getter for connections.
@@ -211,8 +211,8 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 		return false;
 	}
 
-	std::pair<std::map<int, Connection&>::iterator, bool> ret
-		= m_cgiConnections.insert(std::pair<int, Connection&>(pipeFd, connection));
+	std::pair<std::map<int, Connection*>::iterator, bool> ret
+		= m_cgiConnections.insert(std::pair<int, Connection*>(pipeFd, &connection));
 	if (!ret.second) {
 		close(pipeFd);
 		LOG_ERROR << "Failed to add connection for " << pipeFd << ": it already exists";
@@ -657,7 +657,7 @@ void handleEvent(Server& server, struct epoll_event event)
 	uint32_t eventMask = event.events;
 
 	std::map<int, Socket>::const_iterator iter = server.getVirtualServers().find(event.data.fd);
-	std::map<int, Connection&>::iterator cgiIter = server.getCGIConnections().find(event.data.fd);
+	std::map<int, Connection*>::iterator cgiIter = server.getCGIConnections().find(event.data.fd);
 	if (iter != server.getVirtualServers().end()) {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_ERROR << "Error condition happened on the associated file descriptor of " << iter->second;
@@ -666,7 +666,7 @@ void handleEvent(Server& server, struct epoll_event event)
 		}
 		acceptConnections(server, iter->first, iter->second, eventMask);
 	} else if (cgiIter != server.getCGIConnections().end()) {
-		handleConnection(server, cgiIter->first, cgiIter->second);
+		handleConnection(server, cgiIter->first, *cgiIter->second);
 	} else {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_DEBUG << "epoll_wait: EPOLLERR";

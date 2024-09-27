@@ -46,10 +46,10 @@ TEST_F(RegisterCGITest, CGIRegisterSuccess)
 	// Act & Assert
 	EXPECT_EQ(server.registerCGIFileDescriptor(dummyFd, EPOLLIN, connection), true);
 	EXPECT_EQ(server.getCGIConnections().size(), 1);
-	EXPECT_EQ(server.getCGIConnections().at(dummyFd).m_serverSocket.host, serverSock.host);
-	EXPECT_EQ(server.getCGIConnections().at(dummyFd).m_serverSocket.port, serverSock.port);
-	EXPECT_EQ(server.getCGIConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);
-	EXPECT_EQ(server.getCGIConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);
+	EXPECT_EQ(server.getCGIConnections().at(dummyFd)->m_serverSocket.host, serverSock.host);
+	EXPECT_EQ(server.getCGIConnections().at(dummyFd)->m_serverSocket.port, serverSock.port);
+	EXPECT_EQ(server.getCGIConnections().at(dummyFd)->m_clientSocket.host, clientSocket.host);
+	EXPECT_EQ(server.getCGIConnections().at(dummyFd)->m_clientSocket.port, clientSocket.port);
 }
 
 TEST_F(RegisterCGITest, CGIRegisterFail)
