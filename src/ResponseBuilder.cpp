@@ -84,8 +84,8 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  * @brief Append headers to the response.
  *
  * The following headers are appended:
- * - Content-Type: MIME type of the target resource.
- * - Content-Length: Length of the response body.
+ * - Content-Type: MIME type of the target resource (only if response has body)
+ * - Content-Length: Length of the response body (only if response has body)
  * - Server: TriHard.
  * - Date: Current date in GMT.
  * - Location: Target resource if status is StatusMovedPermanently.
@@ -94,10 +94,12 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
+	if (!m_responseBody.empty()) {
 	// Content-Type
 	m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
 	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+	}
 	// Server
 	m_responseHeader << "Server: TriHard\r\n";
 	// Date
