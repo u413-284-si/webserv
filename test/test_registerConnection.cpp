@@ -22,10 +22,7 @@ class RegisterConnectionTest : public ::testing::Test {
 		.WillByDefault(Return(true));
 		serverConfig.host = "127.0.0.1";
 		serverConfig.port = "8080";
-		serverConfig2.host = "0.0.0.0";
-		serverConfig2.port = "0";
 		configFile.servers.push_back(serverConfig);
-		configFile.servers.push_back(serverConfig2);
 	}
 	~RegisterConnectionTest() override { }
 
@@ -34,7 +31,6 @@ class RegisterConnectionTest : public ::testing::Test {
 	MockSocketPolicy socketPolicy;
 	Server server;
 	ConfigServer serverConfig;
-	ConfigServer serverConfig2;
 
 	Socket serverSock = {
 		"127.0.0.1",
