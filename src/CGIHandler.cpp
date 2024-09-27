@@ -306,37 +306,20 @@ std::string CGIHandler::extractScriptPath(const std::string& path)
 	return path.substr(0, extensionStart + m_cgiExt.size());
 }
 
+
 /**
- * @brief Registers signal handlers for various signals.
+ * @brief Registers signal handlers for child processes.
  *
- * This function sets the default signal handlers for SIGINT, SIGTERM, and SIGQUIT,
- * and ignores the SIGHUP signal. If any of the signal registrations fail, an error
- * message is logged and the function returns false.
+ * This function attempts to register signal handlers for specific signals
+ * that are relevant to child processes. Currently, it registers the handler
+ * for SIGQUIT to be ignored.
  *
- * @return true if all signal handlers are successfully registered, false otherwise.
+ * @return true if the signal handlers were successfully registered, false otherwise.
  */
 bool registerChildSignals()
 {
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
-	if (std::signal(SIGINT, SIG_DFL) == SIG_ERR) {
-		LOG_ERROR << "failed to register " << signalNumToName(SIGINT) << ": " << std::strerror(errno);
-		return (false);
-	}
-
-	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
-	if (std::signal(SIGTERM, SIG_DFL) == SIG_ERR) {
-		LOG_ERROR << "failed to register " << signalNumToName(SIGTERM) << ": " << std::strerror(errno);
-		return (false);
-	}
-
-	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
-	if (std::signal(SIGHUP, SIG_IGN) == SIG_ERR) {
-		LOG_ERROR << "failed to register " << signalNumToName(SIGHUP) << ": " << std::strerror(errno);
-		return (false);
-	}
-
-	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)
-	if (std::signal(SIGQUIT, SIG_DFL) == SIG_ERR) {
+	if (std::signal(SIGQUIT, SIG_IGN) == SIG_ERR) {
 		LOG_ERROR << "failed to register " << signalNumToName(SIGQUIT) << ": " << std::strerror(errno);
 		return (false);
 	}
