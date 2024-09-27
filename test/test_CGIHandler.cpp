@@ -26,7 +26,7 @@ protected:
 		request.headers["Content-Length"] = "20";
 		request.headers["Content-Type"] = "text/plain";
 		request.method = MethodPost;
-		
+		connection.m_request = request;
 
 		location.cgiExt = ".py";
 		location.cgiPath = "/usr/bin/python3";
@@ -34,7 +34,8 @@ protected:
 		location.root = "/var/www/html";
 
 		locations.push_back(location);
-		
+		connection.location = locations.begin();
+
 		serverConfig.host = serverSock.host;
 		serverConfig.port = serverSock.port;
 		configFile.servers.push_back(serverConfig);
@@ -50,15 +51,13 @@ protected:
 	
 	ConfigServer serverConfig;
 	ConfigFile configFile;
+	Connection connection = Connection(serverSock, clientSock, dummyFd, configFile.servers);
 	NiceMock<MockProcessOps> processOps;
 };
 
 TEST_F(CGIHandlerTest, Ctor)
 {
 	// Arrange
-	Connection connection(serverSock, clientSock, dummyFd, configFile.servers);
-	connection.m_request = request;
-	connection.location = locations.begin();
 
 	// Act
 	CGIHandler cgiHandler(connection, processOps);
@@ -95,9 +94,7 @@ TEST_F(CGIHandlerTest, NoPathInfo)
 {
 	// Arrange
 	request.uri.path = "/cgi-bin/test.py";
-	Connection connection(serverSock, clientSock, dummyFd, configFile.servers);
 	connection.m_request = request;
-	connection.location = locations.begin();
 
 	// Act
 	CGIHandler cgiHandler(connection, processOps);
@@ -114,10 +111,6 @@ TEST_F(CGIHandlerTest, PipeFail)
 	ON_CALL(processOps, pipeProcess)
 		.WillByDefault(Return(-1));
 
-	Connection connection(serverSock, clientSock, dummyFd, configFile.servers);
-	connection.m_request = request;
-	connection.location = locations.begin();
-
 	// Act
 	CGIHandler cgiHandler(connection, processOps);
 
@@ -131,10 +124,6 @@ TEST_F(CGIHandlerTest, ForkFail)
 	ON_CALL(processOps, forkProcess)
 		.WillByDefault(Return(-1));
 	
-	Connection connection(serverSock, clientSock, dummyFd, configFile.servers);
-	connection.m_request = request;
-	connection.location = locations.begin();
-
 	// Act
 	CGIHandler cgiHandler(connection, processOps);
 	cgiHandler.execute(connection.m_request, connection.location, processOps);
