@@ -1,6 +1,7 @@
 #include "Server.hpp"
 #include "Log.hpp"
 #include <cstdio>
+#include <cstdlib>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -980,7 +981,6 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
 }
 
-
 /**
  * @brief Checks if a CGI request is made based on the connection details.
  *
@@ -1226,12 +1226,18 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
-		// Any child exit status unequal to 0 indicates unsuccessful completion of the process
-		// NOLINTNEXTLINE misinterpretation by HIC++ standard
-		if (WEXITSTATUS(status) != 0) {
-			LOG_ERROR << "child returned with: "
-					  // NOLINTNEXTLINE misinterpretation by HIC++ standard
-					  << WEXITSTATUS(status);
+		// Check if the child exited normally with exit() or returning from main()
+		if (WIFEXITED(status)) { // NOLINT: misinterpretation by HIC++ standard
+			int exitCode = WEXITSTATUS(status); // NOLINT: misinterpretation by HIC++ standard
+			// Any child exit status unequal to 0 indicates unsuccessful completion of the process
+			if (exitCode != 0) {
+				LOG_ERROR << "child returned with: " << exitCode;
+				connection.m_request.httpStatus = StatusInternalServerError;
+				return;
+			}
+		} else if (WIFSIGNALED(status)) { // NOLINT: misinterpretation by HIC++ standard
+			int signalNumber = WTERMSIG(status); // NOLINT: misinterpretation by HIC++ standard
+			LOG_ERROR << "child terminated by signal: " << signalNumber << " (" << signalNumToName(signalNumber) << ")";
 			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
