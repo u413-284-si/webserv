@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        /* Container for the content */
+        .container {
+            text-align: center;
+            z-index: 10; /* Ensure content stays above the stars */
+        }
+        /* Large 404 title */
+        h1 {
+            font-size: 10rem;
+            margin: 0;
+        }
+        /* Subtitle text */
+        h2 {
+            font-size: 2rem;
+            margin: 0;
+        }
+        /* Paragraph styling */
+        p {
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+        /* Button styling */
+        .btn {
+            text-decoration: none;
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #e85550;
+        }
+        /* Emoji styling */
+        .emoji {
+            font-size: 5rem;
+            margin: 20px 0;
+        }
+        /* Planet styling and hover animation */
+        .planet {
+            font-size: 5rem;
+            margin: 20px 0;
+            transition: transform 0.5s ease-in-out;
+        }
+        .planet:hover {
+            transform: rotate(360deg);
+        }
+
+        /* Star field background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(2px 2px at 10px 10px, white, transparent),
+                        radial-gradient(2px 2px at 50px 150px, white, transparent),
+                        radial-gradient(2px 2px at 100px 250px, white, transparent),
+                        radial-gradient(2px 2px at 200px 350px, white, transparent),
+                        radial-gradient(2px 2px at 350px 450px, white, transparent),
+                        radial-gradient(2px 2px at 550px 150px, white, transparent),
+                        radial-gradient(2px 2px at 850px 450px, white, transparent),
+                        radial-gradient(2px 2px at 950px 550px, white, transparent),
+                        radial-gradient(2px 2px at 70vw 80vh, white, transparent),
+                        radial-gradient(2px 2px at 85vw 20vh, white, transparent);
+            background-size: cover;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>404</h1>
+        <div class="emoji">😱</div>
+        <h2>Oops! This page is lost in space!</h2>
+        <p>It looks like the page you're looking for vanished into the void.</p>
+        <p class="planet">🪐</p>
+        <p>But don't worry! You can find your way back by clicking the button below:</p>
+        <a class="btn" href="/">Take Me Home</a>
+        <p>P.S. You can also <a href="javascript:window.history.back();">go back</a> to where you came from!</p>
+    </div>
+</body>
+</html>
