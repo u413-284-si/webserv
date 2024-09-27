@@ -627,8 +627,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
-	if (request.headers.find("Content-Length") != request.headers.end())
-		request.headers["Content-Length"] = webutils::toString(length);
+	request.headers["Content-Length"] = webutils::toString(length);
 }
 
 /**
@@ -771,7 +770,7 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 void RequestParser::validateTransferEncoding(HTTPRequest& request)
 {
 	if (request.headers.find("Transfer-Encoding") != request.headers.end()) {
-		if (request.headers.at("Transfer-Encoding").empty()) {
+		if (request.headers.at("Transfer-Encoding").empty() || request.headers.find("Content-Length") != request.headers.end()) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
