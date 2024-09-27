@@ -971,25 +971,23 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
 	return (connectionBuffer.find("\r\n\r\n") != std::string::npos);
 }
 
+
 /**
- * @brief Checks if CGI execution is requested for the given HTTP request and response.
+ * @brief Checks if a CGI request is made based on the connection details.
  *
- * This function checks if CGI execution is requested based on the provided HTTP request and response.
- * It checks if the CGI path and extension are specified in the response location, and if the request URI path
- * contains the CGI path and extension. If the extension is found and is at the end of the path or followed by a
- * slash, it returns true indicating that CGI execution is requested. Otherwise, it returns false.
+ * This function determines if a CGI request is being made by examining the
+ * URI path of the request and comparing it with the CGI path and extension
+ * specified in the connection's location.
  *
- * @param connection The Connection object.
- * @return true if CGI execution is requested, false otherwise.
+ * @param connection The connection object containing request and location details.
+ * @return true if a CGI request is identified, false otherwise.
  */
 bool isCGIRequested(Connection& connection)
 {
 	// FIXME: May need to iterate through multiple paths and extensions
-	if (connection.location->cgiPath.empty() || connection.location->cgiExt.empty()) {
-		LOG_ERROR << "CGI path or extension not specified in location: " << connection.location->path;
-		connection.m_request.httpStatus = StatusInternalServerError;
+	if (connection.location->cgiPath.empty() || connection.location->cgiExt.empty())
 		return false;
-	}
+
 	size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
 
 	// If extension is found and is at the end of the path or followed by a slash
