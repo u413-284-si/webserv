@@ -37,7 +37,7 @@ protected:
 	Socket clientSocket = { "192.168.0.1", "12345" };
 };
 
-TEST_F(ConnectionReceiveFromCGITest, ConnectionReceiveFromCGI_ReadError)
+TEST_F(ConnectionReceiveFromCGITest, ReadError)
 {
 	// Arrange
 	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
@@ -56,7 +56,7 @@ TEST_F(ConnectionReceiveFromCGITest, ConnectionReceiveFromCGI_ReadError)
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
 }
 
-TEST_F(ConnectionReceiveFromCGITest, ConnectionReceiveFromCGI_PartialRead)
+TEST_F(ConnectionReceiveFromCGITest, PartialRead)
 {
 	// Arrange
 	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);

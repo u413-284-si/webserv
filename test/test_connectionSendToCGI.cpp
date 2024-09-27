@@ -37,7 +37,7 @@ protected:
 	Socket clientSocket = { "192.168.0.1", "12345" };
 };
 
-TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_EmptyBody)
+TEST_F(ConnectionSendToCGITest, EmptyBody)
 {
 	// Arrange
 	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
@@ -51,7 +51,7 @@ TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_EmptyBody)
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
 }
 
-TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_WriteError)
+TEST_F(ConnectionSendToCGITest, WriteError)
 {
 	// Arrange
 	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
@@ -66,7 +66,7 @@ TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_WriteError)
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
 }
 
-TEST_F(ConnectionSendToCGITest, ConnectionSendToCGI_FullBodySent)
+TEST_F(ConnectionSendToCGITest, FullBodySent)
 {
 	// Arrange
 	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
