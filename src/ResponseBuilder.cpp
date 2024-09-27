@@ -81,7 +81,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
 	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
 		return;
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << " \r\n";
+	m_responseHeader << "HTTP/1.1 " << ' ' << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
@@ -99,7 +99,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	// Content-Type
-	m_responseStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+	m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
 	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
@@ -111,7 +111,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseHeader << "Location: " << request.targetResource << "\r\n";
 	}
 	// Delimiter
-	m_responseStream << "\r\n";
+	m_responseHeader << "\r\n";
 }
 
 /**
@@ -127,14 +127,14 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
 {
 	// Content-Length
-	m_responseStream << "Content-Length: " << m_responseBody.length() << "\r\n";
+	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
-	m_responseStream << "Server: TriHard\r\n";
+	m_responseHeader << "Server: TriHard\r\n";
 	// Date
-	m_responseStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	if (request.httpStatus == StatusMovedPermanently) {
-		m_responseStream << "Location: " << request.targetResource << "\r\n";
+		m_responseHeader << "Location: " << request.targetResource << "\r\n";
 	}
 }
 

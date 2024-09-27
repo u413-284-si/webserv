@@ -111,20 +111,14 @@ time_t Server::getClientTimeout() const { return m_clientTimeout; }
  *
  * @return std::vector<char>& Client header buffer.
  */
-std::vector<char>& Server::getClientHeaderBuffer()
-{
-	return m_clientHeaderBuffer;
-}
+std::vector<char>& Server::getClientHeaderBuffer() { return m_clientHeaderBuffer; }
 
 /**
  * @brief Getter for client body buffer.
  *
  * @return std::vector<char>& Client body buffer.
  */
-std::vector<char>& Server::getClientBodyBuffer()
-{
-	return m_clientBodyBuffer;
-}
+std::vector<char>& Server::getClientBodyBuffer() { return m_clientBodyBuffer; }
 
 /* ====== SETTERS ====== */
 
@@ -863,19 +857,20 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(activeFd);
 		connection.m_status = Connection::Closed;
+		return;
+	}
+
+	connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
+	connection.m_timeSinceLastEvent = std::time(0);
+	if (isCompleteRequestHeader(connection.m_buffer)) {
+		handleCompleteRequestHeader(server, activeFd, connection);
 	} else {
-		connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
-		connection.m_timeSinceLastEvent = std::time(0);
-		if (isCompleteRequestHeader(connection.m_buffer)) {
-			handleCompleteRequestHeader(server, clientFd, connection);
-		} else {
-			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-			if (connection.m_buffer.size() == Server::s_clientHeaderBufferSize) {
-				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
-				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-			}
+		LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
+		if (connection.m_buffer.size() == Server::s_clientHeaderBufferSize) {
+			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
+			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
 		}
 	}
 }
@@ -1051,15 +1046,8 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		return;
 	}
 
-	connection.m_buffer += buffer;
+	connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
 	connection.m_timeSinceLastEvent = std::time(0);
-	if (connection.m_buffer.size() >= Server::s_clientMaxBodySize) {
-		LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
-		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(activeFd, EPOLLOUT);
-		return;
-	}
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
 		try {
@@ -1075,14 +1063,14 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 	} else {
 		LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
+			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-			else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
-				LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
-				connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(clientFd, EPOLLOUT);
-			}
+		} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
 		}
 	}
 }

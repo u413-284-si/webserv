@@ -63,19 +63,20 @@ ConfigFile createDummyConfig()
 	location1.indices.push_back("index.html");
 
 	Location location2;
-	location2.path = "/cgi-bin";
-	location2.root = "/workspaces/webserv";
-	location2.cgiPath = "/usr/bin/bash";
-	location2.cgiExt = ".sh";
-
-	Location location2;
 	location2.path = "/directory/";
 	location2.root = "/workspaces/webserv/html";
 	location2.isAutoindex = true;
 
+	Location location3;
+	location3.path = "/cgi-bin";
+	location3.root = "/workspaces/webserv";
+	location3.cgiPath = "/usr/bin/bash";
+	location3.cgiExt = ".sh";
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
 	serverConfig8080.locations.push_back(location2);
+	serverConfig8080.locations.push_back(location3);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";

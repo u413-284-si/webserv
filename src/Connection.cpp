@@ -17,7 +17,6 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
 	, m_clientFd(clientFd)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(Idle)
-	, m_bytesReceived(0)
 	, m_pipeToCGIWriteEnd(-1)
 	, m_pipeFromCGIReadEnd(-1)
 	, m_cgiPid(-1)
@@ -44,7 +43,6 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
-	connection.m_bytesReceived = 0;
 	if (connection.m_pipeToCGIWriteEnd != -1) {
 		close(connection.m_pipeToCGIWriteEnd);
 		connection.m_pipeToCGIWriteEnd = -1;
