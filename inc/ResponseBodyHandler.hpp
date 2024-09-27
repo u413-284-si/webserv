@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Connection.hpp"
+#include "HTTPRequest.hpp"
 #include "FileSystemPolicy.hpp"
 #include "AutoindexHandler.hpp"
 #include "StatusCode.hpp"
