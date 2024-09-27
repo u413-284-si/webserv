@@ -69,7 +69,9 @@ public:
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection&>& getCGIConnections();
-	
+		std::vector<char>& getClientHeaderBuffer();
+	std::vector<char>& getClientBodyBuffer();
+
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
@@ -114,6 +116,8 @@ private:
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	std::map<int, Connection&> m_cgiConnections; /**< Connections that are currently handling CGI */
+	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
+	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */

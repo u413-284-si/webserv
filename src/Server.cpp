@@ -1,6 +1,4 @@
 #include "Server.hpp"
-#include "ProcessOps.hpp"
-#include "StatusCode.hpp"
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -107,6 +105,26 @@ const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_con
  * @return time_t Client timeout in seconds.
  */
 time_t Server::getClientTimeout() const { return m_clientTimeout; }
+
+/**
+ * @brief Getter for client header buffer.
+ *
+ * @return std::vector<char>& Client header buffer.
+ */
+std::vector<char>& Server::getClientHeaderBuffer()
+{
+	return m_clientHeaderBuffer;
+}
+
+/**
+ * @brief Getter for client body buffer.
+ *
+ * @return std::vector<char>& Client body buffer.
+ */
+std::vector<char>& Server::getClientBodyBuffer()
+{
+	return m_clientBodyBuffer;
+}
 
 /* ====== SETTERS ====== */
 
@@ -824,10 +842,17 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		return;
 	LOG_DEBUG << "Receive Request Header for: " << connection.m_clientSocket;
 
-	char buffer[Server::s_clientHeaderBufferSize] = {};
-	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_bytesReceived;
+	std::vector<char>& buffer = server.getClientHeaderBuffer();
+	if (buffer.capacity() < Server::s_clientHeaderBufferSize)
+		buffer.resize(Server::s_clientHeaderBufferSize);
+	buffer.clear();
 
-	const ssize_t bytesRead = server.readFromSocket(activeFd, buffer, bytesToRead, 0);
+	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_buffer.size();
+	LOG_DEBUG << "Bytes to read: " << bytesToRead;
+
+	const ssize_t bytesRead = server.readFromSocket(activeFd, &buffer[0], bytesToRead, 0);
+	LOG_DEBUG << "Bytes read: " << bytesRead;
+
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(activeFd);
@@ -838,21 +863,19 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
 		close(activeFd);
 		connection.m_status = Connection::Closed;
-		return;
-	}
-	
-	connection.m_bytesReceived += bytesRead;
-	connection.m_buffer += buffer;
-	connection.m_timeSinceLastEvent = std::time(0);
-	if (isCompleteRequestHeader(connection.m_buffer)) {
-		handleCompleteRequestHeader(server, activeFd, connection);
 	} else {
-		LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-		if (connection.m_bytesReceived == Server::s_clientHeaderBufferSize) {
-			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
-			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(activeFd, EPOLLOUT);
+		connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
+		connection.m_timeSinceLastEvent = std::time(0);
+		if (isCompleteRequestHeader(connection.m_buffer)) {
+			handleCompleteRequestHeader(server, clientFd, connection);
+		} else {
+			LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
+			if (connection.m_buffer.size() == Server::s_clientHeaderBufferSize) {
+				LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
+				connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+			}
 		}
 	}
 }
@@ -1004,9 +1027,17 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		return;
 	LOG_DEBUG << "Receive Body for: " << connection.m_clientSocket;
 
-	char buffer[Server::s_clientBodyBufferSize] = {};
+	std::vector<char>& buffer = server.getClientBodyBuffer();
+	if (buffer.capacity() < Server::s_clientBodyBufferSize)
+		buffer.resize(Server::s_clientBodyBufferSize);
+	buffer.clear();
 
-	const ssize_t bytesRead = server.readFromSocket(activeFd, buffer, sizeof(buffer), 0);
+	const size_t bytesToRead = Server::s_clientBodyBufferSize - connection.m_buffer.size();
+	LOG_DEBUG << "Bytes to read: " << bytesToRead;
+
+	const ssize_t bytesRead = server.readFromSocket(activeFd, &buffer[0], bytesToRead, 0);
+	LOG_DEBUG << "Bytes read: " << bytesToRead;
+
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
 		close(activeFd);
@@ -1046,6 +1077,12 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
+			else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+				LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+				connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(clientFd, EPOLLOUT);
+			}
 		}
 	}
 }
