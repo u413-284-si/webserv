@@ -27,7 +27,6 @@ protected:
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
-	ConfigServer serverConfig;
 
 	const int dummyFd = 10;
 	const int dummyFd2 = 20;
