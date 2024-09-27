@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include <cstdio>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -1143,7 +1144,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		return;
 	}
 
-	long bytesSent
+	ssize_t bytesSent
 		= write(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
 
 	if (bytesSent == -1) {
@@ -1155,7 +1156,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
 		return;
 	}
-	if (bytesSent == static_cast<long>(connection.m_request.body.size())) {
+	if (bytesSent == static_cast<ssize_t>(connection.m_request.body.size())) {
 		LOG_DEBUG << "CGI: Full body sent";
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
