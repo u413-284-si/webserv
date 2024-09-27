@@ -820,10 +820,11 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer)
  * EPOLLOUT.
  * After parsing the header, tries to find the "Host" header field in the request headers. If it exists, it rechecks the
  * server configuration for the connection.
- * Then it tries to find the target resource for the request with Server::findTargetResource().
- * If no Status is still OK, and the request has a body, set to Connection::ReceiveBody and the received request header
- * is deleted from the buffer.
- * Else sets to Connection::BuildResponse and the event is modified to listen to EPOLLOUT.
+ * Then it tries to find the target resource for the request with Server::findTargetResource() which also sets the
+ * active location for the connection.
+ * Checks with found location if method is allowed. If not sets StatusMethodNotAllowed.
+ * If Status is still OK, and the request has a body, set to Connection::ReceiveBody and the received request header is
+ * deleted from the buffer. Else sets to Connection::BuildResponse and the event is modified to listen to EPOLLOUT.
  * @param server The server object.
  * @param clientFd The file descriptor of the client socket.
  * @param connection The connection object.
@@ -852,6 +853,11 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	}
 
 	server.findTargetResource(connection, connection.m_request);
+
+	// bool array and method are scoped with enum Method
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+	if (!connection.location->allowedMethods[connection.m_request.method])
+		connection.m_request.httpStatus = StatusMethodNotAllowed;
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
