@@ -59,7 +59,40 @@ void ResponseBodyHandler::execute()
  */
 void ResponseBodyHandler::handleErrorBody()
 {
+	LOG_DEBUG << "Create error body for " << m_request.httpStatus;
+
+	std::map<statusCode, std::string>::const_iterator iter
+		= m_connection.location->errorPage.find(m_request.httpStatus);
+
+	if (iter == m_connection.location->errorPage.end()) {
+		LOG_DEBUG << "No custom error page";
 	m_responseBody = webutils::getDefaultErrorPage(m_request.httpStatus);
 	// This is just to get the right extension. Could be put into its own data field of HTML struct.
 	m_request.targetResource = "error.html";
+		return;
+	}
+
+	LOG_DEBUG << "Custom error page: " << iter->second;
+
+	statusCode oldStatus = m_request.httpStatus;
+	m_request.httpStatus = StatusOK;
+	m_request.uri.path = iter->second;
+	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
+	targetResourceHandler.execute(m_connection, m_request);
+
+	if (m_request.httpStatus != StatusOK) {
+		m_responseBody = webutils::getDefaultErrorPage(m_request.httpStatus);
+		m_request.targetResource = "error.html";
+		return;
+	}
+
+	try {
+		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
+	} catch (std::exception& e) {
+		m_request.httpStatus = StatusInternalServerError;
+		m_responseBody = webutils::getDefaultErrorPage(m_request.httpStatus);
+		m_request.targetResource = "error.html";
+	}
+
+	m_request.httpStatus = oldStatus;
 }
