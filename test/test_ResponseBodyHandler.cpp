@@ -3,6 +3,7 @@
 
 #include "ConfigFile.hpp"
 #include "FileSystemPolicy.hpp"
+#include "HTTPRequest.hpp"
 #include "MockFileSystemPolicy.hpp"
 
 #include "ResponseBodyHandler.hpp"
@@ -10,10 +11,16 @@
 
 class ResponseBodyHandlerTest : public ::testing::Test {
 	protected:
-	ResponseBodyHandlerTest() : m_responseBodyHandler(m_request, m_responseBody, m_fileSystemPolicy) { }
+	ResponseBodyHandlerTest() : m_responseBodyHandler(m_connection, m_responseBody, m_fileSystemPolicy) { }
 	~ResponseBodyHandlerTest() override { }
 
-	HTTPRequest m_request;
+	ConfigFile m_configFile = createDummyConfig();
+	Socket m_serverSock = {
+		.host = "127.0.0.1",
+		.port = "8080"
+	};
+	Connection m_connection = Connection(m_serverSock, Socket(), m_configFile.servers);
+	HTTPRequest& m_request = m_connection.m_request;
 	std::string m_responseBody;
 	MockFileSystemPolicy m_fileSystemPolicy;
 	ResponseBodyHandler m_responseBodyHandler;
