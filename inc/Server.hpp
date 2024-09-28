@@ -67,6 +67,7 @@ public:
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 
+    EpollWrapper& getEpollWrapper();
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();

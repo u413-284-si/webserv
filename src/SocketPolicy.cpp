@@ -75,7 +75,8 @@ int SocketPolicy::createListeningSocket(const struct addrinfo* addrinfo, int bac
 	assert(addrinfo != NULL);
 
 	unsigned int socktype = addrinfo->ai_socktype;
-	socktype |= SOCK_NONBLOCK;
+	socktype |= SOCK_NONBLOCK; 
+    socktype |= SOCK_CLOEXEC;
 
 	const int newFd = socket(addrinfo->ai_family, static_cast<int>(socktype), addrinfo->ai_protocol);
 	if (newFd == -1) {

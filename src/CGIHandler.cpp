@@ -87,15 +87,15 @@ CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 
 	/* ========= Create pipes for inter-process communication ========= */
 
-    m_pipeIn[0] = -1;
-    m_pipeIn[1] = -1;
-    m_pipeOut[0] = -1;
-    m_pipeOut[1] = -1;
-    
-    if (connection.m_request.method == MethodPost) {
-	    if (processOps.pipeProcess(m_pipeIn) == -1)
-		    connection.m_request.httpStatus = StatusInternalServerError;
-    }
+	m_pipeIn[0] = -1;
+	m_pipeIn[1] = -1;
+	m_pipeOut[0] = -1;
+	m_pipeOut[1] = -1;
+
+	if (connection.m_request.method == MethodPost) {
+		if (processOps.pipeProcess(m_pipeIn) == -1)
+			connection.m_request.httpStatus = StatusInternalServerError;
+	}
 
 	if (processOps.pipeProcess(m_pipeOut) == -1) {
 		webutils::closePipeEnd(m_pipeIn[0]);
@@ -184,7 +184,6 @@ const std::vector<std::string>& CGIHandler::getEnv() const { return m_env; }
  */
 const std::vector<std::string>& CGIHandler::getArgv() const { return m_argv; }
 
-
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
@@ -203,7 +202,8 @@ const std::vector<std::string>& CGIHandler::getArgv() const { return m_argv; }
  *       signals, changing the directory, or executing the CGI script, it writes an HTTP 500 error to stdout
  *       and exits.
  */
-void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps)
+void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps,
+	int epollFd, const std::map<int, Connection>& connections)
 {
 	if (processOps.forkProcess(m_cgiPid) == -1) {
 		closePipes();
@@ -212,21 +212,21 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 	}
 	if (m_cgiPid == 0) {
 		if (!registerChildSignals()) {
-			closePipes();
+			closeAllFds(epollFd, connections);
 			std::exit(EXIT_FAILURE);
 		}
 
 		// Replace child stdin with read end of input pipe
 		if (processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
-			closePipes();
+			closeAllFds(epollFd, connections);
 			std::exit(EXIT_FAILURE);
 		}
 		// Replace child stdout with write end of output pipe
 		if (processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1) {
-			closePipes();
+			closeAllFds(epollFd, connections);
 			std::exit(EXIT_FAILURE);
 		}
-		closePipes();
+		closeAllFds(epollFd, connections);
 
 		std::string workingDir = location->root + location->path;
 		if (processOps.chdirProcess(workingDir.c_str()) == -1)
@@ -316,7 +316,6 @@ std::string CGIHandler::extractScriptPath(const std::string& path)
 	return path.substr(0, extensionStart + m_cgiExt.size());
 }
 
-
 /**
  * @brief Registers signal handlers for child processes.
  *
@@ -350,4 +349,23 @@ void CGIHandler::closePipes()
 	webutils::closePipeEnd(m_pipeIn[1]);
 	webutils::closePipeEnd(m_pipeOut[0]);
 	webutils::closePipeEnd(m_pipeOut[1]);
+}
+
+/**
+ * @brief Closes all file descriptors associated with the epoll instance and active connections.
+ *
+ * This function ensures that all pipes, the epoll file descriptor, and any file descriptors
+ * associated with active connections in the given map are properly closed.
+ *
+ * @param epollFd The file descriptor for the epoll instance to be closed.
+ * @param connections A map containing connection file descriptors as keys and
+ *        corresponding `Connection` objects as values. All connection file descriptors will be closed.
+ *
+ */
+void CGIHandler::closeAllFds(int epollFd, std::map<int, Connection> connections)
+{
+	closePipes();
+	close(epollFd);
+	for (std::map<int, Connection>::iterator iter = connections.begin(); iter != connections.end(); ++iter)
+		close(iter->first);
 }

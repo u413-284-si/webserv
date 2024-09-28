@@ -27,7 +27,8 @@ class CGIHandler {
 public:
 	explicit CGIHandler(Connection& connection, ProcessOps& processOps);
 
-	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps);
+	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps,
+		int epollFd, const std::map<int, Connection>& connections);
 
 	// Getter functions
 	int getPipeInWriteEnd() const;
@@ -56,6 +57,7 @@ private:
 	std::string extractPathInfo(const std::string& path);
 	std::string extractScriptPath(const std::string& path);
 	void closePipes();
+    void closeAllFds(int epollFd, std::map<int, Connection> connections);
 };
 
 bool registerChildSignals();

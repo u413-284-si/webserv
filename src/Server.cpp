@@ -41,6 +41,7 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
  * 1. Closes all virtual server sockets to release the bound port and stop accepting
  * new connections.
  * 2. Closes all open connections to release associated resources.
+ * 3. Closes all open CGI connections to release associated resources.
  * @todo Is it possible to send a last message to all connected clients to notify server shutdown?
  */
 Server::~Server()
@@ -54,9 +55,21 @@ Server::~Server()
 		m_epollWrapper.removeEvent(iter->first);
 		close(iter->first);
 	}
+
+	for (std::map<int, Connection*>::iterator iter = m_cgiConnections.begin(); iter != m_cgiConnections.end(); ++iter) {
+		m_epollWrapper.removeEvent(iter->first);
+		close(iter->first);
+	}
 }
 
 /* ====== GETTERS ====== */
+
+/**
+ * @brief Getter for epollWrapper.
+ *
+ * @return EpollWrapper& epollwrapper object.
+ */
+EpollWrapper& Server::getEpollWrapper() { return m_epollWrapper; }
 
 /**
  * @brief Getter for virtual servers.
@@ -946,7 +959,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
-		cgiHandler.execute(connection.m_request, connection.location, processOps);
+		cgiHandler.execute(connection.m_request, connection.location, processOps, server.getEpollWrapper().getEpollFd(),
+			server.getConnections());
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();
