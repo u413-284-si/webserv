@@ -1,5 +1,7 @@
 #include "CGIHandler.hpp"
+#include "Method.hpp"
 #include "ProcessOps.hpp"
+#include "utilities.hpp"
 #include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
@@ -85,11 +87,19 @@ CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 
 	/* ========= Create pipes for inter-process communication ========= */
 
-	if (processOps.pipeProcess(m_pipeIn) == -1)
-		connection.m_request.httpStatus = StatusInternalServerError;
+    m_pipeIn[0] = -1;
+    m_pipeIn[1] = -1;
+    m_pipeOut[0] = -1;
+    m_pipeOut[1] = -1;
+    
+    if (connection.m_request.method == MethodPost) {
+	    if (processOps.pipeProcess(m_pipeIn) == -1)
+		    connection.m_request.httpStatus = StatusInternalServerError;
+    }
+
 	if (processOps.pipeProcess(m_pipeOut) == -1) {
-		close(m_pipeIn[0]);
-		close(m_pipeIn[1]);
+		webutils::closePipeEnd(m_pipeIn[0]);
+		webutils::closePipeEnd(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
 	}
 
@@ -227,9 +237,9 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 	}
 
 	// Close read end of input pipe in parent process
-	close(m_pipeIn[0]);
+	webutils::closePipeEnd(m_pipeIn[0]);
 	// Close write end of output pipe in parent process
-	close(m_pipeOut[1]);
+	webutils::closePipeEnd(m_pipeOut[1]);
 }
 
 /**
@@ -336,8 +346,8 @@ bool registerChildSignals()
  */
 void CGIHandler::closePipes()
 {
-	close(m_pipeIn[0]);
-	close(m_pipeIn[1]);
-	close(m_pipeOut[0]);
-	close(m_pipeOut[1]);
+	webutils::closePipeEnd(m_pipeIn[0]);
+	webutils::closePipeEnd(m_pipeIn[1]);
+	webutils::closePipeEnd(m_pipeOut[0]);
+	webutils::closePipeEnd(m_pipeOut[1]);
 }

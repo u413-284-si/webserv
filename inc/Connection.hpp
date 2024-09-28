@@ -3,6 +3,7 @@
 #include "ConfigFile.hpp"
 #include "HTTPRequest.hpp"
 #include "Socket.hpp"
+#include "utilities.hpp"
 
 #include <cstddef>
 #include <cstdio>

@@ -295,4 +295,13 @@ std::string methodToString(Method method)
     }
     return "";
 }
+
+void closePipeEnd(int& pipeEnd)
+{
+    if (pipeEnd != -1) {
+        close(pipeEnd);
+        pipeEnd = -1;
+    }
+}
+
 } // webutils

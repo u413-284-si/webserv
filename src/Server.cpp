@@ -216,7 +216,7 @@ bool Server::registerConnection(const Socket& serverSock, int clientFd, const So
 bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection)
 {
 	if (!m_epollWrapper.addEvent(pipeFd, eventMask)) {
-		close(pipeFd);
+		webutils::closePipeEnd(pipeFd);
 		LOG_ERROR << "Failed to add event for " << pipeFd;
 		return false;
 	}
@@ -224,7 +224,7 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 	std::pair<std::map<int, Connection*>::iterator, bool> ret
 		= m_cgiConnections.insert(std::pair<int, Connection*>(pipeFd, &connection));
 	if (!ret.second) {
-		close(pipeFd);
+		webutils::closePipeEnd(pipeFd);
 		LOG_ERROR << "Failed to add connection for " << pipeFd << ": it already exists";
 		return false;
 	}
@@ -249,8 +249,7 @@ void Server::removeCGIFileDescriptor(Server& server, int& delfd)
 {
 	server.removeEvent(delfd);
 	server.getCGIConnections().erase(delfd);
-	close(delfd);
-	delfd = -1;
+	webutils::closePipeEnd(delfd);
 }
 
 /**
