@@ -73,7 +73,7 @@ TEST_F(ResponseBodyHandlerTest, ErrorPage)
 	m_request.hasAutoindex = false;
 
 	m_responseBodyHandler.execute();
-	EXPECT_EQ(m_responseBody, webutils::getDefaultErrorPage(m_request.httpStatus));
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(m_request.httpStatus));
 }
 
 TEST_F(ResponseBodyHandlerTest, FileNotOpened)
@@ -88,7 +88,7 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_responseBody, webutils::getDefaultErrorPage(m_request.httpStatus));
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(m_request.httpStatus));
 }
 
 TEST_F(ResponseBodyHandlerTest, FileFound)
