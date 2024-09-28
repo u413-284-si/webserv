@@ -975,7 +975,7 @@ void connectionBuildResponse(Server& server, int clientFd, Connection& connectio
 {
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
-	server.buildResponse(connection.m_request);
+	server.buildResponse(connection);
 	connection.m_buffer.clear();
 	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;
