@@ -19,11 +19,11 @@ ResponseBodyHandler::ResponseBodyHandler(
 /**
  * @brief Create the response body.
  *
- * Depending on the HTTP Request status, the body will be created.
- * If the status is not OK, an error page will be created.
- * If the status is OK, the body will be created based on the target resource.
- * If the target resource is a directory, and autoindex is on an autoindex will be created.
- * If the target resource is a file, the file contents will be read and set as the body.
+ * Depending on the HTTP Request status, the body will be created:
+ * - If the status is an error status an error page will be created.
+ * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
+ * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
+ * body.
  * @todo FIXME: Implement other methods than GET.
  */
 void ResponseBodyHandler::execute()
@@ -51,9 +51,17 @@ void ResponseBodyHandler::execute()
 }
 
 /**
- * @brief Get the error page.
+ * @brief Construct an error body.
  *
- * @todo FIXME: Implement custom error pages.
+ * Checks if the active location has a custom error page for HTTP Status Code.
+ * If yes tries to locate the error page via the provided URI.
+ * - The current Status Code is saved and reset to StatusOK.
+ * - The request.uri.path is set to the error page URI.
+ * - Then tries to find it with a TargetResourceHandler.
+ * If no error happened while locating the error page indicated via Status == OK the error page is read into the
+ * body and the status set back to the saved one.
+ *
+ * In case of any error a default error page is constructed via setDefaultErrorPage()
  */
 void ResponseBodyHandler::handleErrorBody()
 {
@@ -90,10 +98,15 @@ void ResponseBodyHandler::handleErrorBody()
 	}
 }
 
+/**
+ * @brief Sets Default Error Page.
+ *
+ * m_responseBody is set to Default Error Page via getDefaultErrorPage().
+ * The targetResource of the request is set to error.html to get the correct MIME type mapping.
+ */
 void ResponseBodyHandler::setDefaultErrorPage()
 {
 	m_responseBody = getDefaultErrorPage(m_request.httpStatus);
-	// This is just to get the right extension. Could be put into its own data field of HTML struct.
 	m_request.targetResource = "error.html";
 }
 
