@@ -368,9 +368,12 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
 /**
  * @brief Wrapper function to ResponseBuilder::buildResponse.
  *
- * @param request The HTTPRequest object to build the response for.
+ * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
+void Server::buildResponse(Connection& connection)
+{
+	m_responseBuilder.buildResponse(connection);
+}
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.

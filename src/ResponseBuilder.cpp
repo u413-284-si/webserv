@@ -34,15 +34,17 @@ std::string ResponseBuilder::getResponse() const
  * Construct and execute a ResponseBodyHandler to construct the response body.
  * Build the response header with appendStatusLine() and appendHeaders().
  * The response is stored in m_responseHeader and m_responseBody. The response can be retrieved with getResponse().
- * @param request HTTP request.
+ * @param connection The connection to build the response for.
  */
-void ResponseBuilder::buildResponse(HTTPRequest& request)
+void ResponseBuilder::buildResponse(Connection& connection)
 {
 	resetBuilder();
 
+	const HTTPRequest& request = connection.m_request;
+
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
 	appendStatusLine(request);

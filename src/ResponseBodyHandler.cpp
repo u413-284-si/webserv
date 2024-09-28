@@ -3,12 +3,14 @@
 /**
  * @brief Construct a new ResponseBodyHandler object
  *
- * @param request The HTTP request.
+ * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBodyHandler::ResponseBodyHandler(HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
-	: m_request(request)
+ResponseBodyHandler::ResponseBodyHandler(
+	Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+	: m_connection(connection)
+	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
