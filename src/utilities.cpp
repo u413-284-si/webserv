@@ -1,9 +1,4 @@
 #include "utilities.hpp"
-#include "StatusCode.hpp"
-
-#include <cassert>
-#include <cctype>
-#include <sys/socket.h>
 
 namespace webutils {
 
@@ -282,6 +277,31 @@ std::string getDefaultErrorPage(statusCode statusCode)
 
 	ret += errorTail;
 	return (ret);
+}
+
+std::string methodToString(Method method)
+{
+    assert(method >= MethodGet && method <= MethodCount);
+    
+    switch (method) {
+    case MethodGet:
+        return "GET";
+    case MethodPost:
+        return "POST";
+    case MethodDelete:
+        return "DELETE";
+    case MethodCount:
+        return "METHODCOUNT";
+    }
+    return "";
+}
+
+void closePipeEnd(int& pipeEnd)
+{
+    if (pipeEnd != -1) {
+        close(pipeEnd);
+        pipeEnd = -1;
+    }
 }
 
 } // webutils

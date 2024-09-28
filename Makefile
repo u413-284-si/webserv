@@ -114,6 +114,7 @@ COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
 SRC:=	main.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
+		CGIHandler.cpp \
 		ConfigFile.cpp \
 		ConfigFileParser.cpp \
 		Connection.cpp \
@@ -127,6 +128,7 @@ SRC:=	main.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
 		LogOstreamInserters.cpp \
+		ProcessOps.cpp \
 		RequestParser.cpp \
 		ResponseBodyHandler.cpp \
 		ResponseBuilder.cpp \
@@ -142,10 +144,13 @@ SRC:=	main.cpp \
 
 TEST_SRC :=	test_acceptConnections.cpp \
 			test_AutoindexHandler.cpp \
+			test_CGIHandler.cpp \
 			test_checkForTimeout.cpp \
 			test_ConfigFileParser.cpp \
+			test_connectionReceiveFromCGI.cpp \
 			test_connectionReceiveHeader.cpp \
 			test_connectionSendResponse.cpp \
+			test_connectionSendToCGI.cpp \
 			test_createVirtualServer.cpp \
 			test_initVirtualServers.cpp \
 			test_isDuplicateServer.cpp \
@@ -153,6 +158,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_parseBody.cpp \
 			test_parseHeader_Headers.cpp \
 			test_parseHeader_RequestLine.cpp \
+			test_registerCGIFileDescriptor.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \
 			test_ResponseBodyHandler.cpp \

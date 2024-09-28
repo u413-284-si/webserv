@@ -33,9 +33,9 @@ protected:
 		.port = "8080"
 	};
 
-	Connection connection = Connection(m_serverSock, Socket(), configFile.servers);
-
 	const int dummyFd = 10;
+
+	Connection connection = Connection(m_serverSock, Socket(), dummyFd, configFile.servers);
 };
 
 TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)

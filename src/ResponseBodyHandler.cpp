@@ -7,7 +7,8 @@
  * @param responseBody Saves the response body.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBodyHandler::ResponseBodyHandler(HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+ResponseBodyHandler::ResponseBodyHandler(
+	HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
 	: m_request(request)
 	, m_responseBody(responseBody)
 	, m_fileSystemPolicy(fileSystemPolicy)
@@ -28,19 +29,23 @@ void ResponseBodyHandler::execute()
 {
 	if (m_request.httpStatus != StatusOK) {
 		handleErrorBody();
-	}
-	else if (m_request.hasAutoindex) {
+	} else if (m_request.hasCGI) {
+		m_responseBody = m_request.body;
+		if (m_responseBody.find("Content-Type: ") == std::string::npos) {
+			m_request.httpStatus = StatusInternalServerError;
+			handleErrorBody();
+		}
+	} else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
-			return ;
+			return;
 		}
 		m_request.httpStatus = StatusOK;
 		m_request.targetResource += "autoindex.html";
-	}
-	else if (m_request.method == MethodGet) {
+	} else if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		} catch (std::exception& e) {

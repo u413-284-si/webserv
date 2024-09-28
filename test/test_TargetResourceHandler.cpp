@@ -10,7 +10,7 @@
 class TargetResourceHandlerTest : public ::testing::Test {
 protected:
 	TargetResourceHandlerTest()
-	: m_connection(Connection(m_serverSock, Socket(), m_configFile.servers))
+	: m_connection(Connection(m_serverSock, Socket(), 10, m_configFile.servers))
 	, m_targetResourceHandler(m_fileSystemPolicy)
 	{
 		Location m_location1;

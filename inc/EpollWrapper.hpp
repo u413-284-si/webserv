@@ -27,6 +27,8 @@ public:
 	explicit EpollWrapper(int maxEvents = s_epollMaxEvents, int epollTimeout = s_epollTimeout);
 	virtual ~EpollWrapper();
 
+    int getEpollFd() const;
+
 	virtual int waitForEvents();
 	virtual std::vector<struct epoll_event>::const_iterator eventsBegin() const;
 	virtual bool addEvent(int newfd, uint32_t eventMask) const;

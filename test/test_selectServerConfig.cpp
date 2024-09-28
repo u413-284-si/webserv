@@ -22,7 +22,8 @@ class selectServerConfigTest : public ::testing::Test {
 		.host = "1.1.1.1",
 		.port = "1234"
 	};
-	Connection connection = Connection(serverSock, clientSock, configFile.servers);
+   	const int dummyFd = 10;
+	Connection connection = Connection(serverSock, clientSock, dummyFd, configFile.servers);
 };
 
 TEST_F(selectServerConfigTest, OneServer)

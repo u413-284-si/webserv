@@ -30,6 +30,15 @@ EpollWrapper::EpollWrapper(int maxEvents, int epollTimeout)
 EpollWrapper::~EpollWrapper() { close(m_epfd); }
 
 /**
+ * @brief Getter for epoll file descriptor
+ * 
+ * ! Only to be used in the forked child process to close the fd
+ * 
+ * @return int fd of the epoll instance
+ */
+int EpollWrapper::getEpollFd() const { return m_epfd; }
+
+/**
  * @brief Wait for events on an epoll instance.
  *
  * If epoll_wait returns -1, it checks if the error is due to an interrupt signal.

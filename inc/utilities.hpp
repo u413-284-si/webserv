@@ -2,11 +2,14 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "Method.hpp"
 #include "StatusCode.hpp"
 #include <algorithm>
+#include <cassert>
 #include <ctime>
 #include <iostream>
 #include <sstream>
+#include <unistd.h>
 #include <vector>
 
 /* ====== DECLARATIONS ====== */
@@ -25,6 +28,10 @@ std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
 std::string getDefaultErrorPage(statusCode status);
+
+std::string methodToString(Method method);
+
+void closePipeEnd(int& pipeEnd);
 
 /**
  * @brief Convert a type to a string

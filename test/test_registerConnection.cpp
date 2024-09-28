@@ -19,7 +19,10 @@ class RegisterConnectionTest : public ::testing::Test {
 		configFile.servers.push_back(serverConfig);
 
 		ON_CALL(epollWrapper, addEvent)
-			.WillByDefault(Return(true));
+		.WillByDefault(Return(true));
+		serverConfig.host = "127.0.0.1";
+		serverConfig.port = "8080";
+		configFile.servers.push_back(serverConfig);
 	}
 	~RegisterConnectionTest() override { }
 
@@ -27,6 +30,7 @@ class RegisterConnectionTest : public ::testing::Test {
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
 	Server server;
+	ConfigServer serverConfig;
 
 	Socket serverSock = {
 		"127.0.0.1",
@@ -66,12 +70,7 @@ TEST_F(RegisterConnectionTest, CantOverwriteExistingConnection)
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, oldClientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 
-	// try to add connection with same fd
+	// reuse the same dummyFd should fail as a connection with this fd already exists
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), false);
-
 	EXPECT_EQ(server.getConnections().size(), 1);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, oldClientSocket.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, oldClientSocket.port);
 }

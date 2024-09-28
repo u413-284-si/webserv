@@ -2,11 +2,13 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "CGIHandler.hpp"
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "EpollWrapper.hpp"
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"
+#include "ProcessOps.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
 #include "Socket.hpp"
@@ -33,6 +35,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <utility>
+#include <vector>
 
 /* ====== CLASS DECLARATION ====== */
 
@@ -52,23 +55,31 @@ public:
 	static const std::size_t s_clientHeaderBufferSize = 1000; /**< Default buffer size for request header in Bytes */
 	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
 	static const std::size_t s_clientMaxBodySize = 1000000; /**< Default max size for request body in Bytes */
+	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
 	~Server();
 
 	// Getters
-	std::map<int, Socket>& getVirtualServers();
+	
 	const std::map<int, Socket>& getVirtualServers() const;
-	std::map<int, Connection>& getConnections();
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
+
+    EpollWrapper& getEpollWrapper();
+	std::map<int, Socket>& getVirtualServers();
+	std::map<int, Connection>& getConnections();
+	std::map<int, Connection*>& getCGIConnections();
 	std::vector<char>& getClientHeaderBuffer();
 	std::vector<char>& getClientBodyBuffer();
+	std::vector<char>& getCGIBodyBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
+	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	static void removeCGIFileDescriptor(Server& server, int& delfd);
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper
@@ -107,8 +118,10 @@ private:
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
+	std::map<int, Connection*> m_cgiConnections; /**< Connections that are currently handling CGI */
 	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
 	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
+	std::vector<char> m_cgiBodyBuffer; /**< Buffer for reading CGI response body */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
@@ -127,15 +140,19 @@ void handleEvent(Server& server, struct epoll_event);
 
 void acceptConnections(Server& server, int serverFd, const Socket& serverSock, uint32_t eventMask);
 
-void handleConnection(Server& server, int clientFd, Connection& connection);
-void connectionReceiveHeader(Server& server, int clientFd, Connection& connection);
+void handleConnection(Server& server, int activeFd, Connection& connection);
+
+void connectionReceiveHeader(Server& server, int activeFd, Connection& connection);
 bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection);
-void connectionReceiveBody(Server& server, int clientFd, Connection& connection);
+bool isCGIRequested(Connection& connection);
+void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
-void connectionBuildResponse(Server& server, int clientFd, Connection& connection);
-void connectionSendResponse(Server& server, int clientFd, Connection& connection);
-void connectionHandleTimeout(Server& server, int clientFd, Connection& connection);
+void connectionSendToCGI(Server& server, int activeFd, Connection& connection);
+void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection);
+void connectionBuildResponse(Server& server, int activeFd, Connection& connection);
+void connectionSendResponse(Server& server, int activeFd, Connection& connection);
+void connectionHandleTimeout(Server& server, int activeFd, Connection& connection);
 
 void checkForTimeout(Server& server);
 
