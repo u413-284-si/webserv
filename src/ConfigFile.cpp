@@ -61,15 +61,27 @@ ConfigFile createDummyConfig()
 	location1.path = "/";
 	location1.root = "/workspaces/webserv/html";
 	location1.indices.push_back("index.html");
+	location1.errorPage[StatusNotFound] = "/error404.html";
 
 	Location location2;
 	location2.path = "/directory/";
 	location2.root = "/workspaces/webserv/html";
 	location2.isAutoindex = true;
 
+	Location location3;
+	location3.path = "/error";
+	location3.root = "/workspaces/webserv/html/error";
+
+	Location location4;
+	location4.path = "/secret/";
+	location4.root = "/workspaces/webserv/html";
+	location4.errorPage[StatusForbidden] = "/error403.html";
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
 	serverConfig8080.locations.push_back(location2);
+	serverConfig8080.locations.push_back(location3);
+	serverConfig8080.locations.push_back(location4);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
