@@ -22,6 +22,7 @@ public:
 
 private:
 	void handleErrorBody();
+	void setDefaultErrorPage();
 
 	Connection& m_connection;
 	HTTPRequest& m_request;

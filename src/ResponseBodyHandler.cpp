@@ -64,9 +64,7 @@ void ResponseBodyHandler::handleErrorBody()
 
 	if (iter == m_connection.location->errorPage.end()) {
 		LOG_DEBUG << "No custom error page";
-		m_responseBody = getDefaultErrorPage(m_request.httpStatus);
-		// This is just to get the right extension. Could be put into its own data field of HTML struct.
-		m_request.targetResource = "error.html";
+		setDefaultErrorPage();
 		return;
 	}
 
@@ -79,20 +77,24 @@ void ResponseBodyHandler::handleErrorBody()
 	targetResourceHandler.execute(m_connection, m_request);
 
 	if (m_request.httpStatus != StatusOK) {
-		m_responseBody = getDefaultErrorPage(m_request.httpStatus);
-		m_request.targetResource = "error.html";
+		setDefaultErrorPage();
 		return;
 	}
 
 	try {
 		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
+		m_request.httpStatus = oldStatus;
 	} catch (std::exception& e) {
 		m_request.httpStatus = StatusInternalServerError;
-		m_responseBody = getDefaultErrorPage(m_request.httpStatus);
-		m_request.targetResource = "error.html";
+		setDefaultErrorPage();
 	}
+}
 
-	m_request.httpStatus = oldStatus;
+void ResponseBodyHandler::setDefaultErrorPage()
+{
+	m_responseBody = getDefaultErrorPage(m_request.httpStatus);
+	// This is just to get the right extension. Could be put into its own data field of HTML struct.
+	m_request.targetResource = "error.html";
 }
 
 /**
@@ -114,7 +116,6 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<head><title>308 Permanent redirect</title></head>\r\n"
 									  "<body>\r\n"
 									  "<center><h1>308 Permanent redirect</h1></center>\r\n";
-
 
 	static const char* error400Page = "<html>\r\n"
 									  "<head><title>400 Bad request</title></head>\r\n"
