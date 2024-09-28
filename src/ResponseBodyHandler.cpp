@@ -28,21 +28,19 @@ ResponseBodyHandler::ResponseBodyHandler(
  */
 void ResponseBodyHandler::execute()
 {
-	if (m_request.httpStatus != StatusOK) {
+	if (m_request.httpStatus >= StatusMovedPermanently) {
 		handleErrorBody();
-	}
-	else if (m_request.hasAutoindex) {
+	} else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
-			return ;
+			return;
 		}
 		m_request.httpStatus = StatusOK;
 		m_request.targetResource += "autoindex.html";
-	}
-	else if (m_request.method == MethodGet) {
+	} else if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		} catch (std::exception& e) {
@@ -66,9 +64,9 @@ void ResponseBodyHandler::handleErrorBody()
 
 	if (iter == m_connection.location->errorPage.end()) {
 		LOG_DEBUG << "No custom error page";
-	m_responseBody = webutils::getDefaultErrorPage(m_request.httpStatus);
-	// This is just to get the right extension. Could be put into its own data field of HTML struct.
-	m_request.targetResource = "error.html";
+		m_responseBody = webutils::getDefaultErrorPage(m_request.httpStatus);
+		// This is just to get the right extension. Could be put into its own data field of HTML struct.
+		m_request.targetResource = "error.html";
 		return;
 	}
 
