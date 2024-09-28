@@ -98,17 +98,18 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 	// Content-Type
-	m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
-	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 	// Server
 	m_responseHeader << "Server: TriHard\r\n";
 	// Date
 	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
-	if (request.httpStatus == StatusMovedPermanently) {
-		m_responseHeader << "Location: " << request.targetResource << "\r\n";
+	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
+	if (iter != request.headers.end()) {
+		m_responseHeader << "Location: " << iter->second << "\r\n";
 	}
 	// Delimiter
 	m_responseHeader << "\r\n";
