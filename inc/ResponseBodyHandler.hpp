@@ -6,6 +6,8 @@
 #include "Log.hpp"
 #include "TargetResourceHandler.hpp"
 
+#include "cassert"
+
 /**
  * @brief Class to handle the body of a HTTP response.
  *
@@ -26,3 +28,5 @@ private:
 	std::string& m_responseBody;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
+
+std::string getDefaultErrorPage(statusCode status);
