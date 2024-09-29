@@ -24,7 +24,6 @@ std::string getGMTString(time_t now, const std::string& format);
 std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
-std::string getDefaultErrorPage(statusCode status);
 
 /**
  * @brief Convert a type to a string
