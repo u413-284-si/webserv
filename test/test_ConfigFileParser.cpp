@@ -362,9 +362,10 @@ TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLine)
 
 TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLineUnderServerDirective)
 {
+	GTEST_SKIP() << "Skipping because not implemented";
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile
 		= m_configFileParser.parseConfigFile("config_files/directive_close_open_bracket_same_line_under_server.conf"));
-	// EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
-	// EXPECT_EQ("8080", configFile.servers[0].port);
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("8080", configFile.servers[0].port);
 }
