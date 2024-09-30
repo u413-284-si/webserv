@@ -23,7 +23,19 @@ public:
 	void execute(Connection& connection, HTTPRequest& request);
 
 private:
+	struct LocatingInfo;
 	const FileSystemPolicy& m_fileSystemPolicy;
+};
+
+struct TargetResourceHandler::LocatingInfo {
+	explicit LocatingInfo(const Connection& connection);
+
+	statusCode statusCode;
+	std::string path;
+	std::string targetResource;
+	bool hasAutoindex;
+	const std::vector<Location>* locations;
+	std::vector<Location>::const_iterator activeLocation;
 };
 
 std::vector<Location>::const_iterator matchLocation(const std::vector<Location>& locations, const std::string& path);

@@ -111,3 +111,12 @@ std::vector<Location>::const_iterator matchLocation(const std::vector<Location>&
 	}
 	return locationMatch;
 }
+
+TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
+	: statusCode(connection.m_request.httpStatus)
+	, path(connection.m_request.uri.path)
+	, hasAutoindex(false)
+	, locations(&connection.serverConfig->locations)
+	, activeLocation(connection.location)
+{
+}
