@@ -17,11 +17,9 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
  * Recursively searches for the target resource with locateTargetResource() using the information in the LocatingInfo.
  * Uses updateConnection() to write found information into Connection.
  * @param connection Connection object.
- * @param request HTTP request.
  */
-void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request)
+void TargetResourceHandler::execute(Connection& connection)
 {
-	(void)request;
 	LocatingInfo locInfo(connection);
 	const int startingDepth = 0;
 	locInfo = locateTargetResource(locInfo, startingDepth);

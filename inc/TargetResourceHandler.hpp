@@ -22,7 +22,7 @@ public:
 	static const int s_maxRecursion = 10; /**< Max recursion depth for locating a resource */
 
 	explicit TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy);
-	void execute(Connection& connection, HTTPRequest& request);
+	void execute(Connection& connection);
 
 private:
 	struct LocatingInfo;
