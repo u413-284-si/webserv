@@ -120,3 +120,13 @@ TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 	, activeLocation(connection.location)
 {
 }
+
+void TargetResourceHandler::updateConnection(Connection& connection, const LocatingInfo& locInfo)
+{
+	connection.m_request.httpStatus = locInfo.statusCode;
+	connection.m_request.uri.path = locInfo.path;
+	connection.m_request.targetResource = locInfo.targetResource;
+	connection.m_request.hasAutoindex = locInfo.hasAutoindex;
+	connection.location = locInfo.activeLocation;
+}
+

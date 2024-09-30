@@ -24,6 +24,7 @@ public:
 
 private:
 	struct LocatingInfo;
+	static void updateConnection(Connection& connection, const LocatingInfo& locInfo);
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
 
