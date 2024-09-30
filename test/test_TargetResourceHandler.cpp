@@ -58,7 +58,7 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillRepeatedly(testing::Return(FileSystemPolicy::FileRegular));
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
@@ -66,19 +66,19 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 	/*
 		m_request.uri.path = "/test/secret";
 		m_request.httpStatus = StatusOK;
-		m_targetResourceHandler.execute(m_connection, m_request);
+		m_targetResourceHandler.execute(m_connection);
 		EXPECT_EQ(m_request.targetResource, "/third/location/test/secret");
 		EXPECT_EQ(m_request.httpStatus, StatusOK);
 
 		m_request.uri.path = "/test/secret/other";
 		m_request.httpStatus = StatusOK;
-		m_targetResourceHandler.execute(m_connection, m_request);
+		m_targetResourceHandler.execute(m_connection);
 		EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/other");
 		EXPECT_EQ(m_request.httpStatus, StatusOK);
 
 		m_request.uri.path = "/";
 		m_request.httpStatus = StatusOK;
-		m_targetResourceHandler.execute(m_connection, m_request);
+		m_targetResourceHandler.execute(m_connection);
 		EXPECT_EQ(m_request.targetResource, "/first/location/");
 		EXPECT_EQ(m_request.httpStatus, StatusOK);
 		*/
@@ -90,7 +90,7 @@ TEST_F(TargetResourceHandlerTest, LocationNotFound)
 
 	m_request.uri.path = "/something";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_request.targetResource, "");
@@ -103,7 +103,7 @@ TEST_F(TargetResourceHandlerTest, FileNotFound)
 
 	m_request.uri.path = "/test";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusNotFound);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
@@ -116,7 +116,7 @@ TEST_F(TargetResourceHandlerTest, FileOther)
 
 	m_request.uri.path = "/test";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
@@ -129,7 +129,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 
 	m_request.uri.path = "/test";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
@@ -143,7 +143,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 
 	m_request.uri.path = "/test/secret/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/index.html");
@@ -158,7 +158,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexNotFound)
 
 	m_request.uri.path = "/test/secret/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/");
@@ -173,7 +173,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexErrorInRecursion)
 
 	m_request.uri.path = "/recursion/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_request.targetResource, "/start/recursion/again/again/");
@@ -186,7 +186,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexMaxRecursion)
 
 	m_request.uri.path = "/recursion/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_request.targetResource, "/start/recursion/again/again/again/again/again/again/again/again/");
@@ -199,7 +199,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 
 	m_request.uri.path = "/test/autoindex/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
 	EXPECT_EQ(m_request.targetResource, "/fourth/location/test/autoindex/");
@@ -213,7 +213,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 
 	m_request.uri.path = "/test/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
@@ -227,7 +227,7 @@ TEST_F(TargetResourceHandlerTest, ServerError)
 
 	m_request.uri.path = "/test/";
 
-	m_targetResourceHandler.execute(m_connection, m_request);
+	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
