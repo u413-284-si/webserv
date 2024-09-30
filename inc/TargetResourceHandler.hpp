@@ -35,6 +35,12 @@ private:
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
 
+/**
+ * @brief Helper struct to extract information out of Connection
+ *
+ * This struct is used to extract the needed information out of the Connection struct. It then can easier be passed
+ * around and copied.
+ */
 struct TargetResourceHandler::LocatingInfo {
 	explicit LocatingInfo(const Connection& connection);
 

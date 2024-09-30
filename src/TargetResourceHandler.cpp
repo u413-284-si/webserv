@@ -13,18 +13,9 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
 /**
  * @brief Determine target resource based on the request path and handle different file types and statuses accordingly.
  *
- * Finds a matching location block.
- * If no match is found set Status to StatusNotFound.
- * Set the targetResource as location.root + request.uri.path and check file type.
- * RegularFile: break, nothing more to do.
- * Directory: if no trailing slash, add it and set Status to StatusMovedPermanently.
- *            if index file is set, add it to the path and set internalRedirect to true.
- *            if autoindex is set, set autoindex to true.
- *            else set Status to StatusForbidden.
- * FileNotExist: set Status to StatusNotFound.
- * FileOther: set Status to StatusForbidden.
- * If internalRedirect is true, repeat the process.
- * If stat fails, set Status to StatusInternalServerError.
+ * Constructs a new LocatingInfo object with the provided Connection.
+ * Recursively searches for the target resource with locateTargetResource() using the information in the LocatingInfo.
+ * Uses updateConnection() to write found information into Connection.
  * @param connection Connection object.
  * @param request HTTP request.
  */
@@ -37,6 +28,24 @@ void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request
 	updateConnection(connection, locInfo);
 }
 
+/**
+ * @brief Locates the target resource and checks its type.
+ *
+ * This function is called recursively. To exit recursion it keeps track of recursion depth.
+ * Checks which location block most closly matches path with matchLocation().
+ * Then constructs target resource by appending the path to location root.
+ * Determines the type with stat() and take different action:
+ * - FileRegular: break, nothing more to do.
+ * - FileDirectory: further action with handleFileDirectory()
+ * - FileNotExist: set Status to StatusNotFound.
+ * - FileOther: set Status to StatusInternalServerError.
+ * If stat fails, set Status to StatusInternalServerError.
+ * @param locInfo Struct containing info for locating the target resource.
+ * @param depth Current depth in recursion.
+ * @return TargetResourceHandler::LocatingInfo
+ * @todo Remove check for no location found if default location implemented.
+ */
+// NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
 {
 	const int currentDepth = depth + 1;
@@ -46,7 +55,6 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		return (locInfo);
 	}
 
-	// Check which location block matches the path
 	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
 
 	// No location found > do we also set a default location to not make extra check?
@@ -55,11 +63,9 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		return (locInfo);
 	}
 
-	// construct target resource
 	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
 
-	// what type is it
 	try {
 		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(locInfo.targetResource);
 
@@ -77,17 +83,14 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 			break;
 
 		case FileSystemPolicy::FileOther:
-			locInfo.statusCode = StatusForbidden;
+			locInfo.statusCode = StatusInternalServerError;
 			break;
 		}
-
-		return (locInfo);
-
 	} catch (const std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		locInfo.statusCode = StatusInternalServerError;
-		return (locInfo);
 	}
+	return (locInfo);
 }
 
 /**
@@ -115,6 +118,11 @@ std::vector<Location>::const_iterator matchLocation(const std::vector<Location>&
 	return locationMatch;
 }
 
+/**
+ * @brief Construct a new LocatingInfo object
+ *
+ * @param connection Connection object from which to extract info.
+ */
 TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 	: statusCode(connection.m_request.httpStatus)
 	, path(connection.m_request.uri.path)
@@ -124,6 +132,12 @@ TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 {
 }
 
+/**
+ * @brief Writes info from LocatingInfo into Connection
+ *
+ * @param connection Connection object which is updated with info.
+ * @param locInfo LocationInfo object from which to extract info.
+ */
 void TargetResourceHandler::updateConnection(Connection& connection, const LocatingInfo& locInfo)
 {
 	connection.m_request.httpStatus = locInfo.statusCode;
@@ -133,22 +147,19 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 	connection.location = locInfo.activeLocation;
 }
 
-bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDepth)
-{
-	std::string savePath = locInfo.path;
-	for (std::vector<std::string>::const_iterator iter = locInfo.activeLocation->indices.begin();
-		 iter != locInfo.activeLocation->indices.end(); ++iter) {
-		locInfo.path += *iter;
-		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth);
-		if (tmp.statusCode != StatusNotFound) {
-			locInfo = tmp;
-			break;
-		}
-		locInfo.path = savePath;
-	}
-	return (locInfo.path != savePath);
-}
-
+/**
+ * @brief Handles filetype directory while locating target resource.
+ *
+ * This function is called within a recursive call chain.
+ * If the found file is of type directory different actions can happen:
+ * - if no trailing slash, add it and set Status to StatusMovedPermanently.
+ * - if index vector is not empty, try to locate a index file with locateIndexFile().
+ * - if autoindex is set, set hasAutoindex to true.
+ * - else set Status to StatusForbidden.
+ * @param locInfo Refrence to LocationInfo which gets overwritten.
+ * @param currentDepth Current depth in recursion.
+ */
+// NOLINTNEXTLINE
 void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int currentDepth)
 {
 	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
@@ -168,4 +179,36 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 	}
 
 	locInfo.statusCode = StatusForbidden;
+}
+
+/**
+ * @brief Finds index file
+ *
+ * This function is called within a recursive call chain.
+ * Saves current path to be able to reset it.
+ * Loops through the index vector of the active location.
+ * Appends the index to path and tries to find it with locateTargetResource(), which is saved in a copy of locInfo.
+ * If status code is not StatusNotFound it indicates that the file was found or an error occured. The passed locInfo is
+ * overwritten with the copy.
+ * Else the path is reset to the saved path and the next index file is tried.
+ * At the end compares the saved path with the path in locInfo, which indicates if an index was found.
+ * @param locInfo Refrence to LocationInfo which gets overwritten.
+ * @param currentDepth Current depth in recursion.
+ * @return true If an index file was found, false otherwise
+ */
+// NOLINTNEXTLINE
+bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDepth)
+{
+	std::string savePath = locInfo.path;
+	for (std::vector<std::string>::const_iterator iter = locInfo.activeLocation->indices.begin();
+		 iter != locInfo.activeLocation->indices.end(); ++iter) {
+		locInfo.path += *iter;
+		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth);
+		if (tmp.statusCode != StatusNotFound) {
+			locInfo = tmp;
+			break;
+		}
+		locInfo.path = savePath;
+	}
+	return (locInfo.path != savePath);
 }
