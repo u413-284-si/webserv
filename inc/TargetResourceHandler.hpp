@@ -19,12 +19,19 @@
 class TargetResourceHandler {
 
 public:
+	static const int s_maxRecursion = 10; /**< Max recursion depth for locating a resource */
+
 	explicit TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy);
 	void execute(Connection& connection, HTTPRequest& request);
 
 private:
 	struct LocatingInfo;
+
+	LocatingInfo locateTargetResource(LocatingInfo locInfo, int depth);
+	void handleFileDirectory(LocatingInfo& locInfo, int currentDepth);
+	bool locateIndexFile(LocatingInfo& locInfo, int currentDepth);
 	static void updateConnection(Connection& connection, const LocatingInfo& locInfo);
+
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
 

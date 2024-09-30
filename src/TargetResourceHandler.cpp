@@ -30,61 +30,64 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
  */
 void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request)
 {
-	bool internalRedirect = false;
+	(void)request;
+	LocatingInfo locInfo(connection);
+	const int startingDepth = 0;
+	locInfo = locateTargetResource(locInfo, startingDepth);
+	updateConnection(connection, locInfo);
+}
 
-	do {
-		// Check which location block matches the path
-		connection.location = matchLocation(connection.serverConfig->locations, request.uri.path);
+TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
+{
+	const int currentDepth = depth + 1;
+	if (currentDepth == s_maxRecursion) {
+		LOG_DEBUG << "Max recursion reached: " << currentDepth;
+		locInfo.statusCode = StatusInternalServerError;
+		return (locInfo);
+	}
 
-		// No location found > do we also set a default location to not make extra check?
-		if (connection.location == connection.serverConfig->locations.end()) {
-			request.httpStatus = StatusNotFound;
+	// Check which location block matches the path
+	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
+
+	// No location found > do we also set a default location to not make extra check?
+	if (locInfo.activeLocation == locInfo.locations->end()) {
+		locInfo.statusCode = StatusInternalServerError;
+		return (locInfo);
+	}
+
+	// construct target resource
+	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
+	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
+
+	// what type is it
+	try {
+		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(locInfo.targetResource);
+
+		switch (fileType) {
+
+		case FileSystemPolicy::FileRegular:
+			break;
+
+		case FileSystemPolicy::FileDirectory:
+			handleFileDirectory(locInfo, currentDepth);
+			break;
+
+		case FileSystemPolicy::FileNotExist:
+			locInfo.statusCode = StatusNotFound;
+			break;
+
+		case FileSystemPolicy::FileOther:
+			locInfo.statusCode = StatusForbidden;
 			break;
 		}
 
-		// construct target resource
-		if (!internalRedirect)
-			request.targetResource = connection.location->root + request.uri.path;
-		internalRedirect = false;
+		return (locInfo);
 
-		// what type is it
-		try {
-			FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(request.targetResource);
-
-			switch (fileType) {
-
-			case FileSystemPolicy::FileRegular:
-				break;
-
-			case FileSystemPolicy::FileDirectory:
-				if (request.targetResource.at(request.targetResource.length() - 1) != '/') {
-					request.targetResource += "/";
-					request.httpStatus = StatusMovedPermanently;
-				} else if (!connection.location->indices.empty()) {
-					request.targetResource += connection.location->indices[0];
-					internalRedirect = true;
-				} else if (connection.location->isAutoindex) {
-					request.hasAutoindex = true;
-				} else
-					request.httpStatus = StatusForbidden;
-				break;
-
-			case FileSystemPolicy::FileNotExist:
-				request.httpStatus = StatusNotFound;
-				break;
-
-			case FileSystemPolicy::FileOther:
-				request.httpStatus = StatusForbidden;
-				break;
-			}
-		} catch (const std::runtime_error& e) {
-			LOG_ERROR << e.what();
-			request.httpStatus = StatusInternalServerError;
-			break;
-		}
-	} while (internalRedirect);
-
-	LOG_DEBUG << "Target resource: " << request.targetResource;
+	} catch (const std::runtime_error& e) {
+		LOG_ERROR << e.what();
+		locInfo.statusCode = StatusInternalServerError;
+		return (locInfo);
+	}
 }
 
 /**
@@ -130,3 +133,39 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 	connection.location = locInfo.activeLocation;
 }
 
+bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDepth)
+{
+	std::string savePath = locInfo.path;
+	for (std::vector<std::string>::const_iterator iter = locInfo.activeLocation->indices.begin();
+		 iter != locInfo.activeLocation->indices.end(); ++iter) {
+		locInfo.path += *iter;
+		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth);
+		if (tmp.statusCode != StatusNotFound) {
+			locInfo = tmp;
+			break;
+		}
+		locInfo.path = savePath;
+	}
+	return (locInfo.path != savePath);
+}
+
+void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int currentDepth)
+{
+	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
+		locInfo.targetResource += "/";
+		locInfo.statusCode = StatusMovedPermanently;
+		return;
+	}
+
+	if (!locInfo.activeLocation->indices.empty()) {
+		if (locateIndexFile(locInfo, currentDepth))
+			return;
+	}
+
+	if (locInfo.activeLocation->isAutoindex) {
+		locInfo.hasAutoindex = true;
+		return;
+	}
+
+	locInfo.statusCode = StatusForbidden;
+}
