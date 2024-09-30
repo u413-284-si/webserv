@@ -164,7 +164,22 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexNotFound)
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/");
 }
 
-TEST_F(TargetResourceHandlerTest, MaxRecursionReached)
+TEST_F(TargetResourceHandlerTest, DirectoryIndexErrorInRecursion)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
+	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
+	.WillOnce(testing::Throw(std::runtime_error("Stat error")));
+
+	m_request.uri.path = "/recursion/";
+
+	m_targetResourceHandler.execute(m_connection, m_request);
+
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_request.targetResource, "/start/recursion/again/again/");
+}
+
+TEST_F(TargetResourceHandlerTest, DirectoryIndexMaxRecursion)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillRepeatedly(testing::Return(FileSystemPolicy::FileDirectory));
