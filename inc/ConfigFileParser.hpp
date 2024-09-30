@@ -3,17 +3,29 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "Server.hpp"
 #include "utilities.hpp"
 #include <algorithm>
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <set>
 #include <stack>
 #include <string>
+#include <vector>
 
 /* ====== DEFINITIONS ====== */
 
-enum Block { ServerBlock, LocationBlock };
+enum Block { HttpBlock, ServerBlock, LocationBlock };
+
+struct LocationContent {
+	std::string content;
+};
+
+struct ServerContent {
+	std::string content;
+	std::vector<LocationContent> locations;
+};
 
 /* ====== CLASS DECLARATION ====== */
 
@@ -26,8 +38,10 @@ public:
 private:
 	ConfigFile m_configFile;
 	std::string m_configFileContent;
+	std::vector<ServerContent> m_serversContent;
 	std::stringstream m_stream;
 	std::string m_currentLine;
+	size_t m_configFileIndex;
 	size_t m_serverIndex;
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;
@@ -39,6 +53,8 @@ private:
 	std::string getValue(const std::string& line) const;
 
 	// Reader functions
+	void readServerBlock();
+	void readLocationBlock(ServerContent serverContent);
 	void readServerConfigLine(void);
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
@@ -47,12 +63,17 @@ private:
 
 	// Checker functions
 	bool isBracketOpen(const std::string& configFileContent);
+	bool isKeyword(const std::string& keyword) const;
+	bool isValidBlockBeginn(Block block);
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, Block block) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
 	static bool isPortValid(const std::string& port);
 
 	// Helper functions
+	std::string convertBlockToString(Block block) const;
+	void skipWhiteSpaces(void);
+	void skipNonWhiteSpaces(void);
 	void readAndTrimLine(void);
 	void processRemainingLine(std::string& line);
 };
