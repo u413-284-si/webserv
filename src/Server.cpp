@@ -385,11 +385,10 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  * @brief Wrapper function to TargetResourceHandler::execute.
  *
  * @param connection The Connection object to handle the target resource for.
- * @param request The HTTPRequest object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection, HTTPRequest& request)
+void Server::findTargetResource(Connection& connection)
 {
-	m_targetResourceHandler.execute(connection, request);
+	m_targetResourceHandler.execute(connection);
 }
 
 /* ====== INITIALIZATION ====== */
@@ -851,7 +850,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		}
 	}
 
-	server.findTargetResource(connection, connection.m_request);
+	server.findTargetResource(connection);
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
