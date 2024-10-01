@@ -30,7 +30,7 @@ void TargetResourceHandler::execute(Connection& connection)
  * @brief Locates the target resource and checks its type.
  *
  * This function is called recursively. To exit recursion it keeps track of recursion depth.
- * Checks which location block most closly matches path with matchLocation().
+ * Checks which location block most closely matches path with matchLocation().
  * Then constructs target resource by appending the path to location root.
  * Determines the type with stat() and take different action:
  * - FileRegular: break, nothing more to do.
@@ -154,7 +154,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
  * - if index vector is not empty, try to locate a index file with locateIndexFile().
  * - if autoindex is set, set hasAutoindex to true.
  * - else set Status to StatusForbidden.
- * @param locInfo Refrence to LocationInfo which gets overwritten.
+ * @param locInfo Reference to LocationInfo which gets overwritten.
  * @param currentDepth Current depth in recursion.
  */
 // NOLINTNEXTLINE
@@ -190,7 +190,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
  * overwritten with the copy.
  * Else the path is reset to the saved path and the next index file is tried.
  * At the end compares the saved path with the path in locInfo, which indicates if an index was found.
- * @param locInfo Refrence to LocationInfo which gets overwritten.
+ * @param locInfo Reference to LocationInfo which gets overwritten.
  * @param currentDepth Current depth in recursion.
  * @return true If an index file was found, false otherwise
  */
