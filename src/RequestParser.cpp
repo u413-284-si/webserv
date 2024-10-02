@@ -5,8 +5,6 @@
 /**
  * @brief Constructs a new RequestParser object.
  *
- * This constructor initializes the RequestParser object with default values.
- * The `m_hasBody` member is set to `false` and the `m_chunked` member is set to `false`.
  */
 RequestParser::RequestParser() { }
 
