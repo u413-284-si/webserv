@@ -1,9 +1,4 @@
 #include "utilities.hpp"
-#include "StatusCode.hpp"
-
-#include <cassert>
-#include <cctype>
-#include <sys/socket.h>
 
 namespace webutils {
 
@@ -283,5 +278,69 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	ret += errorTail;
 	return (ret);
 }
+
+/**
+ * @brief Validates whether a given string is a valid IPv4 address.
+ *
+ * This function checks if the provided string is a valid IPv4 address.
+ * An IPv4 address consists of four decimal numbers, each ranging from 0 to 255,
+ * separated by dots (e.g., "192.168.0.1").
+ *
+ * @param ipAddress The string representation of the IPv4 address to validate.
+ * @return true if the ipAddress is a valid IPv4 address, false otherwise.
+ */
+bool isIpAddressValid(const std::string& ipAddress)
+{
+	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
+		return false;
+
+	const std::vector<std::string> segments = webutils::split(ipAddress, ".");
+	if (segments.size() != 4)
+		return false;
+
+	const short maxIpValue = 255;
+	const short minIpValue = 0;
+	for (std::vector<std::string>::const_iterator citer = segments.begin(); citer != segments.end(); ++citer) {
+		if (citer->empty() || citer->size() > 3)
+			return false;
+		const long segmentValue = std::strtol(citer->c_str(), NULL, constants::g_decimalBase);
+		if (segmentValue > maxIpValue || segmentValue < minIpValue)
+			return false;
+	}
+	return true;
+}
+
+/**
+ * @brief Checks if the port number of the listen directive is valid
+ *
+ * The function makes sure that the port is valid in the following ways:
+ * 1. The port must not contain a character other than '0'-'9'
+ * 2. The value of the port must be between 1-65535
+ *
+ * @param port The port to be checked
+ * @return true If the port is valid
+ * @return false If the port is invalid
+ */
+bool isPortValid(const std::string& port)
+{
+	if (port.find_first_not_of("0123456789") != std::string::npos)
+		return false;
+
+	const int maxPort = 65535;
+	const int minPort = 1;
+
+	const long portNum = std::strtol(port.c_str(), NULL, constants::g_decimalBase);
+	return !(portNum <= minPort || portNum > maxPort);
+}
+
+/**
+ * @brief Converts all characters in a string to lowercase.
+ *
+ * This function takes a reference to a std::string and transforms all of its characters to lowercase using the
+ * std::transform algorithm and the ::tolower function.
+ *
+ * @param str The string to be converted to lowercase.
+ */
+void lowercase(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::tolower); }
 
 } // webutils

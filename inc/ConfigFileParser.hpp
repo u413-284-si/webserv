@@ -48,8 +48,6 @@ private:
 	static bool isBracketOpen(const std::string& configFilePath);
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, Block block) const;
-	static bool isIpAddressValid(const std::string& ipAddress);
-	static bool isPortValid(const std::string& port);
 
 	// Helper functions
 	void readAndTrimLine(void);

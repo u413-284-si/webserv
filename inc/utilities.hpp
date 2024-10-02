@@ -3,7 +3,9 @@
 /* ====== LIBRARIES ====== */
 
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include <algorithm>
+#include <cassert>
 #include <ctime>
 #include <iostream>
 #include <sstream>
@@ -25,6 +27,11 @@ std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
 std::string getDefaultErrorPage(statusCode status);
+
+bool isIpAddressValid(const std::string& ipAddress);
+bool isPortValid(const std::string& port);
+
+void lowercase(std::string& str);
 
 /**
  * @brief Convert a type to a string
