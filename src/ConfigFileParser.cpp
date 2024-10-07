@@ -61,8 +61,6 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	if (isBracketOpen(configFilePath))
 		throw std::runtime_error("Open bracket(s) in config file");
 
-	m_stream << m_configFileContent;
-
 	if (!isValidBlockBeginn(HttpBlock))
 		throw std::runtime_error("Config file does not start with http");
 
@@ -518,18 +516,17 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 /**
  * @brief Gets the directive from the line
  *
- * @param line String containing the directive and value
  * @return std::string The extracted directive
  */
-std::string ConfigFileParser::getDirective(const std::string& line) const
+std::string ConfigFileParser::getDirective() const
 {
 	std::string directive;
 
-	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
+	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(whitespace);
 	if (firstWhiteSpaceIndex == std::string::npos)
-		directive = line;
+		directive = m_currentLine;
 	else
-		directive = line.substr(0, firstWhiteSpaceIndex);
+		directive = m_currentLine.substr(0, firstWhiteSpaceIndex);
 
 	directive = webutils::trimLeadingWhitespaces(directive);
 	webutils::trimTrailingWhiteSpaces(directive);
@@ -540,19 +537,18 @@ std::string ConfigFileParser::getDirective(const std::string& line) const
 /**
  * @brief Gets the value from the line
  *
- * @param line String containing the directive and value;
  * @return std::string  The extracted value
  */
-std::string ConfigFileParser::getValue(const std::string& line) const
+std::string ConfigFileParser::getValue(void) const
 {
-	const size_t semicolonIndex = line.find(';');
+	const size_t semicolonIndex = m_currentLine.find(';');
 	std::string value;
 
-	const size_t firstWhiteSpaceIndex = line.find_first_of(whitespace);
+	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(whitespace);
 	if (firstWhiteSpaceIndex == std::string::npos)
-		value = line.substr(0, semicolonIndex);
+		value = m_currentLine.substr(0, semicolonIndex);
 	else
-		value = line.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
+		value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex + 1);
 
 	value = webutils::trimLeadingWhitespaces(value);
 	webutils::trimTrailingWhiteSpaces(value);

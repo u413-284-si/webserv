@@ -49,8 +49,8 @@ private:
 	static const char* const whitespace;
 
 	// Getter functions
-	std::string getDirective(const std::string& line) const;
-	std::string getValue(const std::string& line) const;
+	std::string getDirective(void) const;
+	std::string getValue(void) const;
 
 	// Reader functions
 	void readServerBlock();
