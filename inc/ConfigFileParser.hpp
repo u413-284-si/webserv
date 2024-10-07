@@ -54,8 +54,9 @@ private:
 
 	// Reader functions
 	void readServerBlock();
-	void readLocationBlock(ServerContent serverContent);
-	void processServerContent(const std::string& content);
+	void readLocationBlock(ServerContent& serverContent);
+	void processServerContent(const ServerContent& serverContent);
+	void processLocationContent(const LocationContent& locationContent);
 	void readServerConfigLine(void);
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
@@ -66,7 +67,6 @@ private:
 	bool isBracketOpen(const std::string& configFileContent);
 	bool isKeyword(const std::string& keyword, size_t startIndex) const;
 	bool isValidBlockBeginn(Block block);
-	// bool isSemicolonMissing(void) const;
 	bool isDirectiveValid(const std::string& directive, Block block) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
 	static bool isPortValid(const std::string& port);
@@ -75,5 +75,4 @@ private:
 	std::string convertBlockToString(Block block) const;
 	void skipBlockBegin(Block block);
 	void readAndTrimLine(void);
-	void processRemainingLine(std::string& line);
 };

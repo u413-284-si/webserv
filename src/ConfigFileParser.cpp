@@ -76,44 +76,14 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		m_configFileIndex++;
 	}
 
-	for (std::vector<ServerContent>::const_iterator it = m_serversContent.begin(); it != m_serversContent.end(); it++) {
-		processServerContent(it->content);
+	for (std::vector<ServerContent>::const_iterator serverIt = m_serversContent.begin();
+		 serverIt != m_serversContent.end(); serverIt++) {
+		processServerContent(*serverIt);
+		m_serverIndex++;
 	}
 
-	// readAndTrimLine();
-	// if (getDirective(m_currentLine) != "http")
-	// 	throw std::runtime_error("Config file does not start with http");
-
-	// for (readAndTrimLine(); m_currentLine != "}"; readAndTrimLine()) {
-	// 	if (getDirective(m_currentLine) == "server") {
-	// 		ConfigServer server;
-	// 		m_configFile.servers.push_back(server);
-	// 		size_t bracketIndex = m_currentLine.find('{');
-
-	// 		if (bracketIndex != std::string::npos) {
-	// 			std::string withoutBracket = m_currentLine.substr(bracketIndex + 1, m_currentLine.length());
-	// 			size_t firstNotWhiteSpaceIndex = withoutBracket.find_first_not_of(whitespace);
-	// 			if (firstNotWhiteSpaceIndex == std::string::npos) {
-	// 				readAndTrimLine();
-	// 			} else
-	// 				m_currentLine = withoutBracket.substr(firstNotWhiteSpaceIndex, withoutBracket.length());
-	// 		} else
-	// 			readAndTrimLine();
-
-	// 		while (m_currentLine != "}") {
-	// 			readServerConfigLine();
-	// 			if (m_currentLine == "}")
-	// 				break;
-	// 			readAndTrimLine();
-	// 		}
-	// 		m_serverIndex++;
-	// 	} else if (getDirective(m_currentLine).empty())
-	// 		continue;
-	// 	else
-	// 		throw std::runtime_error("Invalid directive");
-	// }
-	// if (m_configFile.servers.empty())
-	// 	throw std::runtime_error("No server(s) in config file");
+	if (m_configFile.servers.empty())
+		throw std::runtime_error("No server(s) in config file");
 
 	return m_configFile;
 }
@@ -291,7 +261,7 @@ void ConfigFileParser::readServerBlock(void)
  *
  * @param serverContent The associated struct ServerContent
  */
-void ConfigFileParser::readLocationBlock(ServerContent serverContent)
+void ConfigFileParser::readLocationBlock(ServerContent& serverContent)
 {
 	skipBlockBegin(LocationBlock);
 
@@ -308,18 +278,39 @@ void ConfigFileParser::readLocationBlock(ServerContent serverContent)
 	serverContent.locations.push_back(locationContent);
 }
 
-void ConfigFileParser::processServerContent(const std::string& content)
+void ConfigFileParser::processServerContent(const ServerContent& serverContent)
 {
 	ConfigServer server;
 	m_configFile.servers.push_back(server);
 
 	m_stream.clear();
 	m_stream.str("");
-	m_stream << content;
+	m_stream << serverContent.content;
 
 	readAndTrimLine();
 	while (!m_currentLine.empty()) {
 		readServerConfigLine();
+		readAndTrimLine();
+	}
+
+	for (std::vector<LocationContent>::const_iterator it = serverContent.locations.begin();
+		 it != serverContent.locations.end(); ++it) {
+		processLocationContent(*it);
+	}
+}
+
+void ConfigFileParser::processLocationContent(const LocationContent& locationContent)
+{
+	Location location;
+	m_configFile.servers[m_serverIndex].locations.push_back(location);
+
+	m_stream.clear();
+	m_stream.str("");
+	m_stream << locationContent.content;
+
+	readAndTrimLine();
+	while (!m_currentLine.empty()) {
+		readLocationConfigLine();
 		readAndTrimLine();
 	}
 }
@@ -575,94 +566,42 @@ std::string ConfigFileParser::getValue(void) const
 }
 
 /**
- * @brief Processes the line after the directive and value got extracted
- *
- * It can be the case that multiple directives are in the same line.
- * Therefore the line must still get read until all directives got processed.
- *
- * If the line does NOT contain a semicolon, the line and the current line get cleared.
- *
- * If the line contains a semicolon, the line and the current line get cleared until the semicolon.
- * Which means:
- * For the case that the line contains more than one directive, the already processed directive gets skipped.
- * For the case the line does not contain any more directives, the line gets cleared.
- *
- * @param line The current line
- */
-void ConfigFileParser::processRemainingLine(std::string& line)
-{
-	size_t semicolonIndex = line.find(';');
-	if (semicolonIndex == std::string::npos) {
-		line = "";
-		m_currentLine = line;
-		return;
-	}
-
-	line.erase(0, semicolonIndex + 1);
-	line = webutils::trimLeadingWhitespaces(line);
-	webutils::trimTrailingWhiteSpaces(line);
-	m_currentLine = line;
-}
-
-/**
  * @brief Reads the current line of the server config and does several checks
  *
  * How a line gets processed:
- * 1. Gets checked if it contains a semicolon.
- * 2. The directive of the resulting string gets extracted and checked.
- * 3. The value of the directive gets extracted and checked.
- *
- * If the line contains more than one directive, this process gets repeated for each directive.
- * Otherwise the line just gets cleared and the processing ends.
+ * 1. The directive of the resulting string gets extracted and checked.
+ * 2. The value of the directive gets extracted and checked.
  */
 void ConfigFileParser::readServerConfigLine(void)
 {
-	// if (isSemicolonMissing())
-	// 	throw std::runtime_error("Semicolon missing");
-
 	const std::string directive = getDirective();
+	if (!isDirectiveValid(directive, ServerBlock))
+		throw std::runtime_error("Invalid server directive");
 
 	const std::string value = getValue();
 	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-	if (!isDirectiveValid(directive, ServerBlock))
-		throw std::runtime_error("Invalid server directive");
-
 	readServerDirectiveValue(directive, value);
 }
 
 /**
-* @brief Reads the current line of the location config and does several checks
-*
-* How a line gets processed:
-* 1. Gets checked if it contains a semicolon.
-* 2. The directive of of the resulting string gets extracted and checked.
-* @todo FIXME: 3. The value of the directive gets extracted and checked.
-*
-* If the line contains more than one directive, this process gets repeated for each directive.
-* Otherwise the line just gets cleared and the processing ends.
-
-*/
+ * @brief Reads the current line of the location config and does several checks
+ *
+ * How a line gets processed:
+ * 1. The directive of of the resulting string gets extracted and checked.
+ * @todo FIXME: 2. The value of the directive gets extracted and checked.
+ */
 void ConfigFileParser::readLocationConfigLine(void)
 {
-	std::string line = m_currentLine;
 
-	while (!line.empty() && line != "{" && line != "}") {
-		if (isSemicolonMissing())
-			throw std::runtime_error("Semicolon missing");
+	const std::string directive = getDirective();
+	if (!isDirectiveValid(directive, LocationBlock))
+		throw std::runtime_error("Invalid location directive");
 
-		const std::string directive = getDirective();
-		const std::string value = getValue();
+	const std::string value = getValue();
+	if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
+		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-		if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
-			throw std::runtime_error("'" + directive + "'" + " directive has no value");
-
-		if (!isDirectiveValid(directive, LocationBlock))
-			throw std::runtime_error("Invalid location directive");
-
-		// TODO: readLocationDirectiveValue(directive, value);
-
-		processRemainingLine(line);
-	}
+	// TODO: readLocationDirectiveValue(directive, value);
 }
