@@ -137,9 +137,9 @@ void ConfigFileParser::skipNonWhiteSpaces(void)
  * @return true If the keyword is found
  * @return false If the keyword is not found
  */
-bool ConfigFileParser::isKeyword(const std::string& keyword) const
+bool ConfigFileParser::isKeyword(const std::string& keyword, size_t startIndex) const
 {
-	std::string string = m_configFileContent.substr(m_configFileIndex, keyword.length());
+	std::string string = m_configFileContent.substr(startIndex, keyword.length());
 	return string == keyword;
 }
 

@@ -63,7 +63,7 @@ private:
 
 	// Checker functions
 	bool isBracketOpen(const std::string& configFileContent);
-	bool isKeyword(const std::string& keyword) const;
+	bool isKeyword(const std::string& keyword, size_t startIndex) const;
 	bool isValidBlockBeginn(Block block);
 	bool isSemicolonMissing(const std::string& line) const;
 	bool isDirectiveValid(const std::string& directive, Block block) const;
