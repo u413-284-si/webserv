@@ -1,9 +1,11 @@
 #include "ConfigFileParser.hpp"
+#include "ConfigFile.hpp"
 #include "utilities.hpp"
 #include <cctype>
 #include <cstddef>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 const char* const ConfigFileParser::whitespace = " \t\n\v\f\r";
 
@@ -72,6 +74,10 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		else
 			throw std::runtime_error("Invalid block");
 		m_configFileIndex++;
+	}
+
+	for (std::vector<ServerContent>::const_iterator it = m_serversContent.begin(); it != m_serversContent.end(); it++) {
+		processServerContent(it->content);
 	}
 
 	// readAndTrimLine();
@@ -247,17 +253,13 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFileContent)
 	return !brackets.empty();
 }
 
-/**
- * @brief Checks if the line contains a semicolon, except if the line contains the directive "location"
- *
- * @param line The current line to be checked
- * @return true If the line does not contain a semicolon and is not the directive "location"
- * @return false If the line contains a semicolon or the directive is "location"
- */
-bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
-{
-	return line.find(';') == std::string::npos && getDirective(line) != "location";
-}
+// /**
+//  * @brief Checks if the line contains a semicolon
+//  *
+//  * @return true If the line does not contain a semicolon
+//  * @return false If the line contains a semicolon
+//  */
+// bool ConfigFileParser::isSemicolonMissing(void) const { return m_currentLine.find(';') == std::string::npos; }
 
 /**
  * @brief Reads a server block into a struct ServerContent
@@ -282,7 +284,6 @@ void ConfigFileParser::readServerBlock(void)
 
 	m_configFileIndex++;
 	m_serversContent.push_back(serverContent);
-	// std::cout << "serverContent.content: '" << serverContent.content << "'" << std::endl;
 }
 
 /**
@@ -305,7 +306,22 @@ void ConfigFileParser::readLocationBlock(ServerContent serverContent)
 
 	m_configFileIndex++;
 	serverContent.locations.push_back(locationContent);
-	// std::cout << "locationContent.content: '" << locationContent.content << "'" << std::endl;
+}
+
+void ConfigFileParser::processServerContent(const std::string& content)
+{
+	ConfigServer server;
+	m_configFile.servers.push_back(server);
+
+	m_stream.clear();
+	m_stream.str("");
+	m_stream << content;
+
+	readAndTrimLine();
+	while (!m_currentLine.empty()) {
+		readServerConfigLine();
+		readAndTrimLine();
+	}
 }
 
 /**
@@ -313,7 +329,9 @@ void ConfigFileParser::readLocationBlock(ServerContent serverContent)
  */
 void ConfigFileParser::readAndTrimLine(void)
 {
-	getline(m_stream, m_currentLine);
+	getline(m_stream, m_currentLine, ';');
+	if (m_currentLine.find_first_not_of(whitespace) != std::string::npos)
+		m_currentLine += ";";
 	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
 	webutils::trimTrailingWhiteSpaces(m_currentLine);
 }
@@ -599,36 +617,19 @@ void ConfigFileParser::processRemainingLine(std::string& line)
  */
 void ConfigFileParser::readServerConfigLine(void)
 {
-	std::string line = m_currentLine;
+	// if (isSemicolonMissing())
+	// 	throw std::runtime_error("Semicolon missing");
 
-	while (!line.empty() && line != "{" && line != "}") {
-		if (isSemicolonMissing(line))
-			throw std::runtime_error("Semicolon missing");
+	const std::string directive = getDirective();
 
-		const std::string directive = getDirective(line);
-		if (directive == "location") {
-			Location location;
-			m_configFile.servers[m_serverIndex].locations.push_back(location);
-			while (m_currentLine != "}") {
-				readAndTrimLine();
-				readLocationConfigLine();
-			}
-			m_locationIndex++;
-			processRemainingLine(line);
-			continue;
-		}
+	const std::string value = getValue();
+	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
+		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-		const std::string value = getValue(line);
-		if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
-			throw std::runtime_error("'" + directive + "'" + " directive has no value");
+	if (!isDirectiveValid(directive, ServerBlock))
+		throw std::runtime_error("Invalid server directive");
 
-		if (!isDirectiveValid(directive, ServerBlock))
-			throw std::runtime_error("Invalid server directive");
-
-		readServerDirectiveValue(directive, value);
-
-		processRemainingLine(line);
-	}
+	readServerDirectiveValue(directive, value);
 }
 
 /**
@@ -648,11 +649,11 @@ void ConfigFileParser::readLocationConfigLine(void)
 	std::string line = m_currentLine;
 
 	while (!line.empty() && line != "{" && line != "}") {
-		if (isSemicolonMissing(line))
+		if (isSemicolonMissing())
 			throw std::runtime_error("Semicolon missing");
 
-		const std::string directive = getDirective(line);
-		const std::string value = getValue(line);
+		const std::string directive = getDirective();
+		const std::string value = getValue();
 
 		if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
 			throw std::runtime_error("'" + directive + "'" + " directive has no value");
