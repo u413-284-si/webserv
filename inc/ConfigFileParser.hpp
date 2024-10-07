@@ -72,8 +72,7 @@ private:
 
 	// Helper functions
 	std::string convertBlockToString(Block block) const;
-	void skipWhiteSpaces(void);
-	void skipNonWhiteSpaces(void);
+	void skipBlockBegin(Block block);
 	void readAndTrimLine(void);
 	void processRemainingLine(std::string& line);
 };

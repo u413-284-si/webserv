@@ -66,6 +66,8 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	if (!isValidBlockBeginn(HttpBlock))
 		throw std::runtime_error("Config file does not start with http");
 
+	skipBlockBegin(HttpBlock);
+
 	while (m_configFileContent[m_configFileIndex] != '}') {
 		if (isValidBlockBeginn(ServerBlock))
 			readServerBlock();
@@ -113,24 +115,6 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 }
 
 /**
- * @brief Skips whitespaces within the m_configFileContent
- */
-void ConfigFileParser::skipWhiteSpaces(void)
-{
-	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
-		m_configFileIndex++;
-}
-
-/**
- * @brief Skips non-whitespaces within the m_configFileContent
- */
-void ConfigFileParser::skipNonWhiteSpaces(void)
-{
-	while (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
-		m_configFileIndex++;
-}
-
-/**
  * @brief Looks for a keyword in the m_configFileContent (eg. http, server, location)
  *
  * @param keyword The keyword to look for
@@ -172,30 +156,66 @@ std::string ConfigFileParser::convertBlockToString(Block block) const
  */
 bool ConfigFileParser::isValidBlockBeginn(Block block)
 {
-	skipWhiteSpaces();
+	size_t index = m_configFileIndex;
+
+	while (std::isspace(m_configFileContent[index]) != 0)
+		index++;
 
 	if (block == HttpBlock) {
-		if (!isKeyword(convertBlockToString(HttpBlock)))
+		if (!isKeyword(convertBlockToString(HttpBlock), index))
 			return false;
 	} else if (block == ServerBlock) {
-		if (!isKeyword(convertBlockToString(ServerBlock)))
+		if (!isKeyword(convertBlockToString(ServerBlock), index))
 			return false;
 	} else if (block == LocationBlock) {
-		if (!isKeyword(convertBlockToString(LocationBlock)))
+		if (!isKeyword(convertBlockToString(LocationBlock), index))
 			return false;
 	}
 
-	m_configFileIndex += convertBlockToString(block).length();
+	index += convertBlockToString(block).length();
 
-	skipWhiteSpaces();
+	while (std::isspace(m_configFileContent[index]) != 0)
+		index++;
 
 	if (block == LocationBlock) {
-		skipNonWhiteSpaces();
-		skipWhiteSpaces();
+		while (std::isspace(m_configFileContent[index]) == 0)
+			index++;
+		while (std::isspace(m_configFileContent[index]) != 0)
+			index++;
+	}
+
+	index++;
+	return m_configFileContent[index - 1] == '{';
+}
+
+/**
+ * @brief Skips the beginning of a block
+ *
+ * @param block The block to skip
+ */
+void ConfigFileParser::skipBlockBegin(Block block)
+{
+	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
+		m_configFileIndex++;
+
+	if (block == HttpBlock)
+		m_configFileIndex += convertBlockToString(HttpBlock).length();
+	else if (block == ServerBlock)
+		m_configFileIndex += convertBlockToString(ServerBlock).length();
+	else if (block == LocationBlock)
+		m_configFileIndex += convertBlockToString(LocationBlock).length();
+
+	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
+		m_configFileIndex++;
+
+	if (block == LocationBlock) {
+		while (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
+			m_configFileIndex++;
+		while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
+			m_configFileIndex++;
 	}
 
 	m_configFileIndex++;
-	return m_configFileContent[m_configFileIndex - 1] == '{';
 }
 
 /**
@@ -246,19 +266,25 @@ bool ConfigFileParser::isSemicolonMissing(const std::string& line) const
  */
 void ConfigFileParser::readServerBlock(void)
 {
+	skipBlockBegin(ServerBlock);
+
 	ServerContent serverContent;
 	size_t startIndex = m_configFileIndex;
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
-		if (isKeyword(convertBlockToString(LocationBlock)) && isValidBlockBeginn(LocationBlock))
+		if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex) && isValidBlockBeginn(LocationBlock)) {
+			serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
 			readLocationBlock(serverContent);
+			startIndex = m_configFileIndex;
+		}
 		m_configFileIndex++;
 	}
 
-	serverContent.content = m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+	serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
 
 	m_configFileIndex++;
 	m_serversContent.push_back(serverContent);
+	// std::cout << "serverContent.content: '" << serverContent.content << "'" << std::endl;
 }
 
 /**
@@ -268,6 +294,8 @@ void ConfigFileParser::readServerBlock(void)
  */
 void ConfigFileParser::readLocationBlock(ServerContent serverContent)
 {
+	skipBlockBegin(LocationBlock);
+
 	LocationContent locationContent;
 	size_t startIndex = m_configFileIndex;
 
@@ -279,6 +307,7 @@ void ConfigFileParser::readLocationBlock(ServerContent serverContent)
 
 	m_configFileIndex++;
 	serverContent.locations.push_back(locationContent);
+	// std::cout << "locationContent.content: '" << locationContent.content << "'" << std::endl;
 }
 
 /**
