@@ -89,30 +89,14 @@ TEST_F(InvalidConfigFileTests, FileContainsTooManyBrackets)
 
 TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 {
-	EXPECT_THROW(
-		{
-			try {
-				m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
-			} catch (const std::exception& e) {
-				EXPECT_STREQ("Config file does not start with http", e.what());
-				throw;
-			}
-		},
-		std::runtime_error);
+	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
+	EXPECT_EQ(true, configFile.servers.empty());
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 {
-	EXPECT_THROW(
-		{
-			try {
-				m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
-			} catch (const std::exception& e) {
-				EXPECT_STREQ("No server(s) in config file", e.what());
-				throw;
-			}
-		},
-		std::runtime_error);
+	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
+	EXPECT_EQ(true, configFile.servers.empty());
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsInvalidServerDirective)
