@@ -134,7 +134,7 @@ TEST_F(InvalidConfigFileTests, FileContainsMissingSemicolon)
 			try {
 				m_configFileParser.parseConfigFile("config_files/missing_semicolon.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("Semicolon missing", e.what());
+				EXPECT_STREQ("Unexpected '}'", e.what());
 				throw;
 			}
 		},
