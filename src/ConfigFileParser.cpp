@@ -352,7 +352,6 @@ void ConfigFileParser::processServerContent(const ServerContent& serverContent)
 	ConfigServer server;
 	m_configFile.servers.push_back(server);
 
-	std::cout << "content: " << serverContent.content << std::endl;
 	if (isSemicolonMissing(serverContent.content))
 		throw std::runtime_error("Unexpected '}'");
 
@@ -539,11 +538,6 @@ void ConfigFileParser::readServerConfigLine(void)
 
 	const std::string value = getValue();
 
-	std::cout << "server" << std::endl;
-	std::cout << std::endl;
-	std::cout << "directive: " << directive << std::endl;
-	std::cout << "value: " << value << std::endl;
-
 	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
@@ -565,11 +559,6 @@ void ConfigFileParser::readLocationConfigLine(void)
 
 	const std::string value = getValue();
 
-	std::cout << "location" << std::endl;
-	std::cout << std::endl;
-	std::cout << "m_currentLine: " << m_currentLine << std::endl;
-	std::cout << "directive: " << directive << std::endl;
-	std::cout << "value: " << value << std::endl;
 	if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
