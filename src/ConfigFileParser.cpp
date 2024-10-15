@@ -60,6 +60,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 
 	bufferStream << fileStream.rdbuf();
 	m_configFileContent = bufferStream.str();
+	fileStream.close();
 
 	if (isBracketOpen())
 		throw std::runtime_error("Open bracket(s) in config file");

@@ -39,7 +39,6 @@ private:
 	ConfigFile m_configFile;
 	std::string m_configFileContent;
 	std::vector<ServerContent> m_serversContent;
-	// std::stringstream m_stream;
 	std::string m_currentLine;
 	size_t m_configFileIndex;
 	size_t m_contentIndex;
