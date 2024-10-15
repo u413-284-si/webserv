@@ -20,6 +20,8 @@ int main(int argc, char** argv)
 
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(argv[1]);
+		if (configFile.servers.empty())
+			return 0;
 
 		configFile = createDummyConfig();
 
