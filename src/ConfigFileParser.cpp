@@ -399,16 +399,18 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
  */
 void ConfigFileParser::readRootPath(Block block, const std::string& value)
 {
-	std::string rootPath = value;
-	size_t semicolonIndex = rootPath.find(';');
+	size_t semicolonIndex = value.find(';');
+
+	std::string rootPath = value.substr(0, semicolonIndex);
+
+	if (rootPath.empty())
+		throw std::runtime_error("'root' directive has no value");
 
 	if (rootPath.find_first_of(whitespace) != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath.erase(rootPath.end() - 1);
-
-	rootPath = rootPath.substr(0, semicolonIndex);
 
 	if (block == ServerBlock)
 		m_configFile.servers[m_serverIndex].root = rootPath;
