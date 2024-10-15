@@ -51,7 +51,7 @@ private:
 
 	// Checker functions
 	bool isBracketOpen(void);
-	bool isSemicolonMissing(void) const;
+	bool isSemicolonMissing(const std::string& content) const;
 	bool isKeyword(const std::string& keyword, size_t startIndex) const;
 	bool isValidBlockBeginn(Block block);
 	bool isDirectiveValid(const std::string& directive, Block block) const;

@@ -163,7 +163,11 @@ bool ConfigFileParser::isBracketOpen(void)
 	return !brackets.empty();
 }
 
-bool ConfigFileParser::isSemicolonMissing(void) const { return m_currentLine.find(';') == std::string::npos; }
+bool ConfigFileParser::isSemicolonMissing(const std::string& content) const
+{
+	size_t nonWhitepaceIndex = content.find_last_not_of(whitespace);
+	return content[nonWhitepaceIndex] != ';';
+}
 
 /**
  * @brief Checks if the directive is valid for the given block
@@ -320,6 +324,8 @@ void ConfigFileParser::processServerContent(const ServerContent& serverContent)
 	m_configFile.servers.push_back(server);
 
 	std::cout << "content: " << serverContent.content << std::endl;
+	if (isSemicolonMissing(serverContent.content))
+		throw std::runtime_error("Unexpected '}'");
 
 	while (readAndTrimLine(serverContent.content, ';'))
 		readServerConfigLine();
@@ -334,6 +340,9 @@ void ConfigFileParser::processLocationContent(const LocationContent& locationCon
 {
 	Location location;
 	m_configFile.servers[m_serverIndex].locations.push_back(location);
+
+	if (isSemicolonMissing(locationContent.content))
+		throw std::runtime_error("Unexpected '}'");
 
 	while (readAndTrimLine(locationContent.content, ';'))
 		readLocationConfigLine();
@@ -483,9 +492,6 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 void ConfigFileParser::readServerConfigLine(void)
 {
-	if (isSemicolonMissing())
-		throw std::runtime_error("Semicolon missing");
-
 	const std::string directive = getDirective();
 	if (!isDirectiveValid(directive, ServerBlock))
 		throw std::runtime_error("Invalid server directive");
@@ -512,9 +518,6 @@ void ConfigFileParser::readServerConfigLine(void)
  */
 void ConfigFileParser::readLocationConfigLine(void)
 {
-	if (isSemicolonMissing())
-		throw std::runtime_error("Semicolon missing");
-
 	const std::string directive = getDirective();
 	if (!isDirectiveValid(directive, LocationBlock))
 		throw std::runtime_error("Invalid location directive");
