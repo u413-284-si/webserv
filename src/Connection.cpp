@@ -16,7 +16,6 @@ Connection::Connection(const Socket& server, const Socket& client, const std::ve
 	, m_clientSocket(client)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(Idle)
-	, m_bytesReceived(0)
 {
 	if (!hasValidServerConfig(*this, serverConfigs)) {
 		m_status = Closed;
@@ -28,7 +27,6 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
-	connection.m_bytesReceived = 0;
 	connection.m_timeSinceLastEvent = std::time(0);
 	return (hasValidServerConfig(connection, serverConfigs));
 }

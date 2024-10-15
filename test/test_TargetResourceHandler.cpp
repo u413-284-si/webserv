@@ -85,7 +85,7 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 
 TEST_F(TargetResourceHandlerTest, LocationNotFound)
 {
-	m_configFile.servers[0].locations.pop_back();
+	m_configFile.servers[0].locations.clear();
 
 	m_request.uri.path = "/something";
 
