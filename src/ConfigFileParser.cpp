@@ -15,6 +15,7 @@ const char* const ConfigFileParser::whitespace = " \t\n\v\f\r";
 ConfigFileParser::ConfigFileParser(void)
 	: m_configFile()
 	, m_configFileIndex(0)
+	, m_contentIndex(0)
 	, m_serverIndex(0)
 	, m_locationIndex(0)
 {
@@ -51,28 +52,30 @@ ConfigFileParser::ConfigFileParser(void)
 const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFilePath)
 {
 	std::ifstream fileStream(configFilePath.c_str());
+	std::stringstream bufferStream;
 
 	if (!fileStream.is_open())
 		throw std::runtime_error("Failed to open config file");
 	if (fileStream.peek() == std::ifstream::traits_type::eof())
 		throw std::runtime_error("Config file is empty");
 
-	m_stream << fileStream.rdbuf();
-	m_configFileContent = m_stream.str();
+	bufferStream << fileStream.rdbuf();
+	m_configFileContent = bufferStream.str();
 
-	if (isBracketOpen(configFilePath))
+	if (isBracketOpen())
 		throw std::runtime_error("Open bracket(s) in config file");
 
 	if (!isValidBlockBeginn(HttpBlock))
-		throw std::runtime_error("Config file does not start with http");
+		return m_configFile;
 
 	skipBlockBegin(HttpBlock);
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
 		if (isValidBlockBeginn(ServerBlock))
 			readServerBlock();
-		else
-			throw std::runtime_error("Invalid block");
+		else if (std::isspace(m_configFileContent[m_configFileIndex]) == 0) {
+			throw std::runtime_error("Invalid directive");
+		}
 		m_configFileIndex++;
 	}
 
@@ -82,11 +85,12 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		m_serverIndex++;
 	}
 
-	if (m_configFile.servers.empty())
-		throw std::runtime_error("No server(s) in config file");
-
 	return m_configFile;
 }
+
+/*********************/
+/* CHECKER FUNCTIONS */
+/*********************/
 
 /**
  * @brief Looks for a keyword in the m_configFileContent (eg. http, server, location)
@@ -99,26 +103,6 @@ bool ConfigFileParser::isKeyword(const std::string& keyword, size_t startIndex) 
 {
 	std::string string = m_configFileContent.substr(startIndex, keyword.length());
 	return string == keyword;
-}
-
-/**
- * @brief Convers the Block enum to a string
- *
- * @param block The block to convert
- * @return std::string The converted string
- */
-std::string ConfigFileParser::convertBlockToString(Block block) const
-{
-	switch (block) {
-	case HttpBlock:
-		return "http";
-	case ServerBlock:
-		return "server";
-	case LocationBlock:
-		return "location";
-	default:
-		return "";
-	}
 }
 
 /**
@@ -162,54 +146,11 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 	return m_configFileContent[index - 1] == '{';
 }
 
-/**
- * @brief Skips the beginning of a block
- *
- * @param block The block to skip
- */
-void ConfigFileParser::skipBlockBegin(Block block)
+bool ConfigFileParser::isBracketOpen(void)
 {
-	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
-		m_configFileIndex++;
-
-	if (block == HttpBlock)
-		m_configFileIndex += convertBlockToString(HttpBlock).length();
-	else if (block == ServerBlock)
-		m_configFileIndex += convertBlockToString(ServerBlock).length();
-	else if (block == LocationBlock)
-		m_configFileIndex += convertBlockToString(LocationBlock).length();
-
-	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
-		m_configFileIndex++;
-
-	if (block == LocationBlock) {
-		while (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
-			m_configFileIndex++;
-		while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
-			m_configFileIndex++;
-	}
-
-	m_configFileIndex++;
-}
-
-/**
- * @brief Checks if there are no open brackets
- *
- * If a opening bracket is found, it is pushed onto the brackets stack
- * If a closing bracket is found, it is popped from the brackets stack
- *
- * At the end the stack should be empty. If not, there are open brackets
- *
- * @param configFileContent Content of the config file
- * @return true If there is minimum one open bracket
- * @return false If there no open bracket
- */
-bool ConfigFileParser::isBracketOpen(const std::string& configFileContent)
-{
-	m_stream << configFileContent;
 	std::stack<char> brackets;
 
-	while (!(getline(m_stream, m_currentLine).fail())) {
+	while (readAndTrimLine(m_configFileContent, '\n')) {
 		for (std::string::const_iterator it = m_currentLine.begin(); it != m_currentLine.end(); ++it) {
 			if (*it == '{')
 				brackets.push('{');
@@ -219,113 +160,10 @@ bool ConfigFileParser::isBracketOpen(const std::string& configFileContent)
 				brackets.pop();
 		}
 	}
-	m_stream.clear();
 	return !brackets.empty();
 }
 
-// /**
-//  * @brief Checks if the line contains a semicolon
-//  *
-//  * @return true If the line does not contain a semicolon
-//  * @return false If the line contains a semicolon
-//  */
-// bool ConfigFileParser::isSemicolonMissing(void) const { return m_currentLine.find(';') == std::string::npos; }
-
-/**
- * @brief Reads a server block into a struct ServerContent
- */
-void ConfigFileParser::readServerBlock(void)
-{
-	skipBlockBegin(ServerBlock);
-
-	ServerContent serverContent;
-	size_t startIndex = m_configFileIndex;
-
-	while (m_configFileContent[m_configFileIndex] != '}') {
-		if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex) && isValidBlockBeginn(LocationBlock)) {
-			serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
-			readLocationBlock(serverContent);
-			startIndex = m_configFileIndex;
-		}
-		m_configFileIndex++;
-	}
-
-	serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
-
-	m_configFileIndex++;
-	m_serversContent.push_back(serverContent);
-}
-
-/**
- * @brief Reads a location block into a struct LocationContent
- *
- * @param serverContent The associated struct ServerContent
- */
-void ConfigFileParser::readLocationBlock(ServerContent& serverContent)
-{
-	skipBlockBegin(LocationBlock);
-
-	LocationContent locationContent;
-	size_t startIndex = m_configFileIndex;
-
-	while (m_configFileContent[m_configFileIndex] != '}') {
-		m_configFileIndex++;
-	}
-
-	locationContent.content = m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
-
-	m_configFileIndex++;
-	serverContent.locations.push_back(locationContent);
-}
-
-void ConfigFileParser::processServerContent(const ServerContent& serverContent)
-{
-	ConfigServer server;
-	m_configFile.servers.push_back(server);
-
-	m_stream.clear();
-	m_stream.str("");
-	m_stream << serverContent.content;
-
-	readAndTrimLine();
-	while (!m_currentLine.empty()) {
-		readServerConfigLine();
-		readAndTrimLine();
-	}
-
-	for (std::vector<LocationContent>::const_iterator it = serverContent.locations.begin();
-		 it != serverContent.locations.end(); ++it) {
-		processLocationContent(*it);
-	}
-}
-
-void ConfigFileParser::processLocationContent(const LocationContent& locationContent)
-{
-	Location location;
-	m_configFile.servers[m_serverIndex].locations.push_back(location);
-
-	m_stream.clear();
-	m_stream.str("");
-	m_stream << locationContent.content;
-
-	readAndTrimLine();
-	while (!m_currentLine.empty()) {
-		readLocationConfigLine();
-		readAndTrimLine();
-	}
-}
-
-/**
- * @brief Reads the current line of the config file and removes leading and trailing spaces
- */
-void ConfigFileParser::readAndTrimLine(void)
-{
-	getline(m_stream, m_currentLine, ';');
-	if (m_currentLine.find_first_not_of(whitespace) != std::string::npos)
-		m_currentLine += ";";
-	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
-	webutils::trimTrailingWhiteSpaces(m_currentLine);
-}
+bool ConfigFileParser::isSemicolonMissing(void) const { return m_currentLine.find(';') == std::string::npos; }
 
 /**
  * @brief Checks if the directive is valid for the given block
@@ -353,8 +191,8 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block bloc
 /**
  * @brief Checks if the provided ip address of the listen directive is valid and reads it if that is the case
  *
- * Because the listen directive can contain only an ip address, only a port or can contain both, it must be validated if
- * a colon is present. If no colon is present, the port or the ip address must be valid.
+ * Because the listen directive can contain only an ip address, only a port or can contain both, it must be
+ * validated if a colon is present. If no colon is present, the port or the ip address must be valid.
  *
  * The function makes sure that the ip address is valid in the following ways:
  * 1. The ip address must not contain any character other than '0'-'9' or '.'
@@ -425,6 +263,117 @@ bool ConfigFileParser::isPortValid(const std::string& port)
 	return !(portNum <= minPort || portNum > maxPort);
 }
 
+/*********************/
+/* READER FUNCTIONS */
+/*********************/
+
+/**
+ * @brief Reads a server block into a struct ServerContent
+ */
+void ConfigFileParser::readServerBlock(void)
+{
+	skipBlockBegin(ServerBlock);
+
+	ServerContent serverContent;
+	size_t startIndex = m_configFileIndex;
+
+	while (m_configFileContent[m_configFileIndex] != '}') {
+		if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex) && isValidBlockBeginn(LocationBlock)) {
+			serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+			readLocationBlock(serverContent);
+			startIndex = m_configFileIndex;
+		}
+		m_configFileIndex++;
+	}
+
+	serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+
+	m_configFileIndex++;
+	m_serversContent.push_back(serverContent);
+}
+
+/**
+ * @brief Reads a location block into a struct LocationContent
+ *
+ * @param serverContent The associated struct ServerContent
+ */
+void ConfigFileParser::readLocationBlock(ServerContent& serverContent)
+{
+	skipBlockBegin(LocationBlock);
+
+	LocationContent locationContent;
+	size_t startIndex = m_configFileIndex;
+
+	while (m_configFileContent[m_configFileIndex] != '}') {
+		m_configFileIndex++;
+	}
+
+	locationContent.content = m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+
+	m_configFileIndex++;
+	serverContent.locations.push_back(locationContent);
+}
+
+void ConfigFileParser::processServerContent(const ServerContent& serverContent)
+{
+	ConfigServer server;
+	m_configFile.servers.push_back(server);
+
+	std::cout << "content: " << serverContent.content << std::endl;
+
+	while (readAndTrimLine(serverContent.content, ';'))
+		readServerConfigLine();
+
+	for (std::vector<LocationContent>::const_iterator it = serverContent.locations.begin();
+		 it != serverContent.locations.end(); ++it) {
+		processLocationContent(*it);
+	}
+}
+
+void ConfigFileParser::processLocationContent(const LocationContent& locationContent)
+{
+	Location location;
+	m_configFile.servers[m_serverIndex].locations.push_back(location);
+
+	while (readAndTrimLine(locationContent.content, ';'))
+		readLocationConfigLine();
+}
+
+/**
+ * @brief Reads the current line of the content, delimited by a provided char and removes leading and trailing spaces
+ * If the end of the content is reached, the function returns false, otherwise it returns true
+ *
+ * @param content The string from which the line should be read
+ * @param delimiter The char which delimits the line
+ * @return true If the end of the content is not reached
+ * @return false If the end of the content is reached
+ */
+bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimiter)
+{
+	size_t startIndex = m_contentIndex;
+
+	while (content[m_contentIndex] != delimiter && m_contentIndex < content.size())
+		m_contentIndex++;
+
+	if (m_contentIndex == content.size()) {
+		m_contentIndex = 0;
+
+		m_currentLine = content.substr(startIndex, m_contentIndex - startIndex);
+
+		m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
+		webutils::trimTrailingWhiteSpaces(m_currentLine);
+
+		return false;
+	}
+
+	m_contentIndex++;
+	m_currentLine = content.substr(startIndex, m_contentIndex - startIndex);
+
+	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
+	webutils::trimTrailingWhiteSpaces(m_currentLine);
+	return true;
+}
+
 /**
  * @brief Reads the root path
  *
@@ -488,7 +437,7 @@ void ConfigFileParser::readSocket(const std::string& value)
 	} else {
 		if (dot == std::string::npos) {
 			std::string port = value.substr(0, semicolonIndex);
-			if (!isPortValid(value))
+			if (!isPortValid(port))
 				throw std::runtime_error("Invalid port");
 
 			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
@@ -521,6 +470,68 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 	} else if (directive == "root")
 		readRootPath(ServerBlock, value);
 }
+
+/**
+ * @brief Reads the current line of the server config and does several checks
+ *
+ * How a line gets processed:
+ * 1. The directive of the resulting string gets extracted and checked.
+ * 2. The value of the directive gets extracted and checked.
+ */
+void ConfigFileParser::readServerConfigLine(void)
+{
+	if (isSemicolonMissing())
+		throw std::runtime_error("Semicolon missing");
+
+	const std::string directive = getDirective();
+	if (!isDirectiveValid(directive, ServerBlock))
+		throw std::runtime_error("Invalid server directive");
+
+	const std::string value = getValue();
+
+	std::cout << "server" << std::endl;
+	std::cout << std::endl;
+	std::cout << "directive: " << directive << std::endl;
+	std::cout << "value: " << value << std::endl;
+
+	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
+		throw std::runtime_error("'" + directive + "'" + " directive has no value");
+
+	readServerDirectiveValue(directive, value);
+}
+
+/**
+ * @brief Reads the current line of the location config and does several checks
+ *
+ * How a line gets processed:
+ * 1. The directive of of the resulting string gets extracted and checked.
+ * @todo FIXME: 2. The value of the directive gets extracted and checked.
+ */
+void ConfigFileParser::readLocationConfigLine(void)
+{
+	if (isSemicolonMissing())
+		throw std::runtime_error("Semicolon missing");
+
+	const std::string directive = getDirective();
+	if (!isDirectiveValid(directive, LocationBlock))
+		throw std::runtime_error("Invalid location directive");
+
+	const std::string value = getValue();
+
+	std::cout << "location" << std::endl;
+	std::cout << std::endl;
+	std::cout << "m_currentLine: " << m_currentLine << std::endl;
+	std::cout << "directive: " << directive << std::endl;
+	std::cout << "value: " << value << std::endl;
+	if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
+		throw std::runtime_error("'" + directive + "'" + " directive has no value");
+
+	// TODO: readLocationDirectiveValue(directive, value);
+}
+
+/********************/
+/* HELPER FUNCTIONS */
+/********************/
 
 /**
  * @brief Gets the directive from the line
@@ -566,42 +577,51 @@ std::string ConfigFileParser::getValue(void) const
 }
 
 /**
- * @brief Reads the current line of the server config and does several checks
+ * @brief Convers the Block enum to a string
  *
- * How a line gets processed:
- * 1. The directive of the resulting string gets extracted and checked.
- * 2. The value of the directive gets extracted and checked.
+ * @param block The block to convert
+ * @return std::string The converted string
  */
-void ConfigFileParser::readServerConfigLine(void)
+std::string ConfigFileParser::convertBlockToString(Block block) const
 {
-	const std::string directive = getDirective();
-	if (!isDirectiveValid(directive, ServerBlock))
-		throw std::runtime_error("Invalid server directive");
-
-	const std::string value = getValue();
-	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
-		throw std::runtime_error("'" + directive + "'" + " directive has no value");
-
-	readServerDirectiveValue(directive, value);
+	switch (block) {
+	case HttpBlock:
+		return "http";
+	case ServerBlock:
+		return "server";
+	case LocationBlock:
+		return "location";
+	default:
+		return "";
+	}
 }
 
 /**
- * @brief Reads the current line of the location config and does several checks
+ * @brief Skips the beginning of a block
  *
- * How a line gets processed:
- * 1. The directive of of the resulting string gets extracted and checked.
- * @todo FIXME: 2. The value of the directive gets extracted and checked.
+ * @param block The block to skip
  */
-void ConfigFileParser::readLocationConfigLine(void)
+void ConfigFileParser::skipBlockBegin(Block block)
 {
+	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
+		m_configFileIndex++;
 
-	const std::string directive = getDirective();
-	if (!isDirectiveValid(directive, LocationBlock))
-		throw std::runtime_error("Invalid location directive");
+	if (block == HttpBlock)
+		m_configFileIndex += convertBlockToString(HttpBlock).length();
+	else if (block == ServerBlock)
+		m_configFileIndex += convertBlockToString(ServerBlock).length();
+	else if (block == LocationBlock)
+		m_configFileIndex += convertBlockToString(LocationBlock).length();
 
-	const std::string value = getValue();
-	if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
-		throw std::runtime_error("'" + directive + "'" + " directive has no value");
+	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
+		m_configFileIndex++;
 
-	// TODO: readLocationDirectiveValue(directive, value);
+	if (block == LocationBlock) {
+		while (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
+			m_configFileIndex++;
+		while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
+			m_configFileIndex++;
+	}
+
+	m_configFileIndex++;
 }
