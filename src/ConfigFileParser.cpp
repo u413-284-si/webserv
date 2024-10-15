@@ -43,8 +43,7 @@ ConfigFileParser::ConfigFileParser(void)
  * 1. Can be opened
  * 2. Is not empty
  * 3. Does not contain open brackets
- * 4. Starts with http
- * 5. Contains minimum one server
+ * 4. Does not contain invalid directives
  *
  * @param configFilePath Path to the config file
  * @return const ConfigFile& Created ConfigFile object
@@ -146,6 +145,17 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 	return m_configFileContent[index - 1] == '{';
 }
 
+/**
+ * @brief Checks if there are no open brackets in the config file
+ *
+ * If a opening bracket is found, it is pushed onto the brackets stac
+ * If a closing bracket is found, it is popped from the brackets stack
+ *
+ * At the end the stack should be empty. If not, there are open brackets
+ *
+ * @return true If there is minimum one open bracket
+ * @return false If there are no open bracket
+ */
 bool ConfigFileParser::isBracketOpen(void)
 {
 	std::stack<char> brackets;
@@ -163,6 +173,13 @@ bool ConfigFileParser::isBracketOpen(void)
 	return !brackets.empty();
 }
 
+/**
+ * @brief Checks if a semicolon at the end of the content of a block is missing
+ *
+ * @param content The content of a block
+ * @return true If the semicolon is missing
+ * @return false If the semicolon is not missing
+ */
 bool ConfigFileParser::isSemicolonMissing(const std::string& content) const
 {
 	size_t nonWhitepaceIndex = content.find_last_not_of(whitespace);
@@ -318,6 +335,17 @@ void ConfigFileParser::readLocationBlock(ServerContent& serverContent)
 	serverContent.locations.push_back(locationContent);
 }
 
+/**
+ * @brief Processes the content of a server block
+ *
+ * The content will be processed by reading it line by line (delimited by ';')
+ * In this process the values of the directives will be read and stored
+ * If there are location blocks, they will be processed as well
+ *
+ * If there is a semicolon missing, an exception will be thrown
+ *
+ * @param serverContent The content of the server block
+ */
 void ConfigFileParser::processServerContent(const ServerContent& serverContent)
 {
 	ConfigServer server;
@@ -336,6 +364,16 @@ void ConfigFileParser::processServerContent(const ServerContent& serverContent)
 	}
 }
 
+/**
+ * @brief Processes the content of a location block
+ *
+ * The content will be processed by reading it line by line (delimited by ';')
+ * In this process the values of the directives will be read and stored
+ *
+ * If there is a semicolon missing, an exception will be thrown
+ *
+ * @param locationContent The content of the location block
+ */
 void ConfigFileParser::processLocationContent(const LocationContent& locationContent)
 {
 	Location location;
