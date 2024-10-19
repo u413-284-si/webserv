@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
+#include "constants.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
@@ -20,12 +21,13 @@
 
 /* ====== DEFINITIONS ====== */
 
-const int decimalBase = 10;
-
 /* ====== CLASS DECLARATION ====== */
 
 class RequestParser {
 public:
+	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
+	static const int s_maxHostNameLength = 253; /**< Maximum length for DNS hostname */
+
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
@@ -54,8 +56,10 @@ private:
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);
 	static void validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request);
+	static void validateHostHeader(HTTPRequest& request);
+	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
-	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
+	static void validateMethodWithBody(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
@@ -63,4 +67,8 @@ private:
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
 	static size_t convertHex(const std::string& chunkSize);
+	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
+	static bool isValidHostnameChar(char character, bool& hasAlpha);
+	static bool isValidLabel(const std::string& label, bool& hasAlpha);
+	static bool isValidHostname(const std::string& hostname);
 };

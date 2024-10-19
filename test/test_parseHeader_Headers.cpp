@@ -28,9 +28,9 @@ TEST_F(ParseHeadersTest, ValidHeaders)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["User-Agent"], "curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3");
-	EXPECT_EQ(request.headers["Accept-Language"], "en, mi");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["user-agent"], "curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3");
+	EXPECT_EQ(request.headers["accept-language"], "en, mi");
 }
 
 TEST_F(ParseHeadersTest, TrimWhiteSpaces)
@@ -43,7 +43,7 @@ TEST_F(ParseHeadersTest, TrimWhiteSpaces)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
 }
 
 TEST_F(ParseHeadersTest, ContentLength)
@@ -56,8 +56,8 @@ TEST_F(ParseHeadersTest, ContentLength)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Content-Length"], "23");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["content-length"], "23");
 }
 
 TEST_F(ParseHeadersTest, RepeatedEqualContentLength)
@@ -70,8 +70,8 @@ TEST_F(ParseHeadersTest, RepeatedEqualContentLength)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Content-Length"], "23");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["content-length"], "23");
 }
 
 TEST_F(ParseHeadersTest, TransferEncodingChunked)
@@ -84,8 +84,8 @@ TEST_F(ParseHeadersTest, TransferEncodingChunked)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Transfer-Encoding"], "gzip, chunked");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["transfer-encoding"], "gzip, chunked");
 }
 
 TEST_F(ParseHeadersTest, TransferEncodingNonChunked)
@@ -98,8 +98,8 @@ TEST_F(ParseHeadersTest, TransferEncodingNonChunked)
 		request);
 
 	// Assert
-	EXPECT_EQ(request.headers["Host"], "www.example.com");
-	EXPECT_EQ(request.headers["Transfer-Encoding"], "gzip");
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["transfer-encoding"], "gzip");
 }
 
 TEST_F(ParseHeadersTest, NoBodyTrigger)
@@ -113,6 +113,42 @@ TEST_F(ParseHeadersTest, NoBodyTrigger)
 
 	// Assert
 	EXPECT_FALSE(request.hasBody);
+}
+
+TEST_F(ParseHeadersTest, ValidHostname)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: this.is.my.domain.com\r\n\r\n",
+					request);
+
+	// Assert
+	EXPECT_EQ(request.headers["host"], "this.is.my.domain.com");
+}
+
+TEST_F(ParseHeadersTest, ValidHostnameAsIP)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n",
+					request);
+
+	// Assert
+	EXPECT_EQ(request.headers["host"], "127.0.0.1");
+}
+
+TEST_F(ParseHeadersTest, ValidHostnameAsIPWithPort)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65535\r\n\r\n",
+					request);
+
+	// Assert
+	EXPECT_EQ(request.headers["host"], "177.3.1.1:65535");
 }
 
 // NON-VALID HEADERS TEST SUITE
@@ -339,6 +375,261 @@ TEST_F(ParseHeadersTest, UnexpectedBody)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Method should not have a body", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, MissingHostHeader)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Missing host header", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, EmptyHostValue)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Missing hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, MultipleHostHeaders)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: example.com\r\n"
+					"SomeOtherHeader: random value\r\nHost: huhu.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Multiple host headers", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameInvalidChar)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: special-n@me.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtStart)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: -invalid-hostname.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtStartOfLabel)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: invalid.-hostname.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtEndOfLabel)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: invalid-.hostname.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtEnd)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: invalid-hostname-.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameLabelTooLong)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: this.is.a.too-long-label-123456789012345678901234567890123456789012345678901234567890123.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameTooLong)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: this.is.a.too-long-hostname-1234567890123456789012345678901234567890123456789012345678dfdfdfdfdfdfdfdfdfdferwert90123.com\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameAsIPInvalid)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.999\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+// not an actual IP and missing alphabetical character for hostname
+TEST_F(ParseHeadersTest, InvalidHostnameLikeIP)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.9999\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+// not an actual IP and missing alphabetical character for hostname
+TEST_F(ParseHeadersTest, InvalidHostnameLikeIP2)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.3.43.1.1\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseHeadersTest, HostnameAsIPWithInvalidPort)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65536\r\n\r\n",
+					request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Invalid IP with port as hostname", e.what());
 				throw;
 			}
 		},
