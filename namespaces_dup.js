@@ -1,5 +1,8 @@
 var namespaces_dup =
 [
+    [ "constants", "namespaceconstants.html", [
+      [ "g_decimalBase", "namespaceconstants.html#afe756195738c244eeace3037c5486edc", null ]
+    ] ],
     [ "weblog", "namespaceweblog.html", "namespaceweblog" ],
     [ "webutils", "namespacewebutils.html", [
       [ "trimLeadingWhitespaces", "namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9", null ],
@@ -10,6 +13,9 @@ var namespaces_dup =
       [ "getLocaltimeString", "namespacewebutils.html#ab6119b08526700518f576bb78554be59", null ],
       [ "statusCodeToReasonPhrase", "namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91", null ],
       [ "getDefaultErrorPage", "namespacewebutils.html#ab12d562733bb60393254f6345f6c296f", null ],
+      [ "isIpAddressValid", "namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed", null ],
+      [ "isPortValid", "namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d", null ],
+      [ "lowercase", "namespacewebutils.html#a81d8421d47b55041d0e1336855f72229", null ],
       [ "toString", "namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb", null ],
       [ "timeStringBuffer", "namespacewebutils.html#a835d10ac34a533945ccd642c629a600c", null ]
     ] ]

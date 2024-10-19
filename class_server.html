@@ -244,7 +244,7 @@ Static Public Attributes</h2></td></tr>
 <div class="textblock"><p>Main class of the HTTP server. </p>
 <p>This class is responsible for the main loop of the server. It handles the epoll instance and the listening sockets of the virtual servers. It also handles the connections and the timeout of the connections. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Remove s_backlog and m_backlog and use value from the config file. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00047">47</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00048">48</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5d1d512e7c930519b273faff5bad7f18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d1d512e7c930519b273faff5bad7f18">&#9670;&nbsp;</a></span>Server()</h2>
@@ -308,8 +308,8 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    , m_targetResourceHandler(m_fileSystemPolicy)</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
-<div class="ttc" id="aclass_server_html_a35ccb2bc7eaf3bfd04eacdddd971568e"><div class="ttname"><a href="class_server.html#a35ccb2bc7eaf3bfd04eacdddd971568e">Server::s_clientTimeout</a></div><div class="ttdeci">static const time_t s_clientTimeout</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00050">Server.hpp:50</a></div></div>
-<div class="ttc" id="aclass_server_html_adb14c88ee08be2313f70261a6e7338cb"><div class="ttname"><a href="class_server.html#adb14c88ee08be2313f70261a6e7338cb">Server::s_backlog</a></div><div class="ttdeci">static const int s_backlog</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00049">Server.hpp:49</a></div></div>
+<div class="ttc" id="aclass_server_html_a35ccb2bc7eaf3bfd04eacdddd971568e"><div class="ttname"><a href="class_server.html#a35ccb2bc7eaf3bfd04eacdddd971568e">Server::s_clientTimeout</a></div><div class="ttdeci">static const time_t s_clientTimeout</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00051">Server.hpp:51</a></div></div>
+<div class="ttc" id="aclass_server_html_adb14c88ee08be2313f70261a6e7338cb"><div class="ttname"><a href="class_server.html#adb14c88ee08be2313f70261a6e7338cb">Server::s_backlog</a></div><div class="ttdeci">static const int s_backlog</div><div class="ttdef"><b>Definition:</b> <a href="_server_8hpp_source.html#l00050">Server.hpp:50</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1441,7 +1441,7 @@ Here is the caller graph for this function:</div>
 <div class="fragment"><div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;{</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    m_requestParser.<a class="code" href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">parseHeader</a>(requestString, request);</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;}</div>
-<div class="ttc" id="aclass_request_parser_html_a933b43673d0b7b99d6cc310f5c03a865"><div class="ttname"><a href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">RequestParser::parseHeader</a></div><div class="ttdeci">void parseHeader(const std::string &amp;headerString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the header of an HTTP request.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00258">RequestParser.cpp:258</a></div></div>
+<div class="ttc" id="aclass_request_parser_html_a933b43673d0b7b99d6cc310f5c03a865"><div class="ttname"><a href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">RequestParser::parseHeader</a></div><div class="ttdeci">void parseHeader(const std::string &amp;headerString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the header of an HTTP request.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00027">RequestParser.cpp:27</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1496,7 +1496,7 @@ Here is the caller graph for this function:</div>
 <div class="fragment"><div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;{</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    m_requestParser.<a class="code" href="class_request_parser.html#a5111f16124d227775d963e6ca24ddca0">parseBody</a>(bodyString, request);</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;}</div>
-<div class="ttc" id="aclass_request_parser_html_a5111f16124d227775d963e6ca24ddca0"><div class="ttname"><a href="class_request_parser.html#a5111f16124d227775d963e6ca24ddca0">RequestParser::parseBody</a></div><div class="ttdeci">void parseBody(const std::string &amp;bodyString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the body of an HTTP request.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00568">RequestParser.cpp:568</a></div></div>
+<div class="ttc" id="aclass_request_parser_html_a5111f16124d227775d963e6ca24ddca0"><div class="ttname"><a href="class_request_parser.html#a5111f16124d227775d963e6ca24ddca0">RequestParser::parseBody</a></div><div class="ttdeci">void parseBody(const std::string &amp;bodyString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the body of an HTTP request.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00048">RequestParser.cpp:48</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1531,7 +1531,7 @@ Here is the caller graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00364">364</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
 <div class="fragment"><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;{ m_requestParser.<a class="code" href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">resetRequestStream</a>(); }</div>
-<div class="ttc" id="aclass_request_parser_html_ad8e0fc22eb113d78140e257f002df666"><div class="ttname"><a href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">RequestParser::resetRequestStream</a></div><div class="ttdeci">void resetRequestStream()</div><div class="ttdoc">Clears the contents of the RequestParser object.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00226">RequestParser.cpp:226</a></div></div>
+<div class="ttc" id="aclass_request_parser_html_ad8e0fc22eb113d78140e257f002df666"><div class="ttname"><a href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">RequestParser::resetRequestStream</a></div><div class="ttdeci">void resetRequestStream()</div><div class="ttdoc">Clears the contents of the RequestParser object.</div><div class="ttdef"><b>Definition:</b> <a href="_request_parser_8cpp_source.html#l00088">RequestParser.cpp:88</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1696,7 +1696,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Default backlog for listening sockets </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00049">49</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00050">50</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 
 </div>
 </div>
@@ -1721,7 +1721,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Default timeout for a <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> in seconds </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00050">50</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00051">51</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1746,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Default buffer size for reading from sockets in Bytes </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00051">51</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00052">52</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 
 </div>
 </div>
@@ -1771,7 +1771,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Default buffer size for request header in Bytes </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00052">52</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00053">53</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 
 </div>
 </div>
@@ -1796,7 +1796,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Default buffer size for request body in Bytes </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00053">53</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00054">54</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 
 </div>
 </div>
@@ -1821,7 +1821,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Default max size for request body in Bytes </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00054">54</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_server_8hpp_source.html#l00055">55</a> of file <a class="el" href="_server_8hpp_source.html">Server.hpp</a>.</p>
 
 </div>
 </div>

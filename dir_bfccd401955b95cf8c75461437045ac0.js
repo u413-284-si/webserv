@@ -9,6 +9,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "ConfigFile.hpp", "_config_file_8hpp.html", "_config_file_8hpp" ],
     [ "ConfigFileParser.hpp", "_config_file_parser_8hpp.html", "_config_file_parser_8hpp" ],
     [ "Connection.hpp", "_connection_8hpp.html", "_connection_8hpp" ],
+    [ "constants.hpp", "constants_8hpp.html", "constants_8hpp" ],
     [ "Directory.hpp", "_directory_8hpp.html", [
       [ "Directory", "class_directory.html", "class_directory" ]
     ] ],
@@ -41,7 +42,9 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "MockSocketPolicy.hpp", "_mock_socket_policy_8hpp.html", [
       [ "MockSocketPolicy", "class_mock_socket_policy.html", "class_mock_socket_policy" ]
     ] ],
-    [ "RequestParser.hpp", "_request_parser_8hpp.html", "_request_parser_8hpp" ],
+    [ "RequestParser.hpp", "_request_parser_8hpp.html", [
+      [ "RequestParser", "class_request_parser.html", "class_request_parser" ]
+    ] ],
     [ "ResponseBodyHandler.hpp", "_response_body_handler_8hpp.html", [
       [ "ResponseBodyHandler", "class_response_body_handler.html", "class_response_body_handler" ]
     ] ],

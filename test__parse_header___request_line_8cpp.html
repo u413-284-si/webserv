@@ -215,7 +215,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Arrange</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// Act</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// Assert</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    EXPECT_EQ(request.method, <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>);</div>
@@ -259,7 +259,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// Arrange</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// Act</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;DELETE /index.html HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;DELETE /index.html HTTP/1.1\r\nHost: www.example.com\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// Assert</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    EXPECT_EQ(request.method, <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>);</div>
@@ -303,7 +303,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// Arrange</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// Act</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;POST /abracadabra/ipsum?user=aziz&amp;key=password HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;POST /abracadabra/ipsum?user=aziz&amp;key=password HTTP/1.1\r\nHost: www.example.com\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">// Assert</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    EXPECT_EQ(request.method, <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>);</div>
@@ -347,7 +347,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// Arrange</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// Act</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search? HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search? HTTP/1.1\r\nHost: www.example.com\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Assert</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    EXPECT_EQ(request.method, <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>);</div>
@@ -390,7 +390,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Arrange</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Act</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search?# HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search?# HTTP/1.1\r\nHost: www.example.com\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// Assert</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    EXPECT_EQ(request.method, <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>);</div>
@@ -433,7 +433,7 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// Arrange</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// Act</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search?# HTTP/1.0\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    p.parseHeader(<span class="stringliteral">&quot;GET /search?# HTTP/1.0\r\nHost: www.example.com\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="comment">// Assert</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    EXPECT_EQ(request.method, <a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>);</div>
