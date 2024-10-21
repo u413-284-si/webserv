@@ -647,6 +647,11 @@ void ConfigFileParser::skipBlockBegin(Block block)
 	m_configFileIndex++;
 }
 
+/**
+ * @brief Skips the path of a location block
+ *
+ * @param index The index which gets incremented in the function to skip the path of a location block
+ */
 void ConfigFileParser::skipLocationBlockPath(size_t& index)
 {
 	while (std::isspace(m_configFileContent[index]) == 0)
