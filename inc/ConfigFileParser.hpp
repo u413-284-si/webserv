@@ -18,13 +18,9 @@
 
 enum Block { HttpBlock, ServerBlock, LocationBlock };
 
-struct LocationContent {
-	std::string content;
-};
-
-struct ServerContent {
-	std::string content;
-	std::vector<LocationContent> locations;
+struct ServerBlockConfig {
+	std::string serverBlockContent;
+	std::vector<std::string> locationBlocksContent;
 };
 
 /* ====== CLASS DECLARATION ====== */
@@ -38,7 +34,7 @@ public:
 private:
 	ConfigFile m_configFile;
 	std::string m_configFileContent;
-	std::vector<ServerContent> m_serversContent;
+	std::vector<ServerBlockConfig> m_serverBlocksConfig;
 	std::string m_currentLine;
 	size_t m_configFileIndex;
 	size_t m_contentIndex;
@@ -60,9 +56,9 @@ private:
 	// Reader functions
 	bool readAndTrimLine(const std::string& content, char delimiter);
 	void readServerBlock();
-	void readLocationBlock(ServerContent& serverContent);
-	void processServerContent(const ServerContent& serverContent);
-	void processLocationContent(const LocationContent& locationContent);
+	void readLocationBlock(ServerBlockConfig& serverBlockConfig);
+	void processServerContent(const ServerBlockConfig& serverBlockConfig);
+	void processLocationContent(const std::string& locationBlockContent);
 	void readServerConfigLine(void);
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);

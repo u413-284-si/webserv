@@ -79,8 +79,8 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		m_configFileIndex++;
 	}
 
-	for (std::vector<ServerContent>::const_iterator serverIt = m_serversContent.begin();
-		 serverIt != m_serversContent.end(); serverIt++) {
+	for (std::vector<ServerBlockConfig>::const_iterator serverIt = m_serverBlocksConfig.begin();
+		 serverIt != m_serverBlocksConfig.end(); serverIt++) {
 		processServerContent(*serverIt);
 		m_serverIndex++;
 	}
@@ -296,44 +296,45 @@ void ConfigFileParser::readServerBlock(void)
 {
 	skipBlockBegin(ServerBlock);
 
-	ServerContent serverContent;
+	ServerBlockConfig serverBlockConfig;
 	size_t startIndex = m_configFileIndex;
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
 		if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex) && isValidBlockBeginn(LocationBlock)) {
-			serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
-			readLocationBlock(serverContent);
+			serverBlockConfig.serverBlockContent
+				+= m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+			readLocationBlock(serverBlockConfig);
 			startIndex = m_configFileIndex;
 		}
 		m_configFileIndex++;
 	}
 
-	serverContent.content += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+	serverBlockConfig.serverBlockContent += m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
 
 	m_configFileIndex++;
-	m_serversContent.push_back(serverContent);
+	m_serverBlocksConfig.push_back(serverBlockConfig);
 }
 
 /**
  * @brief Reads a location block into a struct LocationContent
  *
- * @param serverContent The associated struct ServerContent
+ * @param serverBlockConfig The associated struct ServerBlockConfig
  */
-void ConfigFileParser::readLocationBlock(ServerContent& serverContent)
+void ConfigFileParser::readLocationBlock(ServerBlockConfig& serverBlockConfig)
 {
 	skipBlockBegin(LocationBlock);
 
-	LocationContent locationContent;
+	std::string locationBlockContent;
 	size_t startIndex = m_configFileIndex;
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
 		m_configFileIndex++;
 	}
 
-	locationContent.content = m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
+	locationBlockContent = m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
 
 	m_configFileIndex++;
-	serverContent.locations.push_back(locationContent);
+	serverBlockConfig.locationBlocksContent.push_back(locationBlockContent);
 }
 
 /**
@@ -345,21 +346,21 @@ void ConfigFileParser::readLocationBlock(ServerContent& serverContent)
  *
  * If there is a semicolon missing, an exception will be thrown
  *
- * @param serverContent The content of the server block
+ * @param serverBlockConfig The config of the server block
  */
-void ConfigFileParser::processServerContent(const ServerContent& serverContent)
+void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlockConfig)
 {
 	ConfigServer server;
 	m_configFile.servers.push_back(server);
 
-	if (isSemicolonMissing(serverContent.content))
+	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
-	while (readAndTrimLine(serverContent.content, ';'))
+	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
 
-	for (std::vector<LocationContent>::const_iterator it = serverContent.locations.begin();
-		 it != serverContent.locations.end(); ++it) {
+	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
+		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
 		processLocationContent(*it);
 	}
 }
@@ -372,17 +373,17 @@ void ConfigFileParser::processServerContent(const ServerContent& serverContent)
  *
  * If there is a semicolon missing, an exception will be thrown
  *
- * @param locationContent The content of the location block
+ * @param locationBlockContent The content of the location block
  */
-void ConfigFileParser::processLocationContent(const LocationContent& locationContent)
+void ConfigFileParser::processLocationContent(const std::string& locationBlockContent)
 {
 	Location location;
 	m_configFile.servers[m_serverIndex].locations.push_back(location);
 
-	if (isSemicolonMissing(locationContent.content))
+	if (isSemicolonMissing(locationBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
-	while (readAndTrimLine(locationContent.content, ';'))
+	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
 }
 
