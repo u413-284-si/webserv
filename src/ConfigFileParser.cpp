@@ -320,9 +320,8 @@ void ConfigFileParser::readLocationBlock(ServerBlockConfig& serverBlockConfig)
 	std::string locationBlockContent;
 	size_t startIndex = m_configFileIndex;
 
-	while (m_configFileContent[m_configFileIndex] != '}') {
+	while (m_configFileContent[m_configFileIndex] != '}')
 		m_configFileIndex++;
-	}
 
 	locationBlockContent = m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
 
