@@ -94,7 +94,7 @@ public:
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
-	void buildResponse(HTTPRequest& request);
+	void buildResponse(Connection& connection);
 	std::string getResponse();
 
 	// Dispatch to TargetResourceHandler

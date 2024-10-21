@@ -58,7 +58,8 @@ void TargetResourceHandler::execute(Connection& connection, HTTPRequest& request
 
 			case FileSystemPolicy::FileDirectory:
 				if (request.targetResource.at(request.targetResource.length() - 1) != '/') {
-					request.targetResource += "/";
+					request.headers["location"] = request.uri.path + "/";
+					LOG_DEBUG << "Added header location: " << request.headers.at("location");
 					request.httpStatus = StatusMovedPermanently;
 				} else if (!connection.location->indices.empty()) {
 					request.targetResource += connection.location->indices[0];

@@ -1,10 +1,12 @@
 #pragma once
 
-#include "FileSystemPolicy.hpp"
-#include "HTTPRequest.hpp"
 #include "AutoindexHandler.hpp"
-#include "StatusCode.hpp"
-#include <exception>
+#include "Connection.hpp"
+#include "FileSystemPolicy.hpp"
+#include "Log.hpp"
+#include "TargetResourceHandler.hpp"
+
+#include "cassert"
 
 /**
  * @brief Class to handle the body of a HTTP response.
@@ -14,13 +16,18 @@
  */
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(HTTPRequest& request, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBodyHandler(
+		Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:
 	void handleErrorBody();
+	void setDefaultErrorPage();
 
+	Connection& m_connection;
 	HTTPRequest& m_request;
 	std::string& m_responseBody;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
+
+std::string getDefaultErrorPage(statusCode status);
