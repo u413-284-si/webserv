@@ -607,7 +607,7 @@ std::string ConfigFileParser::getValue(void) const
 }
 
 /**
- * @brief Convers the Block enum to a string
+ * @brief Converts the Block enum to a string
  *
  * @param block The block to convert
  * @return std::string The converted string
