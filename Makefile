@@ -117,6 +117,7 @@ SRC:=	main.cpp \
 		ConfigFile.cpp \
 		ConfigFileParser.cpp \
 		Connection.cpp \
+		constants.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
