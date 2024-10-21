@@ -1,11 +1,4 @@
 #include "ConfigFileParser.hpp"
-#include "ConfigFile.hpp"
-#include "utilities.hpp"
-#include <cctype>
-#include <cstddef>
-#include <stdexcept>
-#include <string>
-#include <vector>
 
 const char* const ConfigFileParser::whitespace = " \t\n\v\f\r";
 
