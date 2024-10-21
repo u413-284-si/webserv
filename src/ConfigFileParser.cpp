@@ -128,12 +128,8 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 	while (std::isspace(m_configFileContent[index]) != 0)
 		index++;
 
-	if (block == LocationBlock) {
-		while (std::isspace(m_configFileContent[index]) == 0)
-			index++;
-		while (std::isspace(m_configFileContent[index]) != 0)
-			index++;
-	}
+	if (block == LocationBlock)
+		skipLocationBlockPath(index);
 
 	index++;
 	return m_configFileContent[index - 1] == '{';
@@ -645,12 +641,16 @@ void ConfigFileParser::skipBlockBegin(Block block)
 	while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
 		m_configFileIndex++;
 
-	if (block == LocationBlock) {
-		while (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
-			m_configFileIndex++;
-		while (std::isspace(m_configFileContent[m_configFileIndex]) != 0)
-			m_configFileIndex++;
-	}
+	if (block == LocationBlock)
+		skipLocationBlockPath(m_configFileIndex);
 
 	m_configFileIndex++;
+}
+
+void ConfigFileParser::skipLocationBlockPath(size_t& index)
+{
+	while (std::isspace(m_configFileContent[index]) == 0)
+		index++;
+	while (std::isspace(m_configFileContent[index]) != 0)
+		index++;
 }
