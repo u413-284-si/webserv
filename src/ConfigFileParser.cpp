@@ -112,16 +112,12 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 	while (std::isspace(m_configFileContent[index]) != 0)
 		index++;
 
-	if (block == HttpBlock) {
-		if (!isKeyword(convertBlockToString(HttpBlock), index))
-			return false;
-	} else if (block == ServerBlock) {
-		if (!isKeyword(convertBlockToString(ServerBlock), index))
-			return false;
-	} else if (block == LocationBlock) {
-		if (!isKeyword(convertBlockToString(LocationBlock), index))
-			return false;
-	}
+	if (block == HttpBlock && !isKeyword(convertBlockToString(HttpBlock), index))
+		return false;
+	if (block == ServerBlock && !isKeyword(convertBlockToString(ServerBlock), index))
+		return false;
+	if (block == LocationBlock && !isKeyword(convertBlockToString(LocationBlock), index))
+		return false;
 
 	index += convertBlockToString(block).length();
 
