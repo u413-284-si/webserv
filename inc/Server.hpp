@@ -79,7 +79,7 @@ public:
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
-	static void removeCGIFileDescriptor(Server& server, int& delfd);
+	void removeCGIFileDescriptor(int& delfd);
 	void setClientTimeout(time_t clientTimeout);
 
 	// Dispatch to EpollWrapper

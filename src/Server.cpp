@@ -255,14 +255,16 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
  * 3. Closes the file descriptor.
  * 4. Sets the file descriptor to -1 to indicate it is no longer valid.
  *
- * @param server Reference to the Server object.
  * @param delfd Reference to the file descriptor to be removed.
  */
-void Server::removeCGIFileDescriptor(Server& server, int& delfd)
+void Server::removeCGIFileDescriptor(int& delfd)
 {
-	server.removeEvent(delfd);
-	server.getCGIConnections().erase(delfd);
+	this->removeEvent(delfd);
+	this->getCGIConnections().erase(delfd);
 	webutils::closePipeEnd(delfd);
+
+   	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
+
 }
 
 /**
@@ -1160,8 +1162,8 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
-		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 
@@ -1174,15 +1176,15 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
-		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	if (bytesSent == static_cast<ssize_t>(connection.m_request.body.size())) {
 		LOG_DEBUG << "CGI: Full body sent";
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
-		server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	connection.m_request.body.erase(0, bytesSent);
@@ -1221,18 +1223,18 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
-			server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
+			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(server, connection.m_pipeFromCGIReadEnd);
+		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
-			server.removeCGIFileDescriptor(server, connection.m_pipeToCGIWriteEnd);
+			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		int status = 0;
 		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
 			LOG_ERROR << "waitpid(): " << std::strerror(errno);
