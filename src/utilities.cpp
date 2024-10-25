@@ -281,27 +281,27 @@ std::string getDefaultErrorPage(statusCode statusCode)
 
 std::string methodToString(Method method)
 {
-    assert(method >= MethodGet && method <= MethodCount);
-    
-    switch (method) {
-    case MethodGet:
-        return "GET";
-    case MethodPost:
-        return "POST";
-    case MethodDelete:
-        return "DELETE";
-    case MethodCount:
-        return "METHODCOUNT";
-    }
-    return "";
+	assert(method >= MethodGet && method <= MethodCount);
+
+	switch (method) {
+	case MethodGet:
+		return "GET";
+	case MethodPost:
+		return "POST";
+	case MethodDelete:
+		return "DELETE";
+	case MethodCount:
+		return "METHODCOUNT";
+	}
+	return "";
 }
 
-void closePipeEnd(int& pipeEnd)
+void closeFd(int& fileDescriptor)
 {
-    if (pipeEnd != -1) {
-        close(pipeEnd);
-        pipeEnd = -1;
-    }
+	if (fileDescriptor != -1) {
+		close(fileDescriptor);
+		fileDescriptor = -1;
+	}
 }
 
 } // webutils

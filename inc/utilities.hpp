@@ -31,7 +31,7 @@ std::string getDefaultErrorPage(statusCode status);
 
 std::string methodToString(Method method);
 
-void closePipeEnd(int& pipeEnd);
+void closeFd(int& fileDescriptor);
 
 /**
  * @brief Convert a type to a string

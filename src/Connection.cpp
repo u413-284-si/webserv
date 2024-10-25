@@ -44,11 +44,11 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
 	if (connection.m_pipeToCGIWriteEnd != -1) {
-		webutils::closePipeEnd(connection.m_pipeToCGIWriteEnd);
+		webutils::closeFd(connection.m_pipeToCGIWriteEnd);
 		connection.m_pipeToCGIWriteEnd = -1;
 	}
 	if (connection.m_pipeFromCGIReadEnd != -1) {
-		webutils::closePipeEnd(connection.m_pipeFromCGIReadEnd);
+		webutils::closeFd(connection.m_pipeFromCGIReadEnd);
 		connection.m_pipeFromCGIReadEnd = -1;
 	}
 	connection.m_cgiPid = -1;

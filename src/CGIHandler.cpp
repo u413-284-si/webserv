@@ -100,8 +100,8 @@ CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 	}
 
 	if (m_processOps.pipeProcess(m_pipeOut) == -1) {
-		webutils::closePipeEnd(m_pipeIn[0]);
-		webutils::closePipeEnd(m_pipeIn[1]);
+		webutils::closeFd(m_pipeIn[0]);
+		webutils::closeFd(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
 	}
 
@@ -242,9 +242,9 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 	}
 
 	// Close read end of input pipe in parent process
-	webutils::closePipeEnd(m_pipeIn[0]);
+	webutils::closeFd(m_pipeIn[0]);
 	// Close write end of output pipe in parent process
-	webutils::closePipeEnd(m_pipeOut[1]);
+	webutils::closeFd(m_pipeOut[1]);
 }
 
 /**
@@ -350,10 +350,10 @@ bool registerChildSignals()
  */
 void CGIHandler::closePipes()
 {
-	webutils::closePipeEnd(m_pipeIn[0]);
-	webutils::closePipeEnd(m_pipeIn[1]);
-	webutils::closePipeEnd(m_pipeOut[0]);
-	webutils::closePipeEnd(m_pipeOut[1]);
+	webutils::closeFd(m_pipeIn[0]);
+	webutils::closeFd(m_pipeIn[1]);
+	webutils::closeFd(m_pipeOut[0]);
+	webutils::closeFd(m_pipeOut[1]);
 }
 
 /**
@@ -376,6 +376,6 @@ void CGIHandler::closeAllFds(
 	close(epollFd);
 	for (std::map<int, Connection>::iterator iter = connections.begin(); iter != connections.end(); ++iter)
 		close(iter->first);
-    for (std::map<int, Connection*>::iterator iter = cgiConnections.begin(); iter != cgiConnections.end(); ++iter)
-        close(iter->first);
+	for (std::map<int, Connection*>::iterator iter = cgiConnections.begin(); iter != cgiConnections.end(); ++iter)
+		close(iter->first);
 }
