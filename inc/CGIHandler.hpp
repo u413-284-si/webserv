@@ -27,8 +27,8 @@ class CGIHandler {
 public:
 	explicit CGIHandler(Connection& connection, ProcessOps& processOps);
 
-	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location,
-		int epollFd, const std::map<int, Connection>& connections);
+	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, int epollFd,
+		const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
 
 	// Getter functions
 	int getPipeInWriteEnd() const;
@@ -40,7 +40,7 @@ public:
 	const std::vector<std::string>& getArgv() const;
 
 private:
-    const ProcessOps& m_processOps; /**< Process operations object */
+	const ProcessOps& m_processOps; /**< Process operations object */
 	std::string m_cgiPath; /**< Path to CGI interpreter */
 	std::string m_cgiExt; /**< CGI script extension */
 	std::vector<std::string> m_env; /**< Environment variables for CGI script */
@@ -58,7 +58,7 @@ private:
 	std::string extractPathInfo(const std::string& path);
 	std::string extractScriptPath(const std::string& path);
 	void closePipes();
-    void closeAllFds(int epollFd, std::map<int, Connection> connections);
+	void closeAllFds(int epollFd, std::map<int, Connection> connections, std::map<int, Connection*> cgiConnections);
 };
 
 bool registerChildSignals();

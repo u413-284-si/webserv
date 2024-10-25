@@ -40,6 +40,7 @@ protected:
 		serverConfig.port = serverSock.port;
 		configFile.servers.push_back(serverConfig);
         connections.insert(std::pair<int, Connection>(dummyFd, connection));
+        cgiConnections.insert(std::pair<int, Connection*>(dummyFd, &connection));
 	}
 	~CGIHandlerTest() override { }
 
@@ -55,6 +56,7 @@ protected:
 	Connection connection = Connection(serverSock, clientSock, dummyFd, configFile.servers);
 	NiceMock<MockProcessOps> processOps;
     std::map<int, Connection> connections;
+    std::map<int, Connection*> cgiConnections;
 
 };
 
@@ -129,7 +131,7 @@ TEST_F(CGIHandlerTest, ForkFail)
 	
 	// Act
 	CGIHandler cgiHandler(connection, processOps);
-	cgiHandler.execute(connection.m_request, connection.location, dummyFd, connections);
+	cgiHandler.execute(connection.m_request, connection.location, dummyFd, connections, cgiConnections);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);

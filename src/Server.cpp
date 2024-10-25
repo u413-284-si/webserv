@@ -960,7 +960,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(connection.m_request, connection.location, server.getEpollWrapper().getEpollFd(),
-			server.getConnections());
+			server.getConnections(), server.getCGIConnections());
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();
