@@ -959,7 +959,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
-		cgiHandler.execute(connection.m_request, connection.location, processOps, server.getEpollWrapper().getEpollFd(),
+		cgiHandler.execute(connection.m_request, connection.location, server.getEpollWrapper().getEpollFd(),
 			server.getConnections());
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();

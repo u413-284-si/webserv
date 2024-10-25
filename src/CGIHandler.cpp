@@ -47,11 +47,13 @@
  * arguments for the execve system call.
  */
 CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
-	: m_cgiPath(connection.location->cgiPath)
+	: m_processOps(processOps)
+    , m_cgiPath(connection.location->cgiPath)
 	, m_cgiExt(connection.location->cgiExt)
 	, m_pipeIn()
 	, m_pipeOut()
 	, m_cgiPid(-1)
+    
 {
 
 	/* ========= Set up environment for CGI script ========= */
@@ -93,11 +95,11 @@ CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
 	m_pipeOut[1] = -1;
 
 	if (connection.m_request.method == MethodPost) {
-		if (processOps.pipeProcess(m_pipeIn) == -1)
+		if (m_processOps.pipeProcess(m_pipeIn) == -1)
 			connection.m_request.httpStatus = StatusInternalServerError;
 	}
 
-	if (processOps.pipeProcess(m_pipeOut) == -1) {
+	if (m_processOps.pipeProcess(m_pipeOut) == -1) {
 		webutils::closePipeEnd(m_pipeIn[0]);
 		webutils::closePipeEnd(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
@@ -195,21 +197,23 @@ const std::vector<std::string>& CGIHandler::getArgv() const { return m_argv; }
  *
  * @param request The HTTP request to be processed.
  * @param location An iterator pointing to the location configuration for the request.
- * @param processOps A reference to the ProcessOps object for handling process operations.
+ * @param epollFd The file descriptor for the epoll instance.
+ * @param connections A map of file descriptors to Connection objects.
  *
  * @note If the fork operation fails, the function logs an error, closes the pipes, sets the HTTP status
  *       to internal server error, and returns. If the child process encounters an error while setting up
  *       signals, changing the directory, or executing the CGI script, it writes an HTTP 500 error to stdout
  *       and exits.
  */
-void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, ProcessOps& processOps,
+void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location,
 	int epollFd, const std::map<int, Connection>& connections)
 {
-	if (processOps.forkProcess(m_cgiPid) == -1) {
+	if (m_processOps.forkProcess(m_cgiPid) == -1) {
 		closePipes();
 		request.httpStatus = StatusInternalServerError;
 		return;
 	}
+
 	if (m_cgiPid == 0) {
 		if (!registerChildSignals()) {
 			closeAllFds(epollFd, connections);
@@ -217,22 +221,22 @@ void CGIHandler::execute(HTTPRequest& request, std::vector<Location>::const_iter
 		}
 
 		// Replace child stdin with read end of input pipe
-		if (processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
+		if (m_processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
 			closeAllFds(epollFd, connections);
 			std::exit(EXIT_FAILURE);
 		}
 		// Replace child stdout with write end of output pipe
-		if (processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1) {
+		if (m_processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1) {
 			closeAllFds(epollFd, connections);
 			std::exit(EXIT_FAILURE);
 		}
 		closeAllFds(epollFd, connections);
 
 		std::string workingDir = location->root + location->path;
-		if (processOps.chdirProcess(workingDir.c_str()) == -1)
+		if (m_processOps.chdirProcess(workingDir.c_str()) == -1)
 			std::exit(EXIT_FAILURE);
 
-		if (processOps.execProcess(m_argvp[0], m_argvp.data(), m_envp.data()) == -1)
+		if (m_processOps.execProcess(m_argvp[0], m_argvp.data(), m_envp.data()) == -1)
 			std::exit(EXIT_FAILURE);
 	}
 
