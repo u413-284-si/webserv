@@ -26,7 +26,6 @@ protected:
 		request.headers["Content-Length"] = "20";
 		request.headers["Content-Type"] = "text/plain";
 		request.method = MethodPost;
-		connection.m_request = request;
 
 		location.cgiExt = ".py";
 		location.cgiPath = "/usr/bin/python3";
@@ -47,13 +46,13 @@ protected:
 	const Socket clientSock = { "1.23.4.56", "36952" };
 	const Socket serverSock = { "127.0.0.1", "8080" };
 	const int dummyFd = 10;
-	HTTPRequest request;
 	Location location;
 	std::vector<Location> locations;
 	
 	ConfigServer serverConfig;
 	ConfigFile configFile;
 	Connection connection = Connection(serverSock, clientSock, dummyFd, configFile.servers);
+    HTTPRequest& request = connection.m_request;
 	NiceMock<MockProcessOps> processOps;
     std::map<int, Connection> connections;
     std::map<int, Connection*> cgiConnections;
