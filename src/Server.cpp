@@ -65,13 +65,6 @@ Server::~Server()
 /* ====== GETTERS ====== */
 
 /**
- * @brief Getter for epollWrapper.
- *
- * @return EpollWrapper& epollwrapper object.
- */
-EpollWrapper& Server::getEpollWrapper() { return m_epollWrapper; }
-
-/**
  * @brief Getter for virtual servers.
  *
  * @return std::map<int, Socket>& Map of virtual servers.
@@ -314,6 +307,13 @@ bool Server::modifyEvent(int modfd, uint32_t eventMask) const { return m_epollWr
  * @param delfd The file descriptor of the event to remove.
  */
 void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
+
+/**
+ * @brief Wrapper function to EpollWrapper::getEpollFd.
+ *
+ * @return int The file descriptor of the epoll instance.
+ */
+int Server::getEpollFd() const { return m_epollWrapper.getEpollFd(); }
 
 /* ====== DISPATCH TO SOCKETPOLICY ====== */
 
@@ -993,7 +993,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
-		cgiHandler.execute(connection.m_request, connection.location, server.getEpollWrapper().getEpollFd(),
+		cgiHandler.execute(connection.m_request, connection.location, server.getEpollFd(),
 			server.getConnections(), server.getCGIConnections());
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();

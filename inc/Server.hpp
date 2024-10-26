@@ -68,7 +68,6 @@ public:
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 
-	EpollWrapper& getEpollWrapper();
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();
@@ -89,6 +88,7 @@ public:
 	bool addEvent(int newfd, uint32_t eventMask) const;
 	bool modifyEvent(int modfd, uint32_t eventMask) const;
 	void removeEvent(int delfd) const;
+    int getEpollFd() const;
 
 	// Dispatch to SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
