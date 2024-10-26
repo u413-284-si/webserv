@@ -21,9 +21,6 @@ class RegisterConnectionTest : public ::testing::Test {
 
 		ON_CALL(epollWrapper, addEvent)
 		.WillByDefault(Return(true));
-		serverConfig.host = "127.0.0.1";
-		serverConfig.port = "8080";
-		configFile.servers.push_back(serverConfig);
 	}
 	~RegisterConnectionTest() override { }
 
@@ -32,7 +29,6 @@ class RegisterConnectionTest : public ::testing::Test {
 	MockSocketPolicy socketPolicy;
     MockProcessOps processOps;
 	Server server;
-	ConfigServer serverConfig;
 
 	Socket serverSock = {
 		"127.0.0.1",
