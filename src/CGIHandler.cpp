@@ -1,8 +1,4 @@
 #include "CGIHandler.hpp"
-#include "Method.hpp"
-#include "ProcessOps.hpp"
-#include "utilities.hpp"
-#include <vector>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
