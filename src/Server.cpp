@@ -434,6 +434,21 @@ ssize_t Server::readProcess(int fileDescriptor, char* buffer, size_t size) const
 	return m_processOps.readProcess(fileDescriptor, buffer, size);
 }
 
+/**
+ * @brief Wrapper function to ProcessOps::writeProcess.
+ * 
+ * This function delegates the write operation to the process operations handler.
+ * 
+ * @param fileDescriptor The file descriptor to write to.
+ * @param buffer The buffer containing the data to be written.
+ * @param size The number of bytes to write from the buffer.
+ * @return ssize_t The number of bytes written, or -1 on error.
+ */
+ssize_t Server::writeProcess(int fileDescriptor, const char* buffer, size_t size) const
+{
+    return m_processOps.writeProcess(fileDescriptor, buffer, size);
+}
+
 /* ====== DISPATCH TO REQUESTPARSER ====== */
 
 /**
@@ -1189,7 +1204,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 	}
 
 	const ssize_t bytesSent
-		= write(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
+		= server.writeProcess(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
 	LOG_DEBUG << "Bytes sent to CGI: " << bytesSent;
 
 	if (bytesSent == -1) {

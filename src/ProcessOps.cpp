@@ -132,3 +132,25 @@ ssize_t ProcessOps::readProcess(int fileDescriptor, char *buf, size_t count) con
     }
     return bytesRead;
 }
+
+/**
+ * @brief Writes data from a buffer to a file descriptor.
+ *
+ * This function attempts to write up to `count` bytes from the buffer pointed to by `buf`
+ * to the file descriptor specified by `fileDescriptor`.
+ *
+ * @param fileDescriptor The file descriptor to which to write.
+ * @param buf A pointer to the buffer containing the data to write.
+ * @param count The number of bytes to write.
+ * @return The number of bytes written on success, or -1 on error.
+ *         If an error occurs, an error message is logged.
+ */
+ssize_t ProcessOps::writeProcess(int fileDescriptor, const char *buf, size_t count) const
+{
+    ssize_t bytesWritten = write(fileDescriptor, buf, count);
+    if (bytesWritten == -1) {
+        LOG_ERROR << "write(): " << std::strerror(errno);
+        return -1;
+    }
+    return bytesWritten;
+}

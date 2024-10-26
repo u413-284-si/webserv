@@ -19,6 +19,8 @@ protected:
 		serverConfig.host = serverSock.host;
 		serverConfig.port = serverSock.port;
 		configFile.servers.push_back(serverConfig);
+       	connection.m_pipeToCGIWriteEnd = pipefd[1];
+        connection.m_request.body = "test body";
 
 		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 
@@ -26,23 +28,33 @@ protected:
 	}
 	~ConnectionSendToCGITest() override { }
 
+    const int dummyFd = 10;
+	const int dummyPipeFd = 11;
+	Socket serverSock = { "127.0.0.1", "8080" };
+	Socket clientSocket = { "192.168.0.1", "12345" };
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
     MockProcessOps processOps;
 	Server server;
 	ConfigServer serverConfig;
-	const int dummyFd = 10;
-	const int dummyPipeFd = 11;
+   	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
+    int pipefd[2];
 
-	Socket serverSock = { "127.0.0.1", "8080" };
-	Socket clientSocket = { "192.168.0.1", "12345" };
+    void SetUp() override {
+        // Create a pipe
+        pipe(pipefd);
+    }
+
+    void TearDown() override {
+        close(pipefd[0]);
+        close(pipefd[1]);
+    }
 };
 
 TEST_F(ConnectionSendToCGITest, EmptyBody)
 {
 	// Arrange
-	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
 	connection.m_request.body = "";
 
 	// Act
@@ -56,9 +68,7 @@ TEST_F(ConnectionSendToCGITest, EmptyBody)
 TEST_F(ConnectionSendToCGITest, WriteError)
 {
 	// Arrange
-	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
-	connection.m_request.body = "test body";
-	std::cout << "Clientfd: " << connection.m_clientFd << std::endl;
+ 	EXPECT_CALL(processOps, writeProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
 	connectionSendToCGI(server, dummyPipeFd, connection);
@@ -71,11 +81,11 @@ TEST_F(ConnectionSendToCGITest, WriteError)
 TEST_F(ConnectionSendToCGITest, FullBodySent)
 {
 	// Arrange
-	Connection connection(serverSock, clientSocket, dummyFd, configFile.servers);
-	int pipefd[2];
-	pipe(pipefd);
-	connection.m_pipeToCGIWriteEnd = pipefd[1];
-	connection.m_request.body = "test body";
+    const ssize_t bodySize = connection.m_request.body.size();
+
+	EXPECT_CALL(processOps, writeProcess)
+        .Times(1)
+		.WillOnce(Return(bodySize));
 
 	// Act
 	connectionSendToCGI(server, pipefd[1], connection);
@@ -83,7 +93,4 @@ TEST_F(ConnectionSendToCGITest, FullBodySent)
 	// Assert
 	EXPECT_TRUE(connection.m_request.body.empty());
 	EXPECT_EQ(connection.m_status, Connection::ReceiveFromCGI);
-
-	close(pipefd[0]);
-	close(pipefd[1]);
 }
