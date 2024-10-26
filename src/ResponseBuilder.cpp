@@ -132,10 +132,6 @@ void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
 	m_responseHeader << "Server: TriHard\r\n";
 	// Date
 	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
-	// Location
-	if (request.httpStatus == StatusMovedPermanently) {
-		m_responseHeader << "Location: " << request.targetResource << "\r\n";
-	}
 }
 
 /**
