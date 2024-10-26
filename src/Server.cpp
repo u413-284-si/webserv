@@ -432,9 +432,9 @@ ssize_t Server::readProcess(int fileDescriptor, char* buffer, size_t size) const
 
 /**
  * @brief Wrapper function to ProcessOps::writeProcess.
- * 
+ *
  * This function delegates the write operation to the process operations handler.
- * 
+ *
  * @param fileDescriptor The file descriptor to write to.
  * @param buffer The buffer containing the data to be written.
  * @param size The number of bytes to write from the buffer.
@@ -442,7 +442,7 @@ ssize_t Server::readProcess(int fileDescriptor, char* buffer, size_t size) const
  */
 ssize_t Server::writeProcess(int fileDescriptor, const char* buffer, size_t size) const
 {
-    return m_processOps.writeProcess(fileDescriptor, buffer, size);
+	return m_processOps.writeProcess(fileDescriptor, buffer, size);
 }
 
 /* ====== DISPATCH TO REQUESTPARSER ====== */
@@ -993,8 +993,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
-		cgiHandler.execute(connection.m_request, connection.location, server.getEpollFd(),
-			server.getConnections(), server.getCGIConnections());
+		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
 		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
 		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
 		connection.m_cgiPid = cgiHandler.getCGIPid();
@@ -1199,8 +1198,8 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		return;
 	}
 
-	const ssize_t bytesSent
-		= server.writeProcess(connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
+	const ssize_t bytesSent = server.writeProcess(
+		connection.m_pipeToCGIWriteEnd, connection.m_request.body.c_str(), connection.m_request.body.size());
 	LOG_DEBUG << "Bytes sent to CGI: " << bytesSent;
 
 	if (bytesSent == -1) {

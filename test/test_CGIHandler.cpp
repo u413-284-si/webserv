@@ -130,7 +130,7 @@ TEST_F(CGIHandlerTest, ForkFail)
 	
 	// Act
 	CGIHandler cgiHandler(connection, processOps);
-	cgiHandler.execute(connection.m_request, connection.location, dummyFd, connections, cgiConnections);
+	cgiHandler.execute(dummyFd, connections, cgiConnections);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);

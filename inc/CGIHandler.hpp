@@ -27,8 +27,8 @@ class CGIHandler {
 public:
 	explicit CGIHandler(Connection& connection, const ProcessOps& processOps);
 
-	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, int epollFd,
-		const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
+	void execute(
+		int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
 
 	// Getter functions
 	int getPipeInWriteEnd() const;
@@ -50,6 +50,8 @@ private:
 	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */
 	int m_pipeOut[2]; /**< Pipe for passing output from CGI program to server */
 	pid_t m_cgiPid; /**< Process ID of the CGI process */
+	HTTPRequest& m_request; /**< HTTP request object */
+	std::vector<Location>::const_iterator& m_location; /**< Const iterator to Location object */
 
 	void setEnvp();
 	void setArgv();
