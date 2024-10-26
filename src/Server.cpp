@@ -254,9 +254,8 @@ void Server::removeCGIFileDescriptor(int& delfd)
 {
 	this->removeEvent(delfd);
 	this->getCGIConnections().erase(delfd);
+    LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 	webutils::closeFd(delfd);
-
-	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 }
 
 /**
@@ -994,7 +993,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if (!server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)
+		if ((connection.m_request.method == MethodPost && !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;

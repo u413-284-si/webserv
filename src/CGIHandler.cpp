@@ -192,7 +192,7 @@ void CGIHandler::execute(
 		}
 
 		// Replace child stdin with read end of input pipe
-		if (m_processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
+		if (m_request.method == MethodPost && m_processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
 			closeAllFds(epollFd, connections, cgiConnections);
 			std::exit(EXIT_FAILURE);
 		}
