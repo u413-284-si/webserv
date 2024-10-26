@@ -47,7 +47,7 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
 
 	appendStatusLine(request);
 	if (request.hasCGI && request.httpStatus == StatusOK)
-		appendHeadersCGI(request);
+		appendHeadersCGI();
 	else
 		appendHeaders(request);
 
@@ -122,9 +122,8 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
  * Server: TriHard.
  * Date: Current date in GMT.
  * Location: Target resource if status is StatusMovedPermanently.
- * @param request HTTP request.
  */
-void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
+void ResponseBuilder::appendHeadersCGI()
 {
 	// Content-Length
 	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
