@@ -1,4 +1,5 @@
 #include "ProcessOps.hpp"
+#include <cstdio>
 
 /* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
@@ -108,4 +109,26 @@ int ProcessOps::execProcess(const char *pathname, char *const argv[], char *cons
 		return -1;
 	}
 	return 0;
+}
+
+/**
+ * @brief Reads data from a file descriptor into a buffer.
+ *
+ * This function attempts to read up to `count` bytes from the file descriptor
+ * specified by `fileDescriptor` into the buffer pointed to by `buf`.
+ *
+ * @param fileDescriptor The file descriptor from which to read.
+ * @param buf A pointer to the buffer where the read data should be stored.
+ * @param count The maximum number of bytes to read.
+ * @return The number of bytes read on success, or -1 on error.
+ *         If an error occurs, an error message is logged.
+ */
+ssize_t ProcessOps::readProcess(int fileDescriptor, char *buf, size_t count) const
+{
+    ssize_t bytesRead = read(fileDescriptor, buf, count);
+    if (bytesRead == -1) {
+        LOG_ERROR << "read(): " << std::strerror(errno);
+        return -1;
+    }
+    return bytesRead;
 }

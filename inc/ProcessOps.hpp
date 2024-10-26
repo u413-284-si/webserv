@@ -3,6 +3,7 @@
 /* ====== LIBRARIES ====== */
 #include "Log.hpp"
 
+#include <cstdio>
 #include <cstring>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -25,6 +26,7 @@ public:
 	virtual int chdirProcess(const char* path) const;
 	virtual int forkProcess(pid_t& pid) const;
 	virtual int execProcess(const char* pathname, char* const argv[], char* const envp[]) const;
+    virtual ssize_t readProcess(int fileDescriptor, char* buf, size_t count) const;
 
 private:
 	ProcessOps(const ProcessOps&);

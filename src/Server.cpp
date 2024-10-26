@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Log.hpp"
+#include "ProcessOps.hpp"
 #include <cstdio>
 #include <cstdlib>
 
@@ -18,13 +19,16 @@
  * configuration of virtual servers.
  * @param epollWrapper A ready to use epoll instance. Can be mocked for testing.
  * @param socketPolicy Policy class for functions related to mocking. Can be mocked for testing.
+ * @param processOps Wrapper for process-related functions. Can be mocked for testing.
 
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
-Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy)
+Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy,
+	const ProcessOps& processOps)
 	: m_configFile(configFile)
 	, m_epollWrapper(epollWrapper)
 	, m_socketPolicy(socketPolicy)
+	, m_processOps(processOps)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
 	, m_responseBuilder(m_fileSystemPolicy)
@@ -410,6 +414,24 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 	assert(buffer != NULL);
 
 	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
+}
+
+/* ====== DISPATCH TO PROCESSOPS ====== */
+
+/**
+ * @brief Wrapper function to ProcessOps::readProcess.
+ *
+ * This function delegates the read operation to the m_processOps object, which
+ * handles the actual reading process.
+ *
+ * @param fileDescriptor The file descriptor from which to read data.
+ * @param buffer A pointer to the buffer where the read data will be stored.
+ * @param size The number of bytes to read from the file descriptor.
+ * @return ssize_t The number of bytes read, or -1 if an error occurs.
+ */
+ssize_t Server::readProcess(int fileDescriptor, char* buffer, size_t size) const
+{
+	return m_processOps.readProcess(fileDescriptor, buffer, size);
 }
 
 /* ====== DISPATCH TO REQUESTPARSER ====== */
@@ -1214,7 +1236,8 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		buffer.resize(Server::s_cgiBodyBufferSize);
 	buffer.clear();
 
-	const ssize_t bytesRead = read(connection.m_pipeFromCGIReadEnd, &buffer[0], Server::s_cgiBodyBufferSize);
+	const ssize_t bytesRead
+		= server.readProcess(connection.m_pipeFromCGIReadEnd, &buffer[0], Server::s_cgiBodyBufferSize);
 	LOG_DEBUG << "Bytes read: " << bytesRead;
 
 	if (bytesRead == -1) {

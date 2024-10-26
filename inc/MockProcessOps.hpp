@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -14,4 +15,5 @@ public:
 	MOCK_METHOD(int, chdirProcess, (const char* path), (const, override));
 	MOCK_METHOD(int, forkProcess, (pid_t & pid), (const, override));
 	MOCK_METHOD(int, execProcess, (const char* pathname, char* const argv[], char* const envp[]), (const, override));
+   	MOCK_METHOD(ssize_t, readProcess, (int fileDescriptor, char* buf, size_t count), (const, override));
 };

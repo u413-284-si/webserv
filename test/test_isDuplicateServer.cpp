@@ -4,6 +4,7 @@
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::Return;
@@ -11,7 +12,7 @@ using ::testing::NiceMock;
 
 class isDuplicateServerTest : public ::testing::Test {
 	protected:
-	isDuplicateServerTest() : server(configFile, epollWrapper, socketPolicy)
+	isDuplicateServerTest() : server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ON_CALL(epollWrapper, addEvent)
 		.WillByDefault(Return(true));
@@ -21,6 +22,7 @@ class isDuplicateServerTest : public ::testing::Test {
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 };
 

@@ -3,6 +3,7 @@
 
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::NiceMock;
@@ -11,7 +12,7 @@ using ::testing::Return;
 class ShutdownServerTest : public ::testing::Test {
 protected:
 	ShutdownServerTest()
-		: server(configFile, epollWrapper, socketPolicy)
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		struct epoll_event dummyEvent;
 		dummyEvent.events = EPOLLIN;
@@ -29,6 +30,7 @@ protected:
 	ConfigFile configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 	std::vector<struct epoll_event> dummyEventsVector;
 

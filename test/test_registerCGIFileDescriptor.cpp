@@ -4,6 +4,7 @@
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::Return;
@@ -12,7 +13,7 @@ using ::testing::NiceMock;
 class RegisterCGITest : public ::testing::Test {
 	protected:
 	RegisterCGITest() 
-		: server(configFile, epollWrapper, socketPolicy)
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		serverConfig.host = serverSock.host;
 		serverConfig.port = serverSock.port;
@@ -26,6 +27,7 @@ class RegisterCGITest : public ::testing::Test {
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 	ConfigServer serverConfig;
 	const int dummyFd = 10;

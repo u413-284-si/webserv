@@ -4,6 +4,7 @@
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::Return;
@@ -11,7 +12,7 @@ using ::testing::NiceMock;
 
 class RegisterConnectionTest : public ::testing::Test {
 	protected:
-	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy)
+	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ConfigServer serverConfig;
 		serverConfig.host = serverSock.host;
@@ -29,6 +30,7 @@ class RegisterConnectionTest : public ::testing::Test {
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 	ConfigServer serverConfig;
 

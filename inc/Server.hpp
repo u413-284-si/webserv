@@ -57,17 +57,18 @@ public:
 	static const std::size_t s_clientMaxBodySize = 1000000; /**< Default max size for request body in Bytes */
 	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
-	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy);
+	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy,
+		const ProcessOps& processOps);
 	~Server();
 
 	// Getters
-	
+
 	const std::map<int, Socket>& getVirtualServers() const;
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 
-    EpollWrapper& getEpollWrapper();
+	EpollWrapper& getEpollWrapper();
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();
@@ -98,6 +99,9 @@ public:
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
+    // Dispatch to ProcessOps
+    ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
+
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
 	void parseBody(const std::string& bodyString, HTTPRequest& request);
@@ -114,6 +118,7 @@ private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
 	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
+    const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
