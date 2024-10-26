@@ -46,7 +46,7 @@ void ResponseBuilder::buildResponse(HTTPRequest& request)
 	responseBodyHandler.execute();
 
 	appendStatusLine(request);
-	if (request.hasCGI)
+	if (request.hasCGI && request.httpStatus == StatusOK)
 		appendHeadersCGI(request);
 	else
 		appendHeaders(request);
