@@ -25,7 +25,7 @@
 
 class CGIHandler {
 public:
-	explicit CGIHandler(Connection& connection, ProcessOps& processOps);
+	explicit CGIHandler(Connection& connection, const ProcessOps& processOps);
 
 	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, int epollFd,
 		const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);

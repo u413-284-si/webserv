@@ -42,7 +42,7 @@
  * The constructor also calls setEnvp() to set the environment variables and setArgv() to set the
  * arguments for the execve system call.
  */
-CGIHandler::CGIHandler(Connection& connection, ProcessOps& processOps)
+CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	: m_processOps(processOps)
 	, m_cgiPath(connection.location->cgiPath)
 	, m_cgiExt(connection.location->cgiExt)
