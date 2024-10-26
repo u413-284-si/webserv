@@ -994,9 +994,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		connection.m_pipeToCGIWriteEnd = cgiHandler.getPipeInWriteEnd();
-		connection.m_pipeFromCGIReadEnd = cgiHandler.getPipeOutReadEnd();
-		connection.m_cgiPid = cgiHandler.getCGIPid();
 		if (!server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;

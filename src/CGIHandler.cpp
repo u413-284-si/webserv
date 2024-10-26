@@ -48,7 +48,9 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	, m_cgiExt(connection.location->cgiExt)
 	, m_pipeIn()
 	, m_pipeOut()
-	, m_cgiPid(-1)
+    , m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
+    , m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
+	, m_cgiPid(connection.m_cgiPid)
     , m_request(connection.m_request)
     , m_location(connection.location)
 
@@ -95,6 +97,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	if (connection.m_request.method == MethodPost) {
 		if (m_processOps.pipeProcess(m_pipeIn) == -1)
 			connection.m_request.httpStatus = StatusInternalServerError;
+        m_pipeToCGIWriteEnd = m_pipeIn[1];
 	}
 
 	if (m_processOps.pipeProcess(m_pipeOut) == -1) {
@@ -102,6 +105,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 		webutils::closeFd(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
 	}
+    m_pipeFromCGIReadEnd = m_pipeOut[0];
 
 	/* ========= Create input parameters for execve ========= */
 	setEnvp();
@@ -109,36 +113,6 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 }
 
 /* ====== GETTER/SETTER FUNCTIONS ====== */
-
-/**
- * @brief Retrieves the write end of the input pipe for the CGI handler.
- *
- * This function returns the file descriptor for the write end of the input pipe
- * (`m_pipeIn`), which is used to send data to the CGI process.
- *
- * @return int The file descriptor corresponding to the write end of the input pipe.
- */
-int CGIHandler::getPipeInWriteEnd() const { return m_pipeIn[1]; }
-
-/**
- * @brief Retrieves the read end of the output pipe for the CGI handler.
- *
- * This function returns the file descriptor for the read end of the output pipe
- * (`m_pipeOut`), which is used to read data from the CGI process.
- *
- * @return int The file descriptor corresponding to the read end of the output pipe.
- */
-int CGIHandler::getPipeOutReadEnd() const { return m_pipeOut[0]; }
-
-/**
- * @brief Retrieves the process ID (PID) of the CGI handler.
- *
- * This function returns a constant reference to the process ID (`pid_t`) of the CGI process.
- * The PID uniquely identifies the running CGI process.
- *
- * @return const pid_t& A constant reference to the process ID of the CGI process.
- */
-const pid_t& CGIHandler::getCGIPid() const { return m_cgiPid; }
 
 /**
  * @brief Retrieves the path to the CGI interpreter.

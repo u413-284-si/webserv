@@ -31,9 +31,6 @@ public:
 		int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
 
 	// Getter functions
-	int getPipeInWriteEnd() const;
-	int getPipeOutReadEnd() const;
-	const pid_t& getCGIPid() const;
 	const std::string& getCGIPath() const;
 	const std::string& getCGIExt() const;
 	const std::vector<std::string>& getEnv() const;
@@ -49,7 +46,9 @@ private:
 	std::vector<char*> m_argvp; /**< Pointers to arguments for CGI script */
 	int m_pipeIn[2]; /**< Pipe for passing input from server to CGI program */
 	int m_pipeOut[2]; /**< Pipe for passing output from CGI program to server */
-	pid_t m_cgiPid; /**< Process ID of the CGI process */
+    int& m_pipeToCGIWriteEnd; /**< Write end of the pipe to the CGI process */
+    int& m_pipeFromCGIReadEnd; /**< Read end of the pipe from the CGI process */
+	pid_t& m_cgiPid; /**< Process ID of the CGI process */
 	HTTPRequest& m_request; /**< HTTP request object */
 	std::vector<Location>::const_iterator& m_location; /**< Const iterator to Location object */
 
