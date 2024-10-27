@@ -133,9 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae3003ef1787dbb93a60c53fba1a5aa6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_builder.html#aae3003ef1787dbb93a60c53fba1a5aa6">ResponseBuilder</a> (const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;fileSystemPolicy)</td></tr>
 <tr class="memdesc:aae3003ef1787dbb93a60c53fba1a5aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_response_builder.html" title="Class to build a HTTP response.">ResponseBuilder</a> object.  <a href="class_response_builder.html#aae3003ef1787dbb93a60c53fba1a5aa6">More...</a><br /></td></tr>
 <tr class="separator:aae3003ef1787dbb93a60c53fba1a5aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e5cc86c399698d20a3e33677772e8b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0">buildResponse</a> (<a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
-<tr class="memdesc:a0e5cc86c399698d20a3e33677772e8b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the response for a given request.  <a href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0">More...</a><br /></td></tr>
-<tr class="separator:a0e5cc86c399698d20a3e33677772e8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae037ac16172f1329b44a58f50de0e84e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">buildResponse</a> (<a class="el" href="struct_connection.html">Connection</a> &amp;connection)</td></tr>
+<tr class="memdesc:ae037ac16172f1329b44a58f50de0e84e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the response for a given request.  <a href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">More...</a><br /></td></tr>
+<tr class="separator:ae037ac16172f1329b44a58f50de0e84e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf7d2f0fbb7f5b6866eb884fb2c17e88"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a> () const</td></tr>
 <tr class="memdesc:adf7d2f0fbb7f5b6866eb884fb2c17e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the built response.  <a href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">More...</a><br /></td></tr>
 <tr class="separator:adf7d2f0fbb7f5b6866eb884fb2c17e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Class to build a HTTP response. </p>
 <p>This class is responsible to build a HTTP response based on the request received. It uses a stringstream m_responseHeader to convert variables to string. The stringstream is reused. It uses the class <a class="el" href="class_response_body_handler.html" title="Class to handle the body of a HTTP response.">ResponseBodyHandler</a> to construct the body of the response. Each time a new response is built the old one is overwritten. The <a class="el" href="class_file_system_policy.html" title="Class for C functions on the file system.">FileSystemPolicy</a> passed in the constructor needs to outlive this class. It is passed to subclasses. A mock of <a class="el" href="class_file_system_policy.html" title="Class for C functions on the file system.">FileSystemPolicy</a> can be used for testing. </p>
 
-<p class="definition">Definition at line <a class="el" href="_response_builder_8hpp_source.html#l00020">20</a> of file <a class="el" href="_response_builder_8hpp_source.html">ResponseBuilder.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_response_builder_8hpp_source.html#l00021">21</a> of file <a class="el" href="_response_builder_8hpp_source.html">ResponseBuilder.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aae3003ef1787dbb93a60c53fba1a5aa6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae3003ef1787dbb93a60c53fba1a5aa6">&#9670;&nbsp;</a></span>ResponseBuilder()</h2>
@@ -187,8 +187,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0e5cc86c399698d20a3e33677772e8b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e5cc86c399698d20a3e33677772e8b0">&#9670;&nbsp;</a></span>buildResponse()</h2>
+<a id="ae037ac16172f1329b44a58f50de0e84e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae037ac16172f1329b44a58f50de0e84e">&#9670;&nbsp;</a></span>buildResponse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,8 +196,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void ResponseBuilder::buildResponse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
-          <td class="paramname"><em>request</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_connection.html">Connection</a> &amp;&#160;</td>
+          <td class="paramname"><em>connection</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -206,7 +206,7 @@ Public Member Functions</h2></td></tr>
 <p>Build the response for a given request. </p>
 <p>Reset the builder with resetBuilder(), to clear possible beforehand built response. Construct and execute a <a class="el" href="class_response_body_handler.html" title="Class to handle the body of a HTTP response.">ResponseBodyHandler</a> to construct the response body. Build the response header with appendStatusLine() and appendHeaders(). The response is stored in m_responseHeader and m_responseBody. The response can be retrieved with <a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response.">getResponse()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">request</td><td>HTTP request. </td></tr>
+    <tr><td class="paramname">connection</td><td>The connection to build the response for. </td></tr>
   </table>
   </dd>
 </dl>
@@ -215,34 +215,38 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    resetBuilder();</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Building response for request: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a> &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_h_t_t_p_request.html">HTTPRequest</a>&amp; request = connection.<a class="code" href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">m_request</a>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="class_response_body_handler.html">ResponseBodyHandler</a> responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    responseBodyHandler.execute();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    appendStatusLine(request);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    appendHeaders(request);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Response header: \n&quot;</span> &lt;&lt; m_responseHeader.str();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Building response for request: &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a> &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; request.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="class_response_body_handler.html">ResponseBodyHandler</a> responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    responseBodyHandler.execute();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    appendStatusLine(request);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    appendHeaders(request);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// Response Body often contains binary data, so it is not logged.</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// LOG_DEBUG &lt;&lt; &quot;Response body: \n&quot; &lt;&lt; m_responseBody;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Response header: \n&quot;</span> &lt;&lt; m_responseHeader.str();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// Response Body often contains binary data, so it is not logged.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// LOG_DEBUG &lt;&lt; &quot;Response body: \n&quot; &lt;&lt; m_responseBody;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
 <div class="ttc" id="a_log_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00010">Log.hpp:10</a></div></div>
-<div class="ttc" id="aclass_response_body_handler_html"><div class="ttname"><a href="class_response_body_handler.html">ResponseBodyHandler</a></div><div class="ttdoc">Class to handle the body of a HTTP response.</div><div class="ttdef"><b>Definition:</b> <a href="_response_body_handler_8hpp_source.html#l00015">ResponseBodyHandler.hpp:15</a></div></div>
+<div class="ttc" id="aclass_response_body_handler_html"><div class="ttname"><a href="class_response_body_handler.html">ResponseBodyHandler</a></div><div class="ttdoc">Class to handle the body of a HTTP response.</div><div class="ttdef"><b>Definition:</b> <a href="_response_body_handler_8hpp_source.html#l00017">ResponseBodyHandler.hpp:17</a></div></div>
+<div class="ttc" id="astruct_connection_html_ae94a8a88f07c64cf17ada17c7e670ada"><div class="ttname"><a href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">Connection::m_request</a></div><div class="ttdeci">HTTPRequest m_request</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00035">Connection.hpp:35</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html"><div class="ttname"><a href="struct_h_t_t_p_request.html">HTTPRequest</a></div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00019">HTTPRequest.hpp:19</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_a67c428c2e03ff5e9e3fc4403ba9377a9"><div class="ttname"><a href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">HTTPRequest::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00022">HTTPRequest.hpp:22</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00023">HTTPRequest.hpp:23</a></div></div>
 <div class="ttc" id="astruct_u_r_i_html_a18b7b6f3328197824e58dc4cf46301df"><div class="ttname"><a href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">URI::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00014">HTTPRequest.hpp:14</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_builder_a0e5cc86c399698d20a3e33677772e8b0_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_builder_ae037ac16172f1329b44a58f50de0e84e_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_builder_a0e5cc86c399698d20a3e33677772e8b0_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_builder_ae037ac16172f1329b44a58f50de0e84e_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -264,7 +268,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Get the built response. </p>
-<p>If the response body is empty, only the response header is returned. Otherwise, the response header and body are returned. The response doesn't change until the next <a class="el" href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0" title="Build the response for a given request.">buildResponse()</a> call. </p><dl class="section return"><dt>Returns</dt><dd>std::string Response. </dd></dl>
+<p>If the response body is empty, only the response header is returned. Otherwise, the response header and body are returned. The response doesn't change until the next <a class="el" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request.">buildResponse()</a> call. </p><dl class="section return"><dt>Returns</dt><dd>std::string Response. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_response_builder_8cpp_source.html#l00022">22</a> of file <a class="el" href="_response_builder_8cpp_source.html">ResponseBuilder.cpp</a>.</p>
 <div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>

@@ -448,12 +448,13 @@ $(document).ready(function(){initNavTree('test___config_file_parser_8cpp_source.
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
 <div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="test___config_file_parser_8cpp.html#ac58c641d2692b568b2f9137b9b287fee">  363</a></span>&#160;<a class="code" href="test___config_file_parser_8cpp.html#aaa8c90be9249252b98e416517f9807f6">TEST_F</a>(<a class="code" href="class_valid_config_file_tests.html">ValidConfigFileTests</a>, DirectiveAndClosingBracketOnSameLineUnderServerDirective)</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;{</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <a class="code" href="struct_config_file.html">ConfigFile</a> configFile;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    EXPECT_NO_THROW(configFile</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        = m_configFileParser.parseConfigFile(<span class="stringliteral">&quot;config_files/directive_close_open_bracket_same_line_under_server.conf&quot;</span>));</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="comment">// EXPECT_EQ(&quot;127.0.0.1&quot;, configFile.servers[0].host);</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="comment">// EXPECT_EQ(&quot;8080&quot;, configFile.servers[0].port);</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;}</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    GTEST_SKIP() &lt;&lt; <span class="stringliteral">&quot;Skipping because not implemented&quot;</span>;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <a class="code" href="struct_config_file.html">ConfigFile</a> configFile;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    EXPECT_NO_THROW(configFile</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        = m_configFileParser.parseConfigFile(<span class="stringliteral">&quot;config_files/directive_close_open_bracket_same_line_under_server.conf&quot;</span>));</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    EXPECT_EQ(<span class="stringliteral">&quot;127.0.0.1&quot;</span>, configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].host);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    EXPECT_EQ(<span class="stringliteral">&quot;8080&quot;</span>, configFile.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].port);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;}</div>
 <div class="ttc" id="a_config_file_parser_8hpp_html"><div class="ttname"><a href="_config_file_parser_8hpp.html">ConfigFileParser.hpp</a></div></div>
 <div class="ttc" id="aclass_config_file_parser_html"><div class="ttname"><a href="class_config_file_parser.html">ConfigFileParser</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_parser_8hpp_source.html#l00020">ConfigFileParser.hpp:20</a></div></div>
 <div class="ttc" id="aclass_invalid_config_file_tests_html"><div class="ttname"><a href="class_invalid_config_file_tests.html">InvalidConfigFileTests</a></div><div class="ttdef"><b>Definition:</b> <a href="test___config_file_parser_8cpp_source.html#l00006">test_ConfigFileParser.cpp:6</a></div></div>

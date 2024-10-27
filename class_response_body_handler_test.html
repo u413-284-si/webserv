@@ -132,7 +132,7 @@ Inheritance diagram for ResponseBodyHandlerTest:</div>
 <div class="dynheader">
 Collaboration diagram for ResponseBodyHandlerTest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_response_body_handler_test__coll__graph.svg" width="659" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_body_handler_test__coll__graph.svg" width="100%" height="593"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -145,18 +145,24 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a0657755c961f3cdd6bf07842714cac2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#a0657755c961f3cdd6bf07842714cac2c">m_request</a></td></tr>
-<tr class="separator:a0657755c961f3cdd6bf07842714cac2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d8c30e46da777df6da7229f2adc8f44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_config_file.html">ConfigFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#a8d8c30e46da777df6da7229f2adc8f44">m_configFile</a> = <a class="el" href="_config_file_8cpp.html#a5c24d3b32b5ab2755e29e4e65639820c">createDummyConfig</a>()</td></tr>
+<tr class="separator:a8d8c30e46da777df6da7229f2adc8f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c983c26fca704aab352db9d2f129594"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#a3c983c26fca704aab352db9d2f129594">m_serverSock</a></td></tr>
+<tr class="separator:a3c983c26fca704aab352db9d2f129594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7af7211d16f946510b3997039a42563"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#af7af7211d16f946510b3997039a42563">m_connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_response_body_handler_test.html#a3c983c26fca704aab352db9d2f129594">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), m_configFile.servers)</td></tr>
+<tr class="separator:af7af7211d16f946510b3997039a42563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a850febcb4a52085bc2347603fdbafb33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#a850febcb4a52085bc2347603fdbafb33">m_request</a> = m_connection.m_request</td></tr>
+<tr class="separator:a850febcb4a52085bc2347603fdbafb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c3eb3caa89b8ba8de56a6e8153f8026"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#a9c3eb3caa89b8ba8de56a6e8153f8026">m_responseBody</a></td></tr>
 <tr class="separator:a9c3eb3caa89b8ba8de56a6e8153f8026"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58d729923411f2890818d10ae8de0e9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#a58d729923411f2890818d10ae8de0e9c">m_fileSystemPolicy</a></td></tr>
 <tr class="separator:a58d729923411f2890818d10ae8de0e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6822393eecb77f89cac1208e862c405"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#ac6822393eecb77f89cac1208e862c405">m_responseBodyHandler</a></td></tr>
+<tr class="memitem:ac6822393eecb77f89cac1208e862c405"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler_test.html#ac6822393eecb77f89cac1208e862c405">m_responseBodyHandler</a> = <a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a>(<a class="el" href="class_response_body_handler_test.html#af7af7211d16f946510b3997039a42563">m_connection</a>, <a class="el" href="class_response_body_handler_test.html#a9c3eb3caa89b8ba8de56a6e8153f8026">m_responseBody</a>, <a class="el" href="class_response_body_handler_test.html#a58d729923411f2890818d10ae8de0e9c">m_fileSystemPolicy</a>)</td></tr>
 <tr class="separator:ac6822393eecb77f89cac1208e862c405"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00011">11</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00013">13</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abd4bf046a7f5bc4beb8cfb9773f7e811"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd4bf046a7f5bc4beb8cfb9773f7e811">&#9670;&nbsp;</a></span>ResponseBodyHandlerTest()</h2>
@@ -181,12 +187,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00013">13</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;: <a class="code" href="class_response_body_handler_test.html#ac6822393eecb77f89cac1208e862c405">m_responseBodyHandler</a>(<a class="code" href="class_response_body_handler_test.html#a0657755c961f3cdd6bf07842714cac2c">m_request</a>, <a class="code" href="class_response_body_handler_test.html#a9c3eb3caa89b8ba8de56a6e8153f8026">m_responseBody</a>, <a class="code" href="class_response_body_handler_test.html#a58d729923411f2890818d10ae8de0e9c">m_fileSystemPolicy</a>) { }</div>
-<div class="ttc" id="aclass_response_body_handler_test_html_a0657755c961f3cdd6bf07842714cac2c"><div class="ttname"><a href="class_response_body_handler_test.html#a0657755c961f3cdd6bf07842714cac2c">ResponseBodyHandlerTest::m_request</a></div><div class="ttdeci">HTTPRequest m_request</div><div class="ttdef"><b>Definition:</b> <a href="test___response_body_handler_8cpp_source.html#l00016">test_ResponseBodyHandler.cpp:16</a></div></div>
-<div class="ttc" id="aclass_response_body_handler_test_html_a58d729923411f2890818d10ae8de0e9c"><div class="ttname"><a href="class_response_body_handler_test.html#a58d729923411f2890818d10ae8de0e9c">ResponseBodyHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">MockFileSystemPolicy m_fileSystemPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test___response_body_handler_8cpp_source.html#l00018">test_ResponseBodyHandler.cpp:18</a></div></div>
-<div class="ttc" id="aclass_response_body_handler_test_html_a9c3eb3caa89b8ba8de56a6e8153f8026"><div class="ttname"><a href="class_response_body_handler_test.html#a9c3eb3caa89b8ba8de56a6e8153f8026">ResponseBodyHandlerTest::m_responseBody</a></div><div class="ttdeci">std::string m_responseBody</div><div class="ttdef"><b>Definition:</b> <a href="test___response_body_handler_8cpp_source.html#l00017">test_ResponseBodyHandler.cpp:17</a></div></div>
-<div class="ttc" id="aclass_response_body_handler_test_html_ac6822393eecb77f89cac1208e862c405"><div class="ttname"><a href="class_response_body_handler_test.html#ac6822393eecb77f89cac1208e862c405">ResponseBodyHandlerTest::m_responseBodyHandler</a></div><div class="ttdeci">ResponseBodyHandler m_responseBodyHandler</div><div class="ttdef"><b>Definition:</b> <a href="test___response_body_handler_8cpp_source.html#l00019">test_ResponseBodyHandler.cpp:19</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00015">15</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -213,14 +215,14 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00014">14</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{ }</div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00016">16</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0657755c961f3cdd6bf07842714cac2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0657755c961f3cdd6bf07842714cac2c">&#9670;&nbsp;</a></span>m_request</h2>
+<a id="a8d8c30e46da777df6da7229f2adc8f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d8c30e46da777df6da7229f2adc8f44">&#9670;&nbsp;</a></span>m_configFile</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +231,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> ResponseBodyHandlerTest::m_request</td>
+          <td class="memname"><a class="el" href="struct_config_file.html">ConfigFile</a> ResponseBodyHandlerTest::m_configFile = <a class="el" href="_config_file_8cpp.html#a5c24d3b32b5ab2755e29e4e65639820c">createDummyConfig</a>()</td>
         </tr>
       </table>
   </td>
@@ -239,7 +241,85 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00016">16</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00018">18</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a3c983c26fca704aab352db9d2f129594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c983c26fca704aab352db9d2f129594">&#9670;&nbsp;</a></span>m_serverSock</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_socket.html">Socket</a> ResponseBodyHandlerTest::m_serverSock</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        .host = <a class="code" href="class_response_body_handler_test.html#a8d8c30e46da777df6da7229f2adc8f44">m_configFile</a>.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].host,</div>
+<div class="line">        .port = <a class="code" href="class_response_body_handler_test.html#a8d8c30e46da777df6da7229f2adc8f44">m_configFile</a>.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].port</div>
+<div class="line">    }</div>
+<div class="ttc" id="aclass_response_body_handler_test_html_a8d8c30e46da777df6da7229f2adc8f44"><div class="ttname"><a href="class_response_body_handler_test.html#a8d8c30e46da777df6da7229f2adc8f44">ResponseBodyHandlerTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition:</b> <a href="test___response_body_handler_8cpp_source.html#l00018">test_ResponseBodyHandler.cpp:18</a></div></div>
+<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00019">19</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="af7af7211d16f946510b3997039a42563"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7af7211d16f946510b3997039a42563">&#9670;&nbsp;</a></span>m_connection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> ResponseBodyHandlerTest::m_connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_response_body_handler_test.html#a3c983c26fca704aab352db9d2f129594">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), m_configFile.servers)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00023">23</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a850febcb4a52085bc2347603fdbafb33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a850febcb4a52085bc2347603fdbafb33">&#9670;&nbsp;</a></span>m_request</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a>&amp; ResponseBodyHandlerTest::m_request = m_connection.m_request</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00024">24</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +343,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00017">17</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00025">25</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -287,7 +367,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00018">18</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00026">26</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -301,7 +381,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a> ResponseBodyHandlerTest::m_responseBodyHandler</td>
+          <td class="memname"><a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a> ResponseBodyHandlerTest::m_responseBodyHandler = <a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a>(<a class="el" href="class_response_body_handler_test.html#af7af7211d16f946510b3997039a42563">m_connection</a>, <a class="el" href="class_response_body_handler_test.html#a9c3eb3caa89b8ba8de56a6e8153f8026">m_responseBody</a>, <a class="el" href="class_response_body_handler_test.html#a58d729923411f2890818d10ae8de0e9c">m_fileSystemPolicy</a>)</td>
         </tr>
       </table>
   </td>
@@ -311,7 +391,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00019">19</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00027">27</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
 
 </div>
 </div>

@@ -28,7 +28,7 @@ var class_server =
     [ "parseHeader", "class_server.html#a34bc61299318fe1918293b1d656ee5f9", null ],
     [ "parseBody", "class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a", null ],
     [ "resetRequestStream", "class_server.html#a99dea29de3836364c5191afe48f11ded", null ],
-    [ "buildResponse", "class_server.html#a4f36a7046be8e574b53ad3820216faef", null ],
+    [ "buildResponse", "class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82", null ],
     [ "getResponse", "class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63", null ],
     [ "findTargetResource", "class_server.html#a79e42d429f816514a89b11c729875797", null ]
 ];

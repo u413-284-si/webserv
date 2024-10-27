@@ -215,9 +215,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99dea29de3836364c5191afe48f11ded"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a99dea29de3836364c5191afe48f11ded">resetRequestStream</a> ()</td></tr>
 <tr class="memdesc:a99dea29de3836364c5191afe48f11ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to RequestParser::clearParser.  <a href="class_server.html#a99dea29de3836364c5191afe48f11ded">More...</a><br /></td></tr>
 <tr class="separator:a99dea29de3836364c5191afe48f11ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f36a7046be8e574b53ad3820216faef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a4f36a7046be8e574b53ad3820216faef">buildResponse</a> (<a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
-<tr class="memdesc:a4f36a7046be8e574b53ad3820216faef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0" title="Build the response for a given request.">ResponseBuilder::buildResponse</a>.  <a href="class_server.html#a4f36a7046be8e574b53ad3820216faef">More...</a><br /></td></tr>
-<tr class="separator:a4f36a7046be8e574b53ad3820216faef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa1a16c8d18a7d0a4191adfeb65fdf82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82">buildResponse</a> (<a class="el" href="struct_connection.html">Connection</a> &amp;connection)</td></tr>
+<tr class="memdesc:aaa1a16c8d18a7d0a4191adfeb65fdf82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request.">ResponseBuilder::buildResponse</a>.  <a href="class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82">More...</a><br /></td></tr>
+<tr class="separator:aaa1a16c8d18a7d0a4191adfeb65fdf82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a718bf76e7c3f830abb2f7b0972cdaa63"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63">getResponse</a> ()</td></tr>
 <tr class="memdesc:a718bf76e7c3f830abb2f7b0972cdaa63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response.">ResponseBuilder::getResponse</a>.  <a href="class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63">More...</a><br /></td></tr>
 <tr class="separator:a718bf76e7c3f830abb2f7b0972cdaa63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,7 +296,7 @@ Static Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>Several variables are init to static ones, could be passed as parameters or set in config file. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Several variables are init to static ones, could be passed as parameters or set in config file. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00021">21</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
 <div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    : m_configFile(configFile)</div>
@@ -332,7 +332,7 @@ Static Public Attributes</h2></td></tr>
 <p>This destructor cleans up resources associated with the server instance by closing all open virtual server sockets, all open connections and the epoll instance.</p>
 <ol type="1">
 <li>Closes all virtual server sockets to release the bound port and stop accepting new connections.</li>
-<li>Closes all open connections to release associated resources. <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Is it possible to send a last message to all connected clients to notify server shutdown? </dd></dl>
+<li>Closes all open connections to release associated resources. <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>Is it possible to send a last message to all connected clients to notify server shutdown? </dd></dl>
 </li>
 </ol>
 
@@ -1537,8 +1537,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a4f36a7046be8e574b53ad3820216faef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f36a7046be8e574b53ad3820216faef">&#9670;&nbsp;</a></span>buildResponse()</h2>
+<a id="aaa1a16c8d18a7d0a4191adfeb65fdf82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa1a16c8d18a7d0a4191adfeb65fdf82">&#9670;&nbsp;</a></span>buildResponse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1546,34 +1546,36 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">void Server::buildResponse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
-          <td class="paramname"><em>request</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_connection.html">Connection</a> &amp;&#160;</td>
+          <td class="paramname"><em>connection</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Wrapper function to <a class="el" href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0" title="Build the response for a given request.">ResponseBuilder::buildResponse</a>. </p>
+<p>Wrapper function to <a class="el" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request.">ResponseBuilder::buildResponse</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">request</td><td>The <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object to build the response for. </td></tr>
+    <tr><td class="paramname">connection</td><td>The <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> to build the response for. </td></tr>
   </table>
   </dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00367">367</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;{ m_responseBuilder.<a class="code" href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0">buildResponse</a>(request); }</div>
-<div class="ttc" id="aclass_response_builder_html_a0e5cc86c399698d20a3e33677772e8b0"><div class="ttname"><a href="class_response_builder.html#a0e5cc86c399698d20a3e33677772e8b0">ResponseBuilder::buildResponse</a></div><div class="ttdeci">void buildResponse(HTTPRequest &amp;request)</div><div class="ttdoc">Build the response for a given request.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00039">ResponseBuilder.cpp:39</a></div></div>
+<div class="fragment"><div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;{</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    m_responseBuilder.<a class="code" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">buildResponse</a>(connection);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;}</div>
+<div class="ttc" id="aclass_response_builder_html_ae037ac16172f1329b44a58f50de0e84e"><div class="ttname"><a href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">ResponseBuilder::buildResponse</a></div><div class="ttdeci">void buildResponse(Connection &amp;connection)</div><div class="ttdoc">Build the response for a given request.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00039">ResponseBuilder.cpp:39</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_a4f36a7046be8e574b53ad3820216faef_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_aaa1a16c8d18a7d0a4191adfeb65fdf82_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_a4f36a7046be8e574b53ad3820216faef_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_aaa1a16c8d18a7d0a4191adfeb65fdf82_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -1597,8 +1599,8 @@ Here is the caller graph for this function:</div>
 <p>Wrapper function to <a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response.">ResponseBuilder::getResponse</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::string The response string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00374">374</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00377">377</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
 <div class="ttc" id="aclass_response_builder_html_adf7d2f0fbb7f5b6866eb884fb2c17e88"><div class="ttname"><a href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">ResponseBuilder::getResponse</a></div><div class="ttdeci">std::string getResponse() const</div><div class="ttdoc">Get the built response.</div><div class="ttdef"><b>Definition:</b> <a href="_response_builder_8cpp_source.html#l00022">ResponseBuilder.cpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1650,10 +1652,10 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00384">384</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;{</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    m_targetResourceHandler.<a class="code" href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7">execute</a>(connection, request);</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00387">387</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;{</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    m_targetResourceHandler.<a class="code" href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7">execute</a>(connection, request);</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;}</div>
 <div class="ttc" id="aclass_target_resource_handler_html_adaa54e6f6f23de3c3e5ff256f43079a7"><div class="ttname"><a href="class_target_resource_handler.html#adaa54e6f6f23de3c3e5ff256f43079a7">TargetResourceHandler::execute</a></div><div class="ttdeci">void execute(Connection &amp;connection, HTTPRequest &amp;request)</div><div class="ttdoc">Determine target resource based on the request path and handle different file types and statuses acco...</div><div class="ttdef"><b>Definition:</b> <a href="_target_resource_handler_8cpp_source.html#l00031">TargetResourceHandler.cpp:31</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

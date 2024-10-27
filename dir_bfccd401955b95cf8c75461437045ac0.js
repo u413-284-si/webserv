@@ -45,9 +45,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "RequestParser.hpp", "_request_parser_8hpp.html", [
       [ "RequestParser", "class_request_parser.html", "class_request_parser" ]
     ] ],
-    [ "ResponseBodyHandler.hpp", "_response_body_handler_8hpp.html", [
-      [ "ResponseBodyHandler", "class_response_body_handler.html", "class_response_body_handler" ]
-    ] ],
+    [ "ResponseBodyHandler.hpp", "_response_body_handler_8hpp.html", "_response_body_handler_8hpp" ],
     [ "ResponseBuilder.hpp", "_response_builder_8hpp.html", [
       [ "ResponseBuilder", "class_response_builder.html", "class_response_builder" ]
     ] ],

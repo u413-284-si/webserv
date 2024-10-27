@@ -18,7 +18,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "LogOutputterFile.cpp", "_log_outputter_file_8cpp.html", null ],
     [ "main.cpp", "main_8cpp.html", "main_8cpp" ],
     [ "RequestParser.cpp", "_request_parser_8cpp.html", null ],
-    [ "ResponseBodyHandler.cpp", "_response_body_handler_8cpp.html", null ],
+    [ "ResponseBodyHandler.cpp", "_response_body_handler_8cpp.html", "_response_body_handler_8cpp" ],
     [ "ResponseBuilder.cpp", "_response_builder_8cpp.html", null ],
     [ "Server.cpp", "_server_8cpp.html", "_server_8cpp" ],
     [ "signalHandler.cpp", "signal_handler_8cpp.html", "signal_handler_8cpp" ],

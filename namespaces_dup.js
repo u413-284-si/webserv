@@ -12,7 +12,6 @@ var namespaces_dup =
       [ "getGMTString", "namespacewebutils.html#ae29ddfc0ffbb42f9b1bd34ed1d77b762", null ],
       [ "getLocaltimeString", "namespacewebutils.html#ab6119b08526700518f576bb78554be59", null ],
       [ "statusCodeToReasonPhrase", "namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91", null ],
-      [ "getDefaultErrorPage", "namespacewebutils.html#ab12d562733bb60393254f6345f6c296f", null ],
       [ "isIpAddressValid", "namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed", null ],
       [ "isPortValid", "namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d", null ],
       [ "lowercase", "namespacewebutils.html#a81d8421d47b55041d0e1336855f72229", null ],
