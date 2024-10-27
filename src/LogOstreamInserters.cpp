@@ -130,6 +130,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 	case StatusMovedPermanently:
 		ostream << "301";
 		break;
+	case StatusPermanentRedirect:
+		ostream << "308";
+		break;
 	case StatusBadRequest:
 		ostream << "400";
 		break;
