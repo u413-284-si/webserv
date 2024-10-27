@@ -382,11 +382,10 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  * @brief Wrapper function to TargetResourceHandler::execute.
  *
  * @param connection The Connection object to handle the target resource for.
- * @param request The HTTPRequest object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection, HTTPRequest& request)
+void Server::findTargetResource(Connection& connection)
 {
-	m_targetResourceHandler.execute(connection, request);
+	m_targetResourceHandler.execute(connection);
 }
 
 /* ====== INITIALIZATION ====== */
@@ -849,7 +848,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		}
 	}
 
-	server.findTargetResource(connection, connection.m_request);
+	server.findTargetResource(connection);
 
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
