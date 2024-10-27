@@ -82,7 +82,7 @@ void ResponseBodyHandler::handleErrorBody()
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
 	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
-	targetResourceHandler.execute(m_connection, m_request);
+	targetResourceHandler.execute(m_connection);
 
 	if (m_request.httpStatus != StatusOK) {
 		setDefaultErrorPage();
