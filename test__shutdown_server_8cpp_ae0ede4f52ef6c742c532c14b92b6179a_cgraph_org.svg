@@ -137,33 +137,33 @@
 <path fill="none" stroke="midnightblue" d="M183.16,-364C202.42,-364 224.73,-364 244.11,-364"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="244.25,-367.5 254.25,-364 244.25,-360.5 244.25,-367.5"/>
 </g>
-<!-- Node66 -->
+<!-- Node64 -->
 <g id="node47" class="node">
-<title>Node66</title>
+<title>Node64</title>
 <g id="a_node47"><a xlink:href="class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" target="_top" xlink:title="Wrapper function to EpollWrapper::removeEvent.">
 <polygon fill="none" stroke="black" points="233.5,-240.5 233.5,-259.5 352.5,-259.5 352.5,-240.5 233.5,-240.5"/>
 <text text-anchor="middle" x="293" y="-247.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::removeEvent</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node66 -->
+<!-- Node2&#45;&gt;Node64 -->
 <g id="edge60" class="edge">
-<title>Node2&#45;&gt;Node66</title>
+<title>Node2&#45;&gt;Node64</title>
 <path fill="none" stroke="midnightblue" d="M142.15,-354.21C153.88,-334.82 182.8,-291.45 219,-269 222.41,-266.89 226.05,-265.01 229.81,-263.33"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="231.33,-266.5 239.36,-259.59 228.78,-259.98 231.33,-266.5"/>
 </g>
-<!-- Node68 -->
+<!-- Node66 -->
 <g id="node49" class="node">
-<title>Node68</title>
+<title>Node66</title>
 <g id="a_node49"><a xlink:href="class_server.html#acbcbebe2c30446acc9a90f40f9986b62" target="_top" xlink:title="Wrapper function to EpollWrapper::waitForEvents.">
 <polygon fill="none" stroke="black" points="231.5,-202.5 231.5,-221.5 354.5,-221.5 354.5,-202.5 231.5,-202.5"/>
 <text text-anchor="middle" x="293" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::waitForEvents</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node68 -->
+<!-- Node2&#45;&gt;Node66 -->
 <g id="edge62" class="edge">
-<title>Node2&#45;&gt;Node68</title>
+<title>Node2&#45;&gt;Node66</title>
 <path fill="none" stroke="midnightblue" d="M139.68,-354.2C148.23,-329.45 174.16,-264.05 219,-231 221.64,-229.06 224.45,-227.31 227.39,-225.75"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="228.88,-228.92 236.51,-221.56 225.96,-222.55 228.88,-228.92"/>
 </g>
@@ -766,18 +766,18 @@
 <path fill="none" stroke="midnightblue" d="M905.93,-234.43C940.9,-219.84 1007.72,-191.95 1047.47,-175.37"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1048.84,-178.59 1056.72,-171.51 1046.14,-172.13 1048.84,-178.59"/>
 </g>
-<!-- Node65 -->
+<!-- Node63 -->
 <g id="node46" class="node">
-<title>Node65</title>
+<title>Node63</title>
 <g id="a_node46"><a xlink:href="_server_8cpp.html#a172c400277e73261d212c33f66226090" target="_top" xlink:title="Checks if the connection buffer contains a request header.">
 <polygon fill="none" stroke="black" points="1007,-266.5 1007,-285.5 1154,-285.5 1154,-266.5 1007,-266.5"/>
 <text text-anchor="middle" x="1080.5" y="-273.5" font-family="Helvetica,sans-Serif" font-size="10.00">isCompleteRequestHeader</text>
 </a>
 </g>
 </g>
-<!-- Node55&#45;&gt;Node65 -->
+<!-- Node55&#45;&gt;Node63 -->
 <g id="edge56" class="edge">
-<title>Node55&#45;&gt;Node65</title>
+<title>Node55&#45;&gt;Node63</title>
 <path fill="none" stroke="midnightblue" d="M941.42,-253.51C963.3,-257.08 988.35,-261.16 1011.05,-264.85"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1010.53,-268.31 1020.96,-266.47 1011.65,-261.41 1010.53,-268.31"/>
 </g>
@@ -796,7 +796,7 @@
 <!-- Node58 -->
 <g id="node45" class="node">
 <title>Node58</title>
-<g id="a_node45"><a xlink:href="class_server.html#a79e42d429f816514a89b11c729875797" target="_top" xlink:title="Wrapper function to TargetResourceHandler::execute.">
+<g id="a_node45"><a xlink:href="class_server.html#a002dd2fd1e6f0f4290568b4d94f39594" target="_top" xlink:title="Wrapper function to TargetResourceHandler::execute.">
 <polygon fill="none" stroke="red" points="1217.5,-152.5 1217.5,-171.5 1364.5,-171.5 1364.5,-152.5 1217.5,-152.5"/>
 <text text-anchor="middle" x="1291" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">Server::findTargetResource</text>
 </a>
@@ -808,33 +808,33 @@
 <path fill="none" stroke="midnightblue" d="M1166.61,-162C1179.98,-162 1193.78,-162 1207.1,-162"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1207.17,-165.5 1217.17,-162 1207.17,-158.5 1207.17,-165.5"/>
 </g>
-<!-- Node67 -->
+<!-- Node65 -->
 <g id="node48" class="node">
-<title>Node67</title>
+<title>Node65</title>
 <g id="a_node48"><a xlink:href="class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" target="_top" xlink:title="Remove an event from the epoll instance.">
 <polygon fill="none" stroke="black" points="405,-240.5 405,-259.5 558,-259.5 558,-240.5 405,-240.5"/>
 <text text-anchor="middle" x="481.5" y="-247.5" font-family="Helvetica,sans-Serif" font-size="10.00">EpollWrapper::removeEvent</text>
 </a>
 </g>
 </g>
-<!-- Node66&#45;&gt;Node67 -->
+<!-- Node64&#45;&gt;Node65 -->
 <g id="edge61" class="edge">
-<title>Node66&#45;&gt;Node67</title>
+<title>Node64&#45;&gt;Node65</title>
 <path fill="none" stroke="midnightblue" d="M352.75,-250C366.07,-250 380.48,-250 394.66,-250"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="394.93,-253.5 404.93,-250 394.93,-246.5 394.93,-253.5"/>
 </g>
-<!-- Node69 -->
+<!-- Node67 -->
 <g id="node50" class="node">
-<title>Node69</title>
+<title>Node67</title>
 <g id="a_node50"><a xlink:href="class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85" target="_top" xlink:title="Wait for events on an epoll instance.">
 <polygon fill="none" stroke="black" points="403,-202.5 403,-221.5 560,-221.5 560,-202.5 403,-202.5"/>
 <text text-anchor="middle" x="481.5" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00">EpollWrapper::waitForEvents</text>
 </a>
 </g>
 </g>
-<!-- Node68&#45;&gt;Node69 -->
+<!-- Node66&#45;&gt;Node67 -->
 <g id="edge63" class="edge">
-<title>Node68&#45;&gt;Node69</title>
+<title>Node66&#45;&gt;Node67</title>
 <path fill="none" stroke="midnightblue" d="M354.55,-212C366.72,-212 379.74,-212 392.62,-212"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="392.91,-215.5 402.91,-212 392.91,-208.5 392.91,-215.5"/>
 </g>

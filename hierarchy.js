@@ -17,6 +17,7 @@ var hierarchy =
       [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", null ]
     ] ],
     [ "HTTPRequest", "struct_h_t_t_p_request.html", null ],
+    [ "TargetResourceHandler::LocatingInfo", "struct_target_resource_handler_1_1_locating_info.html", null ],
     [ "Location", "struct_location.html", null ],
     [ "weblog::LogData", "classweblog_1_1_log_data.html", null ],
     [ "weblog::Logger", "classweblog_1_1_logger.html", null ],

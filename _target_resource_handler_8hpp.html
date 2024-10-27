@@ -150,6 +150,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler.html">TargetResourceHandler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to handle the target resource of a HTTP Request.  <a href="class_target_resource_handler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_target_resource_handler_1_1_locating_info.html">TargetResourceHandler::LocatingInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper struct to extract information out of <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a>.  <a href="struct_target_resource_handler_1_1_locating_info.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -194,28 +197,22 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Constant_iterator to the location that has the longest matching path with input. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00100">100</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;{</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    std::size_t longestMatch = 0;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    std::vector&lt;Location&gt;::const_iterator locationMatch = locations.end();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator it = locations.begin(); it != locations.end(); ++it) {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">if</span> (path.find(it-&gt;path) == 0) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">if</span> (it-&gt;path.length() &gt; longestMatch) {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                longestMatch = it-&gt;path.length();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                locationMatch = it;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span> locationMatch;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
-</div><!-- fragment --><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_target_resource_handler_8hpp_a3bd08192e5875b2c101b6f9aa2a99a5c_icgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-
+<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00103">103</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;{</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    std::size_t longestMatch = 0;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    std::vector&lt;Location&gt;::const_iterator locationMatch = locations.end();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator it = locations.begin(); it != locations.end(); ++it) {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">if</span> (path.find(it-&gt;path) == 0) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">if</span> (it-&gt;path.length() &gt; longestMatch) {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                longestMatch = it-&gt;path.length();</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                locationMatch = it;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">return</span> locationMatch;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
