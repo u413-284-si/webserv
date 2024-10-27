@@ -1,196 +1,58 @@
 #include "RequestParser.hpp"
 
-/* ====== HELPER FUNCTIONS ====== */
+/* ====== CONSTRUCTOR/DESTRUCTOR ====== */
 
 /**
- * @brief Checks if a given string starts with a single space followed by a non-space character.
+ * @brief Constructs a new RequestParser object.
  *
- * This function checks if the provided string `str` starts with exactly one space character followed
- * by a non-space character. If this condition is met, it returns a substring of `str` starting from
- * the second character. If the condition is not met, it sets the error code to StatusBadRequest and throws a
- * `std::runtime_error` with an appropriate error message.
- *
- * @param str The input string to be checked.
- * @param request The HTTP request object to be filled.
- * @return A substring of `str` starting from the second character if the input string starts with
- *         a single space followed by a non-space character.
- * @throws std::runtime_error If the input string does not start with a single space followed by a
- *         non-space character, an error is thrown and the error code is set to StatusBadRequest.
  */
-std::string RequestParser::checkForSpace(const std::string& str, HTTPRequest& request)
+RequestParser::RequestParser() { }
+
+/* ====== GETTERS/SETTERS ====== */
+
+/* ====== MEMBER FUNCTIONS ====== */
+
+/**
+ * @brief Parses the header of an HTTP request.
+ *
+ * This function takes a string representation of an HTTP request header.
+ * It extracts the request line and headers from the request string and populates the
+ * provided HTTPRequest object with the parsed data.
+ *
+ * @param headerString The string representation of the HTTP request header.
+ * @param request The HTTPRequest object to populate with the parsed data.
+ *
+ * @throws std::runtime_error If the request line or the headers do not conform to the RFC standards.
+ */
+void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& request)
 {
-	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
-		return (str.substr(1));
-	request.httpStatus = StatusBadRequest;
-	throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
+	m_requestStream.str(headerString);
+	parseRequestLine(request);
+	parseHeaders(request);
+	resetRequestStream();
 }
 
 /**
- * @brief Checks if a given string starts with CRLF.
+ * @brief Parses the body of an HTTP request.
  *
- * Only checks for the carriage return \r, as the linefeed \\n is discarded
- * by std::getline
- * @param str	Input string to be checked.
- * @param request The HTTP request object to be filled.
- * @throws std::runtime_error If the input string does not contain a single
- *         carriage return, an error is thrown and the error code is set to StatusBadRequest.
+ * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
+ * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
+ * is chunked or non-chunked.
+ *
+ * @param bodyString The string representation of the request body.
+ * @param request The HTTPRequest object to populate with the parsed data.
+ *
+ * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
+ * message.
  */
-void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
+void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
-	if (str.length() != 1 || str[0] != '\r') {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_MISS_CRLF);
-	}
-}
-
-/**
- * @brief Checks if a given character is a valid URI character.
- *
- * This function determines if the provided character `c` is a valid character in a URI.
- * It checks against both unreserved and reserved characters as per the URI specification.
- *
- * The unreserved characters include:
- * - Alphanumeric characters (letters and digits)
- * - Hyphen (`-`)
- * - Period (`.`)
- * - Underscore (`_`)
- * - Tilde (`~`)
- *
- * The reserved characters include:
- * - Colon (`:`)
- * - Slash (`/`)
- * - Question mark (`?`)
- * - Hash (`#`)
- * - Square brackets (`[`, `]`)
- * - At symbol (`@`)
- * - Exclamation mark (`!`)
- * - Dollar sign (`$`)
- * - Ampersand (`&`)
- * - Apostrophe (`'`)
- * - Parentheses (`(`, `)`)
- * - Asterisk (`*`)
- * - Plus sign (`+`)
- * - Comma (`,`),
- * - Semicolon (`;`)
- * - Equals sign (`=`)
- *
- * @param chr The character to be checked.
- * @return `true` if the character is not a valid URI character, `false` if valid.
- */
-bool RequestParser::isNotValidURIChar(uint8_t chr)
-{
-	// Check for unreserved chars
-	if ((std::isalnum(chr) != 0) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
-		return false;
-
-	// Check for reserved characters
-	switch (chr) {
-	case ':':
-	case '/':
-	case '?':
-	case '#':
-	case '[':
-	case ']':
-	case '@':
-	case '!':
-	case '$':
-	case '&':
-	case '\'':
-	case '(':
-	case ')':
-	case '*':
-	case '+':
-	case ',':
-	case ';':
-	case '=':
-		return false;
-	default:
-		return true;
-	}
-}
-
-/**
- * @brief Checks if a given character is a valid HTTP header field name character.
- *
- * This function determines if the provided character `c` is valid for use in an HTTP header field name.
- * According to the HTTP/1.1 specification, valid characters for header field names include alphanumeric
- * characters (letters and digits) and the following special characters:
- *
- * - Exclamation mark (`!`)
- * - Hash (`#`)
- * - Dollar sign (`$`)
- * - Percent (`%`)
- * - Ampersand (`&`)
- * - Apostrophe (`'`)
- * - Asterisk (`*`)
- * - Plus sign (`+`)
- * - Hyphen (`-`)
- * - Period (`.`)
- * - Caret (`^`)
- * - Underscore (`_`)
- * - Grave accent (`\``)
- * - Vertical bar (`|`)
- * - Tilde (`~`)
- *
- * @param chr The character to be checked.
- * @return `true` if the character is valid for an HTTP header field name, `false` otherwise.
- */
-bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
-{
-	if (std::isalnum(chr) != 0)
-		return true;
-
-	switch (chr) {
-	case '!':
-	case '#':
-	case '$':
-	case '%':
-	case '&':
-	case '\'':
-	case '*':
-	case '+':
-	case '-':
-	case '.':
-	case '^':
-	case '_':
-	case '`':
-	case '|':
-	case '~':
-		return true;
-	default:
-		return false;
-	}
-}
-
-/**
- * @brief Converts a hexadecimal string to a size_t value.
- *
- * This function takes a string representing a hexadecimal number,
- * validates it, and converts it to a size_t value.
- *
- * @param chunkSize The string containing the hexadecimal number.
- * @return The converted size_t value.
- *
- * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
- * @throws std::runtime_error if the conversion from string to size_t fails.
- */
-size_t RequestParser::convertHex(const std::string& chunkSize)
-{
-	if (chunkSize.empty())
-		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
-
-	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
-		if (std::isxdigit(*it) == 0)
-			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
-	}
-
-	std::istringstream iss(chunkSize);
-	size_t value = 0;
-
-	iss >> std::hex >> value;
-	if (iss.fail())
-		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
-	return value;
+	m_requestStream.str(bodyString);
+	if (request.isChunked)
+		parseChunkedBody(request);
+	else
+		parseNonChunkedBody(request);
+	resetRequestStream();
 }
 
 /**
@@ -229,39 +91,7 @@ void RequestParser::resetRequestStream()
 	m_requestStream.str("");
 }
 
-/* ====== CONSTRUCTOR/DESTRUCTOR ====== */
-
-/**
- * @brief Constructs a new RequestParser object.
- *
- * This constructor initializes the RequestParser object with default values.
- * The `m_hasBody` member is set to `false` and the `m_chunked` member is set to `false`.
- */
-RequestParser::RequestParser() { }
-
-/* ====== GETTERS/SETTERS ====== */
-
-/* ====== MEMBER FUNCTIONS ====== */
-
-/**
- * @brief Parses the header of an HTTP request.
- *
- * This function takes a string representation of an HTTP request header.
- * It extracts the request line and headers from the request string and populates the
- * provided HTTPRequest object with the parsed data.
- *
- * @param headerString The string representation of the HTTP request header.
- * @param request The HTTPRequest object to populate with the parsed data.
- *
- * @throws std::runtime_error If the request line or the headers do not conform to the RFC standards.
- */
-void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& request)
-{
-	m_requestStream.str(headerString);
-	parseRequestLine(request);
-	parseHeaders(request);
-	resetRequestStream();
-}
+/* ====== REQUEST LINE PARSING ====== */
 
 /**
  * @brief Parses the request line of an HTTP request.
@@ -301,58 +131,6 @@ void RequestParser::parseRequestLine(HTTPRequest& request)
 	LOG_DEBUG << "Parsed method: " << request.method;
 	LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
 	LOG_DEBUG << "Parsed version: " << request.version;
-}
-
-/**
- * @brief Parses the HTTP headers from the request stream.
- *
- * This function reads and parses the HTTP headers from the request stream until the end of the header section,
- * which is indicated by an empty line (`\r\n\r\n`). Each header is extracted, validated, and stored in the
- * `request` object.
- *
- * - If a header line begins with a space or tab, it is considered obsolete line folding, and the function
- *   sets the HTTP status to `400 Bad Request` and throws an exception.
- * - The function splits each header into a name and value pair using the `:` delimiter, trims any leading
- *   or trailing whitespace, and stores the pair in the `request.headers` map.
- * - The `Content-Length` and `Transfer-Encoding` headers are checked specifically for validity.
- *
- * @param request The HTTP request object where the parsed headers will be stored.
- *
- * @throws std::runtime_error If the header line contains obsolete line folding or if there's an issue
- * with the `Content-Length` header.
- */
-void RequestParser::parseHeaders(HTTPRequest& request)
-{
-	std::string headerLine;
-
-	// The end of the headers section is marked by an empty line (\r\n\r\n).
-	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
-		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
-			request.httpStatus = StatusBadRequest;
-			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
-		}
-		std::string headerName;
-		std::string headerValue;
-		const std::size_t delimiterPos = headerLine.find_first_of(':');
-		if (delimiterPos != std::string::npos) {
-			headerName = headerLine.substr(0, delimiterPos);
-			validateHeaderName(headerName, request);
-			headerValue = headerLine.substr(delimiterPos + 1);
-			;
-			if (headerValue[headerValue.size() - 1] == '\r')
-				headerValue.erase(headerValue.size() - 1);
-			headerValue = webutils::trimLeadingWhitespaces(headerValue);
-			webutils::trimTrailingWhiteSpaces(headerValue);
-			validateContentLength(headerName, headerValue, request);
-			request.headers[headerName] = headerValue;
-			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
-		}
-	}
-	validateTransferEncoding(request);
-	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
-		request.httpStatus = StatusBadRequest;
-		throw std::runtime_error(ERR_UNEXPECTED_BODY);
-	}
 }
 
 /**
@@ -552,28 +330,60 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 	return (requestLine.substr(++index));
 }
 
+/* ====== HEADER PARSING ====== */
+
 /**
- * @brief Parses the body of an HTTP request.
+ * @brief Parses the HTTP headers from the request stream.
  *
- * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
- * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
- * is chunked or non-chunked.
+ * This function reads and parses the HTTP headers from the request stream until the end of the header section,
+ * which is indicated by an empty line (`\r\n\r\n`). Each header is extracted, validated, and stored in the
+ * `request` object.
  *
- * @param bodyString The string representation of the request body.
- * @param request The HTTPRequest object to populate with the parsed data.
+ * - If a header line begins with a space or tab, it is considered obsolete line folding, and the function
+ *   sets the HTTP status to `400 Bad Request` and throws an exception.
+ * - The function splits each header into a name and value pair using the `:` delimiter, trims any leading
+ *   or trailing whitespace, and stores the pair in the `request.headers` map.
+ * - The `Content-Length` and `Transfer-Encoding` headers are checked specifically for validity.
  *
- * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
- * message.
+ * @param request The HTTP request object where the parsed headers will be stored.
+ *
+ * @throws std::runtime_error If the header line contains obsolete line folding or if there's an issue
+ * with the `Content-Length` header.
  */
-void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
+void RequestParser::parseHeaders(HTTPRequest& request)
 {
-	m_requestStream.str(bodyString);
-	if (request.isChunked)
-		parseChunkedBody(request);
-	else
-		parseNonChunkedBody(request);
-	resetRequestStream();
+	std::string headerLine;
+
+	// The end of the headers section is marked by an empty line (\r\n\r\n).
+	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
+		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
+		}
+		std::string headerName;
+		std::string headerValue;
+		const std::size_t delimiterPos = headerLine.find_first_of(':');
+		if (delimiterPos != std::string::npos) {
+			headerName = headerLine.substr(0, delimiterPos);
+			validateHeaderName(headerName, request);
+			webutils::lowercase(headerName);
+			headerValue = headerLine.substr(delimiterPos + 1);
+			if (headerValue[headerValue.size() - 1] == '\r')
+				headerValue.erase(headerValue.size() - 1);
+			headerValue = webutils::trimLeadingWhitespaces(headerValue);
+			webutils::trimTrailingWhiteSpaces(headerValue);
+			validateContentLength(headerName, headerValue, request);
+			validateNoMultipleHostHeaders(headerName, request);
+			request.headers[headerName] = headerValue;
+			LOG_DEBUG << "Parsed header: " << headerName << " -> " << headerValue;
+		}
+	}
+	validateHostHeader(request);
+	validateTransferEncoding(request);
+	validateMethodWithBody(request);
 }
+
+/* ====== BODY PARSING ====== */
 
 /**
  * @brief Parses a chunked body from the provided input stream.
@@ -627,7 +437,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		request.body += chunkData;
 		length += numChunkSize;
 	} while (numChunkSize > 0);
-	request.headers["Content-Length"] = webutils::toString(length);
+	request.headers["content-length"] = webutils::toString(length);
 }
 
 /**
@@ -668,12 +478,14 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
 	}
 }
+
+/* ====== CHECKS ====== */
 
 /**
  * @brief Checks the validity of an HTTP header field name.
@@ -721,13 +533,13 @@ void RequestParser::validateHeaderName(const std::string& headerName, HTTPReques
  */
 void RequestParser::validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request)
 {
-	if (headerName == "Content-Length") {
+	if (headerName == "content-length") {
 		if (headerValue.empty()) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 		}
-		if (request.headers.find("Content-Length") != request.headers.end()
-			&& request.headers["Content-Length"] != headerValue) {
+		if (request.headers.find("content-length") != request.headers.end()
+			&& request.headers["content-length"] != headerValue) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
@@ -736,7 +548,7 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		std::vector<long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, decimalBase);
+			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, constants::g_decimalBase);
 			if ((contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
@@ -769,14 +581,14 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
  */
 void RequestParser::validateTransferEncoding(HTTPRequest& request)
 {
-	if (request.headers.find("Transfer-Encoding") != request.headers.end()) {
-		if (request.headers.at("Transfer-Encoding").empty() || request.headers.find("Content-Length") != request.headers.end()) {
+	if (request.headers.find("transfer-encoding") != request.headers.end()) {
+		if (request.headers.at("transfer-encoding").empty()) {
 			request.httpStatus = StatusBadRequest;
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
 
-		if (request.headers.at("Transfer-Encoding").find("chunked") != std::string::npos) {
-			std::vector<std::string> encodings = webutils::split(request.headers.at("Transfer-Encoding"), ", ");
+		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
+			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
@@ -786,6 +598,291 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 			request.hasBody = true;
 		}
 	}
+}
+
+/**
+ * @brief Validates if the HTTP request method is allowed to have a body.
+ *
+ * This function checks if the HTTP request contains a body and whether the
+ * method used in the request is allowed to have a body. If the request has a
+ * body but the method is not allowed to have one, it sets the HTTP status to
+ * StatusMethodNotAllowed and throws a runtime error.
+ *
+ * @param request The HTTPRequest object to be validated.
+ *
+ * @throws std::runtime_error If the request has a body but the method is not
+ *         allowed to have a body.
+ */
+void RequestParser::validateMethodWithBody(HTTPRequest& request)
+{
+	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
+		request.httpStatus = StatusMethodNotAllowed;
+		throw std::runtime_error(ERR_UNEXPECTED_BODY);
+	}
+}
+
+/**
+ * @brief Validates the "Host" header in the given HTTP request.
+ *
+ * This function checks if the "Host" header is present and non-empty in the HTTP request.
+ * It also validates the format of the host value, ensuring it is either a valid IP address
+ * (with or without a port) or a valid hostname.
+ *
+ * @param request The HTTP request object containing headers to be validated.
+ *
+ * @throws std::runtime_error If the "Host" header is missing, empty, or contains an invalid value.
+ * The specific error message thrown depends on the type of validation failure:
+ * - ERR_MISSING_HOST_HEADER: The "Host" header is missing.
+ * - ERR_EMPTY_HOST_VALUE: The "Host" header value is empty.
+ * - ERR_INVALID_HOST_IP_WITH_PORT: The "Host" header contains an invalid IP address with a port.
+ * - ERR_INVALID_HOST_IP: The "Host" header contains an invalid IP address.
+ * - ERR_INVALID_HOSTNAME: The "Host" header contains an invalid hostname.
+ */
+void RequestParser::validateHostHeader(HTTPRequest& request)
+{
+	std::map<std::string, std::string>::const_iterator iter = request.headers.find("host");
+	if (iter == request.headers.end()) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
+	}
+
+	if (iter->second.empty()) {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
+	}
+
+	if (iter->second.find(':') != std::string::npos) {
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
+			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+				request.httpStatus = StatusBadRequest;
+				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
+			}
+	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_INVALID_HOST_IP);
+		}
+	 } else {
+		if (!isValidHostname(iter->second)) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_INVALID_HOSTNAME);
+		}
+	 }
+}
+
+/**
+ * @brief Validates that there are no multiple "Host" headers in the HTTP request.
+ *
+ * This function checks if the provided header name is "Host". If it is, it then checks
+ * if the "Host" header already exists in the request headers. If a "Host" header is
+ * found, it sets the HTTP status of the request to BadRequest and throws a runtime error.
+ *
+ * @param headerName The name of the header to validate.
+ * @param request The HTTP request object containing the headers.
+ *
+ * @throws std::runtime_error if multiple "Host" headers are found.
+ */
+void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request)
+{
+	if (headerName == "host") {
+		if (request.headers.find("host") != request.headers.end()) {
+			request.httpStatus = StatusBadRequest;
+			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
+		}
+	}
+}
+
+/* ====== HELPER FUNCTIONS ====== */
+
+/**
+ * @brief Checks if a given string starts with a single space followed by a non-space character.
+ *
+ * This function checks if the provided string `str` starts with exactly one space character followed
+ * by a non-space character. If this condition is met, it returns a substring of `str` starting from
+ * the second character. If the condition is not met, it sets the error code to StatusBadRequest and throws a
+ * `std::runtime_error` with an appropriate error message.
+ *
+ * @param str The input string to be checked.
+ * @param request The HTTP request object to be filled.
+ * @return A substring of `str` starting from the second character if the input string starts with
+ *         a single space followed by a non-space character.
+ * @throws std::runtime_error If the input string does not start with a single space followed by a
+ *         non-space character, an error is thrown and the error code is set to StatusBadRequest.
+ */
+std::string RequestParser::checkForSpace(const std::string& str, HTTPRequest& request)
+{
+	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
+		return (str.substr(1));
+	request.httpStatus = StatusBadRequest;
+	throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
+}
+
+/**
+ * @brief Checks if a given string starts with CRLF.
+ *
+ * Only checks for the carriage return \r, as the linefeed \\n is discarded
+ * by std::getline
+ * @param str	Input string to be checked.
+ * @param request The HTTP request object to be filled.
+ * @throws std::runtime_error If the input string does not contain a single
+ *         carriage return, an error is thrown and the error code is set to StatusBadRequest.
+ */
+void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
+{
+	if (str.length() != 1 || str[0] != '\r') {
+		request.httpStatus = StatusBadRequest;
+		throw std::runtime_error(ERR_MISS_CRLF);
+	}
+}
+
+/**
+ * @brief Checks if a given character is a valid URI character.
+ *
+ * This function determines if the provided character `character` is a valid character in a URI.
+ * It checks against both unreserved and reserved characters as per the URI specification.
+ *
+ * The unreserved characters include:
+ * - Alphanumeric characters (letters and digits)
+ * - Hyphen (`-`)
+ * - Period (`.`)
+ * - Underscore (`_`)
+ * - Tilde (`~`)
+ *
+ * The reserved characters include:
+ * - Colon (`:`)
+ * - Slash (`/`)
+ * - Question mark (`?`)
+ * - Hash (`#`)
+ * - Square brackets (`[`, `]`)
+ * - At symbol (`@`)
+ * - Exclamation mark (`!`)
+ * - Dollar sign (`$`)
+ * - Ampersand (`&`)
+ * - Apostrophe (`'`)
+ * - Parentheses (`(`, `)`)
+ * - Asterisk (`*`)
+ * - Plus sign (`+`)
+ * - Comma (`,`),
+ * - Semicolon (`;`)
+ * - Equals sign (`=`)
+ *
+ * @param chr The character to be checked.
+ * @return `true` if the character is not a valid URI character, `false` if valid.
+ */
+bool RequestParser::isNotValidURIChar(uint8_t chr)
+{
+	// Check for unreserved chars
+	if ((std::isalnum(chr) != 0) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
+		return false;
+
+	// Check for reserved characters
+	switch (chr) {
+	case ':':
+	case '/':
+	case '?':
+	case '#':
+	case '[':
+	case ']':
+	case '@':
+	case '!':
+	case '$':
+	case '&':
+	case '\'':
+	case '(':
+	case ')':
+	case '*':
+	case '+':
+	case ',':
+	case ';':
+	case '=':
+		return false;
+	default:
+		return true;
+	}
+}
+
+/**
+ * @brief Checks if a given character is a valid HTTP header field name character.
+ *
+ * This function determines if the provided character `character` is valid for use in an HTTP header field name.
+ * According to the HTTP/1.1 specification, valid characters for header field names include alphanumeric
+ * characters (letters and digits) and the following special characters:
+ *
+ * - Exclamation mark (`!`)
+ * - Hash (`#`)
+ * - Dollar sign (`$`)
+ * - Percent (`%`)
+ * - Ampersand (`&`)
+ * - Apostrophe (`'`)
+ * - Asterisk (`*`)
+ * - Plus sign (`+`)
+ * - Hyphen (`-`)
+ * - Period (`.`)
+ * - Caret (`^`)
+ * - Underscore (`_`)
+ * - Grave accent (`\``)
+ * - Vertical bar (`|`)
+ * - Tilde (`~`)
+ *
+ * @param chr The character to be checked.
+ * @return `true` if the character is valid for an HTTP header field name, `false` otherwise.
+ */
+bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
+{
+	if (std::isalnum(chr) != 0)
+		return true;
+
+	switch (chr) {
+	case '!':
+	case '#':
+	case '$':
+	case '%':
+	case '&':
+	case '\'':
+	case '*':
+	case '+':
+	case '-':
+	case '.':
+	case '^':
+	case '_':
+	case '`':
+	case '|':
+	case '~':
+		return true;
+	default:
+		return false;
+	}
+}
+
+/**
+ * @brief Converts a hexadecimal string to a size_t value.
+ *
+ * This function takes a string representing a hexadecimal number,
+ * validates it, and converts it to a size_t value.
+ *
+ * @param chunkSize The string containing the hexadecimal number.
+ * @return The converted size_t value.
+ *
+ * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
+ * @throws std::runtime_error if the conversion from string to size_t fails.
+ */
+size_t RequestParser::convertHex(const std::string& chunkSize)
+{
+	if (chunkSize.empty())
+		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
+
+	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
+		if (std::isxdigit(*it) == 0)
+			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
+	}
+
+	std::istringstream iss(chunkSize);
+	size_t value = 0;
+
+	iss >> std::hex >> value;
+	if (iss.fail())
+		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+	return value;
 }
 
 /**
@@ -816,4 +913,82 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	}
 	// this is never reached
 	return false;
+}
+
+
+/**
+ * @brief Checks if a character is valid in a hostname and updates the alpha flag.
+ * 
+ * This function determines if the given character is a valid part of a hostname.
+ * A valid hostname character is either an alphanumeric character or a hyphen ('-').
+ * Additionally, if the character is an alphabetic character, the function sets the 
+ * hasAlpha flag to true.
+ * 
+ * @param character The character to be checked.
+ * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
+ * @return true if the character is a valid hostname character, false otherwise.
+ */
+bool RequestParser::isValidHostnameChar(char character, bool& hasAlpha)
+{
+	if (std::isalpha(character) != 0)
+		hasAlpha = true;
+	return ((std::isalnum(character) != 0) || character == '-');
+}
+
+/**
+ * @brief Validates a label within a hostname.
+ *
+ * This function checks if a given label within a hostname is valid according to the following rules:
+ * - The label must not be empty and must not exceed the maximum label length (RFC 1035).
+ * - The label must not start or end with a hyphen ('-').
+ * - All characters in the label must be valid hostname characters (alphanumeric or hyphen).
+ *
+ * @param label The label string to be validated.
+ * @return true if the label is valid, false otherwise.
+ */
+bool RequestParser::isValidLabel(const std::string& label, bool& hasAlpha)
+{
+	if (label.empty() || label.length() > s_maxLabelLength)
+		return false;
+
+	// Label must not start or end with a hyphen
+	if (label.at(0) == '-' || label.at(label.length() - 1) == '-')
+		return false;
+
+	for (size_t i = 0; i < label.length(); ++i)
+		if (!isValidHostnameChar(label.at(i), hasAlpha))
+			return false;
+	return true;
+}
+
+/**
+ * @brief Validates if the given hostname is valid according to specific rules.
+ *
+ * This function checks if the hostname length does not exceed the maximum allowed length
+ * and if each label (substring between periods) within the hostname is valid.
+ * Also verifies that the hostname has at least one alphabetic character.
+ *
+ * @param hostname The hostname to be validated.
+ * @return true if the hostname is valid, false otherwise.
+ */
+bool RequestParser::isValidHostname(const std::string& hostname)
+{
+	if (hostname.length() > s_maxHostNameLength)
+		return false;
+
+	size_t labelStart = 0;
+	size_t labelEnd = 0;
+	bool hasAlpha = false;
+
+	// Split hostname by periods and validate each label
+	while (labelEnd != std::string::npos) {
+		labelEnd = hostname.find('.', labelStart);
+
+		std::string label = (labelEnd == std::string::npos) ? hostname.substr(labelStart)
+															: hostname.substr(labelStart, labelEnd - labelStart);
+		if (!isValidLabel(label, hasAlpha))
+			return false;
+		labelStart = labelEnd + 1;
+	}
+	return hasAlpha;
 }

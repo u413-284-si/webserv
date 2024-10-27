@@ -5,6 +5,7 @@
 #include "CGIHandler.hpp"
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
+#include "constants.hpp"
 #include "EpollWrapper.hpp"
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"

@@ -972,7 +972,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		return;
 	}
 
-	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("Host");
+	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("host");
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
 			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
@@ -1141,7 +1141,7 @@ bool isCompleteBody(Connection& connection)
 {
 	if (!connection.m_request.isChunked) {
 		unsigned long contentLength
-			= std::strtoul(connection.m_request.headers.at("Content-Length").c_str(), NULL, decimalBase);
+			= std::strtoul(connection.m_request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 		if (contentLength < connection.m_buffer.size()) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			LOG_ERROR << "Content-Length: " << contentLength << ", Buffer size: " << connection.m_buffer.size();

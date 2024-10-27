@@ -4,6 +4,7 @@
 
 #include "Method.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include <algorithm>
 #include <cassert>
 #include <ctime>
@@ -32,6 +33,11 @@ std::string getDefaultErrorPage(statusCode status);
 std::string methodToString(Method method);
 
 void closeFd(int& fileDescriptor);
+
+bool isIpAddressValid(const std::string& ipAddress);
+bool isPortValid(const std::string& port);
+
+void lowercase(std::string& str);
 
 /**
  * @brief Convert a type to a string
