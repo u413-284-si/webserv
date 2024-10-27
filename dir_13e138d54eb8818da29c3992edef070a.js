@@ -7,6 +7,7 @@ var dir_13e138d54eb8818da29c3992edef070a =
     [ "test_connectionReceiveHeader.cpp", "test__connection_receive_header_8cpp.html", "test__connection_receive_header_8cpp" ],
     [ "test_connectionSendResponse.cpp", "test__connection_send_response_8cpp.html", "test__connection_send_response_8cpp" ],
     [ "test_createVirtualServer.cpp", "test__create_virtual_server_8cpp.html", "test__create_virtual_server_8cpp" ],
+    [ "test_handleCompleteRequestHeader.cpp", "test__handle_complete_request_header_8cpp.html", "test__handle_complete_request_header_8cpp" ],
     [ "test_initVirtualServers.cpp", "test__init_virtual_servers_8cpp.html", "test__init_virtual_servers_8cpp" ],
     [ "test_isDuplicateServer.cpp", "test__is_duplicate_server_8cpp.html", "test__is_duplicate_server_8cpp" ],
     [ "test_OstreamInserters.cpp", "test___ostream_inserters_8cpp.html", "test___ostream_inserters_8cpp" ],

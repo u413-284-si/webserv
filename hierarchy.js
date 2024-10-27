@@ -35,6 +35,7 @@ var hierarchy =
       [ "ConnectionReceiveHeaderTest", "class_connection_receive_header_test.html", null ],
       [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", null ],
       [ "CreateVirtualServerTest", "class_create_virtual_server_test.html", null ],
+      [ "HandleCompleteRequestHeaderTest", "class_handle_complete_request_header_test.html", null ],
       [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", null ],
       [ "InvalidConfigFileTests", "class_invalid_config_file_tests.html", null ],
       [ "OstreamInsertersTest", "class_ostream_inserters_test.html", null ],
