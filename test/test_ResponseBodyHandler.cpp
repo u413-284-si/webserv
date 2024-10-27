@@ -131,8 +131,8 @@ TEST_F(ResponseBodyHandlerTest, CustomErrorPageStrangeType)
 	m_request.targetResource = "/not_existing";
 
 	m_responseBodyHandler.execute();
-	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
-	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusForbidden));
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
 }
 
 TEST_F(ResponseBodyHandlerTest, CustomErrorPageOpenFails)
