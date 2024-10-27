@@ -4,7 +4,6 @@
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "MockFileSystemPolicy.hpp"
-
 #include "TargetResourceHandler.hpp"
 
 class TargetResourceHandlerTest : public ::testing::Test {
@@ -42,7 +41,6 @@ protected:
 		m_configFile.servers[0].locations.push_back(m_location5);
 
 		m_request.method = MethodGet;
-		m_request.uri.path = "/test";
 	}
 	~TargetResourceHandlerTest() override { }
 
@@ -98,8 +96,7 @@ TEST_F(TargetResourceHandlerTest, LocationNotFound)
 
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
 
 	m_request.uri.path = "/test";
 
@@ -127,12 +124,13 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
-	m_request.uri.path = "/test";
+	m_request.uri.path = "/directory";
 
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
-	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
+	EXPECT_EQ(m_request.targetResource, "/workspaces/webserv/html/directory");
+	EXPECT_EQ(m_request.headers.at("location"), "/directory/");
 }
 
 TEST_F(TargetResourceHandlerTest, DirectoryIndex)
@@ -141,7 +139,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
 	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
 
-	m_request.uri.path = "/test/secret/";
+	m_request.uri.path = "/";
 
 	m_targetResourceHandler.execute(m_connection);
 
@@ -197,12 +195,12 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
-	m_request.uri.path = "/test/autoindex/";
+	m_request.uri.path = "/directory/";
 
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
-	EXPECT_EQ(m_request.targetResource, "/fourth/location/test/autoindex/");
+	EXPECT_EQ(m_request.targetResource, "/workspaces/webserv/html/directory/");
 	EXPECT_TRUE(m_request.hasAutoindex);
 }
 
@@ -211,7 +209,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
 
-	m_request.uri.path = "/test/";
+	m_request.uri.path = "/secret/";
 
 	m_targetResourceHandler.execute(m_connection);
 
@@ -225,7 +223,7 @@ TEST_F(TargetResourceHandlerTest, ServerError)
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Throw(std::runtime_error("Stat error")));
 
-	m_request.uri.path = "/test/";
+	m_request.uri.path = "/";
 
 	m_targetResourceHandler.execute(m_connection);
 
