@@ -478,9 +478,12 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
 /**
  * @brief Wrapper function to ResponseBuilder::buildResponse.
  *
- * @param request The HTTPRequest object to build the response for.
+ * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(HTTPRequest& request) { m_responseBuilder.buildResponse(request); }
+void Server::buildResponse(Connection& connection)
+{
+	m_responseBuilder.buildResponse(connection);
+}
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -495,11 +498,10 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  * @brief Wrapper function to TargetResourceHandler::execute.
  *
  * @param connection The Connection object to handle the target resource for.
- * @param request The HTTPRequest object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection, HTTPRequest& request)
+void Server::findTargetResource(Connection& connection)
 {
-	m_targetResourceHandler.execute(connection, request);
+	m_targetResourceHandler.execute(connection);
 }
 
 /* ====== INITIALIZATION ====== */
@@ -982,7 +984,12 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		}
 	}
 
-	server.findTargetResource(connection, connection.m_request);
+	server.findTargetResource(connection);
+
+	// bool array and method are scoped with enum Method
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+	if (!connection.location->allowedMethods[connection.m_request.method])
+		connection.m_request.httpStatus = StatusMethodNotAllowed;
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
 		ProcessOps processOps;
@@ -1307,7 +1314,7 @@ void connectionBuildResponse(Server& server, int activeFd, Connection& connectio
 
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
-	server.buildResponse(connection.m_request);
+	server.buildResponse(connection);
 	connection.m_buffer.clear();
 	connection.m_buffer = server.getResponse();
 	connection.m_status = Connection::SendResponse;

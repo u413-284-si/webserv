@@ -110,11 +110,11 @@ public:
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
-	void buildResponse(HTTPRequest& request);
+	void buildResponse(Connection& connection);
 	std::string getResponse();
 
 	// Dispatch to TargetResourceHandler
-	void findTargetResource(Connection& connection, HTTPRequest& request);
+	void findTargetResource(Connection& connection);
 
 private:
 	const ConfigFile& m_configFile; /**< Global config file */

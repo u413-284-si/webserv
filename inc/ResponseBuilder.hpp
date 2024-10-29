@@ -22,7 +22,7 @@ class ResponseBuilder {
 public:
 	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy);
 
-	void buildResponse(HTTPRequest& request);
+	void buildResponse(Connection& connection);
 	std::string getResponse() const;
 
 private:

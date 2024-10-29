@@ -140,6 +140,8 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 		return "OK";
 	case StatusMovedPermanently:
 		return "Moved Permanently";
+	case StatusPermanentRedirect:
+		return "Permanent Redirect";
 	case StatusBadRequest:
 		return "Bad Request";
 	case StatusForbidden:
@@ -166,118 +168,6 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	return "";
 }
 
-/**
- * @brief Get Default Error Page for a given status code.
- *
- * @param statusCode Status code.
- * @return std::string Default error page.
- */
-std::string getDefaultErrorPage(statusCode statusCode)
-{
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
-
-	static const char* error301Page = "<html>\r\n"
-									  "<head><title>301 Moved permanently</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>301 Moved permanently</h1></center>\r\n";
-
-	static const char* error400Page = "<html>\r\n"
-									  "<head><title>400 Bad request</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>400 Bad request</h1></center>\r\n";
-
-	static const char* error403Page = "<html>\r\n"
-									  "<head><title>403 Forbidden</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>403 Forbidden</h1></center>\r\n";
-
-	static const char* error404Page = "<html>\r\n"
-									  "<head><title>404 Not Found</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>404 Not Found</h1></center>\r\n";
-
-	static const char* error405Page = "<html>\r\n"
-									  "<head><title>405 Method not allowed</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>405 Method not allowed</h1></center>\r\n";
-
-	static const char* error408Page = "<html>\r\n"
-									  "<head><title>408 Request timeout</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>408 Request timeout</h1></center>\r\n";
-
-	static const char* error413Page = "<html>\r\n"
-									  "<head><title>413 Request entity too large</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>413 Request entity too large</h1></center>\r\n";
-
-	static const char* error431Page = "<html>\r\n"
-									  "<head><title>431 Request header fields too large</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>431 Request header fields too large</h1></center>\r\n";
-
-	static const char* error500page = "<html>\r\n"
-									  "<head><title>500 Internal server error</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>500 Internal server error</h1></center>\r\n";
-
-	static const char* error501page = "<html>\r\n"
-									  "<head><title>501 Method not implemented</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>501 Method not implemented</h1></center>\r\n";
-
-	static const char* error505page = "<html>\r\n"
-									  "<head><title>505 Non supported version</title></head>\r\n"
-									  "<body>\r\n"
-									  "<center><h1>505 Non supported version</h1></center>\r\n";
-
-	static const char* errorTail = "<hr><center>TriHard</center>\r\n"
-								   "</body>\r\n"
-								   "</html>\r\n";
-
-	std::string ret;
-
-	switch (statusCode) {
-	case StatusOK:
-		return ("");
-	case StatusMovedPermanently:
-		ret = error301Page;
-		break;
-	case StatusBadRequest:
-		ret = error400Page;
-		break;
-	case StatusForbidden:
-		ret = error403Page;
-		break;
-	case StatusNotFound:
-		ret = error404Page;
-		break;
-	case StatusRequestEntityTooLarge:
-		ret = error413Page;
-		break;
-	case StatusMethodNotAllowed:
-		ret = error405Page;
-		break;
-	case StatusRequestTimeout:
-		ret = error408Page;
-		break;
-	case StatusRequestHeaderFieldsTooLarge:
-		ret = error431Page;
-		break;
-	case StatusInternalServerError:
-		ret = error500page;
-		break;
-	case StatusMethodNotImplemented:
-		ret = error501page;
-		break;
-	case StatusNonSupportedVersion:
-		ret = error505page;
-		break;
-	}
-
-	ret += errorTail;
-	return (ret);
-}
 
 std::string methodToString(Method method)
 {
