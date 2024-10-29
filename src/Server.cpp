@@ -104,20 +104,14 @@ time_t Server::getClientTimeout() const { return m_clientTimeout; }
  *
  * @return std::vector<char>& Client header buffer.
  */
-std::vector<char>& Server::getClientHeaderBuffer()
-{
-	return m_clientHeaderBuffer;
-}
+std::vector<char>& Server::getClientHeaderBuffer() { return m_clientHeaderBuffer; }
 
 /**
  * @brief Getter for client body buffer.
  *
  * @return std::vector<char>& Client body buffer.
  */
-std::vector<char>& Server::getClientBodyBuffer()
-{
-	return m_clientBodyBuffer;
-}
+std::vector<char>& Server::getClientBodyBuffer() { return m_clientBodyBuffer; }
 
 /* ====== SETTERS ====== */
 
@@ -917,8 +911,7 @@ void connectionReceiveBody(Server& server, int clientFd, Connection& connection)
 				LOG_ERROR << ERR_CONTENT_LENGTH;
 				connection.m_status = Connection::BuildResponse;
 				server.modifyEvent(clientFd, EPOLLOUT);
-			}
-			else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+			} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
 				LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 				connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 				connection.m_status = Connection::BuildResponse;
