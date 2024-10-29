@@ -1,5 +1,4 @@
 #include "ConfigFile.hpp"
-#include <string>
 
 /* ====== CONSTRUCTORS ====== */
 
@@ -78,16 +77,18 @@ ConfigFile createDummyConfig()
 	location4.errorPage[StatusForbidden] = "/error403.html";
 
 	Location location5;
-	location3.path = "/cgi-bin";
-	location3.root = "/workspaces/webserv";
-	location3.cgiPath = "/usr/bin/bash";
-	location3.cgiExt = ".sh";
+	location5.path = "/cgi-bin";
+	location5.root = "/workspaces/webserv";
+	location5.cgiPath = "/usr/bin/bash";
+	location5.cgiExt = ".sh";
 
 	Location location6;
-	location4.path = "/cgi-bin";
-	location4.root = "/workspaces/webserv";
-	location4.cgiPath = "/usr/bin/python3";
-	location4.cgiExt = ".py";
+	location6.path = "/cgi-bin";
+	location6.root = "/workspaces/webserv";
+	location6.cgiPath = "/usr/bin/python3";
+	location6.cgiExt = ".py";
+    location6.allowedMethods[MethodGet] = true;
+    location6.allowedMethods[MethodPost] = true;
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
