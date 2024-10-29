@@ -3,6 +3,7 @@
 
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 #include "StatusCode.hpp"
 
@@ -12,7 +13,7 @@ using ::testing::Return;
 class HandleCompleteRequestHeaderTest : public ::testing::Test {
 protected:
 	HandleCompleteRequestHeaderTest()
-		: m_server(m_configFile, m_epollWrapper, m_socketPolicy)
+		: m_server(m_configFile, m_epollWrapper, m_socketPolicy, processOps)
 	{
 		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
 
@@ -21,15 +22,17 @@ protected:
 	}
 	~HandleCompleteRequestHeaderTest() override { }
 
+    const int m_dummyFd = 10;
 	ConfigFile m_configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> m_epollWrapper;
 	MockSocketPolicy m_socketPolicy;
+    MockProcessOps processOps;
 	Server m_server;
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 
-	Connection m_connection = Connection(m_serverSock, Socket(), m_configFile.servers);
+	Connection m_connection = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
 
-	const int m_dummyFd = 10;
+	
 };
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequest)

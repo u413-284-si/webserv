@@ -15,15 +15,17 @@ class ResponseBodyHandlerTest : public ::testing::Test {
 	ResponseBodyHandlerTest() { }
 	~ResponseBodyHandlerTest() override { }
 
+    const int dummyFd = 10;
 	ConfigFile m_configFile = createDummyConfig();
 	Socket m_serverSock = {
 		.host = m_configFile.servers[0].host,
 		.port = m_configFile.servers[0].port
 	};
-	Connection m_connection = Connection(m_serverSock, Socket(), m_configFile.servers);
 	HTTPRequest& m_request = m_connection.m_request;
 	std::string m_responseBody;
 	MockFileSystemPolicy m_fileSystemPolicy;
+
+   	Connection m_connection = Connection(m_serverSock, Socket(), dummyFd, m_configFile.servers);
 	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemPolicy);
 };
 
