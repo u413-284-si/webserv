@@ -35,7 +35,8 @@ void ResponseBodyHandler::execute()
 		if (m_responseBody.find("Content-Type: ") == std::string::npos) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
-		} } else if (m_request.hasAutoindex) {
+		} 
+    } else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
