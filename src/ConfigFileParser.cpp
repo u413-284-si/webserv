@@ -127,8 +127,7 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 	if (block == LocationBlock)
 		skipLocationBlockPath(index);
 
-	index++;
-	return m_configFileContent[index - 1] == '{';
+	return m_configFileContent[index] == '{';
 }
 
 /**
