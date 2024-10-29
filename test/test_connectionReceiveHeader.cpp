@@ -4,6 +4,7 @@
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::DoAll;
@@ -14,7 +15,7 @@ using ::testing::SetArrayArgument;
 class ConnectionReceiveHeaderTest : public ::testing::Test {
 protected:
 	ConnectionReceiveHeaderTest()
-		: server(configFile, epollWrapper, socketPolicy)
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ON_CALL(epollWrapper, modifyEvent)
 			.WillByDefault(Return(true));
@@ -27,15 +28,16 @@ protected:
 	ConfigFile configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 	Socket m_serverSock = {
 		.host = "127.0.0.1",
 		.port = "8080"
 	};
 
-	Connection connection = Connection(m_serverSock, Socket(), configFile.servers);
-
 	const int dummyFd = 10;
+
+	Connection connection = Connection(m_serverSock, Socket(), dummyFd, configFile.servers);
 };
 
 TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)

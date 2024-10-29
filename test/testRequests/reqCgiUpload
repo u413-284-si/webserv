@@ -1,0 +1,6 @@
+POST /cgi-bin/upload.py?filename=myfile.txt&directory=documents HTTP/1.1
+Host: 127.0.0.1
+Content-Length: 36
+Content-Type: text/plain
+
+This is the content of the dudu.

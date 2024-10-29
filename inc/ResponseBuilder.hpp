@@ -28,6 +28,7 @@ public:
 private:
 	void appendStatusLine(const HTTPRequest& request);
 	void appendHeaders(const HTTPRequest& request);
+	void appendHeadersCGI();
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void resetBuilder();

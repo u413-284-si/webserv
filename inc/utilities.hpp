@@ -2,6 +2,7 @@
 
 /* ====== LIBRARIES ====== */
 
+#include "Method.hpp"
 #include "StatusCode.hpp"
 #include "constants.hpp"
 #include <algorithm>
@@ -9,6 +10,7 @@
 #include <ctime>
 #include <iostream>
 #include <sstream>
+#include <unistd.h>
 #include <vector>
 
 /* ====== DECLARATIONS ====== */
@@ -26,6 +28,10 @@ std::string getGMTString(time_t now, const std::string& format);
 std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
+
+std::string methodToString(Method method);
+
+void closeFd(int& fileDescriptor);
 
 bool isIpAddressValid(const std::string& ipAddress);
 bool isPortValid(const std::string& port);

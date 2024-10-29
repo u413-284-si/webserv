@@ -10,7 +10,7 @@
 class TargetResourceHandlerTest : public ::testing::Test {
 protected:
 	TargetResourceHandlerTest()
-		: m_connection(Connection(m_serverSock, Socket(), m_configFile.servers))
+		: m_connection(Connection(m_serverSock, Socket(), dummyFd, m_configFile.servers))
 		, m_targetResourceHandler(m_fileSystemPolicy)
 	{
 		Location m_location1;
@@ -46,6 +46,7 @@ protected:
 	}
 	~TargetResourceHandlerTest() override { }
 
+    const int dummyFd = 10;
 	ConfigFile m_configFile = createDummyConfig();
 	MockFileSystemPolicy m_fileSystemPolicy;
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };

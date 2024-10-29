@@ -169,6 +169,31 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 }
 
 
+std::string methodToString(Method method)
+{
+	assert(method >= MethodGet && method <= MethodCount);
+
+	switch (method) {
+	case MethodGet:
+		return "GET";
+	case MethodPost:
+		return "POST";
+	case MethodDelete:
+		return "DELETE";
+	case MethodCount:
+		return "METHODCOUNT";
+	}
+	return "";
+}
+
+void closeFd(int& fileDescriptor)
+{
+	if (fileDescriptor != -1) {
+		close(fileDescriptor);
+		fileDescriptor = -1;
+	}
+}
+
 /**
  * @brief Validates whether a given string is a valid IPv4 address.
  *

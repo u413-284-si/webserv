@@ -3,6 +3,7 @@
 
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::NiceMock;
@@ -11,7 +12,7 @@ using ::testing::Return;
 class CheckForTimeoutTest : public ::testing::Test {
 protected:
 	CheckForTimeoutTest()
-		: server(configFile, epollWrapper, socketPolicy)
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ConfigServer serverConfig;
 		serverConfig.host = serverSock.host;
@@ -26,6 +27,7 @@ protected:
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 
 	const int dummyFd = 10;

@@ -48,7 +48,10 @@ void ResponseBuilder::buildResponse(Connection& connection)
 	responseBodyHandler.execute();
 
 	appendStatusLine(request);
-	appendHeaders(request);
+	if (request.hasCGI && request.httpStatus == StatusOK)
+		appendHeadersCGI();
+	else
+		appendHeaders(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeader.str();
 
@@ -78,8 +81,9 @@ void ResponseBuilder::resetBuilder()
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
-					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
+		return;
+	m_responseHeader << "HTTP/1.1 " << ' ' << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
@@ -113,6 +117,25 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	}
 	// Delimiter
 	m_responseHeader << "\r\n";
+}
+
+/**
+ * @brief Append headers to the response for CGI.
+ *
+ * The following headers are appended:
+ * Content-Length: Length of the response body.
+ * Server: TriHard.
+ * Date: Current date in GMT.
+ * Location: Target resource if status is StatusMovedPermanently.
+ */
+void ResponseBuilder::appendHeadersCGI()
+{
+	// Content-Length
+	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+	// Server
+	m_responseHeader << "Server: TriHard\r\n";
+	// Date
+	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 }
 
 /**

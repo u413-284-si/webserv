@@ -1,4 +1,5 @@
 #include "ConfigFileParser.hpp"
+#include "ProcessOps.hpp"
 #include "Server.hpp"
 
 int main(int argc, char** argv)
@@ -17,13 +18,14 @@ int main(int argc, char** argv)
 	try {
 		EpollWrapper epollWrapper(10, -1);
 		SocketPolicy socketPolicy;
+        ProcessOps processOps;
 
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(argv[1]);
 
 		configFile = createDummyConfig();
 
-		Server server(configFile, epollWrapper, socketPolicy);
+		Server server(configFile, epollWrapper, socketPolicy, processOps);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		runServer(server);
 	} catch (std::exception& e) {

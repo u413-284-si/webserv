@@ -1,5 +1,4 @@
 #include "ConfigFile.hpp"
-#include <string>
 
 /* ====== CONSTRUCTORS ====== */
 
@@ -77,11 +76,26 @@ ConfigFile createDummyConfig()
 	location4.root = "/workspaces/webserv/html";
 	location4.errorPage[StatusForbidden] = "/error403.html";
 
+	Location location5;
+	location5.path = "/cgi-bin";
+	location5.root = "/workspaces/webserv";
+	location5.cgiPath = "/usr/bin/bash";
+	location5.cgiExt = ".sh";
+
+	Location location6;
+	location6.path = "/cgi-bin";
+	location6.root = "/workspaces/webserv";
+	location6.cgiPath = "/usr/bin/python3";
+	location6.cgiExt = ".py";
+    location6.allowedMethods[MethodGet] = true;
+    location6.allowedMethods[MethodPost] = true;
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
 	serverConfig8080.locations.push_back(location2);
 	serverConfig8080.locations.push_back(location3);
 	serverConfig8080.locations.push_back(location4);
+	serverConfig8080.locations.push_back(location5);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
@@ -91,6 +105,12 @@ ConfigFile createDummyConfig()
 	serverConfig8090.host = "127.0.0.1";
 	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
+
+	ConfigServer serverConfig8081;
+	serverConfig8081.locations.push_back(location6);
+	serverConfig8081.host = "127.0.0.1";
+	serverConfig8081.port = "8081";
+	serverConfig8081.serverName = "cgi";
 
 	ConfigServer serverConfig8090dupl;
 	serverConfig8090dupl.locations.push_back(location1);
@@ -102,6 +122,7 @@ ConfigFile createDummyConfig()
 	configFile.servers.push_back(serverConfig8080);
 	configFile.servers.push_back(serverConfig8090);
 	configFile.servers.push_back(serverConfig8090dupl);
+	configFile.servers.push_back(serverConfig8081);
 
 	return configFile;
 }

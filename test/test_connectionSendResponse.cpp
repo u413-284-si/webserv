@@ -3,6 +3,7 @@
 
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::DoAll;
@@ -13,7 +14,7 @@ using ::testing::SetArrayArgument;
 class ConnectionSendResponseTest : public ::testing::Test {
 protected:
 	ConnectionSendResponseTest()
-		: server(configFile, epollWrapper, socketPolicy)
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ON_CALL(epollWrapper, modifyEvent).WillByDefault(Return(true));
 
@@ -26,12 +27,13 @@ protected:
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 
-	Connection connection = Connection(Socket(), Socket(), configFile.servers);
-	std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nABCD";
-
 	const int dummyFd = 10;
+
+	Connection connection = Connection(Socket(), Socket(), dummyFd, configFile.servers);
+	std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nABCD";
 };
 
 TEST_F(ConnectionSendResponseTest, SendFullResponseKeepAlive)
