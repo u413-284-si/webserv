@@ -77,18 +77,24 @@ ConfigFile createDummyConfig()
 	location4.root = "/workspaces/webserv/html";
 	location4.errorPage[StatusForbidden] = "/error403.html";
 
-	Location location3;
+	Location location5;
 	location3.path = "/cgi-bin";
 	location3.root = "/workspaces/webserv";
 	location3.cgiPath = "/usr/bin/bash";
 	location3.cgiExt = ".sh";
+
+	Location location6;
+	location4.path = "/cgi-bin";
+	location4.root = "/workspaces/webserv";
+	location4.cgiPath = "/usr/bin/python3";
+	location4.cgiExt = ".py";
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
 	serverConfig8080.locations.push_back(location2);
 	serverConfig8080.locations.push_back(location3);
 	serverConfig8080.locations.push_back(location4);
-	serverConfig8080.locations.push_back(location3);
+	serverConfig8080.locations.push_back(location5);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
@@ -99,14 +105,8 @@ ConfigFile createDummyConfig()
 	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
 
-	Location location4;
-	location4.path = "/cgi-bin";
-	location4.root = "/workspaces/webserv";
-	location4.cgiPath = "/usr/bin/python3";
-	location4.cgiExt = ".py";
-
 	ConfigServer serverConfig8081;
-	serverConfig8081.locations.push_back(location4);
+	serverConfig8081.locations.push_back(location6);
 	serverConfig8081.host = "127.0.0.1";
 	serverConfig8081.port = "8081";
 	serverConfig8081.serverName = "cgi";
