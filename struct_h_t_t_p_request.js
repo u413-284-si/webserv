@@ -11,5 +11,6 @@ var struct_h_t_t_p_request =
     [ "hasBody", "struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff", null ],
     [ "isChunked", "struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017", null ],
     [ "targetResource", "struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3", null ],
-    [ "hasAutoindex", "struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0", null ]
+    [ "hasAutoindex", "struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0", null ],
+    [ "hasCGI", "struct_h_t_t_p_request.html#abea0de9c98e8420ef93a90354fbdec48", null ]
 ];

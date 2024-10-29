@@ -7,6 +7,8 @@ var utilities_8cpp =
     [ "getGMTString", "utilities_8cpp.html#ae29ddfc0ffbb42f9b1bd34ed1d77b762", null ],
     [ "getLocaltimeString", "utilities_8cpp.html#ab6119b08526700518f576bb78554be59", null ],
     [ "statusCodeToReasonPhrase", "utilities_8cpp.html#a1ea30da2f7898c9a992297784744fe91", null ],
+    [ "methodToString", "utilities_8cpp.html#a66980bbe8e553002953513c019d20f19", null ],
+    [ "closeFd", "utilities_8cpp.html#ad74875f464c74bd45589002fc385605e", null ],
     [ "isIpAddressValid", "utilities_8cpp.html#a6748cf6b6dd81b72c9e46ed8b800ffed", null ],
     [ "isPortValid", "utilities_8cpp.html#a2abb972ac583db43b6bad84e0e37c22d", null ],
     [ "lowercase", "utilities_8cpp.html#a81d8421d47b55041d0e1336855f72229", null ]

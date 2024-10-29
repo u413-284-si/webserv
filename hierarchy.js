@@ -5,6 +5,7 @@ var hierarchy =
       [ "weblog::LogOutputterFile", "classweblog_1_1_log_outputter_file.html", null ]
     ] ],
     [ "AutoindexHandler", "class_autoindex_handler.html", null ],
+    [ "CGIHandler", "class_c_g_i_handler.html", null ],
     [ "ConfigFile", "struct_config_file.html", null ],
     [ "ConfigFileParser", "class_config_file_parser.html", null ],
     [ "ConfigServer", "struct_config_server.html", null ],
@@ -21,6 +22,9 @@ var hierarchy =
     [ "Location", "struct_location.html", null ],
     [ "weblog::LogData", "classweblog_1_1_log_data.html", null ],
     [ "weblog::Logger", "classweblog_1_1_logger.html", null ],
+    [ "ProcessOps", "class_process_ops.html", [
+      [ "MockProcessOps", "class_mock_process_ops.html", null ]
+    ] ],
     [ "RequestParser", "class_request_parser.html", null ],
     [ "ResponseBodyHandler", "class_response_body_handler.html", null ],
     [ "ResponseBuilder", "class_response_builder.html", null ],
@@ -32,9 +36,12 @@ var hierarchy =
     [ "TargetResourceHandler", "class_target_resource_handler.html", null ],
     [ "testing::Test", null, [
       [ "AcceptConnectionsTest", "class_accept_connections_test.html", null ],
+      [ "CGIHandlerTest", "class_c_g_i_handler_test.html", null ],
       [ "CheckForTimeoutTest", "class_check_for_timeout_test.html", null ],
+      [ "ConnectionReceiveFromCGITest", "class_connection_receive_from_c_g_i_test.html", null ],
       [ "ConnectionReceiveHeaderTest", "class_connection_receive_header_test.html", null ],
       [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", null ],
+      [ "ConnectionSendToCGITest", "class_connection_send_to_c_g_i_test.html", null ],
       [ "CreateVirtualServerTest", "class_create_virtual_server_test.html", null ],
       [ "HandleCompleteRequestHeaderTest", "class_handle_complete_request_header_test.html", null ],
       [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", null ],
@@ -43,6 +50,7 @@ var hierarchy =
       [ "ParseBodyTest", "class_parse_body_test.html", null ],
       [ "ParseHeadersTest", "class_parse_headers_test.html", null ],
       [ "ParseRequestLineTest", "class_parse_request_line_test.html", null ],
+      [ "RegisterCGITest", "class_register_c_g_i_test.html", null ],
       [ "RegisterConnectionTest", "class_register_connection_test.html", null ],
       [ "RegisterVirtualServerTest", "class_register_virtual_server_test.html", null ],
       [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", null ],

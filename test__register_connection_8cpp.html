@@ -127,6 +127,7 @@ $(document).ready(function(){initNavTree('test__register_connection_8cpp.html','
 <code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_mock_epoll_wrapper_8hpp_source.html">MockEpollWrapper.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_mock_socket_policy_8hpp_source.html">MockSocketPolicy.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_mock_process_ops_8hpp_source.html">MockProcessOps.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_server_8hpp_source.html">Server.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_registerConnection.cpp:</div>
@@ -178,15 +179,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00040">40</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    EXPECT_EQ(server.getConnections().size(), 1);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00042">42</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    EXPECT_EQ(server.getConnections().size(), 1);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -216,15 +217,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00050">50</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    EXPECT_CALL(epollWrapper, addEvent)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    .Times(1)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    .WillOnce(Return(<span class="keyword">false</span>));</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    EXPECT_EQ(server.getConnections().size(), 0);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00052">52</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    EXPECT_CALL(epollWrapper, addEvent)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    .Times(1)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    .WillOnce(Return(<span class="keyword">false</span>));</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    EXPECT_EQ(server.getConnections().size(), 0);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,27 +255,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00060">60</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="struct_socket.html">Socket</a> oldClientSocket = {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="stringliteral">&quot;1.1.1.1&quot;</span>,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="stringliteral">&quot;11111&quot;</span> };</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, oldClientSocket), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    EXPECT_EQ(server.getConnections().size(), 1);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// try to add connection with same fd</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    EXPECT_EQ(server.getConnections().size(), 1);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, oldClientSocket.<a class="code" href="struct_socket.html#a986f7cf6e2d3334e9ad91a35681c1f80">host</a>);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, oldClientSocket.<a class="code" href="struct_socket.html#af75711bf9c0f0788d7767f836a97c5e6">port</a>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00062">62</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="struct_socket.html">Socket</a> oldClientSocket = {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="stringliteral">&quot;1.1.1.1&quot;</span>,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="stringliteral">&quot;11111&quot;</span> };</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, oldClientSocket), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    EXPECT_EQ(server.getConnections().size(), 1);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// reuse the same dummyFd should fail as a connection with this fd already exists</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    EXPECT_EQ(server.getConnections().size(), 1);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
 <div class="ttc" id="astruct_socket_html"><div class="ttname"><a href="struct_socket.html">Socket</a></div><div class="ttdoc">Represent a socket connection.</div><div class="ttdef"><b>Definition:</b> <a href="_socket_8hpp_source.html#l00008">Socket.hpp:8</a></div></div>
-<div class="ttc" id="astruct_socket_html_a986f7cf6e2d3334e9ad91a35681c1f80"><div class="ttname"><a href="struct_socket.html#a986f7cf6e2d3334e9ad91a35681c1f80">Socket::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Definition:</b> <a href="_socket_8hpp_source.html#l00009">Socket.hpp:9</a></div></div>
-<div class="ttc" id="astruct_socket_html_af75711bf9c0f0788d7767f836a97c5e6"><div class="ttname"><a href="struct_socket.html#af75711bf9c0f0788d7767f836a97c5e6">Socket::port</a></div><div class="ttdeci">std::string port</div><div class="ttdef"><b>Definition:</b> <a href="_socket_8hpp_source.html#l00010">Socket.hpp:10</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

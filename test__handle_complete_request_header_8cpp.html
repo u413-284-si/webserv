@@ -126,6 +126,7 @@ $(document).ready(function(){initNavTree('test__handle_complete_request_header_8
 <code>#include &lt;gtest/gtest.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="_mock_epoll_wrapper_8hpp_source.html">MockEpollWrapper.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_mock_socket_policy_8hpp_source.html">MockSocketPolicy.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_mock_process_ops_8hpp_source.html">MockProcessOps.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_server_8hpp_source.html">Server.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_status_code_8hpp_source.html">StatusCode.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -182,22 +183,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00035">35</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;GET / HTTP/1.1\r\nHost:example.com\r\n\r\n&quot;</span>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    EXPECT_EQ(m_connection.m_request.httpStatus, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="ttc" id="a_server_8hpp_html_a83350eae81b96dd7b301d1238268ffdb"><div class="ttname"><a href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a></div><div class="ttdeci">void handleCompleteRequestHeader(Server &amp;server, int clientFd, Connection &amp;connection)</div><div class="ttdoc">Handles a received complete request header.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00828">Server.cpp:828</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00038">38</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;GET / HTTP/1.1\r\nHost:example.com\r\n\r\n&quot;</span>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    EXPECT_EQ(m_connection.m_request.httpStatus, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="ttc" id="a_server_8hpp_html_a83350eae81b96dd7b301d1238268ffdb"><div class="ttname"><a href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a></div><div class="ttdeci">void handleCompleteRequestHeader(Server &amp;server, int clientFd, Connection &amp;connection)</div><div class="ttdoc">Handles the complete request header received from a client.</div><div class="ttdef"><b>Definition:</b> <a href="_server_8cpp_source.html#l00964">Server.cpp:964</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a></div><div class="ttdeci">@ BuildResponse</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00024">Connection.hpp:24</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a></div><div class="ttdeci">@ BuildResponse</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00027">Connection.hpp:27</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a00d3c07453ceb8ca6576a951222a7829_cgraph.svg" width="100%" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a00d3c07453ceb8ca6576a951222a7829_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -229,20 +230,20 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00045">45</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;POST / HTTP/1.1\r\nHost:example.com\r\n\r\n&quot;</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    EXPECT_EQ(m_connection.m_request.httpStatus, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00048">48</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;POST / HTTP/1.1\r\nHost:example.com\r\n\r\n&quot;</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    EXPECT_EQ(m_connection.m_request.httpStatus, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a></div><div class="ttdeci">@ StatusMethodNotAllowed</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00012">StatusCode.hpp:12</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a5705d4672adfefa8169bd3e9406e75f6_cgraph.svg" width="100%" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a5705d4672adfefa8169bd3e9406e75f6_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -274,22 +275,22 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00055">55</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;POST / HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body&quot;</span>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    m_configFile.servers[0].locations[0].allowedMethods[<a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>] = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">Connection::ReceiveBody</a>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    EXPECT_EQ(m_connection.m_buffer, <span class="stringliteral">&quot;This is body&quot;</span>);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00058">58</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;POST / HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    m_configFile.servers[0].locations[0].allowedMethods[<a class="code" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>] = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">Connection::ReceiveBody</a>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    EXPECT_EQ(m_connection.m_buffer, <span class="stringliteral">&quot;This is body&quot;</span>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a></div><div class="ttdeci">@ MethodPost</div><div class="ttdef"><b>Definition:</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">Connection::ReceiveBody</a></div><div class="ttdeci">@ ReceiveBody</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00023">Connection.hpp:23</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">Connection::ReceiveBody</a></div><div class="ttdeci">@ ReceiveBody</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00024">Connection.hpp:24</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a7e6245bb424d27191d406b619a2fe40b_cgraph.svg" width="100%" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a7e6245bb424d27191d406b619a2fe40b_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -321,18 +322,18 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00066">66</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;Wrong&quot;</span>);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00069">69</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;Wrong&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a63c4237c8b0edef77a20f599133d77d4_cgraph.svg" width="100%" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a63c4237c8b0edef77a20f599133d77d4_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -364,21 +365,21 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00075">75</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;GET / HTTP/1.1\r\nHost:example.com\r\n\r\n&quot;</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    m_configFile.servers.clear();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    EXPECT_EQ(m_connection.m_request.httpStatus, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00028">Connection.hpp:27</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00078">78</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    m_connection.m_buffer.assign(<span class="stringliteral">&quot;GET / HTTP/1.1\r\nHost:example.com\r\n\r\n&quot;</span>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    m_configFile.servers.clear();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb">handleCompleteRequestHeader</a>(m_server, m_dummyFd, m_connection);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    EXPECT_EQ(m_connection.m_request.httpStatus, <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    EXPECT_EQ(m_connection.m_status, <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00031">Connection.hpp:30</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a04308ae6ca27d5aac2ee1ae95e818f78_cgraph.svg" width="100%" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__handle_complete_request_header_8cpp_a04308ae6ca27d5aac2ee1ae95e818f78_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 

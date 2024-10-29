@@ -223,24 +223,30 @@ Public Member Functions</h2></td></tr>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    responseBodyHandler.execute();</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    appendStatusLine(request);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    appendHeaders(request);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Response header: \n&quot;</span> &lt;&lt; m_responseHeader.str();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// Response Body often contains binary data, so it is not logged.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// LOG_DEBUG &lt;&lt; &quot;Response body: \n&quot; &lt;&lt; m_responseBody;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (request.<a class="code" href="struct_h_t_t_p_request.html#abea0de9c98e8420ef93a90354fbdec48">hasCGI</a> &amp;&amp; request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> == <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        appendHeadersCGI();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        appendHeaders(request);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;Response header: \n&quot;</span> &lt;&lt; m_responseHeader.str();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">// Response Body often contains binary data, so it is not logged.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// LOG_DEBUG &lt;&lt; &quot;Response body: \n&quot; &lt;&lt; m_responseBody;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
 <div class="ttc" id="a_log_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition:</b> <a href="_log_8hpp_source.html#l00010">Log.hpp:10</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition:</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
 <div class="ttc" id="aclass_response_body_handler_html"><div class="ttname"><a href="class_response_body_handler.html">ResponseBodyHandler</a></div><div class="ttdoc">Class to handle the body of a HTTP response.</div><div class="ttdef"><b>Definition:</b> <a href="_response_body_handler_8hpp_source.html#l00017">ResponseBodyHandler.hpp:17</a></div></div>
-<div class="ttc" id="astruct_connection_html_ae94a8a88f07c64cf17ada17c7e670ada"><div class="ttname"><a href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">Connection::m_request</a></div><div class="ttdeci">HTTPRequest m_request</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00035">Connection.hpp:35</a></div></div>
+<div class="ttc" id="astruct_connection_html_ae94a8a88f07c64cf17ada17c7e670ada"><div class="ttname"><a href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">Connection::m_request</a></div><div class="ttdeci">HTTPRequest m_request</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00039">Connection.hpp:39</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html"><div class="ttname"><a href="struct_h_t_t_p_request.html">HTTPRequest</a></div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00019">HTTPRequest.hpp:19</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_a4ab3aefab7679eeb2b4e97f7043bdff3"><div class="ttname"><a href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">HTTPRequest::httpStatus</a></div><div class="ttdeci">statusCode httpStatus</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00027">HTTPRequest.hpp:27</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_a67c428c2e03ff5e9e3fc4403ba9377a9"><div class="ttname"><a href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">HTTPRequest::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00022">HTTPRequest.hpp:22</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00023">HTTPRequest.hpp:23</a></div></div>
+<div class="ttc" id="astruct_h_t_t_p_request_html_abea0de9c98e8420ef93a90354fbdec48"><div class="ttname"><a href="struct_h_t_t_p_request.html#abea0de9c98e8420ef93a90354fbdec48">HTTPRequest::hasCGI</a></div><div class="ttdeci">bool hasCGI</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00033">HTTPRequest.hpp:33</a></div></div>
 <div class="ttc" id="astruct_u_r_i_html_a18b7b6f3328197824e58dc4cf46301df"><div class="ttname"><a href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">URI::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00014">HTTPRequest.hpp:14</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_builder_ae037ac16172f1329b44a58f50de0e84e_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_builder_ae037ac16172f1329b44a58f50de0e84e_cgraph.svg" width="100%" height="416"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <div class="dynheader">

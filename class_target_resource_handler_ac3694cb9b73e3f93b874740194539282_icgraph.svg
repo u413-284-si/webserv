@@ -82,7 +82,7 @@ var sectionId = 'dynsection-0';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb" target="_top" xlink:title="Handles a received complete request header.">
+<g id="a_node3"><a xlink:href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb" target="_top" xlink:title="Handles the complete request header received from a client.">
 <polygon fill="none" stroke="black" points="741,-19.5 741,-38.5 913,-38.5 913,-19.5 741,-19.5"/>
 <text text-anchor="middle" x="827" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleCompleteRequestHeader</text>
 </a>
@@ -97,7 +97,7 @@ var sectionId = 'dynsection-0';
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="_server_8hpp.html#a06d0cb066f08d5567ea6ba4ef2897927" target="_top" xlink:title="Receive request header from a client.">
+<g id="a_node4"><a xlink:href="_server_8hpp.html#aa45d6529fd7be9b7adf788a9679ae34b" target="_top" xlink:title="Receive request header from a client.">
 <polygon fill="none" stroke="black" points="561,-38.5 561,-57.5 705,-57.5 705,-38.5 561,-38.5"/>
 <text text-anchor="middle" x="633" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveHeader</text>
 </a>
@@ -127,7 +127,7 @@ var sectionId = 'dynsection-0';
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="_server_8hpp.html#ac74673700d26f829e84f0b5011c35c94" target="_top" xlink:title="Handle a client connection.">
+<g id="a_node5"><a xlink:href="_server_8hpp.html#a54490f09266c8a5fed4d91166df9a6b3" target="_top" xlink:title="Handle a client connection.">
 <polygon fill="none" stroke="black" points="421,-57.5 421,-76.5 525,-76.5 525,-57.5 421,-57.5"/>
 <text text-anchor="middle" x="473" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleConnection</text>
 </a>

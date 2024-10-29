@@ -1,52 +1,52 @@
 <map id="runServer" name="runServer">
-<area shape="rect" id="node1" title="Runs the main event loop with a server object." alt="" coords="5,431,91,457"/>
-<area shape="rect" id="node2" href="$_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf" title="Iterates through all connections and checks if any have timed out." alt="" coords="363,127,498,153"/>
-<area shape="rect" id="node7" href="$_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db" title="Iterates through all connections and removes closed ones." alt="" coords="332,177,529,204"/>
-<area shape="rect" id="node8" href="$class_server.html#a1768b6e65ed7b3205141698ca459ffd8" title="Wrapper function to EpollWrapper::eventsBegin." alt="" coords="354,481,507,508"/>
-<area shape="rect" id="node10" href="$_server_8cpp.html#af9f4479a6262c17deef89938118d27f4" title="Accepts new connections or handles existing ones." alt="" coords="379,431,482,457"/>
-<area shape="rect" id="node44" href="$_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="148,361,275,388"/>
-<area shape="rect" id="node48" href="$class_server.html#acbcbebe2c30446acc9a90f40f9986b62" title="Wrapper function to EpollWrapper::waitForEvents." alt="" coords="349,785,513,812"/>
-<area shape="rect" id="node50" href="$signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="139,577,284,604"/>
-<area shape="rect" id="node3" href="$class_server.html#af8184a299847cca0789696048893bc48" title="Const Getter for client timeout." alt="" coords="589,56,775,83"/>
-<area shape="rect" id="node4" href="$class_server.html#aab1a7e57f49a0c7b7f1cea147d8bf9aa" title="Getter for connections." alt="" coords="595,228,769,255"/>
-<area shape="rect" id="node5" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="1684,284,1839,311"/>
-<area shape="rect" id="node6" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="1927,284,2125,311"/>
-<area shape="rect" id="node9" href="$class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185" title="Get the beginning of the events vector." alt="" coords="583,587,781,613"/>
-<area shape="rect" id="node11" href="$_server_8cpp.html#adb579f3d67061d752e882e6fb3ef6f18" title="Accept new connections." alt="" coords="609,536,755,563"/>
-<area shape="rect" id="node21" href="$class_server.html#ad5228a2a917b01adff3b89007c036ec4" title="Getter for virtual servers." alt="" coords="589,380,775,407"/>
-<area shape="rect" id="node22" href="$_server_8cpp.html#a581dddd40d3728b6d22216003e2065b5" title="Handle a client connection." alt="" coords="613,431,751,457"/>
-<area shape="rect" id="node12" href="$class_server.html#ad8823ad2d9c9a94cfafb40e8e0653865" title="Wrapper function to SocketPolicy::acceptSingleConnection()." alt="" coords="837,509,1065,536"/>
-<area shape="rect" id="node14" href="$class_server.html#ac145e9f668db85b10a66829bd2677746" title="Register a connection." alt="" coords="853,561,1048,588"/>
-<area shape="rect" id="node16" href="$class_server.html#a65c2f3dc363bdb70a98895686826e5e8" title="Wrapper function to SocketPolicy::retrieveBoundSocketInfo." alt="" coords="835,675,1067,701"/>
-<area shape="rect" id="node20" href="$class_server.html#ae4900f55d072ebbe26a92c14b17de396" title="Wrapper function to SocketPolicy::retrieveSocketInfo." alt="" coords="855,616,1046,643"/>
-<area shape="rect" id="node13" href="$class_socket_policy.html#a63228ebffc41e3739677715bcd43a477" title="Accept a connection on a socket." alt="" coords="1119,501,1313,542"/>
-<area shape="rect" id="node15" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="1127,567,1305,593"/>
-<area shape="rect" id="node17" href="$class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33" title="Retrieves info of socket to which sockfd is bound." alt="" coords="1115,669,1317,710"/>
-<area shape="rect" id="node18" href="$class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information." alt="" coords="1365,676,1596,703"/>
-<area shape="rect" id="node19" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1693,705,1829,732"/>
-<area shape="rect" id="node23" href="$_server_8cpp.html#ac98878a19797a7f939c3a5ea1e028e56" title="Builds the response for a client connection." alt="" coords="1121,247,1311,273"/>
-<area shape="rect" id="node26" href="$_server_8cpp.html#adcf8118ac987f6afae3aec0c54cc5f9f" title="Sends the response to a client connection." alt="" coords="1387,411,1575,437"/>
-<area shape="rect" id="node32" href="$_server_8cpp.html#abb21ebec72f9526fbba446f7d566117e" title="Handles a timeout for a client connection." alt="" coords="854,247,1047,273"/>
-<area shape="rect" id="node33" href="$_server_8cpp.html#a3f930db051b00ade521e2633cee948bd" title="Receives the body of a connection." alt="" coords="1127,449,1305,476"/>
-<area shape="rect" id="node40" href="$_server_8cpp.html#a06d0cb066f08d5567ea6ba4ef2897927" title="Receive request header from a client." alt="" coords="1120,304,1312,331"/>
-<area shape="rect" id="node24" href="$class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="1397,5,1564,32"/>
-<area shape="rect" id="node30" href="$class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63" title="Wrapper function to ResponseBuilder::getResponse." alt="" coords="1403,56,1559,83"/>
-<area shape="rect" id="node25" href="$class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request." alt="" coords="1644,5,1879,32"/>
-<area shape="rect" id="node27" href="$_connection_8hpp.html#a1787b72853fa3a6146cea621fa1d0d65" title=" " alt="" coords="1698,436,1825,463"/>
-<area shape="rect" id="node28" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="1670,335,1853,361"/>
-<area shape="rect" id="node29" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="1680,385,1843,412"/>
-<area shape="rect" id="node31" href="$class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response." alt="" coords="1650,56,1873,83"/>
-<area shape="rect" id="node34" href="$class_server.html#a2092f68016c0cfaff0c9c0e1862eb009" title="Getter for client body buffer." alt="" coords="1379,512,1582,539"/>
-<area shape="rect" id="node35" href="$_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a" title="Checks if the HTTP request body has been completely received." alt="" coords="1416,563,1545,589"/>
-<area shape="rect" id="node36" href="$class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a" title="Wrapper function to RequestParser::parseBody." alt="" coords="1410,613,1551,640"/>
-<area shape="rect" id="node38" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="1392,461,1569,488"/>
-<area shape="rect" id="node37" href="$class_request_parser.html#a5111f16124d227775d963e6ca24ddca0" title="Parses the body of an HTTP request." alt="" coords="1665,613,1857,640"/>
-<area shape="rect" id="node39" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="1653,487,1869,513"/>
-<area shape="rect" id="node41" href="$class_server.html#a45f1691489d81cdd6acc640d96d5046b" title="Getter for client header buffer." alt="" coords="1372,259,1589,285"/>
-<area shape="rect" id="node42" href="$_server_8cpp.html#a83350eae81b96dd7b301d1238268ffdb" title="Handles a received complete request header." alt="" coords="1366,309,1595,336"/>
-<area shape="rect" id="node43" href="$_server_8cpp.html#a172c400277e73261d212c33f66226090" title="Checks if the connection buffer contains a request header." alt="" coords="1383,208,1579,235"/>
-<area shape="rect" id="node45" href="$_server_8cpp.html#af2feae308a0fa968c84525fcdfb19251" title="Iterates through all connections, closes and removes idle ones." alt="" coords="342,228,519,255"/>
-<area shape="rect" id="node46" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="351,329,510,356"/>
-<area shape="rect" id="node47" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="580,329,784,356"/>
-<area shape="rect" id="node49" href="$class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85" title="Wait for events on an epoll instance." alt="" coords="577,785,787,812"/>
+<area shape="rect" id="node1" title="Runs the main event loop with a server object." alt="" coords="5,1152,91,1179"/>
+<area shape="rect" id="node2" href="$_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf" title="Iterates through all connections and checks if any have timed out." alt="" coords="345,1000,479,1027"/>
+<area shape="rect" id="node7" href="$_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db" title="Iterates through all connections and removes closed ones." alt="" coords="313,1557,511,1584"/>
+<area shape="rect" id="node8" href="$class_server.html#a1768b6e65ed7b3205141698ca459ffd8" title="Wrapper function to EpollWrapper::eventsBegin." alt="" coords="335,1051,489,1077"/>
+<area shape="rect" id="node10" href="$_server_8cpp.html#af9f4479a6262c17deef89938118d27f4" title="Accepts new connections or handles existing ones." alt="" coords="361,1101,463,1128"/>
+<area shape="rect" id="node41" href="$signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="1141,1203,1286,1229"/>
+<area shape="rect" id="node47" href="$_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="139,1323,265,1349"/>
+<area shape="rect" id="node49" href="$class_server.html#acbcbebe2c30446acc9a90f40f9986b62" title="Wrapper function to EpollWrapper::waitForEvents." alt="" coords="330,1507,494,1533"/>
+<area shape="rect" id="node3" href="$class_server.html#af8184a299847cca0789696048893bc48" title="Const Getter for client timeout." alt="" coords="571,5,756,32"/>
+<area shape="rect" id="node4" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="1407,1380,1581,1407"/>
+<area shape="rect" id="node5" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="1682,461,1837,488"/>
+<area shape="rect" id="node6" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="1909,461,2108,488"/>
+<area shape="rect" id="node9" href="$class_epoll_wrapper.html#a351163f31995e5bab238fac131eb2185" title="Get the beginning of the events vector." alt="" coords="564,461,763,488"/>
+<area shape="rect" id="node11" href="$_server_8cpp.html#adb579f3d67061d752e882e6fb3ef6f18" title="Accept new connections." alt="" coords="591,1083,736,1109"/>
+<area shape="rect" id="node21" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="1396,715,1592,741"/>
+<area shape="rect" id="node22" href="$class_server.html#a878b0cc2f9bc228dd12b250d95d61a75" title="Const Getter for virtual servers." alt="" coords="571,1304,756,1331"/>
+<area shape="rect" id="node23" href="$_server_8cpp.html#afb62203471d9a64b23d0267d5a4a261a" title="Handle a client connection." alt="" coords="594,512,733,539"/>
+<area shape="rect" id="node12" href="$class_server.html#ad8823ad2d9c9a94cfafb40e8e0653865" title="Wrapper function to SocketPolicy::acceptSingleConnection()." alt="" coords="818,1083,1046,1109"/>
+<area shape="rect" id="node14" href="$class_server.html#ac145e9f668db85b10a66829bd2677746" title="Register a connection." alt="" coords="835,1032,1029,1059"/>
+<area shape="rect" id="node16" href="$class_server.html#a65c2f3dc363bdb70a98895686826e5e8" title="Wrapper function to SocketPolicy::retrieveBoundSocketInfo." alt="" coords="816,977,1048,1004"/>
+<area shape="rect" id="node20" href="$class_server.html#ae4900f55d072ebbe26a92c14b17de396" title="Wrapper function to SocketPolicy::retrieveSocketInfo." alt="" coords="837,1133,1027,1160"/>
+<area shape="rect" id="node13" href="$class_socket_policy.html#a63228ebffc41e3739677715bcd43a477" title="Accept a connection on a socket." alt="" coords="1116,1086,1311,1127"/>
+<area shape="rect" id="node15" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="1124,1035,1303,1061"/>
+<area shape="rect" id="node17" href="$class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33" title="Retrieves info of socket to which sockfd is bound." alt="" coords="1112,969,1315,1010"/>
+<area shape="rect" id="node18" href="$class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information." alt="" coords="1379,1152,1609,1179"/>
+<area shape="rect" id="node19" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1691,1177,1827,1204"/>
+<area shape="rect" id="node24" href="$_server_8cpp.html#a9b6964fe44b1605c00c0f211a7f42896" title="Builds the response for a client connection." alt="" coords="1119,157,1308,184"/>
+<area shape="rect" id="node26" href="$_server_8cpp.html#a43e9e764c97aacfc12f233b33ffa3342" title="Sends the response to a client connection." alt="" coords="1400,107,1588,133"/>
+<area shape="rect" id="node29" href="$_server_8cpp.html#ad132a77471376bd48681070a795df914" title="Handles a timeout for a client connection." alt="" coords="835,183,1029,209"/>
+<area shape="rect" id="node30" href="$_server_8cpp.html#a3e07b970ffa58c9315b38673aff94f84" title="Handles the reception of the request body from a client connection." alt="" coords="843,348,1021,375"/>
+<area shape="rect" id="node35" href="$_server_8cpp.html#a735bf6535f62b5907ea2d5f0e1abf3c7" title="Handles receiving data from a CGI script and processes it accordingly." alt="" coords="831,841,1033,868"/>
+<area shape="rect" id="node42" href="$_server_8cpp.html#aa45d6529fd7be9b7adf788a9679ae34b" title="Receive request header from a client." alt="" coords="836,512,1028,539"/>
+<area shape="rect" id="node46" href="$_server_8cpp.html#aa67430205b6049aa70bad4682a7442b8" title="Sends the request body to the CGI process." alt="" coords="851,563,1013,589"/>
+<area shape="rect" id="node25" href="$class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="1411,157,1577,184"/>
+<area shape="rect" id="node28" href="$class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63" title="Wrapper function to ResponseBuilder::getResponse." alt="" coords="1416,208,1572,235"/>
+<area shape="rect" id="node27" href="$_connection_8hpp.html#a1787b72853fa3a6146cea621fa1d0d65" title="Clears the state of a given Connection object and resets its attributes." alt="" coords="1696,107,1823,133"/>
+<area shape="rect" id="node31" href="$class_server.html#a2092f68016c0cfaff0c9c0e1862eb009" title="Getter for client body buffer." alt="" coords="1112,309,1315,336"/>
+<area shape="rect" id="node32" href="$_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a" title="Checks if the HTTP request body has been completely received." alt="" coords="1149,360,1278,387"/>
+<area shape="rect" id="node33" href="$class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a" title="Wrapper function to RequestParser::parseBody." alt="" coords="1143,259,1284,285"/>
+<area shape="rect" id="node34" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="1125,411,1302,437"/>
+<area shape="rect" id="node36" href="$class_server.html#aa6eec7b99c50847aeef2b0746f46a8f6" title="Getter for CGI body buffer." alt="" coords="1119,917,1307,944"/>
+<area shape="rect" id="node37" href="$class_server.html#a8aa46a2d98652ee4c70ac7528f614422" title="Wrapper function to ProcessOps::readProcess." alt="" coords="1138,867,1289,893"/>
+<area shape="rect" id="node38" href="$class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a" title="Removes a CGI file descriptor from the server." alt="" coords="1096,765,1331,792"/>
+<area shape="rect" id="node39" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="1415,1279,1573,1305"/>
+<area shape="rect" id="node40" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="1657,1279,1861,1305"/>
+<area shape="rect" id="node43" href="$class_server.html#a45f1691489d81cdd6acc640d96d5046b" title="Getter for client header buffer." alt="" coords="1105,613,1322,640"/>
+<area shape="rect" id="node44" href="$_server_8cpp.html#a83350eae81b96dd7b301d1238268ffdb" title="Handles the complete request header received from a client." alt="" coords="1099,563,1328,589"/>
+<area shape="rect" id="node45" href="$_server_8cpp.html#a172c400277e73261d212c33f66226090" title="Checks if the connection buffer contains a request header." alt="" coords="1115,664,1311,691"/>
+<area shape="rect" id="node48" href="$_server_8cpp.html#af2feae308a0fa968c84525fcdfb19251" title="Iterates through all connections, closes and removes idle ones." alt="" coords="323,1405,501,1432"/>
+<area shape="rect" id="node50" href="$class_epoll_wrapper.html#a311509445062f6333287f2957b8b2e85" title="Wait for events on an epoll instance." alt="" coords="559,1507,768,1533"/>
 </map>

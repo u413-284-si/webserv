@@ -186,19 +186,19 @@ Public Attributes</h2></td></tr>
 <li>Initializes the returns map to be empty. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="_config_file_8cpp_source.html#l00039">39</a> of file <a class="el" href="_config_file_8cpp_source.html">ConfigFile.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    : <a class="code" href="struct_location.html#abcb6a2cd9887a166063ea4ce40794c22">root</a>(<span class="stringliteral">&quot;html&quot;</span>)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    , <a class="code" href="struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5">isAutoindex</a>(<span class="keyword">false</span>)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    , <a class="code" href="struct_location.html#a68f01d8ebb15037e62a92ff2e55b50f1">maxBodySize</a>(1)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    , <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>()</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="struct_location.html#aa574c024f5d721f0c9d764c177ad98be">indices</a> = std::vector&lt;std::string&gt;();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="struct_location.html#a895fc9b39ff104e1df7ff03ccc09b536">errorPage</a> = std::map&lt;statusCode, std::string&gt;();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="struct_location.html#ac0784739243de5d60bcd6730d7e63786">returns</a> = std::map&lt;statusCode, std::string&gt;();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>[0] = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>[1] = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>[2] = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="_config_file_8cpp_source.html#l00038">38</a> of file <a class="el" href="_config_file_8cpp_source.html">ConfigFile.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    : <a class="code" href="struct_location.html#abcb6a2cd9887a166063ea4ce40794c22">root</a>(<span class="stringliteral">&quot;html&quot;</span>)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    , <a class="code" href="struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5">isAutoindex</a>(<span class="keyword">false</span>)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    , <a class="code" href="struct_location.html#a68f01d8ebb15037e62a92ff2e55b50f1">maxBodySize</a>(1)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    , <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>()</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="struct_location.html#aa574c024f5d721f0c9d764c177ad98be">indices</a> = std::vector&lt;std::string&gt;();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="struct_location.html#a895fc9b39ff104e1df7ff03ccc09b536">errorPage</a> = std::map&lt;statusCode, std::string&gt;();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="struct_location.html#ac0784739243de5d60bcd6730d7e63786">returns</a> = std::map&lt;statusCode, std::string&gt;();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>[0] = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>[1] = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7">allowedMethods</a>[2] = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 <div class="ttc" id="astruct_location_html_a4d4f2aa33c910fe0dc69bdeb32e7e7e5"><div class="ttname"><a href="struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5">Location::isAutoindex</a></div><div class="ttdeci">bool isAutoindex</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00025">ConfigFile.hpp:25</a></div></div>
 <div class="ttc" id="astruct_location_html_a68f01d8ebb15037e62a92ff2e55b50f1"><div class="ttname"><a href="struct_location.html#a68f01d8ebb15037e62a92ff2e55b50f1">Location::maxBodySize</a></div><div class="ttdeci">unsigned long maxBodySize</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00026">ConfigFile.hpp:26</a></div></div>
 <div class="ttc" id="astruct_location_html_a895fc9b39ff104e1df7ff03ccc09b536"><div class="ttname"><a href="struct_location.html#a895fc9b39ff104e1df7ff03ccc09b536">Location::errorPage</a></div><div class="ttdeci">std::map&lt; statusCode, std::string &gt; errorPage</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00027">ConfigFile.hpp:27</a></div></div>

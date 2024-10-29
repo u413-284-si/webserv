@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt>Member <a class="el" href="_server_8cpp.html#a06d0cb066f08d5567ea6ba4ef2897927">connectionReceiveHeader</a>  (<a class="el" href="class_server.html" title="Main class of the HTTP server.">Server</a> &amp;server, int clientFd, <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> &amp;connection)</dt>
+<dt>Member <a class="el" href="_server_8cpp.html#aa45d6529fd7be9b7adf788a9679ae34b">connectionReceiveHeader</a>  (<a class="el" href="class_server.html" title="Main class of the HTTP server.">Server</a> &amp;server, int activeFd, <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> &amp;connection)</dt>
 <dd><p class="startdd"><a class="anchor" id="_todo000009"></a>Implement body handling. </p>
 <p class="enddd">make clientHeaderBufferSize configurable.  </p>
 </dd>
@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <dd><a class="anchor" id="_todo000004"></a>FIXME: Implement other methods than GET.  </dd>
 <dt>Class <a class="el" href="class_server.html">Server</a>  </dt>
 <dd><a class="anchor" id="_todo000001"></a>Remove s_backlog and m_backlog and use value from the config file.  </dd>
-<dt>Member <a class="el" href="class_server.html#a5d1d512e7c930519b273faff5bad7f18">Server::Server</a>  (const <a class="el" href="struct_config_file.html">ConfigFile</a> &amp;configFile, <a class="el" href="class_epoll_wrapper.html" title="Wrapper class for epoll instance.">EpollWrapper</a> &amp;epollWrapper, const <a class="el" href="class_socket_policy.html" title="Policy class for socket functions.">SocketPolicy</a> &amp;socketPolicy)</dt>
+<dt>Member <a class="el" href="class_server.html#a06e5c48cab049a3c60b328724cad2742">Server::Server</a>  (const <a class="el" href="struct_config_file.html">ConfigFile</a> &amp;configFile, <a class="el" href="class_epoll_wrapper.html" title="Wrapper class for epoll instance.">EpollWrapper</a> &amp;epollWrapper, const <a class="el" href="class_socket_policy.html" title="Policy class for socket functions.">SocketPolicy</a> &amp;socketPolicy, const <a class="el" href="class_process_ops.html" title="Wrapper class for process-related functions.">ProcessOps</a> &amp;processOps)</dt>
 <dd><a class="anchor" id="_todo000007"></a>Several variables are init to static ones, could be passed as parameters or set in config file.  </dd>
 <dt>Member <a class="el" href="class_server.html#a4b3aa2579cb1c8cd1d069582c14d0fa6">Server::~Server</a>  ()</dt>
 <dd><a class="anchor" id="_todo000008"></a>Is it possible to send a last message to all connected clients to notify server shutdown?  </dd>

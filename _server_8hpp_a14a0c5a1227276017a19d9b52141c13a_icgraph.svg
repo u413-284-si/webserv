@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 836;
 var viewHeight = 66;
-var sectionId = 'dynsection-23';
+var sectionId = 'dynsection-24';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -66,7 +66,7 @@ var sectionId = 'dynsection-23';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="_server_8hpp.html#a3f930db051b00ade521e2633cee948bd" target="_top" xlink:title="Receives the body of a connection.">
+<g id="a_node2"><a xlink:href="_server_8hpp.html#a3e07b970ffa58c9315b38673aff94f84" target="_top" xlink:title="Handles the reception of the request body from a client connection.">
 <polygon fill="none" stroke="black" points="561,-19.5 561,-38.5 695,-38.5 695,-19.5 561,-19.5"/>
 <text text-anchor="middle" x="628" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveBody</text>
 </a>
@@ -81,7 +81,7 @@ var sectionId = 'dynsection-23';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="_server_8hpp.html#ac74673700d26f829e84f0b5011c35c94" target="_top" xlink:title="Handle a client connection.">
+<g id="a_node3"><a xlink:href="_server_8hpp.html#a54490f09266c8a5fed4d91166df9a6b3" target="_top" xlink:title="Handle a client connection.">
 <polygon fill="none" stroke="black" points="421,-19.5 421,-38.5 525,-38.5 525,-19.5 421,-19.5"/>
 <text text-anchor="middle" x="473" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleConnection</text>
 </a>

@@ -151,7 +151,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:adcd6f0d8edb42a82795aeb8fc7f169f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad56b08f90b85b577188298bcc9a6f1e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classselect_server_config_test.html#ad56b08f90b85b577188298bcc9a6f1e8">clientSock</a></td></tr>
 <tr class="separator:ad56b08f90b85b577188298bcc9a6f1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18ee0a1d5dd20a1d5729f183aa1daf80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classselect_server_config_test.html#a18ee0a1d5dd20a1d5729f183aa1daf80">connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="classselect_server_config_test.html#adcd6f0d8edb42a82795aeb8fc7f169f7">serverSock</a>, <a class="el" href="classselect_server_config_test.html#ad56b08f90b85b577188298bcc9a6f1e8">clientSock</a>, configFile.servers)</td></tr>
+<tr class="memitem:a7e1f8ac2605fcdf4c46304948c59d61b"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classselect_server_config_test.html#a7e1f8ac2605fcdf4c46304948c59d61b">dummyFd</a> = 10</td></tr>
+<tr class="separator:a7e1f8ac2605fcdf4c46304948c59d61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18ee0a1d5dd20a1d5729f183aa1daf80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classselect_server_config_test.html#a18ee0a1d5dd20a1d5729f183aa1daf80">connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="classselect_server_config_test.html#adcd6f0d8edb42a82795aeb8fc7f169f7">serverSock</a>, <a class="el" href="classselect_server_config_test.html#ad56b08f90b85b577188298bcc9a6f1e8">clientSock</a>, <a class="el" href="classselect_server_config_test.html#a7e1f8ac2605fcdf4c46304948c59d61b">dummyFd</a>, configFile.servers)</td></tr>
 <tr class="separator:a18ee0a1d5dd20a1d5729f183aa1daf80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -296,8 +298,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a18ee0a1d5dd20a1d5729f183aa1daf80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18ee0a1d5dd20a1d5729f183aa1daf80">&#9670;&nbsp;</a></span>connection</h2>
+<a id="a7e1f8ac2605fcdf4c46304948c59d61b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e1f8ac2605fcdf4c46304948c59d61b">&#9670;&nbsp;</a></span>dummyFd</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,7 +308,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> selectServerConfigTest::connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="classselect_server_config_test.html#adcd6f0d8edb42a82795aeb8fc7f169f7">serverSock</a>, <a class="el" href="classselect_server_config_test.html#ad56b08f90b85b577188298bcc9a6f1e8">clientSock</a>, configFile.servers)</td>
+          <td class="memname">const int selectServerConfigTest::dummyFd = 10</td>
         </tr>
       </table>
   </td>
@@ -317,6 +319,30 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="test__select_server_config_8cpp_source.html#l00025">25</a> of file <a class="el" href="test__select_server_config_8cpp_source.html">test_selectServerConfig.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a18ee0a1d5dd20a1d5729f183aa1daf80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18ee0a1d5dd20a1d5729f183aa1daf80">&#9670;&nbsp;</a></span>connection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> selectServerConfigTest::connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="classselect_server_config_test.html#adcd6f0d8edb42a82795aeb8fc7f169f7">serverSock</a>, <a class="el" href="classselect_server_config_test.html#ad56b08f90b85b577188298bcc9a6f1e8">clientSock</a>, <a class="el" href="classselect_server_config_test.html#a7e1f8ac2605fcdf4c46304948c59d61b">dummyFd</a>, configFile.servers)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__select_server_config_8cpp_source.html#l00026">26</a> of file <a class="el" href="test__select_server_config_8cpp_source.html">test_selectServerConfig.cpp</a>.</p>
 
 </div>
 </div>

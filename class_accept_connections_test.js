@@ -5,6 +5,7 @@ var class_accept_connections_test =
     [ "configFile", "class_accept_connections_test.html#abf99d9179e810f6f3a2e285cfa75c63e", null ],
     [ "epollWrapper", "class_accept_connections_test.html#ae8ebe36f45dbe83c385ebfa397074405", null ],
     [ "socketPolicy", "class_accept_connections_test.html#ad67f24efe72eb73fddfc1a9468189547", null ],
+    [ "processOps", "class_accept_connections_test.html#a0e84e198e519bb66f8fda91350eb40ee", null ],
     [ "server", "class_accept_connections_test.html#a506459ada721e5f514ddceafba4190b6", null ],
     [ "dummyServerFd", "class_accept_connections_test.html#a8c1e8faa91229327ecb0e0dd0dc6a153", null ],
     [ "serverSock", "class_accept_connections_test.html#a6f93edda966f6c4531e0bc08ba61f0ca", null ],

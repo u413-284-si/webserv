@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="_server_8hpp.html#adcf8118ac987f6afae3aec0c54cc5f9f" target="_top" xlink:title="Sends the response to a client connection.">
+<g id="a_node2"><a xlink:href="_server_8hpp.html#a43e9e764c97aacfc12f233b33ffa3342" target="_top" xlink:title="Sends the response to a client connection.">
 <polygon fill="none" stroke="black" points="937.5,-114.5 937.5,-133.5 1078.5,-133.5 1078.5,-114.5 937.5,-114.5"/>
 <text text-anchor="middle" x="1008" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionSendResponse</text>
 </a>
@@ -50,7 +50,7 @@
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb" target="_top" xlink:title="Handles a received complete request header.">
+<g id="a_node12"><a xlink:href="_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb" target="_top" xlink:title="Handles the complete request header received from a client.">
 <polygon fill="none" stroke="black" points="922,-38.5 922,-57.5 1094,-57.5 1094,-38.5 922,-38.5"/>
 <text text-anchor="middle" x="1008" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleCompleteRequestHeader</text>
 </a>
@@ -65,7 +65,7 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="_server_8hpp.html#ac98878a19797a7f939c3a5ea1e028e56" target="_top" xlink:title="Builds the response for a client connection.">
+<g id="a_node3"><a xlink:href="_server_8hpp.html#a9b6964fe44b1605c00c0f211a7f42896" target="_top" xlink:title="Builds the response for a client connection.">
 <polygon fill="none" stroke="black" points="743,-152.5 743,-171.5 885,-171.5 885,-152.5 743,-152.5"/>
 <text text-anchor="middle" x="814" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionBuildResponse</text>
 </a>
@@ -80,7 +80,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="_server_8hpp.html#ac74673700d26f829e84f0b5011c35c94" target="_top" xlink:title="Handle a client connection.">
+<g id="a_node5"><a xlink:href="_server_8hpp.html#a54490f09266c8a5fed4d91166df9a6b3" target="_top" xlink:title="Handle a client connection.">
 <polygon fill="none" stroke="black" points="421,-114.5 421,-133.5 525,-133.5 525,-114.5 421,-114.5"/>
 <text text-anchor="middle" x="473" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">handleConnection</text>
 </a>
@@ -110,7 +110,7 @@
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="_server_8hpp.html#abb21ebec72f9526fbba446f7d566117e" target="_top" xlink:title="Handles a timeout for a client connection.">
+<g id="a_node4"><a xlink:href="_server_8hpp.html#ad132a77471376bd48681070a795df914" target="_top" xlink:title="Handles a timeout for a client connection.">
 <polygon fill="none" stroke="black" points="561,-152.5 561,-171.5 706,-171.5 706,-152.5 561,-152.5"/>
 <text text-anchor="middle" x="633.5" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionHandleTimeout</text>
 </a>
@@ -209,7 +209,7 @@
 <!-- Node13 -->
 <g id="node13" class="node">
 <title>Node13</title>
-<g id="a_node13"><a xlink:href="_server_8hpp.html#a06d0cb066f08d5567ea6ba4ef2897927" target="_top" xlink:title="Receive request header from a client.">
+<g id="a_node13"><a xlink:href="_server_8hpp.html#aa45d6529fd7be9b7adf788a9679ae34b" target="_top" xlink:title="Receive request header from a client.">
 <polygon fill="none" stroke="black" points="742,-38.5 742,-57.5 886,-57.5 886,-38.5 742,-38.5"/>
 <text text-anchor="middle" x="814" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">connectionReceiveHeader</text>
 </a>

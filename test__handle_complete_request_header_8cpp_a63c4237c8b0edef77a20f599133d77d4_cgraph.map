@@ -1,14 +1,30 @@
 <map id="TEST_F" name="TEST_F">
-<area shape="rect" id="node1" title=" " alt="" coords="5,114,75,141"/>
-<area shape="rect" id="node2" href="$_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb" title="Handles a received complete request header." alt="" coords="123,114,352,141"/>
-<area shape="rect" id="node3" href="$class_server.html#a002dd2fd1e6f0f4290568b4d94f39594" title="Wrapper function to TargetResourceHandler::execute." alt="" coords="400,13,596,39"/>
-<area shape="rect" id="node5" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="407,63,589,90"/>
-<area shape="rect" id="node6" href="$_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="418,114,578,141"/>
-<area shape="rect" id="node8" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="421,165,575,191"/>
-<area shape="rect" id="node10" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="421,215,575,242"/>
-<area shape="rect" id="node4" href="$class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282" title="Determine target resource based on the request path and handle different file types and statuses acco..." alt="" coords="661,5,834,47"/>
-<area shape="rect" id="node7" href="$_connection_8cpp.html#ac4fdfd0273b5ff94aefbdc973ac49ead" title="Find matching server configurations for a server socket." alt="" coords="649,114,845,141"/>
-<area shape="rect" id="node9" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="648,165,847,191"/>
-<area shape="rect" id="node11" href="$class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" title="Parses the header of an HTTP request." alt="" coords="644,215,851,242"/>
-<area shape="rect" id="node12" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="899,208,1108,249"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,419,75,445"/>
+<area shape="rect" id="node2" href="$_server_8hpp.html#a83350eae81b96dd7b301d1238268ffdb" title="Handles the complete request header received from a client." alt="" coords="123,419,352,445"/>
+<area shape="rect" id="node3" href="$class_c_g_i_handler.html#a341ca7c3cad04848c5e0787341fa573e" title="Executes the CGI script for the given HTTP request." alt="" coords="440,208,595,235"/>
+<area shape="rect" id="node12" href="$class_server.html#a002dd2fd1e6f0f4290568b4d94f39594" title="Wrapper function to TargetResourceHandler::execute." alt="" coords="419,267,615,293"/>
+<area shape="rect" id="node14" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="419,317,615,344"/>
+<area shape="rect" id="node15" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="431,368,604,395"/>
+<area shape="rect" id="node16" href="$class_server.html#a058d2c0df13f61b3e755f412ea56947d" title="Wrapper function to EpollWrapper::getEpollFd." alt="" coords="447,419,588,445"/>
+<area shape="rect" id="node18" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="426,469,609,496"/>
+<area shape="rect" id="node19" href="$_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="437,520,597,547"/>
+<area shape="rect" id="node21" href="$_server_8cpp.html#a92411155dbfc5d7f43c3f1ac0fe54548" title="Checks if a CGI request is made based on the connection details." alt="" coords="455,571,580,597"/>
+<area shape="rect" id="node22" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="440,621,595,648"/>
+<area shape="rect" id="node24" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="440,672,595,699"/>
+<area shape="rect" id="node27" href="$class_server.html#abcfb45414689863da69c2e72ac8fc946" title="Register a CGI file descriptor." alt="" coords="400,56,635,83"/>
+<area shape="rect" id="node4" href="$class_process_ops.html#a4bac2dd02d30149ea779a6b3f7adb281" title="Changes the current working directory." alt="" coords="693,107,879,133"/>
+<area shape="rect" id="node5" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="719,56,853,83"/>
+<area shape="rect" id="node6" href="$class_process_ops.html#ae4e6a35e4b926fae2e781ce14212dc65" title="Duplicates a file descriptor to a specified value." alt="" coords="693,157,879,184"/>
+<area shape="rect" id="node7" href="$class_process_ops.html#abc683607d42b4daab6b710a214c968eb" title="Executes a new process image specified by the given pathname." alt="" coords="693,208,879,235"/>
+<area shape="rect" id="node8" href="$class_process_ops.html#a189432b145784c422f4ac6ec515a9984" title="Forks the current process." alt="" coords="695,259,877,285"/>
+<area shape="rect" id="node9" href="$_c_g_i_handler_8cpp.html#ac74e9d3eec8d4845380648b9770ac359" title="Registers signal handlers for child processes." alt="" coords="710,309,862,336"/>
+<area shape="rect" id="node10" href="$signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="969,309,1115,336"/>
+<area shape="rect" id="node11" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1195,309,1331,336"/>
+<area shape="rect" id="node13" href="$class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282" title="Determine target resource based on the request path and handle different file types and statuses acco..." alt="" coords="699,361,873,402"/>
+<area shape="rect" id="node17" href="$class_epoll_wrapper.html#af9b96396ae751ae1189a2c1f9da64ae0" title="Getter for epoll file descriptor." alt="" coords="693,427,879,453"/>
+<area shape="rect" id="node20" href="$_connection_8cpp.html#ac4fdfd0273b5ff94aefbdc973ac49ead" title="Find matching server configurations for a server socket." alt="" coords="688,520,884,547"/>
+<area shape="rect" id="node23" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="687,621,885,648"/>
+<area shape="rect" id="node25" href="$class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" title="Parses the header of an HTTP request." alt="" coords="683,672,889,699"/>
+<area shape="rect" id="node26" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="937,665,1147,706"/>
+<area shape="rect" id="node28" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="697,5,875,32"/>
 </map>

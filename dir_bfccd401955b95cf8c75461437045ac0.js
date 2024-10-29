@@ -6,6 +6,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "AutoindexHandler.hpp", "_autoindex_handler_8hpp.html", [
       [ "AutoindexHandler", "class_autoindex_handler.html", "class_autoindex_handler" ]
     ] ],
+    [ "CGIHandler.hpp", "_c_g_i_handler_8hpp.html", "_c_g_i_handler_8hpp" ],
     [ "ConfigFile.hpp", "_config_file_8hpp.html", "_config_file_8hpp" ],
     [ "ConfigFileParser.hpp", "_config_file_parser_8hpp.html", "_config_file_parser_8hpp" ],
     [ "Connection.hpp", "_connection_8hpp.html", "_connection_8hpp" ],
@@ -39,8 +40,14 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "MockFileSystemPolicy.hpp", "_mock_file_system_policy_8hpp.html", [
       [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", "class_mock_file_system_policy" ]
     ] ],
+    [ "MockProcessOps.hpp", "_mock_process_ops_8hpp.html", [
+      [ "MockProcessOps", "class_mock_process_ops.html", "class_mock_process_ops" ]
+    ] ],
     [ "MockSocketPolicy.hpp", "_mock_socket_policy_8hpp.html", [
       [ "MockSocketPolicy", "class_mock_socket_policy.html", "class_mock_socket_policy" ]
+    ] ],
+    [ "ProcessOps.hpp", "_process_ops_8hpp.html", [
+      [ "ProcessOps", "class_process_ops.html", "class_process_ops" ]
     ] ],
     [ "RequestParser.hpp", "_request_parser_8hpp.html", [
       [ "RequestParser", "class_request_parser.html", "class_request_parser" ]

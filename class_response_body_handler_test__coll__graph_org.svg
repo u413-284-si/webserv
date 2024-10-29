@@ -48,18 +48,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="171.22,-212.99 160.69,-214.19 169.67,-219.81 171.22,-212.99"/>
 <text text-anchor="middle" x="364.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00"> m_serverSock</text>
 </g>
-<!-- Node9 -->
-<g id="node9" class="node">
-<title>Node9</title>
-<g id="a_node9"><a xlink:href="struct_connection.html" target="_top" xlink:title="Represents a connection between a server and a client.">
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="struct_connection.html" target="_top" xlink:title="Represents a connection between a server and a client.">
 <polygon fill="none" stroke="black" points="329,-161.5 329,-180.5 400,-180.5 400,-161.5 329,-161.5"/>
 <text text-anchor="middle" x="364.5" y="-168.5" font-family="Helvetica,sans-Serif" font-size="10.00">Connection</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node9 -->
-<g id="edge9" class="edge">
-<title>Node3&#45;&gt;Node9</title>
+<!-- Node3&#45;&gt;Node7 -->
+<g id="edge7" class="edge">
+<title>Node3&#45;&gt;Node7</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M170.68,-202.5C213.23,-195.55 286.06,-183.65 328.99,-176.64"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="170.12,-199.04 160.81,-204.11 171.24,-205.95 170.12,-199.04"/>
 <text text-anchor="middle" x="243.5" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00"> m_clientSocket</text>
@@ -112,51 +112,51 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="438.33,-46.9 428.11,-49.67 437.83,-53.88 438.33,-46.9"/>
 <text text-anchor="middle" x="509" y="-79" font-family="Helvetica,sans-Serif" font-size="10.00"> m_responseBodyHandler</text>
 </g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="struct_h_t_t_p_request.html" target="_top" xlink:title=" ">
+<!-- Node7&#45;&gt;Node1 -->
+<g id="edge6" class="edge">
+<title>Node7&#45;&gt;Node1</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M410.4,-166.01C452.27,-161.25 516.43,-153.68 572,-146 581.87,-144.64 592.33,-143.09 602.5,-141.55"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="409.8,-162.55 400.26,-167.16 410.59,-169.51 409.8,-162.55"/>
+<text text-anchor="middle" x="509" y="-164" font-family="Helvetica,sans-Serif" font-size="10.00"> m_connection</text>
+</g>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="struct_h_t_t_p_request.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="95,-146.5 95,-165.5 177,-165.5 177,-146.5 95,-146.5"/>
 <text text-anchor="middle" x="136" y="-153.5" font-family="Helvetica,sans-Serif" font-size="10.00">HTTPRequest</text>
 </a>
 </g>
 </g>
-<!-- Node7&#45;&gt;Node1 -->
-<g id="edge6" class="edge">
-<title>Node7&#45;&gt;Node1</title>
+<!-- Node8&#45;&gt;Node1 -->
+<g id="edge10" class="edge">
+<title>Node8&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M187.18,-150.54C219.61,-147.23 262.75,-143.22 301,-141 400.98,-135.19 516.76,-133.12 589.68,-132.4"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="186.63,-147.08 177.05,-151.59 187.35,-154.04 186.63,-147.08"/>
 <text text-anchor="middle" x="364.5" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00"> m_request</text>
 </g>
-<!-- Node7&#45;&gt;Node9 -->
-<g id="edge10" class="edge">
-<title>Node7&#45;&gt;Node9</title>
+<!-- Node8&#45;&gt;Node7 -->
+<g id="edge8" class="edge">
+<title>Node8&#45;&gt;Node7</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M187.21,-159.33C230.23,-162.17 291.04,-166.2 328.83,-168.7"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="187.44,-155.83 177.23,-158.66 186.98,-162.82 187.44,-155.83"/>
 <text text-anchor="middle" x="243.5" y="-168" font-family="Helvetica,sans-Serif" font-size="10.00"> m_request</text>
 </g>
-<!-- Node8 -->
-<g id="node8" class="node">
-<title>Node8</title>
-<g id="a_node8"><a xlink:href="struct_u_r_i.html" target="_top" xlink:title=" ">
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="struct_u_r_i.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="0,-146.5 0,-165.5 34,-165.5 34,-146.5 0,-146.5"/>
 <text text-anchor="middle" x="17" y="-153.5" font-family="Helvetica,sans-Serif" font-size="10.00">URI</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node7 -->
-<g id="edge7" class="edge">
-<title>Node8&#45;&gt;Node7</title>
+<!-- Node9&#45;&gt;Node8 -->
+<g id="edge9" class="edge">
+<title>Node9&#45;&gt;Node8</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M44.28,-156C59.13,-156 78.01,-156 94.69,-156"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="44.27,-152.5 34.27,-156 44.27,-159.5 44.27,-152.5"/>
 <text text-anchor="middle" x="60" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00"> uri</text>
-</g>
-<!-- Node9&#45;&gt;Node1 -->
-<g id="edge8" class="edge">
-<title>Node9&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M410.4,-166.01C452.27,-161.25 516.43,-153.68 572,-146 581.87,-144.64 592.33,-143.09 602.5,-141.55"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="409.8,-162.55 400.26,-167.16 410.59,-169.51 409.8,-162.55"/>
-<text text-anchor="middle" x="509" y="-164" font-family="Helvetica,sans-Serif" font-size="10.00"> m_connection</text>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node">

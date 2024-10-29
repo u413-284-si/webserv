@@ -145,6 +145,8 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a51d7d6c37b8f884c854957cb269205c0"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler_test.html#a51d7d6c37b8f884c854957cb269205c0">dummyFd</a> = 10</td></tr>
+<tr class="separator:a51d7d6c37b8f884c854957cb269205c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3020521612521d9f58e30612c3202506"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_config_file.html">ConfigFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a> = <a class="el" href="_config_file_8cpp.html#a5c24d3b32b5ab2755e29e4e65639820c">createDummyConfig</a>()</td></tr>
 <tr class="separator:a3020521612521d9f58e30612c3202506"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a589e432825b378ed5c55b8dd66133b32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_resource_handler_test.html#a589e432825b378ed5c55b8dd66133b32">m_fileSystemPolicy</a></td></tr>
@@ -186,7 +188,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00012">12</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        : <a class="code" href="class_target_resource_handler_test.html#ae61a059cbea3c55f29a2d3897c804561">m_connection</a>(<a class="code" href="struct_connection.html">Connection</a>(<a class="code" href="class_target_resource_handler_test.html#a28ebdb74e9ccb7622eeb635cef67ce4d">m_serverSock</a>, <a class="code" href="struct_socket.html">Socket</a>(), <a class="code" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>))</div>
+<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        : <a class="code" href="class_target_resource_handler_test.html#ae61a059cbea3c55f29a2d3897c804561">m_connection</a>(<a class="code" href="struct_connection.html">Connection</a>(<a class="code" href="class_target_resource_handler_test.html#a28ebdb74e9ccb7622eeb635cef67ce4d">m_serverSock</a>, <a class="code" href="struct_socket.html">Socket</a>(), <a class="code" href="class_target_resource_handler_test.html#a51d7d6c37b8f884c854957cb269205c0">dummyFd</a>, <a class="code" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>))</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        , <a class="code" href="class_target_resource_handler_test.html#ab9ac5172d8d77bf735fdcbef1ad3ee5f">m_targetResourceHandler</a>(<a class="code" href="class_target_resource_handler_test.html#a589e432825b378ed5c55b8dd66133b32">m_fileSystemPolicy</a>)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="struct_location.html">Location</a> m_location1;</div>
@@ -221,14 +223,15 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="class_target_resource_handler_test.html#a96544ce11d3a6c06853a3a15625b883f">m_request</a>.<a class="code" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a> = <span class="stringliteral">&quot;/test&quot;</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a></div><div class="ttdeci">@ MethodGet</div><div class="ttdef"><b>Definition:</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_a28ebdb74e9ccb7622eeb635cef67ce4d"><div class="ttname"><a href="class_target_resource_handler_test.html#a28ebdb74e9ccb7622eeb635cef67ce4d">TargetResourceHandlerTest::m_serverSock</a></div><div class="ttdeci">Socket m_serverSock</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00051">test_TargetResourceHandler.cpp:51</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_a3020521612521d9f58e30612c3202506"><div class="ttname"><a href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">TargetResourceHandlerTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00049">test_TargetResourceHandler.cpp:49</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_a589e432825b378ed5c55b8dd66133b32"><div class="ttname"><a href="class_target_resource_handler_test.html#a589e432825b378ed5c55b8dd66133b32">TargetResourceHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">MockFileSystemPolicy m_fileSystemPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00050">test_TargetResourceHandler.cpp:50</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_a96544ce11d3a6c06853a3a15625b883f"><div class="ttname"><a href="class_target_resource_handler_test.html#a96544ce11d3a6c06853a3a15625b883f">TargetResourceHandlerTest::m_request</a></div><div class="ttdeci">HTTPRequest &amp; m_request</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00053">test_TargetResourceHandler.cpp:53</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_ab9ac5172d8d77bf735fdcbef1ad3ee5f"><div class="ttname"><a href="class_target_resource_handler_test.html#ab9ac5172d8d77bf735fdcbef1ad3ee5f">TargetResourceHandlerTest::m_targetResourceHandler</a></div><div class="ttdeci">TargetResourceHandler m_targetResourceHandler</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00054">test_TargetResourceHandler.cpp:54</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_ae61a059cbea3c55f29a2d3897c804561"><div class="ttname"><a href="class_target_resource_handler_test.html#ae61a059cbea3c55f29a2d3897c804561">TargetResourceHandlerTest::m_connection</a></div><div class="ttdeci">Connection m_connection</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00052">test_TargetResourceHandler.cpp:52</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_a28ebdb74e9ccb7622eeb635cef67ce4d"><div class="ttname"><a href="class_target_resource_handler_test.html#a28ebdb74e9ccb7622eeb635cef67ce4d">TargetResourceHandlerTest::m_serverSock</a></div><div class="ttdeci">Socket m_serverSock</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00052">test_TargetResourceHandler.cpp:52</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_a3020521612521d9f58e30612c3202506"><div class="ttname"><a href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">TargetResourceHandlerTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00050">test_TargetResourceHandler.cpp:50</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_a51d7d6c37b8f884c854957cb269205c0"><div class="ttname"><a href="class_target_resource_handler_test.html#a51d7d6c37b8f884c854957cb269205c0">TargetResourceHandlerTest::dummyFd</a></div><div class="ttdeci">const int dummyFd</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00049">test_TargetResourceHandler.cpp:49</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_a589e432825b378ed5c55b8dd66133b32"><div class="ttname"><a href="class_target_resource_handler_test.html#a589e432825b378ed5c55b8dd66133b32">TargetResourceHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">MockFileSystemPolicy m_fileSystemPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00051">test_TargetResourceHandler.cpp:51</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_a96544ce11d3a6c06853a3a15625b883f"><div class="ttname"><a href="class_target_resource_handler_test.html#a96544ce11d3a6c06853a3a15625b883f">TargetResourceHandlerTest::m_request</a></div><div class="ttdeci">HTTPRequest &amp; m_request</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00054">test_TargetResourceHandler.cpp:54</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_ab9ac5172d8d77bf735fdcbef1ad3ee5f"><div class="ttname"><a href="class_target_resource_handler_test.html#ab9ac5172d8d77bf735fdcbef1ad3ee5f">TargetResourceHandlerTest::m_targetResourceHandler</a></div><div class="ttdeci">TargetResourceHandler m_targetResourceHandler</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00055">test_TargetResourceHandler.cpp:55</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_ae61a059cbea3c55f29a2d3897c804561"><div class="ttname"><a href="class_target_resource_handler_test.html#ae61a059cbea3c55f29a2d3897c804561">TargetResourceHandlerTest::m_connection</a></div><div class="ttdeci">Connection m_connection</div><div class="ttdef"><b>Definition:</b> <a href="test___target_resource_handler_8cpp_source.html#l00053">test_TargetResourceHandler.cpp:53</a></div></div>
 <div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
-<div class="ttc" id="astruct_connection_html"><div class="ttname"><a href="struct_connection.html">Connection</a></div><div class="ttdoc">Represents a connection between a server and a client.</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00016">Connection.hpp:16</a></div></div>
+<div class="ttc" id="astruct_connection_html"><div class="ttname"><a href="struct_connection.html">Connection</a></div><div class="ttdoc">Represents a connection between a server and a client.</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00017">Connection.hpp:17</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_a67c428c2e03ff5e9e3fc4403ba9377a9"><div class="ttname"><a href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">HTTPRequest::method</a></div><div class="ttdeci">Method method</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00022">HTTPRequest.hpp:22</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_a8f0516b557f9a1dee237d00e48aaac69"><div class="ttname"><a href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">HTTPRequest::uri</a></div><div class="ttdeci">URI uri</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8hpp_source.html#l00023">HTTPRequest.hpp:23</a></div></div>
 <div class="ttc" id="astruct_location_html"><div class="ttname"><a href="struct_location.html">Location</a></div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00015">ConfigFile.hpp:15</a></div></div>
@@ -270,6 +273,30 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a51d7d6c37b8f884c854957cb269205c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51d7d6c37b8f884c854957cb269205c0">&#9670;&nbsp;</a></span>dummyFd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int TargetResourceHandlerTest::dummyFd = 10</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00049">49</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a3020521612521d9f58e30612c3202506"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3020521612521d9f58e30612c3202506">&#9670;&nbsp;</a></span>m_configFile</h2>
 
@@ -290,7 +317,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00049">49</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00050">50</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -314,7 +341,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00050">50</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00051">51</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -338,7 +365,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00051">51</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00052">52</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -362,7 +389,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00052">52</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00053">53</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -386,7 +413,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00053">53</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00054">54</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -410,7 +437,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00054">54</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00055">55</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>

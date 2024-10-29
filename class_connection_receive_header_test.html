@@ -151,18 +151,20 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a0be6e893aa794d2cdcb20f98ce5f3d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af54e50a8c7845e603fbd0666d4fca722"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_socket_policy.html">MockSocketPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#af54e50a8c7845e603fbd0666d4fca722">socketPolicy</a></td></tr>
 <tr class="separator:af54e50a8c7845e603fbd0666d4fca722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae858d0aed9cc3b5e31bc39c6e6882a8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_process_ops.html">MockProcessOps</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#ae858d0aed9cc3b5e31bc39c6e6882a8e">processOps</a></td></tr>
+<tr class="separator:ae858d0aed9cc3b5e31bc39c6e6882a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e4bc40a94fe99beaa7a14dcf4debe5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_server.html">Server</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#a70e4bc40a94fe99beaa7a14dcf4debe5">server</a></td></tr>
 <tr class="separator:a70e4bc40a94fe99beaa7a14dcf4debe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5edb696cd43f0abb636f626234d4bf97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#a5edb696cd43f0abb636f626234d4bf97">m_serverSock</a></td></tr>
 <tr class="separator:a5edb696cd43f0abb636f626234d4bf97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbf923e4a6bd3f424ace072e57e6629d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_connection_receive_header_test.html#a5edb696cd43f0abb636f626234d4bf97">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), configFile.servers)</td></tr>
-<tr class="separator:abbf923e4a6bd3f424ace072e57e6629d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46d3ea09f026380351414c6ac84d566e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#a46d3ea09f026380351414c6ac84d566e">dummyFd</a> = 10</td></tr>
 <tr class="separator:a46d3ea09f026380351414c6ac84d566e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbf923e4a6bd3f424ace072e57e6629d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_connection_receive_header_test.html#a5edb696cd43f0abb636f626234d4bf97">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), <a class="el" href="class_connection_receive_header_test.html#a46d3ea09f026380351414c6ac84d566e">dummyFd</a>, configFile.servers)</td></tr>
+<tr class="separator:abbf923e4a6bd3f424ace072e57e6629d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00014">14</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00015">15</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab7e65196f280d530732c91783a747254"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7e65196f280d530732c91783a747254">&#9670;&nbsp;</a></span>ConnectionReceiveHeaderTest()</h2>
@@ -187,23 +189,24 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00016">16</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        : <a class="code" href="class_connection_receive_header_test.html#a70e4bc40a94fe99beaa7a14dcf4debe5">server</a>(<a class="code" href="class_connection_receive_header_test.html#ac8f0a9e806c7f16d62de6a3503dc91e9">configFile</a>, <a class="code" href="class_connection_receive_header_test.html#a0be6e893aa794d2cdcb20f98ce5f3d81">epollWrapper</a>, <a class="code" href="class_connection_receive_header_test.html#af54e50a8c7845e603fbd0666d4fca722">socketPolicy</a>)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        ON_CALL(<a class="code" href="class_connection_receive_header_test.html#a0be6e893aa794d2cdcb20f98ce5f3d81">epollWrapper</a>, modifyEvent)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            .WillByDefault(Return(<span class="keyword">true</span>));</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">connection</a>.<a class="code" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a> = 0;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">connection</a>.<a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    }</div>
-<div class="ttc" id="aclass_connection_receive_header_test_html_a0be6e893aa794d2cdcb20f98ce5f3d81"><div class="ttname"><a href="class_connection_receive_header_test.html#a0be6e893aa794d2cdcb20f98ce5f3d81">ConnectionReceiveHeaderTest::epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00028">test_connectionReceiveHeader.cpp:28</a></div></div>
-<div class="ttc" id="aclass_connection_receive_header_test_html_a70e4bc40a94fe99beaa7a14dcf4debe5"><div class="ttname"><a href="class_connection_receive_header_test.html#a70e4bc40a94fe99beaa7a14dcf4debe5">ConnectionReceiveHeaderTest::server</a></div><div class="ttdeci">Server server</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00030">test_connectionReceiveHeader.cpp:30</a></div></div>
-<div class="ttc" id="aclass_connection_receive_header_test_html_abbf923e4a6bd3f424ace072e57e6629d"><div class="ttname"><a href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">ConnectionReceiveHeaderTest::connection</a></div><div class="ttdeci">Connection connection</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00036">test_connectionReceiveHeader.cpp:36</a></div></div>
-<div class="ttc" id="aclass_connection_receive_header_test_html_ac8f0a9e806c7f16d62de6a3503dc91e9"><div class="ttname"><a href="class_connection_receive_header_test.html#ac8f0a9e806c7f16d62de6a3503dc91e9">ConnectionReceiveHeaderTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00027">test_connectionReceiveHeader.cpp:27</a></div></div>
-<div class="ttc" id="aclass_connection_receive_header_test_html_af54e50a8c7845e603fbd0666d4fca722"><div class="ttname"><a href="class_connection_receive_header_test.html#af54e50a8c7845e603fbd0666d4fca722">ConnectionReceiveHeaderTest::socketPolicy</a></div><div class="ttdeci">MockSocketPolicy socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00029">test_connectionReceiveHeader.cpp:29</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00022">Connection.hpp:22</a></div></div>
-<div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00032">Connection.hpp:32</a></div></div>
-<div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00033">Connection.hpp:33</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00017">17</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        : <a class="code" href="class_connection_receive_header_test.html#a70e4bc40a94fe99beaa7a14dcf4debe5">server</a>(<a class="code" href="class_connection_receive_header_test.html#ac8f0a9e806c7f16d62de6a3503dc91e9">configFile</a>, <a class="code" href="class_connection_receive_header_test.html#a0be6e893aa794d2cdcb20f98ce5f3d81">epollWrapper</a>, <a class="code" href="class_connection_receive_header_test.html#af54e50a8c7845e603fbd0666d4fca722">socketPolicy</a>, <a class="code" href="class_connection_receive_header_test.html#ae858d0aed9cc3b5e31bc39c6e6882a8e">processOps</a>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        ON_CALL(<a class="code" href="class_connection_receive_header_test.html#a0be6e893aa794d2cdcb20f98ce5f3d81">epollWrapper</a>, modifyEvent)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            .WillByDefault(Return(<span class="keyword">true</span>));</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">connection</a>.<a class="code" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a> = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <a class="code" href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">connection</a>.<a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="ttc" id="aclass_connection_receive_header_test_html_a0be6e893aa794d2cdcb20f98ce5f3d81"><div class="ttname"><a href="class_connection_receive_header_test.html#a0be6e893aa794d2cdcb20f98ce5f3d81">ConnectionReceiveHeaderTest::epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00029">test_connectionReceiveHeader.cpp:29</a></div></div>
+<div class="ttc" id="aclass_connection_receive_header_test_html_a70e4bc40a94fe99beaa7a14dcf4debe5"><div class="ttname"><a href="class_connection_receive_header_test.html#a70e4bc40a94fe99beaa7a14dcf4debe5">ConnectionReceiveHeaderTest::server</a></div><div class="ttdeci">Server server</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00032">test_connectionReceiveHeader.cpp:32</a></div></div>
+<div class="ttc" id="aclass_connection_receive_header_test_html_abbf923e4a6bd3f424ace072e57e6629d"><div class="ttname"><a href="class_connection_receive_header_test.html#abbf923e4a6bd3f424ace072e57e6629d">ConnectionReceiveHeaderTest::connection</a></div><div class="ttdeci">Connection connection</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00040">test_connectionReceiveHeader.cpp:40</a></div></div>
+<div class="ttc" id="aclass_connection_receive_header_test_html_ac8f0a9e806c7f16d62de6a3503dc91e9"><div class="ttname"><a href="class_connection_receive_header_test.html#ac8f0a9e806c7f16d62de6a3503dc91e9">ConnectionReceiveHeaderTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00028">test_connectionReceiveHeader.cpp:28</a></div></div>
+<div class="ttc" id="aclass_connection_receive_header_test_html_ae858d0aed9cc3b5e31bc39c6e6882a8e"><div class="ttname"><a href="class_connection_receive_header_test.html#ae858d0aed9cc3b5e31bc39c6e6882a8e">ConnectionReceiveHeaderTest::processOps</a></div><div class="ttdeci">MockProcessOps processOps</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00031">test_connectionReceiveHeader.cpp:31</a></div></div>
+<div class="ttc" id="aclass_connection_receive_header_test_html_af54e50a8c7845e603fbd0666d4fca722"><div class="ttname"><a href="class_connection_receive_header_test.html#af54e50a8c7845e603fbd0666d4fca722">ConnectionReceiveHeaderTest::socketPolicy</a></div><div class="ttdeci">MockSocketPolicy socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__connection_receive_header_8cpp_source.html#l00030">test_connectionReceiveHeader.cpp:30</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00023">Connection.hpp:23</a></div></div>
+<div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00036">Connection.hpp:36</a></div></div>
+<div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00037">Connection.hpp:37</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -230,8 +233,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00025">25</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{ }</div>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00026">26</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -256,7 +259,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00027">27</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00028">28</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -280,7 +283,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00028">28</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00029">29</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -304,7 +307,31 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00029">29</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00030">30</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae858d0aed9cc3b5e31bc39c6e6882a8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae858d0aed9cc3b5e31bc39c6e6882a8e">&#9670;&nbsp;</a></span>processOps</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_mock_process_ops.html">MockProcessOps</a> ConnectionReceiveHeaderTest::processOps</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00031">31</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -328,7 +355,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00030">30</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00032">32</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -356,31 +383,7 @@ Protected Attributes</h2></td></tr>
 <div class="line">        .port = <span class="stringliteral">&quot;8080&quot;</span></div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00031">31</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
-
-</div>
-</div>
-<a id="abbf923e4a6bd3f424ace072e57e6629d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbf923e4a6bd3f424ace072e57e6629d">&#9670;&nbsp;</a></span>connection</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> ConnectionReceiveHeaderTest::connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_connection_receive_header_test.html#a5edb696cd43f0abb636f626234d4bf97">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), configFile.servers)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00036">36</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00033">33</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -405,6 +408,30 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00038">38</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abbf923e4a6bd3f424ace072e57e6629d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbf923e4a6bd3f424ace072e57e6629d">&#9670;&nbsp;</a></span>connection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> ConnectionReceiveHeaderTest::connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_connection_receive_header_test.html#a5edb696cd43f0abb636f626234d4bf97">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), <a class="el" href="class_connection_receive_header_test.html#a46d3ea09f026380351414c6ac84d566e">dummyFd</a>, configFile.servers)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__connection_receive_header_8cpp_source.html#l00040">40</a> of file <a class="el" href="test__connection_receive_header_8cpp_source.html">test_connectionReceiveHeader.cpp</a>.</p>
 
 </div>
 </div>

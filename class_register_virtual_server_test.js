@@ -5,6 +5,7 @@ var class_register_virtual_server_test =
     [ "configFile", "class_register_virtual_server_test.html#af5c59430db2b6553b027fc575b94845e", null ],
     [ "epollWrapper", "class_register_virtual_server_test.html#a56635aa0fef651e1728de6f976e14b84", null ],
     [ "socketPolicy", "class_register_virtual_server_test.html#a35f28d8789e2b7ff26adddfa77ef171b", null ],
+    [ "processOps", "class_register_virtual_server_test.html#a6716ab87043f705742bf2b11821ea4c0", null ],
     [ "server", "class_register_virtual_server_test.html#a84cfb038e860915e6928e932956cd7a6", null ],
     [ "socket", "class_register_virtual_server_test.html#a4d31c9584f19c12db0427ce25f230176", null ],
     [ "socket2", "class_register_virtual_server_test.html#a2f433a0306f250191243551df3002017", null ],

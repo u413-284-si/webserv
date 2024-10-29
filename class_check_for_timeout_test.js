@@ -5,6 +5,7 @@ var class_check_for_timeout_test =
     [ "configFile", "class_check_for_timeout_test.html#a986cb17ec967b7bfa85a7ec944fb6577", null ],
     [ "epollWrapper", "class_check_for_timeout_test.html#a3f8ebaa9971ad2f9cb1f5e00d6b16e4a", null ],
     [ "socketPolicy", "class_check_for_timeout_test.html#a5f231f889565e1965dbbd3ef2458a801", null ],
+    [ "processOps", "class_check_for_timeout_test.html#a8e22d9abbbdfac7b366b7b8aab4cd78d", null ],
     [ "server", "class_check_for_timeout_test.html#a49d755f72cea0d1bed2c3ac9f3d6691b", null ],
     [ "dummyFd", "class_check_for_timeout_test.html#a3178a9d4890ce91ae2e937e2253ce648", null ],
     [ "dummyFd2", "class_check_for_timeout_test.html#a282e4d72f2c8aa533e2e7025cb488545", null ],

@@ -145,24 +145,26 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:adfd4419cb243c52a087eba1d54a19b65"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#adfd4419cb243c52a087eba1d54a19b65">m_dummyFd</a> = 10</td></tr>
+<tr class="separator:adfd4419cb243c52a087eba1d54a19b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a578010a595832987e3bd364664eb3a3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_config_file.html">ConfigFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#a578010a595832987e3bd364664eb3a3c">m_configFile</a> = <a class="el" href="_config_file_8cpp.html#a5c24d3b32b5ab2755e29e4e65639820c">createDummyConfig</a>()</td></tr>
 <tr class="separator:a578010a595832987e3bd364664eb3a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b5cdb40149375fbd47866c5598dbd50"><td class="memItemLeft" align="right" valign="top">NiceMock&lt; <a class="el" href="class_mock_epoll_wrapper.html">MockEpollWrapper</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">m_epollWrapper</a></td></tr>
 <tr class="separator:a4b5cdb40149375fbd47866c5598dbd50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a80cf797b4318adc6217d199fb24a91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_socket_policy.html">MockSocketPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#a0a80cf797b4318adc6217d199fb24a91">m_socketPolicy</a></td></tr>
 <tr class="separator:a0a80cf797b4318adc6217d199fb24a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ccd21bf024a751b9e5b48978c4b32fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_process_ops.html">MockProcessOps</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#a0ccd21bf024a751b9e5b48978c4b32fb">processOps</a></td></tr>
+<tr class="separator:a0ccd21bf024a751b9e5b48978c4b32fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a020e88ed01f5e877ff565a06de4b6c4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_server.html">Server</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#a020e88ed01f5e877ff565a06de4b6c4a">m_server</a></td></tr>
 <tr class="separator:a020e88ed01f5e877ff565a06de4b6c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f84a9fb72d60de521041030f67b624"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_socket.html">Socket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#a43f84a9fb72d60de521041030f67b624">m_serverSock</a> = { .host = &quot;127.0.0.1&quot;, .port = &quot;8080&quot; }</td></tr>
 <tr class="separator:a43f84a9fb72d60de521041030f67b624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed44fef5cdff7093d53aa413e9544a45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">m_connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_handle_complete_request_header_test.html#a43f84a9fb72d60de521041030f67b624">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), m_configFile.servers)</td></tr>
+<tr class="memitem:aed44fef5cdff7093d53aa413e9544a45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_connection.html">Connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">m_connection</a> = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_handle_complete_request_header_test.html#a43f84a9fb72d60de521041030f67b624">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), <a class="el" href="class_handle_complete_request_header_test.html#adfd4419cb243c52a087eba1d54a19b65">m_dummyFd</a>, m_configFile.servers)</td></tr>
 <tr class="separator:aed44fef5cdff7093d53aa413e9544a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfd4419cb243c52a087eba1d54a19b65"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_handle_complete_request_header_test.html#adfd4419cb243c52a087eba1d54a19b65">m_dummyFd</a> = 10</td></tr>
-<tr class="separator:adfd4419cb243c52a087eba1d54a19b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00012">12</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00013">13</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a938d495e55cc93b87bffc5770c2bd32b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a938d495e55cc93b87bffc5770c2bd32b">&#9670;&nbsp;</a></span>HandleCompleteRequestHeaderTest()</h2>
@@ -187,22 +189,23 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00014">14</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        : <a class="code" href="class_handle_complete_request_header_test.html#a020e88ed01f5e877ff565a06de4b6c4a">m_server</a>(<a class="code" href="class_handle_complete_request_header_test.html#a578010a595832987e3bd364664eb3a3c">m_configFile</a>, <a class="code" href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">m_epollWrapper</a>, <a class="code" href="class_handle_complete_request_header_test.html#a0a80cf797b4318adc6217d199fb24a91">m_socketPolicy</a>)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        ON_CALL(<a class="code" href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">m_epollWrapper</a>, modifyEvent).WillByDefault(Return(<span class="keyword">true</span>));</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">m_connection</a>.<a class="code" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a> = 0;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">m_connection</a>.<a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
-<div class="ttc" id="aclass_handle_complete_request_header_test_html_a020e88ed01f5e877ff565a06de4b6c4a"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a020e88ed01f5e877ff565a06de4b6c4a">HandleCompleteRequestHeaderTest::m_server</a></div><div class="ttdeci">Server m_server</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00027">test_handleCompleteRequestHeader.cpp:27</a></div></div>
-<div class="ttc" id="aclass_handle_complete_request_header_test_html_a0a80cf797b4318adc6217d199fb24a91"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a0a80cf797b4318adc6217d199fb24a91">HandleCompleteRequestHeaderTest::m_socketPolicy</a></div><div class="ttdeci">MockSocketPolicy m_socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00026">test_handleCompleteRequestHeader.cpp:26</a></div></div>
-<div class="ttc" id="aclass_handle_complete_request_header_test_html_a4b5cdb40149375fbd47866c5598dbd50"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">HandleCompleteRequestHeaderTest::m_epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; m_epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00025">test_handleCompleteRequestHeader.cpp:25</a></div></div>
-<div class="ttc" id="aclass_handle_complete_request_header_test_html_a578010a595832987e3bd364664eb3a3c"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a578010a595832987e3bd364664eb3a3c">HandleCompleteRequestHeaderTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00024">test_handleCompleteRequestHeader.cpp:24</a></div></div>
-<div class="ttc" id="aclass_handle_complete_request_header_test_html_aed44fef5cdff7093d53aa413e9544a45"><div class="ttname"><a href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">HandleCompleteRequestHeaderTest::m_connection</a></div><div class="ttdeci">Connection m_connection</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00030">test_handleCompleteRequestHeader.cpp:30</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00022">Connection.hpp:22</a></div></div>
-<div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00032">Connection.hpp:32</a></div></div>
-<div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00033">Connection.hpp:33</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00015">15</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        : <a class="code" href="class_handle_complete_request_header_test.html#a020e88ed01f5e877ff565a06de4b6c4a">m_server</a>(<a class="code" href="class_handle_complete_request_header_test.html#a578010a595832987e3bd364664eb3a3c">m_configFile</a>, <a class="code" href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">m_epollWrapper</a>, <a class="code" href="class_handle_complete_request_header_test.html#a0a80cf797b4318adc6217d199fb24a91">m_socketPolicy</a>, <a class="code" href="class_handle_complete_request_header_test.html#a0ccd21bf024a751b9e5b48978c4b32fb">processOps</a>)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        ON_CALL(<a class="code" href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">m_epollWrapper</a>, modifyEvent).WillByDefault(Return(<span class="keyword">true</span>));</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">m_connection</a>.<a class="code" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a> = 0;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <a class="code" href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">m_connection</a>.<a class="code" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
+<div class="ttc" id="aclass_handle_complete_request_header_test_html_a020e88ed01f5e877ff565a06de4b6c4a"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a020e88ed01f5e877ff565a06de4b6c4a">HandleCompleteRequestHeaderTest::m_server</a></div><div class="ttdeci">Server m_server</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00030">test_handleCompleteRequestHeader.cpp:30</a></div></div>
+<div class="ttc" id="aclass_handle_complete_request_header_test_html_a0a80cf797b4318adc6217d199fb24a91"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a0a80cf797b4318adc6217d199fb24a91">HandleCompleteRequestHeaderTest::m_socketPolicy</a></div><div class="ttdeci">MockSocketPolicy m_socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00028">test_handleCompleteRequestHeader.cpp:28</a></div></div>
+<div class="ttc" id="aclass_handle_complete_request_header_test_html_a0ccd21bf024a751b9e5b48978c4b32fb"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a0ccd21bf024a751b9e5b48978c4b32fb">HandleCompleteRequestHeaderTest::processOps</a></div><div class="ttdeci">MockProcessOps processOps</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00029">test_handleCompleteRequestHeader.cpp:29</a></div></div>
+<div class="ttc" id="aclass_handle_complete_request_header_test_html_a4b5cdb40149375fbd47866c5598dbd50"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a4b5cdb40149375fbd47866c5598dbd50">HandleCompleteRequestHeaderTest::m_epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; m_epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00027">test_handleCompleteRequestHeader.cpp:27</a></div></div>
+<div class="ttc" id="aclass_handle_complete_request_header_test_html_a578010a595832987e3bd364664eb3a3c"><div class="ttname"><a href="class_handle_complete_request_header_test.html#a578010a595832987e3bd364664eb3a3c">HandleCompleteRequestHeaderTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00026">test_handleCompleteRequestHeader.cpp:26</a></div></div>
+<div class="ttc" id="aclass_handle_complete_request_header_test_html_aed44fef5cdff7093d53aa413e9544a45"><div class="ttname"><a href="class_handle_complete_request_header_test.html#aed44fef5cdff7093d53aa413e9544a45">HandleCompleteRequestHeaderTest::m_connection</a></div><div class="ttdeci">Connection m_connection</div><div class="ttdef"><b>Definition:</b> <a href="test__handle_complete_request_header_8cpp_source.html#l00033">test_handleCompleteRequestHeader.cpp:33</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00023">Connection.hpp:23</a></div></div>
+<div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00036">Connection.hpp:36</a></div></div>
+<div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition:</b> <a href="_connection_8hpp_source.html#l00037">Connection.hpp:37</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -229,12 +232,36 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00022">22</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{ }</div>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00023">23</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="adfd4419cb243c52a087eba1d54a19b65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfd4419cb243c52a087eba1d54a19b65">&#9670;&nbsp;</a></span>m_dummyFd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int HandleCompleteRequestHeaderTest::m_dummyFd = 10</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00025">25</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a578010a595832987e3bd364664eb3a3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a578010a595832987e3bd364664eb3a3c">&#9670;&nbsp;</a></span>m_configFile</h2>
 
@@ -255,7 +282,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00024">24</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00026">26</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -279,7 +306,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00025">25</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00027">27</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -303,7 +330,31 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00026">26</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00028">28</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a0ccd21bf024a751b9e5b48978c4b32fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ccd21bf024a751b9e5b48978c4b32fb">&#9670;&nbsp;</a></span>processOps</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_mock_process_ops.html">MockProcessOps</a> HandleCompleteRequestHeaderTest::processOps</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00029">29</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +378,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00027">27</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00030">30</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -351,7 +402,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00028">28</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00031">31</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 
 </div>
 </div>
@@ -365,7 +416,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> HandleCompleteRequestHeaderTest::m_connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_handle_complete_request_header_test.html#a43f84a9fb72d60de521041030f67b624">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), m_configFile.servers)</td>
+          <td class="memname"><a class="el" href="struct_connection.html">Connection</a> HandleCompleteRequestHeaderTest::m_connection = <a class="el" href="struct_connection.html">Connection</a>(<a class="el" href="class_handle_complete_request_header_test.html#a43f84a9fb72d60de521041030f67b624">m_serverSock</a>, <a class="el" href="struct_socket.html">Socket</a>(), <a class="el" href="class_handle_complete_request_header_test.html#adfd4419cb243c52a087eba1d54a19b65">m_dummyFd</a>, m_configFile.servers)</td>
         </tr>
       </table>
   </td>
@@ -375,31 +426,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00030">30</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
-
-</div>
-</div>
-<a id="adfd4419cb243c52a087eba1d54a19b65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfd4419cb243c52a087eba1d54a19b65">&#9670;&nbsp;</a></span>m_dummyFd</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const int HandleCompleteRequestHeaderTest::m_dummyFd = 10</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00032">32</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__handle_complete_request_header_8cpp_source.html#l00033">33</a> of file <a class="el" href="test__handle_complete_request_header_8cpp_source.html">test_handleCompleteRequestHeader.cpp</a>.</p>
 
 </div>
 </div>

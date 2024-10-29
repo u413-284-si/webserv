@@ -132,7 +132,7 @@ Inheritance diagram for ShutdownServerTest:</div>
 <div class="dynheader">
 Collaboration diagram for ShutdownServerTest:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_shutdown_server_test__coll__graph.svg" width="572" height="218"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_shutdown_server_test__coll__graph.svg" width="100%" height="463"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -151,6 +151,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a9c59eb5b349077187858fd9da9ec89db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d30aac8e7a7a22549ecccf3fae8a134"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_socket_policy.html">MockSocketPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shutdown_server_test.html#a2d30aac8e7a7a22549ecccf3fae8a134">socketPolicy</a></td></tr>
 <tr class="separator:a2d30aac8e7a7a22549ecccf3fae8a134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab53ad134f8adf9c282eb7010a2b01d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_process_ops.html">MockProcessOps</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shutdown_server_test.html#aab53ad134f8adf9c282eb7010a2b01d4">processOps</a></td></tr>
+<tr class="separator:aab53ad134f8adf9c282eb7010a2b01d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16638512d2030306bed81c9d8a7a1f60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_server.html">Server</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shutdown_server_test.html#a16638512d2030306bed81c9d8a7a1f60">server</a></td></tr>
 <tr class="separator:a16638512d2030306bed81c9d8a7a1f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e988ca3f5559978e9b23b1e3d4faee2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; struct epoll_event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">dummyEventsVector</a></td></tr>
@@ -170,7 +172,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00011">11</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00012">12</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af19cb032fbc8e3d308515b16fe0ddaa5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af19cb032fbc8e3d308515b16fe0ddaa5">&#9670;&nbsp;</a></span>ShutdownServerTest()</h2>
@@ -195,26 +197,27 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00013">13</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        : <a class="code" href="class_shutdown_server_test.html#a16638512d2030306bed81c9d8a7a1f60">server</a>(<a class="code" href="class_shutdown_server_test.html#a93d9e51e0c5702d20de7a69b808aa23f">configFile</a>, <a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, <a class="code" href="class_shutdown_server_test.html#a2d30aac8e7a7a22549ecccf3fae8a134">socketPolicy</a>)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">struct </span>epoll_event dummyEvent;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        dummyEvent.events = EPOLLIN;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        dummyEvent.data.fd = <a class="code" href="class_shutdown_server_test.html#a4f27a0798701c9efb8a94530aa76e7a1">dummyFd</a>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">dummyEventsVector</a>.push_back(dummyEvent);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        ON_CALL(<a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, addEvent).WillByDefault(Return(<span class="keyword">true</span>));</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        ON_CALL(<a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, waitForEvents).WillByDefault(Return(0));</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        ON_CALL(<a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, eventsBegin).WillByDefault(Return((<a class="code" href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">dummyEventsVector</a>.begin())));</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="signal_handler_8hpp.html#a8dcc1e48e0bf890094e11efb58edafa1">g_signalStatus</a> = SIGQUIT;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
-<div class="ttc" id="aclass_shutdown_server_test_html_a16638512d2030306bed81c9d8a7a1f60"><div class="ttname"><a href="class_shutdown_server_test.html#a16638512d2030306bed81c9d8a7a1f60">ShutdownServerTest::server</a></div><div class="ttdeci">Server server</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00032">test_shutdownServer.cpp:32</a></div></div>
-<div class="ttc" id="aclass_shutdown_server_test_html_a2d30aac8e7a7a22549ecccf3fae8a134"><div class="ttname"><a href="class_shutdown_server_test.html#a2d30aac8e7a7a22549ecccf3fae8a134">ShutdownServerTest::socketPolicy</a></div><div class="ttdeci">MockSocketPolicy socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00031">test_shutdownServer.cpp:31</a></div></div>
-<div class="ttc" id="aclass_shutdown_server_test_html_a4e988ca3f5559978e9b23b1e3d4faee2"><div class="ttname"><a href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">ShutdownServerTest::dummyEventsVector</a></div><div class="ttdeci">std::vector&lt; struct epoll_event &gt; dummyEventsVector</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00033">test_shutdownServer.cpp:33</a></div></div>
-<div class="ttc" id="aclass_shutdown_server_test_html_a4f27a0798701c9efb8a94530aa76e7a1"><div class="ttname"><a href="class_shutdown_server_test.html#a4f27a0798701c9efb8a94530aa76e7a1">ShutdownServerTest::dummyFd</a></div><div class="ttdeci">const int dummyFd</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00035">test_shutdownServer.cpp:35</a></div></div>
-<div class="ttc" id="aclass_shutdown_server_test_html_a93d9e51e0c5702d20de7a69b808aa23f"><div class="ttname"><a href="class_shutdown_server_test.html#a93d9e51e0c5702d20de7a69b808aa23f">ShutdownServerTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00029">test_shutdownServer.cpp:29</a></div></div>
-<div class="ttc" id="aclass_shutdown_server_test_html_a9c59eb5b349077187858fd9da9ec89db"><div class="ttname"><a href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">ShutdownServerTest::epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00030">test_shutdownServer.cpp:30</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00014">14</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        : <a class="code" href="class_shutdown_server_test.html#a16638512d2030306bed81c9d8a7a1f60">server</a>(<a class="code" href="class_shutdown_server_test.html#a93d9e51e0c5702d20de7a69b808aa23f">configFile</a>, <a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, <a class="code" href="class_shutdown_server_test.html#a2d30aac8e7a7a22549ecccf3fae8a134">socketPolicy</a>, <a class="code" href="class_shutdown_server_test.html#aab53ad134f8adf9c282eb7010a2b01d4">processOps</a>)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keyword">struct </span>epoll_event dummyEvent;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        dummyEvent.events = EPOLLIN;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        dummyEvent.data.fd = <a class="code" href="class_shutdown_server_test.html#a4f27a0798701c9efb8a94530aa76e7a1">dummyFd</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">dummyEventsVector</a>.push_back(dummyEvent);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        ON_CALL(<a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, addEvent).WillByDefault(Return(<span class="keyword">true</span>));</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        ON_CALL(<a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, waitForEvents).WillByDefault(Return(0));</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        ON_CALL(<a class="code" href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">epollWrapper</a>, eventsBegin).WillByDefault(Return((<a class="code" href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">dummyEventsVector</a>.begin())));</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="signal_handler_8hpp.html#a8dcc1e48e0bf890094e11efb58edafa1">g_signalStatus</a> = SIGQUIT;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
+<div class="ttc" id="aclass_shutdown_server_test_html_a16638512d2030306bed81c9d8a7a1f60"><div class="ttname"><a href="class_shutdown_server_test.html#a16638512d2030306bed81c9d8a7a1f60">ShutdownServerTest::server</a></div><div class="ttdeci">Server server</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00034">test_shutdownServer.cpp:34</a></div></div>
+<div class="ttc" id="aclass_shutdown_server_test_html_a2d30aac8e7a7a22549ecccf3fae8a134"><div class="ttname"><a href="class_shutdown_server_test.html#a2d30aac8e7a7a22549ecccf3fae8a134">ShutdownServerTest::socketPolicy</a></div><div class="ttdeci">MockSocketPolicy socketPolicy</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00032">test_shutdownServer.cpp:32</a></div></div>
+<div class="ttc" id="aclass_shutdown_server_test_html_a4e988ca3f5559978e9b23b1e3d4faee2"><div class="ttname"><a href="class_shutdown_server_test.html#a4e988ca3f5559978e9b23b1e3d4faee2">ShutdownServerTest::dummyEventsVector</a></div><div class="ttdeci">std::vector&lt; struct epoll_event &gt; dummyEventsVector</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00035">test_shutdownServer.cpp:35</a></div></div>
+<div class="ttc" id="aclass_shutdown_server_test_html_a4f27a0798701c9efb8a94530aa76e7a1"><div class="ttname"><a href="class_shutdown_server_test.html#a4f27a0798701c9efb8a94530aa76e7a1">ShutdownServerTest::dummyFd</a></div><div class="ttdeci">const int dummyFd</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00037">test_shutdownServer.cpp:37</a></div></div>
+<div class="ttc" id="aclass_shutdown_server_test_html_a93d9e51e0c5702d20de7a69b808aa23f"><div class="ttname"><a href="class_shutdown_server_test.html#a93d9e51e0c5702d20de7a69b808aa23f">ShutdownServerTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00030">test_shutdownServer.cpp:30</a></div></div>
+<div class="ttc" id="aclass_shutdown_server_test_html_a9c59eb5b349077187858fd9da9ec89db"><div class="ttname"><a href="class_shutdown_server_test.html#a9c59eb5b349077187858fd9da9ec89db">ShutdownServerTest::epollWrapper</a></div><div class="ttdeci">NiceMock&lt; MockEpollWrapper &gt; epollWrapper</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00031">test_shutdownServer.cpp:31</a></div></div>
+<div class="ttc" id="aclass_shutdown_server_test_html_aab53ad134f8adf9c282eb7010a2b01d4"><div class="ttname"><a href="class_shutdown_server_test.html#aab53ad134f8adf9c282eb7010a2b01d4">ShutdownServerTest::processOps</a></div><div class="ttdeci">MockProcessOps processOps</div><div class="ttdef"><b>Definition:</b> <a href="test__shutdown_server_8cpp_source.html#l00033">test_shutdownServer.cpp:33</a></div></div>
 <div class="ttc" id="asignal_handler_8hpp_html_a8dcc1e48e0bf890094e11efb58edafa1"><div class="ttname"><a href="signal_handler_8hpp.html#a8dcc1e48e0bf890094e11efb58edafa1">g_signalStatus</a></div><div class="ttdeci">volatile std::sig_atomic_t g_signalStatus</div><div class="ttdef"><b>Definition:</b> <a href="signal_handler_8cpp_source.html#l00005">signalHandler.cpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -242,8 +245,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00027">27</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{ }</div>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00028">28</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -268,7 +271,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00029">29</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00030">30</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -292,7 +295,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00030">30</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00031">31</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -316,7 +319,31 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00031">31</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00032">32</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aab53ad134f8adf9c282eb7010a2b01d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab53ad134f8adf9c282eb7010a2b01d4">&#9670;&nbsp;</a></span>processOps</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_mock_process_ops.html">MockProcessOps</a> ShutdownServerTest::processOps</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00033">33</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -340,7 +367,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00032">32</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00034">34</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -364,7 +391,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00033">33</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00035">35</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -388,7 +415,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00035">35</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00037">37</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -412,7 +439,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00036">36</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00038">38</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -436,7 +463,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00037">37</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00039">39</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -460,7 +487,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00038">38</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00040">40</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -489,7 +516,7 @@ Protected Attributes</h2></td></tr>
 <div class="line">    }</div>
 <div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition:</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00040">40</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00042">42</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
@@ -513,7 +540,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00044">44</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00046">46</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
 
 </div>
 </div>
