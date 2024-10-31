@@ -23,8 +23,8 @@ protected:
 
 		request.uri.path = "/cgi-bin/test.py/some/more/path";
 		request.uri.query = "name=John&age=25";
-		request.headers["Content-Length"] = "20";
-		request.headers["Content-Type"] = "text/plain";
+		request.headers["content-length"] = "20";
+		request.headers["content-type"] = "text/plain";
 		request.method = MethodPost;
 
 		location.cgiExt = ".py";

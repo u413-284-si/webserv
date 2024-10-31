@@ -32,7 +32,7 @@ TEST_F(ParseBodyTest, ChunkedBody)
 TEST_F(ParseBodyTest, NonChunkedBodySize14)
 {
 	// Arrange
-	request.headers["Content-Length"] = "14";
+	request.headers["content-length"] = "14";
 
 	// Act
 	p.parseBody("hello \r\nworld!", request);
@@ -44,7 +44,7 @@ TEST_F(ParseBodyTest, NonChunkedBodySize14)
 TEST_F(ParseBodyTest, NonChunkedBodySize16)
 {
 	// Arrange
-	request.headers["Content-Length"] = "16";
+	request.headers["content-length"] = "16";
 
 	// Act
 	p.parseBody("hello \r\nworld!\r\n", request);
@@ -76,7 +76,7 @@ TEST_F(ParseBodyTest, DifferingChunkSize)
 TEST_F(ParseBodyTest, DifferingContentLength)
 {
 	// Arrange
-	request.headers["Content-Length"] = "3";
+	request.headers["content-length"] = "3";
 
 	// Act & Assert
 	EXPECT_THROW(

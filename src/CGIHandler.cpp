@@ -58,10 +58,10 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 
 	/* ========= Set up environment for CGI script ========= */
 
-	if (connection.m_request.headers.find("Content-Length") != connection.m_request.headers.end())
-		m_env.push_back("CONTENT_LENGTH=" + connection.m_request.headers.at("Content-Length"));
-	if (connection.m_request.headers.find("Content-Type") != connection.m_request.headers.end())
-		m_env.push_back("CONTENT_TYPE=" + connection.m_request.headers.at("Content-Type"));
+	if (connection.m_request.headers.find("content-length") != connection.m_request.headers.end())
+		m_env.push_back("CONTENT_LENGTH=" + connection.m_request.headers.at("content-length"));
+	if (connection.m_request.headers.find("content-type") != connection.m_request.headers.end())
+		m_env.push_back("CONTENT_TYPE=" + connection.m_request.headers.at("content-type"));
 	m_env.push_back("GATEWAY_INTERFACE=CGI/1.1");
 	const std::string pathInfo = extractPathInfo(connection.m_request.uri.path);
 	m_env.push_back("PATH_INFO=" + pathInfo);
