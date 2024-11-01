@@ -119,6 +119,7 @@ void RequestParser::parseRequestLine(HTTPRequest& request)
 	std::string requestLine;
 	if (!std::getline(m_requestStream, requestLine) || requestLine.empty()) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_MISS_REQUEST_LINE);
 	}
 	requestLine = parseMethod(requestLine, request);
@@ -192,6 +193,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 	int index = 0;
 	if (requestLine.at(index) != '/') {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
 	}
 
@@ -199,6 +201,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 	const std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
 	if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_URI_INVALID_CHAR);
 	}
 
@@ -212,7 +215,6 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 			parseUriFragment(requestLine, index, request);
 		else
 			request.uri.path.push_back(requestLine.at(index));
-		// FIXME: setup max. URI length?
 	}
 	return (requestLine.substr(index));
 }
@@ -243,6 +245,7 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
 		}
 		if (requestLine.at(index) == '?') {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
 		request.uri.query.push_back(requestLine.at(index));
@@ -274,6 +277,7 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
 		}
 		if (requestLine.at(index) == '#') {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
 		}
 		request.uri.fragment.push_back(requestLine.at(index));
@@ -301,11 +305,13 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 
 	if (requestLine.substr(0, versionPrefixLength) != "HTTP/") {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
 	}
 	int index = versionPrefixLength;
 	if (isdigit(requestLine[index]) == 0) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
 	}
 	if (requestLine[index] != '1') {
@@ -315,11 +321,13 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 	request.version.push_back(requestLine[index]);
 	if (requestLine[++index] != '.') {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_INVALID_VERSION_DELIM);
 	}
 	request.version.push_back(requestLine[index]);
 	if (isdigit(requestLine[++index]) == 0) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
 	}
 	if (requestLine[index] != '1' && requestLine[index] != '0') {
@@ -358,6 +366,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
 		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
 		}
 		std::string headerName;
@@ -420,6 +429,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 			strChunkSize.erase(strChunkSize.size() - 1);
 		else {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 		numChunkSize = convertHex(strChunkSize);
@@ -428,10 +438,12 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 			chunkData.erase(chunkData.size() - 1);
 		else {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 		if (chunkData.size() != numChunkSize) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_CHUNK_SIZE);
 		}
 		request.body += chunkData;
@@ -481,6 +493,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
 	}
 }
@@ -504,11 +517,13 @@ void RequestParser::validateHeaderName(const std::string& headerName, HTTPReques
 {
 	if (isspace(headerName[headerName.size() - 1]) != 0) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_HEADER_COLON_WHITESPACE);
 	}
 	for (size_t i = 0; i < headerName.size(); i++) {
 		if (!isValidHeaderFieldNameChar(headerName[i])) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_HEADER_NAME_INVALID_CHAR);
 		}
 	}
@@ -536,11 +551,13 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 	if (headerName == "content-length") {
 		if (headerValue.empty()) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 		}
 		if (request.headers.find("content-length") != request.headers.end()
 			&& request.headers["content-length"] != headerValue) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 		}
 
@@ -551,11 +568,13 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, constants::g_decimalBase);
 			if ((contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 			}
 			numValues.push_back(contentLength);
 			if (i != 0 && contentLength != numValues[i - 1]) {
 				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 			}
 		}
@@ -584,8 +603,11 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 	if (request.headers.find("transfer-encoding") != request.headers.end()) {
 		if (request.headers.at("transfer-encoding").empty()) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
 		}
+		if (request.headers.find("content-length") != request.headers.end())
+			request.shallCloseConnection = true;
 
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
@@ -643,11 +665,13 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	std::map<std::string, std::string>::const_iterator iter = request.headers.find("host");
 	if (iter == request.headers.end()) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
 	}
 
 	if (iter->second.empty()) {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
 	}
 
@@ -655,16 +679,19 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
 			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
 				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
 			}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
 	 } else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
 	 }
@@ -687,6 +714,7 @@ void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName,
 	if (headerName == "host") {
 		if (request.headers.find("host") != request.headers.end()) {
 			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
 		}
 	}
@@ -714,6 +742,7 @@ std::string RequestParser::checkForSpace(const std::string& str, HTTPRequest& re
 	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
 		return (str.substr(1));
 	request.httpStatus = StatusBadRequest;
+	request.shallCloseConnection = true;
 	throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
 }
 
@@ -731,6 +760,7 @@ void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
 {
 	if (str.length() != 1 || str[0] != '\r') {
 		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_MISS_CRLF);
 	}
 }
