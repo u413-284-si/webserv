@@ -166,6 +166,7 @@ TEST_F(ParseHeadersTest, WhitespaceBetweenHeaderFieldNameAndColon)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Whitespace between header field-name and colon detected", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -185,6 +186,7 @@ TEST_F(ParseHeadersTest, ObsoleteLineFolding)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Obsolete line folding detected", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -204,6 +206,7 @@ TEST_F(ParseHeadersTest, InvalidFieldName)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid char in header field name", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -223,6 +226,7 @@ TEST_F(ParseHeadersTest, EmptyContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid content-length provided", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -242,6 +246,7 @@ TEST_F(ParseHeadersTest, InvalidContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid content-length provided", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -261,6 +266,7 @@ TEST_F(ParseHeadersTest, RepeatedNonEqualContentLengths)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Multiple differing content-length values", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -280,6 +286,7 @@ TEST_F(ParseHeadersTest, InvalidInFirstRepeatedContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid content-length provided", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -299,6 +306,7 @@ TEST_F(ParseHeadersTest, InvalidInLastRepeatedContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid content-length provided", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -318,6 +326,7 @@ TEST_F(ParseHeadersTest, RepeatedContentLengthHeaders)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Multiple differing content-length values", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -337,6 +346,7 @@ TEST_F(ParseHeadersTest, EmptyTransferEncoding)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Transfer encoding not detected", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -356,6 +366,7 @@ TEST_F(ParseHeadersTest, InvalidChunkedTransferEncodingPositioning)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Chunked encoding not the final encoding", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -393,6 +404,7 @@ TEST_F(ParseHeadersTest, MissingHostHeader)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Missing host header", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -411,6 +423,7 @@ TEST_F(ParseHeadersTest, EmptyHostValue)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Missing hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -430,6 +443,7 @@ TEST_F(ParseHeadersTest, MultipleHostHeaders)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Multiple host headers", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -448,6 +462,7 @@ TEST_F(ParseHeadersTest, HostnameInvalidChar)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -466,6 +481,7 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtStart)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -484,6 +500,7 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtStartOfLabel)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -502,6 +519,7 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtEndOfLabel)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -520,6 +538,7 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtEnd)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -538,6 +557,7 @@ TEST_F(ParseHeadersTest, HostnameLabelTooLong)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -556,6 +576,7 @@ TEST_F(ParseHeadersTest, HostnameTooLong)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -574,6 +595,7 @@ TEST_F(ParseHeadersTest, HostnameAsIPInvalid)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -593,6 +615,7 @@ TEST_F(ParseHeadersTest, InvalidHostnameLikeIP)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -612,6 +635,7 @@ TEST_F(ParseHeadersTest, InvalidHostnameLikeIP2)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid IP as hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -630,6 +654,7 @@ TEST_F(ParseHeadersTest, HostnameAsIPWithInvalidPort)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Invalid IP with port as hostname", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
