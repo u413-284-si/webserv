@@ -478,7 +478,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("Content-Length").c_str(), NULL, constants::g_decimalBase);
+	const long contentLength = std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
