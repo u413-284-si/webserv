@@ -11,22 +11,47 @@
  * @param server Server socket associated with connection
  * @param client Client socket associated with connection
  */
-Connection::Connection(const Socket& server, const Socket& client, const std::vector<ConfigServer>& serverConfigs)
+Connection::Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs)
 	: m_serverSocket(server)
 	, m_clientSocket(client)
+	, m_clientFd(clientFd)
 	, m_timeSinceLastEvent(std::time(0))
 	, m_status(Idle)
+	, m_pipeToCGIWriteEnd(-1)
+	, m_pipeFromCGIReadEnd(-1)
+	, m_cgiPid(-1)
+
 {
-	if (!hasValidServerConfig(*this, serverConfigs)) {
+	if (!hasValidServerConfig(*this, serverConfigs))
 		m_status = Closed;
-	}
 }
 
+/**
+ * @brief Clears the state of a given Connection object and resets its attributes.
+ *
+ * This function resets the status, request, buffer, and other attributes of the 
+ * provided Connection object. It also closes any open file descriptors associated 
+ * with CGI communication and resets the CGI process ID. Finally, it updates the 
+ * time since the last event and checks if the connection has a valid server configuration.
+ *
+ * @param connection The Connection object to be cleared and reset.
+ * @param serverConfigs A vector of ConfigServer objects to validate the connection against.
+ * @return true if the connection has a valid server configuration, false otherwise.
+ */
 bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs)
 {
 	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
+	if (connection.m_pipeToCGIWriteEnd != -1) {
+		webutils::closeFd(connection.m_pipeToCGIWriteEnd);
+		connection.m_pipeToCGIWriteEnd = -1;
+	}
+	if (connection.m_pipeFromCGIReadEnd != -1) {
+		webutils::closeFd(connection.m_pipeFromCGIReadEnd);
+		connection.m_pipeFromCGIReadEnd = -1;
+	}
+	connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
 	return (hasValidServerConfig(connection, serverConfigs));
 }

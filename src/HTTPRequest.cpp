@@ -7,5 +7,6 @@ HTTPRequest::HTTPRequest()
 	, hasBody(false)
 	, isChunked(false)
 	, hasAutoindex(false)
+	, hasCGI(false)
 {
 }

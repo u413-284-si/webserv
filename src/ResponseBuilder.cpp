@@ -34,19 +34,24 @@ std::string ResponseBuilder::getResponse() const
  * Construct and execute a ResponseBodyHandler to construct the response body.
  * Build the response header with appendStatusLine() and appendHeaders().
  * The response is stored in m_responseHeader and m_responseBody. The response can be retrieved with getResponse().
- * @param request HTTP request.
+ * @param connection The connection to build the response for.
  */
-void ResponseBuilder::buildResponse(HTTPRequest& request)
+void ResponseBuilder::buildResponse(Connection& connection)
 {
 	resetBuilder();
 
+	const HTTPRequest& request = connection.m_request;
+
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	ResponseBodyHandler responseBodyHandler(request, m_responseBody, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
 	appendStatusLine(request);
-	appendHeaders(request);
+	if (request.hasCGI && request.httpStatus == StatusOK)
+		appendHeadersCGI();
+	else
+		appendHeaders(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeader.str();
 
@@ -76,16 +81,17 @@ void ResponseBuilder::resetBuilder()
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
-					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
+		return;
+	m_responseHeader << "HTTP/1.1 " << ' ' << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
  * @brief Append headers to the response.
  *
  * The following headers are appended:
- * - Content-Type: MIME type of the target resource.
- * - Content-Length: Length of the response body.
+ * - Content-Type: MIME type of the target resource (only if response has body)
+ * - Content-Length: Length of the response body (only if response has body)
  * - Server: TriHard.
  * - Date: Current date in GMT.
  * - Location: Target resource if status is StatusMovedPermanently.
@@ -94,20 +100,42 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
+	if (!m_responseBody.empty()) {
 	// Content-Type
-	m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+	// Content-Length
+		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+	}
+	// Server
+	m_responseHeader << "Server: TriHard\r\n";
+	// Date
+	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	// Location
+	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
+	if (iter != request.headers.end()) {
+		m_responseHeader << "Location: " << iter->second << "\r\n";
+	}
+	// Delimiter
+	m_responseHeader << "\r\n";
+}
+
+/**
+ * @brief Append headers to the response for CGI.
+ *
+ * The following headers are appended:
+ * Content-Length: Length of the response body.
+ * Server: TriHard.
+ * Date: Current date in GMT.
+ * Location: Target resource if status is StatusMovedPermanently.
+ */
+void ResponseBuilder::appendHeadersCGI()
+{
 	// Content-Length
 	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	// Server
 	m_responseHeader << "Server: TriHard\r\n";
 	// Date
 	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
-	// Location
-	if (request.httpStatus == StatusMovedPermanently) {
-		m_responseHeader << "Location: " << request.targetResource << "\r\n";
-	}
-	// Delimiter
-	m_responseHeader << "\r\n";
 }
 
 /**

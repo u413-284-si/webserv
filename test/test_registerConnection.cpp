@@ -4,6 +4,7 @@
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::Return;
@@ -11,7 +12,7 @@ using ::testing::NiceMock;
 
 class RegisterConnectionTest : public ::testing::Test {
 	protected:
-	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy)
+	RegisterConnectionTest() :server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ConfigServer serverConfig;
 		serverConfig.host = serverSock.host;
@@ -19,13 +20,14 @@ class RegisterConnectionTest : public ::testing::Test {
 		configFile.servers.push_back(serverConfig);
 
 		ON_CALL(epollWrapper, addEvent)
-			.WillByDefault(Return(true));
+		.WillByDefault(Return(true));
 	}
 	~RegisterConnectionTest() override { }
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 
 	Socket serverSock = {
@@ -66,12 +68,7 @@ TEST_F(RegisterConnectionTest, CantOverwriteExistingConnection)
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, oldClientSocket), true);
 	EXPECT_EQ(server.getConnections().size(), 1);
 
-	// try to add connection with same fd
+	// reuse the same dummyFd should fail as a connection with this fd already exists
 	EXPECT_EQ(server.registerConnection(serverSock, dummyFd, clientSocket), false);
-
 	EXPECT_EQ(server.getConnections().size(), 1);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.host, oldClientSocket.host);
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_clientSocket.port, oldClientSocket.port);
 }

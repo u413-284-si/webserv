@@ -3,6 +3,7 @@
 
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockProcessOps.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
 
@@ -11,7 +12,8 @@ using ::testing::Return;
 
 class InitVirtualServersTest : public ::testing::Test {
 protected:
-	InitVirtualServersTest() : server(configFile, epollWrapper, socketPolicy)
+	InitVirtualServersTest()
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ConfigServer serverConfig;
 		serverConfig.host = "127.0.0.1";
@@ -24,8 +26,7 @@ protected:
 		configFile.servers.push_back(serverConfig);
 		configFile.servers.push_back(serverConfig2);
 
-		ON_CALL(epollWrapper, addEvent)
-			.WillByDefault(Return(true));
+		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 	}
 
 	~InitVirtualServersTest() override { }
@@ -33,6 +34,7 @@ protected:
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+	MockProcessOps processOps;
 	Server server;
 
 	const int backlog = 10;
@@ -42,7 +44,6 @@ protected:
 
 	const int dummyFd2 = 11;
 	Socket serverSock2 = { "localhost", "7070" };
-
 };
 
 TEST_F(InitVirtualServersTest, ServerInitSuccess)
@@ -51,29 +52,17 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	struct sockaddr* addr2 = (struct sockaddr*)malloc(sizeof(*addr));
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct addrinfo* addrinfo2 = (struct addrinfo*)malloc(sizeof(*addrinfo2));
-	*addrinfo = {
-		.ai_addr = addr,
-		.ai_next = nullptr
-	};
-	*addrinfo2 = {
-		.ai_addr = addr2,
-		.ai_next = nullptr
-	};
+	*addrinfo = { .ai_addr = addr, .ai_next = nullptr };
+	*addrinfo2 = { .ai_addr = addr2, .ai_next = nullptr };
 
 	EXPECT_CALL(socketPolicy, resolveListeningAddresses)
 		.Times(2)
 		.WillOnce(Return(addrinfo))
 		.WillOnce(Return(addrinfo2));
 
-	EXPECT_CALL(socketPolicy, createListeningSocket)
-		.Times(2)
-		.WillOnce(Return(dummyFd))
-		.WillOnce(Return(dummyFd2));
+	EXPECT_CALL(socketPolicy, createListeningSocket).Times(2).WillOnce(Return(dummyFd)).WillOnce(Return(dummyFd2));
 
-	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
-		.Times(2)
-		.WillOnce(Return(serverSock1))
-		.WillOnce(Return(serverSock2));
+	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(2).WillOnce(Return(serverSock1)).WillOnce(Return(serverSock2));
 
 	EXPECT_EQ(initVirtualServers(server, backlog, server.getServerConfigs()), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 2);
@@ -92,22 +81,13 @@ TEST_F(InitVirtualServersTest, OneDuplicateServer)
 
 	struct addrinfo* addrinfo = (struct addrinfo*)malloc(sizeof(*addrinfo));
 	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
-	*addrinfo = {
-		.ai_addr = addr,
-		.ai_next = nullptr
-	};
+	*addrinfo = { .ai_addr = addr, .ai_next = nullptr };
 
-	EXPECT_CALL(socketPolicy, resolveListeningAddresses)
-		.Times(1)
-		.WillOnce(Return(addrinfo));
+	EXPECT_CALL(socketPolicy, resolveListeningAddresses).Times(1).WillOnce(Return(addrinfo));
 
-	EXPECT_CALL(socketPolicy, createListeningSocket)
-		.Times(1)
-		.WillOnce(Return(dummyFd));
+	EXPECT_CALL(socketPolicy, createListeningSocket).Times(1).WillOnce(Return(dummyFd));
 
-	EXPECT_CALL(socketPolicy, retrieveSocketInfo)
-		.Times(1)
-		.WillOnce(Return(serverSock1));
+	EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(serverSock1));
 
 	EXPECT_EQ(initVirtualServers(server, backlog, server.getServerConfigs()), true);
 	EXPECT_EQ(server.getVirtualServers().size(), 1);

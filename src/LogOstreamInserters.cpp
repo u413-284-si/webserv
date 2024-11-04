@@ -130,6 +130,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 	case StatusMovedPermanently:
 		ostream << "301";
 		break;
+	case StatusPermanentRedirect:
+		ostream << "308";
+		break;
 	case StatusBadRequest:
 		ostream << "400";
 		break;
@@ -234,6 +237,12 @@ std::ostream& operator<<(std::ostream& ostream, const Connection::ConnectionStat
 		break;
 	case Connection::ReceiveBody:
 		ostream << "ReceiveBody";
+		break;
+	case Connection::SendToCGI:
+		ostream << "SendToCGI";
+		break;
+	case Connection::ReceiveFromCGI:
+		ostream << "ReceiveFromCGI";
 		break;
 	case Connection::BuildResponse:
 		ostream << "BuildResponse";

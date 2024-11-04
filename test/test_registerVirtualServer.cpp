@@ -4,6 +4,7 @@
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
 #include "MockSocketPolicy.hpp"
+#include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::Return;
@@ -11,12 +12,13 @@ using ::testing::NiceMock;
 
 class RegisterVirtualServerTest : public ::testing::Test {
 	protected:
-	RegisterVirtualServerTest() : server(configFile, epollWrapper, socketPolicy) { }
+	RegisterVirtualServerTest() : server(configFile, epollWrapper, socketPolicy, processOps) { }
 	~RegisterVirtualServerTest() override { }
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
+    MockProcessOps processOps;
 	Server server;
 
 	Socket socket = {

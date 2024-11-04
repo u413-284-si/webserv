@@ -2,21 +2,31 @@
 #include <gmock/gmock.h>
 
 #include "ConfigFile.hpp"
-#include "FileSystemPolicy.hpp"
+#include "HTTPRequest.hpp"
 #include "MockFileSystemPolicy.hpp"
-
 #include "ResponseBodyHandler.hpp"
 #include "StatusCode.hpp"
 
+using ::testing::Return;
+using ::testing::Throw;
+
 class ResponseBodyHandlerTest : public ::testing::Test {
 	protected:
-	ResponseBodyHandlerTest() : m_responseBodyHandler(m_request, m_responseBody, m_fileSystemPolicy) { }
+	ResponseBodyHandlerTest() { }
 	~ResponseBodyHandlerTest() override { }
 
-	HTTPRequest m_request;
+    const int dummyFd = 10;
+	ConfigFile m_configFile = createDummyConfig();
+	Socket m_serverSock = {
+		.host = m_configFile.servers[0].host,
+		.port = m_configFile.servers[0].port
+	};
+	HTTPRequest& m_request = m_connection.m_request;
 	std::string m_responseBody;
 	MockFileSystemPolicy m_fileSystemPolicy;
-	ResponseBodyHandler m_responseBodyHandler;
+
+   	Connection m_connection = Connection(m_serverSock, Socket(), dummyFd, m_configFile.servers);
+	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemPolicy);
 };
 
 TEST_F(ResponseBodyHandlerTest, IndexCreated)
@@ -39,10 +49,10 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 {
 	EXPECT_CALL(m_fileSystemPolicy, openDirectory)
 	.Times(2)
-	.WillOnce(testing::Throw(std::runtime_error("openDirectory failed")))
-	.WillOnce(testing::Return(nullptr));
+	.WillOnce(Throw(std::runtime_error("openDirectory failed")))
+	.WillOnce(Return(nullptr));
 	EXPECT_CALL(m_fileSystemPolicy, readDirectory)
-	.WillOnce(testing::Throw(std::runtime_error("readDirectory failed")));
+	.WillOnce(Throw(std::runtime_error("readDirectory failed")));
 	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
 	.Times(1);
 
@@ -66,13 +76,13 @@ TEST_F(ResponseBodyHandlerTest, ErrorPage)
 	m_request.hasAutoindex = false;
 
 	m_responseBodyHandler.execute();
-	EXPECT_EQ(m_responseBody, webutils::getDefaultErrorPage(m_request.httpStatus));
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(m_request.httpStatus));
 }
 
 TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 {
 	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-	.WillOnce(testing::Throw(std::runtime_error("openFile failed")));
+	.WillOnce(Throw(std::runtime_error("openFile failed")));
 
 	m_request.hasAutoindex = false;
 	m_request.httpStatus = StatusOK;
@@ -81,13 +91,13 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_responseBody, webutils::getDefaultErrorPage(m_request.httpStatus));
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(m_request.httpStatus));
 }
 
 TEST_F(ResponseBodyHandlerTest, FileFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-	.WillOnce(testing::Return("Hello World"));
+	.WillOnce(Return("Hello World"));
 
 	m_request.hasAutoindex = false;
 	m_request.httpStatus = StatusOK;
@@ -97,4 +107,64 @@ TEST_F(ResponseBodyHandlerTest, FileFound)
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
 	EXPECT_EQ(m_responseBody, "Hello World");
+}
+
+TEST_F(ResponseBodyHandlerTest, CustomErrorPage)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
+	.WillOnce(Return("error_page_content"));
+
+	m_request.httpStatus = StatusNotFound;
+	m_request.targetResource = "/not_existing";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusNotFound);
+	EXPECT_EQ(m_responseBody, "error_page_content");
+}
+
+TEST_F(ResponseBodyHandlerTest, CustomErrorPageStrangeType)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(Return(FileSystemPolicy::FileOther));
+
+	m_request.httpStatus = StatusNotFound;
+	m_request.targetResource = "/not_existing";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
+}
+
+TEST_F(ResponseBodyHandlerTest, CustomErrorPageOpenFails)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
+	.WillOnce(Throw(std::runtime_error("openFile failed")));
+
+	m_request.httpStatus = StatusNotFound;
+	m_request.targetResource = "/not_existing";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
+}
+
+TEST(ResponseBodyHandler, getDefaultErrorPage)
+{
+	getDefaultErrorPage(StatusOK);
+	getDefaultErrorPage(StatusMovedPermanently);
+	getDefaultErrorPage(StatusPermanentRedirect);
+	getDefaultErrorPage(StatusBadRequest);
+	getDefaultErrorPage(StatusForbidden);
+	getDefaultErrorPage(StatusNotFound);
+	getDefaultErrorPage(StatusRequestEntityTooLarge);
+	getDefaultErrorPage(StatusMethodNotAllowed);
+	getDefaultErrorPage(StatusRequestTimeout);
+	getDefaultErrorPage(StatusRequestHeaderFieldsTooLarge);
+	getDefaultErrorPage(StatusInternalServerError);
+	getDefaultErrorPage(StatusMethodNotImplemented);
+	getDefaultErrorPage(StatusNonSupportedVersion);
 }

@@ -5,6 +5,7 @@
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "ResponseBodyHandler.hpp"
+
 #include <string>
 
 /**
@@ -21,12 +22,13 @@ class ResponseBuilder {
 public:
 	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy);
 
-	void buildResponse(HTTPRequest& request);
+	void buildResponse(Connection& connection);
 	std::string getResponse() const;
 
 private:
 	void appendStatusLine(const HTTPRequest& request);
 	void appendHeaders(const HTTPRequest& request);
+	void appendHeadersCGI();
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void resetBuilder();
