@@ -260,8 +260,9 @@ TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 
 	EpollWrapper epollWrapper(10, -1);
 	SocketPolicy socketPolicy;
+    ProcessOps processOps;
 
-	Server server(configFile, epollWrapper, socketPolicy);
+	Server server(configFile, epollWrapper, socketPolicy, processOps);
 
 	initVirtualServers(server, 10, server.getServerConfigs());
 	std::map<int, Socket> virtualServers = server.getVirtualServers();
@@ -275,8 +276,9 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 
 	EpollWrapper epollWrapper(10, -1);
 	SocketPolicy socketPolicy;
+    ProcessOps processOps;
 
-	Server server(configFile, epollWrapper, socketPolicy);
+	Server server(configFile, epollWrapper, socketPolicy, processOps);
 
 	initVirtualServers(server, 10, server.getServerConfigs());
 	std::map<int, Socket> virtualServers = server.getVirtualServers();
