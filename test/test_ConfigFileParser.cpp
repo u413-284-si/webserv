@@ -20,15 +20,13 @@ protected:
  * 1. File could not be opened (because the path is wrong, such a file does not exist etc.)
  * 2. File is empty
  * 3. File has open brackets (including missing brackets and too many brackets)
- * 4. File is missing the http block
- * 5. File is missing server block
- * 6. File contains invalid directive (including server and location)
- * 7. File contains missing semicolon
- * 8. Listen directive contains invalid ip address
- * 9. Listen directive contains invalid port
- * 10. Root directive has no root path
- * 11. Root directive has multiple root paths
- * 12. Invalid directives outside of server block
+ * 4. File contains invalid directive (including server and location)
+ * 5. File contains missing semicolon
+ * 6. Listen directive contains invalid ip address
+ * 7. Listen directive contains invalid port
+ * 8. Root directive has no root path
+ * 9. Root directive has multiple root paths
+ * 10. Invalid directives outside of server block
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -85,18 +83,6 @@ TEST_F(InvalidConfigFileTests, FileContainsTooManyBrackets)
 			}
 		},
 		std::runtime_error);
-}
-
-TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
-{
-	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
-	EXPECT_EQ(true, configFile.servers.empty());
-}
-
-TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
-{
-	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
-	EXPECT_EQ(true, configFile.servers.empty());
 }
 
 TEST_F(InvalidConfigFileTests, FileContainsInvalidServerDirective)
@@ -244,16 +230,18 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
  *
  * Checks if the following configuration are seen as valid:
  * 1. A standard valid file
- * 2. Several directives on one line
- * 2. Listen directive contains only ip
- * 3. Listen directive contains only port
- * 4. Listen contains ip and port
- * 5. Bracket under server directive
- * 6. Bracket under location directive
- * 7. Whitespaces between server directive and opening bracket
- * 8. Directive and opening bracket on the same line
- * 9. Directive and closing bracket on the same line
- * 10. Directive and closing bracket on the same line under server directive
+ * 2. File does not contain the http block
+ * 3. File does not contain any server block
+ * 4. Several directives on one line
+ * 5. Listen directive contains only ip
+ * 6. Listen directive contains only port
+ * 7. Listen contains ip and port
+ * 8. Bracket under server directive
+ * 9. Bracket under location directive
+ * 10. Whitespaces between server directive and opening bracket
+ * 11. Directive and opening bracket on the same line
+ * 12. Directive and closing bracket on the same line
+ * 13. Directive and closing bracket on the same line under server directive
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -263,6 +251,36 @@ TEST_F(ValidConfigFileTests, ValidFile)
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
+}
+
+TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
+{
+	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
+	EXPECT_EQ(true, configFile.servers.empty());
+
+	EpollWrapper epollWrapper(10, -1);
+	SocketPolicy socketPolicy;
+
+	Server server(configFile, epollWrapper, socketPolicy);
+
+	initVirtualServers(server, 10, server.getServerConfigs());
+	std::map<int, Socket> virtualServers = server.getVirtualServers();
+	EXPECT_EQ(0, virtualServers.size());
+}
+
+TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
+{
+	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
+	EXPECT_EQ(true, configFile.servers.empty());
+
+	EpollWrapper epollWrapper(10, -1);
+	SocketPolicy socketPolicy;
+
+	Server server(configFile, epollWrapper, socketPolicy);
+
+	initVirtualServers(server, 10, server.getServerConfigs());
+	std::map<int, Socket> virtualServers = server.getVirtualServers();
+	EXPECT_EQ(0, virtualServers.size());
 }
 
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
