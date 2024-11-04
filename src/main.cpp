@@ -20,18 +20,10 @@ int main(int argc, char** argv)
 
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(argv[1]);
-		if (configFile.servers.empty()) {
-			while (g_signalStatus == 0)
-				continue;
-			if (g_signalStatus == SIGQUIT)
-				return 0;
-		} else {
-		configFile = createDummyConfig();
 
 		Server server(configFile, epollWrapper, socketPolicy);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		runServer(server);
-		}
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
 		return 1;
