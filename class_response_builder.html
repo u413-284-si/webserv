@@ -224,7 +224,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    appendStatusLine(request);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (request.<a class="code" href="struct_h_t_t_p_request.html#abea0de9c98e8420ef93a90354fbdec48">hasCGI</a> &amp;&amp; request.<a class="code" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> == <a class="code" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        appendHeadersCGI();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        appendHeadersCGI(request);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        appendHeaders(request);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
