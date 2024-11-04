@@ -1153,6 +1153,7 @@ bool isCompleteBody(Connection& connection)
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			LOG_ERROR << "Content-Length: " << contentLength << ", Buffer size: " << connection.m_buffer.size();
 			connection.m_request.httpStatus = StatusBadRequest;
+			connection.m_request.shallCloseConnection = true;
 			return false;
 		}
 		if (contentLength == connection.m_buffer.size())

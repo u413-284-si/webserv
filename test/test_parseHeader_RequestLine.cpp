@@ -154,6 +154,7 @@ TEST_F(ParseRequestLineTest, MissingSpace)
 				p.parseHeader("GET/search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: missing single space", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -171,6 +172,7 @@ TEST_F(ParseRequestLineTest, MissingSlash)
 				p.parseHeader("GET search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: missing slash in URI", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -188,6 +190,7 @@ TEST_F(ParseRequestLineTest, DoubleQuestionMark)
 				p.parseHeader("GET /search?? HTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid char in URI", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -205,6 +208,7 @@ TEST_F(ParseRequestLineTest, DoubleHash)
 				p.parseHeader("GET /search?## HTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid char in URI", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -222,6 +226,7 @@ TEST_F(ParseRequestLineTest, URI_InvalidChar)
 				p.parseHeader("GET /search§blabla/index.html HTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid char in URI", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -239,6 +244,7 @@ TEST_F(ParseRequestLineTest, URI_MissingSpace)
 				p.parseHeader("GET /searchHTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid char in URI", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -256,6 +262,7 @@ TEST_F(ParseRequestLineTest, Version_MissingH)
 				p.parseHeader("GET /search.html TTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid format of version", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -273,6 +280,7 @@ TEST_F(ParseRequestLineTest, Version_MissingSlash)
 				p.parseHeader("GET /search.html HTTP1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid format of version", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -290,6 +298,7 @@ TEST_F(ParseRequestLineTest, Version_InvalidMajor)
 				p.parseHeader("GET /search.html HTTP/x.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid version major", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -307,6 +316,7 @@ TEST_F(ParseRequestLineTest, Version_MissingDot)
 				p.parseHeader("GET /search.html HTTP/11\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid version delimiter", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -324,6 +334,7 @@ TEST_F(ParseRequestLineTest, Version_InvalidMinor)
 				p.parseHeader("GET /search.html HTTP/1.x\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: invalid version minor", e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},

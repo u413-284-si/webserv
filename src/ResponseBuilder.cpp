@@ -49,7 +49,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	appendStatusLine(request);
 	if (request.hasCGI && request.httpStatus == StatusOK)
-		appendHeadersCGI();
+		appendHeadersCGI(request);
 	else
 		appendHeaders(request);
 
@@ -115,6 +115,11 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	if (iter != request.headers.end()) {
 		m_responseHeader << "Location: " << iter->second << "\r\n";
 	}
+	// Connection
+	if (request.shallCloseConnection)
+		m_responseHeader << "Connection: close\r\n";
+	else
+		m_responseHeader << "Connection: keep-alive\r\n";
 	// Delimiter
 	m_responseHeader << "\r\n";
 }
@@ -127,8 +132,9 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
  * Server: TriHard.
  * Date: Current date in GMT.
  * Location: Target resource if status is StatusMovedPermanently.
+ * @param request HTTP request.
  */
-void ResponseBuilder::appendHeadersCGI()
+void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
 {
 	// Content-Length
 	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
@@ -136,6 +142,11 @@ void ResponseBuilder::appendHeadersCGI()
 	m_responseHeader << "Server: TriHard\r\n";
 	// Date
 	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	// Connection
+	if (request.shallCloseConnection)
+		m_responseHeader << "Connection: close\r\n";
+	else
+		m_responseHeader << "Connection: keep-alive\r\n";
 }
 
 /**
