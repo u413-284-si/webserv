@@ -133,7 +133,7 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 /**
  * @brief Checks if there are no open brackets in the config file
  *
- * If a opening bracket is found, it is pushed onto the brackets stac
+ * If a opening bracket is found, it is pushed onto the brackets stack
  * If a closing bracket is found, it is popped from the brackets stack
  *
  * At the end the stack should be empty. If not, there are open brackets
@@ -145,15 +145,13 @@ bool ConfigFileParser::isBracketOpen(void)
 {
 	std::stack<char> brackets;
 
-	while (readAndTrimLine(m_configFileContent, '\n')) {
-		for (std::string::const_iterator it = m_currentLine.begin(); it != m_currentLine.end(); ++it) {
-			if (*it == '{')
-				brackets.push('{');
-			else if (*it == '}' && brackets.empty())
-				return true;
-			else if (*it == '}')
-				brackets.pop();
-		}
+	for (std::string::const_iterator it = m_configFileContent.begin(); it != m_configFileContent.end(); ++it) {
+		if (*it == '{')
+			brackets.push('{');
+		else if (*it == '}' && brackets.empty())
+			return true;
+		else if (*it == '}')
+			brackets.pop();
 	}
 	return !brackets.empty();
 }
