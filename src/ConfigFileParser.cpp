@@ -374,7 +374,9 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
  * If that is the case, the function checks and reads the ip address AND port.
  *
  * When there is no colon, the function checks if there is a dot in the value of the directive.
- * If that is the case, the function checks and reads the ip address.
+ * If that is the case, the function checks if the value equals "localhost".
+ * When the value equals "localhost" the ip address "127.0.0.1" gets stored as host.
+ * When the value does NOT equal "localhost" the value gets checked and stored as host.
  * Otherwise it checks and reads the port.
  *
  * @param value The value of the directive
@@ -389,7 +391,11 @@ void ConfigFileParser::readSocket(const std::string& value)
 		std::string ipAddress = value.substr(0, colonIndex);
 		if (!webutils::isIpAddressValid(ipAddress))
 			throw std::runtime_error("Invalid ip address");
-		m_configFile.servers[m_serverIndex].host = ipAddress;
+
+		if (ipAddress == "localhost")
+			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+		else
+			m_configFile.servers[m_serverIndex].host = ipAddress;
 
 		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
 		if (!webutils::isPortValid(port))
@@ -397,20 +403,21 @@ void ConfigFileParser::readSocket(const std::string& value)
 		m_configFile.servers[m_serverIndex].port = port;
 	} else {
 		if (dot == std::string::npos) {
-			std::string port = value.substr(0, semicolonIndex);
-			if (!webutils::isPortValid(port))
-				throw std::runtime_error("Invalid port");
-
-			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
-			m_configFile.servers[m_serverIndex].port = port;
-
+			std::string ipAddress = value.substr(0, semicolonIndex);
+			if (ipAddress == "localhost")
+				m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+			else {
+				std::string port = value.substr(0, semicolonIndex);
+				if (!webutils::isPortValid(port))
+					throw std::runtime_error("Invalid port");
+				m_configFile.servers[m_serverIndex].port = port;
+			}
 		} else {
 			std::string ipAddress = value.substr(0, semicolonIndex);
 			if (!webutils::isIpAddressValid(ipAddress))
 				throw std::runtime_error("Invalid ip address");
 
 			m_configFile.servers[m_serverIndex].host = ipAddress;
-			m_configFile.servers[m_serverIndex].port = "80";
 		}
 	}
 }
