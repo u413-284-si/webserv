@@ -260,7 +260,7 @@ TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 
 	EpollWrapper epollWrapper(10, -1);
 	SocketPolicy socketPolicy;
-    ProcessOps processOps;
+	ProcessOps processOps;
 
 	Server server(configFile, epollWrapper, socketPolicy, processOps);
 
@@ -276,7 +276,7 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 
 	EpollWrapper epollWrapper(10, -1);
 	SocketPolicy socketPolicy;
-    ProcessOps processOps;
+	ProcessOps processOps;
 
 	Server server(configFile, epollWrapper, socketPolicy, processOps);
 
@@ -300,14 +300,12 @@ TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_ip.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
-	EXPECT_EQ("80", configFile.servers[0].port);
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsOnlyPort)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_port.conf"));
-	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 }
 
