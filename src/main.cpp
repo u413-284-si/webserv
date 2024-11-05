@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 	try {
 		EpollWrapper epollWrapper(10, -1);
 		SocketPolicy socketPolicy;
-        ProcessOps processOps;
+		ProcessOps processOps;
 
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(argv[1]);
