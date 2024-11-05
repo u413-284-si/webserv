@@ -10,13 +10,13 @@
  * - Sets the root directory to "html".
  * - Sets the maximum body size to 1 (1 MB).
  * - Sets the error pages to an empty map.
- * - Initializes the listen map with "127.0.0.1" and port 80.
+ * - Initializes the listen map with "0.0.0.0" and port "8080".
  * - Sets the locations to an empty vector.
  */
 ConfigServer::ConfigServer(void)
 	: root("html")
-	, host("127.0.0.1")
-	, port("80")
+	, host("0.0.0.0")
+	, port("8080")
 	, maxBodySize(1) // 1 MB
 {
 	errorPage = std::map<statusCode, std::string>();
@@ -87,8 +87,8 @@ ConfigFile createDummyConfig()
 	location6.root = "/workspaces/webserv";
 	location6.cgiPath = "/usr/bin/python3";
 	location6.cgiExt = ".py";
-    location6.allowedMethods[MethodGet] = true;
-    location6.allowedMethods[MethodPost] = true;
+	location6.allowedMethods[MethodGet] = true;
+	location6.allowedMethods[MethodPost] = true;
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
