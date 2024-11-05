@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['idle_977',['Idle',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c',1,'Connection']]]
+  ['httpblock_983',['HttpBlock',['../_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2',1,'ConfigFileParser.hpp']]]
 ];

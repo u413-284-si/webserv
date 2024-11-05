@@ -29,6 +29,7 @@ var hierarchy =
     [ "ResponseBodyHandler", "class_response_body_handler.html", null ],
     [ "ResponseBuilder", "class_response_builder.html", null ],
     [ "Server", "class_server.html", null ],
+    [ "ServerBlockConfig", "struct_server_block_config.html", null ],
     [ "Socket", "struct_socket.html", null ],
     [ "SocketPolicy", "class_socket_policy.html", [
       [ "MockSocketPolicy", "class_mock_socket_policy.html", null ]

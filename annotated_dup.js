@@ -48,6 +48,7 @@ var annotated_dup =
     [ "ResponseBuilder", "class_response_builder.html", "class_response_builder" ],
     [ "selectServerConfigTest", "classselect_server_config_test.html", "classselect_server_config_test" ],
     [ "Server", "class_server.html", "class_server" ],
+    [ "ServerBlockConfig", "struct_server_block_config.html", "struct_server_block_config" ],
     [ "ShutdownServerTest", "class_shutdown_server_test.html", "class_shutdown_server_test" ],
     [ "Socket", "struct_socket.html", "struct_socket" ],
     [ "SocketPolicy", "class_socket_policy.html", "class_socket_policy" ],

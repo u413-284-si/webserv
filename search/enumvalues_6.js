@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['receivebody_987',['ReceiveBody',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251',1,'Connection']]],
-  ['receivefromcgi_988',['ReceiveFromCGI',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638',1,'Connection']]],
-  ['receiveheader_989',['ReceiveHeader',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4',1,'Connection']]]
+  ['methodcount_990',['MethodCount',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce',1,'Method.hpp']]],
+  ['methoddelete_991',['MethodDelete',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703',1,'Method.hpp']]],
+  ['methodget_992',['MethodGet',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec',1,'Method.hpp']]],
+  ['methodpost_993',['MethodPost',['../_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926',1,'Method.hpp']]]
 ];
