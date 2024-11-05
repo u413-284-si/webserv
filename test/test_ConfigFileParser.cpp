@@ -381,7 +381,6 @@ TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLine)
 
 TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLineUnderServerDirective)
 {
-	GTEST_SKIP() << "Skipping because not implemented";
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile
 		= m_configFileParser.parseConfigFile("config_files/directive_close_open_bracket_same_line_under_server.conf"));
