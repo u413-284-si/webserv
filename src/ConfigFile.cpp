@@ -11,7 +11,7 @@
  * - Sets the maximum body size to 1 (1 MB).
  * - Sets the error pages to an empty map.
  * - Initializes the listen map with "0.0.0.0" and port "8080".
- * - Sets the locations to an empty vector.
+ * - Adds a default location with the path "/"
  */
 ConfigServer::ConfigServer(void)
 	: root("html")
@@ -20,7 +20,9 @@ ConfigServer::ConfigServer(void)
 	, maxBodySize(1) // 1 MB
 {
 	errorPage = std::map<statusCode, std::string>();
-	locations = std::vector<Location>();
+	Location location;
+	location.path = "/";
+	locations.push_back(location);
 }
 
 /**
