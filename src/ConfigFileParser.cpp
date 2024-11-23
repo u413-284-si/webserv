@@ -10,7 +10,7 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_configFileIndex(0)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
-	, m_locationIndex(0)
+	, m_locationIndex(1)
 {
 	const char* validServerDirectiveNames[]
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
@@ -229,8 +229,6 @@ void ConfigFileParser::readServerBlock(void)
  */
 void ConfigFileParser::readLocationBlock(ServerBlockConfig& serverBlockConfig)
 {
-	skipBlockBegin(LocationBlock);
-
 	std::string locationBlockContent;
 	size_t startIndex = m_configFileIndex;
 
@@ -289,6 +287,9 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 	if (isSemicolonMissing(locationBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
+	readAndTrimLine(locationBlockContent, ';');
+	readLocationBlockPath();
+
 	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
 }
@@ -326,6 +327,24 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
 	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
 	webutils::trimTrailingWhiteSpaces(m_currentLine);
 	return true;
+}
+
+/**
+ * @brief Reads the path of a location block
+ */
+void ConfigFileParser::readLocationBlockPath(void)
+{
+	std::string directiveLocation = "location";
+	size_t startIndex = directiveLocation.length();
+
+	while (std::isspace(m_currentLine[startIndex]) != 0)
+		startIndex++;
+
+	size_t endIndex = startIndex;
+	while (std::isspace(m_currentLine[endIndex]) == 0)
+		endIndex++;
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].path
+		= m_currentLine.substr(startIndex, endIndex - startIndex + 1);
 }
 
 /**
