@@ -10,7 +10,7 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_configFileIndex(0)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
-	, m_locationIndex(1)
+	, m_locationIndex(0)
 {
 	const char* validServerDirectiveNames[]
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
@@ -275,6 +275,10 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  * The content will be processed by reading it line by line (delimited by ';')
  * In this process the values of the directives will be read and stored
  *
+ * If the path of the location block is "/", the m_locationIndex will be set to 0 in readLocationBlockPath
+ * This is necessary because the following functions need to store the parsed values in the the default location then
+ * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex
+ *
  * If there is a semicolon missing, an exception will be thrown
  *
  * @param locationBlockContent The content of the location block
@@ -283,6 +287,8 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 {
 	Location location;
 	m_configFile.servers[m_serverIndex].locations.push_back(location);
+	m_locationIndex++;
+	size_t tmpIndex = m_locationIndex;
 
 	if (isSemicolonMissing(locationBlockContent))
 		throw std::runtime_error("Unexpected '}'");
@@ -292,6 +298,8 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 
 	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
+
+	m_locationIndex = tmpIndex;
 }
 
 /**
@@ -331,6 +339,10 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
 
 /**
  * @brief Reads the path of a location block
+ *
+ * If the path is "/", the m_locationIndex will be set to 0 because the default location has an index of 0
+ * Therefore the following functions will store the values correctly in the default location
+ *
  */
 void ConfigFileParser::readLocationBlockPath(void)
 {
@@ -343,8 +355,11 @@ void ConfigFileParser::readLocationBlockPath(void)
 	size_t endIndex = startIndex;
 	while (std::isspace(m_currentLine[endIndex]) == 0)
 		endIndex++;
-	m_configFile.servers[m_serverIndex].locations[m_locationIndex].path
-		= m_currentLine.substr(startIndex, endIndex - startIndex + 1);
+
+	std::string path = m_currentLine.substr(startIndex, endIndex - startIndex);
+	if (path == "/")
+		m_locationIndex = 0;
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].path = path;
 }
 
 /**
