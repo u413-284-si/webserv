@@ -387,3 +387,13 @@ TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLineUnderServerDire
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("8080", configFile.servers[0].port);
 }
+
+TEST_F(ValidConfigFileTests, LocationPath)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/location_path.conf"));
+	EXPECT_EQ(3, configFile.servers[0].locations.size());
+	EXPECT_EQ("/", configFile.servers[0].locations[0].path);
+	EXPECT_EQ("/hello", configFile.servers[0].locations[1].path);
+	EXPECT_EQ("/world", configFile.servers[0].locations[2].path);
+}
