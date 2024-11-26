@@ -295,6 +295,16 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 
 	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
+
+	ConfigServer& server = m_configFile.servers[m_serverIndex];
+	Location& location = server.locations[m_locationIndex];
+	if (location.root == "html")
+		location.root = server.root;
+	else if (location.maxBodySize == 1)
+		location.maxBodySize = server.maxBodySize;
+	else if (location.errorPage.empty())
+		location.errorPage = server.errorPage;
+
 	if (m_locationIndex == 0)
 		m_locationIndex = tmpIndex;
 }
