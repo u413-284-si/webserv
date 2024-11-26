@@ -277,7 +277,8 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  *
  * If the path of the location block is "/", the m_locationIndex will be set to 0 in readLocationBlockPath
  * This is necessary because the following functions need to store the parsed values in the the default location then
- * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex
+ * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used if
+ * the location index is 0
  *
  * If there is a semicolon missing, an exception will be thrown
  *
@@ -338,6 +339,8 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
  *
  * If the path is "/", the m_locationIndex will be set to 0 because the default location has an index of 0
  * Therefore the following functions will store the values correctly in the default location
+ *
+ * Otherwise a new location will be created, added to the locations vector and the m_locationIndex will be incremented
  *
  */
 void ConfigFileParser::readLocationBlockPath(void)
