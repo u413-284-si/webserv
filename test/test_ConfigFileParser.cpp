@@ -244,6 +244,8 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
  * 13. Directive and opening bracket on the same line
  * 14. Directive and closing bracket on the same line
  * 15. Directive and closing bracket on the same line under server directive
+ * 16. Location path
+ * 17. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -396,4 +398,11 @@ TEST_F(ValidConfigFileTests, LocationPath)
 	EXPECT_EQ("/", configFile.servers[0].locations[0].path);
 	EXPECT_EQ("/hello", configFile.servers[0].locations[1].path);
 	EXPECT_EQ("/world", configFile.servers[0].locations[2].path);
+}
+
+TEST_F(ValidConfigFileTests, DirectiveInheritance)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/directive_inheritance.conf"));
+	EXPECT_EQ("/var/www/html", configFile.servers[0].locations[0].root);
 }
