@@ -280,6 +280,9 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used if
  * the location index is 0
  *
+ * If no values are specified for the root, max_body_size, and error_page directives in a location block,
+ * they inherit their corresponding values from the server block.
+ *
  * If there is a semicolon missing, an exception will be thrown
  *
  * @param locationBlockContent The content of the location block
