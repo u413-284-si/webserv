@@ -285,21 +285,17 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  */
 void ConfigFileParser::processLocationContent(const std::string& locationBlockContent)
 {
-	Location location;
-	m_configFile.servers[m_serverIndex].locations.push_back(location);
-	m_locationIndex++;
 	size_t tmpIndex = m_locationIndex;
+	readAndTrimLine(locationBlockContent, '{');
+	readLocationBlockPath();
 
 	if (isSemicolonMissing(locationBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
-	readAndTrimLine(locationBlockContent, ';');
-	readLocationBlockPath();
-
 	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
-
-	m_locationIndex = tmpIndex;
+	if (m_locationIndex == 0)
+		m_locationIndex = tmpIndex;
 }
 
 /**
@@ -359,6 +355,11 @@ void ConfigFileParser::readLocationBlockPath(void)
 	std::string path = m_currentLine.substr(startIndex, endIndex - startIndex);
 	if (path == "/")
 		m_locationIndex = 0;
+	else {
+		Location location;
+		m_configFile.servers[m_serverIndex].locations.push_back(location);
+		m_locationIndex++;
+	}
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].path = path;
 }
 
