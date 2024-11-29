@@ -112,6 +112,7 @@ COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
 # ******************************
 
 SRC:=	main.cpp \
+		AFileHandler.cpp \
 		ALogOutputter.cpp \
 		AutoindexHandler.cpp \
 		CGIHandler.cpp \

@@ -1,5 +1,4 @@
 #include "AutoindexHandler.hpp"
-#include "Log.hpp"
 
 /**
  * @brief Construct a new AutoindexHandler object
@@ -7,32 +6,8 @@
  * @param fileSystemPolicy File system policy object. Can be mocked if needed.
  */
 AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+	: AFileHandler(fileSystemPolicy)
 {
-}
-
-/**
- * @brief Get the last modified time of a file.
- *
- * @param fileStat File stat object.
- * @return std::string Last modified time.
- */
-std::string getLastModifiedTime(const struct stat& fileStat)
-{
-	return webutils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
-}
-
-/**
- * @brief Get the file size of a file.
- *
- * @param fileStat File stat object.
- * @return long File size.
- */
-long getFileSize(const struct stat& fileStat)
-{
-	if (S_ISDIR(fileStat.st_mode))
-		return 0;
-	return fileStat.st_size;
 }
 
 /**
@@ -48,7 +23,7 @@ long getFileSize(const struct stat& fileStat)
 std::string AutoindexHandler::execute(const std::string& path)
 {
 	try {
-		m_response
+		getResponse()
 			<< "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n"
 			<< "<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
 			<< "<title>Autoindex</title>\n"
@@ -62,21 +37,21 @@ std::string AutoindexHandler::execute(const std::string& path)
 			<< "<table>\n"
 			<< "<tr><th>File Name</th><th>Last Modified</th><th>Size (Bytes)</th></tr>\n";
 
-		Directory directory(m_fileSystemPolicy, path);
+		Directory directory(getFileSystemPolicy(), path);
 		std::vector<std::string> files = directory.getEntries();
 
 		for (std::vector<std::string>::iterator iter = files.begin(); iter != files.end(); ++iter) {
 			if (*iter == "." || *iter == "..")
 				continue;
-			struct stat fileStat = m_fileSystemPolicy.getFileStat(path + *iter);
+			struct stat fileStat = getFileSystemPolicy().getFileStat(path + *iter);
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
-			m_response << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
+			getResponse() << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
 					   << "<td>" << getLastModifiedTime(fileStat) << "</td>"
 					   << "<td>" << getFileSize(fileStat) << "</td></tr>\n";
 		}
-		m_response << "</table>\n</body>\n</html>";
-		return m_response.str();
+		getResponse() << "</table>\n</body>\n</html>";
+		return getResponse().str();
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		return "";
