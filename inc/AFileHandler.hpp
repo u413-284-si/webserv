@@ -22,9 +22,10 @@ public:
 
 	virtual std::string execute(const std::string& path) = 0;
 
-protected:
+	// Getters
 	std::stringstream& getResponse();
     const FileSystemPolicy& getFileSystemPolicy() const;
+
 	static std::string getLastModifiedTime(const struct stat& fileStat);
 	static long getFileSize(const struct stat& fileStat);
 
