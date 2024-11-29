@@ -1,4 +1,5 @@
 #include "FileSystemPolicy.hpp"
+#include "Log.hpp"
 
 /**
  * @brief Virtual destructor for FileSystemPolicy object
@@ -134,4 +135,26 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
 	if (stat(path.c_str(), &fileStat) == -1)
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	return fileStat;
+}
+
+/**
+ * @brief Creates a file with the specified content at the given path.
+ *
+ * This function attempts to create a file at the specified path and writes the provided content to it.
+ * If the file cannot be created, an error is logged and the function returns false.
+ *
+ * @param path The path where the file should be created.
+ * @param content The content to be written to the file.
+ * @return true if the file was successfully created and written to, false otherwise.
+ */
+bool FileSystemPolicy::isFileCreated(const std::string& path, const std::string& content) const
+{
+	std::ofstream file(path.c_str(), std::ios::binary);
+	if (!file.good()) {
+		LOG_ERROR << "Failed to create file: " << path;
+		return false;
+	}
+	file << content;
+	file.close();
+	return true;
 }
