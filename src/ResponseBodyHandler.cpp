@@ -56,7 +56,7 @@ void ResponseBodyHandler::execute()
 		}
 	} else if (m_request.method == MethodPost) {
 		PostRequestHandler postRequestHandler(m_fileSystemPolicy);
-		m_responseBody = postRequestHandler.execute(m_request.targetResource);
+		m_responseBody = postRequestHandler.execute(m_request.targetResource, m_request.body);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();

@@ -13,7 +13,7 @@ PostRequestHandler::PostRequestHandler(const FileSystemPolicy& fileSystemPolicy)
 
 std::string PostRequestHandler::execute(const std::string& path, const std::string& content)
 {
-	// try {
+	try {
 		if (getFileSystemPolicy().isExistingFile(path))
         {
             // Attempt to append data to file
@@ -23,17 +23,17 @@ std::string PostRequestHandler::execute(const std::string& path, const std::stri
         if (getFileSystemPolicy().isFileCreated(path, content)) {
 			getResponse()
 				<< "{\n"
-				<< "\"id\": 12345,\n"
-				<< "\"name\": \"New Resource\",\n"
+				<< "\"file\":" << path << ",\n"
+				<< "\"file_size\":" << getFileSize(getFileSystemPolicy().getFileStat(path)) << ",\n"
 				<< "\"status\": \"created\"\n"
 				<< "}\n";
 		} else
 			return "";
 		return getResponse().str();
-	// } catch (std::runtime_error& e) {
-	// 	LOG_ERROR << e.what();
-	// 	return "";
-	// }
+	} catch (std::runtime_error& e) {
+		LOG_ERROR << e.what();
+		return "";
+	}
 }
 
 std::string PostRequestHandler::execute(const std::string& path)
