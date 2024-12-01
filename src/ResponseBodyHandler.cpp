@@ -1,4 +1,5 @@
 #include "ResponseBodyHandler.hpp"
+#include "PostRequestHandler.hpp"
 
 /**
  * @brief Construct a new ResponseBodyHandler object
@@ -52,6 +53,14 @@ void ResponseBodyHandler::execute()
 		} catch (std::exception& e) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
+		}
+	} else if (m_request.method == MethodPost) {
+		PostRequestHandler postRequestHandler(m_fileSystemPolicy);
+		m_responseBody = postRequestHandler.execute(m_request.targetResource);
+		if (m_responseBody.empty()) {
+			m_request.httpStatus = StatusInternalServerError;
+			handleErrorBody();
+			return;
 		}
 	}
 }

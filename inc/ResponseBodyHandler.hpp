@@ -4,6 +4,8 @@
 #include "Connection.hpp"
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"
+#include "Method.hpp"
+#include "PostRequestHandler.hpp"
 #include "TargetResourceHandler.hpp"
 
 #include "cassert"
