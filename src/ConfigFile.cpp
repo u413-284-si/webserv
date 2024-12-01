@@ -118,6 +118,12 @@ ConfigFile createDummyConfig()
 	serverConfig8081.port = "8081";
 	serverConfig8081.serverName = "cgi";
 
+	ConfigServer serverConfig8082;
+	serverConfig8081.locations.push_back(location7);
+	serverConfig8081.host = "127.0.0.1";
+	serverConfig8081.port = "8082";
+	serverConfig8081.serverName = "post";
+
 	ConfigServer serverConfig8090dupl;
 	serverConfig8090dupl.locations.push_back(location1);
 	serverConfig8090dupl.host = "127.0.0.1";
@@ -129,6 +135,7 @@ ConfigFile createDummyConfig()
 	configFile.servers.push_back(serverConfig8090);
 	configFile.servers.push_back(serverConfig8090dupl);
 	configFile.servers.push_back(serverConfig8081);
+	configFile.servers.push_back(serverConfig8082);
 
 	return configFile;
 }
