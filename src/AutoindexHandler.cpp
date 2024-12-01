@@ -67,7 +67,7 @@ std::string AutoindexHandler::execute(const std::string& path)
  * @param content Content to be written to the file.
  * @return An empty string.
  */
-std::string execute(const std::string& path, const std::string& content)
+std::string AutoindexHandler::execute(const std::string& path, const std::string& content)
 {
 	(void)path;
 	(void)content;
