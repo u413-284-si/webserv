@@ -30,5 +30,5 @@ public:
 	virtual struct dirent* readDirectory(DIR* dir) const;
 	virtual int closeDirectory(DIR* dir) const;
 	virtual struct stat getFileStat(const std::string& path) const;
-	virtual bool isFileCreated(const std::string& path, const std::string& content) const;
+	virtual void writeToFile(const std::string& path, const std::string& content) const;
 };

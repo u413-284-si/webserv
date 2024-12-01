@@ -145,16 +145,13 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
  *
  * @param path The path where the file should be created.
  * @param content The content to be written to the file.
- * @return true if the file was successfully created and written to, false otherwise.
  */
-bool FileSystemPolicy::isFileCreated(const std::string& path, const std::string& content) const
+void FileSystemPolicy::writeToFile(const std::string& path, const std::string& content) const
 {
-	std::ofstream file(path.c_str(), std::ios::binary);
-	if (!file.good()) {
-		LOG_ERROR << "Failed to create file: " << path;
-		return false;
-	}
+	std::ofstream file(path.c_str(), std::ios::binary | std::ios::app);
+	if (!file.good())
+		throw std::runtime_error("openFile(): \"" + path + "\", " + std::string(strerror(errno)));
 	file << content;
 	file.close();
-	return true;
+	LOG_DEBUG << "Data successfully appended to the file: " << path;
 }
