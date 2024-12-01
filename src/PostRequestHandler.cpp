@@ -14,21 +14,30 @@ PostRequestHandler::PostRequestHandler(const FileSystemPolicy& fileSystemPolicy)
 std::string PostRequestHandler::execute(const std::string& path, const std::string& content)
 {
 	try {
-		if (getFileSystemPolicy().isExistingFile(path))
-        {
-            // Attempt to append data to file
-			// Create response according to result of attempt
-        }
+		bool isExistingFile = getFileSystemPolicy().isExistingFile(path);
+		struct stat fileStat = getFileSystemPolicy().getFileStat(path);
 
-        if (getFileSystemPolicy().isFileCreated(path, content)) {
+		getFileSystemPolicy().writeToFile(path, content);
+		if (isExistingFile)
+		{
 			getResponse()
 				<< "{\n"
-				<< "\"file\":" << path << ",\n"
-				<< "\"file_size\":" << getFileSize(getFileSystemPolicy().getFileStat(path)) << ",\n"
+				<< "\"message\": \"Data appended successfully\",\n"
+				<< "\"file\": \"" << path << "\",\n"
+				<< "\"file_size\": " << getFileSize(fileStat) << ",\n"
+				<< "\"last_modified\": \"" << getLastModifiedTime(fileStat) << "\",\n"
+				<< "\"status\": \"updated\"\n"
+				<< "}\n";
+		} else {
+			getResponse()
+				<< "{\n"
+				<< "\"message\": \"File created successfully\",\n"
+				<< "\"file\": \"" << path << "\",\n"
+				<< "\"file_size\": " << getFileSize(fileStat) << ",\n"
+				<< "\"last_modified\": \"" << getLastModifiedTime(fileStat) << "\",\n"
 				<< "\"status\": \"created\"\n"
 				<< "}\n";
-		} else
-			return "";
+		}
 		return getResponse().str();
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
