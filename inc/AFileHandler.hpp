@@ -21,6 +21,7 @@ public:
 	virtual ~AFileHandler();
 
 	virtual std::string execute(const std::string& path) = 0;
+	virtual std::string execute(const std::string& path, const std::string& content) = 0;
 
 	// Getters
 	std::stringstream& getResponse();

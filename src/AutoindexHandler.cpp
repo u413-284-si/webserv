@@ -47,8 +47,8 @@ std::string AutoindexHandler::execute(const std::string& path)
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
 			getResponse() << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
-					   << "<td>" << getLastModifiedTime(fileStat) << "</td>"
-					   << "<td>" << getFileSize(fileStat) << "</td></tr>\n";
+						  << "<td>" << getLastModifiedTime(fileStat) << "</td>"
+						  << "<td>" << getFileSize(fileStat) << "</td></tr>\n";
 		}
 		getResponse() << "</table>\n</body>\n</html>";
 		return getResponse().str();
@@ -56,4 +56,20 @@ std::string AutoindexHandler::execute(const std::string& path)
 		LOG_ERROR << e.what();
 		return "";
 	}
+}
+
+/**
+ * @brief Placeholder function required by the base class.
+ * 
+ * This function cannot be called and is not implemented in the AutoindexHandler class.
+ * 
+ * @param path Path to file.
+ * @param content Content to be written to the file.
+ * @return An empty string.
+ */
+std::string execute(const std::string& path, const std::string& content)
+{
+	(void)path;
+	(void)content;
+	return "";
 }

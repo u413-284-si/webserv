@@ -14,4 +14,5 @@ public:
 	virtual std::string execute(const std::string& path);
 
 private:
+	virtual std::string execute(const std::string& path, const std::string& content);
 };
