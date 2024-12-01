@@ -983,8 +983,11 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 	}
+	LOG_DEBUG << "Active server: " << connection.m_serverSocket;
 
 	server.findTargetResource(connection);
+
+	LOG_DEBUG << "Target resource: " << connection.location->path;
 
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
