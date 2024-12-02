@@ -360,15 +360,14 @@ void ConfigFileParser::readLocationBlockPath(void)
 {
 	std::string directiveLocation = "location";
 	size_t startIndex = directiveLocation.length();
+	std::string pathWithLeadingWhitespaces = m_currentLine.substr(startIndex);
+	std::string pathWithBracketAtEnd = webutils::trimLeadingWhitespaces(pathWithLeadingWhitespaces);
 
-	while (std::isspace(m_currentLine[startIndex]) != 0)
-		startIndex++;
-
-	size_t endIndex = startIndex;
-	while (std::isspace(m_currentLine[endIndex]) == 0)
+	size_t endIndex = 0;
+	while (std::isspace(pathWithBracketAtEnd[endIndex]) == 0)
 		endIndex++;
 
-	std::string path = m_currentLine.substr(startIndex, endIndex - startIndex);
+	std::string path = pathWithBracketAtEnd.substr(0, endIndex);
 	if (path == "/")
 		m_locationIndex = 0;
 	else {
