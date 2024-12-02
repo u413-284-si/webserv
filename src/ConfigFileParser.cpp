@@ -451,14 +451,13 @@ void ConfigFileParser::readSocket(const std::string& value)
 		m_configFile.servers[m_serverIndex].port = port;
 	} else {
 		if (dot == std::string::npos) {
-			std::string ipAddress = value.substr(0, semicolonIndex);
-			if (ipAddress == "localhost")
+			std::string hostOrPort = value.substr(0, semicolonIndex);
+			if (hostOrPort == "localhost")
 				m_configFile.servers[m_serverIndex].host = "127.0.0.1";
 			else {
-				std::string port = value.substr(0, semicolonIndex);
-				if (!webutils::isPortValid(port))
+				if (!webutils::isPortValid(hostOrPort))
 					throw std::runtime_error("Invalid port");
-				m_configFile.servers[m_serverIndex].port = port;
+				m_configFile.servers[m_serverIndex].port = hostOrPort;
 			}
 		} else {
 			std::string ipAddress = value.substr(0, semicolonIndex);
