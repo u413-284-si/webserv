@@ -15,9 +15,9 @@ std::string PostRequestHandler::execute(const std::string& path, const std::stri
 {
 	try {
 		bool isExistingFile = getFileSystemPolicy().isExistingFile(path);
-		struct stat fileStat = getFileSystemPolicy().getFileStat(path);
-
 		getFileSystemPolicy().writeToFile(path, content);
+		struct stat fileStat = getFileSystemPolicy().getFileStat(path);
+		
 		if (isExistingFile)
 		{
 			getResponse()
