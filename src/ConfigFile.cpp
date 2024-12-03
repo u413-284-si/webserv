@@ -93,6 +93,7 @@ ConfigFile createDummyConfig()
 	location6.allowedMethods[MethodPost] = true;
 
 	ConfigServer serverConfig8080;
+	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
 	serverConfig8080.locations.push_back(location2);
 	serverConfig8080.locations.push_back(location3);
@@ -103,18 +104,21 @@ ConfigFile createDummyConfig()
 	serverConfig8080.serverName = "default";
 
 	ConfigServer serverConfig8090;
+	serverConfig8090.locations.clear();
 	serverConfig8090.locations.push_back(location1);
 	serverConfig8090.host = "127.0.0.1";
 	serverConfig8090.port = "8090";
 	serverConfig8090.serverName = "doc";
 
 	ConfigServer serverConfig8081;
+	serverConfig8081.locations.clear();
 	serverConfig8081.locations.push_back(location6);
 	serverConfig8081.host = "127.0.0.1";
 	serverConfig8081.port = "8081";
 	serverConfig8081.serverName = "cgi";
 
 	ConfigServer serverConfig8090dupl;
+	serverConfig8090dupl.locations.clear();
 	serverConfig8090dupl.locations.push_back(location1);
 	serverConfig8090dupl.host = "127.0.0.1";
 	serverConfig8090dupl.port = "8090";
