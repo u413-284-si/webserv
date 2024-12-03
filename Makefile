@@ -162,6 +162,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_parseBody.cpp \
 			test_parseHeader_Headers.cpp \
 			test_parseHeader_RequestLine.cpp \
+			test_PostRequestHandler.cpp \
 			test_registerCGIFileDescriptor.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \
