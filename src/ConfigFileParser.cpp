@@ -358,8 +358,7 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
  */
 void ConfigFileParser::readLocationBlockPath(void)
 {
-	std::string directiveLocation = "location";
-	size_t startIndex = directiveLocation.length();
+	const size_t startIndex = sizeof("location") - 1; //subtract zero terminator
 	std::string pathWithLeadingWhitespaces = m_currentLine.substr(startIndex);
 	std::string pathWithBracketAtEnd = webutils::trimLeadingWhitespaces(pathWithLeadingWhitespaces);
 
