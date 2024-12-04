@@ -56,6 +56,7 @@ std::string AFileHandler::getLastModifiedTime(const struct stat& fileStat)
  */
 long AFileHandler::getFileSize(const struct stat& fileStat)
 {
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 	if (S_ISDIR(fileStat.st_mode))
 		return 0;
 	return fileStat.st_size;

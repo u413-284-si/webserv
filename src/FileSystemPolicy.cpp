@@ -28,8 +28,10 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 			return FileNotExist;
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	}
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 	if (S_ISREG(fileStat.st_mode))
 		return FileRegular;
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 	if (S_ISDIR(fileStat.st_mode))
 		return FileDirectory;
 	return FileOther;
