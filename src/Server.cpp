@@ -254,7 +254,7 @@ void Server::removeCGIFileDescriptor(int& delfd)
 {
 	this->removeEvent(delfd);
 	this->getCGIConnections().erase(delfd);
-    LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
+	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 	webutils::closeFd(delfd);
 }
 
@@ -480,10 +480,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(Connection& connection)
-{
-	m_responseBuilder.buildResponse(connection);
-}
+void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -499,10 +496,7 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection)
-{
-	m_targetResourceHandler.execute(connection);
-}
+void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
 
 /* ====== INITIALIZATION ====== */
 
@@ -990,6 +984,19 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 	if (!connection.location->allowedMethods[connection.m_request.method])
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
+
+	if (webutils::isRedirectionStatus(connection.m_request.httpStatus)) {
+		const std::pair<std::map<std::string, std::string>::iterator, bool> ret
+			= connection.m_request.headers.insert(std::make_pair("location", connection.m_request.targetResource));
+		if (!ret.second) {
+			LOG_ERROR << "Failed to insert location header";
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(clientFd, EPOLLOUT);
+			return;
+		}
+	}
+
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
 		ProcessOps processOps;
@@ -1000,7 +1007,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost && !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
+		if ((connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;

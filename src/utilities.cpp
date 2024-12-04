@@ -171,6 +171,18 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	return "";
 }
 
+/**
+ * @brief Check if a given status code is a redirection.
+ *
+ * A redirection is a 3xx status code.
+ * @param statusCode Status code to check.
+ * @return true If the status code is a redirection.
+ * @return false If the status code is not a redirection.
+ */
+bool isRedirectionStatus(statusCode statusCode)
+{
+	return (statusCode >= StatusMovedPermanently && statusCode <= StatusPermanentRedirect);
+}
 
 std::string methodToString(Method method)
 {
