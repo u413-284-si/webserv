@@ -161,7 +161,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int currentDepth)
 {
 	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
-		locInfo.targetResource += "/";
+		locInfo.targetResource = locInfo.path + "/";
 		locInfo.statusCode = StatusMovedPermanently;
 		return;
 	}
