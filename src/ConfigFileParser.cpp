@@ -276,7 +276,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  * In this process the values of the directives will be read and stored
  *
  * If the path of the location block is "/", the m_locationIndex will be set to 0 in readLocationBlockPath
- * This is necessary because the following functions need to store the parsed values in the the default location then
+ * This is necessary because the following functions need to store the parsed values in the default location.
  * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used if
  * the location index is 0
  *
