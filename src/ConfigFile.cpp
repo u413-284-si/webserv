@@ -43,7 +43,7 @@ Location::Location(void)
 {
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();
-	returns = std::map<statusCode, std::string>();
+	returns = std::make_pair(NoStatus, std::string());
 	allowedMethods[MethodGet] = true;
 	allowedMethods[MethodPost] = false;
 	allowedMethods[MethodDelete] = false;
