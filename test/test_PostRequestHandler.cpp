@@ -48,18 +48,33 @@ TEST_F(PostRequestHandlerTest, NonExistingFile)
 	EXPECT_EQ(postRequestHandler.getResponse().str(), "{\n\"message\": \"File created successfully\",\n\"file\": \"" + path + "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \"" + webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S") + "\",\n\"status\": \"created\"\n}\n");
 }
 
-// TEST(PostRequestHandler, ReadDirectoryThrow)
-// {
-// 	MockFileSystemPolicy fileSystemPolicy;
-// 	PostRequestHandler postRequestHandler(fileSystemPolicy);
+TEST_F(PostRequestHandlerTest, ExistingFile)
+{
+	// Arrange
+	PostRequestHandler postRequestHandler(fileSystemPolicy);
 
-// 	EXPECT_CALL(fileSystemPolicy, openDirectory)
-// 	.WillOnce(testing::Return((DIR*)1));
-// 	EXPECT_CALL(fileSystemPolicy, readDirectory)
-// 	.WillOnce(testing::Throw(std::runtime_error("readDirectory failed")));
-// 	EXPECT_CALL(fileSystemPolicy, closeDirectory)
-// 	.WillOnce(testing::Return(0));
+	EXPECT_CALL(fileSystemPolicy, isExistingFile)
+		.WillOnce(testing::Return(true));
+	
+	// Act
+	postRequestHandler.execute(path, content);
 
-// 	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/");
-// 	EXPECT_EQ(autoindex, "");
-// }
+	// Assert
+	EXPECT_EQ(postRequestHandler.getResponse().str(), "{\n\"message\": \"Data appended successfully\",\n\"file\": \"" + path + "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \"" + webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S") + "\",\n\"status\": \"updated\"\n}\n");
+}
+
+TEST_F(PostRequestHandlerTest, GetFileStatThrow)
+{
+	// Arrange
+	PostRequestHandler postRequestHandler(fileSystemPolicy);
+	std::string errorMessage = "stat(): getFileStat failed";
+
+	EXPECT_CALL(fileSystemPolicy, getFileStat)
+		.WillOnce(testing::Throw(std::runtime_error(errorMessage)));
+	
+	// Act
+	postRequestHandler.execute(path, content);
+
+	// Assert
+	EXPECT_EQ(postRequestHandler.getResponse().str(), "");
+}
