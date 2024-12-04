@@ -144,6 +144,7 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
  *
  * This function attempts to create a file at the specified path and writes the provided content to it.
  * If the file cannot be created, an error is logged and the function returns false.
+ * If the file exists already, the content is appended to the file.
  *
  * @param path The path where the file should be created.
  * @param content The content to be written to the file.
