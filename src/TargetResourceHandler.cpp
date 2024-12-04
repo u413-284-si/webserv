@@ -60,6 +60,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		locInfo.statusCode = StatusInternalServerError;
 		return (locInfo);
 	}
+	LOG_DEBUG << "Active location: " << locInfo.activeLocation->path;
 
 	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
