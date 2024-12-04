@@ -28,11 +28,8 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "  GET: " << location.allowedMethods[0] << '\n';
 	ostream << "  POST: " << location.allowedMethods[1] << '\n';
 	ostream << "  DELETE: " << location.allowedMethods[2] << '\n';
-	ostream << "Returns:\n";
-	for (std::map<statusCode, std::string>::const_iterator it = location.returns.begin(); it != location.returns.end();
-		 ++it) {
-		ostream << "  " << it->first << ": " << it->second << '\n';
-	}
+	ostream << "Returns: "
+			<< "[" << location.returns.first << "]: " << location.returns.second << '\n';
 	return ostream;
 }
 
@@ -114,6 +111,7 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
  * Translates the enum statusCode to a string representing the number.
  * Since Method is an enum it should only contain valid values. On the off chance of memory bugs, it's asserted that the
  * value is in range of the enum.
+ * In case of NoStatus the string "0" is returned, which is not a valid/used status code.
  *
  * @param ostream The output stream.
  * @param statusCode The statusCode enum.
@@ -121,9 +119,12 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
  */
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	assert(statusCode >= NoStatus && statusCode <= StatusNonSupportedVersion);
 
 	switch (statusCode) {
+	case NoStatus:
+		ostream << "0";
+		break;
 	case StatusOK:
 		ostream << "200";
 		break;

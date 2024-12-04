@@ -35,7 +35,7 @@ void ResponseBodyHandler::execute()
 		if (m_responseBody.find("Content-Type: ") == std::string::npos) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
-		} 
+		}
     } else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
@@ -124,7 +124,7 @@ void ResponseBodyHandler::setDefaultErrorPage()
  */
 std::string getDefaultErrorPage(statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	assert(statusCode >= NoStatus && statusCode <= StatusNonSupportedVersion);
 
 	static const char* error301Page = "<html>\r\n"
 									  "<head><title>301 Moved permanently</title></head>\r\n"
@@ -193,6 +193,7 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	std::string ret;
 
 	switch (statusCode) {
+	case NoStatus:
 	case StatusOK:
 		return ("");
 	case StatusMovedPermanently:
