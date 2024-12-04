@@ -44,9 +44,9 @@ Location::Location(void)
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();
 	returns = std::map<statusCode, std::string>();
-	allowedMethods[0] = true;
-	allowedMethods[1] = false;
-	allowedMethods[2] = false;
+	allowedMethods[MethodGet] = true;
+	allowedMethods[MethodPost] = false;
+	allowedMethods[MethodDelete] = false;
 }
 
 /**
