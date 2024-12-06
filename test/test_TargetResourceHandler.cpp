@@ -133,7 +133,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
-	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
+	EXPECT_EQ(m_request.targetResource, "/test/");
 }
 
 TEST_F(TargetResourceHandlerTest, DirectoryIndex)
