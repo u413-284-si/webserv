@@ -90,12 +90,22 @@ ConfigFile createDummyConfig()
     location6.allowedMethods[MethodGet] = true;
     location6.allowedMethods[MethodPost] = true;
 
+	Location location7;
+	location7.path = "/redirect";
+	location7.returns = std::make_pair(StatusMovedPermanently, "/secret");
+
+	Location location8;
+	location8.path = "/strange";
+	location8.returns = std::make_pair(StatusRequestHeaderFieldsTooLarge, "Too bad");
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
 	serverConfig8080.locations.push_back(location2);
 	serverConfig8080.locations.push_back(location3);
 	serverConfig8080.locations.push_back(location4);
 	serverConfig8080.locations.push_back(location5);
+	serverConfig8080.locations.push_back(location7);
+	serverConfig8080.locations.push_back(location8);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
