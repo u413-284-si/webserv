@@ -31,7 +31,10 @@ void TargetResourceHandler::execute(Connection& connection)
  *
  * This function is called recursively. To exit recursion it keeps track of recursion depth.
  * Checks which location block most closely matches path with matchLocation().
- * Then constructs target resource by appending the path to location root.
+ * If the found location has a return directive, set Status to the return status and set target resource to the return
+ * value. Exits.
+ * Else constructs target resource by appending the path to location root.
+ *
  * Determines the type with stat() and take different action:
  * - FileRegular: break, nothing more to do.
  * - FileDirectory: further action with handleFileDirectory()
@@ -61,6 +64,15 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		return (locInfo);
 	}
 	LOG_DEBUG << "Active location: " << locInfo.activeLocation->path;
+
+	if (locInfo.activeLocation->returns.first != NoStatus) {
+		LOG_DEBUG << "Location returns [" << locInfo.activeLocation->returns.first
+				  << "]: " << locInfo.activeLocation->returns.second;
+		locInfo.hasReturn = true;
+		locInfo.statusCode = locInfo.activeLocation->returns.first;
+		locInfo.targetResource = locInfo.activeLocation->returns.second;
+		return (locInfo);
+	}
 
 	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
@@ -126,6 +138,7 @@ TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 	: statusCode(connection.m_request.httpStatus)
 	, path(connection.m_request.uri.path)
 	, hasAutoindex(false)
+	, hasReturn(false)
 	, locations(&connection.serverConfig->locations)
 	, activeLocation(connection.location)
 {
@@ -143,6 +156,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 	connection.m_request.uri.path = locInfo.path;
 	connection.m_request.targetResource = locInfo.targetResource;
 	connection.m_request.hasAutoindex = locInfo.hasAutoindex;
+	connection.m_request.hasReturn = locInfo.hasReturn;
 	connection.location = locInfo.activeLocation;
 }
 
@@ -189,6 +203,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
  * Appends the index to path and tries to find it with locateTargetResource(), which is saved in a copy of locInfo.
  * If status code is not StatusNotFound it indicates that the file was found or an error occured. The passed locInfo is
  * overwritten with the copy.
+ * Likewise if hasReturn was set to true the location had a Return directive, ending the search.
  * Else the path is reset to the saved path and the next index file is tried.
  * At the end compares the saved path with the path in locInfo, which indicates if an index was found.
  * @param locInfo Reference to LocationInfo which gets overwritten.
@@ -203,7 +218,7 @@ bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDe
 		 iter != locInfo.activeLocation->indices.end(); ++iter) {
 		locInfo.path += *iter;
 		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth);
-		if (tmp.statusCode != StatusNotFound) {
+		if (tmp.statusCode != StatusNotFound && !tmp.hasReturn) {
 			locInfo = tmp;
 			break;
 		}

@@ -938,11 +938,20 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
  * - Parses the request header.
  * - Sets the active server configuration based on the "Host" header.
  * - Finds the target resource for the request.
+ * - Handles redirection if applicable by adding a "Location" header.
+ * - Checks if the request method is allowed by the location.
  * - Handles CGI requests if applicable.
  * - Determines the next connection status based on the request type.
  *
  * If an error occurs during header parsing, the function logs the error, sets
  * the connection status to BuildResponse, and modifies the event to EPOLLOUT.
+ *
+ * If an error occurs while inserting the "Location" header, the function sets
+ * the HTTP status code to 500 Internal Server Error, sets the connection status
+ * to BuildResponse, and modifies the event to EPOLLOUT.
+ *
+ * If the request is for a location with a return directive, the function sets
+ * the connection status to BuildResponse and modifies the event to EPOLLOUT.
  *
  * If the request is a CGI request, the function initializes and executes the
  * CGI handler, and registers the CGI file descriptors for EPOLLOUT and EPOLLIN
@@ -980,11 +989,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	server.findTargetResource(connection);
 
-	// bool array and method are scoped with enum Method
-	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-	if (!connection.location->allowedMethods[connection.m_request.method])
-		connection.m_request.httpStatus = StatusMethodNotAllowed;
-
 	if (webutils::isRedirectionStatus(connection.m_request.httpStatus)) {
 		const std::pair<std::map<std::string, std::string>::iterator, bool> ret
 			= connection.m_request.headers.insert(std::make_pair("location", connection.m_request.targetResource));
@@ -996,6 +1000,17 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 	}
+
+	if (connection.m_request.hasReturn) {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
+	// bool array and method are scoped with enum Method
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+	if (!connection.location->allowedMethods[connection.m_request.method])
+		connection.m_request.httpStatus = StatusMethodNotAllowed;
 
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;

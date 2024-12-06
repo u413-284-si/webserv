@@ -20,6 +20,8 @@ ResponseBodyHandler::ResponseBodyHandler(
  * @brief Create the response body.
  *
  * Depending on the HTTP Request status, the body will be created:
+ * - If the request had a location with return directive  and the status is not a redirection status, the target
+ * resource will be set as the body.
  * - If the status is an error status an error page will be created.
  * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
  * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
@@ -28,6 +30,12 @@ ResponseBodyHandler::ResponseBodyHandler(
  */
 void ResponseBodyHandler::execute()
 {
+	if (m_request.hasReturn) {
+		if (!webutils::isRedirectionStatus(m_request.httpStatus))
+			m_responseBody = m_request.targetResource;
+		return;
+	}
+
 	if (m_request.httpStatus >= StatusMovedPermanently) {
 		handleErrorBody();
 	} else if (m_request.hasCGI) {
@@ -36,7 +44,7 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
-    } else if (m_request.hasAutoindex) {
+	} else if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
