@@ -122,6 +122,7 @@ SRC:=	main.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
+		FileWriteHandler.cpp \
 		HTTPRequest.cpp \
 		LogData.cpp \
 		Logger.cpp \
@@ -129,7 +130,6 @@ SRC:=	main.cpp \
 		LogOutputterConsole.cpp \
 		LogOutputterFile.cpp \
 		LogOstreamInserters.cpp \
-		PostRequestHandler.cpp \
 		ProcessOps.cpp \
 		RequestParser.cpp \
 		ResponseBodyHandler.cpp \
@@ -154,6 +154,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_connectionSendResponse.cpp \
 			test_connectionSendToCGI.cpp \
 			test_createVirtualServer.cpp \
+			test_FileWriteHandler.cpp \
 			test_handleCompleteRequestHeader.cpp \
 			test_initVirtualServers.cpp \
 			test_isDuplicateServer.cpp \
@@ -161,7 +162,6 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_parseBody.cpp \
 			test_parseHeader_Headers.cpp \
 			test_parseHeader_RequestLine.cpp \
-			test_PostRequestHandler.cpp \
 			test_registerCGIFileDescriptor.cpp \
 			test_registerConnection.cpp \
 			test_registerVirtualServer.cpp \

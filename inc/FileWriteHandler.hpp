@@ -1,22 +1,22 @@
 #pragma once
 
-#include "FileSystemPolicy.hpp"
 #include "Directory.hpp"
-#include "utilities.hpp"
+#include "FileSystemPolicy.hpp"
 #include "Log.hpp"
+#include "utilities.hpp"
 
-#include <string>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 /**
  * @brief Class to handle the POST requests.
  *
  */
-class PostRequestHandler{
+class FileWriteHandler {
 
 public:
-	explicit PostRequestHandler(const FileSystemPolicy& fileSystemPolicy);
+	explicit FileWriteHandler(const FileSystemPolicy& fileSystemPolicy);
 	std::string execute(const std::string& path, const std::string& content);
 
 private:

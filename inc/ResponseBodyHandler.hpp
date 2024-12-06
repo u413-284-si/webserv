@@ -5,7 +5,7 @@
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"
 #include "Method.hpp"
-#include "PostRequestHandler.hpp"
+#include "FileWriteHandler.hpp"
 #include "TargetResourceHandler.hpp"
 
 #include "cassert"
