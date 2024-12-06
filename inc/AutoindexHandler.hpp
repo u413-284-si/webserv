@@ -3,6 +3,7 @@
 #include "FileSystemPolicy.hpp"
 #include "Directory.hpp"
 #include "utilities.hpp"
+#include "Log.hpp"
 
 #include <string>
 #include <vector>
