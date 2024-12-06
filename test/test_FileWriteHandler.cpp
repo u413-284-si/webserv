@@ -16,67 +16,63 @@ protected:
 	FileWriteHandlerTest()
 	{
 
-		fakeStat.st_size = 1024;
-		fakeStat.st_mtime = 777;
+		m_fakeStat.st_size = 1024;
+		m_fakeStat.st_mtime = 777;
 
-		ON_CALL(fileSystemPolicy, writeToFile).WillByDefault(testing::Return());
-		ON_CALL(fileSystemPolicy, getFileStat).WillByDefault(testing::Return(fakeStat));
+		ON_CALL(m_fileSystemPolicy, writeToFile).WillByDefault(Return());
+		ON_CALL(m_fileSystemPolicy, getFileStat).WillByDefault(Return(m_fakeStat));
 	}
 	~FileWriteHandlerTest() override { }
 
-	std::string path = "/workspaces/webserv/test/";
-	std::string content = "Hello, World!";
-	struct stat fakeStat = {};
+	std::string m_path = "/workspaces/webserv/test/";
+	std::string m_content = "Hello, World!";
+	struct stat m_fakeStat = {};
 
-	NiceMock<MockFileSystemPolicy> fileSystemPolicy;
+	NiceMock<MockFileSystemPolicy> m_fileSystemPolicy;
+	FileWriteHandler m_fileWriteHandler = FileWriteHandler(m_fileSystemPolicy);
 };
 
 TEST_F(FileWriteHandlerTest, NonExistingFile)
 {
 	// Arrange
-	FileWriteHandler fileWriteHandler(fileSystemPolicy);
-
-	EXPECT_CALL(fileSystemPolicy, isExistingFile).WillOnce(testing::Return(false));
+	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(false));
 
 	// Act
-	std::string responseBody = fileWriteHandler.execute(path, content);
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
 
 	// Assert
 	EXPECT_EQ(responseBody,
-		"{\n\"message\": \"File created successfully\",\n\"file\": \"" + path
-			+ "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \""
-			+ webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S")
+		"{\n\"message\": \"File created successfully\",\n\"file\": \"" + m_path
+			+ "\",\n\"file_size\": " + std::to_string(m_fakeStat.st_size) + ",\n\"last_modified\": \""
+			+ webutils::getLocaltimeString(m_fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S")
 			+ "\",\n\"status\": \"created\"\n}\n");
 }
 
 TEST_F(FileWriteHandlerTest, ExistingFile)
 {
 	// Arrange
-	FileWriteHandler fileWriteHandler(fileSystemPolicy);
-
-	EXPECT_CALL(fileSystemPolicy, isExistingFile).WillOnce(testing::Return(true));
+	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(true));
 
 	// Act
-	std::string responseBody = fileWriteHandler.execute(path, content);
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
 
 	// Assert
 	EXPECT_EQ(responseBody,
-		"{\n\"message\": \"Data appended successfully\",\n\"file\": \"" + path
-			+ "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \""
-			+ webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S")
+		"{\n\"message\": \"Data appended successfully\",\n\"file\": \"" + m_path
+			+ "\",\n\"file_size\": " + std::to_string(m_fakeStat.st_size) + ",\n\"last_modified\": \""
+			+ webutils::getLocaltimeString(m_fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S")
 			+ "\",\n\"status\": \"updated\"\n}\n");
 }
 
 TEST_F(FileWriteHandlerTest, GetFileStatThrow)
 {
 	// Arrange
-	FileWriteHandler fileWriteHandler(fileSystemPolicy);
 	std::string errorMessage = "stat(): getFileStat failed";
 
-	EXPECT_CALL(fileSystemPolicy, getFileStat).WillOnce(testing::Throw(std::runtime_error(errorMessage)));
+	EXPECT_CALL(m_fileSystemPolicy, getFileStat).WillOnce(testing::Throw(std::runtime_error(errorMessage)));
 
 	// Act
-	std::string responseBody = fileWriteHandler.execute(path, content);
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
 
 	// Assert
 	EXPECT_EQ(responseBody, "");
