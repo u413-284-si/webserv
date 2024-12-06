@@ -96,7 +96,12 @@ ConfigFile createDummyConfig()
 
 	Location location8;
 	location8.path = "/strange";
-	location8.returns = std::make_pair(StatusRequestHeaderFieldsTooLarge, "Too bad");
+	location8.returns = std::make_pair(StatusRequestHeaderFieldsTooLarge, "Return Message");
+
+	Location location9;
+	location9.path = "/another";
+	location9.returns = std::make_pair(StatusForbidden, "");
+	location9.errorPage[StatusForbidden] = "/strange";
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
@@ -106,6 +111,7 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location5);
 	serverConfig8080.locations.push_back(location7);
 	serverConfig8080.locations.push_back(location8);
+	serverConfig8080.locations.push_back(location9);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
