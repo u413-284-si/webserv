@@ -7,46 +7,40 @@
  * @param fileSystemPolicy File system policy object. Can be mocked if needed.
  */
 PostRequestHandler::PostRequestHandler(const FileSystemPolicy& fileSystemPolicy)
-	: AFileHandler(fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
 std::string PostRequestHandler::execute(const std::string& path, const std::string& content)
 {
 	try {
-		bool isExistingFile = getFileSystemPolicy().isExistingFile(path);
-		getFileSystemPolicy().writeToFile(path, content);
-		struct stat fileStat = getFileSystemPolicy().getFileStat(path);
+		const bool isExistingFile = m_fileSystemPolicy.isExistingFile(path);
+		m_fileSystemPolicy.writeToFile(path, content);
+		struct stat fileStat = m_fileSystemPolicy.getFileStat(path);
 		
 		if (isExistingFile)
 		{
-			getResponse()
+			m_response
 				<< "{\n"
 				<< "\"message\": \"Data appended successfully\",\n"
 				<< "\"file\": \"" << path << "\",\n"
-				<< "\"file_size\": " << getFileSize(fileStat) << ",\n"
-				<< "\"last_modified\": \"" << getLastModifiedTime(fileStat) << "\",\n"
+				<< "\"file_size\": " << m_fileSystemPolicy.getFileSize(fileStat) << ",\n"
+				<< "\"last_modified\": \"" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "\",\n"
 				<< "\"status\": \"updated\"\n"
 				<< "}\n";
 		} else {
-			getResponse()
+			m_response
 				<< "{\n"
 				<< "\"message\": \"File created successfully\",\n"
 				<< "\"file\": \"" << path << "\",\n"
-				<< "\"file_size\": " << getFileSize(fileStat) << ",\n"
-				<< "\"last_modified\": \"" << getLastModifiedTime(fileStat) << "\",\n"
+				<< "\"file_size\": " << m_fileSystemPolicy.getFileSize(fileStat) << ",\n"
+				<< "\"last_modified\": \"" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "\",\n"
 				<< "\"status\": \"created\"\n"
 				<< "}\n";
 		}
-		return getResponse().str();
+		return m_response.str();
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		return "";
 	}
-}
-
-std::string PostRequestHandler::execute(const std::string& path)
-{
-	(void)path;
-	return "";
 }

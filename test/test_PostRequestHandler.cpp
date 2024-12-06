@@ -42,10 +42,10 @@ TEST_F(PostRequestHandlerTest, NonExistingFile)
 		.WillOnce(testing::Return(false));
 	
 	// Act
-	postRequestHandler.execute(path, content);
+	std::string responseBody = postRequestHandler.execute(path, content);
 
 	// Assert
-	EXPECT_EQ(postRequestHandler.getResponse().str(), "{\n\"message\": \"File created successfully\",\n\"file\": \"" + path + "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \"" + webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S") + "\",\n\"status\": \"created\"\n}\n");
+	EXPECT_EQ(responseBody, "{\n\"message\": \"File created successfully\",\n\"file\": \"" + path + "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \"" + webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S") + "\",\n\"status\": \"created\"\n}\n");
 }
 
 TEST_F(PostRequestHandlerTest, ExistingFile)
@@ -57,10 +57,10 @@ TEST_F(PostRequestHandlerTest, ExistingFile)
 		.WillOnce(testing::Return(true));
 	
 	// Act
-	postRequestHandler.execute(path, content);
+	std::string responseBody = postRequestHandler.execute(path, content);
 
 	// Assert
-	EXPECT_EQ(postRequestHandler.getResponse().str(), "{\n\"message\": \"Data appended successfully\",\n\"file\": \"" + path + "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \"" + webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S") + "\",\n\"status\": \"updated\"\n}\n");
+	EXPECT_EQ(responseBody, "{\n\"message\": \"Data appended successfully\",\n\"file\": \"" + path + "\",\n\"file_size\": " + std::to_string(fakeStat.st_size) + ",\n\"last_modified\": \"" + webutils::getLocaltimeString(fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S") + "\",\n\"status\": \"updated\"\n}\n");
 }
 
 TEST_F(PostRequestHandlerTest, GetFileStatThrow)
@@ -73,8 +73,8 @@ TEST_F(PostRequestHandlerTest, GetFileStatThrow)
 		.WillOnce(testing::Throw(std::runtime_error(errorMessage)));
 	
 	// Act
-	postRequestHandler.execute(path, content);
+	std::string responseBody = postRequestHandler.execute(path, content);
 
 	// Assert
-	EXPECT_EQ(postRequestHandler.getResponse().str(), "");
+	EXPECT_EQ(responseBody, "");
 }

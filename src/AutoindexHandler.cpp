@@ -6,7 +6,7 @@
  * @param fileSystemPolicy File system policy object. Can be mocked if needed.
  */
 AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
-	: AFileHandler(fileSystemPolicy)
+	: m_fileSystemPolicy(fileSystemPolicy)
 {
 }
 
@@ -23,7 +23,7 @@ AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
 std::string AutoindexHandler::execute(const std::string& path)
 {
 	try {
-		getResponse()
+		m_response
 			<< "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n"
 			<< "<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
 			<< "<title>Autoindex</title>\n"
@@ -37,39 +37,24 @@ std::string AutoindexHandler::execute(const std::string& path)
 			<< "<table>\n"
 			<< "<tr><th>File Name</th><th>Last Modified</th><th>Size (Bytes)</th></tr>\n";
 
-		Directory directory(getFileSystemPolicy(), path);
+		Directory directory(m_fileSystemPolicy, path);
 		std::vector<std::string> files = directory.getEntries();
 
 		for (std::vector<std::string>::iterator iter = files.begin(); iter != files.end(); ++iter) {
 			if (*iter == "." || *iter == "..")
 				continue;
-			struct stat fileStat = getFileSystemPolicy().getFileStat(path + *iter);
+			struct stat fileStat = m_fileSystemPolicy.getFileStat(path + *iter);
+			// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
-			getResponse() << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
-						  << "<td>" << getLastModifiedTime(fileStat) << "</td>"
-						  << "<td>" << getFileSize(fileStat) << "</td></tr>\n";
+			m_response << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
+						  << "<td>" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "</td>"
+						  << "<td>" << m_fileSystemPolicy.getFileSize(fileStat) << "</td></tr>\n";
 		}
-		getResponse() << "</table>\n</body>\n</html>";
-		return getResponse().str();
+		m_response << "</table>\n</body>\n</html>";
+		return m_response.str();
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		return "";
 	}
-}
-
-/**
- * @brief Placeholder function required by the base class.
- * 
- * This function cannot be called and is not implemented in the AutoindexHandler class.
- * 
- * @param path Path to file.
- * @param content Content to be written to the file.
- * @return An empty string.
- */
-std::string AutoindexHandler::execute(const std::string& path, const std::string& content)
-{
-	(void)path;
-	(void)content;
-	return "";
 }

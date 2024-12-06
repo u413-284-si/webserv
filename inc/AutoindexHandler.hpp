@@ -1,18 +1,26 @@
 #pragma once
 
-#include "AFileHandler.hpp"
+#include "FileSystemPolicy.hpp"
+#include "Directory.hpp"
+#include "utilities.hpp"
+#include "Log.hpp"
+
+#include <string>
+#include <vector>
+#include <sstream>
+#include <stdexcept>
 
 /**
  * @brief Class to handle the autoindex feature.
  *
  */
-class AutoindexHandler : public AFileHandler {
+class AutoindexHandler {
 
 public:
 	explicit AutoindexHandler(const FileSystemPolicy& fileSystemPolicy);
-
-	virtual std::string execute(const std::string& path);
+	std::string execute(const std::string& path);
 
 private:
-	virtual std::string execute(const std::string& path, const std::string& content);
+	const FileSystemPolicy& m_fileSystemPolicy;
+	std::stringstream m_response;
 };

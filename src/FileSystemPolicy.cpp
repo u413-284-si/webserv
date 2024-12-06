@@ -158,3 +158,28 @@ void FileSystemPolicy::writeToFile(const std::string& path, const std::string& c
 	file.close();
 	LOG_DEBUG << "Data successfully appended to the file: " << path;
 }
+
+/**
+ * @brief Get the last modified time of a file.
+ *
+ * @param fileStat File stat object.
+ * @return std::string Last modified time.
+ */
+std::string FileSystemPolicy::getLastModifiedTime(const struct stat& fileStat) const
+{
+	return webutils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
+}
+
+/**
+ * @brief Get the file size of a file.
+ *
+ * @param fileStat File stat object.
+ * @return long File size.
+ */
+long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
+{
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
+	if (S_ISDIR(fileStat.st_mode))
+		return 0;
+	return fileStat.st_size;
+}

@@ -10,6 +10,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+#include "utilities.hpp"
+
 /**
  * @brief Class for C functions on the file system.
  *
@@ -31,4 +33,6 @@ public:
 	virtual int closeDirectory(DIR* dir) const;
 	virtual struct stat getFileStat(const std::string& path) const;
 	virtual void writeToFile(const std::string& path, const std::string& content) const;
+	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
+	virtual long getFileSize(const struct stat& fileStat) const;
 };
