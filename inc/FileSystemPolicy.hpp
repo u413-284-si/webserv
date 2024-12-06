@@ -11,6 +11,7 @@
 #include <dirent.h>
 
 #include "utilities.hpp"
+#include "Log.hpp"
 
 /**
  * @brief Class for C functions on the file system.

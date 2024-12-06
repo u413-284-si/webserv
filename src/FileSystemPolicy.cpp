@@ -1,5 +1,4 @@
 #include "FileSystemPolicy.hpp"
-#include "Log.hpp"
 
 /**
  * @brief Virtual destructor for FileSystemPolicy object
@@ -146,6 +145,7 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
  * If the file cannot be created, an error is logged and the function returns false.
  * If the file exists already, the content is appended to the file.
  *
+ * @throws std::runtime_error with strerror() of errno.
  * @param path The path where the file should be created.
  * @param content The content to be written to the file.
  */
@@ -155,8 +155,7 @@ void FileSystemPolicy::writeToFile(const std::string& path, const std::string& c
 	if (!file.good())
 		throw std::runtime_error("openFile(): \"" + path + "\", " + std::string(strerror(errno)));
 	file << content;
-	file.close();
-	LOG_DEBUG << "Data successfully appended to the file: " << path;
+	LOG_DEBUG << "Data successfully written/appended to the file: " << path;
 }
 
 /**
