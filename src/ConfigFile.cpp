@@ -119,10 +119,10 @@ ConfigFile createDummyConfig()
 	serverConfig8081.serverName = "cgi";
 
 	ConfigServer serverConfig8082;
-	serverConfig8081.locations.push_back(location7);
-	serverConfig8081.host = "127.0.0.1";
-	serverConfig8081.port = "8082";
-	serverConfig8081.serverName = "post";
+	serverConfig8082.locations.push_back(location7);
+	serverConfig8082.host = "127.0.0.1";
+	serverConfig8082.port = "8082";
+	serverConfig8082.serverName = "post";
 
 	ConfigServer serverConfig8090dupl;
 	serverConfig8090dupl.locations.push_back(location1);
