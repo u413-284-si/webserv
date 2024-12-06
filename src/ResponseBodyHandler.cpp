@@ -70,12 +70,17 @@ void ResponseBodyHandler::execute()
  * Checks if the active location has a custom error page for HTTP Status Code.
  * If yes tries to locate the error page via the provided URI.
  * - The current Status Code is saved and reset to StatusOK.
+ * - The request hasReturn is set to false (in case it was already).
  * - The request.uri.path is set to the error page URI.
  * - Then tries to find it with a TargetResourceHandler.
+ *
+ * If the request hasReturn is set to true the status is set back to the saved one. Depending on whether the target
+ * resource is empty error page is set via setDefaultErrorPage() or the return string is set as the error page.
+ *
  * If no error happened while locating the error page indicated via Status == OK the error page is read into the
  * body and the status set back to the saved one.
  *
- * In case of any error a default error page is constructed via setDefaultErrorPage()
+ * In case of any error a default error page is constructed via setDefaultErrorPage().
  */
 void ResponseBodyHandler::handleErrorBody()
 {
@@ -92,11 +97,21 @@ void ResponseBodyHandler::handleErrorBody()
 
 	LOG_DEBUG << "Custom error page: " << iter->second;
 
-	statusCode oldStatus = m_request.httpStatus;
+	const statusCode oldStatus = m_request.httpStatus;
+	m_request.hasReturn = false;
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
 	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
 	targetResourceHandler.execute(m_connection);
+
+	if (m_request.hasReturn) {
+		m_request.httpStatus = oldStatus;
+		if (m_request.targetResource.empty())
+			setDefaultErrorPage();
+		else
+			m_responseBody = m_request.targetResource;
+		return;
+	}
 
 	if (m_request.httpStatus != StatusOK) {
 		setDefaultErrorPage();
