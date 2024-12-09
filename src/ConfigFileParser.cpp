@@ -133,7 +133,7 @@ bool ConfigFileParser::isValidBlockBeginn(Block block)
 /**
  * @brief Checks if there are no open brackets in the config file
  *
- * If a opening bracket is found, it is pushed onto the brackets stac
+ * If a opening bracket is found, it is pushed onto the brackets stack
  * If a closing bracket is found, it is popped from the brackets stack
  *
  * At the end the stack should be empty. If not, there are open brackets
@@ -145,15 +145,13 @@ bool ConfigFileParser::isBracketOpen(void)
 {
 	std::stack<char> brackets;
 
-	while (readAndTrimLine(m_configFileContent, '\n')) {
-		for (std::string::const_iterator it = m_currentLine.begin(); it != m_currentLine.end(); ++it) {
-			if (*it == '{')
-				brackets.push('{');
-			else if (*it == '}' && brackets.empty())
-				return true;
-			else if (*it == '}')
-				brackets.pop();
-		}
+	for (std::string::const_iterator it = m_configFileContent.begin(); it != m_configFileContent.end(); ++it) {
+		if (*it == '{')
+			brackets.push('{');
+		else if (*it == '}' && brackets.empty())
+			return true;
+		else if (*it == '}')
+			brackets.pop();
 	}
 	return !brackets.empty();
 }
@@ -231,8 +229,6 @@ void ConfigFileParser::readServerBlock(void)
  */
 void ConfigFileParser::readLocationBlock(ServerBlockConfig& serverBlockConfig)
 {
-	skipBlockBegin(LocationBlock);
-
 	std::string locationBlockContent;
 	size_t startIndex = m_configFileIndex;
 
@@ -279,20 +275,41 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  * The content will be processed by reading it line by line (delimited by ';')
  * In this process the values of the directives will be read and stored
  *
+ * If the path of the location block is "/", the m_locationIndex will be set to 0 in readLocationBlockPath
+ * This is necessary because the following functions need to store the parsed values in the default location.
+ * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used if
+ * the location index is 0
+ *
+ * If no values are specified for the root, max_body_size, and error_page directives in a location block,
+ * they inherit their corresponding values from the server block.
+ *
  * If there is a semicolon missing, an exception will be thrown
  *
  * @param locationBlockContent The content of the location block
  */
 void ConfigFileParser::processLocationContent(const std::string& locationBlockContent)
 {
-	Location location;
-	m_configFile.servers[m_serverIndex].locations.push_back(location);
+	size_t tmpIndex = m_locationIndex;
+	readAndTrimLine(locationBlockContent, '{');
+	readLocationBlockPath();
 
 	if (isSemicolonMissing(locationBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
 	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
+
+	ConfigServer& server = m_configFile.servers[m_serverIndex];
+	Location& location = server.locations[m_locationIndex];
+	if (location.root == "html")
+		location.root = server.root;
+	else if (location.maxBodySize == 1)
+		location.maxBodySize = server.maxBodySize;
+	else if (location.errorPage.empty())
+		location.errorPage = server.errorPage;
+
+	if (m_locationIndex == 0)
+		m_locationIndex = tmpIndex;
 }
 
 /**
@@ -328,6 +345,36 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
 	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
 	webutils::trimTrailingWhiteSpaces(m_currentLine);
 	return true;
+}
+
+/**
+ * @brief Reads the path of a location block
+ *
+ * If the path is "/", the m_locationIndex will be set to 0 because the default location has an index of 0
+ * Therefore the following functions will store the values correctly in the default location
+ *
+ * Otherwise a new location will be created, added to the locations vector and the m_locationIndex will be incremented
+ *
+ */
+void ConfigFileParser::readLocationBlockPath(void)
+{
+	const size_t startIndex = sizeof("location") - 1; //subtract zero terminator
+	std::string pathWithLeadingWhitespaces = m_currentLine.substr(startIndex);
+	std::string pathWithBracketAtEnd = webutils::trimLeadingWhitespaces(pathWithLeadingWhitespaces);
+
+	size_t endIndex = 0;
+	while (std::isspace(pathWithBracketAtEnd[endIndex]) == 0)
+		endIndex++;
+
+	std::string path = pathWithBracketAtEnd.substr(0, endIndex);
+	if (path == "/")
+		m_locationIndex = 0;
+	else {
+		Location location;
+		m_configFile.servers[m_serverIndex].locations.push_back(location);
+		m_locationIndex++;
+	}
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].path = path;
 }
 
 /**
@@ -374,7 +421,9 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
  * If that is the case, the function checks and reads the ip address AND port.
  *
  * When there is no colon, the function checks if there is a dot in the value of the directive.
- * If that is the case, the function checks and reads the ip address.
+ * If that is the case, the function checks if the value equals "localhost".
+ * When the value equals "localhost" the ip address "127.0.0.1" gets stored as host.
+ * When the value does NOT equal "localhost" the value gets checked and stored as host.
  * Otherwise it checks and reads the port.
  *
  * @param value The value of the directive
@@ -389,7 +438,11 @@ void ConfigFileParser::readSocket(const std::string& value)
 		std::string ipAddress = value.substr(0, colonIndex);
 		if (!webutils::isIpAddressValid(ipAddress))
 			throw std::runtime_error("Invalid ip address");
-		m_configFile.servers[m_serverIndex].host = ipAddress;
+
+		if (ipAddress == "localhost")
+			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+		else
+			m_configFile.servers[m_serverIndex].host = ipAddress;
 
 		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
 		if (!webutils::isPortValid(port))
@@ -397,20 +450,20 @@ void ConfigFileParser::readSocket(const std::string& value)
 		m_configFile.servers[m_serverIndex].port = port;
 	} else {
 		if (dot == std::string::npos) {
-			std::string port = value.substr(0, semicolonIndex);
-			if (!webutils::isPortValid(port))
-				throw std::runtime_error("Invalid port");
-
-			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
-			m_configFile.servers[m_serverIndex].port = port;
-
+			std::string hostOrPort = value.substr(0, semicolonIndex);
+			if (hostOrPort == "localhost")
+				m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+			else {
+				if (!webutils::isPortValid(hostOrPort))
+					throw std::runtime_error("Invalid port");
+				m_configFile.servers[m_serverIndex].port = hostOrPort;
+			}
 		} else {
 			std::string ipAddress = value.substr(0, semicolonIndex);
 			if (!webutils::isIpAddressValid(ipAddress))
 				throw std::runtime_error("Invalid ip address");
 
 			m_configFile.servers[m_serverIndex].host = ipAddress;
-			m_configFile.servers[m_serverIndex].port = "80";
 		}
 	}
 }

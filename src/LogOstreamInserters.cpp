@@ -45,6 +45,7 @@ std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer
 	ostream << "Server name: " << configServer.serverName << '\n';
 	ostream << "Host: " << configServer.host << '\n';
 	ostream << "Port: " << configServer.port << '\n';
+	ostream << "Root: " << configServer.root << '\n';
 	ostream << "Max body size: " << configServer.maxBodySize << '\n';
 	ostream << "Error pages:\n";
 	for (std::map<statusCode, std::string>::const_iterator it = configServer.errorPage.begin();

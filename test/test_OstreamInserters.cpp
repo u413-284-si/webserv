@@ -91,7 +91,8 @@ protected:
 	Location m_location;
 	ConfigServer m_server;
 	ConfigFile m_configFile;
-	Connection m_connection = Connection(Socket { "127.0.0.1", "8080" }, Socket { "1.1.1.1", "1234" }, 10, m_configFile.servers);
+	Connection m_connection
+		= Connection(Socket { "127.0.0.1", "8080" }, Socket { "1.1.1.1", "1234" }, 10, m_configFile.servers);
 	URI m_uri;
 	HTTPRequest m_httpRequest;
 
@@ -165,6 +166,7 @@ TEST_F(OstreamInsertersTest, ServerConfig)
 	expected << "Server name: localhost\n"
 				"Host: 127.0.0.1\n"
 				"Port: 80\n"
+				"Root: html\n"
 				"Max body size: 1024\n"
 				"Error pages:\n"
 				"  400: BadRequest.html\n"
