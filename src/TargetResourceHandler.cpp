@@ -41,7 +41,7 @@ void TargetResourceHandler::execute(Connection& connection)
  * @param locInfo Struct containing info for locating the target resource.
  * @param depth Current depth in recursion.
  * @return TargetResourceHandler::LocatingInfo
- * @todo Remove check for no location found if default location implemented.
+ * @throws std::runtime_error If no location block is found for the path.
  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
@@ -55,11 +55,9 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 
 	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
 
-	// No location found > do we also set a default location to not make extra check?
-	if (locInfo.activeLocation == locInfo.locations->end()) {
-		locInfo.statusCode = StatusInternalServerError;
-		return (locInfo);
-	}
+	// No location found > this should not happen because default location "/" should always match
+	if (locInfo.activeLocation == locInfo.locations->end())
+		throw std::runtime_error("Could not find location block for path: " + locInfo.path);
 
 	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
