@@ -17,6 +17,7 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
  * Recursively searches for the target resource with locateTargetResource() using the information in the LocatingInfo.
  * Uses updateConnection() to write found information into Connection.
  * @param connection Connection object.
+ * @throws std::runtime_error If no location block is found for the path.
  */
 void TargetResourceHandler::execute(Connection& connection)
 {
