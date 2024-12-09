@@ -122,6 +122,7 @@ SRC:=	main.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
+		FileWriteHandler.cpp \
 		HTTPRequest.cpp \
 		LogData.cpp \
 		Logger.cpp \
@@ -153,6 +154,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_connectionSendResponse.cpp \
 			test_connectionSendToCGI.cpp \
 			test_createVirtualServer.cpp \
+			test_FileWriteHandler.cpp \
 			test_handleCompleteRequestHeader.cpp \
 			test_initVirtualServers.cpp \
 			test_isDuplicateServer.cpp \

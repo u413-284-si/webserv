@@ -600,6 +600,8 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
  */
 void RequestParser::validateTransferEncoding(HTTPRequest& request)
 {
+	LOG_DEBUG << "Validating Transfer-Encoding header...";
+
 	if (request.headers.find("transfer-encoding") != request.headers.end()) {
 		if (request.headers.at("transfer-encoding").empty()) {
 			request.httpStatus = StatusBadRequest;
@@ -620,6 +622,8 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 			request.hasBody = true;
 		}
 	}
+
+	LOG_DEBUG << "Transfer-Encoding header is valid.";
 }
 
 /**
@@ -637,10 +641,14 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
  */
 void RequestParser::validateMethodWithBody(HTTPRequest& request)
 {
+	LOG_DEBUG << "Validating method with body...";
+
 	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
 		request.httpStatus = StatusMethodNotAllowed;
 		throw std::runtime_error(ERR_UNEXPECTED_BODY);
 	}
+
+	LOG_DEBUG << "Method with body is valid.";
 }
 
 /**
@@ -662,6 +670,8 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
  */
 void RequestParser::validateHostHeader(HTTPRequest& request)
 {
+	LOG_DEBUG << "Validating Host header...";
+
 	std::map<std::string, std::string>::const_iterator iter = request.headers.find("host");
 	if (iter == request.headers.end()) {
 		request.httpStatus = StatusBadRequest;
@@ -695,6 +705,8 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
 	 }
+
+	 LOG_DEBUG << "Valid host header: " << iter->second;
 }
 
 /**

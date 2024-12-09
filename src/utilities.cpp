@@ -138,6 +138,8 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	switch (statusCode) {
 	case StatusOK:
 		return "OK";
+	case StatusCreated:
+		return "Created";
 	case StatusMovedPermanently:
 		return "Moved Permanently";
 	case StatusPermanentRedirect:
