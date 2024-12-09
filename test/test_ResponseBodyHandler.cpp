@@ -1,33 +1,52 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "ConfigFile.hpp"
-#include "HTTPRequest.hpp"
 #include "MockFileSystemPolicy.hpp"
 #include "ResponseBodyHandler.hpp"
-#include "StatusCode.hpp"
+
+ConfigFile createTestConfigfile();
 
 using ::testing::Return;
 using ::testing::Throw;
 
 class ResponseBodyHandlerTest : public ::testing::Test {
 	protected:
-	ResponseBodyHandlerTest() { }
+	ResponseBodyHandlerTest()
+	{
+		m_configFile.servers[0].locations[0].errorPage[StatusNotFound] = "/error";
+		m_configFile.servers[0].locations[0].errorPage[StatusForbidden] = "/error_with_return";
+		m_configFile.servers[0].locations[0].errorPage[StatusBadRequest] = "/error_with_empty_return";
+
+		Location location2;
+		location2.path = "/error";
+
+		Location location3;
+		location3.path = "/error_with_return";
+		location3.returns = std::make_pair(StatusMovedPermanently, "Return Message");
+
+		Location location4;
+		location4.path = "/error_with_empty_return";
+		location4.returns = std::make_pair(StatusMovedPermanently, "");
+
+		m_configFile.servers[0].locations.push_back(location2);
+		m_configFile.servers[0].locations.push_back(location3);
+		m_configFile.servers[0].locations.push_back(location4);
+
+		m_connection.location = m_configFile.servers[0].locations.begin();
+	}
 	~ResponseBodyHandlerTest() override { }
 
 	const int m_dummyFd = 10;
-	ConfigFile m_configFile = createDummyConfig();
-	Socket m_serverSock = {
-		.host = m_configFile.servers[0].host,
-		.port = m_configFile.servers[0].port
-	};
-
+	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
+	ConfigFile m_configFile = createTestConfigfile();
 	Connection m_connection = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
+
+	HTTPRequest& m_request = m_connection.m_request;
+
 	std::string m_responseBody;
 	MockFileSystemPolicy m_fileSystemPolicy;
 	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemPolicy);
 
-	HTTPRequest& m_request = m_connection.m_request;
 };
 
 TEST_F(ResponseBodyHandlerTest, IndexCreated)
@@ -73,7 +92,7 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 TEST_F(ResponseBodyHandlerTest, ErrorPage)
 {
 	m_request.targetResource = "/proc/self/";
-	m_request.httpStatus = StatusForbidden;
+	m_request.httpStatus = StatusInternalServerError;
 	m_request.hasAutoindex = false;
 
 	m_responseBodyHandler.execute();
@@ -151,6 +170,72 @@ TEST_F(ResponseBodyHandlerTest, CustomErrorPageOpenFails)
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
+}
+
+TEST_F(ResponseBodyHandlerTest, ReturnAsSimpleRedirect)
+{
+	m_request.httpStatus = StatusPermanentRedirect;
+	m_request.targetResource = "/new_location";
+	m_request.hasReturn = true;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusPermanentRedirect);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusPermanentRedirect));
+}
+
+TEST_F(ResponseBodyHandlerTest, ReturnWithNonErrorCodeAndNoContent)
+{
+	m_request.httpStatus = StatusOK;
+	m_request.targetResource = "";
+	m_request.hasReturn = true;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusOK);
+	EXPECT_EQ(m_responseBody, "");
+}
+
+TEST_F(ResponseBodyHandlerTest, ReturnWithNoRedirectAndCustomContent)
+{
+	m_request.httpStatus = StatusNonSupportedVersion;
+	m_request.targetResource = "Return Message";
+	m_request.hasReturn = true;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusNonSupportedVersion);
+	EXPECT_EQ(m_responseBody, "Return Message");
+}
+
+TEST_F(ResponseBodyHandlerTest, ReturnWithErrorCodeAndNoContentFindsDefaultErrorPage)
+{
+	m_request.httpStatus = StatusMethodNotAllowed;
+	m_request.targetResource = "";
+	m_request.hasReturn = true;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusMethodNotAllowed);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusMethodNotAllowed));
+}
+
+TEST_F(ResponseBodyHandlerTest, ReturnWithErrorCodeAndNoContentFindsCustomErrorPageWithReturnNoContent)
+{
+	m_request.httpStatus = StatusBadRequest;
+	m_request.targetResource = "";
+	m_request.hasReturn = true;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusBadRequest);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusBadRequest));
+}
+
+TEST_F(ResponseBodyHandlerTest, ReturnWithErrorCodeAndNoContentFindsCustomErrorPageWithReturnWithContent)
+{
+	m_request.httpStatus = StatusForbidden;
+	m_request.targetResource = "";
+	m_request.hasReturn = true;
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_EQ(m_responseBody, "Return Message");
 }
 
 TEST(ResponseBodyHandler, getDefaultErrorPage)
