@@ -256,6 +256,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 {
 	ConfigServer server;
 	m_configFile.servers.push_back(server);
+	m_locationIndex = 0;
 
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error("Unexpected '}'");
