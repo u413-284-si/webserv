@@ -390,6 +390,7 @@ void ConfigFileParser::readLocationBlockPath(void)
  * This function can be used for the server block and location block
  *
  * @param block The block which surounds the directive
+ * @param value The value of the directive root
  */
 void ConfigFileParser::readRootPath(Block block, const std::string& value)
 {
@@ -426,7 +427,7 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
  * When the value does NOT equal "localhost" the value gets checked and stored as host.
  * Otherwise it checks and reads the port.
  *
- * @param value The value of the directive
+ * @param value The value of the directive listen
  */
 void ConfigFileParser::readSocket(const std::string& value)
 {
