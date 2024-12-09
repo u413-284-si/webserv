@@ -23,10 +23,14 @@ var test___config_file_parser_8cpp =
     [ "TEST_F", "test___config_file_parser_8cpp.html#a097f0d3d6d889f9d7579a578da6ef4e0", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#ae8122d5d9ef19a4a27216d6c2a55027d", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#ae8624cc253510273db8aaa1f786f331a", null ],
+    [ "TEST_F", "test___config_file_parser_8cpp.html#acc993fa2d383c02b790914530a1b2ce2", null ],
+    [ "TEST_F", "test___config_file_parser_8cpp.html#af3ea7d9f9eedeb7a01f3721fe01aeb71", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a9b72f2471a859f7f4433eb73ccbc5245", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#aa61b862ecf524172a416fccc39ceab7b", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a9b12d58155a484209cc0843e07f0de06", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a04a2023776d263393454f2ed9ec4166d", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a2d4c60edc5421eb44d0c01cf9070c08a", null ],
-    [ "TEST_F", "test___config_file_parser_8cpp.html#ac58c641d2692b568b2f9137b9b287fee", null ]
+    [ "TEST_F", "test___config_file_parser_8cpp.html#ac58c641d2692b568b2f9137b9b287fee", null ],
+    [ "TEST_F", "test___config_file_parser_8cpp.html#a849015cd88265951e2866c431895ae82", null ],
+    [ "TEST_F", "test___config_file_parser_8cpp.html#a0538e23c54d12472330f5955ef661d28", null ]
 ];

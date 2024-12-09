@@ -1,7 +1,11 @@
 <map id="Server::removeCGIFileDescriptor" name="Server::removeCGIFileDescriptor">
-<area shape="rect" id="node1" title="Removes a CGI file descriptor from the server." alt="" coords="5,56,240,83"/>
-<area shape="rect" id="node2" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="319,5,453,32"/>
-<area shape="rect" id="node3" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="288,56,484,83"/>
-<area shape="rect" id="node4" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="307,107,465,133"/>
-<area shape="rect" id="node5" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="532,107,736,133"/>
+<area shape="rect" id="Node000001" title="Removes a CGI file descriptor from the server." alt="" coords="5,55,240,80"/>
+<area shape="rect" id="Node000002" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="319,5,453,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,52,305,30,306,36,192,57"/>
+<area shape="rect" id="Node000003" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="288,55,484,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="240,65,274,65,274,70,240,70"/>
+<area shape="rect" id="Node000004" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="307,104,465,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="192,77,304,99,303,104,191,83"/>
+<area shape="rect" id="Node000005" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="532,104,736,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="466,114,518,114,518,119,466,119"/>
 </map>

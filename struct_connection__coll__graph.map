@@ -1,6 +1,9 @@
 <map id="Connection" name="Connection">
-<area shape="rect" id="node1" title="Represents a connection between a server and a client." alt="" coords="59,199,153,225"/>
-<area shape="rect" id="node2" href="$struct_socket.html" title="Represent a socket connection." alt="" coords="5,95,71,121"/>
-<area shape="rect" id="node3" href="$struct_h_t_t_p_request.html" title=" " alt="" coords="119,95,229,121"/>
-<area shape="rect" id="node4" href="$struct_u_r_i.html" title=" " alt="" coords="151,5,197,32"/>
+<area shape="rect" id="Node000001" title="Represents a connection between a server and a client." alt="" coords="59,196,153,221"/>
+<area shape="rect" id="Node000002" href="$struct_socket.html" title="Represent a socket connection." alt="" coords="5,93,71,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="35,132,36,152,42,171,54,184,70,194,67,198,50,188,37,173,30,153,30,132"/>
+<area shape="rect" id="Node000003" href="$struct_h_t_t_p_request.html" title=" " alt="" coords="119,93,229,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,133,147,174,123,198,119,194,143,170,163,131"/>
+<area shape="rect" id="Node000004" href="$struct_u_r_i.html" title=" " alt="" coords="151,5,197,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="177,45,177,93,171,93,171,45"/>
 </map>

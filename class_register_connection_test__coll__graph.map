@@ -1,11 +1,19 @@
 <map id="RegisterConnectionTest" name="RegisterConnectionTest">
-<area shape="rect" id="node1" title=" " alt="" coords="234,185,409,212"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,81,107,108"/>
-<area shape="rect" id="node3" href="$struct_socket.html" title="Represent a socket connection." alt="" coords="131,81,197,108"/>
-<area shape="rect" id="node4" href="$class_server.html" title="Main class of the HTTP server." alt="" coords="221,81,285,108"/>
-<area shape="rect" id="node5" href="$class_mock_process_ops.html" title="Mock class for ProcessOps." alt="" coords="310,81,442,108"/>
-<area shape="rect" id="node6" href="$class_process_ops.html" title="Wrapper class for process&#45;related functions." alt="" coords="327,5,425,32"/>
-<area shape="rect" id="node7" href="$class_mock_socket_policy.html" title="Mock class for SocketPolicy." alt="" coords="467,81,605,108"/>
-<area shape="rect" id="node8" href="$class_socket_policy.html" title="Policy class for socket functions." alt="" coords="484,5,588,32"/>
-<area shape="rect" id="node9" href="$struct_config_file.html" title=" " alt="" coords="630,81,717,108"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="305,183,479,208"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,107,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,109,144,133,205,156,258,170,310,180,309,185,256,175,203,161,142,138,89,114"/>
+<area shape="rect" id="Node000003" href="$struct_config_file.html" title=" " alt="" coords="131,80,218,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,113,220,136,249,156,282,170,317,180,316,185,281,175,247,161,216,140,192,117"/>
+<area shape="rect" id="Node000004" href="$class_mock_socket_policy.html" title="Mock class for SocketPolicy." alt="" coords="243,80,381,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="320,118,327,138,338,157,352,170,368,180,365,185,349,174,334,160,322,140,315,120"/>
+<area shape="rect" id="Node000005" href="$class_socket_policy.html" title="Policy class for socket functions." alt="" coords="260,5,364,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="315,45,315,80,309,80,309,45"/>
+<area shape="rect" id="Node000006" href="$class_mock_process_ops.html" title="Mock class for ProcessOps." alt="" coords="406,80,538,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="457,118,423,160,404,184,400,181,419,157,453,115"/>
+<area shape="rect" id="Node000007" href="$class_process_ops.html" title="Wrapper class for process&#45;related functions." alt="" coords="423,5,521,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="475,45,475,80,469,80,469,45"/>
+<area shape="rect" id="Node000008" href="$class_server.html" title="Main class of the HTTP server." alt="" coords="563,80,627,105"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="579,118,557,141,529,161,498,175,465,185,463,180,496,170,527,156,554,136,575,114"/>
+<area shape="rect" id="Node000009" href="$struct_socket.html" title="Represent a socket connection." alt="" coords="651,80,717,105"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="668,118,644,141,615,161,582,174,547,184,480,194,479,189,546,179,580,169,612,156,641,137,664,114"/>
 </map>

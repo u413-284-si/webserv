@@ -1,11 +1,32 @@
 <map id="isCompleteRequestHeader" name="isCompleteRequestHeader">
-<area shape="rect" id="node1" title="Checks if the connection buffer contains a request header." alt="" coords="993,56,1189,83"/>
-<area shape="rect" id="node2" href="$_server_8hpp.html#aa45d6529fd7be9b7adf788a9679ae34b" title="Receive request header from a client." alt="" coords="753,56,945,83"/>
-<area shape="rect" id="node3" href="$_server_8hpp.html#a54490f09266c8a5fed4d91166df9a6b3" title="Handle a client connection." alt="" coords="567,31,705,57"/>
-<area shape="rect" id="node9" href="$test__connection_receive_header_8cpp.html#ae40546436ca5ae6d8af1f754dfff4a98" title=" " alt="" coords="601,81,671,108"/>
-<area shape="rect" id="node4" href="$_server_8hpp.html#a4211c4d6b958979b39b3dfc8148c801a" title="Accepts new connections or handles existing ones." alt="" coords="416,31,519,57"/>
-<area shape="rect" id="node5" href="$_server_8hpp.html#ab66b27c2186daacb15a6b13dd43be31b" title="Runs the main event loop with a server object." alt="" coords="108,5,193,32"/>
-<area shape="rect" id="node7" href="$_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="241,56,368,83"/>
-<area shape="rect" id="node6" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,5,60,32"/>
-<area shape="rect" id="node8" href="$test__shutdown_server_8cpp.html#ae0ede4f52ef6c742c532c14b92b6179a" title=" " alt="" coords="116,56,185,83"/>
+<area shape="rect" id="Node000001" title="Checks if the connection buffer contains a request header." alt="" coords="993,155,1189,180"/>
+<area shape="rect" id="Node000002" href="$_server_8cpp.html#aa45d6529fd7be9b7adf788a9679ae34b" title="Receive request header from a client." alt="" coords="753,155,945,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="979,170,945,170,945,165,979,165"/>
+<area shape="rect" id="Node000003" href="$_server_8cpp.html#afb62203471d9a64b23d0267d5a4a261a" title="Handle a client connection." alt="" coords="567,31,705,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="820,148,768,110,704,71,675,58,678,54,707,66,771,105,823,144"/>
+<area shape="rect" id="Node000011" href="$test__connection_receive_header_8cpp.html#ae40546436ca5ae6d8af1f754dfff4a98" title=" " alt="" coords="601,80,671,105"/>
+<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="798,153,670,107,672,102,800,147"/>
+<area shape="rect" id="Node000012" href="$test__connection_receive_header_8cpp.html#a0952222a64d85993a5b3d9022826859c" title=" " alt="" coords="601,129,671,155"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="739,157,670,149,671,143,740,152"/>
+<area shape="rect" id="Node000013" href="$test__connection_receive_header_8cpp.html#a492a1135a23e13de8b412f266f5422dd" title=" " alt="" coords="601,179,671,204"/>
+<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="740,182,671,190,670,185,739,177"/>
+<area shape="rect" id="Node000014" href="$test__connection_receive_header_8cpp.html#a42aad638a3786700de9108d63bbba850" title=" " alt="" coords="601,228,671,253"/>
+<area shape="poly" id="edge14_Node000002_Node000014" title=" " alt="" coords="799,187,672,232,670,226,798,182"/>
+<area shape="rect" id="Node000015" href="$test__connection_receive_header_8cpp.html#aa34cc8553c29e19d06c302699e916a3e" title=" " alt="" coords="601,277,671,303"/>
+<area shape="poly" id="edge15_Node000002_Node000015" title=" " alt="" coords="824,191,771,229,707,268,672,283,670,278,704,264,768,225,820,186"/>
+<area shape="rect" id="Node000004" href="$_server_8cpp.html#af9f4479a6262c17deef89938118d27f4" title="Accepts new connections or handles existing ones." alt="" coords="416,31,519,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="553,46,519,46,519,41,553,41"/>
+<area shape="rect" id="Node000005" href="$_server_8cpp.html#ab66b27c2186daacb15a6b13dd43be31b" title="Runs the main event loop with a server object." alt="" coords="108,5,193,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="402,41,193,24,194,19,403,36"/>
+<area shape="rect" id="Node000007" href="$_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="241,56,368,81"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="403,56,369,61,368,56,402,51"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="251,54,189,33,191,28,253,49"/>
+<area shape="rect" id="Node000008" href="$test__shutdown_server_8cpp.html#a6462dc91a572c9969b759806ed15590b" title=" " alt="" coords="116,55,185,80"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="227,71,186,70,186,65,228,65"/>
+<area shape="rect" id="Node000009" href="$test__shutdown_server_8cpp.html#a69fea7b0fb329821fdd955271edc65ee" title=" " alt="" coords="116,104,185,129"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="251,88,186,109,185,103,249,83"/>
+<area shape="rect" id="Node000010" href="$test__shutdown_server_8cpp.html#ae0ede4f52ef6c742c532c14b92b6179a" title=" " alt="" coords="116,153,185,179"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="275,91,195,144,176,156,173,151,192,140,272,87"/>
 </map>

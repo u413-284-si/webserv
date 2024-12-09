@@ -1,10 +1,17 @@
 <map id="CreateVirtualServerTest" name="CreateVirtualServerTest">
-<area shape="rect" id="node1" title=" " alt="" coords="197,171,373,197"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,81,107,108"/>
-<area shape="rect" id="node3" href="$class_server.html" title="Main class of the HTTP server." alt="" coords="131,81,195,108"/>
-<area shape="rect" id="node4" href="$class_mock_process_ops.html" title="Mock class for ProcessOps." alt="" coords="219,81,351,108"/>
-<area shape="rect" id="node5" href="$class_process_ops.html" title="Wrapper class for process&#45;related functions." alt="" coords="237,5,334,32"/>
-<area shape="rect" id="node6" href="$class_mock_socket_policy.html" title="Mock class for SocketPolicy." alt="" coords="376,81,515,108"/>
-<area shape="rect" id="node7" href="$class_socket_policy.html" title="Policy class for socket functions." alt="" coords="393,5,497,32"/>
-<area shape="rect" id="node8" href="$struct_config_file.html" title=" " alt="" coords="539,81,626,108"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="224,168,400,193"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,107,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,107,278,165,277,170,103,112"/>
+<area shape="rect" id="Node000003" href="$struct_config_file.html" title=" " alt="" coords="131,80,218,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,112,241,142,287,166,284,170,239,146,197,116"/>
+<area shape="rect" id="Node000004" href="$class_mock_socket_policy.html" title="Mock class for SocketPolicy." alt="" coords="243,80,381,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="315,119,315,167,309,167,309,119"/>
+<area shape="rect" id="Node000005" href="$class_socket_policy.html" title="Policy class for socket functions." alt="" coords="260,5,364,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="315,45,315,80,309,80,309,45"/>
+<area shape="rect" id="Node000006" href="$class_mock_process_ops.html" title="Mock class for ProcessOps." alt="" coords="406,80,538,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="449,116,404,146,348,170,346,165,401,142,446,112"/>
+<area shape="rect" id="Node000007" href="$class_process_ops.html" title="Wrapper class for process&#45;related functions." alt="" coords="423,5,521,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="475,45,475,80,469,80,469,45"/>
+<area shape="rect" id="Node000008" href="$class_server.html" title="Main class of the HTTP server." alt="" coords="563,80,627,105"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="569,115,542,132,510,146,455,163,401,173,400,168,454,157,508,142,539,127,567,111"/>
 </map>

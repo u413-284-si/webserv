@@ -1,67 +1,35 @@
 var dir_bfccd401955b95cf8c75461437045ac0 =
 [
-    [ "ALogOutputter.hpp", "_a_log_outputter_8hpp.html", [
-      [ "ALogOutputter", "classweblog_1_1_a_log_outputter.html", "classweblog_1_1_a_log_outputter" ]
-    ] ],
-    [ "AutoindexHandler.hpp", "_autoindex_handler_8hpp.html", [
-      [ "AutoindexHandler", "class_autoindex_handler.html", "class_autoindex_handler" ]
-    ] ],
+    [ "ALogOutputter.hpp", "_a_log_outputter_8hpp.html", "_a_log_outputter_8hpp" ],
+    [ "AutoindexHandler.hpp", "_autoindex_handler_8hpp.html", "_autoindex_handler_8hpp" ],
     [ "CGIHandler.hpp", "_c_g_i_handler_8hpp.html", "_c_g_i_handler_8hpp" ],
     [ "ConfigFile.hpp", "_config_file_8hpp.html", "_config_file_8hpp" ],
     [ "ConfigFileParser.hpp", "_config_file_parser_8hpp.html", "_config_file_parser_8hpp" ],
     [ "Connection.hpp", "_connection_8hpp.html", "_connection_8hpp" ],
     [ "constants.hpp", "constants_8hpp.html", "constants_8hpp" ],
-    [ "Directory.hpp", "_directory_8hpp.html", [
-      [ "Directory", "class_directory.html", "class_directory" ]
-    ] ],
-    [ "EpollWrapper.hpp", "_epoll_wrapper_8hpp.html", [
-      [ "EpollWrapper", "class_epoll_wrapper.html", "class_epoll_wrapper" ]
-    ] ],
+    [ "Directory.hpp", "_directory_8hpp.html", "_directory_8hpp" ],
+    [ "EpollWrapper.hpp", "_epoll_wrapper_8hpp.html", "_epoll_wrapper_8hpp" ],
     [ "error.hpp", "error_8hpp.html", "error_8hpp" ],
-    [ "FileSystemPolicy.hpp", "_file_system_policy_8hpp.html", [
-      [ "FileSystemPolicy", "class_file_system_policy.html", "class_file_system_policy" ]
-    ] ],
+    [ "FileSystemPolicy.hpp", "_file_system_policy_8hpp.html", "_file_system_policy_8hpp" ],
     [ "HTTPRequest.hpp", "_h_t_t_p_request_8hpp.html", "_h_t_t_p_request_8hpp" ],
     [ "Log.hpp", "_log_8hpp.html", "_log_8hpp" ],
     [ "LogData.hpp", "_log_data_8hpp.html", "_log_data_8hpp" ],
-    [ "Logger.hpp", "_logger_8hpp.html", [
-      [ "Logger", "classweblog_1_1_logger.html", "classweblog_1_1_logger" ]
-    ] ],
-    [ "LogOutputterConsole.hpp", "_log_outputter_console_8hpp.html", [
-      [ "LogOutputterConsole", "classweblog_1_1_log_outputter_console.html", "classweblog_1_1_log_outputter_console" ]
-    ] ],
-    [ "LogOutputterFile.hpp", "_log_outputter_file_8hpp.html", [
-      [ "LogOutputterFile", "classweblog_1_1_log_outputter_file.html", "classweblog_1_1_log_outputter_file" ]
-    ] ],
+    [ "Logger.hpp", "_logger_8hpp.html", "_logger_8hpp" ],
+    [ "LogOutputterConsole.hpp", "_log_outputter_console_8hpp.html", "_log_outputter_console_8hpp" ],
+    [ "LogOutputterFile.hpp", "_log_outputter_file_8hpp.html", "_log_outputter_file_8hpp" ],
     [ "Method.hpp", "_method_8hpp.html", "_method_8hpp" ],
-    [ "MockEpollWrapper.hpp", "_mock_epoll_wrapper_8hpp.html", [
-      [ "MockEpollWrapper", "class_mock_epoll_wrapper.html", "class_mock_epoll_wrapper" ]
-    ] ],
-    [ "MockFileSystemPolicy.hpp", "_mock_file_system_policy_8hpp.html", [
-      [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", "class_mock_file_system_policy" ]
-    ] ],
-    [ "MockProcessOps.hpp", "_mock_process_ops_8hpp.html", [
-      [ "MockProcessOps", "class_mock_process_ops.html", "class_mock_process_ops" ]
-    ] ],
-    [ "MockSocketPolicy.hpp", "_mock_socket_policy_8hpp.html", [
-      [ "MockSocketPolicy", "class_mock_socket_policy.html", "class_mock_socket_policy" ]
-    ] ],
-    [ "ProcessOps.hpp", "_process_ops_8hpp.html", [
-      [ "ProcessOps", "class_process_ops.html", "class_process_ops" ]
-    ] ],
-    [ "RequestParser.hpp", "_request_parser_8hpp.html", [
-      [ "RequestParser", "class_request_parser.html", "class_request_parser" ]
-    ] ],
+    [ "MockEpollWrapper.hpp", "_mock_epoll_wrapper_8hpp.html", "_mock_epoll_wrapper_8hpp" ],
+    [ "MockFileSystemPolicy.hpp", "_mock_file_system_policy_8hpp.html", "_mock_file_system_policy_8hpp" ],
+    [ "MockProcessOps.hpp", "_mock_process_ops_8hpp.html", "_mock_process_ops_8hpp" ],
+    [ "MockSocketPolicy.hpp", "_mock_socket_policy_8hpp.html", "_mock_socket_policy_8hpp" ],
+    [ "ProcessOps.hpp", "_process_ops_8hpp.html", "_process_ops_8hpp" ],
+    [ "RequestParser.hpp", "_request_parser_8hpp.html", "_request_parser_8hpp" ],
     [ "ResponseBodyHandler.hpp", "_response_body_handler_8hpp.html", "_response_body_handler_8hpp" ],
-    [ "ResponseBuilder.hpp", "_response_builder_8hpp.html", [
-      [ "ResponseBuilder", "class_response_builder.html", "class_response_builder" ]
-    ] ],
+    [ "ResponseBuilder.hpp", "_response_builder_8hpp.html", "_response_builder_8hpp" ],
     [ "Server.hpp", "_server_8hpp.html", "_server_8hpp" ],
     [ "signalHandler.hpp", "signal_handler_8hpp.html", "signal_handler_8hpp" ],
     [ "Socket.hpp", "_socket_8hpp.html", "_socket_8hpp" ],
-    [ "SocketPolicy.hpp", "_socket_policy_8hpp.html", [
-      [ "SocketPolicy", "class_socket_policy.html", "class_socket_policy" ]
-    ] ],
+    [ "SocketPolicy.hpp", "_socket_policy_8hpp.html", "_socket_policy_8hpp" ],
     [ "StatusCode.hpp", "_status_code_8hpp.html", "_status_code_8hpp" ],
     [ "TargetResourceHandler.hpp", "_target_resource_handler_8hpp.html", "_target_resource_handler_8hpp" ],
     [ "utilities.hpp", "utilities_8hpp.html", "utilities_8hpp" ]

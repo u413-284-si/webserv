@@ -1,8 +1,13 @@
 <map id="TEST_F" name="TEST_F">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,75,83"/>
-<area shape="rect" id="node2" href="$_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf" title="Iterates through all connections and checks if any have timed out." alt="" coords="123,56,257,83"/>
-<area shape="rect" id="node3" href="$class_server.html#af8184a299847cca0789696048893bc48" title="Const Getter for client timeout." alt="" coords="305,5,491,32"/>
-<area shape="rect" id="node4" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="311,56,485,83"/>
-<area shape="rect" id="node5" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="321,107,475,133"/>
-<area shape="rect" id="node6" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="539,107,737,133"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,75,80"/>
+<area shape="rect" id="Node000002" href="$_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf" title="Iterates through all connections and checks if any have timed out." alt="" coords="123,55,257,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,65,109,65,109,70,75,70"/>
+<area shape="rect" id="Node000003" href="$class_server.html#af8184a299847cca0789696048893bc48" title="Const Getter for client timeout." alt="" coords="305,5,491,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="244,52,330,31,331,37,245,57"/>
+<area shape="rect" id="Node000004" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="311,55,485,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="257,65,298,65,298,70,257,70"/>
+<area shape="rect" id="Node000005" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="321,104,475,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="245,77,331,98,330,103,244,83"/>
+<area shape="rect" id="Node000006" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="539,104,737,129"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="476,114,524,114,524,119,476,119"/>
 </map>

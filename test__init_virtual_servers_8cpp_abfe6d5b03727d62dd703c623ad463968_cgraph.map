@@ -1,16 +1,30 @@
 <map id="TEST_F" name="TEST_F">
-<area shape="rect" id="node1" title=" " alt="" coords="5,189,75,215"/>
-<area shape="rect" id="node2" href="$_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a" title="Initialize virtual servers." alt="" coords="123,189,257,215"/>
-<area shape="rect" id="node3" href="$_server_8cpp.html#aa6ca6a0179cbb661c05aa6b2758f5389" title="Creates a new virtual server and registers it with the server object." alt="" coords="305,130,453,157"/>
-<area shape="rect" id="node13" href="$class_server.html#a878b0cc2f9bc228dd12b250d95d61a75" title="Const Getter for virtual servers." alt="" coords="516,239,701,266"/>
-<area shape="rect" id="node14" href="$_server_8cpp.html#a4f6456b9a16154a6d320ae8b370285d6" title="Check for duplicate virtual servers." alt="" coords="311,239,448,266"/>
-<area shape="rect" id="node4" href="$class_server.html#a4e98a13498a791a2f3639e67e5b849e0" title="Wrapper function to SocketPolicy::createListeningSocket." alt="" coords="501,17,716,43"/>
-<area shape="rect" id="node6" href="$class_server.html#aae8cc5a8fc07a6ce97d468d94cd08a6e" title="Register a virtual server." alt="" coords="505,71,712,98"/>
-<area shape="rect" id="node8" href="$class_server.html#abf1dc68ec7f88650ad80e93f56e14e5c" title="Wrapper function to SocketPolicy::resolveListeningAddresses." alt="" coords="519,123,698,164"/>
-<area shape="rect" id="node10" href="$class_server.html#ae4900f55d072ebbe26a92c14b17de396" title="Wrapper function to SocketPolicy::retrieveSocketInfo." alt="" coords="513,189,704,215"/>
-<area shape="rect" id="node5" href="$class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd" title="Create a listening socket." alt="" coords="774,5,985,47"/>
-<area shape="rect" id="node7" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="790,71,969,98"/>
-<area shape="rect" id="node9" href="$class_socket_policy.html#a5dc6880ff55223d8ecee64a414d1f652" title="Resolves the passed host and port to a list of addresses suitable for listening." alt="" coords="770,123,989,164"/>
-<area shape="rect" id="node11" href="$class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information." alt="" coords="764,189,995,215"/>
-<area shape="rect" id="node12" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1043,189,1179,215"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,183,75,209"/>
+<area shape="rect" id="Node000002" href="$_server_8cpp.html#a35359f61d42dbd6561a07c12009ca45a" title="Initialize virtual servers." alt="" coords="123,183,257,209"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,193,109,193,109,199,75,199"/>
+<area shape="rect" id="Node000003" href="$_server_8cpp.html#aa6ca6a0179cbb661c05aa6b2758f5389" title="Creates a new virtual server and registers it with the server object." alt="" coords="305,127,453,153"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="233,181,321,154,323,159,234,186"/>
+<area shape="rect" id="Node000013" href="$class_server.html#a878b0cc2f9bc228dd12b250d95d61a75" title="Const Getter for virtual servers." alt="" coords="516,234,701,259"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="258,199,454,220,518,229,517,234,453,225,257,204"/>
+<area shape="rect" id="Node000014" href="$_server_8cpp.html#a4f6456b9a16154a6d320ae8b370285d6" title="Check for duplicate virtual servers." alt="" coords="311,234,448,259"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="239,206,319,228,317,233,238,211"/>
+<area shape="rect" id="Node000004" href="$class_server.html#a4e98a13498a791a2f3639e67e5b849e0" title="Wrapper function to SocketPolicy::createListeningSocket." alt="" coords="501,17,716,42"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="394,125,440,90,500,55,531,43,533,48,502,60,443,95,397,129"/>
+<area shape="rect" id="Node000006" href="$class_server.html#aae8cc5a8fc07a6ce97d468d94cd08a6e" title="Register a virtual server." alt="" coords="505,70,712,95"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="427,125,501,105,539,96,540,101,502,111,428,130"/>
+<area shape="rect" id="Node000008" href="$class_server.html#abf1dc68ec7f88650ad80e93f56e14e5c" title="Wrapper function to SocketPolicy::resolveListeningAddresses." alt="" coords="519,120,698,160"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="454,137,505,137,505,143,454,143"/>
+<area shape="rect" id="Node000010" href="$class_server.html#ae4900f55d072ebbe26a92c14b17de396" title="Wrapper function to SocketPolicy::retrieveSocketInfo." alt="" coords="513,185,704,210"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="428,150,502,169,540,179,539,184,501,175,427,155"/>
+<area shape="rect" id="Node000005" href="$class_socket_policy.html#a39e0eea05ab4986261bff0fe9d5497bd" title="Create a listening socket." alt="" coords="774,5,985,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="716,25,760,24,760,30,716,30"/>
+<area shape="rect" id="Node000007" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="790,70,969,95"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="712,80,776,80,776,85,712,85"/>
+<area shape="rect" id="Node000009" href="$class_socket_policy.html#a5dc6880ff55223d8ecee64a414d1f652" title="Resolves the passed host and port to a list of addresses suitable for listening." alt="" coords="770,120,989,160"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="698,137,756,137,756,143,698,143"/>
+<area shape="rect" id="Node000011" href="$class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information." alt="" coords="764,185,995,210"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="704,195,750,195,750,200,704,200"/>
+<area shape="rect" id="Node000012" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1043,185,1179,210"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="995,195,1029,195,1029,200,995,200"/>
+<area shape="poly" id="edge14_Node000014_Node000013" title=" " alt="" coords="448,244,502,244,502,249,448,249"/>
 </map>

@@ -18,7 +18,7 @@ var class_server =
     [ "removeCGIFileDescriptor", "class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a", null ],
     [ "setClientTimeout", "class_server.html#a9dc90838b48fae329562928cdfd685ca", null ],
     [ "waitForEvents", "class_server.html#acbcbebe2c30446acc9a90f40f9986b62", null ],
-    [ "eventsBegin", "class_server.html#a1768b6e65ed7b3205141698ca459ffd8", null ],
+    [ "eventsBegin", "class_server.html#a048d4512afec0390f18868b9669c9f48", null ],
     [ "addEvent", "class_server.html#ae02283a176e4c6ffc9ff0efaf00074cf", null ],
     [ "modifyEvent", "class_server.html#afab1a4ec9e524b0dae8f60080642e7fe", null ],
     [ "removeEvent", "class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1", null ],

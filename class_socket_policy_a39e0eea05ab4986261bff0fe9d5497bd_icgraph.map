@@ -1,9 +1,37 @@
 <map id="SocketPolicy::createListeningSocket" name="SocketPolicy::createListeningSocket">
-<area shape="rect" id="node1" title="Create a listening socket." alt="" coords="764,49,975,90"/>
-<area shape="rect" id="node2" href="$class_server.html#a4e98a13498a791a2f3639e67e5b849e0" title="Wrapper function to SocketPolicy::createListeningSocket." alt="" coords="501,56,716,83"/>
-<area shape="rect" id="node3" href="$_server_8hpp.html#aa6ca6a0179cbb661c05aa6b2758f5389" title="Creates a new virtual server and registers it with the server object." alt="" coords="305,56,453,83"/>
-<area shape="rect" id="node4" href="$_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a" title="Initialize virtual servers." alt="" coords="123,31,257,57"/>
-<area shape="rect" id="node7" href="$test__create_virtual_server_8cpp.html#a0dab7ae2d51f771c7d651de64d6fd66a" title=" " alt="" coords="155,81,225,108"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="13,5,67,32"/>
-<area shape="rect" id="node6" href="$test___config_file_parser_8cpp.html#acdf80c4eac12c31af201f6f13f46dfef" title=" " alt="" coords="5,56,75,83"/>
+<area shape="rect" id="Node000001" title="Create a listening socket." alt="" coords="764,318,975,358"/>
+<area shape="rect" id="Node000002" href="$class_server.html#a4e98a13498a791a2f3639e67e5b849e0" title="Wrapper function to SocketPolicy::createListeningSocket." alt="" coords="501,325,716,351"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="750,341,716,341,716,335,750,335"/>
+<area shape="rect" id="Node000003" href="$_server_8cpp.html#aa6ca6a0179cbb661c05aa6b2758f5389" title="Creates a new virtual server and registers it with the server object." alt="" coords="305,325,453,351"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="488,341,454,341,454,335,488,335"/>
+<area shape="rect" id="Node000004" href="$_server_8cpp.html#a35359f61d42dbd6561a07c12009ca45a" title="Initialize virtual servers." alt="" coords="123,128,257,153"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="364,314,323,241,292,201,256,167,236,156,239,151,259,163,296,198,327,239,369,312"/>
+<area shape="rect" id="Node000011" href="$test__create_virtual_server_8cpp.html#a63b60c6088ac03f74dfdfe9f7c75ea9e" title=" " alt="" coords="155,177,225,203"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="358,316,315,266,287,239,256,216,224,201,226,197,259,212,290,235,319,262,362,313"/>
+<area shape="rect" id="Node000012" href="$test__create_virtual_server_8cpp.html#ad57534041a7dd7922496193f16b8abbb" title=" " alt="" coords="155,227,225,252"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="347,320,305,292,256,266,224,252,226,248,258,261,307,288,350,315"/>
+<area shape="rect" id="Node000013" href="$test__create_virtual_server_8cpp.html#a68e87c65c2811c43ab1eaa2b05271881" title=" " alt="" coords="155,276,225,301"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="316,324,224,300,226,295,317,319"/>
+<area shape="rect" id="Node000014" href="$test__create_virtual_server_8cpp.html#ac97e9c5d05c2fe14f3ce1ef3e6ab5586" title=" " alt="" coords="155,325,225,351"/>
+<area shape="poly" id="edge13_Node000003_Node000014" title=" " alt="" coords="292,341,225,341,225,335,292,335"/>
+<area shape="rect" id="Node000015" href="$test__create_virtual_server_8cpp.html#acb2b2d06ec7e54f0a1321f3b1b6fef64" title=" " alt="" coords="155,375,225,400"/>
+<area shape="poly" id="edge14_Node000003_Node000015" title=" " alt="" coords="317,357,226,381,224,376,316,352"/>
+<area shape="rect" id="Node000016" href="$test__create_virtual_server_8cpp.html#addaf9539812fea0adffb5a3881dbf1d6" title=" " alt="" coords="155,424,225,449"/>
+<area shape="poly" id="edge15_Node000003_Node000016" title=" " alt="" coords="349,361,259,414,226,428,224,423,256,409,347,356"/>
+<area shape="rect" id="Node000017" href="$test__create_virtual_server_8cpp.html#a2743f6a457a97451e9a4d5dec394c64b" title=" " alt="" coords="155,473,225,499"/>
+<area shape="poly" id="edge16_Node000003_Node000017" title=" " alt="" coords="362,363,319,414,290,441,259,464,226,479,224,475,256,460,287,437,315,410,358,360"/>
+<area shape="rect" id="Node000018" href="$test__create_virtual_server_8cpp.html#a0dab7ae2d51f771c7d651de64d6fd66a" title=" " alt="" coords="155,523,225,548"/>
+<area shape="poly" id="edge17_Node000003_Node000018" title=" " alt="" coords="369,364,327,437,296,478,259,514,226,530,224,525,256,509,292,475,323,435,364,362"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="13,5,67,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="163,121,73,44,58,33,61,29,76,40,166,117"/>
+<area shape="rect" id="Node000006" href="$test__init_virtual_servers_8cpp.html#a898cd8e5a6bc1ea3ad534ebccca37541" title=" " alt="" coords="5,55,75,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="150,124,66,83,68,78,152,119"/>
+<area shape="rect" id="Node000007" href="$test__init_virtual_servers_8cpp.html#abfe6d5b03727d62dd703c623ad463968" title=" " alt="" coords="5,104,75,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="109,130,74,125,75,119,110,125"/>
+<area shape="rect" id="Node000008" href="$test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790" title=" " alt="" coords="5,153,75,179"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="110,157,75,163,74,158,109,152"/>
+<area shape="rect" id="Node000009" href="$test___config_file_parser_8cpp.html#acdf80c4eac12c31af201f6f13f46dfef" title=" " alt="" coords="5,203,75,228"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="138,161,124,167,61,205,58,200,121,162,136,156"/>
+<area shape="rect" id="Node000010" href="$test___config_file_parser_8cpp.html#a7a877316d050e1cb0b37399e230a92eb" title=" " alt="" coords="5,252,75,277"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="131,162,124,167,108,184,100,201,91,220,77,241,62,254,59,250,73,238,87,218,95,199,104,181,121,163,128,158"/>
 </map>

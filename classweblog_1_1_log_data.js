@@ -7,5 +7,5 @@ var classweblog_1_1_log_data =
     [ "getLine", "classweblog_1_1_log_data.html#a1b85f949a0947b0636a6cff9cd04fd88", null ],
     [ "getFunction", "classweblog_1_1_log_data.html#ab1e3d7de2081aa7f8998314ea03c3fbc", null ],
     [ "getFile", "classweblog_1_1_log_data.html#a4c09579fe7c971807f48775a269fd0a8", null ],
-    [ "operator<<", "classweblog_1_1_log_data.html#a81a2a62c520270bb648ccc803776d45a", null ]
+    [ "operator<<", "classweblog_1_1_log_data.html#a3994eb6299acdabb0ce9b043ac39afc5", null ]
 ];

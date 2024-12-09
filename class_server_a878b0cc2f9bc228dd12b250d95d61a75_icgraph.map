@@ -1,12 +1,45 @@
 <map id="Server::getVirtualServers" name="Server::getVirtualServers">
-<area shape="rect" id="node1" title="Const Getter for virtual servers." alt="" coords="609,107,795,133"/>
-<area shape="rect" id="node2" href="$_server_8hpp.html#a4211c4d6b958979b39b3dfc8148c801a" title="Accepts new connections or handles existing ones." alt="" coords="441,5,544,32"/>
-<area shape="rect" id="node5" href="$_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="245,56,372,83"/>
-<area shape="rect" id="node7" href="$_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a" title="Initialize virtual servers." alt="" coords="241,157,376,184"/>
-<area shape="rect" id="node8" href="$test___config_file_parser_8cpp.html#acdf80c4eac12c31af201f6f13f46dfef" title=" " alt="" coords="116,107,185,133"/>
-<area shape="rect" id="node9" href="$_server_8hpp.html#a4f6456b9a16154a6d320ae8b370285d6" title="Check for duplicate virtual servers." alt="" coords="424,208,561,235"/>
-<area shape="rect" id="node3" href="$_server_8hpp.html#ab66b27c2186daacb15a6b13dd43be31b" title="Runs the main event loop with a server object." alt="" coords="108,5,193,32"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,81,60,108"/>
-<area shape="rect" id="node6" href="$test__shutdown_server_8cpp.html#ae0ede4f52ef6c742c532c14b92b6179a" title=" " alt="" coords="116,56,185,83"/>
-<area shape="rect" id="node10" href="$test__is_duplicate_server_8cpp.html#aea2b55f75977ede523fc795d572b8fc4" title=" " alt="" coords="274,208,343,235"/>
+<area shape="rect" id="Node000001" title="Const Getter for virtual servers." alt="" coords="609,227,795,252"/>
+<area shape="rect" id="Node000002" href="$_server_8cpp.html#af9f4479a6262c17deef89938118d27f4" title="Accepts new connections or handles existing ones." alt="" coords="441,100,544,125"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="671,221,620,185,560,147,522,128,525,123,563,142,623,180,674,216"/>
+<area shape="rect" id="Node000005" href="$_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="245,101,372,127"/>
+<area shape="poly" id="edge22_Node000001_Node000005" title=" " alt="" coords="647,225,349,129,351,124,649,220"/>
+<area shape="rect" id="Node000009" href="$_server_8cpp.html#a35359f61d42dbd6561a07c12009ca45a" title="Initialize virtual servers." alt="" coords="241,303,376,328"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="654,259,562,286,465,303,376,313,376,308,464,297,561,281,653,254"/>
+<area shape="rect" id="Node000013" href="$test___config_file_parser_8cpp.html#acdf80c4eac12c31af201f6f13f46dfef" title=" " alt="" coords="116,203,185,228"/>
+<area shape="poly" id="edge23_Node000001_Node000013" title=" " alt="" coords="595,237,185,219,186,214,595,232"/>
+<area shape="rect" id="Node000014" href="$test___config_file_parser_8cpp.html#a7a877316d050e1cb0b37399e230a92eb" title=" " alt="" coords="116,252,185,277"/>
+<area shape="poly" id="edge24_Node000001_Node000014" title=" " alt="" coords="595,247,186,266,185,260,595,242"/>
+<area shape="rect" id="Node000015" href="$_server_8cpp.html#a4f6456b9a16154a6d320ae8b370285d6" title="Check for duplicate virtual servers." alt="" coords="424,377,561,403"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="673,263,513,379,510,375,670,258"/>
+<area shape="rect" id="Node000003" href="$_server_8cpp.html#ab66b27c2186daacb15a6b13dd43be31b" title="Runs the main event loop with a server object." alt="" coords="108,5,193,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="432,99,193,32,194,27,434,94"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="428,116,372,116,372,111,428,110"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,204,60,229"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,41,110,44,81,85,61,131,39,205,34,203,56,129,77,83,106,40,109,37"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="275,96,192,44,173,33,176,29,195,40,277,92"/>
+<area shape="rect" id="Node000006" href="$test__shutdown_server_8cpp.html#a6462dc91a572c9969b759806ed15590b" title=" " alt="" coords="116,55,185,80"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="251,100,185,80,186,75,252,95"/>
+<area shape="rect" id="Node000007" href="$test__shutdown_server_8cpp.html#a69fea7b0fb329821fdd955271edc65ee" title=" " alt="" coords="116,104,185,129"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="232,118,186,119,186,113,232,113"/>
+<area shape="rect" id="Node000008" href="$test__shutdown_server_8cpp.html#ae0ede4f52ef6c742c532c14b92b6179a" title=" " alt="" coords="116,153,185,179"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="257,134,186,157,185,152,255,129"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="255,336,243,343,229,355,220,368,211,381,195,391,170,400,150,405,129,402,107,391,87,374,71,354,49,309,37,264,32,230,38,229,43,263,54,307,76,352,91,371,109,386,131,397,149,399,169,395,192,386,207,377,216,365,225,352,240,339,253,331"/>
+<area shape="rect" id="Node000010" href="$test__init_virtual_servers_8cpp.html#a898cd8e5a6bc1ea3ad534ebccca37541" title=" " alt="" coords="116,452,185,477"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="251,337,243,343,226,364,218,386,211,409,195,434,174,454,170,450,191,431,206,407,213,384,221,362,239,339,248,332"/>
+<area shape="rect" id="Node000011" href="$test__init_virtual_servers_8cpp.html#abfe6d5b03727d62dd703c623ad463968" title=" " alt="" coords="116,301,185,327"/>
+<area shape="poly" id="edge12_Node000009_Node000011" title=" " alt="" coords="227,317,186,317,186,312,227,312"/>
+<area shape="rect" id="Node000012" href="$test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790" title=" " alt="" coords="116,351,185,376"/>
+<area shape="poly" id="edge13_Node000009_Node000012" title=" " alt="" coords="254,335,186,356,185,350,252,329"/>
+<area shape="poly" id="edge14_Node000009_Node000013" title=" " alt="" coords="275,297,192,243,172,230,175,226,195,238,278,292"/>
+<area shape="poly" id="edge15_Node000009_Node000014" title=" " alt="" coords="254,301,185,278,186,273,256,296"/>
+<area shape="poly" id="edge17_Node000015_Node000009" title=" " alt="" coords="449,374,375,343,343,331,345,326,377,338,451,369"/>
+<area shape="rect" id="Node000016" href="$test__is_duplicate_server_8cpp.html#ac504b201e12dd5c32006b29923e13a7d" title=" " alt="" coords="274,500,343,525"/>
+<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="471,415,430,453,377,491,345,505,343,501,375,486,426,449,468,411"/>
+<area shape="rect" id="Node000017" href="$test__is_duplicate_server_8cpp.html#a8b33f3e96bbbf39b0d99d4b1c1c8cca0" title=" " alt="" coords="274,352,343,377"/>
+<area shape="poly" id="edge19_Node000015_Node000017" title=" " alt="" coords="410,381,343,372,344,367,411,376"/>
+<area shape="rect" id="Node000018" href="$test__is_duplicate_server_8cpp.html#aea2b55f75977ede523fc795d572b8fc4" title=" " alt="" coords="274,401,343,427"/>
+<area shape="poly" id="edge20_Node000015_Node000018" title=" " alt="" coords="410,403,344,412,343,407,410,398"/>
+<area shape="rect" id="Node000019" href="$test__is_duplicate_server_8cpp.html#a96cad152807546b7320b00dfb44044a2" title=" " alt="" coords="274,451,343,476"/>
+<area shape="poly" id="edge21_Node000015_Node000019" title=" " alt="" coords="451,411,377,442,344,454,342,449,375,437,449,406"/>
 </map>

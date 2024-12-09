@@ -1,12 +1,22 @@
 <map id="acceptConnections" name="acceptConnections">
-<area shape="rect" id="node1" title="Accept new connections." alt="" coords="5,103,151,130"/>
-<area shape="rect" id="node2" href="$class_server.html#ad8823ad2d9c9a94cfafb40e8e0653865" title="Wrapper function to SocketPolicy::acceptSingleConnection()." alt="" coords="201,18,429,45"/>
-<area shape="rect" id="node4" href="$class_server.html#ac145e9f668db85b10a66829bd2677746" title="Register a connection." alt="" coords="217,74,412,101"/>
-<area shape="rect" id="node6" href="$class_server.html#a65c2f3dc363bdb70a98895686826e5e8" title="Wrapper function to SocketPolicy::retrieveBoundSocketInfo." alt="" coords="199,129,431,155"/>
-<area shape="rect" id="node10" href="$class_server.html#ae4900f55d072ebbe26a92c14b17de396" title="Wrapper function to SocketPolicy::retrieveSocketInfo." alt="" coords="485,189,675,215"/>
-<area shape="rect" id="node3" href="$class_socket_policy.html#a63228ebffc41e3739677715bcd43a477" title="Accept a connection on a socket." alt="" coords="483,5,677,47"/>
-<area shape="rect" id="node5" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="491,71,669,98"/>
-<area shape="rect" id="node7" href="$class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33" title="Retrieves info of socket to which sockfd is bound." alt="" coords="479,123,681,164"/>
-<area shape="rect" id="node8" href="$class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information." alt="" coords="729,159,960,186"/>
-<area shape="rect" id="node9" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1008,159,1144,186"/>
+<area shape="rect" id="Node000001" title="Accept new connections." alt="" coords="5,102,151,127"/>
+<area shape="rect" id="Node000002" href="$class_server.html#ad8823ad2d9c9a94cfafb40e8e0653865" title="Wrapper function to SocketPolicy::acceptSingleConnection()." alt="" coords="201,18,429,43"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,99,146,78,198,57,241,44,243,49,200,63,149,83,105,104"/>
+<area shape="rect" id="Node000004" href="$class_server.html#ac145e9f668db85b10a66829bd2677746" title="Register a connection." alt="" coords="217,73,412,98"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,103,203,96,204,102,151,108"/>
+<area shape="rect" id="Node000006" href="$class_server.html#a65c2f3dc363bdb70a98895686826e5e8" title="Wrapper function to SocketPolicy::retrieveBoundSocketInfo." alt="" coords="199,126,431,151"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="151,119,185,123,185,128,151,125"/>
+<area shape="rect" id="Node000010" href="$class_server.html#ae4900f55d072ebbe26a92c14b17de396" title="Wrapper function to SocketPolicy::retrieveSocketInfo." alt="" coords="485,185,675,210"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="105,125,148,144,199,161,269,175,340,185,471,194,471,199,340,190,268,181,198,167,146,149,103,130"/>
+<area shape="rect" id="Node000003" href="$class_socket_policy.html#a63228ebffc41e3739677715bcd43a477" title="Accept a connection on a socket." alt="" coords="483,5,677,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,26,469,25,469,30,429,31"/>
+<area shape="rect" id="Node000005" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="491,70,669,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="412,82,477,81,477,86,412,87"/>
+<area shape="rect" id="Node000007" href="$class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33" title="Retrieves info of socket to which sockfd is bound." alt="" coords="479,120,681,160"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="431,137,465,137,465,142,431,142"/>
+<area shape="rect" id="Node000008" href="$class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98" title="Retrieve socket information." alt="" coords="729,157,960,182"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="682,149,717,153,716,158,681,154"/>
+<area shape="rect" id="Node000009" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="1008,157,1144,182"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="960,167,994,167,994,172,960,172"/>
+<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="675,185,715,180,716,186,676,190"/>
 </map>

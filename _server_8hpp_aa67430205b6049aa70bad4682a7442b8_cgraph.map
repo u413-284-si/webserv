@@ -1,12 +1,21 @@
 <map id="connectionSendToCGI" name="connectionSendToCGI">
-<area shape="rect" id="node1" title="Sends the request body to the CGI process." alt="" coords="5,107,168,133"/>
-<area shape="rect" id="node2" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="256,31,411,57"/>
-<area shape="rect" id="node4" href="$class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a" title="Removes a CGI file descriptor from the server." alt="" coords="216,107,451,133"/>
-<area shape="rect" id="node9" href="$class_server.html#a8fec2a00e7d106bf35f19d2d7f61fd0b" title="Wrapper function to ProcessOps::writeProcess." alt="" coords="256,183,411,209"/>
-<area shape="rect" id="node3" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="499,5,697,32"/>
-<area shape="rect" id="node5" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="531,56,665,83"/>
-<area shape="rect" id="node6" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="500,107,696,133"/>
-<area shape="rect" id="node7" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="519,157,677,184"/>
-<area shape="rect" id="node8" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="745,157,949,184"/>
-<area shape="rect" id="node10" href="$class_process_ops.html#a2f7d6815890c3dbc375b70ae4f5348b9" title="Writes data from a buffer to a file descriptor." alt="" coords="504,208,692,235"/>
+<area shape="rect" id="Node000001" title="Sends the request body to the CGI process." alt="" coords="5,104,168,129"/>
+<area shape="rect" id="Node000002" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="256,31,411,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,101,276,57,277,63,131,106"/>
+<area shape="rect" id="Node000004" href="$class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a" title="Removes a CGI file descriptor from the server." alt="" coords="216,104,451,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="168,114,202,114,202,119,168,119"/>
+<area shape="rect" id="Node000009" href="$class_server.html#a8fec2a00e7d106bf35f19d2d7f61fd0b" title="Wrapper function to ProcessOps::writeProcess." alt="" coords="256,177,411,203"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="131,127,277,171,276,176,130,132"/>
+<area shape="rect" id="Node000003" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="499,5,697,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="411,33,485,26,485,31,411,39"/>
+<area shape="rect" id="Node000005" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="531,55,665,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="402,101,517,80,518,85,403,107"/>
+<area shape="rect" id="Node000006" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="500,104,696,129"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="451,114,486,114,486,119,451,119"/>
+<area shape="rect" id="Node000007" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="519,153,677,179"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="403,127,516,148,515,153,402,132"/>
+<area shape="rect" id="Node000008" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="745,153,949,179"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="677,163,731,163,731,169,677,169"/>
+<area shape="rect" id="Node000010" href="$class_process_ops.html#a2f7d6815890c3dbc375b70ae4f5348b9" title="Writes data from a buffer to a file descriptor." alt="" coords="504,203,692,228"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="411,195,491,202,490,208,411,200"/>
 </map>
