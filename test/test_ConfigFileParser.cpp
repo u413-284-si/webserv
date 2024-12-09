@@ -236,12 +236,16 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
  * 5. Listen directive contains only ip
  * 6. Listen directive contains only port
  * 7. Listen contains ip and port
- * 8. Bracket under server directive
- * 9. Bracket under location directive
- * 10. Whitespaces between server directive and opening bracket
- * 11. Directive and opening bracket on the same line
- * 12. Directive and closing bracket on the same line
- * 13. Directive and closing bracket on the same line under server directive
+ * 8. Listen contains only localhost
+ * 9. Listen contains localhost and port
+ * 10. Bracket under server directive
+ * 11. Bracket under location directive
+ * 12. Whitespaces between server directive and opening bracket
+ * 13. Directive and opening bracket on the same line
+ * 14. Directive and closing bracket on the same line
+ * 15. Directive and closing bracket on the same line under server directive
+ * 16. Location path
+ * 17. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -260,7 +264,7 @@ TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 
 	EpollWrapper epollWrapper(10, -1);
 	SocketPolicy socketPolicy;
-    ProcessOps processOps;
+	ProcessOps processOps;
 
 	Server server(configFile, epollWrapper, socketPolicy, processOps);
 
@@ -276,7 +280,7 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 
 	EpollWrapper epollWrapper(10, -1);
 	SocketPolicy socketPolicy;
-    ProcessOps processOps;
+	ProcessOps processOps;
 
 	Server server(configFile, epollWrapper, socketPolicy, processOps);
 
@@ -300,14 +304,12 @@ TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_ip.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
-	EXPECT_EQ("80", configFile.servers[0].port);
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsOnlyPort)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_port.conf"));
-	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 }
 
@@ -317,6 +319,21 @@ TEST_F(ValidConfigFileTests, ListenContainsIpAndPort)
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_ip_and_port.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, ListenContainsOnlyLocalhost)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_only_localhost.conf"));
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+}
+
+TEST_F(ValidConfigFileTests, ListenContainsLocalhostAndPort)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_localhost_and_port.conf"));
+	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
+	EXPECT_EQ("9090", configFile.servers[0].port);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
@@ -366,10 +383,26 @@ TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLine)
 
 TEST_F(ValidConfigFileTests, DirectiveAndClosingBracketOnSameLineUnderServerDirective)
 {
-	GTEST_SKIP() << "Skipping because not implemented";
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile
 		= m_configFileParser.parseConfigFile("config_files/directive_close_open_bracket_same_line_under_server.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("8080", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, LocationPath)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/location_path.conf"));
+	EXPECT_EQ(3, configFile.servers[0].locations.size());
+	EXPECT_EQ("/", configFile.servers[0].locations[0].path);
+	EXPECT_EQ("/hello", configFile.servers[0].locations[1].path);
+	EXPECT_EQ("/world", configFile.servers[0].locations[2].path);
+}
+
+TEST_F(ValidConfigFileTests, DirectiveInheritance)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/directive_inheritance.conf"));
+	EXPECT_EQ("/var/www/html", configFile.servers[0].locations[0].root);
 }

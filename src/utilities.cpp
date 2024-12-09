@@ -168,7 +168,6 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	return "";
 }
 
-
 std::string methodToString(Method method)
 {
 	assert(method >= MethodGet && method <= MethodCount);
@@ -197,7 +196,7 @@ void closeFd(int& fileDescriptor)
 /**
  * @brief Validates whether a given string is a valid IPv4 address.
  *
- * This function checks if the provided string is a valid IPv4 address.
+ * This function checks if the provided string is a valid IPv4 address or equals "localhost".
  * An IPv4 address consists of four decimal numbers, each ranging from 0 to 255,
  * separated by dots (e.g., "192.168.0.1").
  *
@@ -206,6 +205,9 @@ void closeFd(int& fileDescriptor)
  */
 bool isIpAddressValid(const std::string& ipAddress)
 {
+	if (ipAddress == "localhost")
+		return true;
+
 	if (ipAddress.find_first_not_of("0123456789.") != std::string::npos)
 		return false;
 
