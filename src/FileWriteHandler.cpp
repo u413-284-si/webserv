@@ -10,6 +10,21 @@ FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
 {
 }
 
+/**
+ * @brief Executes the file write operation.
+ *
+ * This function writes the given content to the specified file path. If the file already exists,
+ * the content is appended to the file. If the file does not exist, a new file is created with the
+ * given content. The function returns a JSON-formatted body containing details about the operation.
+ *
+ * @param path The file path where the content should be written.
+ * @param content The content to be written to the file.
+ * @return A JSON-formatted string containing the operation result, including the file path, file size,
+ *         last modified time, and status (either "updated" or "created"). If an error occurs, an empty
+ *         string is returned.
+ *
+ * @exception std::runtime_error If an error occurs during the file operation.
+ */
 std::string FileWriteHandler::execute(const std::string& path, const std::string& content)
 {
 	try {
