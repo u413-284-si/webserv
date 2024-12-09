@@ -27,6 +27,7 @@ protected:
  * 8. Root directive has no root path
  * 9. Root directive has multiple root paths
  * 10. Invalid directives outside of server block
+ * 11. Several server names
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -225,6 +226,20 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, SeveralServerNames)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/invalid_server_name_several_server_names.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("More than one server name", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 /**
  * @brief Tests for a valid file
  *
@@ -233,19 +248,21 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
  * 2. File does not contain the http block
  * 3. File does not contain any server block
  * 4. Several directives on one line
- * 5. Listen directive contains only ip
- * 6. Listen directive contains only port
- * 7. Listen contains ip and port
- * 8. Listen contains only localhost
- * 9. Listen contains localhost and port
- * 10. Bracket under server directive
- * 11. Bracket under location directive
- * 12. Whitespaces between server directive and opening bracket
- * 13. Directive and opening bracket on the same line
- * 14. Directive and closing bracket on the same line
- * 15. Directive and closing bracket on the same line under server directive
- * 16. Location path
- * 17. Inheritance of the server directives root, max_body_size and error_page to location
+ * 5. Server name contains one name
+ * 6. Server name contains empty string
+ * 7. Listen directive contains only ip
+ * 8. Listen directive contains only port
+ * 9. Listen contains ip and port
+ * 10. Listen contains only localhost
+ * 11. Listen contains localhost and port
+ * 12. Bracket under server directive
+ * 13. Bracket under location directive
+ * 14. Whitespaces between server directive and opening bracket
+ * 15. Directive and opening bracket on the same line
+ * 16. Directive and closing bracket on the same line
+ * 17. Directive and closing bracket on the same line under server directive
+ * 18. Location path
+ * 19. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -297,6 +314,20 @@ TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
+}
+
+TEST_F(ValidConfigFileTests, ServerNameContainsOneName)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/server_name_one_name.conf"));
+	EXPECT_EQ("greatestWebsite.com", configFile.servers[0].serverName);
+}
+
+TEST_F(ValidConfigFileTests, ServerNameContainsEmptyString)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/server_name_empty_server_name.conf"));
+	EXPECT_EQ("", configFile.servers[0].serverName);
 }
 
 TEST_F(ValidConfigFileTests, ListenContainsOnlyIp)
