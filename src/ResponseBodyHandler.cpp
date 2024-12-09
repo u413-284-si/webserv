@@ -64,6 +64,7 @@ void ResponseBodyHandler::execute()
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		} catch (std::exception& e) {
+			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
@@ -128,6 +129,7 @@ void ResponseBodyHandler::handleErrorBody()
 		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		m_request.httpStatus = oldStatus;
 	} catch (std::exception& e) {
+		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusInternalServerError;
 		setDefaultErrorPage();
 	}
