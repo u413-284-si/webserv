@@ -213,7 +213,6 @@ std::string getDefaultErrorPage(statusCode statusCode)
 
 	switch (statusCode) {
 	case StatusOK:
-		return ("");
 	case StatusCreated:
 		return ("");
 	case StatusMovedPermanently:
