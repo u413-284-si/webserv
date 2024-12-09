@@ -112,11 +112,9 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 	// Location
 	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
-	if (iter != request.headers.end() && request.httpStatus != StatusCreated) {
+	if (iter != request.headers.end()) {
 		m_responseHeader << "Location: " << iter->second << "\r\n";
 	}
-	if (request.httpStatus == StatusCreated)
-		m_responseHeader << "Location: " << request.uri.path << "\r\n";
 	// Connection
 	if (request.shallCloseConnection)
 		m_responseHeader << "Connection: close\r\n";

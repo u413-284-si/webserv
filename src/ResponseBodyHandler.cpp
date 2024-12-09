@@ -66,6 +66,7 @@ void ResponseBodyHandler::execute()
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body);
 		if (m_responseBody.find("created") != std::string::npos) {
 			m_request.httpStatus = StatusCreated;
+			m_request.headers["location"] = m_request.uri.path;
 		}
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
