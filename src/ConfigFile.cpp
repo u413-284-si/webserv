@@ -90,18 +90,18 @@ ConfigFile createDummyConfig()
     location6.allowedMethods[MethodGet] = true;
     location6.allowedMethods[MethodPost] = true;
 
-	Location location7;
-	location7.path = "/redirect";
-	location7.returns = std::make_pair(StatusMovedPermanently, "/secret");
-
 	Location location8;
-	location8.path = "/strange";
-	location8.returns = std::make_pair(StatusRequestHeaderFieldsTooLarge, "Return Message");
+	location8.path = "/redirect";
+	location8.returns = std::make_pair(StatusMovedPermanently, "/secret");
 
 	Location location9;
-	location9.path = "/another";
-	location9.returns = std::make_pair(StatusForbidden, "");
-	location9.errorPage[StatusForbidden] = "/strange";
+	location9.path = "/strange";
+	location9.returns = std::make_pair(StatusRequestHeaderFieldsTooLarge, "Return Message");
+
+	Location location10;
+	location10.path = "/another";
+	location10.returns = std::make_pair(StatusForbidden, "");
+	location10.errorPage[StatusForbidden] = "/strange";
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.push_back(location1);
@@ -109,9 +109,9 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location3);
 	serverConfig8080.locations.push_back(location4);
 	serverConfig8080.locations.push_back(location5);
-	serverConfig8080.locations.push_back(location7);
 	serverConfig8080.locations.push_back(location8);
 	serverConfig8080.locations.push_back(location9);
+	serverConfig8080.locations.push_back(location10);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
