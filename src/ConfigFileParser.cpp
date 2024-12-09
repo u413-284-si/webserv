@@ -358,7 +358,7 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
  */
 void ConfigFileParser::readLocationBlockPath(void)
 {
-	const size_t startIndex = sizeof("location") - 1; //subtract zero terminator
+	const size_t startIndex = sizeof("location") - 1; // subtract zero terminator
 	std::string pathWithLeadingWhitespaces = m_currentLine.substr(startIndex);
 	std::string pathWithBracketAtEnd = webutils::trimLeadingWhitespaces(pathWithLeadingWhitespaces);
 
@@ -411,6 +411,30 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
 		m_configFile.servers[m_serverIndex].root = rootPath;
 	else if (block == LocationBlock)
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].root = rootPath;
+}
+
+/**
+ * @brief Reads the server name
+ *
+ * The function checks if there is only one server name and reads it if that is the case
+ * If an empty string is provided, the server name will be set to an empty string
+ *
+ * @param value The value of the directive server_name
+ */
+
+void ConfigFileParser::readServerName(const std::string& value)
+{
+	std::string serverName = value.substr(0, value.find(';'));
+
+	serverName = webutils::trimLeadingWhitespaces(serverName);
+	webutils::trimTrailingWhiteSpaces(serverName);
+
+	if (serverName.find_first_of(whitespace) != std::string::npos)
+		throw std::runtime_error("More than one server name");
+	if (serverName == "\"\"")
+		m_configFile.servers[m_serverIndex].serverName = "";
+	else
+		m_configFile.servers[m_serverIndex].serverName = serverName;
 }
 
 /**
@@ -480,10 +504,12 @@ void ConfigFileParser::readSocket(const std::string& value)
  */
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
-	if (directive == "listen") {
+	if (directive == "listen")
 		readSocket(value);
-	} else if (directive == "root")
+	else if (directive == "root")
 		readRootPath(ServerBlock, value);
+	else if (directive == "server_name")
+		readServerName(value);
 }
 
 /**
