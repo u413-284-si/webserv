@@ -989,17 +989,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	server.findTargetResource(connection);
 
-	if (webutils::isRedirectionStatus(connection.m_request.httpStatus)) {
-		const std::pair<std::map<std::string, std::string>::iterator, bool> ret
-			= connection.m_request.headers.insert(std::make_pair("location", connection.m_request.targetResource));
-		if (!ret.second) {
-			LOG_ERROR << "Failed to insert location header";
-			connection.m_request.httpStatus = StatusInternalServerError;
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(clientFd, EPOLLOUT);
-			return;
-		}
-	}
+	if (webutils::isRedirectionStatus(connection.m_request.httpStatus))
+		connection.m_request.headers["location"] = connection.m_request.targetResource;
 
 	if (connection.m_request.hasReturn) {
 		connection.m_status = Connection::BuildResponse;
