@@ -23,7 +23,7 @@ public:
 	std::string cgiExt;
 	std::string cgiPath;
 	bool isAutoindex;
-	unsigned long maxBodySize;
+	size_t maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	bool allowedMethods[MethodCount];
 	std::map<statusCode, std::string> returns;
@@ -38,7 +38,7 @@ public:
 	std::string root;
 	std::string host;
 	std::string port;
-	unsigned long maxBodySize;
+	size_t maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	std::vector<Location> locations;
 };

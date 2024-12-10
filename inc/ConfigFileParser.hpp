@@ -42,7 +42,8 @@ private:
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;
 	std::vector<std::string> m_validLocationDirectives;
-	static const char* const whitespace;
+	static const char* const s_whitespace;
+	static const char* const s_number;
 
 	// Checker functions
 	bool isBracketOpen(void);

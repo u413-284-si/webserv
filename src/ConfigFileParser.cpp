@@ -1,6 +1,7 @@
 #include "ConfigFileParser.hpp"
 
-const char* const ConfigFileParser::whitespace = " \t\n\v\f\r";
+const char* const ConfigFileParser::s_whitespace = " \t\n\v\f\r";
+const char* const ConfigFileParser::s_number = "0123456789";
 
 /**
  * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
@@ -165,7 +166,7 @@ bool ConfigFileParser::isBracketOpen(void)
  */
 bool ConfigFileParser::isSemicolonMissing(const std::string& content) const
 {
-	size_t nonWhitepaceIndex = content.find_last_not_of(whitespace);
+	size_t nonWhitepaceIndex = content.find_last_not_of(s_whitespace);
 	return content[nonWhitepaceIndex] != ';';
 }
 
@@ -402,7 +403,7 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
 	if (rootPath.empty())
 		throw std::runtime_error("'root' directive has no value");
 
-	if (rootPath.find_first_of(whitespace) != std::string::npos)
+	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
 	if (rootPath[rootPath.length() - 1] == '/')
@@ -430,7 +431,7 @@ void ConfigFileParser::readServerName(const std::string& value)
 	serverName = webutils::trimLeadingWhitespaces(serverName);
 	webutils::trimTrailingWhiteSpaces(serverName);
 
-	if (serverName.find_first_of(whitespace) != std::string::npos)
+	if (serverName.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one server name");
 	if (serverName == "\"\"")
 		m_configFile.servers[m_serverIndex].serverName = "";
@@ -528,7 +529,7 @@ void ConfigFileParser::readServerConfigLine(void)
 
 	const std::string value = getValue();
 
-	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
+	if ((value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos))
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 	readServerDirectiveValue(directive, value);
@@ -549,7 +550,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 
 	const std::string value = getValue();
 
-	if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
+	if (value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos)
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 	// TODO: readLocationDirectiveValue(directive, value);
@@ -568,7 +569,7 @@ std::string ConfigFileParser::getDirective() const
 {
 	std::string directive;
 
-	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(whitespace);
+	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);
 	if (firstWhiteSpaceIndex == std::string::npos)
 		directive = m_currentLine;
 	else
@@ -590,7 +591,7 @@ std::string ConfigFileParser::getValue(void) const
 	const size_t semicolonIndex = m_currentLine.find(';');
 	std::string value;
 
-	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(whitespace);
+	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);
 	if (firstWhiteSpaceIndex == std::string::npos)
 		value = m_currentLine.substr(0, semicolonIndex);
 	else
