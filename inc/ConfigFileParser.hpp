@@ -66,6 +66,7 @@ private:
 	void readServerName(const std::string& value);
 	void readSocket(const std::string& value);
 	void readRootPath(Block block, const std::string& value);
+	void readMaxBodySize(const std::string& value);
 	void readLocationBlockPath(void);
 
 	// Helper functions

@@ -496,6 +496,69 @@ void ConfigFileParser::readSocket(const std::string& value)
 }
 
 /**
+ * @brief Reads the max body size including the unit
+ *
+ * The function checks if the value of the directive is valid and reads it if that is the case.
+ *
+ * In general there can be two cases:
+ * 1. The value is solely a number
+ * 2. The value is a number followed by a unit
+ *
+ * At first it will be checked if there is a number as value
+ * If that is the case the function will check if the number is valid and does not contain any other characters
+ *
+ * When the checks for number are passed, the function will check if there is a unit
+ * If that is the case the function will check if the unit is valid and
+ * only consists of one character which is a valid unit
+ *
+ * @param value The value of the directive client_max_body_size
+ */
+void ConfigFileParser::readMaxBodySize(const std::string& value)
+{
+	const size_t bytesPerKiloByte = 1024;
+	const size_t semicolonIndex = value.find(';');
+	std::string maxBodySize = value.substr(0, semicolonIndex);
+
+	const size_t lastNumberIndex = maxBodySize.find_last_of(s_number);
+	if (lastNumberIndex == std::string::npos)
+		throw std::runtime_error("Invalid client_max_body_size value");
+
+	const std::string number = maxBodySize.substr(0, lastNumberIndex + 1);
+	if (number.find_first_not_of(s_number) != std::string::npos)
+		throw std::runtime_error("Invalid client_max_body_size value");
+
+	std::stringstream sstream(number);
+	size_t size = 0;
+	sstream >> size;
+
+	if (lastNumberIndex != maxBodySize.size() - 1) {
+		const std::string letter = maxBodySize.substr(lastNumberIndex + 1);
+		if (letter.length() != 1)
+			throw std::runtime_error("Invalid client_max_body_size unit");
+		const char unit = letter.at(0);
+
+		switch (unit) {
+		case 'k':
+		case 'K':
+			size *= bytesPerKiloByte;
+			break;
+		case 'm':
+		case 'M':
+			size *= bytesPerKiloByte * bytesPerKiloByte;
+			break;
+		case 'g':
+		case 'G':
+			size *= bytesPerKiloByte * bytesPerKiloByte * bytesPerKiloByte;
+			break;
+		default:
+			throw std::runtime_error("Invalid client_max_body_size unit");
+		}
+	}
+
+	m_configFile.servers[m_serverIndex].maxBodySize = size;
+}
+
+/**
  * @brief Reads and checks the value of the directive in the current line of the config file
  *
  * @details This function is called when the directive is valid.
@@ -512,6 +575,8 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 		readRootPath(ServerBlock, value);
 	else if (directive == "server_name")
 		readServerName(value);
+	else if (directive == "client_max_body_size")
+		readMaxBodySize(value);
 }
 
 /**
