@@ -19,15 +19,19 @@ protected:
  * Checks if the following configuration are seen as invalid:
  * 1. File could not be opened (because the path is wrong, such a file does not exist etc.)
  * 2. File is empty
- * 3. File has open brackets (including missing brackets and too many brackets)
+ * 3. File contains open brackets (including missing brackets and too many brackets)
  * 4. File contains invalid directive (including server and location)
  * 5. File contains missing semicolon
  * 6. Listen directive contains invalid ip address
  * 7. Listen directive contains invalid port
- * 8. Root directive has no root path
- * 9. Root directive has multiple root paths
- * 10. Invalid directives outside of server block
- * 11. Several server names
+ * 8. Root directive contains no root path
+ * 9. Root directive contains multiple root paths
+ * 11. Max body size directive contains no number
+ * 12. Max body size directive contains invalid char within number
+ * 13. Max body size directive contains invalid unit char
+ * 14. Max body size directive contains invalid unit lenght
+ * 15. Invalid directives outside of server block
+ * 16. Several server names
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -212,6 +216,62 @@ TEST_F(InvalidConfigFileTests, RootDirectiveContainsMultipleRootPaths)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsNoNumber)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_no_number.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid client_max_body_size value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidCharWithinNumber)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_char_within_number.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid client_max_body_size value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidUnitChar)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_unit_char.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid client_max_body_size unit", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidUnitLenght)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_unit_lenght.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid client_max_body_size unit", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
 {
 	EXPECT_THROW(
@@ -255,14 +315,21 @@ TEST_F(InvalidConfigFileTests, SeveralServerNames)
  * 9. Listen contains ip and port
  * 10. Listen contains only localhost
  * 11. Listen contains localhost and port
- * 12. Bracket under server directive
- * 13. Bracket under location directive
- * 14. Whitespaces between server directive and opening bracket
- * 15. Directive and opening bracket on the same line
- * 16. Directive and closing bracket on the same line
- * 17. Directive and closing bracket on the same line under server directive
- * 18. Location path
- * 19. Inheritance of the server directives root, max_body_size and error_page to location
+ * 12. Max body size contains only number
+ * 13. Max body size contains number and k unit
+ * 14. Max body size contains number and K unit
+ * 15. Max body size contains number and m unit
+ * 16. Max body size contains number and M unit
+ * 17. Max body size contains number and g unit
+ * 18. Max body size contains number and G unit
+ * 19. Bracket under server directive
+ * 20. Bracket under location directive
+ * 21. Whitespaces between server directive and opening bracket
+ * 22. Directive and opening bracket on the same line
+ * 23. Directive and closing bracket on the same line
+ * 24. Directive and closing bracket on the same line under server directive
+ * 25. Location path
+ * 26. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -365,6 +432,61 @@ TEST_F(ValidConfigFileTests, ListenContainsLocalhostAndPort)
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_localhost_and_port.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("9090", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsOnlyNumber)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_only_number.conf"));
+	EXPECT_EQ(10, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitKLower)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_k_lower.conf"));
+	EXPECT_EQ(5120, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitKUpper)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_k_upper.conf"));
+	EXPECT_EQ(5120, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitMLower)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_m_lower.conf"));
+	EXPECT_EQ(15728640, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitMUpper)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_m_upper.conf"));
+	EXPECT_EQ(15728640, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitGLower)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_g_lower.conf"));
+	EXPECT_EQ(2147483648, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitGUpper)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_g_upper.conf"));
+	EXPECT_EQ(2147483648, configFile.servers[0].maxBodySize);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
