@@ -3,6 +3,7 @@
 #include <iostream>
 
 enum statusCode {
+	NoStatus = 0,
 	StatusOK = 200,
 	StatusCreated = 201,
 	StatusMovedPermanently = 301,

@@ -128,14 +128,17 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 /**
  * @brief Returns reason phrase for a given status code.
  *
+ * In case of NoStatus returns the string "NO STATUS CODE".
  * @param statusCode Status code.
  * @return std::string Reason phrase.
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	assert(statusCode >= NoStatus && statusCode <= StatusNonSupportedVersion);
 
 	switch (statusCode) {
+	case NoStatus:
+		return "NO STATUS CODE";
 	case StatusOK:
 		return "OK";
 	case StatusCreated:
@@ -168,6 +171,19 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 
 	assert(false && "Unhandled enum value");
 	return "";
+}
+
+/**
+ * @brief Check if a given status code is a redirection.
+ *
+ * A redirection is a 3xx status code.
+ * @param statusCode Status code to check.
+ * @return true If the status code is a redirection.
+ * @return false If the status code is not a redirection.
+ */
+bool isRedirectionStatus(statusCode statusCode)
+{
+	return (statusCode >= StatusMovedPermanently && statusCode <= StatusPermanentRedirect);
 }
 
 std::string methodToString(Method method)
