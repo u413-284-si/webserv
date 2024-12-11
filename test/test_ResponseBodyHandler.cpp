@@ -33,6 +33,7 @@ class ResponseBodyHandlerTest : public ::testing::Test {
 		m_configFile.servers[0].locations.push_back(location4);
 
 		m_connection.location = m_configFile.servers[0].locations.begin();
+		m_request.hasReturn = false;
 	}
 	~ResponseBodyHandlerTest() override { }
 
