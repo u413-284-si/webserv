@@ -46,3 +46,8 @@ TEST(replaceAlias, ReplacementIsEmpty)
 {
 	EXPECT_EQ(webutils::replaceAlias("/path/to/somewhere", "/path", ""), "/to/somewhere");
 }
+
+TEST(replaceAlias, MultipleInstancesOfAlias)
+{
+	EXPECT_EQ(webutils::replaceAlias("/alias/alias/alias/alias/", "/alias", "/replacement"), "/replacement/alias/alias/alias/");
+}
