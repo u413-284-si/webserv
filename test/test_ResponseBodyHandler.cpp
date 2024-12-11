@@ -33,7 +33,6 @@ class ResponseBodyHandlerTest : public ::testing::Test {
 		m_configFile.servers[0].locations.push_back(location4);
 
 		m_connection.location = m_configFile.servers[0].locations.begin();
-		m_request.hasReturn = false;
 	}
 	~ResponseBodyHandlerTest() override { }
 
@@ -59,7 +58,6 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 	.Times(1);
 
 	m_request.targetResource = "/proc/self/";
-	m_request.httpStatus = StatusOK;
 	m_request.hasAutoindex = true;
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
@@ -78,7 +76,6 @@ TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 	.Times(1);
 
 	m_request.targetResource = "/proc/self/";
-	m_request.httpStatus = StatusOK;
 	m_request.hasAutoindex = true;
 
 	m_responseBodyHandler.execute();
@@ -94,7 +91,6 @@ TEST_F(ResponseBodyHandlerTest, ErrorPage)
 {
 	m_request.targetResource = "/proc/self/";
 	m_request.httpStatus = StatusInternalServerError;
-	m_request.hasAutoindex = false;
 
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_responseBody, getDefaultErrorPage(m_request.httpStatus));
@@ -105,8 +101,6 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
 	.WillOnce(Throw(std::runtime_error("openFile failed")));
 
-	m_request.hasAutoindex = false;
-	m_request.httpStatus = StatusOK;
 	m_request.method = MethodGet;
 	m_request.targetResource = "/proc/self/cmdline";
 
@@ -120,8 +114,6 @@ TEST_F(ResponseBodyHandlerTest, FileFound)
 	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
 	.WillOnce(Return("Hello World"));
 
-	m_request.hasAutoindex = false;
-	m_request.httpStatus = StatusOK;
 	m_request.method = MethodGet;
 	m_request.targetResource = "/proc/self/cmdline";
 
