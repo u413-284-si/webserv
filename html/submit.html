@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Text/Plain POST</title>
+</head>
+<body>
+    <h1>Custom Text/Plain POST Request</h1>
+    <form id="customForm">
+        <label for="url">Target URL:</label>
+        <input type="text" id="url" placeholder="/uploads/test01" required><br><br>
+
+        <label for="body">Request Body:</label>
+        <textarea id="body" rows="5" cols="40" placeholder="Beam me up, Scotty!" required></textarea><br><br>
+
+        <button type="submit">Send POST Request</button>
+    </form>
+
+    <script>
+        document.getElementById('customForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            // Collect input values
+            const url = document.getElementById('url').value;
+            const body = document.getElementById('body').value;
+
+            try {
+                // Send the POST request
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: body,
+                });
+
+                // Handle response
+                if (response.ok) {
+                    alert('Request sent successfully!');
+                } else {
+                    alert(`Failed: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while sending the request.');
+            }
+        });
+    </script>
+</body>
+</html>
