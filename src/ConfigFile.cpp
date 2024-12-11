@@ -98,6 +98,11 @@ ConfigFile createDummyConfig()
 	location7.root = "/workspaces/webserv/html";
 	location7.allowedMethods[MethodPost] = true;
 
+	Location location11;
+	location11.path = "/alias/";
+	location11.root = "/workspaces/webserv/html";
+	location11.alias = std::make_pair(true, "/workspaces/webserv/html/images/");
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
@@ -106,6 +111,7 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location4);
 	serverConfig8080.locations.push_back(location5);
 	serverConfig8080.locations.push_back(location7);
+	serverConfig8080.locations.push_back(location11);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
