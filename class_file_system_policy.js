@@ -14,5 +14,8 @@ var class_file_system_policy =
     [ "openDirectory", "class_file_system_policy.html#a2a397c37b970408daa29c42d4ccc9577", null ],
     [ "readDirectory", "class_file_system_policy.html#ad23fadf21355a78cce6e905f61611469", null ],
     [ "closeDirectory", "class_file_system_policy.html#ab26568344bc9f550116c68499f01c8d5", null ],
-    [ "getFileStat", "class_file_system_policy.html#ad2571bc684c5f8db457d8e282729f832", null ]
+    [ "getFileStat", "class_file_system_policy.html#ad2571bc684c5f8db457d8e282729f832", null ],
+    [ "writeToFile", "class_file_system_policy.html#a16fb846b30be84537cca1fc8a9697fe3", null ],
+    [ "getLastModifiedTime", "class_file_system_policy.html#a0f46a15649cfbec298a4a2fcfd15676a", null ],
+    [ "getFileSize", "class_file_system_policy.html#afc59bac08d6e98c19f4d9b62c5f66b4a", null ]
 ];

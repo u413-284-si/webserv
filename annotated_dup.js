@@ -24,6 +24,8 @@ var annotated_dup =
     [ "Directory", "class_directory.html", "class_directory" ],
     [ "EpollWrapper", "class_epoll_wrapper.html", "class_epoll_wrapper" ],
     [ "FileSystemPolicy", "class_file_system_policy.html", "class_file_system_policy" ],
+    [ "FileWriteHandler", "class_file_write_handler.html", "class_file_write_handler" ],
+    [ "FileWriteHandlerTest", "class_file_write_handler_test.html", "class_file_write_handler_test" ],
     [ "HandleCompleteRequestHeaderTest", "class_handle_complete_request_header_test.html", "class_handle_complete_request_header_test" ],
     [ "HTTPRequest", "struct_h_t_t_p_request.html", "struct_h_t_t_p_request" ],
     [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", "class_init_virtual_servers_test" ],

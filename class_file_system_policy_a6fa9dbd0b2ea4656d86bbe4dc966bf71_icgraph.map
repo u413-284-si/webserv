@@ -1,7 +1,37 @@
 <map id="FileSystemPolicy::checkFileType" name="FileSystemPolicy::checkFileType">
-<area shape="rect" id="Node000001" title="Check the file type of a given path." alt="" coords="280,31,511,56"/>
-<area shape="rect" id="Node000002" href="$class_file_system_policy.html#a145dc07b440c3aa4c8e361be15c38f42" title="Wrapper to check if a path is a directory." alt="" coords="13,5,224,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,34,224,30,225,25,267,29"/>
-<area shape="rect" id="Node000003" href="$class_file_system_policy.html#a041c67f56f9a96ace0e2b6d5a4b88e75" title="Wrapper to check if a path is an existing file." alt="" coords="5,55,232,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="267,57,233,60,232,55,266,52"/>
+<area shape="rect" id="Node000001" title="Check the file type of a given path." alt="" coords="2460,31,2691,56"/>
+<area shape="rect" id="Node000002" href="$class_file_system_policy.html#a145dc07b440c3aa4c8e361be15c38f42" title="Wrapper to check if a path is a directory." alt="" coords="2193,5,2404,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2446,34,2404,30,2405,25,2447,29"/>
+<area shape="rect" id="Node000003" href="$class_file_system_policy.html#a041c67f56f9a96ace0e2b6d5a4b88e75" title="Wrapper to check if a path is an existing file." alt="" coords="2185,55,2412,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="2447,57,2413,60,2412,55,2446,52"/>
+<area shape="rect" id="Node000004" href="$class_file_write_handler.html#accd13b33bbd69dbf05f1ef00225ea1a6" title="Executes the file write operation." alt="" coords="1947,55,2137,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="2172,70,2137,70,2137,65,2172,65"/>
+<area shape="rect" id="Node000005" href="$class_response_body_handler.html#a0660b57e440e2c519761817d178818c0" title="Create the response body." alt="" coords="1729,47,1899,87"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1933,70,1899,70,1899,65,1933,65"/>
+<area shape="rect" id="Node000006" href="$class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request." alt="" coords="1447,55,1681,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1716,70,1682,70,1682,65,1716,65"/>
+<area shape="rect" id="Node000007" href="$class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="1232,55,1399,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1433,70,1399,70,1399,65,1433,65"/>
+<area shape="rect" id="Node000008" href="$_server_8cpp.html#a9b6964fe44b1605c00c0f211a7f42896" title="Builds the response for a client connection." alt="" coords="995,55,1184,80"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1218,70,1184,70,1184,65,1218,65"/>
+<area shape="rect" id="Node000009" href="$_server_8cpp.html#ad132a77471376bd48681070a795df914" title="Handles a timeout for a client connection." alt="" coords="753,29,947,55"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="981,59,947,55,947,50,981,53"/>
+<area shape="rect" id="Node000010" href="$_server_8cpp.html#afb62203471d9a64b23d0267d5a4a261a" title="Handle a client connection." alt="" coords="567,55,705,80"/>
+<area shape="poly" id="edge18_Node000008_Node000010" title=" " alt="" coords="981,70,706,70,706,65,981,65"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="740,58,706,62,705,56,739,52"/>
+<area shape="rect" id="Node000011" href="$_server_8cpp.html#af9f4479a6262c17deef89938118d27f4" title="Accepts new connections or handles existing ones." alt="" coords="416,55,519,80"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="553,70,519,70,519,65,553,65"/>
+<area shape="rect" id="Node000012" href="$_server_8cpp.html#ab66b27c2186daacb15a6b13dd43be31b" title="Runs the main event loop with a server object." alt="" coords="108,29,193,55"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="402,65,193,48,194,43,403,60"/>
+<area shape="rect" id="Node000014" href="$_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="241,80,368,105"/>
+<area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="403,80,369,85,368,80,402,75"/>
+<area shape="rect" id="Node000013" href="$main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,29,60,55"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="94,45,60,45,60,39,94,39"/>
+<area shape="poly" id="edge14_Node000014_Node000012" title=" " alt="" coords="251,78,189,57,191,52,253,73"/>
+<area shape="rect" id="Node000015" href="$test__shutdown_server_8cpp.html#a6462dc91a572c9969b759806ed15590b" title=" " alt="" coords="116,79,185,104"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="227,95,186,94,186,89,228,89"/>
+<area shape="rect" id="Node000016" href="$test__shutdown_server_8cpp.html#a69fea7b0fb329821fdd955271edc65ee" title=" " alt="" coords="116,128,185,153"/>
+<area shape="poly" id="edge16_Node000014_Node000016" title=" " alt="" coords="251,112,186,133,185,127,249,107"/>
+<area shape="rect" id="Node000017" href="$test__shutdown_server_8cpp.html#ae0ede4f52ef6c742c532c14b92b6179a" title=" " alt="" coords="116,177,185,203"/>
+<area shape="poly" id="edge17_Node000014_Node000017" title=" " alt="" coords="275,115,195,168,176,180,173,175,192,164,272,111"/>
 </map>

@@ -17,6 +17,7 @@ var hierarchy =
     [ "FileSystemPolicy", "class_file_system_policy.html", [
       [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", null ]
     ] ],
+    [ "FileWriteHandler", "class_file_write_handler.html", null ],
     [ "HTTPRequest", "struct_h_t_t_p_request.html", null ],
     [ "TargetResourceHandler::LocatingInfo", "struct_target_resource_handler_1_1_locating_info.html", null ],
     [ "Location", "struct_location.html", null ],
@@ -44,6 +45,7 @@ var hierarchy =
       [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", null ],
       [ "ConnectionSendToCGITest", "class_connection_send_to_c_g_i_test.html", null ],
       [ "CreateVirtualServerTest", "class_create_virtual_server_test.html", null ],
+      [ "FileWriteHandlerTest", "class_file_write_handler_test.html", null ],
       [ "HandleCompleteRequestHeaderTest", "class_handle_complete_request_header_test.html", null ],
       [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", null ],
       [ "InvalidConfigFileTests", "class_invalid_config_file_tests.html", null ],

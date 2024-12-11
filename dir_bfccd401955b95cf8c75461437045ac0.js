@@ -11,6 +11,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "EpollWrapper.hpp", "_epoll_wrapper_8hpp.html", "_epoll_wrapper_8hpp" ],
     [ "error.hpp", "error_8hpp.html", "error_8hpp" ],
     [ "FileSystemPolicy.hpp", "_file_system_policy_8hpp.html", "_file_system_policy_8hpp" ],
+    [ "FileWriteHandler.hpp", "_file_write_handler_8hpp.html", "_file_write_handler_8hpp" ],
     [ "HTTPRequest.hpp", "_h_t_t_p_request_8hpp.html", "_h_t_t_p_request_8hpp" ],
     [ "Log.hpp", "_log_8hpp.html", "_log_8hpp" ],
     [ "LogData.hpp", "_log_data_8hpp.html", "_log_data_8hpp" ],

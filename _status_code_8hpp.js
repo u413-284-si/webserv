@@ -2,6 +2,7 @@ var _status_code_8hpp =
 [
     [ "statusCode", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea", [
       [ "StatusOK", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080", null ],
+      [ "StatusCreated", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda", null ],
       [ "StatusMovedPermanently", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46", null ],
       [ "StatusPermanentRedirect", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92", null ],
       [ "StatusBadRequest", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424", null ],
