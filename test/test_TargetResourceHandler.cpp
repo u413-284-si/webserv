@@ -89,12 +89,20 @@ TEST_F(TargetResourceHandlerTest, LocationNotFound)
 {
 	m_configFile.servers[0].locations.clear();
 
-	m_request.uri.path = "/something";
+	m_request.uri.path = "/error";
 
-	m_targetResourceHandler.execute(m_connection);
+	EXPECT_THROW(
+		{
+			try {
+				m_targetResourceHandler.execute(m_connection);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Could not find location block for path: /error", e.what());
+				EXPECT_EQ(m_request.targetResource, "");
+				throw;
+			}
+		},
+		std::runtime_error);
 
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_request.targetResource, "");
 }
 
 TEST_F(TargetResourceHandlerTest, FileNotFound)
