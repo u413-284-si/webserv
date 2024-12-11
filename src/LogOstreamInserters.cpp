@@ -129,6 +129,9 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 	case StatusOK:
 		ostream << "200";
 		break;
+	case StatusCreated:
+		ostream << "201";
+		break;
 	case StatusMovedPermanently:
 		ostream << "301";
 		break;

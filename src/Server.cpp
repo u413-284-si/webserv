@@ -986,6 +986,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 	}
+	LOG_DEBUG << "Active server: " << connection.m_serverSocket;
 
 	server.findTargetResource(connection);
 
@@ -997,6 +998,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		server.modifyEvent(clientFd, EPOLLOUT);
 		return;
 	}
+
+	// Allow for non-existing files when POST is used
+	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusNotFound)
+		connection.m_request.httpStatus = StatusOK;
 
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)

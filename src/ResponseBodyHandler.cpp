@@ -44,13 +44,17 @@ void ResponseBodyHandler::execute()
 
 	if (m_request.httpStatus >= StatusMovedPermanently) {
 		handleErrorBody();
-	} else if (m_request.hasCGI) {
+		return;
+	}
+	if (m_request.hasCGI) {
 		m_responseBody = m_request.body;
 		if (m_responseBody.find("Content-Type: ") == std::string::npos) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
-	} else if (m_request.hasAutoindex) {
+		return;
+	}
+	if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
@@ -60,7 +64,9 @@ void ResponseBodyHandler::execute()
 		}
 		m_request.httpStatus = StatusOK;
 		m_request.targetResource += "autoindex.html";
-	} else if (m_request.method == MethodGet) {
+		return;
+	}
+	if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		} catch (std::exception& e) {
@@ -68,6 +74,21 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
+		return;
+	}
+
+	if (m_request.method == MethodPost) {
+		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
+		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body);
+		if (m_responseBody.find("created") != std::string::npos) {
+			m_request.httpStatus = StatusCreated;
+			m_request.headers["location"] = m_request.uri.path;
+		}
+		if (m_responseBody.empty()) {
+			m_request.httpStatus = StatusInternalServerError;
+			handleErrorBody();
+		}
+		return;
 	}
 }
 
@@ -226,6 +247,7 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	switch (statusCode) {
 	case NoStatus:
 	case StatusOK:
+	case StatusCreated:
 		return ("");
 	case StatusMovedPermanently:
 		ret = error301Page;
