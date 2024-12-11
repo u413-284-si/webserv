@@ -42,6 +42,7 @@ Location::Location(void)
 	, isAutoindex(false)
 	, maxBodySize(1)
 	, allowedMethods()
+	, alias(std::pair<bool, std::string>(false, ""))
 {
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();

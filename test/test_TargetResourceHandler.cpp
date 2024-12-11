@@ -18,6 +18,7 @@ protected:
 		Location m_location3;
 		Location m_location4;
 		Location m_location5;
+		Location m_location6;
 
 		m_location1.path = "/";
 		m_location1.root = "/first/location";
@@ -33,6 +34,9 @@ protected:
 		m_location5.path = "/recursion";
 		m_location5.root = "/start";
 		m_location5.indices.emplace_back("again/");
+		m_location6.path = "/alias";
+		m_location6.root = "/sixth/location";
+		m_location6.alias = std::make_pair(true, "/new/path");
 
 		m_configFile.servers[0].locations.pop_back();
 		m_configFile.servers[0].locations.push_back(m_location3);
@@ -40,6 +44,7 @@ protected:
 		m_configFile.servers[0].locations.push_back(m_location4);
 		m_configFile.servers[0].locations.push_back(m_location1);
 		m_configFile.servers[0].locations.push_back(m_location5);
+		m_configFile.servers[0].locations.push_back(m_location6);
 
 		m_request.method = MethodGet;
 		m_request.uri.path = "/test";
@@ -233,4 +238,17 @@ TEST_F(TargetResourceHandlerTest, ServerError)
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
 	EXPECT_FALSE(m_request.hasAutoindex);
+}
+
+TEST_F(TargetResourceHandlerTest, LocationWithAlias)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
+
+	m_request.uri.path = "/alias/test";
+
+	m_targetResourceHandler.execute(m_connection);
+
+	EXPECT_EQ(m_request.targetResource, "/new/path/test");
+	EXPECT_EQ(m_request.httpStatus, StatusOK);
 }
