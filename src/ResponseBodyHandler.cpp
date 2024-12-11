@@ -77,7 +77,7 @@ void ResponseBodyHandler::execute()
  * Checks if the active location has a custom error page for HTTP Status Code.
  * If yes tries to locate the error page via the provided URI.
  * - The current Status Code is saved and reset to StatusOK.
- * - The request hasReturn is set to false (in case it was already).
+ * - The request hasReturn is set to false (in case it was set to true).
  * - The request.uri.path is set to the error page URI.
  * - Then tries to find it with a TargetResourceHandler.
  *
