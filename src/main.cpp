@@ -1,8 +1,26 @@
 #include "ConfigFileParser.hpp"
 #include "Server.hpp"
 
+/**
+ * @brief Stringize the result of expansion of a macro argument
+ *
+ * If the macro DEFAULT_CONFIG_PATH is defined with -D at compile time the literal value would be inserted. For it to be
+ * a string the user would have to escape double quotes. These two macro stringize the defined value. The user can
+ * redefine the path as "-D DEFAULT_CONFIG_PATH=./new/path"
+ * @sa https://gcc.gnu.org/onlinedocs/cpp/Stringizing.html
+ */
+#define xstr(s) str(s)
+
+/**
+ * @brief Converts macro argument into a string constant.
+ *
+ * Uses the '#' preprocessing operator. When a macro parameter is used with a leading '#', the preprocessor replaces it
+ * with the literal text of the actual argument
+ */
+#define str(s) #s
+
 #ifndef DEFAULT_CONFIG_PATH
-#define DEFAULT_CONFIG_PATH "./config_files/standard_config.conf"
+#define DEFAULT_CONFIG_PATH ./ config_files / standard_config.conf
 #endif
 
 int main(const int argc, const char* argv[])
@@ -13,8 +31,8 @@ int main(const int argc, const char* argv[])
 		return 1;
 	}
 
-	//NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-	const std::string configFilePath = (argc == 1) ? DEFAULT_CONFIG_PATH : argv[1];
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+	const std::string configFilePath = (argc == 1) ? xstr(DEFAULT_CONFIG_PATH) : argv[1];
 	std::cout << "Config file path: " << configFilePath << '\n';
 
 	weblog::initConsole(weblog::LevelDebug);
