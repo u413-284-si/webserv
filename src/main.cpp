@@ -2,12 +2,21 @@
 #include "ProcessOps.hpp"
 #include "Server.hpp"
 
+#ifndef DEFAULT_CONFIG_PATH
+#define DEFAULT_CONFIG_PATH "./config_files/standard_config.conf"
+#endif
+
 int main(int argc, char** argv)
 {
-	if (argc != 2) {
-		std::cerr << "error: arguments invalid\nexpected: " << program_invocation_name << " <config file>\n";
+	if (argc > 2) {
+		std::cerr << "webserv: usage error: too many arguments provided" << '\n'
+				  << "Usage: " << program_invocation_name << " [path to config file]" << '\n';
 		return 1;
 	}
+
+	//NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+	const std::string configFilePath = (argc == 1) ? DEFAULT_CONFIG_PATH : argv[1];
+	std::cout << "Config file path: " << configFilePath << '\n';
 
 	weblog::initConsole(weblog::LevelDebug);
 
@@ -21,7 +30,7 @@ int main(int argc, char** argv)
 		ProcessOps processOps;
 
 		ConfigFileParser parser;
-		ConfigFile configFile = parser.parseConfigFile(argv[1]);
+		ConfigFile configFile = parser.parseConfigFile(configFilePath);
 
 		configFile = createDummyConfig();
 
