@@ -5,7 +5,7 @@
 #define DEFAULT_CONFIG_PATH "./config_files/standard_config.conf"
 #endif
 
-int main(int argc, char** argv)
+int main(const int argc, const char* argv[])
 {
 	if (argc > 2) {
 		std::cerr << "webserv: usage error: too many arguments provided" << '\n'
