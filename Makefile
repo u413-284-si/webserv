@@ -311,11 +311,6 @@ coverage2: $(NAME) | $(COV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests as index.html $(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT) pytest --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
 
-.PHONY: coverage3
-coverage3: $(NAME) | $(COV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT) pytest --with-coverage --cobertura-only --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
-
 # ******************************
 # *     Object compiling and   *
 # *     dependecy creation     *
