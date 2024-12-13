@@ -40,6 +40,13 @@ else
 	ASAN =
 endif
 
+# Set NODEBUG=1 to compile with debug messages
+ifeq ($(NODEBUG),1)
+	DEBUG_FLAGS =
+else
+	DEBUG_FLAGS = -D DEBUG_MSG -g
+endif
+
 # ******************************
 # *     Text effects           *
 # ******************************
@@ -98,7 +105,7 @@ CONFIG_DIR := config_files
 CXX := c++
 CPPFLAGS := -I $(INC_DIR)
 WARNINGS := -Wall -Wextra -Werror -Wpedantic -Wdocumentation
-CXXFLAGS = -std=c++98 $(WARNINGS) $(ASAN) -g
+CXXFLAGS = -std=c++98 $(WARNINGS) $(ASAN) $(DEBUG_FLAGS)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
 LDFLAGS = $(ASAN)
 LDLIBS =
@@ -106,7 +113,7 @@ COMPILE = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) -c
 POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 
 # Special variables for compiling test files
-CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) -g
+CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) $(DEBUG_FLAGS)
 COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
 
 # ******************************
