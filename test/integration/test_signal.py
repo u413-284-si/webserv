@@ -33,5 +33,9 @@ def test_server_shutdown_behavior(request):
     time.sleep(delay_time)
     print("Testing server shutdown behavior...")
     os.kill(server_process.pid, signal.SIGQUIT)
+    time.sleep(3)
+    server_process.terminate()
+    server_process.wait()
+    print("Server stopped.")
 
 
