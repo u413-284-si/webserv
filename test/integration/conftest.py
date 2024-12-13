@@ -8,7 +8,7 @@ def pytest_addoption(parser):
     parser.addoption("--with-coverage", action="store_true", help="Run server with kcov for coverage")
     parser.addoption("--kcov-output-dir", action="store", default="/workspaces/webserv/.vscode/coverage", help="Path to the kcov output directory")
     parser.addoption("--kcov-excl-path", action="store", default="--exclude-path=/usr/include,/usr/lib,/usr/local", help="Path to exclude from kcov coverage")
-    parser.addoption("--cobertura-only", action="store_true", help="Pass option to kcov to generate cobertura XML report")
+    parser.addoption("--cobertura-only", action="store_false", default=False, help="Pass option to kcov to generate cobertura XML report")
     parser.addoption("--server-executable", action="store", default="/workspaces/webserv/webserv", help="Path to the server executable")
     parser.addoption("--config-file", action="store", default="/workspaces/webserv/config_files/valid_config.conf", help="Path to the server config file")
 
