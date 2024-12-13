@@ -1011,10 +1011,12 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			connection.m_request.httpStatus = StatusInternalServerError;
 		}
 	}
-
+	
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+		if (!connection.m_buffer.empty())
+			handleBody(server, clientFd, connection);
 	} else if (connection.m_request.hasCGI)
 		connection.m_status = Connection::ReceiveFromCGI;
 	else {
@@ -1109,6 +1111,10 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 
 	connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
 	connection.m_timeSinceLastEvent = std::time(0);
+	handleBody(server, activeFd, connection);
+}
+
+void handleBody(Server& server, int activeFd, Connection& connection) {
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
 		try {
