@@ -48,4 +48,4 @@ def start_cpp_server(request):
     # Stop the server after the tests are done
     server_process.terminate()
     server_process.wait()
-    print("Server stopped.")
+    print("Server stopped from test fixture start_cpp_server.")
