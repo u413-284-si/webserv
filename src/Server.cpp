@@ -1114,32 +1114,44 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 	handleBody(server, activeFd, connection);
 }
 
+/**
+ * @brief Handles the body of the HTTP request.
+ *
+ * This function processes the body of the HTTP request. If the complete body
+ * is received, it parses the body and updates the connection status based on
+ * whether CGI is involved. If only a partial body is received, it checks for
+ * errors such as bad request or exceeding the maximum allowed body size.
+ *
+ * @param server Reference to the Server object.
+ * @param activeFd The file descriptor of the active connection.
+ * @param connection Reference to the Connection object.
+ */
 void handleBody(Server& server, int activeFd, Connection& connection) {
-	if (isCompleteBody(connection)) {
-		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
-		try {
-			server.parseBody(connection.m_buffer, connection.m_request);
-		} catch (std::exception& e) {
-			LOG_ERROR << e.what();
-		}
-		if (connection.m_request.hasCGI)
-			connection.m_status = Connection::SendToCGI;
-		else
-			connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(activeFd, EPOLLOUT);
-	} else {
-		LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
-		if (connection.m_request.httpStatus == StatusBadRequest) {
-			LOG_ERROR << ERR_CONTENT_LENGTH;
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(activeFd, EPOLLOUT);
-		} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
-			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
-			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(activeFd, EPOLLOUT);
-		}
-	}
+    if (isCompleteBody(connection)) {
+        LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+        try {
+            server.parseBody(connection.m_buffer, connection.m_request);
+        } catch (std::exception& e) {
+            LOG_ERROR << e.what();
+        }
+        if (connection.m_request.hasCGI)
+            connection.m_status = Connection::SendToCGI;
+        else
+            connection.m_status = Connection::BuildResponse;
+        server.modifyEvent(activeFd, EPOLLOUT);
+    } else {
+        LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+        if (connection.m_request.httpStatus == StatusBadRequest) {
+            LOG_ERROR << ERR_CONTENT_LENGTH;
+            connection.m_status = Connection::BuildResponse;
+            server.modifyEvent(activeFd, EPOLLOUT);
+        } else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+            LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+            connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+            connection.m_status = Connection::BuildResponse;
+            server.modifyEvent(activeFd, EPOLLOUT);
+        }
+    }
 }
 
 /**
