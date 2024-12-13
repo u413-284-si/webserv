@@ -10,7 +10,7 @@
 #include <string>
 
 /**
- * @brief Class to handle the POST requests.
+ * @brief Class to handle the DELETE requests.
  *
  */
 class DeleteHandler {
