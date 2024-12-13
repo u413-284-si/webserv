@@ -59,6 +59,8 @@ BLUE := \033[34m
 SRC_DIR := src
 
 TEST_DIR := test
+UNIT_TEST_DIR := $(TEST_DIR)/unit
+INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
 
 # Base directory for object files
 BASE_OBJ_DIR = obj
@@ -235,11 +237,17 @@ $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
 
+# Run unit and integration tests
+.PHONY: test2
+test2:
+	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT) pytest ./$(INTEGRATION_TEST_DIR)
+
 # This target uses the file standard_config.conf as argument to run the program.
 .PHONY: run
 run: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
-	./webserv $(CONFIG_DIR)/standard_config.conf
+	./$(NAME) $(CONFIG_DIR)/standard_config.conf
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -286,10 +294,17 @@ check_bear_installed:
 EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 .PHONY: coverage
 coverage: $(TEST) | $(COV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from unittests as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov $(EXCL_PATH) $(COV_DIR) ./$(TEST)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov $(EXCL_PATH) --cobertura-only $(COV_DIR) ./$(TEST)
+
+.PHONY: coverage2
+coverage2: $(NAME) | $(COV_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests as index.html $(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT) pytest --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT) pytest --with-coverage --cobertura-only --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
 
 # ******************************
 # *     Object compiling and   *
@@ -315,7 +330,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(SILENT)$(POSTCOMPILE)
 
 # Similar target for testfiles; uses different compile flags
-$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(UNIT_TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE_TEST) $< -o $@
