@@ -431,6 +431,8 @@ void ConfigFileParser::readServerName(const std::string& value)
 	serverName = webutils::trimLeadingWhitespaces(serverName);
 	webutils::trimTrailingWhiteSpaces(serverName);
 
+	if (serverName.empty())
+		throw std::runtime_error("server_name value is empty");
 	if (serverName.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one server name");
 	if (serverName == "\"\"")
