@@ -394,7 +394,7 @@ void ConfigFileParser::readLocationBlockPath(void)
  * @param block The block which surounds the directive
  * @param value The value of the directive root
  */
-void ConfigFileParser::readRootPath(Block block, const std::string& value)
+void ConfigFileParser::readRootPath(const Block& block, const std::string& value)
 {
 	size_t semicolonIndex = value.find(';');
 
@@ -513,7 +513,7 @@ void ConfigFileParser::readSocket(const std::string& value)
  *
  * @param value The value of the directive client_max_body_size
  */
-void ConfigFileParser::readMaxBodySize(const std::string& value)
+void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& value)
 {
 	const size_t bytesPerKiloByte = 1024;
 	const size_t semicolonIndex = value.find(';');
@@ -555,7 +555,10 @@ void ConfigFileParser::readMaxBodySize(const std::string& value)
 		}
 	}
 
-	m_configFile.servers[m_serverIndex].maxBodySize = size;
+	if (block == ServerBlock)
+		m_configFile.servers[m_serverIndex].maxBodySize = size;
+	else if (block == LocationBlock)
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].maxBodySize = size;
 }
 
 /**
