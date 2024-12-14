@@ -339,6 +339,10 @@ TEST_F(ValidConfigFileTests, ValidFile)
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
+	EXPECT_EQ(2097152, configFile.servers[0].maxBodySize);
+
+	EXPECT_EQ("/var/www/images", configFile.servers[0].locations[0].root);
+	EXPECT_EQ(1073741824, configFile.servers[0].locations[0].maxBodySize);
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
