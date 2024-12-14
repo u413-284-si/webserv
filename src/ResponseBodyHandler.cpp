@@ -74,6 +74,12 @@ void ResponseBodyHandler::execute()
 		}
 		return;
 	}
+	if (m_request.method == MethodDelete) {
+		DeleteHandler deleteHandler(m_fileSystemPolicy);
+		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
+		if (m_responseBody.empty())
+			handleErrorBody();
+	}
 }
 
 /**
