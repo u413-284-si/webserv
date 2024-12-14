@@ -85,26 +85,6 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 		*/
 }
 
-TEST_F(TargetResourceHandlerTest, LocationNotFound)
-{
-	m_configFile.servers[0].locations.clear();
-
-	m_request.uri.path = "/error";
-
-	EXPECT_THROW(
-		{
-			try {
-				m_targetResourceHandler.execute(m_connection);
-			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Could not find location block for path: /error", e.what());
-				EXPECT_EQ(m_request.targetResource, "");
-				throw;
-			}
-		},
-		std::runtime_error);
-
-}
-
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)

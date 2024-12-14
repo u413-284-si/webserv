@@ -56,10 +56,6 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 
 	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
 
-	// No location found > this should not happen because default location "/" should always match
-	if (locInfo.activeLocation == locInfo.locations->end())
-		throw std::runtime_error("Could not find location block for path: " + locInfo.path);
-
 	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
 
@@ -102,7 +98,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 std::vector<Location>::const_iterator matchLocation(const std::vector<Location>& locations, const std::string& path)
 {
 	std::size_t longestMatch = 0;
-	std::vector<Location>::const_iterator locationMatch = locations.end();
+	std::vector<Location>::const_iterator locationMatch = locations.begin();
 
 	for (std::vector<Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
 		if (path.find(it->path) == 0) {
