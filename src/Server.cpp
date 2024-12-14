@@ -991,6 +991,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusNotFound)
 		connection.m_request.httpStatus = StatusOK;
 
+	// Allow directories to be deleted
+	if (connection.m_request.method == MethodDelete && connection.m_request.httpStatus == StatusForbidden)
+		connection.m_request.httpStatus = StatusOK;
+
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 	if (!connection.location->allowedMethods[connection.m_request.method])
