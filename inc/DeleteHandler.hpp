@@ -17,7 +17,7 @@ class DeleteHandler {
 
 public:
 	explicit DeleteHandler(const FileSystemPolicy& fileSystemPolicy);
-	std::string execute(const std::string& path);
+	std::string execute(const std::string& path, statusCode& httpStatus);
 
 private:
 	const FileSystemPolicy& m_fileSystemPolicy;
