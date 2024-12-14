@@ -25,9 +25,9 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "CGI path: " << location.cgiPath << '\n';
 	ostream << "Autoindex: " << location.isAutoindex << '\n';
 	ostream << "Allowed methods:\n";
-	ostream << "  GET: " << location.allowedMethods[0] << '\n';
-	ostream << "  POST: " << location.allowedMethods[1] << '\n';
-	ostream << "  DELETE: " << location.allowedMethods[2] << '\n';
+	ostream << "  GET: " << location.allowMethods[0] << '\n';
+	ostream << "  POST: " << location.allowMethods[1] << '\n';
+	ostream << "  DELETE: " << location.allowMethods[2] << '\n';
 	ostream << "Returns:\n";
 	for (std::map<statusCode, std::string>::const_iterator it = location.returns.begin(); it != location.returns.end();
 		 ++it) {

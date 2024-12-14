@@ -25,7 +25,7 @@ public:
 	bool isAutoindex;
 	size_t maxBodySize;
 	std::map<statusCode, std::string> errorPage;
-	bool allowedMethods[MethodCount];
+	bool allowMethods[MethodCount];
 	std::map<statusCode, std::string> returns;
 };
 

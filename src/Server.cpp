@@ -254,7 +254,7 @@ void Server::removeCGIFileDescriptor(int& delfd)
 {
 	this->removeEvent(delfd);
 	this->getCGIConnections().erase(delfd);
-    LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
+	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 	webutils::closeFd(delfd);
 }
 
@@ -480,10 +480,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(Connection& connection)
-{
-	m_responseBuilder.buildResponse(connection);
-}
+void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -499,10 +496,7 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection)
-{
-	m_targetResourceHandler.execute(connection);
-}
+void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
 
 /* ====== INITIALIZATION ====== */
 
@@ -988,7 +982,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-	if (!connection.location->allowedMethods[connection.m_request.method])
+	if (!connection.location->allowMethods[connection.m_request.method])
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
@@ -1000,7 +994,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost && !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
+		if ((connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;

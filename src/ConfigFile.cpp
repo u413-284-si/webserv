@@ -41,14 +41,14 @@ Location::Location(void)
 	: root("html")
 	, isAutoindex(false)
 	, maxBodySize(1)
-	, allowedMethods()
+	, allowMethods()
 {
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();
 	returns = std::map<statusCode, std::string>();
-	allowedMethods[0] = true;
-	allowedMethods[1] = false;
-	allowedMethods[2] = false;
+	allowMethods[0] = true;
+	allowMethods[1] = false;
+	allowMethods[2] = false;
 }
 
 /**
@@ -89,8 +89,8 @@ ConfigFile createDummyConfig()
 	location6.root = "/workspaces/webserv";
 	location6.cgiPath = "/usr/bin/python3";
 	location6.cgiExt = ".py";
-	location6.allowedMethods[MethodGet] = true;
-	location6.allowedMethods[MethodPost] = true;
+	location6.allowMethods[MethodGet] = true;
+	location6.allowMethods[MethodPost] = true;
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
