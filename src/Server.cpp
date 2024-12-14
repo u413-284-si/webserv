@@ -254,7 +254,7 @@ void Server::removeCGIFileDescriptor(int& delfd)
 {
 	this->removeEvent(delfd);
 	this->getCGIConnections().erase(delfd);
-    LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
+	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 	webutils::closeFd(delfd);
 }
 
@@ -480,10 +480,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(Connection& connection)
-{
-	m_responseBuilder.buildResponse(connection);
-}
+void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -499,10 +496,7 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection)
-{
-	m_targetResourceHandler.execute(connection);
-}
+void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
 
 /* ====== INITIALIZATION ====== */
 
@@ -1005,13 +999,14 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost && !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
+		if ((connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;
 		}
 	}
-	
+
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
@@ -1126,32 +1121,33 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
  * @param activeFd The file descriptor of the active connection.
  * @param connection Reference to the Connection object.
  */
-void handleBody(Server& server, int activeFd, Connection& connection) {
-    if (isCompleteBody(connection)) {
-        LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
-        try {
-            server.parseBody(connection.m_buffer, connection.m_request);
-        } catch (std::exception& e) {
-            LOG_ERROR << e.what();
-        }
-        if (connection.m_request.hasCGI)
-            connection.m_status = Connection::SendToCGI;
-        else
-            connection.m_status = Connection::BuildResponse;
-        server.modifyEvent(activeFd, EPOLLOUT);
-    } else {
-        LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
-        if (connection.m_request.httpStatus == StatusBadRequest) {
-            LOG_ERROR << ERR_CONTENT_LENGTH;
-            connection.m_status = Connection::BuildResponse;
-            server.modifyEvent(activeFd, EPOLLOUT);
-        } else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
-            LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
-            connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-            connection.m_status = Connection::BuildResponse;
-            server.modifyEvent(activeFd, EPOLLOUT);
-        }
-    }
+void handleBody(Server& server, int activeFd, Connection& connection)
+{
+	if (isCompleteBody(connection)) {
+		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+		try {
+			server.parseBody(connection.m_buffer, connection.m_request);
+		} catch (std::exception& e) {
+			LOG_ERROR << e.what();
+		}
+		if (connection.m_request.hasCGI)
+			connection.m_status = Connection::SendToCGI;
+		else
+			connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(activeFd, EPOLLOUT);
+	} else {
+		LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+		if (connection.m_request.httpStatus == StatusBadRequest) {
+			LOG_ERROR << ERR_CONTENT_LENGTH;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+		} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
+			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+		}
+	}
 }
 
 /**
