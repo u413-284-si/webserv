@@ -31,8 +31,10 @@ protected:
  * 13. Max body size directive contains invalid unit char
  * 14. Max body size directive contains invalid unit lenght
  * 15. Autoindex directive contains invalid value
- * 16. Invalid directives outside of server block
- * 17. Several server names
+ * 16. Allow methods directive contains invalid value
+ * 17. Allow methods contains no value
+ * 18. Invalid directives outside of server block
+ * 19. Several server names
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -287,6 +289,34 @@ TEST_F(InvalidConfigFileTests, AutoIndexContainsInvalidValue)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, AllowMethodsContainsInvalidValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/allow_methods_invalid.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid allow_methods value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, AllowMethodsContainsNoValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/allow_methods_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("allow_methods value is empty", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
 {
 	EXPECT_THROW(
@@ -339,14 +369,18 @@ TEST_F(InvalidConfigFileTests, SeveralServerNames)
  * 18. Max body size contains number and G unit
  * 19. Autoindex contains on
  * 20. Autoindex contains off
- * 21. Bracket under server directive
- * 22. Bracket under location directive
- * 23. Whitespaces between server directive and opening bracket
- * 24. Directive and opening bracket on the same line
- * 25. Directive and closing bracket on the same line
- * 26. Directive and closing bracket on the same line under server directive
- * 27. Location path
- * 28. Inheritance of the server directives root, max_body_size and error_page to location
+ * 21. Allow methods contains GET
+ * 22. Allow methods contains POST
+ * 23. Allow methods contains DELETE
+ * 24. Allow methods contains GET, POST and DELETE
+ * 25. Bracket under server directive
+ * 26. Bracket under location directive
+ * 27. Whitespaces between server directive and opening bracket
+ * 28. Directive and opening bracket on the same line
+ * 29. Directive and closing bracket on the same line
+ * 30. Directive and closing bracket on the same line under server directive
+ * 31. Location path
+ * 32. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -522,6 +556,42 @@ TEST_F(ValidConfigFileTests, AutoindexContainsOff)
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_off.conf"));
 	EXPECT_EQ(false, configFile.servers[0].locations[0].isAutoindex);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsGet)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get.conf"));
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsPost)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_post.conf"));
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsDelete)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_delete.conf"));
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsGetPostDelete)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get_post_delete.conf"));
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
