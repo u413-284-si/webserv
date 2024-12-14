@@ -562,13 +562,13 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& va
 }
 
 /**
- * @brief Reads and checks the value of the directive in the current line of the config file
+ * @brief Reads and checks the value of the server directive in the current line of the config file
  *
- * @details This function is called when the directive is valid.
- *          It calls the appropriate function to read the value of the directive.
+ * @details This function is called when the server directive is valid.
+ *          It calls the appropriate function to read the value of the server directive.
  *          It throws an exception if the value is invalid.
 
- * @param directive Is the the directive which value is being read and checked
+ * @param directive Is the the server directive which value is being read and checked
  */
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
@@ -582,6 +582,15 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 		readMaxBodySize(ServerBlock, value);
 }
 
+/**
+ * @brief Reads and checks the value of the location directive in the current line of the config file
+ *
+ * @details This function is called when the location directive is valid.
+ *          It calls the appropriate function to read the value of the location directive.
+ *          It throws an exception if the value is invalid.
+
+ * @param directive Is the the location directive which value is being read and checked
+ */
 void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, const std::string& value)
 {
 	if (directive == "root")
