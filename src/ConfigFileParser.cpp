@@ -562,6 +562,28 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& va
 }
 
 /**
+ * @brief Reads the autoindex
+ *
+ * The function checks if the value of the directive is "on" or "off".
+ * If that is the case the function will set the autoindex to true or false.
+ * Otherwise it will throw an exception.
+ *
+ * @param value The value of the directive autoindex
+ */
+void ConfigFileParser::readAutoIndex(const std::string& value)
+{
+	const size_t semicolonIndex = value.find(';');
+	std::string autoindex = value.substr(0, semicolonIndex);
+
+	if (autoindex == "on")
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].isAutoindex = true;
+	else if (autoindex == "off")
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].isAutoindex = false;
+	else
+		throw std::runtime_error("Invalid autoindex value");
+}
+
+/**
  * @brief Reads and checks the value of the server directive in the current line of the config file
  *
  * @details This function is called when the server directive is valid.
@@ -597,6 +619,8 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 		readRootPath(LocationBlock, value);
 	else if (directive == "client_max_body_size")
 		readMaxBodySize(LocationBlock, value);
+	else if (directive == "autoindex")
+		readAutoIndex(value);
 }
 
 /**
