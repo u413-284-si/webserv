@@ -480,6 +480,8 @@ void ConfigFileParser::readSocket(const std::string& value)
 	} else {
 		if (dot == std::string::npos) {
 			std::string hostOrPort = value.substr(0, semicolonIndex);
+			if (hostOrPort.empty())
+				throw std::runtime_error("Listen value is empty");
 			if (hostOrPort == "localhost")
 				m_configFile.servers[m_serverIndex].host = "127.0.0.1";
 			else {
