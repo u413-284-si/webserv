@@ -69,6 +69,7 @@ private:
 	void readRootPath(const Block& block, const std::string& value);
 	void readMaxBodySize(const Block& block, const std::string& value);
 	void readAutoIndex(const std::string& value);
+	void readAllowMethods(const std::string& value);
 	void readLocationBlockPath(void);
 
 	// Helper functions

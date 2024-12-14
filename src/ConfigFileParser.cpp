@@ -18,7 +18,7 @@ ConfigFileParser::ConfigFileParser(void)
 	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
 	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "client_max_body_size",
-		"autoindex", "limit_except", "location", "return" };
+		"autoindex", "allow_methods", "location", "return" };
 	const int validLocationDirectiveNamesSize
 		= sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
 
@@ -584,6 +584,51 @@ void ConfigFileParser::readAutoIndex(const std::string& value)
 }
 
 /**
+ * @brief Reads the allow methods
+ *
+ * The function checks if the value of the directive is either "GET", "POST" or "DELETE".
+ * If that is the case the function will set the corresponding allow method to true.
+ * Otherwise it will throw an exception.
+ *
+ * Before setting the allow method to true the function will set all other allow methods to false
+ *
+ * @param value The value of the directive allow_methods
+ */
+void ConfigFileParser::readAllowMethods(const std::string& value)
+{
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = false;
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[1] = false;
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = false;
+
+	size_t semicolonIndex = value.find(';');
+	std::string allowMethods = value.substr(0, semicolonIndex);
+	if (allowMethods.empty())
+		throw std::runtime_error("allow_methods value is empty");
+
+	size_t index = 0;
+	while (allowMethods[index] != '\0') {
+		size_t startIndex = index;
+
+		while (std::isspace(allowMethods[index]) == 0 && allowMethods[index] != '\0')
+			index++;
+
+		std::string method = value.substr(startIndex, index - startIndex);
+
+		if (method == "GET")
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = true;
+		else if (method == "POST")
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[1] = true;
+		else if (method == "DELETE")
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = true;
+		else
+			throw std::runtime_error("Invalid allow_methods value");
+
+		while (std::isspace(allowMethods[index]) != 0 && allowMethods[index] != '\0')
+			index++;
+	}
+}
+
+/**
  * @brief Reads and checks the value of the server directive in the current line of the config file
  *
  * @details This function is called when the server directive is valid.
@@ -621,6 +666,8 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 		readMaxBodySize(LocationBlock, value);
 	else if (directive == "autoindex")
 		readAutoIndex(value);
+	else if (directive == "allow_methods")
+		readAllowMethods(value);
 }
 
 /**
