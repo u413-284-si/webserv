@@ -30,8 +30,9 @@ protected:
  * 12. Max body size directive contains invalid char within number
  * 13. Max body size directive contains invalid unit char
  * 14. Max body size directive contains invalid unit lenght
- * 15. Invalid directives outside of server block
- * 16. Several server names
+ * 15. Autoindex directive contains invalid value
+ * 16. Invalid directives outside of server block
+ * 17. Several server names
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -272,6 +273,20 @@ TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidUnitLenght)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, AutoIndexContainsInvalidValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/autoindex_invalid.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid autoindex value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
 {
 	EXPECT_THROW(
@@ -310,8 +325,8 @@ TEST_F(InvalidConfigFileTests, SeveralServerNames)
  * 4. Several directives on one line
  * 5. Server name contains one name
  * 6. Server name contains empty string
- * 7. Listen directive contains only ip
- * 8. Listen directive contains only port
+ * 7. Listen contains only ip
+ * 8. Listen contains only port
  * 9. Listen contains ip and port
  * 10. Listen contains only localhost
  * 11. Listen contains localhost and port
@@ -322,14 +337,16 @@ TEST_F(InvalidConfigFileTests, SeveralServerNames)
  * 16. Max body size contains number and M unit
  * 17. Max body size contains number and g unit
  * 18. Max body size contains number and G unit
- * 19. Bracket under server directive
- * 20. Bracket under location directive
- * 21. Whitespaces between server directive and opening bracket
- * 22. Directive and opening bracket on the same line
- * 23. Directive and closing bracket on the same line
- * 24. Directive and closing bracket on the same line under server directive
- * 25. Location path
- * 26. Inheritance of the server directives root, max_body_size and error_page to location
+ * 19. Autoindex contains on
+ * 20. Autoindex contains off
+ * 21. Bracket under server directive
+ * 22. Bracket under location directive
+ * 23. Whitespaces between server directive and opening bracket
+ * 24. Directive and opening bracket on the same line
+ * 25. Directive and closing bracket on the same line
+ * 26. Directive and closing bracket on the same line under server directive
+ * 27. Location path
+ * 28. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -491,6 +508,20 @@ TEST_F(ValidConfigFileTests, MaxBodySizeContainsAndUnitGUpper)
 	EXPECT_NO_THROW(
 		configFile = m_configFileParser.parseConfigFile("config_files/max_body_size_number_and_unit_g_upper.conf"));
 	EXPECT_EQ(2147483648, configFile.servers[0].maxBodySize);
+}
+
+TEST_F(ValidConfigFileTests, AutoindexContainsOn)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_on.conf"));
+	EXPECT_EQ(true, configFile.servers[0].locations[0].isAutoindex);
+}
+
+TEST_F(ValidConfigFileTests, AutoindexContainsOff)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_off.conf"));
+	EXPECT_EQ(false, configFile.servers[0].locations[0].isAutoindex);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
