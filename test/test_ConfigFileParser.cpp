@@ -24,8 +24,9 @@ protected:
  * 5. File contains missing semicolon
  * 6. Listen directive contains invalid ip address
  * 7. Listen directive contains invalid port
- * 8. Root directive contains no root path
- * 9. Root directive contains multiple root paths
+ * 8. Listen directive contains no value
+ * 9. Root directive contains no root path
+ * 10. Root directive contains multiple root paths
  * 11. Max body size directive contains no number
  * 12. Max body size directive contains invalid char within number
  * 13. Max body size directive contains invalid unit char
@@ -186,6 +187,20 @@ TEST_F(InvalidConfigFileTests, ListenDirectiveContainsTooLowPort)
 				m_configFileParser.parseConfigFile("config_files/listen_invalid_port_low.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid port", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsNoValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/listen_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Listen value is empty", e.what());
 				throw;
 			}
 		},
