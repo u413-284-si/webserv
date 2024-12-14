@@ -31,11 +31,15 @@ def test_server_shutdown_behavior(request):
         delay_time = 3
 
     time.sleep(delay_time)
+
+    if with_coverage:
+        pid = int(subprocess.check_output(["pgrep", "webserv"]).decode().strip())
+    else:
+        pid = server_process.pid
+
     print("Testing server shutdown behavior...")
-    os.kill(server_process.pid, signal.SIGQUIT)
+    os.kill(pid, signal.SIGQUIT)
     time.sleep(3)
     server_process.terminate()
     server_process.wait()
     print("Server stopped.")
-
-
