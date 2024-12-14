@@ -31,12 +31,13 @@ protected:
  * 12. Max body size directive contains invalid char within number
  * 13. Max body size directive contains invalid unit char
  * 14. Max body size directive contains invalid unit lenght
- * 15. Autoindex directive contains invalid value
- * 16. Allow methods directive contains invalid value
- * 17. Allow methods contains no value
- * 18. Invalid directives outside of server block
- * 19. Several server names
- * 20. Server name contains no value
+ * 15. Max body size directive contains no value
+ * 16. Autoindex directive contains invalid value
+ * 17. Allow methods directive contains invalid value
+ * 18. Allow methods contains no value
+ * 19. Invalid directives outside of server block
+ * 20. Several server names
+ * 21. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -285,6 +286,20 @@ TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidUnitLenght)
 				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_unit_lenght.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid client_max_body_size unit", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsNoValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("client_max_body_size value is empty", e.what());
 				throw;
 			}
 		},
