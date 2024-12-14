@@ -522,6 +522,8 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& va
 	const size_t bytesPerKiloByte = 1024;
 	const size_t semicolonIndex = value.find(';');
 	std::string maxBodySize = value.substr(0, semicolonIndex);
+	if (maxBodySize.empty())
+		throw std::runtime_error("client_max_body_size value is empty");
 
 	const size_t lastNumberIndex = maxBodySize.find_last_of(s_number);
 	if (lastNumberIndex == std::string::npos)
