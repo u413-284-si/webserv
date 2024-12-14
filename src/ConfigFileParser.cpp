@@ -579,7 +579,15 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 	else if (directive == "server_name")
 		readServerName(value);
 	else if (directive == "client_max_body_size")
-		readMaxBodySize(value);
+		readMaxBodySize(ServerBlock, value);
+}
+
+void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, const std::string& value)
+{
+	if (directive == "root")
+		readRootPath(LocationBlock, value);
+	else if (directive == "client_max_body_size")
+		readMaxBodySize(LocationBlock, value);
 }
 
 /**
@@ -621,7 +629,7 @@ void ConfigFileParser::readLocationConfigLine(void)
 	if (value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos)
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-	// TODO: readLocationDirectiveValue(directive, value);
+	readLocationDirectiveValue(directive, value);
 }
 
 /********************/
