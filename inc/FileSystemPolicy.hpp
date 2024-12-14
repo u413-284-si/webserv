@@ -36,4 +36,5 @@ public:
 	virtual void writeToFile(const std::string& path, const std::string& content) const;
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
+	virtual void deleteFile(const std::string& path) const;
 };
