@@ -119,6 +119,7 @@ SRC:=	main.cpp \
 		ConfigFileParser.cpp \
 		Connection.cpp \
 		constants.cpp \
+		DeleteHandler.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
 		FileSystemPolicy.cpp \
