@@ -301,15 +301,13 @@ check_bear_installed:
 EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 .PHONY: coverage
 coverage: $(TEST) | $(COV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report from unittests as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov $(EXCL_PATH) $(COV_DIR) ./$(TEST)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)kcov $(EXCL_PATH) --cobertura-only $(COV_DIR) ./$(TEST)
 
 .PHONY: coverage2
 coverage2: $(NAME) | $(COV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests as index.html $(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT) pytest --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)pytest --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
 
 # ******************************
 # *     Object compiling and   *
