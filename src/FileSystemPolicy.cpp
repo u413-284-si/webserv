@@ -4,7 +4,7 @@
  * @brief Virtual destructor for FileSystemPolicy object
  *
  */
-FileSystemPolicy::~FileSystemPolicy() {}
+FileSystemPolicy::~FileSystemPolicy() { }
 
 /**
  * @brief Check the file type of a given path.
@@ -86,7 +86,7 @@ std::string FileSystemPolicy::getFileContents(const char* filename) const
 DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 {
 	errno = 0;
-	DIR *dir = opendir(path.c_str());
+	DIR* dir = opendir(path.c_str());
 	if (dir == NULL)
 		throw std::runtime_error("opendir(): " + std::string(strerror(errno)));
 	return dir;
@@ -102,7 +102,7 @@ DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 {
 	errno = 0;
-	struct dirent *entry = readdir(dir);
+	struct dirent* entry = readdir(dir);
 	if (entry == NULL && errno != 0)
 		throw std::runtime_error("readdir(): " + std::string(strerror(errno)));
 	return entry;
@@ -200,3 +200,70 @@ void FileSystemPolicy::deleteFile(const std::string& path) const
 	if (remove(path.c_str()) != 0)
 		throw std::runtime_error("remove(): " + std::string(strerror(errno)));
 }
+
+/**
+ * @brief Deletes a directory at the specified path.
+ *
+ * This function attempts to delete the directory located at the given path.
+ * It recursively deletes all files and subdirectories within the directory.
+ * If any file or directory cannot be deleted, it throws a runtime error with
+ * the appropriate error message.
+ *
+ * @param path The path to the directory to be deleted.
+ * @throws std::runtime_error if any file or directory cannot be deleted.
+ */
+// NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
+void FileSystemPolicy::deleteDirectory(const std::string& path) const
+{
+	DirectoryGuard dir(openDirectory(path));
+
+	struct dirent* entry = NULL;
+	while ((entry = readdir(dir.getDir())) != NULL) {
+		// Skip `.` and `..` entries
+		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+			continue;
+
+		std::string fullPath = std::string(path) + "/" + entry->d_name;
+
+		struct stat info = getFileStat(fullPath);
+		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
+		if (S_ISDIR(info.st_mode))
+			deleteDirectory(fullPath);
+		else {
+			errno = 0;
+			if (unlink(fullPath.c_str()) != 0)
+				throw std::runtime_error("unlink(): " + std::string(strerror(errno)));
+		}
+	}
+
+	// Remove the empty directory itself
+	errno = 0;
+	if (rmdir(path.c_str()) != 0)
+		throw std::runtime_error("rmdir(): " + std::string(strerror(errno)));
+}
+
+/**
+ * @brief Constructs a DirectoryGuard with the specified directory pointer.
+ * @param dir The directory pointer.
+ */
+FileSystemPolicy::DirectoryGuard::DirectoryGuard(DIR* dir)
+	: m_dir(dir)
+{
+}
+
+/**
+ * @brief Destructor for the DirectoryGuard class.
+ *
+ * If the directory pointer is not NULL, it is closed.
+ */
+FileSystemPolicy::DirectoryGuard::~DirectoryGuard()
+{
+	if (m_dir != NULL)
+		closedir(m_dir);
+}
+
+/**
+ * @brief Gets the directory pointer.
+ * @return The directory pointer.
+ */
+DIR* FileSystemPolicy::DirectoryGuard::getDir() const { return m_dir; }

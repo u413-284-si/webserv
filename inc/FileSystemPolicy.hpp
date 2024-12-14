@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sys/types.h>
 #include <dirent.h>
+#include <unistd.h>
 
 #include "utilities.hpp"
 #include "Log.hpp"
@@ -18,6 +19,8 @@
  *
  * This class is a wrapper for C functions on the file system.
  * It is used to make the code more testable.
+ * It contains a nested DirectoryGuard class for managing directory pointers.
+ * The class ensures that open pointers are closed when they go out of scope.
  */
 class FileSystemPolicy {
 
@@ -37,4 +40,16 @@ public:
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
 	virtual void deleteFile(const std::string& path) const;
+	virtual void deleteDirectory(const std::string& path) const;
+
+private:
+    class DirectoryGuard {
+    public:
+        explicit DirectoryGuard(DIR* dir);
+        ~DirectoryGuard();
+        DIR* getDir() const;
+
+    private:
+        DIR* m_dir;
+    };
 };
