@@ -101,9 +101,9 @@ protected:
 		m_location.cgiExt = ".php";
 		m_location.cgiPath = "/cgi-bin";
 		m_location.isAutoindex = true;
-		m_location.allowedMethods[0] = true;
-		m_location.allowedMethods[1] = false;
-		m_location.allowedMethods[2] = false;
+		m_location.allowMethods[0] = true;
+		m_location.allowMethods[1] = false;
+		m_location.allowMethods[2] = false;
 		m_location.returns = { { StatusOK, "OK.html" }, { StatusBadRequest, "BadRequest.html" } };
 
 		m_uri.path = "/path/to/resource";
