@@ -35,6 +35,7 @@ protected:
  * 17. Allow methods contains no value
  * 18. Invalid directives outside of server block
  * 19. Several server names
+ * 20. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -339,6 +340,20 @@ TEST_F(InvalidConfigFileTests, SeveralServerNames)
 				m_configFileParser.parseConfigFile("config_files/invalid_server_name_several_server_names.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("More than one server name", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/server_name_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("server_name value is empty", e.what());
 				throw;
 			}
 		},
