@@ -102,7 +102,10 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 	// Content-Type
-		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+		if (m_responseBody.find('{') != std::string::npos)
+			m_responseHeader << "Content-Type: application/json\r\n";
+		else
+			m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
 		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
