@@ -4,7 +4,7 @@ import time
 import os
 
 # Fixture to start the server for normal tests
-@pytest.fixture(scope="package")
+@pytest.fixture(scope="package", autouse=True)
 def start_cpp_server(request):
     cpp_server_executable = request.config.getoption("--server-executable")
     config_file = request.config.getoption("--config-file")

@@ -1,21 +1,21 @@
 import requests
 
-def test_no_CGI_defined(start_cpp_server):
+def test_no_CGI_defined():
     print("Try to access CGI without it defined")
     response = requests.get("http://127.0.0.1:8080/cgi-bin/time.py")
     assert response.status_code == 200
 
-#def test_CGI_helloWorld(start_cpp_server):
+#def test_CGI_helloWorld():
 #    print("Request for /cgi-bin/helloWorld.sh")
 #    response = requests.get("http://127.0.0.1:8080/cgi-bin/helloWorld.sh")
 #    assert response.status_code == 200
 
-#def test_CGI_time(start_cpp_server):
+#def test_CGI_time():
 #    print("Request for /cgi-bin/time.py")
 #    response = requests.get("http://127.0.0.1:8081/cgi-bin/time.py")
 #    assert response.status_code == 200
 
-#def test_CGI_upload_file(start_cpp_server):
+#def test_CGI_upload_file():
 #    print("Upload file with /cgi-bin/upload.py")
 #    # Query string parameters
 #    query_params = {
@@ -28,7 +28,7 @@ def test_no_CGI_defined(start_cpp_server):
 #    response = requests.post("http://127.0.0.1:8081/cgi-bin/upload.py", params=query_params, data=payload)
 #    assert response.status_code == 200
 
-# def test_CGI_toUpper(start_cpp_server):
+# def test_CGI_toUpper():
 #     print("Change to upper case with /cgi-bin/upload.py")
 #     # Define body
 #     payload = (
