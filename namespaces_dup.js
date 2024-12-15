@@ -1,8 +1,13 @@
 var namespaces_dup =
 [
+    [ "conftest", "namespaceconftest.html", [
+      [ "pytest_addoption", "namespaceconftest.html#a6f3d18943083f7c1cf563414a6cc6ecd", null ]
+    ] ],
     [ "constants", "namespaceconstants.html", [
       [ "g_decimalBase", "namespaceconstants.html#afe756195738c244eeace3037c5486edc", null ]
     ] ],
+    [ "server_management", "namespaceserver__management.html", "namespaceserver__management" ],
+    [ "server_response", "namespaceserver__response.html", "namespaceserver__response" ],
     [ "time", "namespacetime.html", null ],
     [ "upload", "namespaceupload.html", [
       [ "base_save_dir", "namespaceupload.html#a82b81fb245853758fc67d8a7c360a298", null ],

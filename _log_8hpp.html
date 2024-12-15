@@ -138,7 +138,7 @@ Macros</h2></td></tr>
 <tr class="separator:a42225a6ad31917d72a9bd2726fa827f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d7f7ae34f91f304bc7b521685bd9135" id="r_a4d7f7ae34f91f304bc7b521685bd9135"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_log_8hpp.html#a4d7f7ae34f91f304bc7b521685bd9135">LOG_</a>(level)&#160;&#160;&#160;<a class="el" href="classweblog_1_1_logger.html#a637a190cca7d8dfa8872bb86fbdf5af9">weblog::Logger::getInstance</a>() += <a class="el" href="classweblog_1_1_log_data.html">weblog::LogData</a>(level, __PRETTY_FUNCTION__, __LINE__, __FILE__)</td></tr>
 <tr class="separator:a4d7f7ae34f91f304bc7b521685bd9135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ff63e8955665c4a58b1598f2b07c51a" id="r_a6ff63e8955665c4a58b1598f2b07c51a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a>&#160;&#160;&#160;<a class="el" href="_log_8hpp.html#a4d7f7ae34f91f304bc7b521685bd9135">LOG_</a>(<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162">weblog::LevelDebug</a>)</td></tr>
+<tr class="memitem:a6ff63e8955665c4a58b1598f2b07c51a" id="r_a6ff63e8955665c4a58b1598f2b07c51a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a>&#160;&#160;&#160;if (0) std::cerr</td></tr>
 <tr class="separator:a6ff63e8955665c4a58b1598f2b07c51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb4f36db01bd128c7afeac5889dac311" id="r_aeb4f36db01bd128c7afeac5889dac311"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a>&#160;&#160;&#160;<a class="el" href="_log_8hpp.html#a4d7f7ae34f91f304bc7b521685bd9135">LOG_</a>(<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea58fb77d048847e4bc776bcdcd0c667d9">weblog::LevelInfo</a>)</td></tr>
 <tr class="separator:aeb4f36db01bd128c7afeac5889dac311"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,12 +214,12 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_DEBUG&#160;&#160;&#160;<a class="el" href="_log_8hpp.html#a4d7f7ae34f91f304bc7b521685bd9135">LOG_</a>(<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea7f37e7ef1be6c9896709e28e203e8162">weblog::LevelDebug</a>)</td>
+          <td class="memname">#define LOG_DEBUG&#160;&#160;&#160;if (0) std::cerr</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00010">10</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00013">13</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
 
 </div>
 </div>
@@ -235,7 +235,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00011">11</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00016">16</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
 
 </div>
 </div>
@@ -251,7 +251,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00012">12</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00017">17</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
 
 </div>
 </div>
@@ -267,7 +267,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00013">13</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_log_8hpp_source.html#l00018">18</a> of file <a class="el" href="_log_8hpp_source.html">Log.hpp</a>.</p>
 
 </div>
 </div>

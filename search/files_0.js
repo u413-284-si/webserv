@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['alogoutputter_2ecpp_0',['ALogOutputter.cpp',['../_a_log_outputter_8cpp.html',1,'']]],
-  ['alogoutputter_2ehpp_1',['ALogOutputter.hpp',['../_a_log_outputter_8hpp.html',1,'']]],
-  ['autoindexhandler_2ecpp_2',['AutoindexHandler.cpp',['../_autoindex_handler_8cpp.html',1,'']]],
-  ['autoindexhandler_2ehpp_3',['AutoindexHandler.hpp',['../_autoindex_handler_8hpp.html',1,'']]]
+  ['_5f_5finit_5f_5f_2epy_0',['__init__.py',['../server__management_2____init_____8py.html',1,'(Global Namespace)'],['../server__response_2____init_____8py.html',1,'(Global Namespace)']]]
 ];

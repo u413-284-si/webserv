@@ -121,17 +121,22 @@ $(document).ready(function(){initNavTree('_log_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="_log_8hpp.html#a42225a6ad31917d72a9bd2726fa827f2">    7</a></span><span class="preprocessor">#define LOG_INIT(level, outputter) weblog::Logger::getInstance().init(level, outputter)</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="_log_8hpp.html#a4d7f7ae34f91f304bc7b521685bd9135">    8</a></span><span class="preprocessor">#define LOG_(level) weblog::Logger::getInstance() += weblog::LogData(level, __PRETTY_FUNCTION__, __LINE__, __FILE__)</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">   10</a></span><span class="preprocessor">#define LOG_DEBUG LOG_(weblog::LevelDebug)</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">   11</a></span><span class="preprocessor">#define LOG_INFO LOG_(weblog::LevelInfo)</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="_log_8hpp.html#aea3f57d6dcc5b4ac957e2679e87dde27">   12</a></span><span class="preprocessor">#define LOG_WARN LOG_(weblog::LevelWarn)</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">   13</a></span><span class="preprocessor">#define LOG_ERROR LOG_(weblog::LevelError)</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceweblog.html">weblog</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>Logger&amp; <a class="code hl_function" href="namespaceweblog.html#ac346e51accb760668965fa2d12248fe2">initFile</a>(<a class="code hl_enumeration" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>Logger&amp; <a class="code hl_function" href="namespaceweblog.html#a23e11f7efdebde689d1fa3b697e3ff4a">initConsole</a>(<a class="code hl_enumeration" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> level);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifdef DEBUG_MSG</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor"> #define LOG_DEBUG LOG_(weblog::LevelDebug)</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">   13</a></span><span class="preprocessor"> #define LOG_DEBUG if (0) std::cerr</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="_log_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">   16</a></span><span class="preprocessor">#define LOG_INFO LOG_(weblog::LevelInfo)</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="_log_8hpp.html#aea3f57d6dcc5b4ac957e2679e87dde27">   17</a></span><span class="preprocessor">#define LOG_WARN LOG_(weblog::LevelWarn)</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">   18</a></span><span class="preprocessor">#define LOG_ERROR LOG_(weblog::LevelError)</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>} <span class="comment">// weblog</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceweblog.html">weblog</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>Logger&amp; <a class="code hl_function" href="namespaceweblog.html#ac346e51accb760668965fa2d12248fe2">initFile</a>(<a class="code hl_enumeration" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>Logger&amp; <a class="code hl_function" href="namespaceweblog.html#a23e11f7efdebde689d1fa3b697e3ff4a">initConsole</a>(<a class="code hl_enumeration" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> level);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>} <span class="comment">// weblog</span></div>
 <div class="ttc" id="a_log_outputter_console_8hpp_html"><div class="ttname"><a href="_log_outputter_console_8hpp.html">LogOutputterConsole.hpp</a></div></div>
 <div class="ttc" id="a_log_outputter_file_8hpp_html"><div class="ttname"><a href="_log_outputter_file_8hpp.html">LogOutputterFile.hpp</a></div></div>
 <div class="ttc" id="a_logger_8hpp_html"><div class="ttname"><a href="_logger_8hpp.html">Logger.hpp</a></div></div>

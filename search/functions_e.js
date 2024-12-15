@@ -11,5 +11,6 @@ var searchData=
   ['signalnumtoname_8',['signalnumtoname',['../signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7',1,'signalNumToName(int signum):&#160;signalHandler.cpp'],['../signal_handler_8cpp.html#adc4193659d5893030190dca46c276ac7',1,'signalNumToName(int signum):&#160;signalHandler.cpp']]],
   ['socketpolicy_9',['SocketPolicy',['../class_socket_policy.html#a9f904f94411982a2c958e3fd89e6085a',1,'SocketPolicy']]],
   ['split_10',['split',['../namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda',1,'webutils']]],
-  ['statuscodetoreasonphrase_11',['statusCodeToReasonPhrase',['../namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91',1,'webutils']]]
+  ['start_5fcpp_5fserver_11',['start_cpp_server',['../namespaceserver__response_1_1conftest.html#a2540e995e7b12021bb7416977cab2f14',1,'server_response::conftest']]],
+  ['statuscodetoreasonphrase_12',['statusCodeToReasonPhrase',['../namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91',1,'webutils']]]
 ];

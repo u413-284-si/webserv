@@ -1,9 +1,14 @@
 var searchData=
 [
-  ['main_2ecpp_0',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['method_2ehpp_1',['Method.hpp',['../_method_8hpp.html',1,'']]],
-  ['mockepollwrapper_2ehpp_2',['MockEpollWrapper.hpp',['../_mock_epoll_wrapper_8hpp.html',1,'']]],
-  ['mockfilesystempolicy_2ehpp_3',['MockFileSystemPolicy.hpp',['../_mock_file_system_policy_8hpp.html',1,'']]],
-  ['mockprocessops_2ehpp_4',['MockProcessOps.hpp',['../_mock_process_ops_8hpp.html',1,'']]],
-  ['mocksocketpolicy_2ehpp_5',['MockSocketPolicy.hpp',['../_mock_socket_policy_8hpp.html',1,'']]]
+  ['log_2ehpp_0',['Log.hpp',['../_log_8hpp.html',1,'']]],
+  ['logdata_2ecpp_1',['LogData.cpp',['../_log_data_8cpp.html',1,'']]],
+  ['logdata_2ehpp_2',['LogData.hpp',['../_log_data_8hpp.html',1,'']]],
+  ['logger_2ecpp_3',['Logger.cpp',['../_logger_8cpp.html',1,'']]],
+  ['logger_2ehpp_4',['Logger.hpp',['../_logger_8hpp.html',1,'']]],
+  ['loginit_2ecpp_5',['LogInit.cpp',['../_log_init_8cpp.html',1,'']]],
+  ['logostreaminserters_2ecpp_6',['LogOstreamInserters.cpp',['../_log_ostream_inserters_8cpp.html',1,'']]],
+  ['logoutputterconsole_2ecpp_7',['LogOutputterConsole.cpp',['../_log_outputter_console_8cpp.html',1,'']]],
+  ['logoutputterconsole_2ehpp_8',['LogOutputterConsole.hpp',['../_log_outputter_console_8hpp.html',1,'']]],
+  ['logoutputterfile_2ecpp_9',['LogOutputterFile.cpp',['../_log_outputter_file_8cpp.html',1,'']]],
+  ['logoutputterfile_2ehpp_10',['LogOutputterFile.hpp',['../_log_outputter_file_8hpp.html',1,'']]]
 ];

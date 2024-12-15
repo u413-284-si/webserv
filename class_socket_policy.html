@@ -265,8 +265,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
 <div class="line"><span class="lineno">   36</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* node = NULL;</div>
 <div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (!host.empty() || host != <span class="stringliteral">&quot;*&quot;</span>)</div>
-<div class="line"><span class="lineno">   39</span>        node = host.c_str();</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b">host</a>.empty() || host != <span class="stringliteral">&quot;*&quot;</span>)</div>
+<div class="line"><span class="lineno">   39</span>        node = <a class="code hl_variable" href="namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b">host</a>.c_str();</div>
 <div class="line"><span class="lineno">   40</span> </div>
 <div class="line"><span class="lineno">   41</span>    <span class="keyword">struct </span>addrinfo hints = {</div>
 <div class="line"><span class="lineno">   42</span>        AI_PASSIVE, <span class="comment">/* .ai_flags */</span></div>
@@ -280,7 +280,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   50</span>    };</div>
 <div class="line"><span class="lineno">   51</span> </div>
 <div class="line"><span class="lineno">   52</span>    <span class="keyword">struct </span>addrinfo* list = NULL;</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> result = getaddrinfo(node, port.c_str(), &amp;hints, &amp;list);</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> result = getaddrinfo(node, <a class="code hl_variable" href="namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64">port</a>.c_str(), &amp;hints, &amp;list);</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> (result != 0) {</div>
 <div class="line"><span class="lineno">   55</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;getaddrinfo(): &quot;</span> &lt;&lt; gai_strerror(result);</div>
 <div class="line"><span class="lineno">   56</span>        <span class="keywordflow">return</span> NULL;</div>
@@ -288,7 +288,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> list;</div>
 <div class="line"><span class="lineno">   60</span>}</div>
-<div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00013">Log.hpp:13</a></div></div>
+<div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00018">Log.hpp:18</a></div></div>
+<div class="ttc" id="anamespaceserver__response_1_1test__invalid_html_a344cce51b585da57ae304cd53640858b"><div class="ttname"><a href="namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b">server_response.test_invalid.host</a></div><div class="ttdeci">str host</div><div class="ttdef"><b>Definition</b> <a href="test__invalid_8py_source.html#l00006">test_invalid.py:6</a></div></div>
+<div class="ttc" id="anamespaceserver__response_1_1test__invalid_html_abad8d4fce10bcc0f3ec893f25f29ab64"><div class="ttname"><a href="namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64">server_response.test_invalid.port</a></div><div class="ttdeci">int port</div><div class="ttdef"><b>Definition</b> <a href="test__invalid_8py_source.html#l00007">test_invalid.py:7</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -375,7 +377,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  103</span>    }</div>
 <div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> newFd;</div>
 <div class="line"><span class="lineno">  105</span>}</div>
-<div class="ttc" id="a_log_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00010">Log.hpp:10</a></div></div>
+<div class="ttc" id="a_log_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_log_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00013">Log.hpp:13</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
