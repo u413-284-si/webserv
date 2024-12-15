@@ -373,6 +373,10 @@ fclean: clean
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@rm -rf $(COV_DIR)
 	@printf "$(RED)removed subdir $(COV_DIR)$(RESET)\n"
+	@rm -rf $(INTEGRATION_TEST_DIR)/__pycache__ \
+			$(INTEGRATION_TEST_DIR)/*/__pycache__ \
+			.pytest_cache
+	@printf "$(RED)removed .pytest_cache and directories __pychache__$(RESET)\n"
 	@echo
 
 # ******************************
