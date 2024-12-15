@@ -244,9 +244,9 @@ $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
 
-# Run unit and integration tests
+# Run integration tests
 .PHONY: test2
-test2:
+test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT) pytest -s ./$(INTEGRATION_TEST_DIR)
 
