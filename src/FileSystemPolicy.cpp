@@ -27,8 +27,10 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 			return FileNotExist;
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	}
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 	if (S_ISREG(fileStat.st_mode))
 		return FileRegular;
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 	if (S_ISDIR(fileStat.st_mode))
 		return FileDirectory;
 	return FileOther;
@@ -134,4 +136,49 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
 	if (stat(path.c_str(), &fileStat) == -1)
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	return fileStat;
+}
+
+/**
+ * @brief Creates a file with the specified content at the given path.
+ *
+ * This function attempts to create a file at the specified path and writes the provided content to it.
+ * If the file cannot be created, an error is logged and the function returns false.
+ * If the file exists already, the content is appended to the file.
+ *
+ * @throws std::runtime_error with strerror() of errno.
+ * @param path The path where the file should be created.
+ * @param content The content to be written to the file.
+ */
+void FileSystemPolicy::writeToFile(const std::string& path, const std::string& content) const
+{
+	std::ofstream file(path.c_str(), std::ios::binary | std::ios::app);
+	if (!file.good())
+		throw std::runtime_error("openFile(): \"" + path + "\", " + std::string(strerror(errno)));
+	file << content;
+	LOG_DEBUG << "Data successfully written/appended to the file: " << path;
+}
+
+/**
+ * @brief Get the last modified time of a file.
+ *
+ * @param fileStat File stat object.
+ * @return std::string Last modified time.
+ */
+std::string FileSystemPolicy::getLastModifiedTime(const struct stat& fileStat) const
+{
+	return webutils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
+}
+
+/**
+ * @brief Get the file size of a file.
+ *
+ * @param fileStat File stat object.
+ * @return long File size.
+ */
+long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
+{
+	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
+	if (S_ISDIR(fileStat.st_mode))
+		return 0;
+	return fileStat.st_size;
 }
