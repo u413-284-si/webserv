@@ -248,7 +248,7 @@ $(TEST): $(TEST_OBJS)
 .PHONY: test2
 test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT) pytest -s ./$(INTEGRATION_TEST_DIR)
+	$(SILENT)pytest ./$(INTEGRATION_TEST_DIR)
 
 # This target uses the file standard_config.conf as argument to run the program.
 .PHONY: run
