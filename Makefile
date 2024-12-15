@@ -40,7 +40,7 @@ else
 	ASAN =
 endif
 
-# Set NODEBUG=1 to compile with debug messages
+# Set NODEBUG=1 to compile without debug messages
 ifeq ($(NODEBUG),1)
 	DEBUG_FLAGS =
 else
