@@ -24,7 +24,8 @@ ResponseBodyHandler::ResponseBodyHandler(
  * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
  * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
  * body.
- * @todo FIXME: Implement other methods than GET.
+ * - In case of a POST request, the request body will be written to the target resource.
+ * - In case of a DELETE request, the target resource will be deleted.
  */
 void ResponseBodyHandler::execute()
 {
