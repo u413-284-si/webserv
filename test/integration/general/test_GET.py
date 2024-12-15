@@ -1,3 +1,5 @@
+# This module is for succesful GET requests
+
 import requests
 import os
 

@@ -1,3 +1,5 @@
+# This module is for signal handling
+
 import signal
 import os
 import time

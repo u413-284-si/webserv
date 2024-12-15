@@ -1,3 +1,5 @@
+# This module is for succesful POST requests
+
 import requests
 import os
 

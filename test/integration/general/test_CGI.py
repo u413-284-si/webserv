@@ -1,3 +1,5 @@
+# This module is for succesful CGI requests
+
 import requests
 
 def test_no_CGI_defined():
