@@ -21,5 +21,4 @@ public:
 	MOCK_METHOD(struct stat, getFileStat, (const std::string&), (const, override));
 	MOCK_METHOD(void, writeToFile, (const std::string&, const std::string&), (const, override));
 	MOCK_METHOD(void, deleteFile, (const std::string&), (const, override));
-	MOCK_METHOD(void, deleteDirectory, (const std::string&), (const, override));
 };

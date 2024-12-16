@@ -1,6 +1,7 @@
 #include "gmock/gmock.h"
 #include <gtest/gtest.h>
 
+#include <filesystem>
 #include <stdexcept>
 #include <string>
 
@@ -16,11 +17,10 @@ protected:
 	DeleteHandlerTest()
 	{
 		ON_CALL(m_fileSystemPolicy, deleteFile).WillByDefault(Return());
-		ON_CALL(m_fileSystemPolicy, deleteDirectory).WillByDefault(Return());
 	}
 	~DeleteHandlerTest() override { }
 
-	std::string m_path = "/workspaces/webserv/test/";
+	std::string m_path = "/workspaces/webserv/html/test/";
 	statusCode m_statusCode = StatusOK;
 
 	NiceMock<MockFileSystemPolicy> m_fileSystemPolicy;
@@ -44,7 +44,10 @@ TEST_F(DeleteHandlerTest, DeleteFile)
 TEST_F(DeleteHandlerTest, DeleteDirectory)
 {
 	// Arrange
+	std::filesystem::create_directory(m_path);
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemPolicy, openDirectory).WillOnce(Return(nullptr));
+	EXPECT_CALL(m_fileSystemPolicy, readDirectory).WillOnce(Return(nullptr));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);
