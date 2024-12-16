@@ -17,6 +17,7 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
  * Recursively searches for the target resource with locateTargetResource() using the information in the LocatingInfo.
  * Uses updateConnection() to write found information into Connection.
  * @param connection Connection object.
+ * @throws std::runtime_error If no location block is found for the path.
  */
 void TargetResourceHandler::execute(Connection& connection)
 {
@@ -41,7 +42,7 @@ void TargetResourceHandler::execute(Connection& connection)
  * @param locInfo Struct containing info for locating the target resource.
  * @param depth Current depth in recursion.
  * @return TargetResourceHandler::LocatingInfo
- * @todo Remove check for no location found if default location implemented.
+ * @throws std::runtime_error If no location block is found for the path.
  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
@@ -54,12 +55,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 	}
 
 	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
-
-	// No location found > do we also set a default location to not make extra check?
-	if (locInfo.activeLocation == locInfo.locations->end()) {
-		locInfo.statusCode = StatusInternalServerError;
-		return (locInfo);
-	}
+	LOG_DEBUG << "Active location: " << locInfo.activeLocation->path;
 
 	if (locInfo.activeLocation->alias.first) {
 		LOG_DEBUG << "Alias found: " << locInfo.activeLocation->alias.second;
@@ -108,7 +104,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 std::vector<Location>::const_iterator matchLocation(const std::vector<Location>& locations, const std::string& path)
 {
 	std::size_t longestMatch = 0;
-	std::vector<Location>::const_iterator locationMatch = locations.end();
+	std::vector<Location>::const_iterator locationMatch = locations.begin();
 
 	for (std::vector<Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
 		if (path.find(it->path) == 0) {
