@@ -123,6 +123,19 @@ TEST_F(TargetResourceHandlerTest, FileOther)
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
 }
 
+TEST_F(TargetResourceHandlerTest, FileNoPermission)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileNoPermission));
+
+	m_request.uri.path = "/test";
+
+	m_targetResourceHandler.execute(m_connection);
+
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_EQ(m_request.targetResource, "/second/location/test");
+}
+
 TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
