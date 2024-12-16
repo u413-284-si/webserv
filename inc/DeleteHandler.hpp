@@ -10,7 +10,7 @@
 #include <string>
 
 /**
- * @brief Class to handle the DELETE requests.
+ * @brief Class to delete files and directories.
  *
  */
 class DeleteHandler {
