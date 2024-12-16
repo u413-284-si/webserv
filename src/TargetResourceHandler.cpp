@@ -70,18 +70,27 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		switch (fileType) {
 
 		case FileSystemPolicy::FileRegular:
+			LOG_DEBUG << "File type: regular";
 			break;
 
 		case FileSystemPolicy::FileDirectory:
+			LOG_DEBUG << "File type: directory";
 			handleFileDirectory(locInfo, currentDepth);
 			break;
 
+		case FileSystemPolicy::FileOther:
+			LOG_DEBUG << "File type: other";
+			locInfo.statusCode = StatusInternalServerError;
+			break;
+
 		case FileSystemPolicy::FileNotExist:
+			LOG_DEBUG << "No such file or directory";
 			locInfo.statusCode = StatusNotFound;
 			break;
 
-		case FileSystemPolicy::FileOther:
-			locInfo.statusCode = StatusInternalServerError;
+		case FileSystemPolicy::FileNoPermission:
+			LOG_DEBUG << "Permission denied";
+			locInfo.statusCode = StatusForbidden;
 			break;
 		}
 	} catch (const std::runtime_error& e) {
