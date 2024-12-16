@@ -22,4 +22,6 @@ public:
 private:
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_response;
+
+	void deleteDirectory(const std::string& path) const;
 };

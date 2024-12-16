@@ -40,7 +40,7 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			break;
 
 		case FileSystemPolicy::FileDirectory:
-			m_fileSystemPolicy.deleteDirectory(path);
+			deleteDirectory(path);
 			m_response << "{\n"
 					   << "\"message\": \"Directory deleted successfully\",\n"
 					   << "\"directory\": \"" << path << "\"\n"
@@ -64,4 +64,45 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			httpStatus = StatusInternalServerError;
 	}
 	return m_response.str();
+}
+
+/**
+ * @brief Deletes a directory at the specified path.
+ *
+ * This function attempts to delete the directory located at the given path.
+ * It recursively deletes all files and subdirectories within the directory.
+ * If any file or directory cannot be deleted, it throws a runtime error with
+ * the appropriate error message.
+ *
+ * @param path The path to the directory to be deleted.
+ * @throws std::runtime_error if any file or directory cannot be deleted.
+ */
+// NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
+void DeleteHandler::deleteDirectory(const std::string& path) const
+{
+	Directory dir(m_fileSystemPolicy, path);
+
+	struct dirent* entry = NULL;
+	while ((entry = readdir(dir.getDir())) != NULL) {
+		// Skip `.` and `..` entries
+		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+			continue;
+
+		std::string fullPath = std::string(path) + "/" + entry->d_name;
+
+		struct stat info = m_fileSystemPolicy.getFileStat(fullPath);
+		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
+		if (S_ISDIR(info.st_mode))
+			deleteDirectory(fullPath);
+		else {
+			errno = 0;
+			if (unlink(fullPath.c_str()) != 0)
+				throw std::runtime_error("unlink(): " + std::string(strerror(errno)));
+		}
+	}
+
+	// Remove the empty directory itself
+	errno = 0;
+	if (rmdir(path.c_str()) != 0)
+		throw std::runtime_error("rmdir(): " + std::string(strerror(errno)));
 }
