@@ -95,7 +95,7 @@ ConfigFile createDummyConfig()
 	Location location7;
 	location7.path = "/uploads/";
 	location7.root = "/workspaces/webserv/html";
-	location7.allowedMethods[MethodPost] = true;
+	location7.allowMethods[MethodPost] = true;
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
