@@ -40,6 +40,13 @@ else
 	ASAN =
 endif
 
+# Set NODEBUG=1 to compile without debug messages
+ifeq ($(NODEBUG),1)
+	DEBUG_FLAGS =
+else
+	DEBUG_FLAGS = -D DEBUG_MSG
+endif
+
 # ******************************
 # *     Text effects           *
 # ******************************
@@ -59,6 +66,8 @@ BLUE := \033[34m
 SRC_DIR := src
 
 TEST_DIR := test
+UNIT_TEST_DIR := $(TEST_DIR)/unit
+INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
 
 # Base directory for object files
 BASE_OBJ_DIR = obj
@@ -96,7 +105,7 @@ CONFIG_DIR := config_files
 CXX := c++
 CPPFLAGS := -I $(INC_DIR)
 WARNINGS := -Wall -Wextra -Werror -Wpedantic -Wdocumentation
-CXXFLAGS = -std=c++98 $(WARNINGS) $(ASAN) -g
+CXXFLAGS = -std=c++98 $(WARNINGS) $(ASAN) $(DEBUG_FLAGS) -g
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
 LDFLAGS = $(ASAN)
 LDLIBS =
@@ -104,7 +113,7 @@ COMPILE = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) -c
 POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 
 # Special variables for compiling test files
-CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) -g
+CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) $(DEBUG_FLAGS) -g
 COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
 
 # ******************************
@@ -235,11 +244,17 @@ $(TEST): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
 
+# Run integration tests
+.PHONY: test2
+test2: $(NAME)
+	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)pytest ./$(INTEGRATION_TEST_DIR)
+
 # This target uses the file standard_config.conf as argument to run the program.
 .PHONY: run
 run: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
-	./webserv $(CONFIG_DIR)/standard_config.conf
+	./$(NAME) $(CONFIG_DIR)/standard_config.conf
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -286,10 +301,13 @@ check_bear_installed:
 EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 .PHONY: coverage
 coverage: $(TEST) | $(COV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report as index.html$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)kcov $(EXCL_PATH) $(COV_DIR) ./$(TEST)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report as cov.xml$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)kcov $(EXCL_PATH) --cobertura-only $(COV_DIR) ./$(TEST)
+
+.PHONY: coverage2
+coverage2: $(NAME) | $(COV_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)pytest --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
 
 # ******************************
 # *     Object compiling and   *
@@ -315,7 +333,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(SILENT)$(POSTCOMPILE)
 
 # Similar target for testfiles; uses different compile flags
-$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(UNIT_TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE_TEST) $< -o $@
@@ -355,6 +373,10 @@ fclean: clean
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@rm -rf $(COV_DIR)
 	@printf "$(RED)removed subdir $(COV_DIR)$(RESET)\n"
+	@rm -rf $(INTEGRATION_TEST_DIR)/__pycache__ \
+			$(INTEGRATION_TEST_DIR)/*/__pycache__ \
+			$(INTEGRATION_TEST_DIR)/.pytest_cache
+	@printf "$(RED)removed .pytest_cache and directories __pychache__$(RESET)\n"
 	@echo
 
 # ******************************
