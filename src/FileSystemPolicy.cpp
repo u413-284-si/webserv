@@ -1,6 +1,12 @@
 #include "FileSystemPolicy.hpp"
 
 /**
+ * @brief Construct a new File System Policy:: File System Policy object
+ *
+ */
+FileSystemPolicy::FileSystemPolicy() {}
+
+/**
  * @brief Virtual destructor for FileSystemPolicy object
  *
  */
@@ -25,6 +31,8 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 	if (stat(path.c_str(), &fileStat) == -1) {
 		if (errno == ENOENT)
 			return FileNotExist;
+		if (errno == EACCES)
+			return FileNoPermission;
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	}
 	// NOLINTNEXTLINE: misinterpretation by HIC++ standard

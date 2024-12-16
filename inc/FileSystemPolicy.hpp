@@ -1,17 +1,17 @@
 #pragma once
 
-#include <string>
 #include <cerrno>
 #include <cstring>
-#include <sys/stat.h>
-#include <fstream>
-#include <stdexcept>
-#include <iostream>
-#include <sys/types.h>
 #include <dirent.h>
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-#include "utilities.hpp"
 #include "Log.hpp"
+#include "utilities.hpp"
 
 /**
  * @brief Class for C functions on the file system.
@@ -22,9 +22,11 @@
 class FileSystemPolicy {
 
 public:
+	FileSystemPolicy();
 	virtual ~FileSystemPolicy();
 
-	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3, FileNoPermission = 4 };
+
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
 	virtual bool isExistingFile(const std::string& path) const;
@@ -36,4 +38,8 @@ public:
 	virtual void writeToFile(const std::string& path, const std::string& content) const;
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
+
+private:
+	FileSystemPolicy(const FileSystemPolicy& ref);
+	FileSystemPolicy& operator=(const FileSystemPolicy& ref);
 };
