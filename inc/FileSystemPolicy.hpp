@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cerrno>
+#include <cstdio>
 #include <cstring>
 #include <sys/stat.h>
 #include <fstream>
@@ -9,7 +10,6 @@
 #include <iostream>
 #include <sys/types.h>
 #include <dirent.h>
-#include <unistd.h>
 
 #include "utilities.hpp"
 #include "Log.hpp"

@@ -197,6 +197,6 @@ long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
 void FileSystemPolicy::deleteFile(const std::string& path) const
 {
 	errno = 0;
-	if (remove(path.c_str()) != 0)
+	if (std::remove(path.c_str()) != 0)
 		throw std::runtime_error("remove(): " + std::string(strerror(errno)));
 }
