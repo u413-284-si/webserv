@@ -183,17 +183,25 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
  * If the file cannot be created, an error is logged and the function returns false.
  * If the file exists already, the content is appended to the file.
  *
- * @throws std::runtime_error with strerror() of errno.
+ * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
+ * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
+ * @throws std::runtime_error in other cases with strerror() of errno.
  * @param path The path where the file should be created.
  * @param content The content to be written to the file.
  */
 void FileSystemPolicy::writeToFile(const std::string& path, const std::string& content) const
 {
+	errno = 0;
 	std::ofstream file(path.c_str(), std::ios::binary | std::ios::app);
-	if (!file.good())
-		throw std::runtime_error("openFile(): \"" + path + "\", " + std::string(strerror(errno)));
+	if (!file.is_open()) {
+		if (errno == ENOENT)
+			throw FileNotFoundException("std::ifstream: " + std::string(strerror(errno)));
+		if (errno == EACCES)
+			throw NoPermissionException("std::ifstream: " + std::string(strerror(errno)));
+	}
+	if (file.fail())
+		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
 	file << content;
-	LOG_DEBUG << "Data successfully written/appended to the file: " << path;
 }
 
 /**
