@@ -140,12 +140,13 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test___g_e_t_8py_source.html#l00006">6</a> of file <a class="el" href="test___g_e_t_8py_source.html">test_GET.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    6</span><span class="keyword">def </span>test_GET_simple():</div>
 <div class="line"><span class="lineno">    7</span>    print(<span class="stringliteral">&quot;Request for /index.html&quot;</span>)</div>
-<div class="line"><span class="lineno">    8</span>    response = requests.get(<span class="stringliteral">&quot;http://localhost:8080/index.html&quot;</span>)</div>
+<div class="line"><span class="lineno">    8</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://localhost:8080/index.html&quot;</span>)</div>
 <div class="line"><span class="lineno">    9</span>    file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/index.html&quot;</span></div>
-<div class="line"><span class="lineno">   10</span>    file_size = os.path.getsize(file_path)</div>
-<div class="line"><span class="lineno">   11</span>    <span class="keyword">assert</span> int(response.headers[<span class="stringliteral">&quot;content-length&quot;</span>]) == file_size</div>
-<div class="line"><span class="lineno">   12</span>    <span class="keyword">assert</span> response.status_code == 200</div>
+<div class="line"><span class="lineno">   10</span>    file_size = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.getsize</a>(file_path)</div>
+<div class="line"><span class="lineno">   11</span>    <span class="keyword">assert</span> int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;content-length&quot;</span>]) == file_size</div>
+<div class="line"><span class="lineno">   12</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
 <div class="line"><span class="lineno">   13</span> </div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -167,11 +168,11 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test___g_e_t_8py_source.html#l00014">14</a> of file <a class="el" href="test___g_e_t_8py_source.html">test_GET.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   14</span><span class="keyword">def </span>test_GET_index_file():</div>
 <div class="line"><span class="lineno">   15</span>    print(<span class="stringliteral">&quot;Request for /&quot;</span>)</div>
-<div class="line"><span class="lineno">   16</span>    response = requests.get(<span class="stringliteral">&quot;http://127.0.0.1:8080&quot;</span>)</div>
+<div class="line"><span class="lineno">   16</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://127.0.0.1:8080&quot;</span>)</div>
 <div class="line"><span class="lineno">   17</span>    file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/index.html&quot;</span></div>
-<div class="line"><span class="lineno">   18</span>    file_size = os.path.getsize(file_path)</div>
-<div class="line"><span class="lineno">   19</span>    <span class="keyword">assert</span> int(response.headers[<span class="stringliteral">&quot;content-length&quot;</span>]) == file_size</div>
-<div class="line"><span class="lineno">   20</span>    <span class="keyword">assert</span> response.status_code == 200</div>
+<div class="line"><span class="lineno">   18</span>    file_size = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.getsize</a>(file_path)</div>
+<div class="line"><span class="lineno">   19</span>    <span class="keyword">assert</span> int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;content-length&quot;</span>]) == file_size</div>
+<div class="line"><span class="lineno">   20</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
 <div class="line"><span class="lineno">   21</span> </div>
 </div><!-- fragment -->
 </div>
@@ -194,10 +195,10 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test___g_e_t_8py_source.html#l00022">22</a> of file <a class="el" href="test___g_e_t_8py_source.html">test_GET.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   22</span><span class="keyword">def </span>test_GET_directory_listing():</div>
 <div class="line"><span class="lineno">   23</span>    print(<span class="stringliteral">&quot;Request for /directory/&quot;</span>)</div>
-<div class="line"><span class="lineno">   24</span>    response = requests.get(<span class="stringliteral">&quot;http://localhost:8080/directory/&quot;</span>)</div>
+<div class="line"><span class="lineno">   24</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://localhost:8080/directory/&quot;</span>)</div>
 <div class="line"><span class="lineno">   25</span>    heading = <span class="stringliteral">&quot;Index of /workspaces/webserv/html/directory/&quot;</span></div>
-<div class="line"><span class="lineno">   26</span>    <span class="keyword">assert</span> heading <span class="keywordflow">in</span> response.text</div>
-<div class="line"><span class="lineno">   27</span>    <span class="keyword">assert</span> response.status_code == 200</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keyword">assert</span> heading <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.text</a></div>
+<div class="line"><span class="lineno">   27</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
 <div class="line"><span class="lineno">   28</span> </div>
 </div><!-- fragment -->
 </div>
@@ -220,10 +221,10 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test___g_e_t_8py_source.html#l00029">29</a> of file <a class="el" href="test___g_e_t_8py_source.html">test_GET.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span><span class="keyword">def </span>test_GET_directory_redirect():</div>
 <div class="line"><span class="lineno">   30</span>    print(<span class="stringliteral">&quot;Request for /directory&quot;</span>)</div>
-<div class="line"><span class="lineno">   31</span>    response = requests.get(<span class="stringliteral">&quot;http://localhost:8080/directory&quot;</span>, allow_redirects=<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">   31</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://localhost:8080/directory&quot;</span>, allow_redirects=<span class="keyword">False</span>)</div>
 <div class="line"><span class="lineno">   32</span><span class="comment"># does not work right now</span></div>
 <div class="line"><span class="lineno">   33</span><span class="comment">#    assert response.headers[&quot;location&quot;] == &quot;/directory/&quot;</span></div>
-<div class="line"><span class="lineno">   34</span>    <span class="keyword">assert</span> response.status_code == 301</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 301</div>
 </div><!-- fragment -->
 </div>
 </div>

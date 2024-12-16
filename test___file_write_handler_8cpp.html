@@ -131,11 +131,11 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5b4f171e73ffa2fa1510a1ffee183418" id="r_a5b4f171e73ffa2fa1510a1ffee183418"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___file_write_handler_8cpp.html#a5b4f171e73ffa2fa1510a1ffee183418">TEST_F</a> (<a class="el" href="class_file_write_handler_test.html">FileWriteHandlerTest</a>, NonExistingFile)</td></tr>
+<tr class="memitem:a5b4f171e73ffa2fa1510a1ffee183418" id="r_a5b4f171e73ffa2fa1510a1ffee183418"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___file_write_handler_8cpp.html#a5b4f171e73ffa2fa1510a1ffee183418">TEST_F</a> (<a class="el" href="class_file_write_handler_test.html">FileWriteHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NonExistingFile</a>)</td></tr>
 <tr class="separator:a5b4f171e73ffa2fa1510a1ffee183418"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af545cd03a3e301e3d7727a70885b3b97" id="r_af545cd03a3e301e3d7727a70885b3b97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___file_write_handler_8cpp.html#af545cd03a3e301e3d7727a70885b3b97">TEST_F</a> (<a class="el" href="class_file_write_handler_test.html">FileWriteHandlerTest</a>, ExistingFile)</td></tr>
+<tr class="memitem:af545cd03a3e301e3d7727a70885b3b97" id="r_af545cd03a3e301e3d7727a70885b3b97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___file_write_handler_8cpp.html#af545cd03a3e301e3d7727a70885b3b97">TEST_F</a> (<a class="el" href="class_file_write_handler_test.html">FileWriteHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ExistingFile</a>)</td></tr>
 <tr class="separator:af545cd03a3e301e3d7727a70885b3b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40ef3e17f3772c77c3c9d02b4975496c" id="r_a40ef3e17f3772c77c3c9d02b4975496c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___file_write_handler_8cpp.html#a40ef3e17f3772c77c3c9d02b4975496c">TEST_F</a> (<a class="el" href="class_file_write_handler_test.html">FileWriteHandlerTest</a>, GetFileStatThrow)</td></tr>
+<tr class="memitem:a40ef3e17f3772c77c3c9d02b4975496c" id="r_a40ef3e17f3772c77c3c9d02b4975496c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___file_write_handler_8cpp.html#a40ef3e17f3772c77c3c9d02b4975496c">TEST_F</a> (<a class="el" href="class_file_write_handler_test.html">FileWriteHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">GetFileStatThrow</a>)</td></tr>
 <tr class="separator:a40ef3e17f3772c77c3c9d02b4975496c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -154,7 +154,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NonExistingFile&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NonExistingFile</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -168,18 +168,19 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00035">35</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
 <div class="line"><span class="lineno">   37</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   38</span>    EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(<span class="keyword">false</span>));</div>
+<div class="line"><span class="lineno">   38</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, isExistingFile).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">false</span>));</div>
 <div class="line"><span class="lineno">   39</span> </div>
 <div class="line"><span class="lineno">   40</span>    <span class="comment">// Act</span></div>
-<div class="line"><span class="lineno">   41</span>    std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);</div>
+<div class="line"><span class="lineno">   41</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a> = m_fileWriteHandler.execute(m_path, m_content);</div>
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">   44</span>    EXPECT_EQ(responseBody,</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a>,</div>
 <div class="line"><span class="lineno">   45</span>        <span class="stringliteral">&quot;{\n\&quot;message\&quot;: \&quot;File created successfully\&quot;,\n\&quot;file\&quot;: \&quot;&quot;</span> + m_path</div>
 <div class="line"><span class="lineno">   46</span>            + <span class="stringliteral">&quot;\&quot;,\n\&quot;file_size\&quot;: &quot;</span> + std::to_string(m_fakeStat.st_size) + <span class="stringliteral">&quot;,\n\&quot;last_modified\&quot;: \&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   47</span>            + <a class="code hl_function" href="namespacewebutils.html#ab6119b08526700518f576bb78554be59">webutils::getLocaltimeString</a>(m_fakeStat.st_mtime, <span class="stringliteral">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</div>
 <div class="line"><span class="lineno">   48</span>            + <span class="stringliteral">&quot;\&quot;,\n\&quot;status\&quot;: \&quot;created\&quot;\n}\n&quot;</span>);</div>
 <div class="line"><span class="lineno">   49</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="anamespacewebutils_html_ab6119b08526700518f576bb78554be59"><div class="ttname"><a href="namespacewebutils.html#ab6119b08526700518f576bb78554be59">webutils::getLocaltimeString</a></div><div class="ttdeci">std::string getLocaltimeString(time_t now, const std::string &amp;format)</div><div class="ttdoc">Returns localtime string in provided format.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00120">utilities.cpp:120</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -204,7 +205,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ExistingFile&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ExistingFile</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -218,13 +219,13 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00051">51</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
 <div class="line"><span class="lineno">   53</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   54</span>    EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(<span class="keyword">true</span>));</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, isExistingFile).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">true</span>));</div>
 <div class="line"><span class="lineno">   55</span> </div>
 <div class="line"><span class="lineno">   56</span>    <span class="comment">// Act</span></div>
-<div class="line"><span class="lineno">   57</span>    std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);</div>
+<div class="line"><span class="lineno">   57</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a> = m_fileWriteHandler.execute(m_path, m_content);</div>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">   60</span>    EXPECT_EQ(responseBody,</div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a>,</div>
 <div class="line"><span class="lineno">   61</span>        <span class="stringliteral">&quot;{\n\&quot;message\&quot;: \&quot;Data appended successfully\&quot;,\n\&quot;file\&quot;: \&quot;&quot;</span> + m_path</div>
 <div class="line"><span class="lineno">   62</span>            + <span class="stringliteral">&quot;\&quot;,\n\&quot;file_size\&quot;: &quot;</span> + std::to_string(m_fakeStat.st_size) + <span class="stringliteral">&quot;,\n\&quot;last_modified\&quot;: \&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   63</span>            + <a class="code hl_function" href="namespacewebutils.html#ab6119b08526700518f576bb78554be59">webutils::getLocaltimeString</a>(m_fakeStat.st_mtime, <span class="stringliteral">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</div>
@@ -253,7 +254,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GetFileStatThrow&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">GetFileStatThrow</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -267,15 +268,15 @@ Here is the call graph for this function:</div>
 <p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00067">67</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
 <div class="line"><span class="lineno">   69</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   70</span>    std::string errorMessage = <span class="stringliteral">&quot;stat(): getFileStat failed&quot;</span>;</div>
+<div class="line"><span class="lineno">   70</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorMessage</a> = <span class="stringliteral">&quot;stat(): getFileStat failed&quot;</span>;</div>
 <div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>    EXPECT_CALL(m_fileSystemPolicy, getFileStat).WillOnce(testing::Throw(std::runtime_error(errorMessage)));</div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileStat).WillOnce(testing::Throw(std::runtime_error(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorMessage</a>)));</div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>    <span class="comment">// Act</span></div>
-<div class="line"><span class="lineno">   75</span>    std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);</div>
+<div class="line"><span class="lineno">   75</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a> = m_fileWriteHandler.execute(m_path, m_content);</div>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">   78</span>    EXPECT_EQ(responseBody, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">   78</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a>, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">   79</span>}</div>
 </div><!-- fragment -->
 </div>

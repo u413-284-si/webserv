@@ -134,8 +134,8 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00005">5</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span>test_no_CGI_defined():</div>
 <div class="line"><span class="lineno">    6</span>    print(<span class="stringliteral">&quot;Try to access CGI without it defined&quot;</span>)</div>
-<div class="line"><span class="lineno">    7</span>    response = requests.get(<span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/time.py&quot;</span>)</div>
-<div class="line"><span class="lineno">    8</span>    <span class="keyword">assert</span> response.status_code == 200</div>
+<div class="line"><span class="lineno">    7</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/time.py&quot;</span>)</div>
+<div class="line"><span class="lineno">    8</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
 <div class="line"><span class="lineno">    9</span> </div>
 <div class="line"><span class="lineno">   10</span><span class="comment">#def test_CGI_helloWorld():</span></div>
 <div class="line"><span class="lineno">   11</span><span class="comment">#    print(&quot;Request for /cgi-bin/helloWorld.sh&quot;)</span></div>
@@ -175,6 +175,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span><span class="comment">#     )</span></div>
 <div class="line"><span class="lineno">   46</span><span class="comment">#     response = requests.post(&quot;http://127.0.0.1:8080/cgi-bin/upperCase.sh&quot;, data=payload)</span></div>
 <div class="line"><span class="lineno">   47</span><span class="comment">#     assert response.status_code == 200</span></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

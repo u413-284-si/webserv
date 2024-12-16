@@ -132,11 +132,11 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a25537358add2db1ce439b611dffe8790" id="r_a25537358add2db1ce439b611dffe8790"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790">TEST_F</a> (<a class="el" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, ServerInitSuccess)</td></tr>
+<tr class="memitem:a25537358add2db1ce439b611dffe8790" id="r_a25537358add2db1ce439b611dffe8790"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__init_virtual_servers_8cpp.html#a25537358add2db1ce439b611dffe8790">TEST_F</a> (<a class="el" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ServerInitSuccess</a>)</td></tr>
 <tr class="separator:a25537358add2db1ce439b611dffe8790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfe6d5b03727d62dd703c623ad463968" id="r_abfe6d5b03727d62dd703c623ad463968"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__init_virtual_servers_8cpp.html#abfe6d5b03727d62dd703c623ad463968">TEST_F</a> (<a class="el" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, OneDuplicateServer)</td></tr>
+<tr class="memitem:abfe6d5b03727d62dd703c623ad463968" id="r_abfe6d5b03727d62dd703c623ad463968"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__init_virtual_servers_8cpp.html#abfe6d5b03727d62dd703c623ad463968">TEST_F</a> (<a class="el" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OneDuplicateServer</a>)</td></tr>
 <tr class="separator:abfe6d5b03727d62dd703c623ad463968"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898cd8e5a6bc1ea3ad534ebccca37541" id="r_a898cd8e5a6bc1ea3ad534ebccca37541"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__init_virtual_servers_8cpp.html#a898cd8e5a6bc1ea3ad534ebccca37541">TEST_F</a> (<a class="el" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, NoServers)</td></tr>
+<tr class="memitem:a898cd8e5a6bc1ea3ad534ebccca37541" id="r_a898cd8e5a6bc1ea3ad534ebccca37541"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__init_virtual_servers_8cpp.html#a898cd8e5a6bc1ea3ad534ebccca37541">TEST_F</a> (<a class="el" href="class_init_virtual_servers_test.html">InitVirtualServersTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NoServers</a>)</td></tr>
 <tr class="separator:a898cd8e5a6bc1ea3ad534ebccca37541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -155,7 +155,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ServerInitSuccess&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ServerInitSuccess</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -168,33 +168,34 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="test__init_virtual_servers_8cpp_source.html#l00049">49</a> of file <a class="el" href="test__init_virtual_servers_8cpp_source.html">test_initVirtualServers.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">struct </span>sockaddr* addr = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keyword">struct </span>sockaddr* addr2 = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keyword">struct </span>addrinfo* addrinfo = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo));</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">struct </span>addrinfo* addrinfo2 = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo2));</div>
-<div class="line"><span class="lineno">   55</span>    *addrinfo = { .ai_addr = addr, .ai_next = <span class="keyword">nullptr</span> };</div>
-<div class="line"><span class="lineno">   56</span>    *addrinfo2 = { .ai_addr = addr2, .ai_next = <span class="keyword">nullptr</span> };</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sockaddr</a>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a> = (<span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sockaddr</a>*)<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">malloc</a>(<span class="keyword">sizeof</span>(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>));</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sockaddr</a>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr2</a> = (<span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sockaddr</a>*)<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">malloc</a>(<span class="keyword">sizeof</span>(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>));</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a> = (<span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>*)<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">malloc</a>(<span class="keyword">sizeof</span>(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>));</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo2</a> = (<span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>*)<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">malloc</a>(<span class="keyword">sizeof</span>(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo2</a>));</div>
+<div class="line"><span class="lineno">   55</span>    *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a> = { .ai_addr = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>, .ai_next = <span class="keyword">nullptr</span> };</div>
+<div class="line"><span class="lineno">   56</span>    *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo2</a> = { .ai_addr = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr2</a>, .ai_next = <span class="keyword">nullptr</span> };</div>
 <div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    EXPECT_CALL(socketPolicy, resolveListeningAddresses)</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, resolveListeningAddresses)</div>
 <div class="line"><span class="lineno">   59</span>        .Times(2)</div>
-<div class="line"><span class="lineno">   60</span>        .WillOnce(Return(addrinfo))</div>
-<div class="line"><span class="lineno">   61</span>        .WillOnce(Return(addrinfo2));</div>
+<div class="line"><span class="lineno">   60</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>))</div>
+<div class="line"><span class="lineno">   61</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo2</a>));</div>
 <div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>    EXPECT_CALL(socketPolicy, createListeningSocket).Times(2).WillOnce(Return(dummyFd)).WillOnce(Return(dummyFd2));</div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, createListeningSocket).Times(2).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(dummyFd)).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(dummyFd2));</div>
 <div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(2).WillOnce(Return(serverSock1)).WillOnce(Return(serverSock2));</div>
+<div class="line"><span class="lineno">   65</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, retrieveSocketInfo).Times(2).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(serverSock1)).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(serverSock2));</div>
 <div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    EXPECT_EQ(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   68</span>    EXPECT_EQ(server.getVirtualServers().size(), 2);</div>
-<div class="line"><span class="lineno">   69</span>    EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
-<div class="line"><span class="lineno">   70</span>    EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
-<div class="line"><span class="lineno">   71</span>    EXPECT_EQ(server.getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);</div>
-<div class="line"><span class="lineno">   72</span>    EXPECT_EQ(server.getVirtualServers().at(dummyFd2).port, configFile.servers[1].port);</div>
+<div class="line"><span class="lineno">   67</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   68</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().size(), 2);</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
+<div class="line"><span class="lineno">   70</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().at(dummyFd2).host, configFile.servers[1].host);</div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().at(dummyFd2).port, configFile.servers[1].port);</div>
 <div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    free(addr);</div>
-<div class="line"><span class="lineno">   75</span>    free(addr2);</div>
+<div class="line"><span class="lineno">   74</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">free</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>);</div>
+<div class="line"><span class="lineno">   75</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">free</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr2</a>);</div>
 <div class="line"><span class="lineno">   76</span>}</div>
 <div class="ttc" id="a_server_8hpp_html_a35359f61d42dbd6561a07c12009ca45a"><div class="ttname"><a href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a></div><div class="ttdeci">bool initVirtualServers(Server &amp;server, int backlog, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Initialize virtual servers.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l00523">Server.cpp:523</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -218,7 +219,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">OneDuplicateServer&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OneDuplicateServer</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -233,22 +234,22 @@ Here is the call graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">   79</span>{</div>
 <div class="line"><span class="lineno">   80</span>    configFile.servers[1] = configFile.servers[0];</div>
 <div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>    <span class="keyword">struct </span>addrinfo* addrinfo = (<span class="keyword">struct </span>addrinfo*)malloc(<span class="keyword">sizeof</span>(*addrinfo));</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keyword">struct </span>sockaddr* addr = (<span class="keyword">struct </span>sockaddr*)malloc(<span class="keyword">sizeof</span>(*addr));</div>
-<div class="line"><span class="lineno">   84</span>    *addrinfo = { .ai_addr = addr, .ai_next = <span class="keyword">nullptr</span> };</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a> = (<span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>*)<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">malloc</a>(<span class="keyword">sizeof</span>(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>));</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sockaddr</a>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a> = (<span class="keyword">struct </span><a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sockaddr</a>*)<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">malloc</a>(<span class="keyword">sizeof</span>(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>));</div>
+<div class="line"><span class="lineno">   84</span>    *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a> = { .ai_addr = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>, .ai_next = <span class="keyword">nullptr</span> };</div>
 <div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>    EXPECT_CALL(socketPolicy, resolveListeningAddresses).Times(1).WillOnce(Return(addrinfo));</div>
+<div class="line"><span class="lineno">   86</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, resolveListeningAddresses).Times(1).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>));</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    EXPECT_CALL(socketPolicy, createListeningSocket).Times(1).WillOnce(Return(dummyFd));</div>
+<div class="line"><span class="lineno">   88</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, createListeningSocket).Times(1).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(dummyFd));</div>
 <div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>    EXPECT_CALL(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(serverSock1));</div>
+<div class="line"><span class="lineno">   90</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, retrieveSocketInfo).Times(1).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(serverSock1));</div>
 <div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    EXPECT_EQ(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   93</span>    EXPECT_EQ(server.getVirtualServers().size(), 1);</div>
-<div class="line"><span class="lineno">   94</span>    EXPECT_EQ(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
-<div class="line"><span class="lineno">   95</span>    EXPECT_EQ(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
+<div class="line"><span class="lineno">   92</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().size(), 1);</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().at(dummyFd).host, configFile.servers[0].host);</div>
+<div class="line"><span class="lineno">   95</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().at(dummyFd).port, configFile.servers[0].port);</div>
 <div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    free(addr);</div>
+<div class="line"><span class="lineno">   97</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">free</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>);</div>
 <div class="line"><span class="lineno">   98</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -273,7 +274,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NoServers&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NoServers</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -288,8 +289,8 @@ Here is the call graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">  101</span>{</div>
 <div class="line"><span class="lineno">  102</span>    configFile.servers.clear();</div>
 <div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>    EXPECT_EQ(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  105</span>    EXPECT_EQ(server.getVirtualServers().size(), 0);</div>
+<div class="line"><span class="lineno">  104</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(server, backlog, server.getServerConfigs()), <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  105</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getVirtualServers().size(), 0);</div>
 <div class="line"><span class="lineno">  106</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

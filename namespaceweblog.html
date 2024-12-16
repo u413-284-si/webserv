@@ -138,10 +138,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac346e51accb760668965fa2d12248fe2" id="r_ac346e51accb760668965fa2d12248fe2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classweblog_1_1_logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceweblog.html#ac346e51accb760668965fa2d12248fe2">initFile</a> (<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> level, const char *filename)</td></tr>
+<tr class="memitem:ac346e51accb760668965fa2d12248fe2" id="r_ac346e51accb760668965fa2d12248fe2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classweblog_1_1_logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceweblog.html#ac346e51accb760668965fa2d12248fe2">initFile</a> (<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">level</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">char</a> *filename)</td></tr>
 <tr class="memdesc:ac346e51accb760668965fa2d12248fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object with a log level and a file outputter.  <br /></td></tr>
 <tr class="separator:ac346e51accb760668965fa2d12248fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23e11f7efdebde689d1fa3b697e3ff4a" id="r_a23e11f7efdebde689d1fa3b697e3ff4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classweblog_1_1_logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceweblog.html#a23e11f7efdebde689d1fa3b697e3ff4a">initConsole</a> (<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> level)</td></tr>
+<tr class="memitem:a23e11f7efdebde689d1fa3b697e3ff4a" id="r_a23e11f7efdebde689d1fa3b697e3ff4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classweblog_1_1_logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceweblog.html#a23e11f7efdebde689d1fa3b697e3ff4a">initConsole</a> (<a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">LogLevel</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">level</a>)</td></tr>
 <tr class="memdesc:a23e11f7efdebde689d1fa3b697e3ff4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classweblog_1_1_logger.html" title="Logger class to log messages.">Logger</a> object with a log level and a console outputter.  <br /></td></tr>
 <tr class="separator:a23e11f7efdebde689d1fa3b697e3ff4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -153,7 +153,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">weblog::LogLevel</a></td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">enum</a> <a class="el" href="namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770e">weblog::LogLevel</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -189,7 +189,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">char</a> *&#160;</td>
           <td class="paramname"><em>filename</em>&#160;</td>
         </tr>
         <tr>
@@ -212,9 +212,10 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_log_init_8cpp_source.html#l00016">16</a> of file <a class="el" href="_log_init_8cpp_source.html">LogInit.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   17</span>{</div>
-<div class="line"><span class="lineno">   18</span>    <span class="keyword">static</span> <a class="code hl_class" href="classweblog_1_1_log_outputter_file.html">LogOutputterFile</a> outputter(filename);</div>
-<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">return</span> Logger::init(level, &amp;outputter);</div>
+<div class="line"><span class="lineno">   18</span>    <span class="keyword">static</span> <a class="code hl_class" href="classweblog_1_1_log_outputter_file.html">LogOutputterFile</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">outputter</a>(filename);</div>
+<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">return</span> Logger::init(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">level</a>, &amp;<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">outputter</a>);</div>
 <div class="line"><span class="lineno">   20</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="aclassweblog_1_1_log_outputter_file_html"><div class="ttname"><a href="classweblog_1_1_log_outputter_file.html">weblog::LogOutputterFile</a></div><div class="ttdef"><b>Definition</b> <a href="_log_outputter_file_8hpp_source.html#l00010">LogOutputterFile.hpp:10</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -251,8 +252,8 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="_log_init_8cpp_source.html#l00032">32</a> of file <a class="el" href="_log_init_8cpp_source.html">LogInit.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keyword">static</span> <a class="code hl_class" href="classweblog_1_1_log_outputter_console.html">LogOutputterConsole</a> outputter;</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> Logger::init(level, &amp;outputter);</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keyword">static</span> <a class="code hl_class" href="classweblog_1_1_log_outputter_console.html">LogOutputterConsole</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">outputter</a>;</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> Logger::init(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">level</a>, &amp;<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">outputter</a>);</div>
 <div class="line"><span class="lineno">   36</span>}</div>
 <div class="ttc" id="aclassweblog_1_1_log_outputter_console_html"><div class="ttname"><a href="classweblog_1_1_log_outputter_console.html">weblog::LogOutputterConsole</a></div><div class="ttdef"><b>Definition</b> <a href="_log_outputter_console_8hpp_source.html#l00010">LogOutputterConsole.hpp:10</a></div></div>
 </div><!-- fragment --><div class="dynheader">

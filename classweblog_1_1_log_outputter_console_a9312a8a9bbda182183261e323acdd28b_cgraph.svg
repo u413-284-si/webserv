@@ -58,8 +58,8 @@ var sectionId = 'dynsection-2';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="Log a message to the console.">
-<polygon fill="#999999" stroke="#666666" points="182,-80 0,-80 0,-61 182,-61 182,-80"/>
-<text text-anchor="middle" x="91" y="-68" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogOutputterConsole::log</text>
+<polygon fill="#999999" stroke="#666666" points="182,-141.5 0,-141.5 0,-122.5 182,-122.5 182,-141.5"/>
+<text text-anchor="middle" x="91" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogOutputterConsole::log</text>
 </a>
 </g>
 </g>
@@ -67,9 +67,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classweblog_1_1_a_log_outputter.html#a74e71c0a78eb3efd1a60fddc11cfa545" target="_top" xlink:title="Format a message out of the logData object.">
-<polygon fill="white" stroke="#666666" points="350,-128.5 218,-128.5 218,-98.5 350,-98.5 350,-128.5"/>
-<text text-anchor="start" x="226" y="-116.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::ALogOutputter</text>
-<text text-anchor="middle" x="284" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">::getFormattedMessage</text>
+<polygon fill="white" stroke="#666666" points="350,-147 218,-147 218,-117 350,-117 350,-147"/>
+<text text-anchor="start" x="226" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::ALogOutputter</text>
+<text text-anchor="middle" x="284" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">::getFormattedMessage</text>
 </a>
 </g>
 </g>
@@ -77,26 +77,8 @@ var sectionId = 'dynsection-2';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M134.39,-80.04C156.03,-84.91 182.99,-90.99 208,-96.61"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="207.31,-100.05 217.83,-98.83 208.84,-93.22 207.31,-100.05"/>
-</a>
-</g>
-</g>
-<!-- Node6 -->
-<g id="Node000006" class="node">
-<title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classweblog_1_1_log_data.html#abf7dacd4f854b930998d0a4a8861d375" target="_top" xlink:title="Get the log level.">
-<polygon fill="white" stroke="#666666" points="556.5,-19 410.5,-19 410.5,0 556.5,0 556.5,-19"/>
-<text text-anchor="middle" x="483.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getLevel</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node6 -->
-<g id="edge9_Node000001_Node000006" class="edge">
-<title>Node1&#45;&gt;Node6</title>
-<g id="a_edge9_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M153.02,-60.97C222.98,-50.04 337.51,-32.15 411.44,-20.6"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="412.25,-24.02 421.59,-19.01 411.17,-17.1 412.25,-24.02"/>
+<path fill="none" stroke="#63b8ff" d="M182.19,-132C190.77,-132 199.41,-132 207.83,-132"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="207.97,-135.5 217.97,-132 207.97,-128.5 207.97,-135.5"/>
 </a>
 </g>
 </g>
@@ -104,8 +86,8 @@ var sectionId = 'dynsection-2';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classweblog_1_1_log_data.html#a4c09579fe7c971807f48775a269fd0a8" target="_top" xlink:title="Get the file name.">
-<polygon fill="white" stroke="#666666" points="552,-253 415,-253 415,-234 552,-234 552,-253"/>
-<text text-anchor="middle" x="483.5" y="-241" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getFile</text>
+<polygon fill="white" stroke="#666666" points="552,-252.5 415,-252.5 415,-233.5 552,-233.5 552,-252.5"/>
+<text text-anchor="middle" x="483.5" y="-240.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getFile</text>
 </a>
 </g>
 </g>
@@ -113,8 +95,8 @@ var sectionId = 'dynsection-2';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M294,-128.7C309.45,-153.36 343.51,-201.7 386,-225.5 391.94,-228.83 398.38,-231.56 405.02,-233.79"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="404.27,-237.22 414.85,-236.73 406.27,-230.51 404.27,-237.22"/>
+<path fill="none" stroke="#63b8ff" d="M296.85,-147.35C314.05,-168.46 348.06,-206 386,-225 392.04,-228.03 398.52,-230.55 405.17,-232.64"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="404.41,-236.07 414.99,-235.43 406.32,-229.33 404.41,-236.07"/>
 </a>
 </g>
 </g>
@@ -122,8 +104,8 @@ var sectionId = 'dynsection-2';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classweblog_1_1_log_data.html#aa4077a11fc212264e7a7a85415d2f725" target="_top" xlink:title="Get the formatted time.">
-<polygon fill="white" stroke="#666666" points="581,-216 386,-216 386,-197 581,-197 581,-216"/>
-<text text-anchor="middle" x="483.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getFormattedTime</text>
+<polygon fill="white" stroke="#666666" points="581,-215.5 386,-215.5 386,-196.5 581,-196.5 581,-215.5"/>
+<text text-anchor="middle" x="483.5" y="-203.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getFormattedTime</text>
 </a>
 </g>
 </g>
@@ -131,8 +113,8 @@ var sectionId = 'dynsection-2';
 <g id="edge3_Node000002_Node000004" class="edge">
 <title>Node2&#45;&gt;Node4</title>
 <g id="a_edge3_Node000002_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M300.68,-128.79C319.38,-146.11 352.37,-173.82 386,-188.5 390.93,-190.65 396.11,-192.55 401.41,-194.22"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="400.45,-197.58 411.03,-196.98 402.39,-190.86 400.45,-197.58"/>
+<path fill="none" stroke="#63b8ff" d="M307.27,-147.11C327.09,-159.88 357.32,-177.68 386,-188 392.36,-190.29 399.06,-192.3 405.85,-194.06"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="405.28,-197.53 415.82,-196.47 406.93,-190.72 405.28,-197.53"/>
 </a>
 </g>
 </g>
@@ -140,8 +122,8 @@ var sectionId = 'dynsection-2';
 <g id="Node000005" class="node">
 <title>Node5</title>
 <g id="a_Node000005"><a xlink:href="classweblog_1_1_log_data.html#ab1e3d7de2081aa7f8998314ea03c3fbc" target="_top" xlink:title="Get the function name.">
-<polygon fill="white" stroke="#666666" points="564,-179 403,-179 403,-160 564,-160 564,-179"/>
-<text text-anchor="middle" x="483.5" y="-167" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getFunction</text>
+<polygon fill="white" stroke="#666666" points="564,-178.5 403,-178.5 403,-159.5 564,-159.5 564,-178.5"/>
+<text text-anchor="middle" x="483.5" y="-166.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getFunction</text>
 </a>
 </g>
 </g>
@@ -149,8 +131,17 @@ var sectionId = 'dynsection-2';
 <g id="edge4_Node000002_Node000005" class="edge">
 <title>Node2&#45;&gt;Node5</title>
 <g id="a_edge4_Node000002_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M320.48,-128.6C339.62,-136.29 363.8,-145.31 386,-151.5 394.47,-153.86 403.44,-156 412.37,-157.92"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="411.91,-161.4 422.41,-159.98 413.32,-154.54 411.91,-161.4"/>
+<path fill="none" stroke="#63b8ff" d="M350.19,-144.28C362.11,-146.52 374.43,-148.83 386,-151 397.4,-153.14 409.56,-155.41 421.27,-157.59"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="420.94,-161.09 431.41,-159.49 422.23,-154.21 420.94,-161.09"/>
+</a>
+</g>
+</g>
+<!-- Node6 -->
+<g id="Node000006" class="node">
+<title>Node6</title>
+<g id="a_Node000006"><a xlink:href="classweblog_1_1_log_data.html#abf7dacd4f854b930998d0a4a8861d375" target="_top" xlink:title="Get the log level.">
+<polygon fill="white" stroke="#666666" points="556.5,-141.5 410.5,-141.5 410.5,-122.5 556.5,-122.5 556.5,-141.5"/>
+<text text-anchor="middle" x="483.5" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getLevel</text>
 </a>
 </g>
 </g>
@@ -158,8 +149,8 @@ var sectionId = 'dynsection-2';
 <g id="edge5_Node000002_Node000006" class="edge">
 <title>Node2&#45;&gt;Node6</title>
 <g id="a_edge5_Node000002_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M305.98,-98.33C318.95,-88.71 335.79,-75.8 350,-63.5 366.87,-48.89 366.24,-38.86 386,-28.5 390.61,-26.08 395.49,-23.97 400.5,-22.13"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="401.89,-25.36 410.29,-18.91 399.7,-18.71 401.89,-25.36"/>
+<path fill="none" stroke="#63b8ff" d="M350.22,-132C366.13,-132 383.36,-132 399.96,-132"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="400.19,-135.5 410.19,-132 400.19,-128.5 400.19,-135.5"/>
 </a>
 </g>
 </g>
@@ -167,8 +158,8 @@ var sectionId = 'dynsection-2';
 <g id="Node000007" class="node">
 <title>Node7</title>
 <g id="a_Node000007"><a xlink:href="classweblog_1_1_log_data.html#a1b85f949a0947b0636a6cff9cd04fd88" target="_top" xlink:title="Get the line number.">
-<polygon fill="white" stroke="#666666" points="553.5,-142 413.5,-142 413.5,-123 553.5,-123 553.5,-142"/>
-<text text-anchor="middle" x="483.5" y="-130" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getLine</text>
+<polygon fill="white" stroke="#666666" points="553.5,-104.5 413.5,-104.5 413.5,-85.5 553.5,-85.5 553.5,-104.5"/>
+<text text-anchor="middle" x="483.5" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getLine</text>
 </a>
 </g>
 </g>
@@ -176,8 +167,8 @@ var sectionId = 'dynsection-2';
 <g id="edge6_Node000002_Node000007" class="edge">
 <title>Node2&#45;&gt;Node7</title>
 <g id="a_edge6_Node000002_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M350.22,-119.77C367.12,-121.4 385.52,-123.17 403.06,-124.86"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="402.99,-128.37 413.28,-125.84 403.66,-121.4 402.99,-128.37"/>
+<path fill="none" stroke="#63b8ff" d="M350.22,-119.78C373.31,-115.45 399.19,-110.61 421.89,-106.35"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="422.55,-109.79 431.74,-104.51 421.27,-102.91 422.55,-109.79"/>
 </a>
 </g>
 </g>
@@ -185,8 +176,8 @@ var sectionId = 'dynsection-2';
 <g id="Node000008" class="node">
 <title>Node8</title>
 <g id="a_Node000008"><a xlink:href="classweblog_1_1_log_data.html#ae083584fe82c6fefe25a9cbbff3bb9f8" target="_top" xlink:title="Get the log message.">
-<polygon fill="white" stroke="#666666" points="565.5,-105 401.5,-105 401.5,-86 565.5,-86 565.5,-105"/>
-<text text-anchor="middle" x="483.5" y="-93" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getMessage</text>
+<polygon fill="white" stroke="#666666" points="565.5,-67.5 401.5,-67.5 401.5,-48.5 565.5,-48.5 565.5,-67.5"/>
+<text text-anchor="middle" x="483.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::getMessage</text>
 </a>
 </g>
 </g>
@@ -194,8 +185,8 @@ var sectionId = 'dynsection-2';
 <g id="edge7_Node000002_Node000008" class="edge">
 <title>Node2&#45;&gt;Node8</title>
 <g id="a_edge7_Node000002_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M350.22,-107.56C363.42,-106.35 377.52,-105.07 391.43,-103.8"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="391.86,-107.28 401.5,-102.88 391.22,-100.3 391.86,-107.28"/>
+<path fill="none" stroke="#63b8ff" d="M308.12,-116.75C328,-104.31 357.83,-87.17 386,-77 393.54,-74.28 401.55,-71.92 409.62,-69.87"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="410.53,-73.25 419.45,-67.54 408.91,-66.44 410.53,-73.25"/>
 </a>
 </g>
 </g>
@@ -203,9 +194,9 @@ var sectionId = 'dynsection-2';
 <g id="Node000009" class="node">
 <title>Node9</title>
 <g id="a_Node000009"><a xlink:href="classweblog_1_1_log_data.html#a558c41ae966801658a1e67b8691f838e" target="_top" xlink:title="Convert the log level to a string.">
-<polygon fill="white" stroke="#666666" points="553,-67.5 414,-67.5 414,-37.5 553,-37.5 553,-67.5"/>
-<text text-anchor="start" x="422" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::levelTo</text>
-<text text-anchor="middle" x="483.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
+<polygon fill="white" stroke="#666666" points="553,-30 414,-30 414,0 553,0 553,-30"/>
+<text text-anchor="start" x="422" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">weblog::LogData::levelTo</text>
+<text text-anchor="middle" x="483.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
 </a>
 </g>
 </g>
@@ -213,8 +204,8 @@ var sectionId = 'dynsection-2';
 <g id="edge8_Node000002_Node000009" class="edge">
 <title>Node2&#45;&gt;Node9</title>
 <g id="a_edge8_Node000002_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M324.54,-98.49C343.08,-91.69 365.54,-83.78 386,-77.5 394.09,-75.02 402.6,-72.57 411.09,-70.24"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="412.27,-73.54 421.01,-67.56 410.44,-66.79 412.27,-73.54"/>
+<path fill="none" stroke="#63b8ff" d="M297.37,-116.83C314.93,-96.31 349.08,-59.99 386,-40 391.83,-36.84 398.07,-34.07 404.48,-31.64"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="405.67,-34.93 413.95,-28.32 403.35,-28.33 405.67,-34.93"/>
 </a>
 </g>
 </g>

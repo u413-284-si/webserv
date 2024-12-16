@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('namespaceserver__response_1_1test__inv
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afa1f05e636e91423afac143f874bc912" id="r_afa1f05e636e91423afac143f874bc912"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#afa1f05e636e91423afac143f874bc912">parse_http_response</a> (sock)</td></tr>
+<tr class="memitem:afa1f05e636e91423afac143f874bc912" id="r_afa1f05e636e91423afac143f874bc912"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#afa1f05e636e91423afac143f874bc912">parse_http_response</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock</a>)</td></tr>
 <tr class="separator:afa1f05e636e91423afac143f874bc912"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15ede1064d574a203ea5178e9bcc6a31" id="r_a15ede1064d574a203ea5178e9bcc6a31"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#a15ede1064d574a203ea5178e9bcc6a31">test_invalid_method_not_implemented</a> ()</td></tr>
 <tr class="separator:a15ede1064d574a203ea5178e9bcc6a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,9 +122,9 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a344cce51b585da57ae304cd53640858b" id="r_a344cce51b585da57ae304cd53640858b"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b">host</a> = &quot;localhost&quot;</td></tr>
+<tr class="memitem:a344cce51b585da57ae304cd53640858b" id="r_a344cce51b585da57ae304cd53640858b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b">host</a> = &quot;localhost&quot;</td></tr>
 <tr class="separator:a344cce51b585da57ae304cd53640858b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abad8d4fce10bcc0f3ec893f25f29ab64" id="r_abad8d4fce10bcc0f3ec893f25f29ab64"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64">port</a> = 8080</td></tr>
+<tr class="memitem:abad8d4fce10bcc0f3ec893f25f29ab64" id="r_abad8d4fce10bcc0f3ec893f25f29ab64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64">port</a> = 8080</td></tr>
 <tr class="separator:abad8d4fce10bcc0f3ec893f25f29ab64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -147,35 +147,36 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00009">9</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>parse_http_response(sock):</div>
 <div class="line"><span class="lineno">   10</span>    <span class="comment"># Receive the full response</span></div>
-<div class="line"><span class="lineno">   11</span>    response_data = sock.recv(4096)</div>
+<div class="line"><span class="lineno">   11</span>    response_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.recv</a>(4096)</div>
 <div class="line"><span class="lineno">   12</span> </div>
 <div class="line"><span class="lineno">   13</span>    <span class="comment"># Decode response</span></div>
-<div class="line"><span class="lineno">   14</span>    response_str = response_data.decode(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
+<div class="line"><span class="lineno">   14</span>    response_str = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_data.decode</a>(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
 <div class="line"><span class="lineno">   15</span> </div>
 <div class="line"><span class="lineno">   16</span>    <span class="comment"># Split into lines</span></div>
-<div class="line"><span class="lineno">   17</span>    response_lines = response_str.split(<span class="stringliteral">&#39;\r\n&#39;</span>)</div>
+<div class="line"><span class="lineno">   17</span>    response_lines = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_str.split</a>(<span class="stringliteral">&#39;\r\n&#39;</span>)</div>
 <div class="line"><span class="lineno">   18</span> </div>
 <div class="line"><span class="lineno">   19</span>    <span class="comment"># Status line (first line)</span></div>
 <div class="line"><span class="lineno">   20</span>    status_line = response_lines[0]</div>
-<div class="line"><span class="lineno">   21</span>    status_code = int(status_line.split()[1])</div>
+<div class="line"><span class="lineno">   21</span>    status_code = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">status_line.split</a>()[1])</div>
 <div class="line"><span class="lineno">   22</span> </div>
 <div class="line"><span class="lineno">   23</span>    <span class="comment"># Headers (remaining lines)</span></div>
 <div class="line"><span class="lineno">   24</span>    headers = {}</div>
 <div class="line"><span class="lineno">   25</span>    <span class="keywordflow">for</span> line <span class="keywordflow">in</span> response_lines[1:]:</div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> line.strip() == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">line.strip</a>() == <span class="stringliteral">&quot;&quot;</span>:</div>
 <div class="line"><span class="lineno">   27</span>            <span class="comment"># End of headers</span></div>
 <div class="line"><span class="lineno">   28</span>            <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   29</span>        key, value = line.split(<span class="stringliteral">&quot;:&quot;</span>, 1)</div>
-<div class="line"><span class="lineno">   30</span>        headers[key.strip()] = value.strip()</div>
+<div class="line"><span class="lineno">   29</span>        key, value = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">line.split</a>(<span class="stringliteral">&quot;:&quot;</span>, 1)</div>
+<div class="line"><span class="lineno">   30</span>        headers[<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">key.strip</a>()] = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">value.strip</a>()</div>
 <div class="line"><span class="lineno">   31</span> </div>
 <div class="line"><span class="lineno">   32</span>    <span class="keywordflow">return</span> {</div>
 <div class="line"><span class="lineno">   33</span>        <span class="stringliteral">&quot;status_code&quot;</span>: status_code,</div>
 <div class="line"><span class="lineno">   34</span>        <span class="stringliteral">&quot;headers&quot;</span>: headers,</div>
-<div class="line"><span class="lineno">   35</span>        <span class="stringliteral">&quot;body&quot;</span>: response_str.split(<span class="stringliteral">&#39;\r\n\r\n&#39;</span>, 1)[1] <span class="keywordflow">if</span> <span class="stringliteral">&#39;\r\n\r\n&#39;</span> <span class="keywordflow">in</span> response_str <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   35</span>        <span class="stringliteral">&quot;body&quot;</span>: <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_str.split</a>(<span class="stringliteral">&#39;\r\n\r\n&#39;</span>, 1)[1] <span class="keywordflow">if</span> <span class="stringliteral">&#39;\r\n\r\n&#39;</span> <span class="keywordflow">in</span> response_str <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   36</span>    }</div>
 <div class="line"><span class="lineno">   37</span> </div>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span> </div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -203,10 +204,10 @@ Here is the caller graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">   40</span><span class="keyword">def </span>test_invalid_method_not_implemented():</div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="keyword">with</span> socket.create_connection((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
 <div class="line"><span class="lineno">   44</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
 <div class="line"><span class="lineno">   45</span>        request = b<span class="stringliteral">&quot;INVALIDREQUEST / HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   46</span>        sock.sendall(request)</div>
+<div class="line"><span class="lineno">   46</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
 <div class="line"><span class="lineno">   47</span> </div>
 <div class="line"><span class="lineno">   48</span>        <span class="comment"># Receive the response</span></div>
 <div class="line"><span class="lineno">   49</span>        response = parse_http_response(sock)</div>
@@ -240,10 +241,10 @@ Here is the call graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>test_invalid_missing_host_header():</div>
 <div class="line"><span class="lineno">   54</span> </div>
 <div class="line"><span class="lineno">   55</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="keyword">with</span> socket.create_connection((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
 <div class="line"><span class="lineno">   57</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
 <div class="line"><span class="lineno">   58</span>        request = b<span class="stringliteral">&quot;GET / HTTP/1.1\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   59</span>        sock.sendall(request)</div>
+<div class="line"><span class="lineno">   59</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
 <div class="line"><span class="lineno">   60</span> </div>
 <div class="line"><span class="lineno">   61</span>        <span class="comment"># Receive the response</span></div>
 <div class="line"><span class="lineno">   62</span>        response = parse_http_response(sock)</div>
@@ -264,7 +265,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">str server_response.test_invalid.host = &quot;localhost&quot;</td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> server_response.test_invalid.host = &quot;localhost&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -280,7 +281,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int server_response.test_invalid.port = 8080</td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a> server_response.test_invalid.port = 8080</td>
         </tr>
       </table>
 </div><div class="memdoc">

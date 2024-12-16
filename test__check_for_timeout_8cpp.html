@@ -133,9 +133,9 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:aa104b7ee8b0b5c5b33b6409f6450eeb6" id="r_aa104b7ee8b0b5c5b33b6409f6450eeb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__check_for_timeout_8cpp.html#aa104b7ee8b0b5c5b33b6409f6450eeb6">TEST_F</a> (<a class="el" href="class_check_for_timeout_test.html">CheckForTimeoutTest</a>, Timeout)</td></tr>
 <tr class="separator:aa104b7ee8b0b5c5b33b6409f6450eeb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a357859374e2b4455a440f278ec9bd6c6" id="r_a357859374e2b4455a440f278ec9bd6c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__check_for_timeout_8cpp.html#a357859374e2b4455a440f278ec9bd6c6">TEST_F</a> (<a class="el" href="class_check_for_timeout_test.html">CheckForTimeoutTest</a>, NoTimeout)</td></tr>
+<tr class="memitem:a357859374e2b4455a440f278ec9bd6c6" id="r_a357859374e2b4455a440f278ec9bd6c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__check_for_timeout_8cpp.html#a357859374e2b4455a440f278ec9bd6c6">TEST_F</a> (<a class="el" href="class_check_for_timeout_test.html">CheckForTimeoutTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NoTimeout</a>)</td></tr>
 <tr class="separator:a357859374e2b4455a440f278ec9bd6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75c3c481939f99b90a0a41f3f2d0684b" id="r_a75c3c481939f99b90a0a41f3f2d0684b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__check_for_timeout_8cpp.html#a75c3c481939f99b90a0a41f3f2d0684b">TEST_F</a> (<a class="el" href="class_check_for_timeout_test.html">CheckForTimeoutTest</a>, MultipleTimeouts)</td></tr>
+<tr class="memitem:a75c3c481939f99b90a0a41f3f2d0684b" id="r_a75c3c481939f99b90a0a41f3f2d0684b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__check_for_timeout_8cpp.html#a75c3c481939f99b90a0a41f3f2d0684b">TEST_F</a> (<a class="el" href="class_check_for_timeout_test.html">CheckForTimeoutTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">MultipleTimeouts</a>)</td></tr>
 <tr class="separator:a75c3c481939f99b90a0a41f3f2d0684b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -173,9 +173,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   46</span> </div>
 <div class="line"><span class="lineno">   47</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(server);</div>
 <div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    EXPECT_EQ(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   49</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
 <div class="line"><span class="lineno">   50</span>}</div>
 <div class="ttc" id="a_server_8hpp_html_a28fd29ec48bd9459c678980cfccca4cf"><div class="ttname"><a href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a></div><div class="ttdeci">void checkForTimeout(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and checks if any have timed out.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l01411">Server.cpp:1411</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a></div><div class="ttdeci">@ Timeout</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00029">Connection.hpp:29</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -200,7 +201,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NoTimeout&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NoTimeout</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -219,7 +220,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(server);</div>
 <div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    EXPECT_EQ(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
 <div class="line"><span class="lineno">   61</span>}</div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00022">Connection.hpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -245,7 +246,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MultipleTimeouts&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">MultipleTimeouts</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -266,9 +267,9 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   70</span> </div>
 <div class="line"><span class="lineno">   71</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(server);</div>
 <div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    EXPECT_EQ(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
-<div class="line"><span class="lineno">   74</span>    EXPECT_EQ(server.getConnections().at(dummyFd2).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
-<div class="line"><span class="lineno">   75</span>    EXPECT_EQ(server.getConnections().at(dummyFd3).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   73</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   74</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd2).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   75</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd3).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
 <div class="line"><span class="lineno">   76</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

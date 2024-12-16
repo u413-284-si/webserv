@@ -119,8 +119,8 @@ $(document).ready(function(){initNavTree('test___c_g_i_8py_source.html',''); ini
 <div class="foldopen" id="foldopen00005" data-start="" data-end="">
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49">    5</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49">test_no_CGI_defined</a>():</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    print(<span class="stringliteral">&quot;Try to access CGI without it defined&quot;</span>)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    response = requests.get(<span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/time.py&quot;</span>)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">assert</span> response.status_code == 200</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/time.py&quot;</span>)</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">#def test_CGI_helloWorld():</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">#    print(&quot;Request for /cgi-bin/helloWorld.sh&quot;)</span></div>
@@ -161,6 +161,7 @@ $(document).ready(function(){initNavTree('test___c_g_i_8py_source.html',''); ini
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">#     response = requests.post(&quot;http://127.0.0.1:8080/cgi-bin/upperCase.sh&quot;, data=payload)</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">#     assert response.status_code == 200</span></div>
 </div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="anamespaceserver__response_1_1test___c_g_i_html_ab57a66ba29b67648e4f616992df8dc49"><div class="ttname"><a href="namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49">server_response.test_CGI.test_no_CGI_defined</a></div><div class="ttdeci">test_no_CGI_defined()</div><div class="ttdef"><b>Definition</b> <a href="test___c_g_i_8py_source.html#l00005">test_CGI.py:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

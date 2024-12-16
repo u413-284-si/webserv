@@ -132,7 +132,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a98b6368a1aac1dca6452b14839592542" id="r_a98b6368a1aac1dca6452b14839592542"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_socket_8hpp.html#a98b6368a1aac1dca6452b14839592542">operator&lt;&lt;</a> (std::ostream &amp;ostream, const <a class="el" href="struct_socket.html">Socket</a> &amp;socket)</td></tr>
+<tr class="memitem:a98b6368a1aac1dca6452b14839592542" id="r_a98b6368a1aac1dca6452b14839592542"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::ostream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_socket_8hpp.html#a98b6368a1aac1dca6452b14839592542">operator&lt;&lt;</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::ostream</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="struct_socket.html">Socket</a> &amp;socket)</td></tr>
 <tr class="memdesc:a98b6368a1aac1dca6452b14839592542"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload &lt;&lt; operator to append a <a class="el" href="struct_socket.html" title="Represent a socket connection.">Socket</a>.  <br /></td></tr>
 <tr class="separator:a98b6368a1aac1dca6452b14839592542"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -144,15 +144,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::ostream</a> &amp; <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">operator</a>&lt;&lt; </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::ostream</a> &amp;&#160;</td>
           <td class="paramname"><em>ostream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="struct_socket.html">Socket</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="struct_socket.html">Socket</a> &amp;&#160;</td>
           <td class="paramname"><em>socket</em>&#160;</td>
         </tr>
         <tr>
@@ -173,11 +173,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00218">218</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
-<div class="line"><span class="lineno">  220</span>    ostream &lt;&lt; socket.<a class="code hl_variable" href="struct_socket.html#a986f7cf6e2d3334e9ad91a35681c1f80">host</a> &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; socket.<a class="code hl_variable" href="struct_socket.html#af75711bf9c0f0788d7767f836a97c5e6">port</a>;</div>
-<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">return</span> ostream;</div>
-<div class="line"><span class="lineno">  222</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00219">219</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  220</span>{</div>
+<div class="line"><span class="lineno">  221</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; socket.<a class="code hl_variable" href="struct_socket.html#a986f7cf6e2d3334e9ad91a35681c1f80">host</a> &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; socket.<a class="code hl_variable" href="struct_socket.html#af75711bf9c0f0788d7767f836a97c5e6">port</a>;</div>
+<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a>;</div>
+<div class="line"><span class="lineno">  223</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="astruct_socket_html_a986f7cf6e2d3334e9ad91a35681c1f80"><div class="ttname"><a href="struct_socket.html#a986f7cf6e2d3334e9ad91a35681c1f80">Socket::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Definition</b> <a href="_socket_8hpp_source.html#l00009">Socket.hpp:9</a></div></div>
 <div class="ttc" id="astruct_socket_html_af75711bf9c0f0788d7767f836a97c5e6"><div class="ttname"><a href="struct_socket.html#af75711bf9c0f0788d7767f836a97c5e6">Socket::port</a></div><div class="ttdeci">std::string port</div><div class="ttdef"><b>Definition</b> <a href="_socket_8hpp_source.html#l00010">Socket.hpp:10</a></div></div>
 </div><!-- fragment -->

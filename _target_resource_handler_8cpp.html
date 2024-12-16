@@ -120,7 +120,7 @@ Include dependency graph for TargetResourceHandler.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae12e829b2e3de214214c70be14214095" id="r_ae12e829b2e3de214214c70be14214095"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_target_resource_handler_8cpp.html#ae12e829b2e3de214214c70be14214095">matchLocation</a> (const std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;locations, const std::string &amp;path)</td></tr>
+<tr class="memitem:ae12e829b2e3de214214c70be14214095" id="r_ae12e829b2e3de214214c70be14214095"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::vector</a>&lt; <a class="el" href="struct_location.html">Location</a> &gt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">::const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_target_resource_handler_8cpp.html#ae12e829b2e3de214214c70be14214095">matchLocation</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::vector</a>&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;locations, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::string</a> &amp;path)</td></tr>
 <tr class="memdesc:ae12e829b2e3de214214c70be14214095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate through <a class="el" href="struct_location.html">Location</a> objects to find longest matching path based on a given input path.  <br /></td></tr>
 <tr class="separator:ae12e829b2e3de214214c70be14214095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -132,15 +132,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt;::const_iterator matchLocation </td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::vector</a>&lt; <a class="el" href="struct_location.html">Location</a> &gt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">::const_iterator</a> matchLocation </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::vector</a>&lt; <a class="el" href="struct_location.html">Location</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>locations</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::string</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em>&#160;</td>
         </tr>
         <tr>
@@ -161,21 +161,22 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Constant_iterator to the location that has the longest matching path with input. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00103">103</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
-<div class="line"><span class="lineno">  105</span>    std::size_t longestMatch = 0;</div>
-<div class="line"><span class="lineno">  106</span>    std::vector&lt;Location&gt;::const_iterator locationMatch = locations.end();</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator it = locations.begin(); it != locations.end(); ++it) {</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">if</span> (path.find(it-&gt;path) == 0) {</div>
-<div class="line"><span class="lineno">  110</span>            <span class="keywordflow">if</span> (it-&gt;path.length() &gt; longestMatch) {</div>
-<div class="line"><span class="lineno">  111</span>                longestMatch = it-&gt;path.length();</div>
-<div class="line"><span class="lineno">  112</span>                locationMatch = it;</div>
-<div class="line"><span class="lineno">  113</span>            }</div>
-<div class="line"><span class="lineno">  114</span>        }</div>
-<div class="line"><span class="lineno">  115</span>    }</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> locationMatch;</div>
-<div class="line"><span class="lineno">  117</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_target_resource_handler_8cpp_source.html#l00098">98</a> of file <a class="el" href="_target_resource_handler_8cpp_source.html">TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>{</div>
+<div class="line"><span class="lineno">  100</span>    std::size_t <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">longestMatch</a> = 0;</div>
+<div class="line"><span class="lineno">  101</span>    std::vector&lt;Location&gt;::const_iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">locationMatch</a> = locations.begin();</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">for</span> (std::vector&lt;Location&gt;::const_iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a> = locations.begin(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a> != locations.end(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a>) {</div>
+<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">if</span> (path.find(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a>-&gt;path) == 0) {</div>
+<div class="line"><span class="lineno">  105</span>            <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a>-&gt;path.length() &gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">longestMatch</a>) {</div>
+<div class="line"><span class="lineno">  106</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">longestMatch</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a>-&gt;path.length();</div>
+<div class="line"><span class="lineno">  107</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">locationMatch</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">it</a>;</div>
+<div class="line"><span class="lineno">  108</span>            }</div>
+<div class="line"><span class="lineno">  109</span>        }</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">locationMatch</a>;</div>
+<div class="line"><span class="lineno">  112</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

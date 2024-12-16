@@ -118,10 +118,10 @@ $(document).ready(function(){initNavTree('class_response_body_handler.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa3ba77e6186dcc09020ff198cb27ca35" id="r_aa3ba77e6186dcc09020ff198cb27ca35"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler.html#aa3ba77e6186dcc09020ff198cb27ca35">ResponseBodyHandler</a> (<a class="el" href="struct_connection.html">Connection</a> &amp;connection, std::string &amp;responseBody, const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;fileSystemPolicy)</td></tr>
+<tr class="memitem:aa3ba77e6186dcc09020ff198cb27ca35" id="r_aa3ba77e6186dcc09020ff198cb27ca35"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler.html#aa3ba77e6186dcc09020ff198cb27ca35">ResponseBodyHandler</a> (<a class="el" href="struct_connection.html">Connection</a> &amp;connection, std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>)</td></tr>
 <tr class="memdesc:aa3ba77e6186dcc09020ff198cb27ca35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_response_body_handler.html" title="Class to handle the body of a HTTP response.">ResponseBodyHandler</a> object.  <br /></td></tr>
 <tr class="separator:aa3ba77e6186dcc09020ff198cb27ca35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0660b57e440e2c519761817d178818c0" id="r_a0660b57e440e2c519761817d178818c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler.html#a0660b57e440e2c519761817d178818c0">execute</a> ()</td></tr>
+<tr class="memitem:a0660b57e440e2c519761817d178818c0" id="r_a0660b57e440e2c519761817d178818c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_body_handler.html#a0660b57e440e2c519761817d178818c0">execute</a> ()</td></tr>
 <tr class="memdesc:a0660b57e440e2c519761817d178818c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the response body.  <br /></td></tr>
 <tr class="separator:a0660b57e440e2c519761817d178818c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -155,7 +155,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;&#160;</td>
           <td class="paramname"><em>fileSystemPolicy</em>&#160;</td>
         </tr>
         <tr>
@@ -184,10 +184,11 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_response_body_handler_8cpp_source.html#l00010">10</a> of file <a class="el" href="_response_body_handler_8cpp_source.html">ResponseBodyHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   12</span>    : m_connection(connection)</div>
 <div class="line"><span class="lineno">   13</span>    , m_request(connection.<a class="code hl_variable" href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">m_request</a>)</div>
-<div class="line"><span class="lineno">   14</span>    , m_responseBody(responseBody)</div>
-<div class="line"><span class="lineno">   15</span>    , m_fileSystemPolicy(fileSystemPolicy)</div>
+<div class="line"><span class="lineno">   14</span>    , m_responseBody(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a>)</div>
+<div class="line"><span class="lineno">   15</span>    , m_fileSystemPolicy(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>)</div>
 <div class="line"><span class="lineno">   16</span>{</div>
 <div class="line"><span class="lineno">   17</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="astruct_connection_html_ae94a8a88f07c64cf17ada17c7e670ada"><div class="ttname"><a href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">Connection::m_request</a></div><div class="ttdeci">HTTPRequest m_request</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00039">Connection.hpp:39</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -200,7 +201,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ResponseBodyHandler::execute </td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a> ResponseBodyHandler::execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -231,8 +232,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   41</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   42</span>    }</div>
 <div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> (m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a745c64e106ae20b1404a86e579ad94f0">hasAutoindex</a>) {</div>
-<div class="line"><span class="lineno">   44</span>        <a class="code hl_class" href="class_autoindex_handler.html">AutoindexHandler</a> autoindexHandler(m_fileSystemPolicy);</div>
-<div class="line"><span class="lineno">   45</span>        m_responseBody = autoindexHandler.execute(m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>);</div>
+<div class="line"><span class="lineno">   44</span>        <a class="code hl_class" href="class_autoindex_handler.html">AutoindexHandler</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindexHandler</a>(m_fileSystemPolicy);</div>
+<div class="line"><span class="lineno">   45</span>        m_responseBody = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindexHandler</a>.execute(m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>);</div>
 <div class="line"><span class="lineno">   46</span>        <span class="keywordflow">if</span> (m_responseBody.empty()) {</div>
 <div class="line"><span class="lineno">   47</span>            m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
 <div class="line"><span class="lineno">   48</span>            handleErrorBody();</div>
@@ -245,15 +246,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a> == <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>) {</div>
 <div class="line"><span class="lineno">   56</span>        <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">   57</span>            m_responseBody = m_fileSystemPolicy.<a class="code hl_function" href="class_file_system_policy.html#a700e01137b08674976427c869e078cc9">getFileContents</a>(m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>.c_str());</div>
-<div class="line"><span class="lineno">   58</span>        } <span class="keywordflow">catch</span> (std::exception&amp; e) {</div>
+<div class="line"><span class="lineno">   58</span>        } <span class="keywordflow">catch</span> (std::exception&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
 <div class="line"><span class="lineno">   59</span>            m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
 <div class="line"><span class="lineno">   60</span>            handleErrorBody();</div>
 <div class="line"><span class="lineno">   61</span>        }</div>
 <div class="line"><span class="lineno">   62</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   63</span>    }</div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9">method</a> == <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>) {</div>
-<div class="line"><span class="lineno">   65</span>        <a class="code hl_class" href="class_file_write_handler.html">FileWriteHandler</a> fileWriteHandler(m_fileSystemPolicy);</div>
-<div class="line"><span class="lineno">   66</span>        m_responseBody = fileWriteHandler.execute(m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>, m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">body</a>);</div>
+<div class="line"><span class="lineno">   65</span>        <a class="code hl_class" href="class_file_write_handler.html">FileWriteHandler</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileWriteHandler</a>(m_fileSystemPolicy);</div>
+<div class="line"><span class="lineno">   66</span>        m_responseBody = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileWriteHandler</a>.execute(m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>, m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b">body</a>);</div>
 <div class="line"><span class="lineno">   67</span>        <span class="keywordflow">if</span> (m_responseBody.find(<span class="stringliteral">&quot;created&quot;</span>) != std::string::npos) {</div>
 <div class="line"><span class="lineno">   68</span>            m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a4ab3aefab7679eeb2b4e97f7043bdff3">httpStatus</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>;</div>
 <div class="line"><span class="lineno">   69</span>            m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a7f295acd62075df13848bd3103c89bbf">headers</a>[<span class="stringliteral">&quot;location&quot;</span>] = m_request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#a8f0516b557f9a1dee237d00e48aaac69">uri</a>.<a class="code hl_variable" href="struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df">path</a>;</div>
@@ -286,12 +287,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_body_handler_a0660b57e440e2c519761817d178818c0_cgraph.svg" width="100%" height="487"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_response_body_handler_a0660b57e440e2c519761817d178818c0_icgraph.svg" width="100%" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_response_body_handler_a0660b57e440e2c519761817d178818c0_cgraph.svg" width="412" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

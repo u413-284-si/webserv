@@ -134,9 +134,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:acd248002a168209089438d39017ca034" id="r_acd248002a168209089438d39017ca034"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__connection_receive_from_c_g_i_8cpp.html#acd248002a168209089438d39017ca034">TEST_F</a> (<a class="el" href="class_connection_receive_from_c_g_i_test.html">ConnectionReceiveFromCGITest</a>, ReadError)</td></tr>
+<tr class="memitem:acd248002a168209089438d39017ca034" id="r_acd248002a168209089438d39017ca034"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__connection_receive_from_c_g_i_8cpp.html#acd248002a168209089438d39017ca034">TEST_F</a> (<a class="el" href="class_connection_receive_from_c_g_i_test.html">ConnectionReceiveFromCGITest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReadError</a>)</td></tr>
 <tr class="separator:acd248002a168209089438d39017ca034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a257e52c0c048d052b1f9238cfe0411" id="r_a3a257e52c0c048d052b1f9238cfe0411"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__connection_receive_from_c_g_i_8cpp.html#a3a257e52c0c048d052b1f9238cfe0411">TEST_F</a> (<a class="el" href="class_connection_receive_from_c_g_i_test.html">ConnectionReceiveFromCGITest</a>, PartialRead)</td></tr>
+<tr class="memitem:a3a257e52c0c048d052b1f9238cfe0411" id="r_a3a257e52c0c048d052b1f9238cfe0411"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__connection_receive_from_c_g_i_8cpp.html#a3a257e52c0c048d052b1f9238cfe0411">TEST_F</a> (<a class="el" href="class_connection_receive_from_c_g_i_test.html">ConnectionReceiveFromCGITest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">PartialRead</a>)</td></tr>
 <tr class="separator:a3a257e52c0c048d052b1f9238cfe0411"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -155,7 +155,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ReadError&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReadError</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -169,16 +169,17 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test__connection_receive_from_c_g_i_8cpp_source.html#l00058">58</a> of file <a class="el" href="test__connection_receive_from_c_g_i_8cpp_source.html">test_connectionReceiveFromCGI.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
 <div class="line"><span class="lineno">   60</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   61</span>    EXPECT_CALL(processOps, readProcess).Times(1).WillOnce(Return(-1));</div>
+<div class="line"><span class="lineno">   61</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(processOps, readProcess).Times(1).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(-1));</div>
 <div class="line"><span class="lineno">   62</span> </div>
 <div class="line"><span class="lineno">   63</span>    <span class="comment">// Act</span></div>
 <div class="line"><span class="lineno">   64</span>    <a class="code hl_function" href="_server_8hpp.html#a735bf6535f62b5907ea2d5f0e1abf3c7">connectionReceiveFromCGI</a>(server, pipefd[0], connection);</div>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">   67</span>    EXPECT_EQ(connection.m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">   68</span>    EXPECT_EQ(connection.m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
+<div class="line"><span class="lineno">   67</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(connection.m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">   68</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(connection.m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a>);</div>
 <div class="line"><span class="lineno">   69</span>}</div>
 <div class="ttc" id="a_server_8hpp_html_a735bf6535f62b5907ea2d5f0e1abf3c7"><div class="ttname"><a href="_server_8hpp.html#a735bf6535f62b5907ea2d5f0e1abf3c7">connectionReceiveFromCGI</a></div><div class="ttdeci">void connectionReceiveFromCGI(Server &amp;server, int activeFd, Connection &amp;connection)</div><div class="ttdoc">Handles receiving data from a CGI script and processes it accordingly.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l01246">Server.cpp:1246</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00017">StatusCode.hpp:17</a></div></div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a></div><div class="ttdeci">@ BuildResponse</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00027">Connection.hpp:27</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -204,7 +205,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PartialRead&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">PartialRead</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -219,20 +220,20 @@ Here is the call graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
 <div class="line"><span class="lineno">   73</span>    <span class="comment">// Arrange</span></div>
 <div class="line"><span class="lineno">   74</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* response = <span class="stringliteral">&quot;CGI response&quot;</span>;</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keyword">const</span> ssize_t responseSize = strlen(response);</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keyword">const</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ssize_t</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseSize</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">strlen</a>(response);</div>
 <div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>    EXPECT_CALL(processOps, readProcess)</div>
+<div class="line"><span class="lineno">   77</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(processOps, readProcess)</div>
 <div class="line"><span class="lineno">   78</span>        .Times(1)</div>
-<div class="line"><span class="lineno">   79</span>        .WillOnce(DoAll(</div>
-<div class="line"><span class="lineno">   80</span>            SetArrayArgument&lt;1&gt;(response, response + responseSize),</div>
-<div class="line"><span class="lineno">   81</span>            Return(responseSize)));</div>
+<div class="line"><span class="lineno">   79</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">DoAll</a>(</div>
+<div class="line"><span class="lineno">   80</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SetArrayArgument&lt;1&gt;</a>(response, response + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseSize</a>),</div>
+<div class="line"><span class="lineno">   81</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseSize</a>)));</div>
 <div class="line"><span class="lineno">   82</span> </div>
 <div class="line"><span class="lineno">   83</span>    <span class="comment">// Act</span></div>
 <div class="line"><span class="lineno">   84</span>    <a class="code hl_function" href="_server_8hpp.html#a735bf6535f62b5907ea2d5f0e1abf3c7">connectionReceiveFromCGI</a>(server, pipefd[0], connection);</div>
 <div class="line"><span class="lineno">   85</span> </div>
 <div class="line"><span class="lineno">   86</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">   87</span>    EXPECT_EQ(connection.m_request.body, response);</div>
-<div class="line"><span class="lineno">   88</span>    EXPECT_EQ(connection.m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">Connection::ReceiveFromCGI</a>);</div>
+<div class="line"><span class="lineno">   87</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(connection.m_request.body, response);</div>
+<div class="line"><span class="lineno">   88</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(connection.m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">Connection::ReceiveFromCGI</a>);</div>
 <div class="line"><span class="lineno">   89</span>}</div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">Connection::ReceiveFromCGI</a></div><div class="ttdeci">@ ReceiveFromCGI</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00026">Connection.hpp:26</a></div></div>
 </div><!-- fragment --><div class="dynheader">

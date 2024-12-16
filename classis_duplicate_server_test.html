@@ -126,14 +126,14 @@ Collaboration diagram for isDuplicateServerTest:</div>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a0e2f41b2d82d9dde33f6101e43668666" id="r_a0e2f41b2d82d9dde33f6101e43668666"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a0e2f41b2d82d9dde33f6101e43668666">isDuplicateServerTest</a> ()</td></tr>
 <tr class="separator:a0e2f41b2d82d9dde33f6101e43668666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5495b31fc6ab1998539eddfa22ceb45a" id="r_a5495b31fc6ab1998539eddfa22ceb45a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a5495b31fc6ab1998539eddfa22ceb45a">~isDuplicateServerTest</a> () override</td></tr>
+<tr class="memitem:a5495b31fc6ab1998539eddfa22ceb45a" id="r_a5495b31fc6ab1998539eddfa22ceb45a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a5495b31fc6ab1998539eddfa22ceb45a">~isDuplicateServerTest</a> () <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">override</a></td></tr>
 <tr class="separator:a5495b31fc6ab1998539eddfa22ceb45a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a64936dfec973125ef412f45b90b36eda" id="r_a64936dfec973125ef412f45b90b36eda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_config_file.html">ConfigFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a64936dfec973125ef412f45b90b36eda">configFile</a></td></tr>
 <tr class="separator:a64936dfec973125ef412f45b90b36eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a672eea9651b6df9eb38d3745c7ac1dff" id="r_a672eea9651b6df9eb38d3745c7ac1dff"><td class="memItemLeft" align="right" valign="top">NiceMock&lt; <a class="el" href="class_mock_epoll_wrapper.html">MockEpollWrapper</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a672eea9651b6df9eb38d3745c7ac1dff">epollWrapper</a></td></tr>
+<tr class="memitem:a672eea9651b6df9eb38d3745c7ac1dff" id="r_a672eea9651b6df9eb38d3745c7ac1dff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt; <a class="el" href="class_mock_epoll_wrapper.html">MockEpollWrapper</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a672eea9651b6df9eb38d3745c7ac1dff">epollWrapper</a></td></tr>
 <tr class="separator:a672eea9651b6df9eb38d3745c7ac1dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84774e0152a578fce5d8eee501777d93" id="r_a84774e0152a578fce5d8eee501777d93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mock_socket_policy.html">MockSocketPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classis_duplicate_server_test.html#a84774e0152a578fce5d8eee501777d93">socketPolicy</a></td></tr>
 <tr class="separator:a84774e0152a578fce5d8eee501777d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,9 +172,10 @@ Protected Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="test__is_duplicate_server_8cpp_source.html#l00015">15</a> of file <a class="el" href="test__is_duplicate_server_8cpp_source.html">test_isDuplicateServer.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   15</span>                            : <a class="code hl_variable" href="classis_duplicate_server_test.html#a47391793704b67d15d6d3100dc16ffd5">server</a>(<a class="code hl_variable" href="classis_duplicate_server_test.html#a64936dfec973125ef412f45b90b36eda">configFile</a>, <a class="code hl_variable" href="classis_duplicate_server_test.html#a672eea9651b6df9eb38d3745c7ac1dff">epollWrapper</a>, <a class="code hl_variable" href="classis_duplicate_server_test.html#a84774e0152a578fce5d8eee501777d93">socketPolicy</a>, <a class="code hl_variable" href="classis_duplicate_server_test.html#a1d61f685e74fae70634e2f8db93013d7">processOps</a>)</div>
 <div class="line"><span class="lineno">   16</span>    {</div>
-<div class="line"><span class="lineno">   17</span>        ON_CALL(<a class="code hl_variable" href="classis_duplicate_server_test.html#a672eea9651b6df9eb38d3745c7ac1dff">epollWrapper</a>, addEvent)</div>
-<div class="line"><span class="lineno">   18</span>        .WillByDefault(Return(<span class="keyword">true</span>));</div>
+<div class="line"><span class="lineno">   17</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ON_CALL</a>(<a class="code hl_variable" href="classis_duplicate_server_test.html#a672eea9651b6df9eb38d3745c7ac1dff">epollWrapper</a>, addEvent)</div>
+<div class="line"><span class="lineno">   18</span>        .WillByDefault(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">true</span>));</div>
 <div class="line"><span class="lineno">   19</span>    }</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="aclassis_duplicate_server_test_html_a1d61f685e74fae70634e2f8db93013d7"><div class="ttname"><a href="classis_duplicate_server_test.html#a1d61f685e74fae70634e2f8db93013d7">isDuplicateServerTest::processOps</a></div><div class="ttdeci">MockProcessOps processOps</div><div class="ttdef"><b>Definition</b> <a href="test__is_duplicate_server_8cpp_source.html#l00025">test_isDuplicateServer.cpp:25</a></div></div>
 <div class="ttc" id="aclassis_duplicate_server_test_html_a47391793704b67d15d6d3100dc16ffd5"><div class="ttname"><a href="classis_duplicate_server_test.html#a47391793704b67d15d6d3100dc16ffd5">isDuplicateServerTest::server</a></div><div class="ttdeci">Server server</div><div class="ttdef"><b>Definition</b> <a href="test__is_duplicate_server_8cpp_source.html#l00026">test_isDuplicateServer.cpp:26</a></div></div>
 <div class="ttc" id="aclassis_duplicate_server_test_html_a64936dfec973125ef412f45b90b36eda"><div class="ttname"><a href="classis_duplicate_server_test.html#a64936dfec973125ef412f45b90b36eda">isDuplicateServerTest::configFile</a></div><div class="ttdeci">ConfigFile configFile</div><div class="ttdef"><b>Definition</b> <a href="test__is_duplicate_server_8cpp_source.html#l00022">test_isDuplicateServer.cpp:22</a></div></div>
@@ -246,7 +247,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">NiceMock&lt;<a class="el" href="class_mock_epoll_wrapper.html">MockEpollWrapper</a>&gt; isDuplicateServerTest::epollWrapper</td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt;<a class="el" href="class_mock_epoll_wrapper.html">MockEpollWrapper</a>&gt; isDuplicateServerTest::epollWrapper</td>
         </tr>
       </table>
   </td>

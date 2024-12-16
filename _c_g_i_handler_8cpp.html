@@ -120,7 +120,7 @@ Include dependency graph for CGIHandler.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac74e9d3eec8d4845380648b9770ac359" id="r_ac74e9d3eec8d4845380648b9770ac359"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_g_i_handler_8cpp.html#ac74e9d3eec8d4845380648b9770ac359">registerChildSignals</a> ()</td></tr>
+<tr class="memitem:ac74e9d3eec8d4845380648b9770ac359" id="r_ac74e9d3eec8d4845380648b9770ac359"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_g_i_handler_8cpp.html#ac74e9d3eec8d4845380648b9770ac359">registerChildSignals</a> ()</td></tr>
 <tr class="memdesc:ac74e9d3eec8d4845380648b9770ac359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers signal handlers for child processes.  <br /></td></tr>
 <tr class="separator:ac74e9d3eec8d4845380648b9770ac359"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -132,7 +132,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool registerChildSignals </td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a> registerChildSignals </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -147,13 +147,14 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_c_g_i_handler_8cpp_source.html#l00303">303</a> of file <a class="el" href="_c_g_i_handler_8cpp_source.html">CGIHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
 <div class="line"><span class="lineno">  305</span>    <span class="comment">// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)</span></div>
-<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">if</span> (std::signal(SIGQUIT, SIG_IGN) == SIG_ERR) {</div>
-<div class="line"><span class="lineno">  307</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;failed to register &quot;</span> &lt;&lt; <a class="code hl_function" href="signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7">signalNumToName</a>(SIGQUIT) &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; std::strerror(errno);</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">if</span> (std::signal(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGQUIT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIG_IGN</a>) == <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIG_ERR</a>) {</div>
+<div class="line"><span class="lineno">  307</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;failed to register &quot;</span> &lt;&lt; <a class="code hl_function" href="signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7">signalNumToName</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGQUIT</a>) &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; std::strerror(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a>);</div>
 <div class="line"><span class="lineno">  308</span>        <span class="keywordflow">return</span> (<span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  309</span>    }</div>
 <div class="line"><span class="lineno">  310</span>    <span class="keywordflow">return</span> (<span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  311</span>}</div>
 <div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00018">Log.hpp:18</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="asignal_handler_8hpp_html_adc4193659d5893030190dca46c276ac7"><div class="ttname"><a href="signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7">signalNumToName</a></div><div class="ttdeci">std::string signalNumToName(int signum)</div><div class="ttdoc">Converts a signal number to its name.</div><div class="ttdef"><b>Definition</b> <a href="signal_handler_8cpp_source.html#l00020">signalHandler.cpp:20</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -163,7 +164,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_c_g_i_handler_8cpp_ac74e9d3eec8d4845380648b9770ac359_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_c_g_i_handler_8cpp_ac74e9d3eec8d4845380648b9770ac359_icgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -136,42 +136,43 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>test_server_shutdown_behavior(request):</div>
 <div class="line"><span class="lineno">   10</span> </div>
 <div class="line"><span class="lineno">   11</span>    <span class="comment"># Check if the user passed the --with-coverage option</span></div>
-<div class="line"><span class="lineno">   12</span>    with_coverage = request.config.getoption(<span class="stringliteral">&quot;--with-coverage&quot;</span>)</div>
+<div class="line"><span class="lineno">   12</span>    with_coverage = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--with-coverage&quot;</span>)</div>
 <div class="line"><span class="lineno">   13</span> </div>
 <div class="line"><span class="lineno">   14</span>    <span class="comment"># Path to the C++ server executable</span></div>
-<div class="line"><span class="lineno">   15</span>    kcov_output_dir = request.config.getoption(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>)</div>
-<div class="line"><span class="lineno">   16</span>    kcov_excl_path = request.config.getoption(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>)</div>
-<div class="line"><span class="lineno">   17</span>    cpp_server_executable = request.config.getoption(<span class="stringliteral">&quot;--server-executable&quot;</span>)</div>
-<div class="line"><span class="lineno">   18</span>    config_file = config_file = request.config.getoption(<span class="stringliteral">&quot;--config-file&quot;</span>)</div>
+<div class="line"><span class="lineno">   15</span>    kcov_output_dir = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>)</div>
+<div class="line"><span class="lineno">   16</span>    kcov_excl_path = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>)</div>
+<div class="line"><span class="lineno">   17</span>    cpp_server_executable = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--server-executable&quot;</span>)</div>
+<div class="line"><span class="lineno">   18</span>    config_file = config_file = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--config-file&quot;</span>)</div>
 <div class="line"><span class="lineno">   19</span> </div>
 <div class="line"><span class="lineno">   20</span>    <span class="keywordflow">if</span> with_coverage:</div>
 <div class="line"><span class="lineno">   21</span>        <span class="comment"># Create the kcov output directory if it doesn&#39;t exist</span></div>
-<div class="line"><span class="lineno">   22</span>        os.makedirs(kcov_output_dir, exist_ok=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   23</span>        server_process = subprocess.Popen(</div>
+<div class="line"><span class="lineno">   22</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.makedirs</a>(kcov_output_dir, exist_ok=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   23</span>        server_process = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.Popen</a>(</div>
 <div class="line"><span class="lineno">   24</span>            [<span class="stringliteral">&quot;kcov&quot;</span>, kcov_excl_path, kcov_output_dir, cpp_server_executable, config_file]</div>
 <div class="line"><span class="lineno">   25</span>        )</div>
 <div class="line"><span class="lineno">   26</span>        print(<span class="stringliteral">&quot;Running server with coverage (kcov)...&quot;</span>)</div>
 <div class="line"><span class="lineno">   27</span>        delay_time = 10</div>
 <div class="line"><span class="lineno">   28</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   29</span>        server_process = subprocess.Popen(</div>
+<div class="line"><span class="lineno">   29</span>        server_process = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.Popen</a>(</div>
 <div class="line"><span class="lineno">   30</span>            [cpp_server_executable, config_file]</div>
 <div class="line"><span class="lineno">   31</span>        )</div>
 <div class="line"><span class="lineno">   32</span>        print(<span class="stringliteral">&quot;Running server...&quot;</span>)</div>
 <div class="line"><span class="lineno">   33</span>        delay_time = 3</div>
 <div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>    time.sleep(delay_time)</div>
+<div class="line"><span class="lineno">   35</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">time.sleep</a>(delay_time)</div>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> with_coverage:</div>
-<div class="line"><span class="lineno">   38</span>        pid = int(subprocess.check_output([<span class="stringliteral">&quot;pgrep&quot;</span>, <span class="stringliteral">&quot;webserv&quot;</span>]).decode().strip())</div>
+<div class="line"><span class="lineno">   38</span>        pid = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.check_output</a>([<span class="stringliteral">&quot;pgrep&quot;</span>, <span class="stringliteral">&quot;webserv&quot;</span>]).decode().strip())</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   40</span>        pid = server_process.pid</div>
+<div class="line"><span class="lineno">   40</span>        pid = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.pid</a></div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>    print(<span class="stringliteral">&quot;Testing server shutdown behavior...&quot;</span>)</div>
-<div class="line"><span class="lineno">   43</span>    os.kill(pid, signal.SIGQUIT)</div>
-<div class="line"><span class="lineno">   44</span>    time.sleep(3)</div>
-<div class="line"><span class="lineno">   45</span>    server_process.terminate()</div>
-<div class="line"><span class="lineno">   46</span>    server_process.wait()</div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.kill</a>(pid, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">signal.SIGQUIT</a>)</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">time.sleep</a>(3)</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.terminate</a>()</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.wait</a>()</div>
 <div class="line"><span class="lineno">   47</span>    print(<span class="stringliteral">&quot;Server stopped.&quot;</span>)</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

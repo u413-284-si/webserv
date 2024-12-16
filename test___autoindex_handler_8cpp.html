@@ -124,9 +124,9 @@ Include dependency graph for test_AutoindexHandler.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa7105d131a234704f21f7b55222671b1" id="r_aa7105d131a234704f21f7b55222671b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___autoindex_handler_8cpp.html#aa7105d131a234704f21f7b55222671b1">TEST</a> (<a class="el" href="class_autoindex_handler.html">AutoindexHandler</a>, OpenDirectoyThrow)</td></tr>
+<tr class="memitem:aa7105d131a234704f21f7b55222671b1" id="r_aa7105d131a234704f21f7b55222671b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___autoindex_handler_8cpp.html#aa7105d131a234704f21f7b55222671b1">TEST</a> (<a class="el" href="class_autoindex_handler.html">AutoindexHandler</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OpenDirectoyThrow</a>)</td></tr>
 <tr class="separator:aa7105d131a234704f21f7b55222671b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ee1606153bcc3e04355208f82fd6ac3" id="r_a1ee1606153bcc3e04355208f82fd6ac3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___autoindex_handler_8cpp.html#a1ee1606153bcc3e04355208f82fd6ac3">TEST</a> (<a class="el" href="class_autoindex_handler.html">AutoindexHandler</a>, ReadDirectoryThrow)</td></tr>
+<tr class="memitem:a1ee1606153bcc3e04355208f82fd6ac3" id="r_a1ee1606153bcc3e04355208f82fd6ac3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___autoindex_handler_8cpp.html#a1ee1606153bcc3e04355208f82fd6ac3">TEST</a> (<a class="el" href="class_autoindex_handler.html">AutoindexHandler</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReadDirectoryThrow</a>)</td></tr>
 <tr class="separator:a1ee1606153bcc3e04355208f82fd6ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -145,7 +145,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">OpenDirectoyThrow&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OpenDirectoyThrow</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -158,23 +158,19 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="test___autoindex_handler_8cpp_source.html#l00010">10</a> of file <a class="el" href="test___autoindex_handler_8cpp_source.html">test_AutoindexHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   11</span>{</div>
-<div class="line"><span class="lineno">   12</span>    <a class="code hl_class" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a> fileSystemPolicy;</div>
-<div class="line"><span class="lineno">   13</span>    <a class="code hl_class" href="class_autoindex_handler.html">AutoindexHandler</a> autoindexHandler(fileSystemPolicy);</div>
+<div class="line"><span class="lineno">   12</span>    <a class="code hl_class" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>;</div>
+<div class="line"><span class="lineno">   13</span>    <a class="code hl_class" href="class_autoindex_handler.html">AutoindexHandler</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindexHandler</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>);</div>
 <div class="line"><span class="lineno">   14</span> </div>
-<div class="line"><span class="lineno">   15</span>    EXPECT_CALL(fileSystemPolicy, openDirectory)</div>
+<div class="line"><span class="lineno">   15</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>, openDirectory)</div>
 <div class="line"><span class="lineno">   16</span>    .WillOnce(testing::Throw(std::runtime_error(<span class="stringliteral">&quot;openDirectory failed&quot;</span>)));</div>
 <div class="line"><span class="lineno">   17</span> </div>
-<div class="line"><span class="lineno">   18</span>    std::string autoindex = autoindexHandler.execute(<span class="stringliteral">&quot;/workspaces/webserv/test/&quot;</span>);</div>
-<div class="line"><span class="lineno">   19</span>    EXPECT_EQ(autoindex, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">   18</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindex</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindexHandler</a>.execute(<span class="stringliteral">&quot;/workspaces/webserv/test/&quot;</span>);</div>
+<div class="line"><span class="lineno">   19</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindex</a>, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">   20</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="aclass_autoindex_handler_html"><div class="ttname"><a href="class_autoindex_handler.html">AutoindexHandler</a></div><div class="ttdoc">Class to handle the autoindex feature.</div><div class="ttdef"><b>Definition</b> <a href="_autoindex_handler_8hpp_source.html#l00017">AutoindexHandler.hpp:17</a></div></div>
 <div class="ttc" id="aclass_mock_file_system_policy_html"><div class="ttname"><a href="class_mock_file_system_policy.html">MockFileSystemPolicy</a></div><div class="ttdoc">Mock class for FileSystemPolicy.</div><div class="ttdef"><b>Definition</b> <a href="_mock_file_system_policy_8hpp_source.html#l00012">MockFileSystemPolicy.hpp:12</a></div></div>
-</div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test___autoindex_handler_8cpp_aa7105d131a234704f21f7b55222671b1_cgraph.svg" width="100%" height="413"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a1ee1606153bcc3e04355208f82fd6ac3" name="a1ee1606153bcc3e04355208f82fd6ac3"></a>
@@ -192,7 +188,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ReadDirectoryThrow&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReadDirectoryThrow</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -205,25 +201,20 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="test___autoindex_handler_8cpp_source.html#l00022">22</a> of file <a class="el" href="test___autoindex_handler_8cpp_source.html">test_AutoindexHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
-<div class="line"><span class="lineno">   24</span>    <a class="code hl_class" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a> fileSystemPolicy;</div>
-<div class="line"><span class="lineno">   25</span>    <a class="code hl_class" href="class_autoindex_handler.html">AutoindexHandler</a> autoindexHandler(fileSystemPolicy);</div>
+<div class="line"><span class="lineno">   24</span>    <a class="code hl_class" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>;</div>
+<div class="line"><span class="lineno">   25</span>    <a class="code hl_class" href="class_autoindex_handler.html">AutoindexHandler</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindexHandler</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>);</div>
 <div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    EXPECT_CALL(fileSystemPolicy, openDirectory)</div>
-<div class="line"><span class="lineno">   28</span>    .WillOnce(testing::Return((DIR*)1));</div>
-<div class="line"><span class="lineno">   29</span>    EXPECT_CALL(fileSystemPolicy, readDirectory)</div>
+<div class="line"><span class="lineno">   27</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>, openDirectory)</div>
+<div class="line"><span class="lineno">   28</span>    .WillOnce(testing::Return((<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">DIR</a>*)1));</div>
+<div class="line"><span class="lineno">   29</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>, readDirectory)</div>
 <div class="line"><span class="lineno">   30</span>    .WillOnce(testing::Throw(std::runtime_error(<span class="stringliteral">&quot;readDirectory failed&quot;</span>)));</div>
-<div class="line"><span class="lineno">   31</span>    EXPECT_CALL(fileSystemPolicy, closeDirectory)</div>
+<div class="line"><span class="lineno">   31</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>, closeDirectory)</div>
 <div class="line"><span class="lineno">   32</span>    .WillOnce(testing::Return(0));</div>
 <div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>    std::string autoindex = autoindexHandler.execute(<span class="stringliteral">&quot;/workspaces/webserv/test/&quot;</span>);</div>
-<div class="line"><span class="lineno">   35</span>    EXPECT_EQ(autoindex, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">   34</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindex</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindexHandler</a>.execute(<span class="stringliteral">&quot;/workspaces/webserv/test/&quot;</span>);</div>
+<div class="line"><span class="lineno">   35</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">autoindex</a>, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">   36</span>}</div>
-</div><!-- fragment --><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test___autoindex_handler_8cpp_a1ee1606153bcc3e04355208f82fd6ac3_cgraph.svg" width="100%" height="413"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
