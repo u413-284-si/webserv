@@ -176,7 +176,7 @@ void ResponseBodyHandler::setDefaultErrorPage()
  */
 std::string getDefaultErrorPage(statusCode statusCode)
 {
-	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
 		statusCode = StatusInternalServerError;
 
 	static const char* error301Page = "<html>\r\n"

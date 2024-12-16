@@ -134,7 +134,7 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
-	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
 		statusCode = StatusInternalServerError;
 
 	switch (statusCode) {

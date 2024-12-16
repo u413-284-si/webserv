@@ -120,7 +120,7 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
  */
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 {
-	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
 		statusCode = StatusInternalServerError;
 
 	switch (statusCode) {
