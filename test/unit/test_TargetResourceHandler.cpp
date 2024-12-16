@@ -88,7 +88,7 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
 
 	m_request.uri.path = "/test";
 
@@ -107,14 +107,14 @@ TEST_F(TargetResourceHandlerTest, FileOther)
 
 	m_targetResourceHandler.execute(m_connection);
 
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
 }
 
 TEST_F(TargetResourceHandlerTest, FileNoPermission)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileNoPermission));
+	.WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException("No permission")));
 
 	m_request.uri.path = "/test";
 
@@ -155,8 +155,8 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist))
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")))
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
 
 	m_request.uri.path = "/test/secret/";
 
