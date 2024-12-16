@@ -41,7 +41,7 @@ FileSystemPolicy::NoPermissionException::NoPermissionException(const std::string
  * If the file is neither a regular file nor a directory, FileOther is returned.
  * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
  * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
- * @throws std::runtime_error with strerror() of errno.
+ * @throws std::runtime_error in other cases with strerror() of errno.
  * @param path Path to check.
  * @return FileSystemPolicy::fileType File type.
  */
@@ -86,7 +86,11 @@ bool FileSystemPolicy::isExistingFile(const std::string& path) const { return ch
 /**
  * @brief Gets the contents of a file.
  *
- * @throws std::runtime_error with strerror() of errno.
+ * Opens a file stream. Checks if it could open wirh is_open(). If not throws custom exceptions.
+ * If the stream has other errors, throws a std::runtime_error.
+ * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
+ * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
+ * @throws std::runtime_error in other cases with strerror() of errno.
  * @param filename File to read.
  * @return std::string File contents.
  */

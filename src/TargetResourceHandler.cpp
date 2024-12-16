@@ -33,16 +33,17 @@ void TargetResourceHandler::execute(Connection& connection)
  * This function is called recursively. To exit recursion it keeps track of recursion depth.
  * Checks which location block most closely matches path with matchLocation().
  * Then constructs target resource by appending the path to location root.
- * Determines the type with stat() and take different action:
+ * Determines the type with FileSystemPolicy::checkFileType() and take different action:
  * - FileRegular: break, nothing more to do.
  * - FileDirectory: further action with handleFileDirectory()
- * - FileNotExist: set Status to StatusNotFound.
  * - FileOther: set Status to StatusInternalServerError.
- * If stat fails, set Status to StatusInternalServerError.
+ * If FileSystemPolicy::checkFileType() throws, sets status depending on exception type:
+ * - FileSystemPolicy::FileNotFoundException: StatusNotFound
+ * - FileSystemPolicy::NoPermissionException: StatusForbidden
+ * - std::runtime_error: StatusInternalServerError.
  * @param locInfo Struct containing info for locating the target resource.
  * @param depth Current depth in recursion.
  * @return TargetResourceHandler::LocatingInfo
- * @throws std::runtime_error If no location block is found for the path.
  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
@@ -55,6 +56,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 	}
 
 	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
+	LOG_DEBUG << "Active location: " << locInfo.activeLocation->path;
 
 	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
