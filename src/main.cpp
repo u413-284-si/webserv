@@ -5,7 +5,7 @@
  * @brief Stringize the result of expansion of a macro argument
  *
  * If the macro DEFAULT_CONFIG_PATH is defined with -D at compile time the literal value would be inserted. Since it has
- * to be a string one would have to put the vlue in escaped double quotes. This macro in combination with STRINGIZE(s)
+ * to be a string one would have to put the value in escaped double quotes. This macro in combination with STRINGIZE(s)
  * stringize the defined value. First the macro gets expanded, and then the expanded value gets stringized. One can
  * simply redefine the path with "-D DEFAULT_CONFIG_PATH=./new/path"
  * @sa https://gcc.gnu.org/onlinedocs/cpp/Stringizing.html
