@@ -92,6 +92,11 @@ ConfigFile createDummyConfig()
 	location6.allowMethods[MethodGet] = true;
 	location6.allowMethods[MethodPost] = true;
 
+	Location location7;
+	location7.path = "/uploads/";
+	location7.root = "/workspaces/webserv/html";
+	location7.allowedMethods[MethodPost] = true;
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
@@ -99,6 +104,7 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location3);
 	serverConfig8080.locations.push_back(location4);
 	serverConfig8080.locations.push_back(location5);
+	serverConfig8080.locations.push_back(location7);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
@@ -117,6 +123,12 @@ ConfigFile createDummyConfig()
 	serverConfig8081.port = "8081";
 	serverConfig8081.serverName = "cgi";
 
+	ConfigServer serverConfig8082;
+	serverConfig8082.locations.push_back(location7);
+	serverConfig8082.host = "127.0.0.1";
+	serverConfig8082.port = "8082";
+	serverConfig8082.serverName = "post";
+
 	ConfigServer serverConfig8090dupl;
 	serverConfig8090dupl.locations.clear();
 	serverConfig8090dupl.locations.push_back(location1);
@@ -129,6 +141,7 @@ ConfigFile createDummyConfig()
 	configFile.servers.push_back(serverConfig8090);
 	configFile.servers.push_back(serverConfig8090dupl);
 	configFile.servers.push_back(serverConfig8081);
+	configFile.servers.push_back(serverConfig8082);
 
 	return configFile;
 }

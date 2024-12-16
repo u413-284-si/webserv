@@ -1,5 +1,4 @@
 #include "AutoindexHandler.hpp"
-#include "Log.hpp"
 
 /**
  * @brief Construct a new AutoindexHandler object
@@ -9,30 +8,6 @@
 AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
 {
-}
-
-/**
- * @brief Get the last modified time of a file.
- *
- * @param fileStat File stat object.
- * @return std::string Last modified time.
- */
-std::string getLastModifiedTime(const struct stat& fileStat)
-{
-	return webutils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
-}
-
-/**
- * @brief Get the file size of a file.
- *
- * @param fileStat File stat object.
- * @return long File size.
- */
-long getFileSize(const struct stat& fileStat)
-{
-	if (S_ISDIR(fileStat.st_mode))
-		return 0;
-	return fileStat.st_size;
 }
 
 /**
@@ -69,11 +44,12 @@ std::string AutoindexHandler::execute(const std::string& path)
 			if (*iter == "." || *iter == "..")
 				continue;
 			struct stat fileStat = m_fileSystemPolicy.getFileStat(path + *iter);
+			// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
 			m_response << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
-					   << "<td>" << getLastModifiedTime(fileStat) << "</td>"
-					   << "<td>" << getFileSize(fileStat) << "</td></tr>\n";
+						  << "<td>" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "</td>"
+						  << "<td>" << m_fileSystemPolicy.getFileSize(fileStat) << "</td></tr>\n";
 		}
 		m_response << "</table>\n</body>\n</html>";
 		return m_response.str();
