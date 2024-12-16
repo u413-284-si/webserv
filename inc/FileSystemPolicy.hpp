@@ -40,16 +40,4 @@ public:
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
 	virtual void deleteFile(const std::string& path) const;
-	virtual void deleteDirectory(const std::string& path) const;
-
-private:
-    class DirectoryGuard {
-    public:
-        explicit DirectoryGuard(DIR* dir);
-        ~DirectoryGuard();
-        DIR* getDir() const;
-
-    private:
-        DIR* m_dir;
-    };
 };
