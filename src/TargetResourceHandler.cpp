@@ -124,6 +124,7 @@ std::vector<Location>::const_iterator matchLocation(const std::vector<Location>&
 TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 	: statusCode(connection.m_request.httpStatus)
 	, path(connection.m_request.uri.path)
+	, isDirectory(false)
 	, hasAutoindex(false)
 	, locations(&connection.serverConfig->locations)
 	, activeLocation(connection.location)
@@ -141,6 +142,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 	connection.m_request.httpStatus = locInfo.statusCode;
 	connection.m_request.uri.path = locInfo.path;
 	connection.m_request.targetResource = locInfo.targetResource;
+	connection.m_request.isDirectory = locInfo.isDirectory;
 	connection.m_request.hasAutoindex = locInfo.hasAutoindex;
 	connection.location = locInfo.activeLocation;
 }
@@ -154,6 +156,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
  * - if index vector is not empty, try to locate a index file with locateIndexFile().
  * - if autoindex is set, set hasAutoindex to true.
  * - else set Status to StatusForbidden.
+ * If the file is a directory and no index is appended, isDirectory is set to true.
  * @param locInfo Reference to LocationInfo which gets overwritten.
  * @param currentDepth Current depth in recursion.
  */
@@ -162,6 +165,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 {
 	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
 		locInfo.targetResource += "/";
+		locInfo.isDirectory = true;
 		locInfo.statusCode = StatusMovedPermanently;
 		return;
 	}
@@ -172,10 +176,12 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 	}
 
 	if (locInfo.activeLocation->isAutoindex) {
+		locInfo.isDirectory = true;
 		locInfo.hasAutoindex = true;
 		return;
 	}
 
+	locInfo.isDirectory = true;
 	locInfo.statusCode = StatusForbidden;
 }
 
