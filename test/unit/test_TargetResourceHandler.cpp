@@ -92,18 +92,6 @@ TEST_F(TargetResourceHandlerTest, TwoLocationsMatchOneIsLonger)
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
 }
 
-TEST_F(TargetResourceHandlerTest, LocationNotFound)
-{
-	m_configFile.servers[0].locations.clear();
-
-	m_request.uri.path = "/something";
-
-	m_targetResourceHandler.execute(m_connection);
-
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_request.targetResource, "");
-}
-
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)

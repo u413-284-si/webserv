@@ -120,7 +120,8 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
  */
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 {
-	assert(statusCode >= NoStatus && statusCode <= StatusNonSupportedVersion);
+	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+		statusCode = StatusInternalServerError;
 
 	switch (statusCode) {
 	case NoStatus:
