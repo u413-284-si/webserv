@@ -31,10 +31,13 @@ private:
 	void appendHeadersCGI(const HTTPRequest& request);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
+	void parseResponseBody();
 	void resetBuilder();
 
 	std::map<std::string, std::string> m_mimeTypes;
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_responseHeader;
 	std::string m_responseBody;
+	std::string m_responseStatusLine;
+	std::map<std::string, std::string> m_responseHeaders;
 };

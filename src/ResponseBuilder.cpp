@@ -47,6 +47,8 @@ void ResponseBuilder::buildResponse(Connection& connection)
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
+	parseResponseBody();
+
 	appendStatusLine(request);
 	if (request.hasCGI && request.httpStatus == StatusOK)
 		appendHeadersCGI(request);
@@ -83,7 +85,8 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
 	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
 		return;
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' ' << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
+					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
@@ -101,9 +104,10 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
-	// Content-Type
-		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
-	// Content-Length
+		// Content-Type
+		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
+						 << "\r\n";
+		// Content-Length
 		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 	// Server
@@ -184,4 +188,42 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 		return iter->second;
 	}
 	return m_mimeTypes.at("default");
+}
+
+void ResponseBuilder::parseResponseBody()
+{
+	if (m_responseBody.empty())
+		return;
+
+	size_t posStatus = m_responseBody.find("Status");
+	size_t posStatusEnd = 0;
+	if (posStatus != std::string::npos)
+	{
+		posStatusEnd = m_responseBody.find("\r\n", posStatus);
+		m_responseStatusLine = m_responseBody.substr(posStatus,  posStatusEnd - posStatus);
+		posStatusEnd += 2;
+	}
+
+	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
+	if (posHeadersEnd != std::string::npos)
+	{
+		std::string headers = m_responseBody.substr(posStatusEnd, posHeadersEnd - posStatusEnd);
+		std::istringstream headersStream(headers);
+		std::string header;
+		while (std::getline(headersStream, header))
+		{
+			if (header.find("Content-Type") != std::string::npos)
+			{
+				m_responseHeaders["Content-Type"] = header.substr(header.find(":") + 2);
+			}
+			else if (header.find("Content-Length") != std::string::npos)
+			{
+				m_responseHeaders["Content-Length"] = header.substr(header.find(":") + 2);
+			}
+			else if (header.find("Location") != std::string::npos)
+			{
+				m_responseHeaders["Location"] = header.substr(header.find(":") + 2);
+			}
+		}
+	}
 }
