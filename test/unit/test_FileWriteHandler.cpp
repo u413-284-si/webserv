@@ -35,7 +35,7 @@ protected:
 TEST_F(FileWriteHandlerTest, NonExistingFile)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(false));
+	EXPECT_CALL(m_fileSystemPolicy, isRegularFile).WillOnce(Return(false));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
@@ -51,7 +51,7 @@ TEST_F(FileWriteHandlerTest, NonExistingFile)
 TEST_F(FileWriteHandlerTest, ExistingFile)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(true));
+	EXPECT_CALL(m_fileSystemPolicy, isRegularFile).WillOnce(Return(true));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);

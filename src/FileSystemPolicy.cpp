@@ -81,7 +81,7 @@ bool FileSystemPolicy::isDirectory(const std::string& path) const { return check
  * @return true Path is an existing file.
  * @return false Path is not an existing file.
  */
-bool FileSystemPolicy::isExistingFile(const std::string& path) const { return checkFileType(path) == FileRegular; }
+bool FileSystemPolicy::isRegularFile(const std::string& path) const { return checkFileType(path) == FileRegular; }
 
 /**
  * @brief Gets the contents of a file.
