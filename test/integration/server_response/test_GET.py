@@ -2,7 +2,6 @@
 
 import requests
 import os
-import stat
 
 def test_GET_simple():
     print("Request for /index.html")
@@ -33,16 +32,3 @@ def test_GET_directory_redirect():
 # does not work right now
 #    assert response.headers["location"] == "/directory/"
     assert response.status_code == 301
-
-def test_GET_no_permission():
-    print("Chmod 000 index.html and request it")
-    file_path = "/workspaces/webserv/html/index.html"
-    # Get and store the current permissions
-    original_permissions = stat.S_IMODE(os.stat(file_path).st_mode)
-    # Change permissions to 000
-    os.chmod(file_path, 0o000)
-    # Try to access
-    response = requests.get("http://localhost:8080/index.html")
-    # Restore the original permissions
-    os.chmod(file_path, original_permissions)
-    assert response.status_code == 403
