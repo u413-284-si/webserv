@@ -4,22 +4,43 @@
  * @brief Construct a new File System Policy:: File System Policy object
  *
  */
-FileSystemPolicy::FileSystemPolicy() {}
+FileSystemPolicy::FileSystemPolicy() { }
 
 /**
  * @brief Virtual destructor for FileSystemPolicy object
  *
  */
-FileSystemPolicy::~FileSystemPolicy() {}
+FileSystemPolicy::~FileSystemPolicy() { }
+
+/**
+ * @brief Construct a new File System Policy:: File Not Found Exception:: File Not Found Exception object
+ *
+ * @param msg Error message.
+ */
+FileSystemPolicy::FileNotFoundException::FileNotFoundException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
+
+/**
+ * @brief Construct a new File System Policy:: No Permission Exception:: No Permission Exception object
+ *
+ * @param msg Error message.
+ */
+FileSystemPolicy::NoPermissionException::NoPermissionException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
 
 /**
  * @brief Check the file type of a given path.
  *
  * Uses stat() to check the file type of a given path.
- * If the file does not exist, FileNotExist is returned.
  * If the file is a regular file, FileRegular is returned.
  * If the file is a directory, FileDirectory is returned.
  * If the file is neither a regular file nor a directory, FileOther is returned.
+ * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
+ * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
  * @throws std::runtime_error with strerror() of errno.
  * @param path Path to check.
  * @return FileSystemPolicy::fileType File type.
@@ -30,9 +51,9 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 	errno = 0;
 	if (stat(path.c_str(), &fileStat) == -1) {
 		if (errno == ENOENT)
-			return FileNotExist;
+			throw FileNotFoundException("stat(): " + std::string(strerror(errno)));
 		if (errno == EACCES)
-			return FileNoPermission;
+			throw NoPermissionException("stat(): " + std::string(strerror(errno)));
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	}
 	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
@@ -54,13 +75,13 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 bool FileSystemPolicy::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
 
 /**
- * @brief Wrapper to check if a path is an existing file.
+ * @brief Wrapper to check if a path is an existing, regular file.
  *
  * @param path Path to check.
  * @return true Path is an existing file.
  * @return false Path is not an existing file.
  */
-bool FileSystemPolicy::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotExist; }
+bool FileSystemPolicy::isExistingFile(const std::string& path) const { return checkFileType(path) == FileRegular; }
 
 /**
  * @brief Gets the contents of a file.
@@ -73,9 +94,14 @@ std::string FileSystemPolicy::getFileContents(const char* filename) const
 {
 	errno = 0;
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
-	if (!fileStream.good()) {
-		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
+	if (!fileStream.is_open()) {
+		if (errno == ENOENT)
+			throw FileNotFoundException("std::ifstream: " + std::string(strerror(errno)));
+		if (errno == EACCES)
+			throw NoPermissionException("std::ifstream: " + std::string(strerror(errno)));
 	}
+	if (fileStream.fail())
+		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
 	std::string contents;
 	fileStream.seekg(0, std::ios::end);
 	contents.resize(fileStream.tellg());
@@ -94,7 +120,7 @@ std::string FileSystemPolicy::getFileContents(const char* filename) const
 DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 {
 	errno = 0;
-	DIR *dir = opendir(path.c_str());
+	DIR* dir = opendir(path.c_str());
 	if (dir == NULL)
 		throw std::runtime_error("opendir(): " + std::string(strerror(errno)));
 	return dir;
@@ -110,7 +136,7 @@ DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 {
 	errno = 0;
-	struct dirent *entry = readdir(dir);
+	struct dirent* entry = readdir(dir);
 	if (entry == NULL && errno != 0)
 		throw std::runtime_error("readdir(): " + std::string(strerror(errno)));
 	return entry;

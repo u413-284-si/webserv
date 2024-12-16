@@ -25,7 +25,15 @@ public:
 	FileSystemPolicy();
 	virtual ~FileSystemPolicy();
 
-	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3, FileNoPermission = 4 };
+	enum fileType { FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+
+// custom exceptions
+	struct FileNotFoundException : public std::runtime_error {
+		explicit FileNotFoundException(const std::string& msg);
+	};
+	struct NoPermissionException : public std::runtime_error {
+		explicit NoPermissionException(const std::string& msg);
+	};
 
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
