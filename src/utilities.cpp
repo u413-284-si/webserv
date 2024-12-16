@@ -133,7 +133,8 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+		statusCode = StatusInternalServerError;
 
 	switch (statusCode) {
 	case StatusOK:
@@ -165,9 +166,6 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	case StatusNonSupportedVersion:
 		return "HTTP Version Not Supported";
 	}
-
-	assert(false && "Unhandled enum value");
-	return "";
 }
 
 std::string methodToString(Method method)

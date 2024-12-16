@@ -161,7 +161,8 @@ void ResponseBodyHandler::setDefaultErrorPage()
  */
 std::string getDefaultErrorPage(statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+		statusCode = StatusInternalServerError;
 
 	static const char* error301Page = "<html>\r\n"
 									  "<head><title>301 Moved permanently</title></head>\r\n"
