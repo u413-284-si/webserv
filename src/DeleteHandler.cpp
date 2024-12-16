@@ -83,7 +83,7 @@ void DeleteHandler::deleteDirectory(const std::string& path) const
 	Directory dir(m_fileSystemPolicy, path);
 
 	struct dirent* entry = NULL;
-	while ((entry = readdir(dir.getDir())) != NULL) {
+	while ((entry = m_fileSystemPolicy.readDirectory(dir.getDir())) != NULL) {
 		// Skip `.` and `..` entries
 		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
 			continue;
@@ -94,11 +94,8 @@ void DeleteHandler::deleteDirectory(const std::string& path) const
 		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 		if (S_ISDIR(info.st_mode))
 			deleteDirectory(fullPath);
-		else {
-			errno = 0;
-			if (unlink(fullPath.c_str()) != 0)
-				throw std::runtime_error("unlink(): " + std::string(strerror(errno)));
-		}
+		else
+			m_fileSystemPolicy.deleteFile(fullPath);
 	}
 
 	// Remove the empty directory itself
