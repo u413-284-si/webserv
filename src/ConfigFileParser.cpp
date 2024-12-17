@@ -18,7 +18,7 @@ ConfigFileParser::ConfigFileParser(void)
 	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
 	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "client_max_body_size",
-		"autoindex", "allow_methods", "location", "return" };
+		"autoindex", "error_page", "allow_methods", "location", "return" };
 	const int validLocationDirectiveNamesSize
 		= sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
 
@@ -635,6 +635,53 @@ void ConfigFileParser::readAllowMethods(const std::string& value)
 }
 
 /**
+ * @brief Reads the error codes and corresponding error pages
+ *
+ * The function checks if the error code is valid and the error page path is not empty.
+ *
+ * @param block The block which surounds the directive
+ * @param value The value of the directive error_page
+ */
+void ConfigFileParser::readErrorPage(const Block& block, const std::string& value)
+{
+
+	size_t semicolonIndex = value.find(';');
+	std::string errorPageValue = value.substr(0, semicolonIndex);
+	if (errorPageValue.empty())
+		throw std::runtime_error("error_page value is empty");
+
+	size_t index = 0;
+	while (index < errorPageValue.length()) {
+
+		index = errorPageValue.find_first_not_of(s_whitespace, index);
+		size_t errorCodeStartIndex = index;
+		size_t errorCodeEndIndex = errorPageValue.find_first_of(s_whitespace, index);
+		std::string errorCodeStr = errorPageValue.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);
+
+		statusCode errorCode = convertStringToStatusCode(errorCodeStr);
+		if (errorCode < StatusMovedPermanently || errorCode > StatusNonSupportedVersion)
+			throw std::runtime_error("Invalid error code");
+
+		index = errorPageValue.find_first_not_of(s_whitespace, errorCodeEndIndex);
+		size_t errorPagePathStartIndex = index;
+		size_t errorPagePathEndIndex = errorPageValue.find_first_of(s_whitespace, index);
+		std::string errorPagePath
+			= errorPageValue.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
+		if (errorPagePath.empty())
+			throw std::runtime_error("error page path is empty");
+
+		index = errorPagePathEndIndex;
+
+		if (block == ServerBlock)
+			m_configFile.servers[m_serverIndex].errorPage.insert(
+				std::pair<statusCode, std::string>(errorCode, errorPagePath));
+		else if (block == LocationBlock)
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].errorPage.insert(
+				std::pair<statusCode, std::string>(errorCode, errorPagePath));
+	}
+}
+
+/**
  * @brief Reads and checks the value of the server directive in the current line of the config file
  *
  * @details This function is called when the server directive is valid.
@@ -653,6 +700,8 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 		readServerName(value);
 	else if (directive == "client_max_body_size")
 		readMaxBodySize(ServerBlock, value);
+	else if (directive == "error_page")
+		readErrorPage(ServerBlock, value);
 }
 
 /**
@@ -674,6 +723,8 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 		readAutoIndex(value);
 	else if (directive == "allow_methods")
 		readAllowMethods(value);
+	else if (directive == "error_page")
+		readErrorPage(LocationBlock, value);
 }
 
 /**
@@ -783,6 +834,14 @@ std::string ConfigFileParser::convertBlockToString(Block block) const
 	default:
 		return "";
 	}
+}
+
+statusCode ConfigFileParser::convertStringToStatusCode(const std::string& statusCode) const
+{
+	unsigned long code = std::strtoul(statusCode.c_str(), NULL, constants::g_decimalBase);
+	if (code == 0)
+		throw std::runtime_error("Status code contains invalid characters");
+	return static_cast<enum statusCode>(code);
 }
 
 /**

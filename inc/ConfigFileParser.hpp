@@ -4,6 +4,7 @@
 
 #include "ConfigFile.hpp"
 #include "Server.hpp"
+#include "StatusCode.hpp"
 #include "utilities.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -70,12 +71,14 @@ private:
 	void readMaxBodySize(const Block& block, const std::string& value);
 	void readAutoIndex(const std::string& value);
 	void readAllowMethods(const std::string& value);
+	void readErrorPage(const Block& block, const std::string& value);
 	void readLocationBlockPath(void);
 
 	// Helper functions
 	std::string getDirective(void) const;
 	std::string getValue(void) const;
 	std::string convertBlockToString(Block block) const;
+	statusCode convertStringToStatusCode(const std::string& statusCodeString) const;
 	void skipBlockBegin(Block block);
 	void skipLocationBlockPath(size_t& index);
 };

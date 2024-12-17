@@ -33,6 +33,10 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 		 ++it) {
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	}
+	ostream << "Error pages:\n";
+	for (std::map<statusCode, std::string>::const_iterator it = location.errorPage.begin();
+		 it != location.errorPage.end(); ++it)
+		ostream << "  " << it->first << ": " << it->second << '\n';
 	return ostream;
 }
 
