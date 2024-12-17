@@ -1,17 +1,17 @@
 #pragma once
 
-#include <string>
 #include <cerrno>
 #include <cstring>
-#include <sys/stat.h>
-#include <fstream>
-#include <stdexcept>
-#include <iostream>
-#include <sys/types.h>
 #include <dirent.h>
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-#include "utilities.hpp"
 #include "Log.hpp"
+#include "utilities.hpp"
 
 /**
  * @brief Class for C functions on the file system.
@@ -22,12 +22,22 @@
 class FileSystemPolicy {
 
 public:
+	FileSystemPolicy();
 	virtual ~FileSystemPolicy();
 
-	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+	enum fileType { FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+
+// custom exceptions
+	struct FileNotFoundException : public std::runtime_error {
+		explicit FileNotFoundException(const std::string& msg);
+	};
+	struct NoPermissionException : public std::runtime_error {
+		explicit NoPermissionException(const std::string& msg);
+	};
+
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
-	virtual bool isExistingFile(const std::string& path) const;
+	virtual bool isRegularFile(const std::string& path) const;
 	virtual std::string getFileContents(const char* filename) const;
 	virtual DIR* openDirectory(const std::string& path) const;
 	virtual struct dirent* readDirectory(DIR* dir) const;
@@ -36,4 +46,8 @@ public:
 	virtual void writeToFile(const std::string& path, const std::string& content) const;
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
+
+private:
+	FileSystemPolicy(const FileSystemPolicy& ref);
+	FileSystemPolicy& operator=(const FileSystemPolicy& ref);
 };

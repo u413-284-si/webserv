@@ -88,7 +88,7 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
 
 	m_request.uri.path = "/test";
 
@@ -107,7 +107,20 @@ TEST_F(TargetResourceHandlerTest, FileOther)
 
 	m_targetResourceHandler.execute(m_connection);
 
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_EQ(m_request.targetResource, "/second/location/test");
+}
+
+TEST_F(TargetResourceHandlerTest, FileNoPermission)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException("No permission")));
+
+	m_request.uri.path = "/test";
+
+	m_targetResourceHandler.execute(m_connection);
+
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
 }
 
@@ -121,10 +134,11 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
+	EXPECT_TRUE(m_request.isDirectory);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
 }
 
-TEST_F(TargetResourceHandlerTest, DirectoryIndex)
+TEST_F(TargetResourceHandlerTest, HitDirectoryAppendIndexFile)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
@@ -138,18 +152,19 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/index.html");
 }
 
-TEST_F(TargetResourceHandlerTest, DirectoryIndexNotFound)
+TEST_F(TargetResourceHandlerTest, HitDirectoryIndexfileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist))
-	.WillOnce(testing::Return(FileSystemPolicy::FileNotExist));
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")))
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
 
 	m_request.uri.path = "/test/secret/";
 
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_TRUE(m_request.isDirectory);
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/");
 }
 
@@ -193,9 +208,10 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
 	EXPECT_EQ(m_request.targetResource, "/fourth/location/test/autoindex/");
 	EXPECT_TRUE(m_request.hasAutoindex);
+	EXPECT_TRUE(m_request.isDirectory);
 }
 
-TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
+TEST_F(TargetResourceHandlerTest, DirectoryWithNoAutoindex)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory));
@@ -207,6 +223,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryForbidden)
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
 	EXPECT_FALSE(m_request.hasAutoindex);
+	EXPECT_TRUE(m_request.isDirectory);
 }
 
 TEST_F(TargetResourceHandlerTest, ServerError)
