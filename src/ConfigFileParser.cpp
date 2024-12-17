@@ -664,12 +664,13 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& valu
 			throw std::runtime_error("Invalid error code");
 
 		index = errorPageValue.find_first_not_of(s_whitespace, errorCodeEndIndex);
+		if (index == std::string::npos)
+			throw std::runtime_error("error_page path is empty");
+
 		size_t errorPagePathStartIndex = index;
 		size_t errorPagePathEndIndex = errorPageValue.find_first_of(s_whitespace, index);
 		std::string errorPagePath
 			= errorPageValue.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
-		if (errorPagePath.empty())
-			throw std::runtime_error("error page path is empty");
 
 		index = errorPagePathEndIndex;
 
