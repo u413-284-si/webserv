@@ -7,5 +7,6 @@
 namespace constants {
 
 extern const int g_decimalBase;
+extern const int g_oneMegabyte;
 
 } // constants
