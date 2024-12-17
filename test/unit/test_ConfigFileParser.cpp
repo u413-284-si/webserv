@@ -204,7 +204,7 @@ TEST_F(InvalidConfigFileTests, ListenDirectiveContainsNoValue)
 			try {
 				m_configFileParser.parseConfigFile("config_files/listen_no_value.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("Listen value is empty", e.what());
+				EXPECT_STREQ("'listen' directive has no value", e.what());
 				throw;
 			}
 		},
@@ -302,7 +302,7 @@ TEST_F(InvalidConfigFileTests, MaxBodySizeContainsNoValue)
 			try {
 				m_configFileParser.parseConfigFile("config_files/max_body_size_no_value.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("client_max_body_size value is empty", e.what());
+				EXPECT_STREQ("'client_max_body_size' directive has no value", e.what());
 				throw;
 			}
 		},
@@ -344,7 +344,7 @@ TEST_F(InvalidConfigFileTests, AllowMethodsContainsNoValue)
 			try {
 				m_configFileParser.parseConfigFile("config_files/allow_methods_no_value.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("allow_methods value is empty", e.what());
+				EXPECT_STREQ("'allow_methods' directive has no value", e.what());
 				throw;
 			}
 		},
@@ -372,7 +372,7 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyErrorPagePath)
 			try {
 				m_configFileParser.parseConfigFile("config_files/error_page_empty_error_page_path.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("error_page path is empty", e.what());
+				EXPECT_STREQ("'error_page' directive path has no value", e.what());
 				throw;
 			}
 		},
@@ -386,7 +386,7 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyValue)
 			try {
 				m_configFileParser.parseConfigFile("config_files/error_page_empty_value.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("error_page value is empty", e.what());
+				EXPECT_STREQ("'error_page' directive has no value", e.what());
 				throw;
 			}
 		},
@@ -428,7 +428,7 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
 			try {
 				m_configFileParser.parseConfigFile("config_files/server_name_no_value.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("server_name value is empty", e.what());
+				EXPECT_STREQ("'server_name' directive has no value", e.what());
 				throw;
 			}
 		},

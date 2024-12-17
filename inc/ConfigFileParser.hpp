@@ -65,13 +65,14 @@ private:
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
 	void readLocationDirectiveValue(const std::string& directive, const std::string& value);
-	void readServerName(const std::string& value);
+	void readServerName(const std::string& serverName);
 	void readSocket(const std::string& value);
-	void readRootPath(const Block& block, const std::string& value);
-	void readMaxBodySize(const Block& block, const std::string& value);
-	void readAutoIndex(const std::string& value);
-	void readAllowMethods(const std::string& value);
-	void readErrorPage(const Block& block, const std::string& value);
+	void readRootPath(const Block& block, std::string rootPath);
+	void readMaxBodySize(const Block& block, const std::string& maxBodySize);
+	void readAutoIndex(const std::string& autoindex);
+	void readAllowMethods(const std::string& allowMethods);
+	void readErrorPage(const Block& block, const std::string& errorPage);
+	void readCGIExtension(const std::string& extension);
 	void readLocationBlockPath(void);
 
 	// Helper functions

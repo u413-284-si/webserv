@@ -392,17 +392,10 @@ void ConfigFileParser::readLocationBlockPath(void)
  * This function can be used for the server block and location block
  *
  * @param block The block which surounds the directive
- * @param value The value of the directive root
+ * @param rootPath The value of the directive root
  */
-void ConfigFileParser::readRootPath(const Block& block, const std::string& value)
+void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
-	size_t semicolonIndex = value.find(';');
-
-	std::string rootPath = value.substr(0, semicolonIndex);
-
-	if (rootPath.empty())
-		throw std::runtime_error("'root' directive has no value");
-
 	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one root path");
 
@@ -421,18 +414,11 @@ void ConfigFileParser::readRootPath(const Block& block, const std::string& value
  * The function checks if there is only one server name and reads it if that is the case
  * If an empty string is provided, the server name will be set to an empty string
  *
- * @param value The value of the directive server_name
+ * @param serverName The value of the directive server_name
  */
 
-void ConfigFileParser::readServerName(const std::string& value)
+void ConfigFileParser::readServerName(const std::string& serverName)
 {
-	std::string serverName = value.substr(0, value.find(';'));
-
-	serverName = webutils::trimLeadingWhitespaces(serverName);
-	webutils::trimTrailingWhiteSpaces(serverName);
-
-	if (serverName.empty())
-		throw std::runtime_error("server_name value is empty");
 	if (serverName.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one server name");
 	if (serverName == "\"\"")
@@ -516,16 +502,11 @@ void ConfigFileParser::readSocket(const std::string& value)
  * only consists of one character which is a valid unit
  *
  * @param block The block which surounds the directive
- * @param value The value of the directive client_max_body_size
+ * @param maxBodySize The value of the directive client_max_body_size
  */
-void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& value)
+void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& maxBodySize)
 {
 	const size_t bytesPerKiloByte = 1024;
-	const size_t semicolonIndex = value.find(';');
-	std::string maxBodySize = value.substr(0, semicolonIndex);
-	if (maxBodySize.empty())
-		throw std::runtime_error("client_max_body_size value is empty");
-
 	const size_t lastNumberIndex = maxBodySize.find_last_of(s_number);
 	if (lastNumberIndex == std::string::npos)
 		throw std::runtime_error("Invalid client_max_body_size value");
@@ -575,13 +556,10 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& va
  * If that is the case the function will set the autoindex to true or false.
  * Otherwise it will throw an exception.
  *
- * @param value The value of the directive autoindex
+ * @param autoindex The value of the directive autoindex
  */
-void ConfigFileParser::readAutoIndex(const std::string& value)
+void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 {
-	const size_t semicolonIndex = value.find(';');
-	std::string autoindex = value.substr(0, semicolonIndex);
-
 	if (autoindex == "on")
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].isAutoindex = true;
 	else if (autoindex == "off")
@@ -599,18 +577,13 @@ void ConfigFileParser::readAutoIndex(const std::string& value)
  *
  * Before setting the allow method to true the function will set all other allow methods to false
  *
- * @param value The value of the directive allow_methods
+ * @param allowMethods The value of the directive allow_methods
  */
-void ConfigFileParser::readAllowMethods(const std::string& value)
+void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
 {
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = false;
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[1] = false;
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = false;
-
-	size_t semicolonIndex = value.find(';');
-	std::string allowMethods = value.substr(0, semicolonIndex);
-	if (allowMethods.empty())
-		throw std::runtime_error("allow_methods value is empty");
 
 	size_t index = 0;
 	while (index < allowMethods.length()) {
@@ -639,36 +612,30 @@ void ConfigFileParser::readAllowMethods(const std::string& value)
  * The function checks if the error code is valid and the error page path is not empty.
  *
  * @param block The block which surounds the directive
- * @param value The value of the directive error_page
+ * @param errorPage The value of the directive error_page
  */
-void ConfigFileParser::readErrorPage(const Block& block, const std::string& value)
+void ConfigFileParser::readErrorPage(const Block& block, const std::string& errorPage)
 {
-
-	size_t semicolonIndex = value.find(';');
-	std::string errorPageValue = value.substr(0, semicolonIndex);
-	if (errorPageValue.empty())
-		throw std::runtime_error("error_page value is empty");
-
 	size_t index = 0;
-	while (index < errorPageValue.length()) {
+	while (index < errorPage.length()) {
 
-		index = errorPageValue.find_first_not_of(s_whitespace, index);
+		index = errorPage.find_first_not_of(s_whitespace, index);
 		size_t errorCodeStartIndex = index;
-		size_t errorCodeEndIndex = errorPageValue.find_first_of(s_whitespace, index);
-		std::string errorCodeStr = errorPageValue.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);
+		size_t errorCodeEndIndex = errorPage.find_first_of(s_whitespace, index);
+		std::string errorCodeStr = errorPage.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);
 
 		statusCode errorCode = convertStringToStatusCode(errorCodeStr);
 		if (errorCode < StatusMovedPermanently || errorCode > StatusNonSupportedVersion)
 			throw std::runtime_error("Invalid error code");
 
-		index = errorPageValue.find_first_not_of(s_whitespace, errorCodeEndIndex);
+		index = errorPage.find_first_not_of(s_whitespace, errorCodeEndIndex);
 		if (index == std::string::npos)
-			throw std::runtime_error("error_page path is empty");
+			throw std::runtime_error("'error_page' directive path has no value");
 
 		size_t errorPagePathStartIndex = index;
-		size_t errorPagePathEndIndex = errorPageValue.find_first_of(s_whitespace, index);
+		size_t errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);
 		std::string errorPagePath
-			= errorPageValue.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
+			= errorPage.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
 
 		index = errorPagePathEndIndex;
 
@@ -808,7 +775,7 @@ std::string ConfigFileParser::getValue(void) const
 	if (firstWhiteSpaceIndex == std::string::npos)
 		value = m_currentLine.substr(0, semicolonIndex);
 	else
-		value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex + 1);
+		value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
 	webutils::trimTrailingWhiteSpaces(value);
