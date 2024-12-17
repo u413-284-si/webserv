@@ -923,7 +923,7 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		handleCompleteRequestHeader(server, activeFd, connection);
 	} else {
 		LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-		if (connection.m_buffer.size() == Server::s_clientHeaderBufferSize) {
+		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) {
 			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 			connection.m_status = Connection::BuildResponse;
@@ -1127,7 +1127,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-		} else if (connection.m_buffer.size() == connection.location->maxBodySize) {
+		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
