@@ -254,7 +254,7 @@ void Server::removeCGIFileDescriptor(int& delfd)
 {
 	this->removeEvent(delfd);
 	this->getCGIConnections().erase(delfd);
-    LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
+	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 	webutils::closeFd(delfd);
 }
 
@@ -480,10 +480,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(Connection& connection)
-{
-	m_responseBuilder.buildResponse(connection);
-}
+void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -499,10 +496,7 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection)
-{
-	m_targetResourceHandler.execute(connection);
-}
+void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
 
 /* ====== INITIALIZATION ====== */
 
@@ -1005,7 +999,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost && !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
+		if ((connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;
@@ -1015,6 +1010,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+		if (!connection.m_buffer.empty())
+			handleBody(server, clientFd, connection);
 	} else if (connection.m_request.hasCGI)
 		connection.m_status = Connection::ReceiveFromCGI;
 	else {
@@ -1109,6 +1106,23 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 
 	connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
 	connection.m_timeSinceLastEvent = std::time(0);
+	handleBody(server, activeFd, connection);
+}
+
+/**
+ * @brief Handles the body of the HTTP request.
+ *
+ * This function processes the body of the HTTP request. If the complete body
+ * is received, it parses the body and updates the connection status based on
+ * whether CGI is involved. If only a partial body is received, it checks for
+ * errors such as bad request or exceeding the maximum allowed body size.
+ *
+ * @param server Reference to the Server object.
+ * @param activeFd The file descriptor of the active connection.
+ * @param connection Reference to the Connection object.
+ */
+void handleBody(Server& server, int activeFd, Connection& connection)
+{
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
 		try {
