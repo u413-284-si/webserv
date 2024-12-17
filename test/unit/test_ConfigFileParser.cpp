@@ -35,9 +35,12 @@ protected:
  * 16. Autoindex directive contains invalid value
  * 17. Allow methods directive contains invalid value
  * 18. Allow methods contains no value
- * 19. Invalid directives outside of server block
- * 20. Several server names
- * 21. Server name contains no value
+ * 19. Error page contains invalid error code
+ * 20. Error page path contains no value
+ * 21. Error page contains no value
+ * 22. Invalid directives outside of server block
+ * 23. Several server names
+ * 24. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -348,6 +351,48 @@ TEST_F(InvalidConfigFileTests, AllowMethodsContainsNoValue)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidErrorCode)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_invalid_error_code.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid error code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyErrorPagePath)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_empty_error_page_path.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("error_page path is empty", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_empty_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("error_page value is empty", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
 {
 	EXPECT_THROW(
@@ -418,6 +463,7 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  * 22. Allow methods contains POST
  * 23. Allow methods contains DELETE
  * 24. Allow methods contains GET, POST and DELETE
+ * 25. Error page contains mutliple error codes and error page paths
  * 25. Bracket under server directive
  * 26. Bracket under location directive
  * 27. Whitespaces between server directive and opening bracket
@@ -637,6 +683,17 @@ TEST_F(ValidConfigFileTests, AllowMethodsContainsGetPostDelete)
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, ErrorPageContainsMultipleErrorCodesAndErrorPagePaths)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/error_page_multiple_errors_pages.conf"));
+	EXPECT_EQ("/error/404.html", configFile.servers[0].errorPage[StatusNotFound]);
+	EXPECT_EQ("/error/405.html", configFile.servers[0].errorPage[StatusMethodNotAllowed]);
+	EXPECT_EQ("/error/400.html", configFile.servers[0].locations[0].errorPage[StatusBadRequest]);
+	EXPECT_EQ("/error/403.html", configFile.servers[0].locations[0].errorPage[StatusForbidden]);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
