@@ -1127,7 +1127,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-		} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+		} else if (connection.m_buffer.size() == connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
