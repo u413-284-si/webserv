@@ -29,7 +29,7 @@ protected:
 		m_location3.indices.emplace_back("other.html");
 		m_location4.path = "/test/autoindex";
 		m_location4.root = "/fourth/location";
-		m_location4.isAutoindex = true;
+		m_location4.hasAutoindex = true;
 		m_location5.path = "/recursion";
 		m_location5.root = "/start";
 		m_location5.indices.emplace_back("again/");

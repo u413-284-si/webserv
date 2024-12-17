@@ -39,7 +39,7 @@ ConfigServer::ConfigServer(void)
  */
 Location::Location(void)
 	: root("html")
-	, isAutoindex(false)
+	, hasAutoindex(false)
 	, maxBodySize(constants::g_oneMegabyte)
 	, allowedMethods()
 {

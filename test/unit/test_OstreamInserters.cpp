@@ -100,7 +100,7 @@ protected:
 		m_location.indices = { "index.html" };
 		m_location.cgiExt = ".php";
 		m_location.cgiPath = "/cgi-bin";
-		m_location.isAutoindex = true;
+		m_location.hasAutoindex = true;
 		m_location.allowedMethods[0] = true;
 		m_location.allowedMethods[1] = false;
 		m_location.allowedMethods[2] = false;

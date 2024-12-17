@@ -23,7 +23,7 @@ public:
 	std::vector<std::string> indices;
 	std::string cgiExt;
 	std::string cgiPath;
-	bool isAutoindex;
+	bool hasAutoindex;
 	unsigned long maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	bool allowedMethods[MethodCount];

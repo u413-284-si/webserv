@@ -166,7 +166,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 			return;
 	}
 
-	if (locInfo.activeLocation->isAutoindex) {
+	if (locInfo.activeLocation->hasAutoindex) {
 		locInfo.hasAutoindex = true;
 		return;
 	}
