@@ -154,6 +154,7 @@ bool isCompleteRequestHeader(const std::string& connectionBuffer);
 void handleCompleteRequestHeader(Server& server, int clientFd, Connection& connection);
 bool isCGIRequested(Connection& connection);
 void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
+void handleBody(Server& server, int activeFd, Connection& connection);
 bool isCompleteBody(Connection& connection);
 void connectionSendToCGI(Server& server, int activeFd, Connection& connection);
 void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection);
