@@ -515,6 +515,7 @@ void ConfigFileParser::readSocket(const std::string& value)
  * If that is the case the function will check if the unit is valid and
  * only consists of one character which is a valid unit
  *
+ * @param block The block which surounds the directive
  * @param value The value of the directive client_max_body_size
  */
 void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& value)
