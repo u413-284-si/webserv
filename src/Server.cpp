@@ -1088,7 +1088,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 	const size_t bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
 	size_t bytesToRead = Server::s_clientBodyBufferSize;
 	if (bytesAvailable <= Server::s_clientBodyBufferSize)
-		bytesToRead -= connection.m_buffer.size();
+		bytesToRead -= bytesAvailable;
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
 
 	const ssize_t bytesRead = server.readFromSocket(activeFd, &buffer[0], bytesToRead, 0);
