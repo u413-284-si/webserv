@@ -4,6 +4,7 @@
 
 #include "Method.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
