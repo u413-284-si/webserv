@@ -613,13 +613,12 @@ void ConfigFileParser::readAllowMethods(const std::string& value)
 		throw std::runtime_error("allow_methods value is empty");
 
 	size_t index = 0;
-	while (allowMethods[index] != '\0') {
-		size_t startIndex = index;
+	while (index < allowMethods.length()) {
 
-		while (std::isspace(allowMethods[index]) == 0 && allowMethods[index] != '\0')
-			index++;
+		size_t methodStartIndex = index;
+		size_t methodEndIndex = allowMethods.find_first_of(s_whitespace, index);
 
-		std::string method = value.substr(startIndex, index - startIndex);
+		std::string method = allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex);
 
 		if (method == "GET")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = true;
@@ -630,8 +629,7 @@ void ConfigFileParser::readAllowMethods(const std::string& value)
 		else
 			throw std::runtime_error("Invalid allow_methods value");
 
-		while (std::isspace(allowMethods[index]) != 0 && allowMethods[index] != '\0')
-			index++;
+		index = allowMethods.find_first_not_of(s_whitespace, methodEndIndex);
 	}
 }
 
