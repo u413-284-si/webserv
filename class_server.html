@@ -1836,7 +1836,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_ace46f4e07ab67db60e3790a32b2e8e0a_icgraph.svg" width="100%" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_ace46f4e07ab67db60e3790a32b2e8e0a_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1894,9 +1894,7 @@ Here is the call graph for this function:</div>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00483">483</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  484</span>{</div>
-<div class="line"><span class="lineno">  485</span>    m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">buildResponse</a>(connection);</div>
-<div class="line"><span class="lineno">  486</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  483</span>{ m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">buildResponse</a>(connection); }</div>
 <div class="ttc" id="aclass_response_builder_html_ae037ac16172f1329b44a58f50de0e84e"><div class="ttname"><a href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">ResponseBuilder::buildResponse</a></div><div class="ttdeci">void buildResponse(Connection &amp;connection)</div><div class="ttdoc">Build the response for a given request.</div><div class="ttdef"><b>Definition</b> <a href="_response_builder_8cpp_source.html#l00039">ResponseBuilder.cpp:39</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1929,8 +1927,8 @@ Here is the caller graph for this function:</div>
 <p>Wrapper function to <a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response.">ResponseBuilder::getResponse</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::string The response string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00493">493</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  493</span>{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00490">490</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  490</span>{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
 <div class="ttc" id="aclass_response_builder_html_adf7d2f0fbb7f5b6866eb884fb2c17e88"><div class="ttname"><a href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">ResponseBuilder::getResponse</a></div><div class="ttdeci">std::string getResponse() const</div><div class="ttdoc">Get the built response.</div><div class="ttdef"><b>Definition</b> <a href="_response_builder_8cpp_source.html#l00022">ResponseBuilder.cpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1969,10 +1967,8 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00502">502</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  503</span>{</div>
-<div class="line"><span class="lineno">  504</span>    m_targetResourceHandler.<a class="code hl_function" href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282">execute</a>(connection);</div>
-<div class="line"><span class="lineno">  505</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00499">499</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  499</span>{ m_targetResourceHandler.<a class="code hl_function" href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282">execute</a>(connection); }</div>
 <div class="ttc" id="aclass_target_resource_handler_html_ac3694cb9b73e3f93b874740194539282"><div class="ttname"><a href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282">TargetResourceHandler::execute</a></div><div class="ttdeci">void execute(Connection &amp;connection)</div><div class="ttdoc">Determine target resource based on the request path and handle different file types and statuses acco...</div><div class="ttdef"><b>Definition</b> <a href="_target_resource_handler_8cpp_source.html#l00022">TargetResourceHandler.cpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
