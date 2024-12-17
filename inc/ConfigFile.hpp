@@ -54,4 +54,3 @@ ConfigFile createDummyConfig();
 std::ostream& operator<<(std::ostream& ostream, const Location& location);
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer);
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile);
-std::ostream& operator<<(std::ostream& ostream, Method method);
