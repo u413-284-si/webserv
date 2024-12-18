@@ -17,6 +17,7 @@ public:
 	~Directory();
 
 	std::vector<std::string> getEntries();
+	DIR* getDir() const;
 
 private:
 	Directory(const Directory& ref);

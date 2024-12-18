@@ -39,3 +39,9 @@ std::vector<std::string> Directory::getEntries()
 	std::sort(files.begin(), files.end());
 	return files;
 }
+
+/**
+ * @brief Gets the directory pointer.
+ * @return The directory pointer.
+ */
+DIR* Directory::getDir() const { return m_directory; }

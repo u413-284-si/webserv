@@ -10,16 +10,18 @@
 #include <string>
 
 /**
- * @brief Class to create or append to files.
+ * @brief Class to delete files and directories.
  *
  */
-class FileWriteHandler {
+class DeleteHandler {
 
 public:
-	explicit FileWriteHandler(const FileSystemPolicy& fileSystemPolicy);
-	std::string execute(const std::string& path, const std::string& content);
+	explicit DeleteHandler(const FileSystemPolicy& fileSystemPolicy);
+	std::string execute(const std::string& path, statusCode& httpStatus);
 
 private:
 	const FileSystemPolicy& m_fileSystemPolicy;
 	std::stringstream m_response;
+
+	void deleteDirectory(const std::string& path) const;
 };
