@@ -73,6 +73,7 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
+		m_request.targetResource = "posted.json";
 		return;
 	}
 	if (m_request.method == MethodDelete) {
@@ -80,6 +81,7 @@ void ResponseBodyHandler::execute()
 		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 		if (m_responseBody.empty())
 			handleErrorBody();
+		m_request.targetResource = "deleted.json";
 	}
 }
 

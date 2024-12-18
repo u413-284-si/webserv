@@ -102,10 +102,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 	// Content-Type
-		if (m_responseBody.find('{') != std::string::npos)
-			m_responseHeader << "Content-Type: application/json\r\n";
-		else
-			m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
 		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
@@ -169,6 +166,7 @@ void ResponseBuilder::initMIMETypes()
 	m_mimeTypes["js"] = "application/javascript";
 	m_mimeTypes["pdf"] = "application/pdf";
 	m_mimeTypes["txt"] = "text/plain";
+	m_mimeTypes["json"] = "application/json";
 	m_mimeTypes["default"] = "application/octet-stream";
 }
 
