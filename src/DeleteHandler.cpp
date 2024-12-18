@@ -40,11 +40,13 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			break;
 
 		case FileSystemPolicy::FileDirectory:
-			deleteDirectory(path);
-			m_response << "{\n"
-					   << "\"message\": \"Directory deleted successfully\",\n"
-					   << "\"directory\": \"" << path << "\"\n"
-					   << "}\n";
+			httpStatus = StatusForbidden;
+			// FIXME: reactivate after eval
+			// deleteDirectory(path);
+			// m_response << "{\n"
+			// 		   << "\"message\": \"Directory deleted successfully\",\n"
+			// 		   << "\"directory\": \"" << path << "\"\n"
+			// 		   << "}\n";
 			break;
 
 		case FileSystemPolicy::FileNotExist:
@@ -66,40 +68,41 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 	return m_response.str();
 }
 
-/**
- * @brief Deletes a directory at the specified path.
- *
- * This function attempts to delete the directory located at the given path.
- * It recursively deletes all files and subdirectories within the directory.
- * If any file or directory cannot be deleted, it throws a runtime error with
- * the appropriate error message.
- *
- * @param path The path to the directory to be deleted.
- * @throws std::runtime_error if any file or directory cannot be deleted.
- */
+// FIXME: reactivate after eval
+// /**
+//  * @brief Deletes a directory at the specified path.
+//  *
+//  * This function attempts to delete the directory located at the given path.
+//  * It recursively deletes all files and subdirectories within the directory.
+//  * If any file or directory cannot be deleted, it throws a runtime error with
+//  * the appropriate error message.
+//  *
+//  * @param path The path to the directory to be deleted.
+//  * @throws std::runtime_error if any file or directory cannot be deleted.
+//  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
-void DeleteHandler::deleteDirectory(const std::string& path) const
-{
-	Directory dir(m_fileSystemPolicy, path);
+// void DeleteHandler::deleteDirectory(const std::string& path) const
+// {
+// 	Directory dir(m_fileSystemPolicy, path);
 
-	struct dirent* entry = NULL;
-	while ((entry = m_fileSystemPolicy.readDirectory(dir.getDir())) != NULL) {
-		// Skip `.` and `..` entries
-		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
-			continue;
+// 	struct dirent* entry = NULL;
+// 	while ((entry = m_fileSystemPolicy.readDirectory(dir.getDir())) != NULL) {
+// 		// Skip `.` and `..` entries
+// 		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+// 			continue;
 
-		std::string fullPath = std::string(path) + "/" + entry->d_name;
+// 		std::string fullPath = std::string(path) + "/" + entry->d_name;
 
-		struct stat info = m_fileSystemPolicy.getFileStat(fullPath);
-		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
-		if (S_ISDIR(info.st_mode))
-			deleteDirectory(fullPath);
-		else
-			m_fileSystemPolicy.deleteFile(fullPath);
-	}
+// 		struct stat info = m_fileSystemPolicy.getFileStat(fullPath);
+// 		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
+// 		if (S_ISDIR(info.st_mode))
+// 			deleteDirectory(fullPath);
+// 		else
+// 			m_fileSystemPolicy.deleteFile(fullPath);
+// 	}
 
-	// Remove the empty directory itself
-	errno = 0;
-	if (rmdir(path.c_str()) != 0)
-		throw std::runtime_error("rmdir(): " + std::string(strerror(errno)));
-}
+// 	// Remove the empty directory itself
+// 	errno = 0;
+// 	if (rmdir(path.c_str()) != 0)
+// 		throw std::runtime_error("rmdir(): " + std::string(strerror(errno)));
+// }
