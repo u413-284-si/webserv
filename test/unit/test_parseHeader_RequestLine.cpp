@@ -374,3 +374,12 @@ TEST_F(ParseRequestLineTest, Version_NonSupportedMinor)
 		},
 		std::runtime_error);
 }
+
+TEST(removeDotSegments, SeveralDoubleDots)
+{
+	const std::string path = "/a/b/c/./../../g";
+
+	const std::string pathDotsRemoved = removeDotSegments(path);
+
+	EXPECT_EQ(pathDotsRemoved, "/a/g");
+}

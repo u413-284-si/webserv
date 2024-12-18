@@ -490,7 +490,8 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
+	const long contentLength
+		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;
@@ -686,27 +687,27 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	}
 
 	if (iter->second.find(':') != std::string::npos) {
-		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
-			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
-				request.httpStatus = StatusBadRequest;
-				request.shallCloseConnection = true;
-				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
-			}
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))
+			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
+		}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
-	 } else {
+	} else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
-	 }
+	}
 
-	 LOG_DEBUG << "Valid host header: " << iter->second;
+	LOG_DEBUG << "Valid host header: " << iter->second;
 }
 
 /**
@@ -957,15 +958,14 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	return false;
 }
 
-
 /**
  * @brief Checks if a character is valid in a hostname and updates the alpha flag.
- * 
+ *
  * This function determines if the given character is a valid part of a hostname.
  * A valid hostname character is either an alphanumeric character or a hyphen ('-').
- * Additionally, if the character is an alphabetic character, the function sets the 
+ * Additionally, if the character is an alphabetic character, the function sets the
  * hasAlpha flag to true.
- * 
+ *
  * @param character The character to be checked.
  * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
  * @return true if the character is a valid hostname character, false otherwise.
@@ -1033,4 +1033,55 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 		labelStart = labelEnd + 1;
 	}
 	return hasAlpha;
+}
+
+std::string removeDotSegments(const std::string& path)
+{
+	std::string output; // Output buffer
+	std::string::const_iterator iter = path.begin();
+
+	while (iter != path.end()) {
+		if (*iter == '/') {
+			// Start of a new segment
+			++iter;
+			if (iter == path.end())
+				break;
+
+			// Handle single dot segment
+			if (*iter == '.' && (iter + 1 == path.end() || *(iter + 1) == '/')) {
+				++iter;
+				continue;
+			}
+
+			// Handle double dot segment
+			if (*iter == '.' && (iter + 1 != path.end() && *(iter + 1) == '.')
+				&& (iter + 2 == path.end() || *(iter + 2) == '/')) {
+				++iter; // Skip first dot
+				++iter; // Skip second dot
+				// Remove the last segment from the output
+				if (!output.empty()) {
+					size_t pos = output.find_last_of('/');
+					if (pos != std::string::npos) {
+						output.erase(pos);
+					} else {
+						output.clear();
+					}
+				}
+				continue;
+			}
+
+			// Otherwise, it's a normal segment
+			output += '/';
+			while (iter != path.end() && *iter != '/') {
+				output += *iter;
+				++iter;
+			}
+		} else {
+			// No leading '/' means it's not valid; skip to next
+			++iter;
+		}
+	}
+
+	// Special case: if output is empty, return "/"
+	return output.empty() ? "/" : output;
 }
