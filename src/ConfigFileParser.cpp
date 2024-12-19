@@ -648,6 +648,16 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 	}
 }
 
+void ConfigFileParser::readCGIExtension(const std::string& extension)
+{
+	if (extension.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("More than one CGI extension");
+	if (extension.at(0) != '.')
+		throw std::runtime_error("Invalid CGI extension");
+
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiExt = extension;
+}
+
 /**
  * @brief Reads and checks the value of the server directive in the current line of the config file
  *
@@ -692,6 +702,8 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 		readAllowMethods(value);
 	else if (directive == "error_page")
 		readErrorPage(LocationBlock, value);
+	else if (directive == "cgi_ext")
+		readCGIExtension(value);
 }
 
 /**
