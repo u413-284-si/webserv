@@ -40,10 +40,11 @@ protected:
  * 21. Error page contains no value
  * 22. CGI extension contains no dot at beginning
  * 23. CGI extension contains multiple extensions
- * 24. CGI extension contains no value
- * 25. Invalid directives outside of server block
- * 26. Several server names
- * 27. Server name contains no value
+ * 24. CGI extension contains multiple dots
+ * 25. CGI extension contains no value
+ * 26. Invalid directives outside of server block
+ * 27. Several server names
+ * 28. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -418,6 +419,20 @@ TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleExtensions)
 				m_configFileParser.parseConfigFile("config_files/cgi_extension_multiple_extensions.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("More than one CGI extension", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleDots)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_extension_multiple_dots.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("More than one dot at the beginning of the CGI extension", e.what());
 				throw;
 			}
 		},
