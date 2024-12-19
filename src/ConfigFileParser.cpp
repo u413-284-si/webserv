@@ -655,6 +655,10 @@ void ConfigFileParser::readCGIExtension(const std::string& extension)
 	if (extension.at(0) != '.')
 		throw std::runtime_error("Invalid CGI extension");
 
+	std::string extensionWithoutDotAtBeginning = extension.substr(1);
+	if (extensionWithoutDotAtBeginning.find_first_of('.') != std::string::npos)
+		throw std::runtime_error("More than one dot at the beginning of the CGI extension");
+
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiExt = extension;
 }
 
