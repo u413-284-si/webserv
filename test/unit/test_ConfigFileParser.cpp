@@ -38,9 +38,12 @@ protected:
  * 19. Error page contains invalid error code
  * 20. Error page path contains no value
  * 21. Error page contains no value
- * 22. Invalid directives outside of server block
- * 23. Several server names
- * 24. Server name contains no value
+ * 22. CGI extension contains no dot at beginning
+ * 23. CGI extension contains multiple extensions
+ * 24. CGI extension contains no value
+ * 25. Invalid directives outside of server block
+ * 26. Several server names
+ * 27. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -387,6 +390,48 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyValue)
 				m_configFileParser.parseConfigFile("config_files/error_page_empty_value.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("'error_page' directive has no value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIExtensionContainsNoDotAtBeginning)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_extension_no_dot.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid CGI extension", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleExtensions)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_extension_multiple_extensions.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("More than one CGI extension", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIExtensionContainsEmptyValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_extension_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("'cgi_ext' directive has no value", e.what());
 				throw;
 			}
 		},
