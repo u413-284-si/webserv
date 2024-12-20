@@ -88,7 +88,7 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
+	.WillOnce(testing::Return(FileSystemPolicy::FileNotFound));
 
 	m_request.uri.path = "/test";
 
@@ -156,8 +156,8 @@ TEST_F(TargetResourceHandlerTest, HitDirectoryIndexfileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(testing::Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")))
-	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
+	.WillOnce(testing::Return(FileSystemPolicy::FileNotFound))
+	.WillOnce(testing::Return(FileSystemPolicy::FileNotFound));
 
 	m_request.uri.path = "/test/secret/";
 
