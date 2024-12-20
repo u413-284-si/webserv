@@ -1040,6 +1040,24 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 	return hasAlpha;
 }
 
+/**
+ * @brief Decodes a percent encoded string.
+ *
+ * Iterates through the string. If it finds a '%' it converts the next two chars to hex and appends the char to the
+ * buffer. Then jumps over the triplet. Else it just adds the char to the buffer.
+ * If a '%' is not followed by two chars, sets status to StatusBadRequest, shallCloseConnection to true, and throws.
+ * If a "%00" is encountered ('\0' or NUL terminator), also sets status to StatusBadRequest, shallCloseConnection to true, and
+ * throws. This char is not supported.
+ *
+ * According to RFV 3986 Sect 2.1. percent encoding is used to represent a char which is outside of the allowed set. This
+ * could either be a unicode character like 'ö' or a reserved char with special meaning. Char is encoded with a triplet
+ * consisting of percent char '%' followed by the two hexadecimal digits representing the chars numeric value.
+ * @param encoded The percent encoded string.
+ * @param request The HTTP request object to be filled.
+ * @return std::string The decoded string.
+ * @throws std::runtime_error if invalid "%00" is encountered or '%' is not followed by two chars.
+ * @sa https://datatracker.ietf.org/doc/html/rfc3986#section-2.1
+ */
 std::string RequestParser::decodePercentEncoding(const std::string& encoded, HTTPRequest& request)
 {
 	std::string decoded;
