@@ -15,8 +15,9 @@
 #define ERR_INVALID_VERSION_DELIM "Invalid HTTP request: invalid version delimiter"
 #define ERR_INVALID_VERSION_MINOR "Invalid HTTP request: invalid version minor"
 #define ERR_NONSUPPORTED_VERSION "Invalid HTTP request: version not supported"
-#define ERR_NONSUPPORTED_PERCENT_NUL "Invalid HTTP request: %00 (NUL) is not supported."
+#define ERR_PERCENT_NONSUPPORTED_NUL "Invalid HTTP request: %00 (NUL) is not supported."
 #define ERR_PERCENT_INCOMPLETE "Invalid HTTP request: Incomplete percent encoding at end of string."
+#define ERR_PERCENT_INVALID_HEX "Invalid HTTP request: Percent encoding triplet consists of non hex values"
 
 
 // HTTP REQUEST HEADER ERRORS
