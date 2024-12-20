@@ -216,9 +216,9 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		else
 			request.uri.path.push_back(requestLine.at(index));
 	}
-	request.uri.path = decodePercentEncoding(request.uri.path);
-	request.uri.fragment = decodePercentEncoding(request.uri.fragment);
-	request.uri.query = decodePercentEncoding(request.uri.query);
+	request.uri.path = decodePercentEncoding(request.uri.path, request);
+	request.uri.fragment = decodePercentEncoding(request.uri.fragment, request);
+	request.uri.query = decodePercentEncoding(request.uri.query, request);
 	return (requestLine.substr(index));
 }
 
@@ -1040,25 +1040,31 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 	return hasAlpha;
 }
 
-std::string decodePercentEncoding(const std::string& encoded)
+std::string RequestParser::decodePercentEncoding(const std::string& encoded, HTTPRequest& request)
 {
 	std::string decoded;
 	std::string::const_iterator iter = encoded.begin();
 
 	while (iter != encoded.end()) {
+		if (*iter == '%' && std::distance(iter, encoded.end()) < 2) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
+		}
 		if (*iter == '%' && std::distance(iter, encoded.end()) >= 2) {
 			std::string hex = std::string(iter + 1, iter + 3);
 			unsigned int value = 0;
 			std::istringstream(hex) >> std::hex >> value;
 
-			if (value == 0)
+			if (value == 0) {
+				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_NONSUPPORTED_PERCENT_NUL);
+			}
 			decoded += static_cast<char>(value);
 
 			iter += 3;
 
-		} else if (*iter == '%' && std::distance(iter, encoded.end()) < 2) {
-			throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
 		} else {
 			decoded += *iter;
 			++iter;
