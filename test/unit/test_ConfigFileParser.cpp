@@ -42,9 +42,11 @@ protected:
  * 23. CGI extension contains multiple extensions
  * 24. CGI extension contains multiple dots
  * 25. CGI extension contains no value
- * 26. Invalid directives outside of server block
- * 27. Several server names
- * 28. Server name contains no value
+ * 26. CGI path contains no value
+ * 27. CGI index contains no value
+ * 28. Invalid directives outside of server block
+ * 29. Several server names
+ * 30. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -453,6 +455,34 @@ TEST_F(InvalidConfigFileTests, CGIExtensionContainsEmptyValue)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, CGIPathContainsEmptyValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_path_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("'cgi_path' directive has no value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, IndexContainsEmptyValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/index_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("'index' directive has no value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
 {
 	EXPECT_THROW(
@@ -754,6 +784,28 @@ TEST_F(ValidConfigFileTests, ErrorPageContainsMultipleErrorCodesAndErrorPagePath
 	EXPECT_EQ("/error/405.html", configFile.servers[0].errorPage[StatusMethodNotAllowed]);
 	EXPECT_EQ("/error/400.html", configFile.servers[0].locations[0].errorPage[StatusBadRequest]);
 	EXPECT_EQ("/error/403.html", configFile.servers[0].locations[0].errorPage[StatusForbidden]);
+}
+
+TEST_F(ValidConfigFileTests, CGIExtensionContainsOneExtensions)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/cgi_extension_python.conf"));
+	EXPECT_EQ(".py", configFile.servers[0].locations[0].cgiExt);
+}
+
+TEST_F(ValidConfigFileTests, CGIPathContainsOnePath)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/cgi_path_python.conf"));
+	EXPECT_EQ("/usr/bin/python3", configFile.servers[0].locations[0].cgiPath);
+}
+
+TEST_F(ValidConfigFileTests, IndexContainsMultipleIndices)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/index_multiple_indices.conf"));
+	EXPECT_EQ("index.html", configFile.servers[0].locations[0].indices[0]);
+	EXPECT_EQ("default.html", configFile.servers[0].locations[0].indices[1]);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
