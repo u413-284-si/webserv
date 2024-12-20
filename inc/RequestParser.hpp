@@ -71,6 +71,6 @@ private:
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
+	static std::string removeDotSegments(const std::string& path);
 };
 
-std::string removeDotSegments(const std::string& path);

@@ -179,6 +179,7 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
  * and checks each character for validity.
  * If the URI contains a query ('?') or fragment ('#'), it delegates parsing to
  * `parseUriQuery` and `parseUriFragment` respectively.
+ * After parsing the URI removeDotSegments() on parsed path is called.
  * If an invalid character is encountered, an error code is set, and
  * a `std::runtime_error` is thrown.
  *
@@ -216,6 +217,8 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		else
 			request.uri.path.push_back(requestLine.at(index));
 	}
+
+	request.uri.path = removeDotSegments(request.uri.path);
 	return (requestLine.substr(index));
 }
 
@@ -1035,53 +1038,99 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 	return hasAlpha;
 }
 
-std::string removeDotSegments(const std::string& path)
+/**
+ * @brief Checks for a single dot segment "/."
+ *
+ * @param iter Iterator to the current position.
+ * @param end End iterator of string.
+ * @return true It is a single dot segment.
+ * @return false It is not a single dot segment.
+ */
+static bool isSingleDot(const std::string::const_iterator& iter, const std::string::const_iterator& end)
 {
-	std::string output; // Output buffer
+	return *iter == '.' && (iter + 1 == end || *(iter + 1) == '/');
+}
+
+/**
+ * @brief Checks for a double dot segment "/.."
+ *
+ * Needs to check if next iterator points not to end, as derefencing end iterator is undefined behavior.
+ *
+ * @param iter Iterator to the current position.
+ * @param end End iterator of string.
+ * @return true It is a double dot segment.
+ * @return false It is not a double dot segment.
+ */
+static bool isDoubleDot(const std::string::const_iterator& iter, const std::string::const_iterator& end)
+{
+	return *iter == '.' && (iter + 1 != end && *(iter + 1) == '.') && (iter + 2 == end || *(iter + 2) == '/');
+}
+
+/**
+ * @brief Removes last segment of a path denoted by '/'.
+ *
+ * @param output Reference to buffer containing path.
+ */
+static void removeLastSegment(std::string& output)
+{
+	if (!output.empty()) {
+		size_t lastSlash = output.find_last_of('/');
+		if (lastSlash != std::string::npos) {
+			output.erase(lastSlash);
+		} else {
+			output.clear();
+		}
+	}
+}
+
+/**
+ * @brief Removes dot segments "/." and "/.." from a path.
+ *
+ * Iterates through the string. If it finds a '/' checks for
+ * - end of string - break out of loop.
+ * - isSingleDot() = "/." - ignore dot segment.
+ * - isDoubleDot() = "/.." - ignore dot segment and removeLastSegment() of output.
+ * - else - append a '/' to output buffer.
+ * If not a '/' just append to buffer.
+ * If buffer is empty at the end append a '/' to it.
+ *
+ * This implements the algorithm as described in RFC 3986 Sect. 5.2.4.
+ * However it does not handle all described algorithm conditions
+ * - 2.A. buffer begins with "./" or "../" (note: '.' comes before '/')
+ * - 2.D. buffer consists only of '.' or '..'
+ * As requests need an absolute path (starting with '/') per RFC 9110 we can ignore these conditions.
+ *
+ * @sa https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.4
+ * @param path Where to remove possible dot segments from.
+ * @return std::string String with dot segments removed.
+ */
+std::string RequestParser::removeDotSegments(const std::string& path)
+{
+	std::string output;
 	std::string::const_iterator iter = path.begin();
 
 	while (iter != path.end()) {
 		if (*iter == '/') {
-			// Start of a new segment
 			++iter;
 			if (iter == path.end())
 				break;
 
-			// Handle single dot segment
-			if (*iter == '.' && (iter + 1 == path.end() || *(iter + 1) == '/')) {
+			if (isSingleDot(iter, path.end())) {
 				++iter;
 				continue;
 			}
 
-			// Handle double dot segment
-			if (*iter == '.' && (iter + 1 != path.end() && *(iter + 1) == '.')
-				&& (iter + 2 == path.end() || *(iter + 2) == '/')) {
-				++iter; // Skip first dot
-				++iter; // Skip second dot
-				// Remove the last segment from the output
-				if (!output.empty()) {
-					size_t pos = output.find_last_of('/');
-					if (pos != std::string::npos) {
-						output.erase(pos);
-					} else {
-						output.clear();
-					}
-				}
+			if (isDoubleDot(iter, path.end())) {
+				iter += 2;
+				removeLastSegment(output);
 				continue;
 			}
 
-			// Otherwise, it's a normal segment
 			output += '/';
-			while (iter != path.end() && *iter != '/') {
-				output += *iter;
-				++iter;
-			}
 		} else {
-			// No leading '/' means it's not valid; skip to next
+			output += *iter;
 			++iter;
 		}
 	}
-
-	// Special case: if output is empty, return "/"
 	return output.empty() ? "/" : output;
 }
