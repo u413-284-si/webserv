@@ -73,6 +73,8 @@ private:
 	void readAllowMethods(const std::string& allowMethods);
 	void readErrorPage(const Block& block, const std::string& errorPage);
 	void readCGIExtension(const std::string& extension);
+	void readCGIPath(const std::string& path);
+	void readIndices(const std::string& indices);
 	void readLocationBlockPath(void);
 
 	// Helper functions

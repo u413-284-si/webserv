@@ -671,6 +671,41 @@ void ConfigFileParser::readCGIExtension(const std::string& extension)
 }
 
 /**
+ * @brief Reads the CGI path
+ *
+ * @param path The value of the directive cgi_path
+ */
+void ConfigFileParser::readCGIPath(const std::string& path)
+{
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiPath = path;
+}
+
+/**
+ * @brief Reads the indices
+ *
+ * Before reading the indices, the function clears the vector of indices
+ *
+ * @param indices The value of the directive index
+ */
+void ConfigFileParser::readIndices(const std::string& indices)
+{
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].indices.clear();
+
+	size_t index = 0;
+	while (index < indices.length()) {
+
+		index = indices.find_first_not_of(s_whitespace, index);
+		size_t indicesStartIndex = index;
+		size_t indicesEndIndex = indices.find_first_of(s_whitespace, index);
+		std::string indexStr = indices.substr(indicesStartIndex, indicesEndIndex - indicesStartIndex);
+
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].indices.push_back(indexStr);
+
+		index = indicesEndIndex;
+	}
+}
+
+/**
  * @brief Reads and checks the value of the server directive in the current line of the config file
  *
  * @details This function is called when the server directive is valid.
@@ -716,6 +751,10 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 		readErrorPage(LocationBlock, value);
 	else if (directive == "cgi_ext")
 		readCGIExtension(value);
+	else if (directive == "cgi_path")
+		readCGIPath(value);
+	else if (directive == "index")
+		readIndices(value);
 }
 
 /**
