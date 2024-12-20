@@ -37,11 +37,11 @@ TEST_F(ParseRequestLineTest, RequestLineWithDotSegments_GET)
 	// Arrange
 
 	// Act
-	p.parseHeader("GET /search/../../hello?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+	p.parseHeader("GET /search/../.././hello/?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.method, MethodGet);
-	EXPECT_EQ(request.uri.path, "/hello");
+	EXPECT_EQ(request.uri.path, "/hello/");
 	EXPECT_EQ(request.uri.query, "query=openai&year=2024");
 	EXPECT_EQ(request.uri.fragment, "conclusion");
 	EXPECT_EQ(request.version, "1.1");
