@@ -554,27 +554,50 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  * 23. Allow methods contains DELETE
  * 24. Allow methods contains GET, POST and DELETE
  * 25. Error page contains mutliple error codes and error page paths
- * 25. Bracket under server directive
- * 26. Bracket under location directive
- * 27. Whitespaces between server directive and opening bracket
- * 28. Directive and opening bracket on the same line
- * 29. Directive and closing bracket on the same line
- * 30. Directive and closing bracket on the same line under server directive
- * 31. Location path
- * 32. Inheritance of the server directives root, max_body_size and error_page to location
+ * 26. CGI extension contains one extension
+ * 27. CGI path contains one path
+ * 28. Index contains multiple indices
+ * 29. Bracket under server directive
+ * 30. Bracket under location directive
+ * 31. Whitespaces between server directive and opening bracket
+ * 32. Directive and opening bracket on the same line
+ * 33. Directive and closing bracket on the same line
+ * 34. Directive and closing bracket on the same line under server directive
+ * 35. Location path
+ * 36. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
 {
 	ConfigFile configFile;
+
+	// server block
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/valid_config.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("80", configFile.servers[0].port);
 	EXPECT_EQ("/var/www/html", configFile.servers[0].root);
 	EXPECT_EQ(2097152, configFile.servers[0].maxBodySize);
+	EXPECT_EQ("/error/404.html", configFile.servers[0].errorPage[StatusNotFound]);
 
-	EXPECT_EQ("/var/www/images", configFile.servers[0].locations[0].root);
+	// location '/' block
+	EXPECT_EQ("/var/www/html", configFile.servers[0].locations[0].root);
 	EXPECT_EQ(1073741824, configFile.servers[0].locations[0].maxBodySize);
+	EXPECT_EQ("index.html", configFile.servers[0].locations[0].indices[0]);
+	EXPECT_EQ("default.html", configFile.servers[0].locations[0].indices[1]);
+
+	// location '/list' block
+	EXPECT_EQ("/var/www", configFile.servers[0].locations[1].root);
+	EXPECT_EQ(true, configFile.servers[0].locations[1].isAutoindex);
+
+	// location '/upload' block
+	EXPECT_EQ("/var/www", configFile.servers[0].locations[2].root);
+	EXPECT_EQ(true, configFile.servers[0].locations[2].allowMethods[MethodPost]);
+	EXPECT_EQ("/error/403.html", configFile.servers[0].locations[2].errorPage[StatusForbidden]);
+
+	// location '/cgi' block
+	EXPECT_EQ("/var/www", configFile.servers[0].locations[3].root);
+	EXPECT_EQ(".py", configFile.servers[0].locations[3].cgiExt);
+	EXPECT_EQ("/usr/bin/python3", configFile.servers[0].locations[3].cgiPath);
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
