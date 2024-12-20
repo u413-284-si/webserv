@@ -1094,7 +1094,7 @@ static void removeLastSegment(std::string& output)
  * - isSingleDot() = "/." - increment to ignore dot segment.
  * - isDoubleDot() = "/.." - increment to ignore double dot segment and removeLastSegment() of output.
  * - else - append a '/' to output buffer.
- * If not a '/' append iter - 1 to buffer since we incremented in if-clause.
+ * If not a '/' append to buffer.
  * If buffer is empty at the end append a '/' to it.
  *
  * This implements the algorithm as described in RFC 3986 Sect. 5.2.4.
@@ -1113,7 +1113,8 @@ std::string RequestParser::removeDotSegments(const std::string& path)
 	std::string::const_iterator iter = path.begin();
 
 	while (iter != path.end()) {
-		if (*iter++ == '/') {
+		if (*iter == '/') {
+			iter++;
 
 			if (isSingleDot(iter, path.end())) {
 				++iter;
@@ -1127,8 +1128,10 @@ std::string RequestParser::removeDotSegments(const std::string& path)
 			}
 
 			output += '/';
-		} else
-			output += *(iter - 1);
+		} else {
+			output += *iter;
+			iter++;
+		}
 	}
 	return output.empty() ? "/" : output;
 }
