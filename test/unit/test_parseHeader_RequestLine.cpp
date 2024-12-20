@@ -119,7 +119,7 @@ TEST_F(ParseRequestLineTest, RequestLinePercentEncodedInvalidNUL)
 			} catch (const std::runtime_error& e) {
 				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				EXPECT_TRUE(request.shallCloseConnection);
-				EXPECT_STREQ(ERR_NONSUPPORTED_PERCENT_NUL, e.what());
+				EXPECT_STREQ(ERR_PERCENT_NONSUPPORTED_NUL, e.what());
 				throw;
 			}
 		},
@@ -139,6 +139,25 @@ TEST_F(ParseRequestLineTest, RequestLinePercentEncodedNotComplete)
 				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				EXPECT_TRUE(request.shallCloseConnection);
 				EXPECT_STREQ(ERR_PERCENT_INCOMPLETE, e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseRequestLineTest, RequestLinePercentEncodedNonHex)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search%4& HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_EQ(request.httpStatus, StatusBadRequest);
+				EXPECT_TRUE(request.shallCloseConnection);
+				EXPECT_STREQ(ERR_PERCENT_INVALID_HEX, e.what());
 				throw;
 			}
 		},

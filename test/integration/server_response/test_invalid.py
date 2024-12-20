@@ -85,3 +85,15 @@ def test_invalid_percent_encoding_incomplete():
         # Receive the response
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+
+def test_invalid_percent_encoding_non_hex():
+
+    # Create a socket connection
+    with socket.create_connection((host, port)) as sock:
+        # %00 is NUL char
+        request = b"GET /search%1$ HTTP/1.1\r\nHost: localhost\r\n\r\n"
+        sock.sendall(request)
+
+        # Receive the response
+        response = parse_http_response(sock)
+        assert response["status_code"] == 400
