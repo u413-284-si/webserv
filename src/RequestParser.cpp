@@ -216,6 +216,9 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		else
 			request.uri.path.push_back(requestLine.at(index));
 	}
+	request.uri.path = decodePercentEncoding(request.uri.path);
+	request.uri.fragment = decodePercentEncoding(request.uri.fragment);
+	request.uri.query = decodePercentEncoding(request.uri.query);
 	return (requestLine.substr(index));
 }
 
