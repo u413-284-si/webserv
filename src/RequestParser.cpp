@@ -786,6 +786,7 @@ void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
  *
  * This function determines if the provided character `character` is a valid character in a URI.
  * It checks against both unreserved and reserved characters as per the URI specification.
+ * It also accepts `%` as encoding character.
  *
  * The unreserved characters include:
  * - Alphanumeric characters (letters and digits)
@@ -821,7 +822,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
 	if ((std::isalnum(chr) != 0) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
 		return false;
 
-	// Check for reserved characters
+	// Check for reserved characters and encoding char `%`
 	switch (chr) {
 	case ':':
 	case '/':
@@ -841,6 +842,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
 	case ',':
 	case ';':
 	case '=':
+	case '%':
 		return false;
 	default:
 		return true;
