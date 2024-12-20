@@ -75,13 +75,13 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 bool FileSystemPolicy::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
 
 /**
- * @brief Wrapper to check if a path is an existing, regular file.
+ * @brief Wrapper to check if a path is an existing file.
  *
  * @param path Path to check.
  * @return true Path is an existing file.
  * @return false Path is not an existing file.
  */
-bool FileSystemPolicy::isRegularFile(const std::string& path) const { return checkFileType(path) == FileRegular; }
+bool FileSystemPolicy::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotFound; }
 
 /**
  * @brief Gets the contents of a file.

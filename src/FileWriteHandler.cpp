@@ -28,7 +28,7 @@ FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
 std::string FileWriteHandler::execute(const std::string& path, const std::string& content)
 {
 	try {
-		const bool isExistingFile = m_fileSystemPolicy.isRegularFile(path);
+		const bool isExistingFile = m_fileSystemPolicy.isExistingFile(path);
 		m_fileSystemPolicy.writeToFile(path, content);
 		LOG_DEBUG << "Data successfully written/appended to the file: " << path;
 		struct stat fileStat = m_fileSystemPolicy.getFileStat(path);

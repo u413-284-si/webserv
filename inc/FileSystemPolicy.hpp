@@ -37,7 +37,7 @@ public:
 
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
-	virtual bool isRegularFile(const std::string& path) const;
+	virtual bool isExistingFile(const std::string& path) const;
 	virtual std::string getFileContents(const char* filename) const;
 	virtual DIR* openDirectory(const std::string& path) const;
 	virtual struct dirent* readDirectory(DIR* dir) const;
