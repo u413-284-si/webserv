@@ -15,6 +15,9 @@
 #define ERR_INVALID_VERSION_DELIM "Invalid HTTP request: invalid version delimiter"
 #define ERR_INVALID_VERSION_MINOR "Invalid HTTP request: invalid version minor"
 #define ERR_NONSUPPORTED_VERSION "Invalid HTTP request: version not supported"
+#define ERR_NONSUPPORTED_PERCENT_NUL "Invalid HTTP request: %00 (NUL) is not supported."
+#define ERR_PERCENT_INCOMPLETE "Invalid HTTP request: Incomplete percent encoding at end of string."
+
 
 // HTTP REQUEST HEADER ERRORS
 #define ERR_HEADER_COLON_WHITESPACE "Invalid HTTP request: Whitespace between header field-name and colon detected"

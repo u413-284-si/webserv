@@ -1052,13 +1052,13 @@ std::string decodePercentEncoding(const std::string& encoded)
 			std::istringstream(hex) >> std::hex >> value;
 
 			if (value == 0)
-				throw std::runtime_error("%00 (NUL) is not supported.");
+				throw std::runtime_error(ERR_NONSUPPORTED_PERCENT_NUL);
 			decoded += static_cast<char>(value);
 
 			iter += 3;
 
 		} else if (*iter == '%' && std::distance(iter, encoded.end()) < 2) {
-			throw std::runtime_error("Incomplete percent encoding at end of string.");
+			throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
 		} else {
 			decoded += *iter;
 			++iter;
