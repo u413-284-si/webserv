@@ -1046,12 +1046,14 @@ std::string decodePercentEncoding(const std::string& encoded)
 			unsigned int value = 0;
 			std::istringstream(hex) >> std::hex >> value;
 
+			if (value == 0)
+				throw std::runtime_error("%00 (NUL) is not supported.");
 			decoded += static_cast<char>(value);
 
 			iter += 3;
+
 		} else if (*iter == '%' && std::distance(iter, encoded.end()) < 2) {
-			// Percent sign not followed by valid two hex digits
-			throw std::runtime_error("Incomplete percent encoding at end of string");
+			throw std::runtime_error("Incomplete percent encoding at end of string.");
 		} else {
 			decoded += *iter;
 			++iter;
