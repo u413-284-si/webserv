@@ -79,10 +79,11 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 			LOG_DEBUG << "File type: other";
 			locInfo.statusCode = StatusForbidden;
 			break;
+
+		case FileSystemPolicy::FileNotFound:
+			LOG_DEBUG << "File not found";
+			locInfo.statusCode = StatusNotFound;
 		}
-	} catch (FileSystemPolicy::FileNotFoundException& e) {
-		LOG_ERROR << e.what();
-		locInfo.statusCode = StatusNotFound;
 	} catch (FileSystemPolicy::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		locInfo.statusCode = StatusForbidden;

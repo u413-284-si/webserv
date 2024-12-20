@@ -39,7 +39,7 @@ FileSystemPolicy::NoPermissionException::NoPermissionException(const std::string
  * If the file is a regular file, FileRegular is returned.
  * If the file is a directory, FileDirectory is returned.
  * If the file is neither a regular file nor a directory, FileOther is returned.
- * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
+ * If the file does not exist, FileNotFound is returned
  * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
  * @throws std::runtime_error in other cases with strerror() of errno.
  * @param path Path to check.
@@ -51,7 +51,7 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
 	errno = 0;
 	if (stat(path.c_str(), &fileStat) == -1) {
 		if (errno == ENOENT)
-			throw FileNotFoundException("stat(): " + std::string(strerror(errno)));
+			return FileNotFound;
 		if (errno == EACCES)
 			throw NoPermissionException("stat(): " + std::string(strerror(errno)));
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));

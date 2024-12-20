@@ -25,9 +25,9 @@ public:
 	FileSystemPolicy();
 	virtual ~FileSystemPolicy();
 
-	enum fileType { FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+	enum fileType { FileNotFound = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
 
-// custom exceptions
+	// custom exceptions
 	struct FileNotFoundException : public std::runtime_error {
 		explicit FileNotFoundException(const std::string& msg);
 	};
