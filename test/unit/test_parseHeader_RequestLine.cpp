@@ -374,3 +374,10 @@ TEST_F(ParseRequestLineTest, Version_NonSupportedMinor)
 		},
 		std::runtime_error);
 }
+
+TEST(decodePercent, simpleTest)
+{
+	std::string input = "%C3%96";
+	input = decodePercentEncoding(input);
+	EXPECT_EQ(input, "Ö");
+}

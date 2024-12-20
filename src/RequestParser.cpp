@@ -490,7 +490,8 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
+	const long contentLength
+		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;
@@ -686,27 +687,27 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	}
 
 	if (iter->second.find(':') != std::string::npos) {
-		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
-			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
-				request.httpStatus = StatusBadRequest;
-				request.shallCloseConnection = true;
-				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
-			}
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))
+			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
+		}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
-	 } else {
+	} else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
-	 }
+	}
 
-	 LOG_DEBUG << "Valid host header: " << iter->second;
+	LOG_DEBUG << "Valid host header: " << iter->second;
 }
 
 /**
@@ -957,15 +958,14 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	return false;
 }
 
-
 /**
  * @brief Checks if a character is valid in a hostname and updates the alpha flag.
- * 
+ *
  * This function determines if the given character is a valid part of a hostname.
  * A valid hostname character is either an alphanumeric character or a hyphen ('-').
- * Additionally, if the character is an alphabetic character, the function sets the 
+ * Additionally, if the character is an alphabetic character, the function sets the
  * hasAlpha flag to true.
- * 
+ *
  * @param character The character to be checked.
  * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
  * @return true if the character is a valid hostname character, false otherwise.
@@ -1033,4 +1033,30 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 		labelStart = labelEnd + 1;
 	}
 	return hasAlpha;
+}
+
+std::string decodePercentEncoding(const std::string& encoded)
+{
+	std::string decoded;
+	std::string::const_iterator iter = encoded.begin();
+
+	while (iter != encoded.end()) {
+		if (*iter == '%' && std::distance(iter, encoded.end()) >= 2) {
+			std::string hex = std::string(iter + 1, iter + 3);
+			unsigned int value = 0;
+			std::istringstream(hex) >> std::hex >> value;
+
+			decoded += static_cast<char>(value);
+
+			iter += 3;
+		} else if (*iter == '%' && std::distance(iter, encoded.end()) < 2) {
+			// Percent sign not followed by valid two hex digits
+			throw std::runtime_error("Incomplete percent encoding at end of string");
+		} else {
+			decoded += *iter;
+			++iter;
+		}
+	}
+
+	return decoded;
 }
