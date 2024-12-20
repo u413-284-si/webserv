@@ -1080,11 +1080,10 @@ static void removeLastSegment(std::string& output)
 {
 	if (!output.empty()) {
 		size_t lastSlash = output.find_last_of('/');
-		if (lastSlash != std::string::npos) {
+		if (lastSlash != std::string::npos)
 			output.erase(lastSlash);
-		} else {
+		else
 			output.clear();
-		}
 	}
 }
 
