@@ -131,6 +131,12 @@ protected:
 		m_httpRequest.body = "Hello, World!";
 		m_httpRequest.httpStatus = StatusOK;
 		m_httpRequest.shallCloseConnection = false;
+		m_httpRequest.hasBody = true;
+		m_httpRequest.isChunked = false;
+		m_httpRequest.targetResource = "/path/to/resource";
+		m_httpRequest.isDirectory = false;
+		m_httpRequest.hasAutoindex = false;
+		m_httpRequest.hasCGI = false;
 
 		m_connection.m_timeSinceLastEvent = 1234;
 		m_connection.m_buffer = "GET / HTTP/1.1";
@@ -211,11 +217,9 @@ TEST_F(OstreamInsertersTest, HTTPRequest)
 	ostream << m_httpRequest;
 
 	std::ostringstream expected;
-	expected << "Method: " << m_httpRequest.method
-			 << "\n"
-				"URI:\n"
-			 << m_uri
-			 << "Version: HTTP/1.1\n"
+	expected << "Method: " << m_httpRequest.method << "\n"
+			"URI:\n" << m_uri <<
+			"Version: HTTP/1.1\n"
 				"Headers:\n"
 				"  Host: localhost\n"
 				"  User-Agent: curl/7.68.0\n"
@@ -223,7 +227,13 @@ TEST_F(OstreamInsertersTest, HTTPRequest)
 				"HTTP status: "
 			 << m_httpRequest.httpStatus
 			 << "\n"
-				"Shall close connection: 0\n";
+				"Shall close connection: 0\n"
+				"Has body: 1\n"
+				"Is chunked: 0\n"
+				"Target resource: /path/to/resource\n"
+				"Is directory: 0\n"
+				"Has autoindex: 0\n"
+				"Has CGI: 0\n";
 	EXPECT_EQ(ostream.str(), expected.str());
 }
 
