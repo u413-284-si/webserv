@@ -33,7 +33,7 @@ protected:
 		Location location4;
 		location4.path = "/test/autoindex";
 		location4.root = "/fourth/location";
-		location4.isAutoindex = true;
+		location4.hasAutoindex = true;
 
 		Location location5;
 		location5.path = "/recursion";
