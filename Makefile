@@ -158,6 +158,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_CGIHandler.cpp \
 			test_checkForTimeout.cpp \
 			test_ConfigFileParser.cpp \
+			test_connectionReceiveBody.cpp \
 			test_connectionReceiveFromCGI.cpp \
 			test_connectionReceiveHeader.cpp \
 			test_connectionSendResponse.cpp \

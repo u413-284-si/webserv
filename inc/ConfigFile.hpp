@@ -4,6 +4,7 @@
 
 #include "Method.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -23,7 +24,7 @@ public:
 	std::vector<std::string> indices;
 	std::string cgiExt;
 	std::string cgiPath;
-	bool isAutoindex;
+	bool hasAutoindex;
 	unsigned long maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	bool allowedMethods[MethodCount];
@@ -54,4 +55,3 @@ ConfigFile createDummyConfig();
 std::ostream& operator<<(std::ostream& ostream, const Location& location);
 std::ostream& operator<<(std::ostream& ostream, const ConfigServer& configServer);
 std::ostream& operator<<(std::ostream& ostream, const ConfigFile& configFile);
-std::ostream& operator<<(std::ostream& ostream, Method method);

@@ -7,19 +7,18 @@
  *
  * Default constructor for the ConfigServer struct. Initializes the object with default values.
  *
- * - Sets the root directory to "html".
- * - Sets the maximum body size to 1 (1 MB).
- * - Sets the error pages to an empty map.
- * - Initializes the listen map with "0.0.0.0" and port "8080".
+ * - Sets root to "html".
+ * - Sets host to "0.0.0.0"
+ * - Sets port to "8080"
+ * - Sets maxBodySize to 1 MB.
  * - Adds a default location with the path "/"
  */
 ConfigServer::ConfigServer(void)
 	: root("html")
 	, host("0.0.0.0")
 	, port("8080")
-	, maxBodySize(1) // 1 MB
+	, maxBodySize(constants::g_oneMegabyte)
 {
-	errorPage = std::map<statusCode, std::string>();
 	Location location;
 	location.path = "/";
 	locations.push_back(location);
@@ -30,17 +29,15 @@ ConfigServer::ConfigServer(void)
  *
  * Default constructor for the Location struct. Initializes the object with default values.
  *
- * - Sets the root directory to "html".
- * - Sets the autoindex flag to false.
- * - Sets the maximum body size to 1.
- * - Initializes the allowed methods vector to contain false for all methods.
- * - Initializes the indices vector to be empty.
- * - Initializes the returns map to be empty.
+ * - Sets root to "html".
+ * - Sets hasAutoindex to false.
+ * - Sets maxBodySize to 1 MB.
+ * - Init allowedMethods to true (GET), false (POST), false (DELETE)
  */
 Location::Location(void)
 	: root("html")
-	, isAutoindex(false)
-	, maxBodySize(1)
+	, hasAutoindex(false)
+	, maxBodySize(constants::g_oneMegabyte)
 	, allowedMethods()
 {
 	indices = std::vector<std::string>();
@@ -67,7 +64,7 @@ ConfigFile createDummyConfig()
 	Location location2;
 	location2.path = "/directory/";
 	location2.root = "/workspaces/webserv/html";
-	location2.isAutoindex = true;
+	location2.hasAutoindex = true;
 
 	Location location3;
 	location3.path = "/error";

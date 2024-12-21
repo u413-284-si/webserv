@@ -917,7 +917,7 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		handleCompleteRequestHeader(server, activeFd, connection);
 	} else {
 		LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-		if (connection.m_buffer.size() == Server::s_clientHeaderBufferSize) {
+		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) {
 			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 			connection.m_status = Connection::BuildResponse;
@@ -1104,7 +1104,10 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		buffer.resize(Server::s_clientBodyBufferSize);
 	buffer.clear();
 
-	const size_t bytesToRead = Server::s_clientBodyBufferSize - connection.m_buffer.size();
+	const size_t bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
+	size_t bytesToRead = Server::s_clientBodyBufferSize;
+	if (bytesAvailable <= Server::s_clientBodyBufferSize)
+		bytesToRead -= bytesAvailable;
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
 
 	const ssize_t bytesRead = server.readFromSocket(activeFd, &buffer[0], bytesToRead, 0);
@@ -1143,7 +1146,9 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 void handleBody(Server& server, int activeFd, Connection& connection)
 {
 	if (isCompleteBody(connection)) {
-		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+		LOG_DEBUG << "Received complete request body";
+		// Printing body can be confusing for big files.
+		//LOG_DEBUG << connection.m_buffer;
 		try {
 			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
@@ -1155,12 +1160,14 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(activeFd, EPOLLOUT);
 	} else {
-		LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+		LOG_DEBUG << "Received partial request body";
+		// Printing body can be confusing for big files.
+		//LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-		} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;
