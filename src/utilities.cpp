@@ -1,4 +1,5 @@
 #include "utilities.hpp"
+#include "StatusCode.hpp"
 
 namespace webutils {
 
@@ -168,6 +169,60 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 
 	assert(false && "Unhandled enum value");
 	return "";
+}
+
+/**
+ * @brief Converts a string to an HTTP status code.
+ *
+ * This function takes a string representation of an HTTP status code
+ * and returns the corresponding statusCode enum value. If the string
+ * does not match any known status code, it returns StatusBadRequest.
+ *
+ * @param str The string representation of the HTTP status code.
+ * @return The corresponding statusCode enum value.
+ */
+statusCode stringToStatusCode(std::string& str)
+{
+	if (str == "200")
+		return StatusOK;
+	if (str == "201")
+		return StatusCreated;
+	if (str == "301")
+		return StatusMovedPermanently;
+	if (str == "308")
+		return StatusPermanentRedirect;
+	if (str == "400")
+		return StatusBadRequest;
+	if (str == "403")
+		return StatusForbidden;
+	if (str == "404")
+		return StatusNotFound;
+	if (str == "405")
+		return StatusMethodNotAllowed;
+	if (str == "408")
+		return StatusRequestTimeout;
+	if (str == "413")
+		return StatusRequestEntityTooLarge;
+	if (str == "431")
+		return StatusRequestHeaderFieldsTooLarge;
+	if (str == "500")
+		return StatusInternalServerError;
+	if (str == "501")
+		return StatusMethodNotImplemented;
+	if (str == "505")
+		return StatusNonSupportedVersion;
+
+	return StatusBadRequest;
+}
+
+statusCode extractStatusCode(const std::string& statusLine)
+{
+	size_t pos = statusLine.find_first_of("0123456789");
+	if (pos != std::string::npos) {
+		std::string statusCodeString = statusLine.substr(pos, statusLine.find_first_not_of("0123456789", pos) - pos);
+		return stringToStatusCode(statusCodeString);
+	}
+    return StatusInternalServerError;
 }
 
 std::string methodToString(Method method)
