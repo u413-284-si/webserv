@@ -7,19 +7,18 @@
  *
  * Default constructor for the ConfigServer struct. Initializes the object with default values.
  *
- * - Sets the root directory to "html".
- * - Sets the maximum body size to 1 (1 MB).
- * - Sets the error pages to an empty map.
- * - Initializes the listen map with "0.0.0.0" and port "8080".
+ * - Sets root to "html".
+ * - Sets host to "0.0.0.0"
+ * - Sets port to "8080"
+ * - Sets maxBodySize to 1 MB.
  * - Adds a default location with the path "/"
  */
 ConfigServer::ConfigServer(void)
 	: root("html")
 	, host("0.0.0.0")
 	, port("8080")
-	, maxBodySize(1) // 1 MB
+	, maxBodySize(constants::g_oneMegabyte)
 {
-	errorPage = std::map<statusCode, std::string>();
 	Location location;
 	location.path = "/";
 	locations.push_back(location);
@@ -30,26 +29,24 @@ ConfigServer::ConfigServer(void)
  *
  * Default constructor for the Location struct. Initializes the object with default values.
  *
- * - Sets the root directory to "html".
- * - Sets the autoindex flag to false.
- * - Sets the maximum body size to 1.
- * - Initializes the allowed methods vector to contain false for all methods.
- * - Initializes the indices vector to be empty.
- * - Initializes the returns map to be empty.
+ * - Sets root to "html".
+ * - Sets hasAutoindex to false.
+ * - Sets maxBodySize to 1 MB.
+ * - Init allowedMethods to true (GET), false (POST), false (DELETE)
  */
 Location::Location(void)
 	: root("html")
-	, isAutoindex(false)
-	, maxBodySize(1)
+	, hasAutoindex(false)
+	, maxBodySize(constants::g_oneMegabyte)
 	, allowedMethods()
 	, alias(std::pair<bool, std::string>(false, ""))
 {
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();
-	returns = std::map<statusCode, std::string>();
-	allowedMethods[0] = true;
-	allowedMethods[1] = false;
-	allowedMethods[2] = false;
+	returns = std::make_pair(NoStatus, std::string());
+	allowedMethods[MethodGet] = true;
+	allowedMethods[MethodPost] = false;
+	allowedMethods[MethodDelete] = false;
 }
 
 /**
@@ -68,7 +65,7 @@ ConfigFile createDummyConfig()
 	Location location2;
 	location2.path = "/directory/";
 	location2.root = "/workspaces/webserv/html";
-	location2.isAutoindex = true;
+	location2.hasAutoindex = true;
 
 	Location location3;
 	location3.path = "/error";
@@ -98,6 +95,19 @@ ConfigFile createDummyConfig()
 	location7.root = "/workspaces/webserv/html";
 	location7.allowedMethods[MethodPost] = true;
 
+	Location location8;
+	location8.path = "/redirect";
+	location8.returns = std::make_pair(StatusMovedPermanently, "/secret");
+
+	Location location9;
+	location9.path = "/strange";
+	location9.returns = std::make_pair(StatusRequestHeaderFieldsTooLarge, "Return Message");
+
+	Location location10;
+	location10.path = "/another";
+	location10.returns = std::make_pair(StatusForbidden, "");
+	location10.errorPage[StatusForbidden] = "/strange";
+
 	Location location11;
 	location11.path = "/alias/";
 	location11.root = "/workspaces/webserv/html";
@@ -111,6 +121,9 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location4);
 	serverConfig8080.locations.push_back(location5);
 	serverConfig8080.locations.push_back(location7);
+	serverConfig8080.locations.push_back(location8);
+	serverConfig8080.locations.push_back(location9);
+	serverConfig8080.locations.push_back(location10);
 	serverConfig8080.locations.push_back(location11);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";

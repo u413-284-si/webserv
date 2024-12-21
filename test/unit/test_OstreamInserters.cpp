@@ -25,6 +25,9 @@ TEST(OstreamInserters, Method)
 TEST(OstreamInserters, StatusCode)
 {
 	std::ostringstream ostream;
+	ostream << NoStatus;
+	EXPECT_EQ(ostream.str(), "0");
+	ostream.str("");
 	ostream << StatusOK;
 	EXPECT_EQ(ostream.str(), "200");
 	ostream.str("");
@@ -97,14 +100,16 @@ protected:
 	{
 		m_location.path = "/path/to/resource";
 		m_location.root = "/root";
-		m_location.indices = { "index.html" };
+		m_location.indices = { "index.html", "index.php" };
 		m_location.cgiExt = ".php";
 		m_location.cgiPath = "/cgi-bin";
-		m_location.isAutoindex = true;
+		m_location.hasAutoindex = true;
+		m_location.maxBodySize = 123;
+		m_location.errorPage = { {StatusNotFound, "error404.html"}, {StatusForbidden, "error403.html"} };
 		m_location.allowedMethods[0] = true;
 		m_location.allowedMethods[1] = false;
 		m_location.allowedMethods[2] = false;
-		m_location.returns = { { StatusOK, "OK.html" }, { StatusBadRequest, "BadRequest.html" } };
+		m_location.returns = std::make_pair(StatusOK, "OK.html");
 
 		m_uri.path = "/path/to/resource";
 		m_uri.query = "query=value";
@@ -142,16 +147,19 @@ TEST_F(OstreamInsertersTest, Location)
 								 "Root: /root\n"
 								 "Indices: \n"
 								 "  index.html\n"
+								 "  index.php\n"
 								 "CGI extension: .php\n"
 								 "CGI path: /cgi-bin\n"
 								 "Autoindex: 1\n"
+								 "Max body size: 123\n"
+								 "Error Page:\n"
+								 "  403: error403.html\n"
+								 "  404: error404.html\n"
 								 "Allowed methods:\n"
 								 "  GET: 1\n"
 								 "  POST: 0\n"
 								 "  DELETE: 0\n"
-								 "Returns:\n"
-								 "  200: OK.html\n"
-								 "  400: BadRequest.html\n";
+								 "Returns: [200]: OK.html\n";
 
 	EXPECT_EQ(ostream.str(), expected);
 }
