@@ -1,4 +1,7 @@
 #include "ResponseBuilder.hpp"
+#include "StatusCode.hpp"
+#include <cstddef>
+#include <vector>
 
 /**
  * @brief Construct a new ResponseBuilder object
@@ -40,14 +43,14 @@ void ResponseBuilder::buildResponse(Connection& connection)
 {
 	resetBuilder();
 
-	const HTTPRequest& request = connection.m_request;
+	HTTPRequest& request = connection.m_request;
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 
-	parseResponseBody();
+	parseResponseBody(request);
 
 	appendStatusLine(request);
 	if (request.hasCGI && request.httpStatus == StatusOK)
@@ -190,40 +193,52 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 	return m_mimeTypes.at("default");
 }
 
-void ResponseBuilder::parseResponseBody()
+void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 {
 	if (m_responseBody.empty())
 		return;
 
-	size_t posStatus = m_responseBody.find("Status");
 	size_t posStatusEnd = 0;
-	if (posStatus != std::string::npos)
-	{
-		posStatusEnd = m_responseBody.find("\r\n", posStatus);
-		m_responseStatusLine = m_responseBody.substr(posStatus,  posStatusEnd - posStatus);
-		posStatusEnd += 2;
+	std::vector<std::string> statusIdentifiers;
+	statusIdentifiers.push_back("Status");
+	statusIdentifiers.push_back("HTTP/1.1");
+
+	for (std::vector<std::string>::const_iterator iter = statusIdentifiers.begin(); iter != statusIdentifiers.end();
+		 ++iter) {
+		size_t posStatus = m_responseBody.find(*iter);
+		if (posStatus != std::string::npos) {
+			std::string statusLine;
+			posStatusEnd = m_responseBody.find("\r\n", posStatus);
+			statusLine = m_responseBody.substr(posStatus, posStatusEnd - posStatus);
+			request.httpStatus = webutils::extractStatusCode(statusLine);
+			posStatusEnd += 2;
+		}
 	}
 
 	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
-	if (posHeadersEnd != std::string::npos)
-	{
+	if (posHeadersEnd != std::string::npos) {
 		std::string headers = m_responseBody.substr(posStatusEnd, posHeadersEnd - posStatusEnd);
-		std::istringstream headersStream(headers);
-		std::string header;
-		while (std::getline(headersStream, header))
-		{
-			if (header.find("Content-Type") != std::string::npos)
-			{
-				m_responseHeaders["Content-Type"] = header.substr(header.find(":") + 2);
-			}
-			else if (header.find("Content-Length") != std::string::npos)
-			{
-				m_responseHeaders["Content-Length"] = header.substr(header.find(":") + 2);
-			}
-			else if (header.find("Location") != std::string::npos)
-			{
-				m_responseHeaders["Location"] = header.substr(header.find(":") + 2);
-			}
-		}
+		size_t lineStart = 0;
+        size_t lineEnd = headers.find("\r\n");
+        
+        while (lineEnd != std::string::npos) {
+            std::string header = headers.substr(lineStart, lineEnd - lineStart);
+            
+            std::string headerName;
+            std::string headerValue;
+            const std::size_t delimiterPos = header.find_first_of(':');
+            if (delimiterPos != std::string::npos) {
+                headerName = header.substr(0, delimiterPos);
+                headerValue = header.substr(delimiterPos + 1);
+                headerValue = webutils::trimLeadingWhitespaces(headerValue);
+                webutils::trimTrailingWhiteSpaces(headerValue);
+                m_responseHeaders[headerName] = headerValue;
+                LOG_DEBUG << "Parsed response header: " << headerName << " -> " << headerValue;
+            }
+
+            lineStart = lineEnd + 2;
+            lineEnd = headers.find("\r\n", lineStart);
+        }
 	}
 }
+
