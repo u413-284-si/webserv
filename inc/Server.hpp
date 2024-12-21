@@ -55,7 +55,6 @@ public:
 	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */
 	static const std::size_t s_clientHeaderBufferSize = 1000; /**< Default buffer size for request header in Bytes */
 	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
-	static const std::size_t s_clientMaxBodySize = 1000000; /**< Default max size for request body in Bytes */
 	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy,

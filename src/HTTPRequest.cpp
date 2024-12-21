@@ -9,5 +9,6 @@ HTTPRequest::HTTPRequest()
 	, isDirectory(false)
 	, hasAutoindex(false)
 	, hasCGI(false)
+	, hasReturn(false)
 {
 }
