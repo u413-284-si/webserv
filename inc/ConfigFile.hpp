@@ -29,6 +29,7 @@ public:
 	std::map<statusCode, std::string> errorPage;
 	bool allowedMethods[MethodCount];
 	std::pair<statusCode, std::string> returns;
+	std::pair<bool, std::string> alias;
 };
 
 struct ConfigServer {
