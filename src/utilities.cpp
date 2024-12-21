@@ -128,15 +128,18 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 /**
  * @brief Returns reason phrase for a given status code.
  *
+ * In case of NoStatus returns the string "NO STATUS CODE".
  * @param statusCode Status code.
  * @return std::string Reason phrase.
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
-	if (statusCode < StatusOK || statusCode > StatusNonSupportedVersion)
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
 		statusCode = StatusInternalServerError;
 
 	switch (statusCode) {
+	case NoStatus:
+		return "NO STATUS CODE";
 	case StatusOK:
 		return "OK";
 	case StatusCreated:
@@ -166,6 +169,19 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	case StatusNonSupportedVersion:
 		return "HTTP Version Not Supported";
 	}
+}
+
+/**
+ * @brief Check if a given status code is a redirection.
+ *
+ * A redirection is a 3xx status code.
+ * @param statusCode Status code to check.
+ * @return true If the status code is a redirection.
+ * @return false If the status code is not a redirection.
+ */
+bool isRedirectionStatus(statusCode statusCode)
+{
+	return (statusCode >= StatusMovedPermanently && statusCode <= StatusPermanentRedirect);
 }
 
 std::string methodToString(Method method)
