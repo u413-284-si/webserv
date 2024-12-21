@@ -19,5 +19,11 @@ var namespaceserver__response =
       [ "host", "namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b", null ],
       [ "port", "namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64", null ]
     ] ],
-    [ "test_POST", "namespaceserver__response_1_1test___p_o_s_t.html", null ]
+    [ "test_POST", "namespaceserver__response_1_1test___p_o_s_t.html", [
+      [ "test_POST_simple", "namespaceserver__response_1_1test___p_o_s_t.html#ac0e6639994994b9733113dea26adffb7", null ],
+      [ "generate_chunks", "namespaceserver__response_1_1test___p_o_s_t.html#a3f87e188fb39546111887533e959eb77", null ],
+      [ "test_POST_chunked_encoding", "namespaceserver__response_1_1test___p_o_s_t.html#ac95599d7baa686a3cab23fe2ed804be4", null ],
+      [ "test_POST_bigger_file", "namespaceserver__response_1_1test___p_o_s_t.html#a47fba5ba821365cd53bf0ad7b2bdda41", null ],
+      [ "test_POST_file_too_big", "namespaceserver__response_1_1test___p_o_s_t.html#a4e597b9b4533bb5b29c661437708aeb6", null ]
+    ] ]
 ];

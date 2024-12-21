@@ -7,9 +7,10 @@ var searchData=
   ['configfileparser_4',['ConfigFileParser',['../class_config_file_parser.html',1,'']]],
   ['configserver_5',['ConfigServer',['../struct_config_server.html',1,'']]],
   ['connection_6',['Connection',['../struct_connection.html',1,'']]],
-  ['connectionreceivefromcgitest_7',['ConnectionReceiveFromCGITest',['../class_connection_receive_from_c_g_i_test.html',1,'']]],
-  ['connectionreceiveheadertest_8',['ConnectionReceiveHeaderTest',['../class_connection_receive_header_test.html',1,'']]],
-  ['connectionsendresponsetest_9',['ConnectionSendResponseTest',['../class_connection_send_response_test.html',1,'']]],
-  ['connectionsendtocgitest_10',['ConnectionSendToCGITest',['../class_connection_send_to_c_g_i_test.html',1,'']]],
-  ['createvirtualservertest_11',['CreateVirtualServerTest',['../class_create_virtual_server_test.html',1,'']]]
+  ['connectionreceivebodytest_7',['ConnectionReceiveBodyTest',['../class_connection_receive_body_test.html',1,'']]],
+  ['connectionreceivefromcgitest_8',['ConnectionReceiveFromCGITest',['../class_connection_receive_from_c_g_i_test.html',1,'']]],
+  ['connectionreceiveheadertest_9',['ConnectionReceiveHeaderTest',['../class_connection_receive_header_test.html',1,'']]],
+  ['connectionsendresponsetest_10',['ConnectionSendResponseTest',['../class_connection_send_response_test.html',1,'']]],
+  ['connectionsendtocgitest_11',['ConnectionSendToCGITest',['../class_connection_send_to_c_g_i_test.html',1,'']]],
+  ['createvirtualservertest_12',['CreateVirtualServerTest',['../class_create_virtual_server_test.html',1,'']]]
 ];

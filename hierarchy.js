@@ -40,6 +40,7 @@ var hierarchy =
       [ "AcceptConnectionsTest", "class_accept_connections_test.html", null ],
       [ "CGIHandlerTest", "class_c_g_i_handler_test.html", null ],
       [ "CheckForTimeoutTest", "class_check_for_timeout_test.html", null ],
+      [ "ConnectionReceiveBodyTest", "class_connection_receive_body_test.html", null ],
       [ "ConnectionReceiveFromCGITest", "class_connection_receive_from_c_g_i_test.html", null ],
       [ "ConnectionReceiveHeaderTest", "class_connection_receive_header_test.html", null ],
       [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", null ],

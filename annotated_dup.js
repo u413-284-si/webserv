@@ -16,6 +16,7 @@ var annotated_dup =
     [ "ConfigFileParser", "class_config_file_parser.html", "class_config_file_parser" ],
     [ "ConfigServer", "struct_config_server.html", "struct_config_server" ],
     [ "Connection", "struct_connection.html", "struct_connection" ],
+    [ "ConnectionReceiveBodyTest", "class_connection_receive_body_test.html", "class_connection_receive_body_test" ],
     [ "ConnectionReceiveFromCGITest", "class_connection_receive_from_c_g_i_test.html", "class_connection_receive_from_c_g_i_test" ],
     [ "ConnectionReceiveHeaderTest", "class_connection_receive_header_test.html", "class_connection_receive_header_test" ],
     [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", "class_connection_send_response_test" ],

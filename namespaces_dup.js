@@ -4,7 +4,8 @@ var namespaces_dup =
       [ "pytest_addoption", "namespaceconftest.html#a6f3d18943083f7c1cf563414a6cc6ecd", null ]
     ] ],
     [ "constants", "namespaceconstants.html", [
-      [ "g_decimalBase", "namespaceconstants.html#afe756195738c244eeace3037c5486edc", null ]
+      [ "g_decimalBase", "namespaceconstants.html#afe756195738c244eeace3037c5486edc", null ],
+      [ "g_oneMegabyte", "namespaceconstants.html#a7615a958df9c9000cf15e3da3558e6ce", null ]
     ] ],
     [ "server_management", "namespaceserver__management.html", "namespaceserver__management" ],
     [ "server_response", "namespaceserver__response.html", "namespaceserver__response" ],

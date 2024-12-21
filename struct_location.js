@@ -6,7 +6,7 @@ var struct_location =
     [ "indices", "struct_location.html#aa574c024f5d721f0c9d764c177ad98be", null ],
     [ "cgiExt", "struct_location.html#aad604c8547e93f80ae1e908739fdaa68", null ],
     [ "cgiPath", "struct_location.html#aa62b6dfbbbe95e15f9f8e8df6b52b921", null ],
-    [ "isAutoindex", "struct_location.html#a4d4f2aa33c910fe0dc69bdeb32e7e7e5", null ],
+    [ "hasAutoindex", "struct_location.html#a78f6a16e7d204e1093925d08824de616", null ],
     [ "maxBodySize", "struct_location.html#a68f01d8ebb15037e62a92ff2e55b50f1", null ],
     [ "errorPage", "struct_location.html#a895fc9b39ff104e1df7ff03ccc09b536", null ],
     [ "allowedMethods", "struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7", null ],

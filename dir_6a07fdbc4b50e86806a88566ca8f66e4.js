@@ -5,6 +5,7 @@ var dir_6a07fdbc4b50e86806a88566ca8f66e4 =
     [ "test_CGIHandler.cpp", "test___c_g_i_handler_8cpp.html", "test___c_g_i_handler_8cpp" ],
     [ "test_checkForTimeout.cpp", "test__check_for_timeout_8cpp.html", "test__check_for_timeout_8cpp" ],
     [ "test_ConfigFileParser.cpp", "test___config_file_parser_8cpp.html", "test___config_file_parser_8cpp" ],
+    [ "test_connectionReceiveBody.cpp", "test__connection_receive_body_8cpp.html", "test__connection_receive_body_8cpp" ],
     [ "test_connectionReceiveFromCGI.cpp", "test__connection_receive_from_c_g_i_8cpp.html", "test__connection_receive_from_c_g_i_8cpp" ],
     [ "test_connectionReceiveHeader.cpp", "test__connection_receive_header_8cpp.html", "test__connection_receive_header_8cpp" ],
     [ "test_connectionSendResponse.cpp", "test__connection_send_response_8cpp.html", "test__connection_send_response_8cpp" ],
