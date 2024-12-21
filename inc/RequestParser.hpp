@@ -3,10 +3,10 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
-#include "constants.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include "error.hpp"
 #include "utilities.hpp"
 
@@ -71,4 +71,6 @@ private:
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
+	static std::string removeDotSegments(const std::string& path);
 };
+

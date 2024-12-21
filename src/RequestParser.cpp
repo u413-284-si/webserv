@@ -179,6 +179,7 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
  * and checks each character for validity.
  * If the URI contains a query ('?') or fragment ('#'), it delegates parsing to
  * `parseUriQuery` and `parseUriFragment` respectively.
+ * After parsing the URI removeDotSegments() on parsed path is called.
  * If an invalid character is encountered, an error code is set, and
  * a `std::runtime_error` is thrown.
  *
@@ -216,6 +217,8 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		else
 			request.uri.path.push_back(requestLine.at(index));
 	}
+
+	request.uri.path = removeDotSegments(request.uri.path);
 	return (requestLine.substr(index));
 }
 
@@ -490,7 +493,8 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
+	const long contentLength
+		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;
@@ -686,27 +690,27 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	}
 
 	if (iter->second.find(':') != std::string::npos) {
-		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
-			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
-				request.httpStatus = StatusBadRequest;
-				request.shallCloseConnection = true;
-				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
-			}
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))
+			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
+		}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
-	 } else {
+	} else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
-	 }
+	}
 
-	 LOG_DEBUG << "Valid host header: " << iter->second;
+	LOG_DEBUG << "Valid host header: " << iter->second;
 }
 
 /**
@@ -957,15 +961,14 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	return false;
 }
 
-
 /**
  * @brief Checks if a character is valid in a hostname and updates the alpha flag.
- * 
+ *
  * This function determines if the given character is a valid part of a hostname.
  * A valid hostname character is either an alphanumeric character or a hyphen ('-').
- * Additionally, if the character is an alphabetic character, the function sets the 
+ * Additionally, if the character is an alphabetic character, the function sets the
  * hasAlpha flag to true.
- * 
+ *
  * @param character The character to be checked.
  * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
  * @return true if the character is a valid hostname character, false otherwise.
@@ -1033,4 +1036,102 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 		labelStart = labelEnd + 1;
 	}
 	return hasAlpha;
+}
+
+/**
+ * @brief Checks for a single dot segment "/."
+ *
+ * Needs to check if iterator points to end, as derefencing end iterator is undefined behavior.
+ * @param iter Iterator to the current position.
+ * @param end End iterator of string.
+ * @return true It is a single dot segment.
+ * @return false It is not a single dot segment.
+ */
+static bool isSingleDot(const std::string::const_iterator& iter, const std::string::const_iterator& end)
+{
+	if (iter == end)
+		return false;
+	return *iter == '.' && (iter + 1 == end || *(iter + 1) == '/');
+}
+
+/**
+ * @brief Checks for a double dot segment "/.."
+ *
+ * Needs to check if iterator or iterator + 1 point to end, as derefencing end iterator is undefined behavior.
+ *
+ * @param iter Iterator to the current position.
+ * @param end End iterator of string.
+ * @return true It is a double dot segment.
+ * @return false It is not a double dot segment.
+ */
+static bool isDoubleDot(const std::string::const_iterator& iter, const std::string::const_iterator& end)
+{
+	if (iter == end || iter + 1 == end)
+		return false;
+	return *iter == '.' && *(iter + 1) == '.' && (iter + 2 == end || *(iter + 2) == '/');
+}
+
+/**
+ * @brief Removes last segment of a path denoted by '/'.
+ *
+ * @param output Reference to buffer containing path.
+ */
+static void removeLastSegment(std::string& output)
+{
+	if (!output.empty()) {
+		size_t lastSlash = output.find_last_of('/');
+		if (lastSlash != std::string::npos)
+			output.erase(lastSlash);
+		else
+			output.clear();
+	}
+}
+
+/**
+ * @brief Removes dot segments "/." and "/.." from a path.
+ *
+ * Iterates through the string. If it finds a '/', increments and checks for
+ * - isSingleDot() = "/." - increment to ignore dot segment.
+ * - isDoubleDot() = "/.." - increment to ignore double dot segment and removeLastSegment() of output.
+ * - else - append a '/' to output buffer.
+ * If not a '/' append to buffer.
+ * If buffer is empty at the end append a '/' to it.
+ *
+ * This implements the algorithm as described in RFC 3986 Sect. 5.2.4.
+ * However it does not handle all described algorithm conditions
+ * - 2.A. buffer begins with "./" or "../" (note: '.' comes before '/')
+ * - 2.D. buffer consists only of '.' or '..'
+ * As requests need an absolute path (starting with '/') per RFC 9110 we can ignore these conditions.
+ *
+ * @sa https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.4
+ * @param path Where to remove possible dot segments from.
+ * @return std::string String with dot segments removed.
+ */
+std::string RequestParser::removeDotSegments(const std::string& path)
+{
+	std::string output;
+	std::string::const_iterator iter = path.begin();
+
+	while (iter != path.end()) {
+		if (*iter == '/') {
+			iter++;
+
+			if (isSingleDot(iter, path.end())) {
+				++iter;
+				continue;
+			}
+
+			if (isDoubleDot(iter, path.end())) {
+				iter += 2;
+				removeLastSegment(output);
+				continue;
+			}
+
+			output += '/';
+		} else {
+			output += *iter;
+			iter++;
+		}
+	}
+	return output.empty() ? "/" : output;
 }

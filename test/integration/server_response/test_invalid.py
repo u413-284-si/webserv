@@ -61,3 +61,14 @@ def test_invalid_missing_host_header():
         # Receive the response
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+
+def test_invalid_directory_traversal():
+    # Create a socket connection
+    with socket.create_connection((host, port)) as sock:
+        # Craft HTTP request with directory traversal try
+        request = b"GET /../../../etc/passwd HTTP/1.1\r\nHost: localhost\r\n\r\n"
+        sock.sendall(request)
+
+        # Receive the response
+        response = parse_http_response(sock)
+        assert response["status_code"] == 404
