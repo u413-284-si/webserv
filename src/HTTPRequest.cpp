@@ -8,5 +8,6 @@ HTTPRequest::HTTPRequest()
 	, isChunked(false)
 	, hasAutoindex(false)
 	, hasCGI(false)
+	, hasReturn(false)
 {
 }

@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <utility>
 
 /* ====== DEFINITIONS ====== */
 
@@ -27,7 +28,7 @@ public:
 	unsigned long maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	bool allowedMethods[MethodCount];
-	std::map<statusCode, std::string> returns;
+	std::pair<statusCode, std::string> returns;
 };
 
 struct ConfigServer {

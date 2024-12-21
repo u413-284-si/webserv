@@ -25,6 +25,9 @@ TEST(OstreamInserters, Method)
 TEST(OstreamInserters, StatusCode)
 {
 	std::ostringstream ostream;
+	ostream << NoStatus;
+	EXPECT_EQ(ostream.str(), "0");
+	ostream.str("");
 	ostream << StatusOK;
 	EXPECT_EQ(ostream.str(), "200");
 	ostream.str("");
@@ -106,7 +109,7 @@ protected:
 		m_location.allowedMethods[0] = true;
 		m_location.allowedMethods[1] = false;
 		m_location.allowedMethods[2] = false;
-		m_location.returns = { { StatusOK, "OK.html" }, { StatusBadRequest, "BadRequest.html" } };
+		m_location.returns = std::make_pair(StatusOK, "OK.html");
 
 		m_uri.path = "/path/to/resource";
 		m_uri.query = "query=value";
@@ -156,9 +159,7 @@ TEST_F(OstreamInsertersTest, Location)
 								 "  GET: 1\n"
 								 "  POST: 0\n"
 								 "  DELETE: 0\n"
-								 "Returns:\n"
-								 "  200: OK.html\n"
-								 "  400: BadRequest.html\n";
+								 "Returns: [200]: OK.html\n";
 
 	EXPECT_EQ(ostream.str(), expected);
 }
