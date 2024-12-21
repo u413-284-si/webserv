@@ -1,6 +1,7 @@
 var _status_code_8hpp =
 [
     [ "statusCode", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea", [
+      [ "NoStatus", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83", null ],
       [ "StatusOK", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080", null ],
       [ "StatusCreated", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda", null ],
       [ "StatusMovedPermanently", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46", null ],

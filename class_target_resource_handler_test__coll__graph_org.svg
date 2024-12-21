@@ -12,8 +12,8 @@
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="747,-169 598,-169 598,-150 747,-150 747,-169"/>
-<text text-anchor="middle" x="672.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">TargetResourceHandlerTest</text>
+<polygon fill="#999999" stroke="#666666" points="747,-139 598,-139 598,-120 747,-120 747,-139"/>
+<text text-anchor="middle" x="672.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">TargetResourceHandlerTest</text>
 </a>
 </g>
 </g>
@@ -30,17 +30,17 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M414.31,-274.02C459.05,-273.65 527.04,-268.37 580,-243.5 617.67,-225.81 650.55,-187.05 664.45,-169.04"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="414.3,-270.52 404.3,-274.02 414.3,-277.52 414.3,-270.52"/>
+<path fill="none" stroke="#63b8ff" d="M414.47,-277.04C459.89,-279.16 528.87,-276.37 580,-247.5 625.82,-221.62 656.51,-162.59 667.25,-139.25"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="414.48,-273.54 404.3,-276.47 414.09,-280.53 414.48,-273.54"/>
 </a>
 </g>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="struct_config_file.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="398.5,-245 333.5,-245 333.5,-226 398.5,-226 398.5,-245"/>
-<text text-anchor="middle" x="366" y="-233" font-family="Helvetica,sans-Serif" font-size="10.00">ConfigFile</text>
+<g id="a_Node000003"><a xlink:href="struct_socket.html" target="_top" xlink:title="Represent a socket connection.">
+<polygon fill="white" stroke="#666666" points="160.5,-215 111.5,-215 111.5,-196 160.5,-196 160.5,-215"/>
+<text text-anchor="middle" x="136" y="-203" font-family="Helvetica,sans-Serif" font-size="10.00">Socket</text>
 </a>
 </g>
 </g>
@@ -48,18 +48,38 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node3&#45;&gt;Node1</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M408.91,-232.91C452.47,-229.37 522.22,-221.29 580,-203.5 607.63,-194.99 637.41,-179.33 655.25,-169.17"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="408.4,-229.44 398.69,-233.7 408.93,-236.42 408.4,-229.44"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M170.46,-213.9C181.11,-216.2 192.98,-218.36 204,-219.5 238.93,-223.11 247.99,-222.19 283,-219.5 416.18,-209.25 452.43,-213.09 580,-173.5 607.61,-164.93 637.4,-149.28 655.24,-139.14"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="171.22,-210.49 160.69,-211.69 169.67,-217.31 171.22,-210.49"/>
 </a>
 </g>
-<text text-anchor="middle" x="514.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_configFile</text>
+<text text-anchor="middle" x="366" y="-220.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_serverSock</text>
+</g>
+<!-- Node5 -->
+<g id="Node000005" class="node">
+<title>Node5</title>
+<g id="a_Node000005"><a xlink:href="struct_connection.html" target="_top" xlink:title="Represents a connection between a server and a client.">
+<polygon fill="white" stroke="#666666" points="401.5,-178 330.5,-178 330.5,-159 401.5,-159 401.5,-178"/>
+<text text-anchor="middle" x="366" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00">Connection</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node5 -->
+<g id="edge5_Node000005_Node000003" class="edge">
+<title>Node3&#45;&gt;Node5</title>
+<g id="a_edge5_Node000005_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M170.44,-200.07C213.15,-193.14 286.72,-181.2 330.11,-174.16"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="169.85,-196.62 160.54,-201.68 170.97,-203.53 169.85,-196.62"/>
+</a>
+</g>
+<text text-anchor="middle" x="243.5" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_clientSocket</text>
+<text text-anchor="middle" x="243.5" y="-197.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">m_serverSocket</text>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="class_mock_file_system_policy.html" target="_top" xlink:title="Mock class for FileSystemPolicy.">
-<polygon fill="white" stroke="#666666" points="429,-208 303,-208 303,-189 429,-189 429,-208"/>
-<text text-anchor="middle" x="366" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">MockFileSystemPolicy</text>
+<g id="a_Node000004"><a xlink:href="struct_config_file.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="398.5,-93 333.5,-93 333.5,-74 398.5,-74 398.5,-93"/>
+<text text-anchor="middle" x="366" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">ConfigFile</text>
 </a>
 </g>
 </g>
@@ -67,126 +87,106 @@
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node4&#45;&gt;Node1</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M439.03,-190.68C480.33,-186.04 533.13,-179.83 580,-173.5 590.03,-172.14 600.67,-170.61 611,-169.06"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="438.6,-187.21 429.05,-191.8 439.38,-194.16 438.6,-187.21"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M408.75,-85.53C451.91,-88.12 521.09,-93.63 580,-104.5 600.89,-108.36 623.96,-114.67 641.71,-119.99"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="408.82,-82.03 398.63,-84.95 408.41,-89.02 408.82,-82.03"/>
 </a>
 </g>
-<text text-anchor="middle" x="514.5" y="-191.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_fileSystemPolicy</text>
+<text text-anchor="middle" x="514.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_configFile</text>
 </g>
-<!-- Node5 -->
-<g id="Node000005" class="node">
-<title>Node5</title>
-<g id="a_Node000005"><a xlink:href="class_file_system_policy.html" target="_top" xlink:title="Class for C functions on the file system.">
-<polygon fill="white" stroke="#666666" points="186,-208 86,-208 86,-189 186,-189 186,-208"/>
-<text text-anchor="middle" x="136" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">FileSystemPolicy</text>
+<!-- Node5&#45;&gt;Node1 -->
+<g id="edge4_Node000001_Node000005" class="edge">
+<title>Node5&#45;&gt;Node1</title>
+<g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M411.89,-163.69C455.04,-158.96 522.05,-151.33 580,-143.5 590.03,-142.14 600.67,-140.61 611,-139.06"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="411.29,-160.24 401.73,-164.8 412.05,-167.2 411.29,-160.24"/>
 </a>
 </g>
-</g>
-<!-- Node5&#45;&gt;Node4 -->
-<g id="edge4_Node000004_Node000005" class="edge">
-<title>Node5&#45;&gt;Node4</title>
-<g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M196.52,-198.5C229.22,-198.5 269.74,-198.5 302.85,-198.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="196.19,-195 186.19,-198.5 196.19,-202 196.19,-195"/>
-</a>
-</g>
+<text text-anchor="middle" x="514.5" y="-161.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_connection</text>
 </g>
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="struct_socket.html" target="_top" xlink:title="Represent a socket connection.">
-<polygon fill="white" stroke="#666666" points="160.5,-141 111.5,-141 111.5,-122 160.5,-122 160.5,-141"/>
-<text text-anchor="middle" x="136" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00">Socket</text>
+<g id="a_Node000006"><a xlink:href="struct_h_t_t_p_request.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="177,-163 95,-163 95,-144 177,-144 177,-163"/>
+<text text-anchor="middle" x="136" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">HTTPRequest</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node1 -->
-<g id="edge5_Node000001_Node000006" class="edge">
+<g id="edge8_Node000001_Node000006" class="edge">
 <title>Node6&#45;&gt;Node1</title>
-<g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M170.48,-139.7C181.13,-141.99 193,-144.2 204,-145.5 342.49,-161.91 505.58,-162.6 597.92,-161.28"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="171.23,-136.28 160.71,-137.52 169.7,-143.12 171.23,-136.28"/>
+<g id="a_edge8_Node000001_Node000006"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M187.19,-148.45C219.63,-145.38 262.77,-141.65 301,-139.5 403.95,-133.72 523.19,-131.26 597.99,-130.23"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="186.68,-144.99 177.06,-149.43 187.34,-151.96 186.68,-144.99"/>
 </a>
 </g>
-<text text-anchor="middle" x="366" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_serverSock</text>
+<text text-anchor="middle" x="366" y="-142.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_request</text>
+</g>
+<!-- Node6&#45;&gt;Node5 -->
+<g id="edge6_Node000005_Node000006" class="edge">
+<title>Node6&#45;&gt;Node5</title>
+<g id="a_edge6_Node000005_Node000006"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M187.31,-156.81C230.73,-159.67 292.29,-163.72 330.38,-166.22"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="187.45,-153.31 177.24,-156.15 186.99,-160.3 187.45,-153.31"/>
+</a>
+</g>
+<text text-anchor="middle" x="243.5" y="-165.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_request</text>
 </g>
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="struct_connection.html" target="_top" xlink:title="Represents a connection between a server and a client.">
-<polygon fill="white" stroke="#666666" points="401.5,-123 330.5,-123 330.5,-104 401.5,-104 401.5,-123"/>
-<text text-anchor="middle" x="366" y="-111" font-family="Helvetica,sans-Serif" font-size="10.00">Connection</text>
+<g id="a_Node000007"><a xlink:href="struct_u_r_i.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="34,-163 0,-163 0,-144 34,-144 34,-163"/>
+<text text-anchor="middle" x="17" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">URI</text>
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node7 -->
-<g id="edge7_Node000007_Node000006" class="edge">
-<title>Node6&#45;&gt;Node7</title>
-<g id="a_edge7_Node000007_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M170.7,-127.1C181.34,-125.81 193.15,-124.48 204,-123.5 247.51,-119.55 297.78,-116.7 330.41,-115.08"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="170.02,-123.65 160.53,-128.36 170.89,-130.6 170.02,-123.65"/>
+<!-- Node7&#45;&gt;Node6 -->
+<g id="edge7_Node000006_Node000007" class="edge">
+<title>Node7&#45;&gt;Node6</title>
+<g id="a_edge7_Node000006_Node000007"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M44.28,-153.5C59.13,-153.5 78.01,-153.5 94.69,-153.5"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="44.27,-150 34.27,-153.5 44.27,-157 44.27,-150"/>
 </a>
 </g>
-<text text-anchor="middle" x="243.5" y="-137.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_clientSocket</text>
-<text text-anchor="middle" x="243.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">m_serverSocket</text>
-</g>
-<!-- Node7&#45;&gt;Node1 -->
-<g id="edge6_Node000001_Node000007" class="edge">
-<title>Node7&#45;&gt;Node1</title>
-<g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M411.76,-115.72C455.08,-118.38 522.44,-123.88 580,-134.5 600.89,-138.36 623.96,-144.67 641.71,-149.99"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="411.75,-112.21 401.56,-115.12 411.34,-119.2 411.75,-112.21"/>
-</a>
-</g>
-<text text-anchor="middle" x="514.5" y="-137.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_connection</text>
+<text text-anchor="middle" x="60" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> uri</text>
 </g>
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="struct_h_t_t_p_request.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="177,-89 95,-89 95,-70 177,-70 177,-89"/>
-<text text-anchor="middle" x="136" y="-77" font-family="Helvetica,sans-Serif" font-size="10.00">HTTPRequest</text>
+<g id="a_Node000008"><a xlink:href="class_mock_file_system_policy.html" target="_top" xlink:title="Mock class for FileSystemPolicy.">
+<polygon fill="white" stroke="#666666" points="429,-56 303,-56 303,-37 429,-37 429,-56"/>
+<text text-anchor="middle" x="366" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">MockFileSystemPolicy</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node1 -->
-<g id="edge10_Node000001_Node000008" class="edge">
+<g id="edge9_Node000001_Node000008" class="edge">
 <title>Node8&#45;&gt;Node1</title>
-<g id="a_edge10_Node000001_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M187.14,-75.59C270.97,-70.76 443.8,-68.17 580,-114.5 607.49,-123.85 637.31,-139.69 655.19,-149.86"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="186.89,-72.1 177.13,-76.2 187.32,-79.09 186.89,-72.1"/>
+<g id="a_edge9_Node000001_Node000008"><a xlink:title=" ">
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M439.33,-48.12C481.39,-50.9 534.84,-57.64 580,-73.5 611.1,-84.42 642.94,-107.01 659.62,-119.91"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="439.36,-44.61 429.17,-47.51 438.94,-51.6 439.36,-44.61"/>
 </a>
 </g>
-<text text-anchor="middle" x="366" y="-84.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_request</text>
-</g>
-<!-- Node8&#45;&gt;Node7 -->
-<g id="edge8_Node000007_Node000008" class="edge">
-<title>Node8&#45;&gt;Node7</title>
-<g id="a_edge8_Node000007_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M187.31,-87C230.73,-93.48 292.29,-102.66 330.38,-108.34"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="187.64,-83.51 177.24,-85.5 186.61,-90.44 187.64,-83.51"/>
-</a>
-</g>
-<text text-anchor="middle" x="243.5" y="-103.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_request</text>
+<text text-anchor="middle" x="514.5" y="-76.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_fileSystemPolicy</text>
 </g>
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="struct_u_r_i.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="34,-89 0,-89 0,-70 34,-70 34,-89"/>
-<text text-anchor="middle" x="17" y="-77" font-family="Helvetica,sans-Serif" font-size="10.00">URI</text>
+<g id="a_Node000009"><a xlink:href="class_file_system_policy.html" target="_top" xlink:title="Class for C functions on the file system.">
+<polygon fill="white" stroke="#666666" points="186,-56 86,-56 86,-37 186,-37 186,-56"/>
+<text text-anchor="middle" x="136" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">FileSystemPolicy</text>
 </a>
 </g>
 </g>
 <!-- Node9&#45;&gt;Node8 -->
-<g id="edge9_Node000008_Node000009" class="edge">
+<g id="edge10_Node000008_Node000009" class="edge">
 <title>Node9&#45;&gt;Node8</title>
-<g id="a_edge9_Node000008_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M44.28,-79.5C59.13,-79.5 78.01,-79.5 94.69,-79.5"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="44.27,-76 34.27,-79.5 44.27,-83 44.27,-76"/>
+<g id="a_edge10_Node000008_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M196.52,-46.5C229.22,-46.5 269.74,-46.5 302.85,-46.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="196.19,-43 186.19,-46.5 196.19,-50 196.19,-43"/>
 </a>
 </g>
-<text text-anchor="middle" x="60" y="-82.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> uri</text>
 </g>
 <!-- Node10 -->
 <g id="Node000010" class="node">
@@ -201,11 +201,11 @@
 <g id="edge11_Node000001_Node000010" class="edge">
 <title>Node10&#45;&gt;Node1</title>
 <g id="a_edge11_Node000001_Node000010"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M441.5,-2.11C484.66,-1.27 538.5,-6.4 580,-30.5 628.91,-58.9 658.36,-125.12 667.99,-149.91"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="441.22,1.38 431.34,-2.42 441.44,-5.61 441.22,1.38"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M441.28,-5.61C483.9,-6.3 537.26,-12.28 580,-33.5 620.63,-53.67 652.91,-99.65 665.63,-119.77"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="441.27,-2.11 431.25,-5.54 441.22,-9.11 441.27,-2.11"/>
 </a>
 </g>
-<text text-anchor="middle" x="514.5" y="-33.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_targetResourceHandler</text>
+<text text-anchor="middle" x="514.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> m_targetResourceHandler</text>
 </g>
 </g>
 </svg>

@@ -1,116 +1,116 @@
 <map id="handleConnection" name="handleConnection">
-<area shape="rect" id="Node000001" title="Handle a client connection." alt="" coords="5,256,144,281"/>
+<area shape="rect" id="Node000001" title="Handle a client connection." alt="" coords="5,355,144,380"/>
 <area shape="rect" id="Node000002" href="$_server_8cpp.html#a9b6964fe44b1605c00c0f211a7f42896" title="Builds the response for a client connection." alt="" coords="464,56,653,81"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,255,92,222,115,178,148,134,168,114,191,98,221,83,254,71,322,56,389,51,451,52,451,58,389,56,323,62,255,76,224,88,193,103,171,119,152,137,119,181,97,224,83,257"/>
-<area shape="rect" id="Node000005" href="$_server_8cpp.html#a43e9e764c97aacfc12f233b33ffa3342" title="Sends the response to a client connection." alt="" coords="738,105,926,131"/>
-<area shape="poly" id="edge59_Node000001_Node000005" title=" " alt="" coords="105,253,247,198,343,168,441,143,514,131,589,123,724,116,725,121,589,129,515,137,442,149,344,173,249,203,107,258"/>
-<area shape="rect" id="Node000017" href="$_server_8cpp.html#ad132a77471376bd48681070a795df914" title="Handles a timeout for a client connection." alt="" coords="196,5,389,31"/>
-<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="77,255,89,215,111,159,144,100,166,72,190,48,213,34,215,38,194,52,170,76,149,103,116,162,94,217,82,256"/>
-<area shape="rect" id="Node000018" href="$_server_8cpp.html#a3e07b970ffa58c9315b38673aff94f84" title="Handles the reception of the request body from a client connection." alt="" coords="203,533,382,559"/>
-<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="88,280,194,418,275,521,271,524,190,421,84,283"/>
-<area shape="rect" id="Node000027" href="$_server_8cpp.html#a735bf6535f62b5907ea2d5f0e1abf3c7" title="Handles receiving data from a CGI script and processes it accordingly." alt="" coords="192,256,393,281"/>
-<area shape="poly" id="edge27_Node000001_Node000027" title=" " alt="" coords="144,266,178,266,178,271,144,271"/>
-<area shape="rect" id="Node000037" href="$_server_8cpp.html#aa45d6529fd7be9b7adf788a9679ae34b" title="Receive request header from a client." alt="" coords="197,709,389,735"/>
-<area shape="poly" id="edge39_Node000001_Node000037" title=" " alt="" coords="82,281,123,402,156,486,194,570,236,640,276,697,271,700,232,643,190,573,151,488,118,403,77,283"/>
-<area shape="rect" id="Node000051" href="$_server_8cpp.html#aa67430205b6049aa70bad4682a7442b8" title="Sends the request body to the CGI process." alt="" coords="211,381,374,407"/>
-<area shape="poly" id="edge60_Node000001_Node000051" title=" " alt="" coords="99,279,259,372,256,377,96,284"/>
-<area shape="rect" id="Node000003" href="$class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="749,56,915,81"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="654,66,735,66,735,71,654,71"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="630,79,748,100,747,105,629,84"/>
-<area shape="rect" id="Node000015" href="$class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63" title="Wrapper function to ResponseBuilder::getResponse." alt="" coords="754,7,910,32"/>
-<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="629,53,747,32,748,37,630,59"/>
-<area shape="rect" id="Node000004" href="$class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request." alt="" coords="988,56,1223,81"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="916,66,974,66,974,71,916,71"/>
-<area shape="rect" id="Node000006" href="$_connection_8cpp.html#a1787b72853fa3a6146cea621fa1d0d65" title="Clears the state of a given Connection object and resets its attributes." alt="" coords="1042,305,1169,331"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="912,128,941,141,989,176,1031,217,1065,258,1090,292,1086,295,1061,261,1027,220,986,180,939,146,910,133"/>
-<area shape="rect" id="Node000010" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="1014,355,1197,380"/>
-<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="924,129,942,141,960,167,968,192,969,218,966,244,964,269,965,294,972,318,990,341,1003,352,1000,356,986,345,967,320,959,295,958,269,961,243,964,218,963,193,956,169,938,145,921,133"/>
-<area shape="rect" id="Node000011" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="1028,533,1183,559"/>
-<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="926,129,942,141,968,178,980,214,981,250,977,286,971,322,969,359,974,399,990,441,1008,466,1029,488,1073,524,1070,528,1025,492,1003,469,986,443,969,400,964,359,966,321,972,285,976,250,974,215,963,181,938,145,922,133"/>
-<area shape="rect" id="Node000013" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="1024,105,1187,131"/>
-<area shape="poly" id="edge12_Node000005_Node000013" title=" " alt="" coords="926,115,1010,115,1010,121,926,121"/>
-<area shape="rect" id="Node000007" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="1304,305,1439,331"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1169,315,1290,315,1290,321,1169,321"/>
-<area shape="rect" id="Node000008" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="1291,609,1451,635"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="1170,316,1199,325,1224,341,1245,370,1255,398,1256,426,1253,454,1250,483,1250,511,1256,540,1273,570,1292,588,1315,602,1313,606,1289,592,1269,573,1251,542,1244,512,1244,482,1248,454,1251,426,1249,399,1241,372,1221,345,1197,329,1168,321"/>
-<area shape="rect" id="Node000009" href="$_connection_8cpp.html#af96f533f342bd6cf42899f3c9fd30a99" title="Find matching server configurations for a server socket." alt="" coords="1520,609,1716,635"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1452,619,1506,619,1506,625,1452,625"/>
-<area shape="rect" id="Node000012" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="1272,533,1471,559"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1183,543,1258,543,1258,549,1183,549"/>
-<area shape="rect" id="Node000014" href="$class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1" title="Write to a socket." alt="" coords="1271,105,1472,131"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="1187,115,1257,115,1257,121,1187,121"/>
-<area shape="rect" id="Node000016" href="$class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response." alt="" coords="994,7,1217,32"/>
-<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="910,17,980,17,980,22,910,22"/>
-<area shape="poly" id="edge17_Node000017_Node000002" title=" " alt="" coords="361,28,478,51,477,56,360,33"/>
-<area shape="rect" id="Node000019" href="$class_server.html#a2092f68016c0cfaff0c9c0e1862eb009" title="Getter for client body buffer." alt="" coords="457,559,660,584"/>
-<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="382,552,444,558,443,563,382,557"/>
-<area shape="rect" id="Node000020" href="$_server_8cpp.html#af0fb17fe53a5e9e72824e5df3fba1322" title="Handles the body of the HTTP request." alt="" coords="783,760,881,785"/>
-<area shape="poly" id="edge20_Node000018_Node000020" title=" " alt="" coords="339,531,408,517,495,509,542,510,588,516,634,527,677,545,695,558,714,579,754,634,820,747,815,749,749,637,710,582,691,562,675,550,632,532,588,521,541,515,495,515,409,522,340,536"/>
-<area shape="rect" id="Node000025" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="470,608,647,633"/>
-<area shape="poly" id="edge25_Node000018_Node000025" title=" " alt="" coords="328,556,442,594,476,602,474,608,441,599,326,561"/>
-<area shape="poly" id="edge22_Node000020_Node000011" title=" " alt="" coords="881,762,910,753,938,738,971,709,1012,662,1084,569,1089,572,1016,666,975,713,942,743,912,758,882,767"/>
-<area shape="rect" id="Node000021" href="$_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a" title="Checks if the HTTP request body has been completely received." alt="" coords="1041,712,1170,737"/>
-<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="881,761,1026,736,1027,741,882,767"/>
-<area shape="rect" id="Node000022" href="$class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a" title="Wrapper function to RequestParser::parseBody." alt="" coords="1035,761,1176,787"/>
-<area shape="poly" id="edge23_Node000020_Node000022" title=" " alt="" coords="882,770,1020,771,1020,776,882,776"/>
-<area shape="rect" id="Node000023" href="$class_request_parser.html#a5111f16124d227775d963e6ca24ddca0" title="Parses the body of an HTTP request." alt="" coords="1275,761,1467,787"/>
-<area shape="poly" id="edge24_Node000022_Node000023" title=" " alt="" coords="1176,771,1262,771,1262,777,1176,777"/>
-<area shape="rect" id="Node000026" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="724,557,940,583"/>
-<area shape="poly" id="edge26_Node000025_Node000026" title=" " alt="" coords="627,605,749,583,750,588,628,611"/>
-<area shape="poly" id="edge29_Node000027_Node000011" title=" " alt="" coords="365,279,704,342,863,373,941,393,957,404,968,414,990,440,1080,522,1077,526,986,444,964,418,954,408,939,398,862,379,703,347,364,284"/>
-<area shape="rect" id="Node000028" href="$class_server.html#aa6eec7b99c50847aeef2b0746f46a8f6" title="Getter for CGI body buffer." alt="" coords="465,207,653,232"/>
-<area shape="poly" id="edge28_Node000027_Node000028" title=" " alt="" coords="361,253,476,232,477,237,362,259"/>
-<area shape="rect" id="Node000029" href="$class_server.html#a8aa46a2d98652ee4c70ac7528f614422" title="Wrapper function to ProcessOps::readProcess." alt="" coords="483,157,634,183"/>
-<area shape="poly" id="edge30_Node000027_Node000029" title=" " alt="" coords="314,254,370,223,440,193,472,183,474,188,442,198,372,228,316,258"/>
-<area shape="rect" id="Node000031" href="$class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a" title="Removes a CGI file descriptor from the server." alt="" coords="441,357,676,383"/>
-<area shape="poly" id="edge32_Node000027_Node000031" title=" " alt="" coords="319,279,375,307,442,336,491,351,489,356,440,340,372,312,317,284"/>
-<area shape="rect" id="Node000035" href="$signal_handler_8cpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="486,256,631,281"/>
-<area shape="poly" id="edge37_Node000027_Node000035" title=" " alt="" coords="394,266,472,266,472,271,394,271"/>
-<area shape="rect" id="Node000030" href="$class_process_ops.html#ac7393024f6806564358982953cc0df77" title="Reads data from a file descriptor into a buffer." alt="" coords="740,155,924,180"/>
-<area shape="poly" id="edge31_Node000029_Node000030" title=" " alt="" coords="634,167,726,166,726,171,634,172"/>
-<area shape="poly" id="edge33_Node000031_Node000007" title=" " alt="" coords="579,355,641,321,682,304,723,291,801,278,881,271,961,269,1039,271,1182,284,1294,300,1294,306,1182,289,1039,276,961,274,881,276,802,283,725,297,683,309,644,326,581,359"/>
-<area shape="rect" id="Node000032" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="734,508,930,533"/>
-<area shape="poly" id="edge34_Node000031_Node000032" title=" " alt="" coords="647,380,677,393,693,405,703,416,726,443,801,498,798,503,722,447,699,420,690,408,675,398,645,385"/>
-<area shape="rect" id="Node000033" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="753,305,911,331"/>
-<area shape="poly" id="edge35_Node000031_Node000033" title=" " alt="" coords="626,355,751,331,752,336,627,360"/>
-<area shape="rect" id="Node000034" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="1003,404,1207,429"/>
-<area shape="poly" id="edge36_Node000033_Node000034" title=" " alt="" coords="893,328,941,348,956,359,966,370,975,381,989,390,1005,397,1003,402,987,395,971,385,962,373,953,363,939,352,891,333"/>
-<area shape="rect" id="Node000036" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="764,204,900,229"/>
-<area shape="poly" id="edge38_Node000035_Node000036" title=" " alt="" coords="626,253,751,229,752,234,627,259"/>
-<area shape="poly" id="edge57_Node000037_Node000011" title=" " alt="" coords="371,707,625,661,782,629,939,593,1051,560,1053,566,941,598,783,634,626,666,372,712"/>
-<area shape="poly" id="edge58_Node000037_Node000025" title=" " alt="" coords="317,707,372,679,440,650,489,635,491,640,442,655,375,684,319,712"/>
-<area shape="rect" id="Node000038" href="$class_server.html#a45f1691489d81cdd6acc640d96d5046b" title="Getter for client header buffer." alt="" coords="450,884,667,909"/>
-<area shape="poly" id="edge40_Node000037_Node000038" title=" " alt="" coords="305,733,357,800,397,838,443,870,456,877,454,882,440,875,394,842,353,804,300,737"/>
-<area shape="rect" id="Node000039" href="$_server_8cpp.html#a83350eae81b96dd7b301d1238268ffdb" title="Handles the complete request header received from a client." alt="" coords="444,785,673,811"/>
-<area shape="poly" id="edge41_Node000037_Node000039" title=" " alt="" coords="339,732,501,779,499,784,337,737"/>
-<area shape="rect" id="Node000050" href="$_server_8cpp.html#a172c400277e73261d212c33f66226090" title="Checks if the connection buffer contains a request header." alt="" coords="461,835,657,860"/>
-<area shape="poly" id="edge56_Node000037_Node000050" title=" " alt="" coords="310,733,366,776,403,801,442,821,463,828,461,833,440,826,400,805,363,781,307,737"/>
-<area shape="poly" id="edge50_Node000039_Node000008" title=" " alt="" coords="658,808,678,821,691,837,698,854,701,888,705,920,712,934,726,947,753,963,778,971,802,974,826,973,877,961,940,946,1025,933,1093,921,1123,911,1154,896,1186,875,1221,847,1240,824,1248,802,1255,777,1268,749,1309,691,1348,643,1352,647,1313,694,1273,751,1260,779,1253,804,1244,827,1225,851,1189,880,1156,901,1125,916,1094,926,1026,939,940,951,878,966,827,978,802,980,777,977,751,967,722,951,708,937,700,921,696,888,693,855,687,840,674,825,655,813"/>
-<area shape="poly" id="edge48_Node000039_Node000010" title=" " alt="" coords="579,783,723,698,757,683,787,672,841,658,866,649,890,638,914,620,938,594,953,568,960,542,958,491,956,466,958,441,967,416,986,391,1000,380,1003,384,990,395,972,418,963,442,962,466,964,491,965,543,958,570,942,597,917,624,893,642,868,654,843,663,789,677,759,687,725,703,582,787"/>
-<area shape="poly" id="edge52_Node000039_Node000011" title=" " alt="" coords="600,783,723,746,785,732,834,724,882,713,939,688,982,660,1022,628,1082,567,1086,571,1025,631,985,664,941,692,884,718,836,729,786,737,725,751,602,788"/>
-<area shape="poly" id="edge49_Node000039_Node000020" title=" " alt="" coords="673,785,769,776,769,781,674,790"/>
-<area shape="poly" id="edge44_Node000039_Node000032" title=" " alt="" coords="569,784,617,725,674,645,686,616,693,591,702,567,722,544,731,538,734,542,726,548,706,570,698,593,691,618,678,647,621,728,573,787"/>
-<area shape="rect" id="Node000040" href="$class_server.html#a002dd2fd1e6f0f4290568b4d94f39594" title="Wrapper function to TargetResourceHandler::execute." alt="" coords="734,1111,930,1136"/>
-<area shape="poly" id="edge42_Node000039_Node000040" title=" " alt="" coords="661,809,678,821,702,856,710,891,709,927,703,962,696,996,695,1031,703,1064,726,1098,729,1101,725,1104,722,1101,698,1066,690,1031,691,996,697,961,704,926,705,892,697,858,674,825,658,813"/>
-<area shape="rect" id="Node000042" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="745,1061,919,1087"/>
-<area shape="poly" id="edge45_Node000039_Node000042" title=" " alt="" coords="661,809,678,821,698,850,707,879,707,908,703,937,699,966,699,994,707,1021,726,1048,735,1056,731,1060,722,1052,702,1023,694,994,693,965,697,936,701,908,701,880,694,852,674,825,658,813"/>
-<area shape="rect" id="Node000043" href="$class_server.html#a058d2c0df13f61b3e755f412ea56947d" title="Wrapper function to EpollWrapper::getEpollFd." alt="" coords="761,1012,903,1037"/>
-<area shape="poly" id="edge46_Node000039_Node000043" title=" " alt="" coords="659,809,678,821,694,842,702,864,703,907,704,950,711,970,726,991,750,1007,747,1012,722,995,706,973,699,951,698,907,697,865,690,845,674,825,656,813"/>
-<area shape="rect" id="Node000045" href="$_server_8cpp.html#a92411155dbfc5d7f43c3f1ac0fe54548" title="Checks if a CGI request is made based on the connection details." alt="" coords="769,861,895,887"/>
-<area shape="poly" id="edge51_Node000039_Node000045" title=" " alt="" coords="627,808,677,821,725,839,773,855,772,860,723,845,675,826,626,813"/>
-<area shape="rect" id="Node000046" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="755,911,909,936"/>
-<area shape="poly" id="edge53_Node000039_Node000046" title=" " alt="" coords="653,809,678,821,695,840,703,860,710,880,726,897,743,907,741,912,722,901,705,882,698,862,690,843,674,825,651,813"/>
-<area shape="rect" id="Node000048" href="$class_server.html#abcfb45414689863da69c2e72ac8fc946" title="Register a CGI file descriptor." alt="" coords="988,811,1223,836"/>
-<area shape="poly" id="edge54_Node000039_Node000048" title=" " alt="" coords="674,801,974,815,974,820,673,806"/>
-<area shape="rect" id="Node000041" href="$class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282" title="Determine target resource based on the request path and handle different file types and statuses acco..." alt="" coords="1019,1103,1192,1143"/>
-<area shape="poly" id="edge43_Node000040_Node000041" title=" " alt="" coords="930,1121,1005,1121,1005,1126,930,1126"/>
-<area shape="rect" id="Node000044" href="$class_epoll_wrapper.html#af9b96396ae751ae1189a2c1f9da64ae0" title="Getter for epoll file descriptor." alt="" coords="1012,1012,1199,1037"/>
-<area shape="poly" id="edge47_Node000043_Node000044" title=" " alt="" coords="903,1022,998,1022,998,1027,903,1027"/>
-<area shape="poly" id="edge55_Node000048_Node000007" title=" " alt="" coords="1207,809,1221,797,1246,765,1259,734,1263,703,1262,672,1257,603,1258,564,1268,521,1288,469,1311,420,1353,341,1358,344,1315,422,1293,472,1273,523,1264,565,1262,603,1268,671,1269,704,1264,736,1250,768,1225,801,1210,813"/>
-<area shape="poly" id="edge61_Node000051_Node000011" title=" " alt="" coords="325,404,379,424,442,442,517,456,581,464,690,470,801,474,865,481,941,494,1001,509,1057,526,1055,531,1000,514,939,499,864,486,800,479,690,475,580,470,516,462,441,447,378,429,324,409"/>
-<area shape="poly" id="edge62_Node000051_Node000031" title=" " alt="" coords="374,384,428,379,428,384,374,389"/>
-<area shape="rect" id="Node000052" href="$class_server.html#a8fec2a00e7d106bf35f19d2d7f61fd0b" title="Wrapper function to ProcessOps::writeProcess." alt="" coords="481,407,636,432"/>
-<area shape="poly" id="edge63_Node000051_Node000052" title=" " alt="" coords="374,399,468,408,467,413,374,404"/>
-<area shape="rect" id="Node000053" href="$class_process_ops.html#a2f7d6815890c3dbc375b70ae4f5348b9" title="Writes data from a buffer to a file descriptor." alt="" coords="738,407,926,432"/>
-<area shape="poly" id="edge64_Node000052_Node000053" title=" " alt="" coords="636,417,724,417,724,422,636,422"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,353,125,295,156,260,190,228,254,179,308,146,365,120,440,91,470,82,472,87,442,97,367,125,310,151,257,183,194,232,160,264,129,299,86,356"/>
+<area shape="rect" id="Node000005" href="$_server_8cpp.html#a43e9e764c97aacfc12f233b33ffa3342" title="Sends the response to a client connection." alt="" coords="738,304,926,329"/>
+<area shape="poly" id="edge59_Node000001_Node000005" title=" " alt="" coords="144,360,724,321,724,326,144,365"/>
+<area shape="rect" id="Node000017" href="$_server_8cpp.html#ad132a77471376bd48681070a795df914" title="Handles a timeout for a client connection." alt="" coords="196,68,389,93"/>
+<area shape="poly" id="edge15_Node000001_Node000017" title=" " alt="" coords="77,353,90,313,113,256,146,193,167,162,190,135,216,113,244,97,247,102,219,118,194,139,171,166,151,195,118,258,95,315,82,355"/>
+<area shape="rect" id="Node000018" href="$_server_8cpp.html#a3e07b970ffa58c9315b38673aff94f84" title="Handles the reception of the request body from a client connection." alt="" coords="203,532,382,557"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="93,378,267,521,263,525,90,382"/>
+<area shape="rect" id="Node000027" href="$_server_8cpp.html#a735bf6535f62b5907ea2d5f0e1abf3c7" title="Handles receiving data from a CGI script and processes it accordingly." alt="" coords="192,241,393,267"/>
+<area shape="poly" id="edge26_Node000001_Node000027" title=" " alt="" coords="99,352,253,271,256,276,102,357"/>
+<area shape="rect" id="Node000037" href="$_server_8cpp.html#aa45d6529fd7be9b7adf788a9679ae34b" title="Receive request header from a client." alt="" coords="197,683,389,708"/>
+<area shape="poly" id="edge38_Node000001_Node000037" title=" " alt="" coords="85,379,128,460,194,569,235,624,273,671,269,674,231,628,190,571,124,463,80,381"/>
+<area shape="rect" id="Node000052" href="$_server_8cpp.html#aa67430205b6049aa70bad4682a7442b8" title="Sends the request body to the CGI process." alt="" coords="211,405,374,431"/>
+<area shape="poly" id="edge60_Node000001_Node000052" title=" " alt="" coords="131,378,225,400,224,405,130,383"/>
+<area shape="rect" id="Node000003" href="$class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82" title="Wrapper function to ResponseBuilder::buildResponse." alt="" coords="749,5,915,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="627,53,749,31,750,36,628,59"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="655,77,678,92,696,117,704,142,705,168,703,194,700,219,701,243,708,267,726,291,730,294,726,298,722,294,704,270,696,244,695,218,697,193,700,168,699,143,692,119,674,96,652,81"/>
+<area shape="rect" id="Node000015" href="$class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63" title="Wrapper function to ResponseBuilder::getResponse." alt="" coords="754,55,910,80"/>
+<area shape="poly" id="edge13_Node000002_Node000015" title=" " alt="" coords="654,66,740,65,740,70,654,71"/>
+<area shape="rect" id="Node000004" href="$class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e" title="Build the response for a given request." alt="" coords="988,5,1223,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="916,15,974,15,974,21,916,21"/>
+<area shape="rect" id="Node000006" href="$_connection_8cpp.html#a1787b72853fa3a6146cea621fa1d0d65" title="Clears the state of a given Connection object and resets its attributes." alt="" coords="1042,380,1169,405"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="879,327,1046,374,1045,379,878,332"/>
+<area shape="rect" id="Node000010" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="1014,481,1197,507"/>
+<area shape="poly" id="edge8_Node000005_Node000010" title=" " alt="" coords="902,327,942,346,959,364,968,381,976,398,990,416,1029,448,1068,472,1066,477,1026,452,986,420,971,401,963,383,954,367,938,351,900,332"/>
+<area shape="rect" id="Node000011" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="1028,544,1183,569"/>
+<area shape="poly" id="edge9_Node000005_Node000011" title=" " alt="" coords="912,327,942,347,958,369,966,391,967,434,968,476,975,497,990,517,1017,537,1014,541,986,521,970,499,963,477,962,434,960,392,953,371,938,351,909,332"/>
+<area shape="rect" id="Node000013" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="1024,304,1187,329"/>
+<area shape="poly" id="edge11_Node000005_Node000013" title=" " alt="" coords="926,314,1010,314,1010,319,926,319"/>
+<area shape="rect" id="Node000007" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="1304,380,1439,405"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1169,390,1290,390,1290,395,1169,395"/>
+<area shape="rect" id="Node000008" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="1291,481,1451,507"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="1141,403,1325,474,1323,479,1139,408"/>
+<area shape="rect" id="Node000012" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="1272,544,1471,569"/>
+<area shape="poly" id="edge10_Node000011_Node000012" title=" " alt="" coords="1183,554,1258,554,1258,559,1183,559"/>
+<area shape="rect" id="Node000014" href="$class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1" title="Write to a socket." alt="" coords="1271,304,1472,329"/>
+<area shape="poly" id="edge12_Node000013_Node000014" title=" " alt="" coords="1187,314,1257,314,1257,319,1187,319"/>
+<area shape="rect" id="Node000016" href="$class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response." alt="" coords="994,55,1217,80"/>
+<area shape="poly" id="edge14_Node000015_Node000016" title=" " alt="" coords="910,65,980,65,980,70,910,70"/>
+<area shape="poly" id="edge16_Node000017_Node000002" title=" " alt="" coords="389,74,450,71,450,76,390,79"/>
+<area shape="rect" id="Node000019" href="$class_server.html#a2092f68016c0cfaff0c9c0e1862eb009" title="Getter for client body buffer." alt="" coords="457,507,660,532"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="382,534,443,528,444,533,382,539"/>
+<area shape="rect" id="Node000020" href="$_server_8cpp.html#af0fb17fe53a5e9e72824e5df3fba1322" title="Handles the body of the HTTP request." alt="" coords="783,709,881,735"/>
+<area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="333,555,442,591,780,702,778,708,440,597,331,560"/>
+<area shape="rect" id="Node000025" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="470,556,647,581"/>
+<area shape="poly" id="edge24_Node000018_Node000025" title=" " alt="" coords="382,550,457,557,456,562,382,555"/>
+<area shape="poly" id="edge21_Node000020_Node000011" title=" " alt="" coords="881,709,910,700,939,688,963,670,986,648,1076,576,1079,580,990,652,967,674,941,692,912,705,882,714"/>
+<area shape="rect" id="Node000021" href="$_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a" title="Checks if the HTTP request body has been completely received." alt="" coords="1041,661,1170,687"/>
+<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="881,711,1026,685,1027,690,882,716"/>
+<area shape="rect" id="Node000022" href="$class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a" title="Wrapper function to RequestParser::parseBody." alt="" coords="1035,711,1176,736"/>
+<area shape="poly" id="edge22_Node000020_Node000022" title=" " alt="" coords="882,720,1020,720,1020,726,882,725"/>
+<area shape="rect" id="Node000023" href="$class_request_parser.html#a5111f16124d227775d963e6ca24ddca0" title="Parses the body of an HTTP request." alt="" coords="1275,711,1467,736"/>
+<area shape="poly" id="edge23_Node000022_Node000023" title=" " alt="" coords="1176,721,1262,721,1262,726,1176,726"/>
+<area shape="rect" id="Node000026" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="724,507,940,532"/>
+<area shape="poly" id="edge25_Node000025_Node000026" title=" " alt="" coords="629,553,747,532,748,537,630,559"/>
+<area shape="poly" id="edge28_Node000027_Node000011" title=" " alt="" coords="343,264,442,289,693,336,857,369,914,382,941,392,956,407,963,423,967,455,971,487,978,502,990,517,1019,537,1016,541,986,521,973,505,966,489,962,456,958,425,951,410,939,396,913,387,856,374,692,341,441,294,342,269"/>
+<area shape="rect" id="Node000028" href="$class_server.html#aa6eec7b99c50847aeef2b0746f46a8f6" title="Getter for CGI body buffer." alt="" coords="465,204,653,229"/>
+<area shape="poly" id="edge27_Node000027_Node000028" title=" " alt="" coords="383,239,454,229,454,234,384,244"/>
+<area shape="rect" id="Node000029" href="$class_server.html#a8aa46a2d98652ee4c70ac7528f614422" title="Wrapper function to ProcessOps::readProcess." alt="" coords="483,105,634,131"/>
+<area shape="poly" id="edge29_Node000027_Node000029" title=" " alt="" coords="308,239,375,185,440,141,469,130,470,135,443,146,378,189,311,243"/>
+<area shape="rect" id="Node000031" href="$class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a" title="Removes a CGI file descriptor from the server." alt="" coords="441,253,676,279"/>
+<area shape="poly" id="edge31_Node000027_Node000031" title=" " alt="" coords="394,256,428,257,428,263,393,261"/>
+<area shape="rect" id="Node000035" href="$signal_handler_8cpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="486,155,631,180"/>
+<area shape="poly" id="edge36_Node000027_Node000035" title=" " alt="" coords="320,239,375,214,441,190,475,181,477,186,442,195,377,219,322,244"/>
+<area shape="rect" id="Node000030" href="$class_process_ops.html#ac7393024f6806564358982953cc0df77" title="Reads data from a file descriptor into a buffer." alt="" coords="740,104,924,129"/>
+<area shape="poly" id="edge30_Node000029_Node000030" title=" " alt="" coords="634,115,726,115,726,120,634,120"/>
+<area shape="poly" id="edge32_Node000031_Node000007" title=" " alt="" coords="634,251,777,230,950,214,1035,211,1112,213,1177,223,1203,231,1224,241,1237,252,1245,264,1252,289,1257,315,1263,327,1273,340,1295,358,1320,372,1318,377,1292,362,1269,344,1258,330,1252,316,1247,290,1240,266,1233,255,1221,246,1201,236,1175,228,1111,219,1035,216,950,219,778,236,635,256"/>
+<area shape="rect" id="Node000032" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="734,608,930,633"/>
+<area shape="poly" id="edge33_Node000031_Node000032" title=" " alt="" coords="577,277,627,325,654,357,678,393,695,435,700,470,707,505,714,523,726,543,758,575,793,599,790,603,754,579,722,546,709,526,701,506,695,471,690,436,674,395,650,360,623,328,574,281"/>
+<area shape="rect" id="Node000033" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="753,255,911,280"/>
+<area shape="poly" id="edge34_Node000031_Node000033" title=" " alt="" coords="676,264,739,264,739,270,676,269"/>
+<area shape="rect" id="Node000034" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="1003,255,1207,280"/>
+<area shape="poly" id="edge35_Node000033_Node000034" title=" " alt="" coords="912,265,990,265,990,270,912,270"/>
+<area shape="rect" id="Node000036" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="764,153,900,179"/>
+<area shape="poly" id="edge37_Node000035_Node000036" title=" " alt="" coords="631,164,750,164,750,169,631,170"/>
+<area shape="poly" id="edge57_Node000037_Node000011" title=" " alt="" coords="340,680,508,638,724,594,877,573,1014,560,1015,566,878,579,724,599,510,643,341,685"/>
+<area shape="poly" id="edge58_Node000037_Node000025" title=" " alt="" coords="320,680,518,585,520,590,322,685"/>
+<area shape="rect" id="Node000038" href="$class_server.html#a45f1691489d81cdd6acc640d96d5046b" title="Getter for client header buffer." alt="" coords="450,708,667,733"/>
+<area shape="poly" id="edge39_Node000037_Node000038" title=" " alt="" coords="389,702,437,706,436,712,388,707"/>
+<area shape="rect" id="Node000039" href="$_server_8cpp.html#a83350eae81b96dd7b301d1238268ffdb" title="Handles the complete request header received from a client." alt="" coords="444,861,673,887"/>
+<area shape="poly" id="edge40_Node000037_Node000039" title=" " alt="" coords="315,706,443,793,529,851,526,856,440,798,312,710"/>
+<area shape="rect" id="Node000051" href="$_server_8cpp.html#a172c400277e73261d212c33f66226090" title="Checks if the connection buffer contains a request header." alt="" coords="461,757,657,783"/>
+<area shape="poly" id="edge56_Node000037_Node000051" title=" " alt="" coords="328,705,442,743,476,752,474,757,441,749,326,711"/>
+<area shape="poly" id="edge49_Node000039_Node000008" title=" " alt="" coords="606,884,733,909,815,919,903,921,992,913,1036,904,1078,892,1118,875,1156,854,1190,828,1221,796,1241,763,1249,730,1249,698,1244,666,1239,633,1239,600,1247,566,1269,531,1294,511,1298,515,1273,534,1252,568,1244,600,1245,633,1249,665,1254,698,1254,731,1246,765,1225,800,1194,832,1159,858,1121,880,1080,897,1037,909,993,918,903,926,815,924,732,915,605,889"/>
+<area shape="poly" id="edge47_Node000039_Node000010" title=" " alt="" coords="585,859,630,832,653,814,674,794,689,768,695,744,703,720,722,696,751,678,779,670,806,669,833,670,859,672,885,670,911,662,938,644,950,631,957,618,962,590,967,560,974,545,986,531,1021,509,1023,514,990,535,978,548,972,562,967,590,962,619,955,634,942,648,913,666,886,675,859,677,833,675,806,674,780,675,753,683,726,700,707,722,700,745,694,770,678,797,657,818,633,836,588,864"/>
+<area shape="poly" id="edge52_Node000039_Node000011" title=" " alt="" coords="607,884,679,897,767,902,813,898,858,888,900,872,938,847,958,825,967,803,970,780,969,756,967,705,972,677,986,649,1003,626,1024,606,1067,574,1070,579,1028,610,1007,629,990,651,977,679,972,705,974,756,976,780,973,804,962,828,942,851,903,876,860,893,814,903,767,907,678,902,606,889"/>
+<area shape="poly" id="edge48_Node000039_Node000020" title=" " alt="" coords="579,859,674,793,697,771,723,752,768,733,770,738,725,756,701,775,678,797,582,864"/>
+<area shape="poly" id="edge43_Node000039_Node000032" title=" " alt="" coords="587,859,632,833,655,815,674,794,685,775,691,757,694,721,699,686,708,669,722,651,741,637,744,641,726,655,712,671,704,688,700,722,696,758,690,777,678,797,658,818,635,837,590,863"/>
+<area shape="rect" id="Node000040" href="$class_server.html#a002dd2fd1e6f0f4290568b4d94f39594" title="Wrapper function to TargetResourceHandler::execute." alt="" coords="734,963,930,988"/>
+<area shape="poly" id="edge41_Node000039_Node000040" title=" " alt="" coords="589,884,725,941,772,956,770,961,723,946,586,889"/>
+<area shape="rect" id="Node000042" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="745,811,919,836"/>
+<area shape="poly" id="edge44_Node000039_Node000042" title=" " alt="" coords="627,859,749,836,750,841,628,864"/>
+<area shape="rect" id="Node000043" href="$class_server.html#a058d2c0df13f61b3e755f412ea56947d" title="Wrapper function to EpollWrapper::getEpollFd." alt="" coords="761,1160,903,1185"/>
+<area shape="poly" id="edge45_Node000039_Node000043" title=" " alt="" coords="566,886,583,936,615,1007,636,1045,662,1083,692,1117,726,1146,750,1159,747,1164,722,1151,688,1121,658,1086,632,1048,610,1009,578,938,561,888"/>
+<area shape="rect" id="Node000045" href="$_server_8cpp.html#a92411155dbfc5d7f43c3f1ac0fe54548" title="Checks if a CGI request is made based on the connection details." alt="" coords="769,1111,895,1136"/>
+<area shape="poly" id="edge50_Node000039_Node000045" title=" " alt="" coords="568,886,587,927,621,985,667,1046,695,1074,725,1097,757,1111,755,1116,723,1102,691,1078,663,1050,617,988,583,930,563,888"/>
+<area shape="rect" id="Node000046" href="$namespacewebutils.html#a4cc9980ab07ede124181a637b5db5c28" title="Check if a given status code is a redirection." alt="" coords="727,1012,937,1037"/>
+<area shape="poly" id="edge51_Node000039_Node000046" title=" " alt="" coords="574,885,636,940,678,972,725,998,743,1005,741,1010,723,1003,676,976,632,944,571,889"/>
+<area shape="rect" id="Node000047" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="755,1061,909,1087"/>
+<area shape="poly" id="edge53_Node000039_Node000047" title=" " alt="" coords="570,886,593,919,628,963,673,1009,725,1048,743,1056,741,1061,723,1052,670,1013,624,967,589,922,566,889"/>
+<area shape="rect" id="Node000049" href="$class_server.html#abcfb45414689863da69c2e72ac8fc946" title="Register a CGI file descriptor." alt="" coords="988,760,1223,785"/>
+<area shape="poly" id="edge54_Node000039_Node000049" title=" " alt="" coords="580,859,643,826,682,810,723,797,787,784,852,775,974,768,975,773,852,780,788,789,725,802,684,815,645,831,583,864"/>
+<area shape="rect" id="Node000041" href="$class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282" title="Determine target resource based on the request path and handle different file types and statuses acco..." alt="" coords="1019,962,1192,1002"/>
+<area shape="poly" id="edge42_Node000040_Node000041" title=" " alt="" coords="930,975,1005,977,1005,982,930,980"/>
+<area shape="rect" id="Node000044" href="$class_epoll_wrapper.html#af9b96396ae751ae1189a2c1f9da64ae0" title="Getter for epoll file descriptor." alt="" coords="1012,1160,1199,1185"/>
+<area shape="poly" id="edge46_Node000043_Node000044" title=" " alt="" coords="903,1170,998,1170,998,1175,903,1175"/>
+<area shape="poly" id="edge55_Node000049_Node000007" title=" " alt="" coords="1207,758,1221,747,1245,714,1255,682,1257,649,1253,616,1247,582,1246,546,1251,508,1268,469,1297,435,1331,410,1334,415,1301,439,1273,471,1256,510,1251,546,1253,581,1258,616,1262,649,1261,683,1250,716,1225,751,1210,762"/>
+<area shape="poly" id="edge61_Node000052_Node000011" title=" " alt="" coords="362,428,442,441,518,449,582,453,693,455,803,463,867,474,941,493,965,504,989,517,1047,537,1045,542,987,522,963,509,939,498,866,479,803,468,693,460,582,458,517,454,441,446,362,433"/>
+<area shape="poly" id="edge62_Node000052_Node000031" title=" " alt="" coords="315,403,522,283,525,288,317,408"/>
+<area shape="rect" id="Node000053" href="$class_server.html#a8fec2a00e7d106bf35f19d2d7f61fd0b" title="Wrapper function to ProcessOps::writeProcess." alt="" coords="481,405,636,431"/>
+<area shape="poly" id="edge63_Node000052_Node000053" title=" " alt="" coords="374,415,468,415,468,421,374,421"/>
+<area shape="rect" id="Node000054" href="$class_process_ops.html#a2f7d6815890c3dbc375b70ae4f5348b9" title="Writes data from a buffer to a file descriptor." alt="" coords="738,405,926,431"/>
+<area shape="poly" id="edge64_Node000053_Node000054" title=" " alt="" coords="636,415,724,415,724,421,636,421"/>
 </map>

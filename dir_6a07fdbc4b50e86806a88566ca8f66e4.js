@@ -12,6 +12,7 @@ var dir_6a07fdbc4b50e86806a88566ca8f66e4 =
     [ "test_createVirtualServer.cpp", "test__create_virtual_server_8cpp.html", "test__create_virtual_server_8cpp" ],
     [ "test_FileWriteHandler.cpp", "test___file_write_handler_8cpp.html", "test___file_write_handler_8cpp" ],
     [ "test_handleCompleteRequestHeader.cpp", "test__handle_complete_request_header_8cpp.html", "test__handle_complete_request_header_8cpp" ],
+    [ "test_helpers.cpp", "test__helpers_8cpp.html", "test__helpers_8cpp" ],
     [ "test_initVirtualServers.cpp", "test__init_virtual_servers_8cpp.html", "test__init_virtual_servers_8cpp" ],
     [ "test_isDuplicateServer.cpp", "test__is_duplicate_server_8cpp.html", "test__is_duplicate_server_8cpp" ],
     [ "test_OstreamInserters.cpp", "test___ostream_inserters_8cpp.html", "test___ostream_inserters_8cpp" ],

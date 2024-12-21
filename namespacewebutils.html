@@ -134,6 +134,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1ea30da2f7898c9a992297784744fe91" id="r_a1ea30da2f7898c9a992297784744fe91"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a1ea30da2f7898c9a992297784744fe91">statusCodeToReasonPhrase</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
 <tr class="memdesc:a1ea30da2f7898c9a992297784744fe91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reason phrase for a given status code.  <br /></td></tr>
 <tr class="separator:a1ea30da2f7898c9a992297784744fe91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc9980ab07ede124181a637b5db5c28" id="r_a4cc9980ab07ede124181a637b5db5c28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a4cc9980ab07ede124181a637b5db5c28">isRedirectionStatus</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
+<tr class="memdesc:a4cc9980ab07ede124181a637b5db5c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a given status code is a redirection.  <br /></td></tr>
+<tr class="separator:a4cc9980ab07ede124181a637b5db5c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66980bbe8e553002953513c019d20f19" id="r_a66980bbe8e553002953513c019d20f19"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a66980bbe8e553002953513c019d20f19">methodToString</a> (<a class="el" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0f">Method</a> method)</td></tr>
 <tr class="separator:a66980bbe8e553002953513c019d20f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad74875f464c74bd45589002fc385605e" id="r_ad74875f464c74bd45589002fc385605e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#ad74875f464c74bd45589002fc385605e">closeFd</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a>)</td></tr>
@@ -457,7 +460,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Returns reason phrase for a given status code. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>In case of NoStatus returns the string "NO STATUS CODE". </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">statusCode</td><td>Status code. </td></tr>
   </table>
@@ -465,57 +468,99 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string Reason phrase. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00134">134</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>{</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode &lt; StatusOK || statusCode &gt;</a> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
-<div class="line"><span class="lineno">  137</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
-<div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">switch</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>) {</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>:</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;OK&quot;</span>;</div>
-<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>:</div>
-<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Created&quot;</span>;</div>
-<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>:</div>
-<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Moved Permanently&quot;</span>;</div>
-<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>:</div>
-<div class="line"><span class="lineno">  147</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Permanent Redirect&quot;</span>;</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>:</div>
-<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Bad Request&quot;</span>;</div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>:</div>
-<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Forbidden&quot;</span>;</div>
-<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>:</div>
-<div class="line"><span class="lineno">  153</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Not Found&quot;</span>;</div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>:</div>
-<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Request Entity Too Large&quot;</span>;</div>
-<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>:</div>
-<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Method Not Allowed&quot;</span>;</div>
-<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>:</div>
-<div class="line"><span class="lineno">  159</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Request Timeout&quot;</span>;</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>:</div>
-<div class="line"><span class="lineno">  161</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Request Header Fields Too Large&quot;</span>;</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>:</div>
-<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Internal Server Error&quot;</span>;</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>:</div>
-<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Not Implemented&quot;</span>;</div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>:</div>
-<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;HTTP Version Not Supported&quot;</span>;</div>
-<div class="line"><span class="lineno">  168</span>    }</div>
-<div class="line"><span class="lineno">  169</span>}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a></div><div class="ttdeci">@ StatusPermanentRedirect</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a></div><div class="ttdeci">@ StatusCreated</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00007">StatusCode.hpp:7</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a></div><div class="ttdeci">@ StatusMethodNotAllowed</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00013">StatusCode.hpp:13</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a></div><div class="ttdeci">@ StatusMethodNotImplemented</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00018">StatusCode.hpp:18</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00011">StatusCode.hpp:11</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a></div><div class="ttdeci">@ StatusRequestEntityTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00015">StatusCode.hpp:15</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a></div><div class="ttdeci">@ StatusRequestHeaderFieldsTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00016">StatusCode.hpp:16</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00017">StatusCode.hpp:17</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a></div><div class="ttdeci">@ StatusBadRequest</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00010">StatusCode.hpp:10</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00012">StatusCode.hpp:12</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a></div><div class="ttdeci">@ StatusRequestTimeout</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a></div><div class="ttdeci">@ StatusNonSupportedVersion</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00020">StatusCode.hpp:19</a></div></div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00135">135</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode &lt; NoStatus || statusCode &gt;</a> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
+<div class="line"><span class="lineno">  138</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">switch</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>) {</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>:</div>
+<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;NO STATUS CODE&quot;</span>;</div>
+<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>:</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;OK&quot;</span>;</div>
+<div class="line"><span class="lineno">  145</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>:</div>
+<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Created&quot;</span>;</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>:</div>
+<div class="line"><span class="lineno">  148</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Moved Permanently&quot;</span>;</div>
+<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>:</div>
+<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Permanent Redirect&quot;</span>;</div>
+<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>:</div>
+<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Bad Request&quot;</span>;</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>:</div>
+<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Forbidden&quot;</span>;</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>:</div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Not Found&quot;</span>;</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>:</div>
+<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Request Entity Too Large&quot;</span>;</div>
+<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>:</div>
+<div class="line"><span class="lineno">  160</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Method Not Allowed&quot;</span>;</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>:</div>
+<div class="line"><span class="lineno">  162</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Request Timeout&quot;</span>;</div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>:</div>
+<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Request Header Fields Too Large&quot;</span>;</div>
+<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>:</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Internal Server Error&quot;</span>;</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>:</div>
+<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Not Implemented&quot;</span>;</div>
+<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>:</div>
+<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;HTTP Version Not Supported&quot;</span>;</div>
+<div class="line"><span class="lineno">  171</span>    }</div>
+<div class="line"><span class="lineno">  172</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a></div><div class="ttdeci">@ StatusPermanentRedirect</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00010">StatusCode.hpp:10</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a></div><div class="ttdeci">@ StatusCreated</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a></div><div class="ttdeci">@ StatusMethodNotAllowed</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a></div><div class="ttdeci">@ StatusMethodNotImplemented</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00019">StatusCode.hpp:19</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a></div><div class="ttdeci">@ NoStatus</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00012">StatusCode.hpp:12</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a></div><div class="ttdeci">@ StatusRequestEntityTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00016">StatusCode.hpp:16</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a></div><div class="ttdeci">@ StatusRequestHeaderFieldsTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00017">StatusCode.hpp:17</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00018">StatusCode.hpp:18</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a></div><div class="ttdeci">@ StatusBadRequest</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00011">StatusCode.hpp:11</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00007">StatusCode.hpp:7</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00013">StatusCode.hpp:13</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a></div><div class="ttdeci">@ StatusRequestTimeout</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00015">StatusCode.hpp:15</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a></div><div class="ttdeci">@ StatusNonSupportedVersion</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00021">StatusCode.hpp:20</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a4cc9980ab07ede124181a637b5db5c28" name="a4cc9980ab07ede124181a637b5db5c28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cc9980ab07ede124181a637b5db5c28">&#9670;&#160;</a></span>isRedirectionStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a> webutils::isRedirectionStatus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&#160;</td>
+          <td class="paramname"><em>statusCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if a given status code is a redirection. </p>
+<p>A redirection is a 3xx status code. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statusCode</td><td>Status code to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true If the status code is a redirection. </dd>
+<dd>
+false If the status code is not a redirection. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00182">182</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
+<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &gt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a> &amp;&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &lt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
+<div class="line"><span class="lineno">  185</span>}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacewebutils_a4cc9980ab07ede124181a637b5db5c28_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
 </div>
 </div>
 <a id="a66980bbe8e553002953513c019d20f19" name="a66980bbe8e553002953513c019d20f19"></a>
@@ -534,22 +579,22 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00171">171</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  172</span>{</div>
-<div class="line"><span class="lineno">  173</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">assert</a>(method &gt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a> &amp;&amp; method &lt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>);</div>
-<div class="line"><span class="lineno">  174</span> </div>
-<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">switch</span> (method) {</div>
-<div class="line"><span class="lineno">  176</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>:</div>
-<div class="line"><span class="lineno">  177</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;GET&quot;</span>;</div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>:</div>
-<div class="line"><span class="lineno">  179</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;POST&quot;</span>;</div>
-<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>:</div>
-<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
-<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>:</div>
-<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;METHODCOUNT&quot;</span>;</div>
-<div class="line"><span class="lineno">  184</span>    }</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  186</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00187">187</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  188</span>{</div>
+<div class="line"><span class="lineno">  189</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">assert</a>(method &gt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a> &amp;&amp; method &lt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>);</div>
+<div class="line"><span class="lineno">  190</span> </div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">switch</span> (method) {</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>:</div>
+<div class="line"><span class="lineno">  193</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;GET&quot;</span>;</div>
+<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>:</div>
+<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;POST&quot;</span>;</div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>:</div>
+<div class="line"><span class="lineno">  197</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>:</div>
+<div class="line"><span class="lineno">  199</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;METHODCOUNT&quot;</span>;</div>
+<div class="line"><span class="lineno">  200</span>    }</div>
+<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  202</span>}</div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a></div><div class="ttdeci">@ MethodPost</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a></div><div class="ttdeci">@ MethodCount</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a></div><div class="ttdeci">@ MethodDelete</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
@@ -578,13 +623,13 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00188">188</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  189</span>{</div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a> != -1) {</div>
-<div class="line"><span class="lineno">  191</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">close</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a>);</div>
-<div class="line"><span class="lineno">  192</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a> = -1;</div>
-<div class="line"><span class="lineno">  193</span>    }</div>
-<div class="line"><span class="lineno">  194</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00204">204</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  205</span>{</div>
+<div class="line"><span class="lineno">  206</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a> != -1) {</div>
+<div class="line"><span class="lineno">  207</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">close</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a>);</div>
+<div class="line"><span class="lineno">  208</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileDescriptor</a> = -1;</div>
+<div class="line"><span class="lineno">  209</span>    }</div>
+<div class="line"><span class="lineno">  210</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -619,29 +664,29 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the ipAddress is a valid IPv4 address, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00206">206</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  207</span>{</div>
-<div class="line"><span class="lineno">  208</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ipAddress</a> == <span class="stringliteral">&quot;localhost&quot;</span>)</div>
-<div class="line"><span class="lineno">  209</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ipAddress</a>.find_first_not_of(<span class="stringliteral">&quot;0123456789.&quot;</span>) != std::string::npos)</div>
-<div class="line"><span class="lineno">  212</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  213</span> </div>
-<div class="line"><span class="lineno">  214</span>    <span class="keyword">const</span> std::vector&lt;std::string&gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a> = <a class="code hl_function" href="namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda">webutils::split</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ipAddress</a>, <span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><span class="lineno">  215</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a>.size() != 4)</div>
-<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>    <span class="keyword">const</span> <span class="keywordtype">short</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxIpValue</a> = 255;</div>
-<div class="line"><span class="lineno">  219</span>    <span class="keyword">const</span> <span class="keywordtype">short</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">minIpValue</a> = 0;</div>
-<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">for</span> (std::vector&lt;std::string&gt;::const_iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a>.begin(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a> != <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a>.end(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>) {</div>
-<div class="line"><span class="lineno">  221</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>-&gt;empty() || <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>-&gt;size() &gt; 3)</div>
-<div class="line"><span class="lineno">  222</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  223</span>        <span class="keyword">const</span> <span class="keywordtype">long</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segmentValue</a> = std::strtol(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>-&gt;c_str(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NULL</a>, <a class="code hl_variable" href="namespaceconstants.html#afe756195738c244eeace3037c5486edc">constants::g_decimalBase</a>);</div>
-<div class="line"><span class="lineno">  224</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segmentValue</a> &gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxIpValue</a> || <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segmentValue</a> &lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">minIpValue</a>)</div>
-<div class="line"><span class="lineno">  225</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  226</span>    }</div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  228</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00222">222</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
+<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ipAddress</a> == <span class="stringliteral">&quot;localhost&quot;</span>)</div>
+<div class="line"><span class="lineno">  225</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  226</span> </div>
+<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ipAddress</a>.find_first_not_of(<span class="stringliteral">&quot;0123456789.&quot;</span>) != std::string::npos)</div>
+<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span>    <span class="keyword">const</span> std::vector&lt;std::string&gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a> = <a class="code hl_function" href="namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda">webutils::split</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ipAddress</a>, <span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a>.size() != 4)</div>
+<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  233</span> </div>
+<div class="line"><span class="lineno">  234</span>    <span class="keyword">const</span> <span class="keywordtype">short</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxIpValue</a> = 255;</div>
+<div class="line"><span class="lineno">  235</span>    <span class="keyword">const</span> <span class="keywordtype">short</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">minIpValue</a> = 0;</div>
+<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">for</span> (std::vector&lt;std::string&gt;::const_iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a>.begin(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a> != <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segments</a>.end(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>) {</div>
+<div class="line"><span class="lineno">  237</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>-&gt;empty() || <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>-&gt;size() &gt; 3)</div>
+<div class="line"><span class="lineno">  238</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  239</span>        <span class="keyword">const</span> <span class="keywordtype">long</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segmentValue</a> = std::strtol(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">citer</a>-&gt;c_str(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NULL</a>, <a class="code hl_variable" href="namespaceconstants.html#afe756195738c244eeace3037c5486edc">constants::g_decimalBase</a>);</div>
+<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segmentValue</a> &gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxIpValue</a> || <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">segmentValue</a> &lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">minIpValue</a>)</div>
+<div class="line"><span class="lineno">  241</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  242</span>    }</div>
+<div class="line"><span class="lineno">  243</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  244</span>}</div>
 <div class="ttc" id="anamespaceconstants_html_afe756195738c244eeace3037c5486edc"><div class="ttname"><a href="namespaceconstants.html#afe756195738c244eeace3037c5486edc">constants::g_decimalBase</a></div><div class="ttdeci">const int g_decimalBase</div><div class="ttdef"><b>Definition</b> <a href="constants_8cpp_source.html#l00005">constants.cpp:5</a></div></div>
 <div class="ttc" id="anamespacewebutils_html_ac353e83957132d4f186a74f5d29b9cda"><div class="ttname"><a href="namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda">webutils::split</a></div><div class="ttdeci">std::vector&lt; std::string &gt; split(const std::string &amp;str, const std::string &amp;delimiter)</div><div class="ttdoc">Splits a given string into substrings based on a specified delimiter.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00056">utilities.cpp:56</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -683,17 +728,17 @@ Here is the call graph for this function:</div>
 <dd>
 false If the port is invalid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00241">241</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  242</span>{</div>
-<div class="line"><span class="lineno">  243</span>    <span class="keywordflow">if</span> (port.find_first_not_of(<span class="stringliteral">&quot;0123456789&quot;</span>) != std::string::npos)</div>
-<div class="line"><span class="lineno">  244</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  245</span> </div>
-<div class="line"><span class="lineno">  246</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxPort</a> = 65535;</div>
-<div class="line"><span class="lineno">  247</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">minPort</a> = 1;</div>
-<div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span>    <span class="keyword">const</span> <span class="keywordtype">long</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">portNum</a> = std::strtol(port.c_str(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NULL</a>, <a class="code hl_variable" href="namespaceconstants.html#afe756195738c244eeace3037c5486edc">constants::g_decimalBase</a>);</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">return</span> !(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">portNum &lt;= minPort || portNum &gt;</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxPort</a>);</div>
-<div class="line"><span class="lineno">  251</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00257">257</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  258</span>{</div>
+<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (port.find_first_not_of(<span class="stringliteral">&quot;0123456789&quot;</span>) != std::string::npos)</div>
+<div class="line"><span class="lineno">  260</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  261</span> </div>
+<div class="line"><span class="lineno">  262</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxPort</a> = 65535;</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">minPort</a> = 1;</div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>    <span class="keyword">const</span> <span class="keywordtype">long</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">portNum</a> = std::strtol(port.c_str(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NULL</a>, <a class="code hl_variable" href="namespaceconstants.html#afe756195738c244eeace3037c5486edc">constants::g_decimalBase</a>);</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">return</span> !(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">portNum &lt;= minPort || portNum &gt;</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">maxPort</a>);</div>
+<div class="line"><span class="lineno">  267</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -722,8 +767,8 @@ false If the port is invalid </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00261">261</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  261</span>{ std::transform(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.end(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">::tolower</a>); }</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00277">277</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  277</span>{ std::transform(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.end(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">::tolower</a>); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -761,12 +806,12 @@ template&lt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5ea
 <dl class="section return"><dt>Returns</dt><dd>std::string The string representation of the type </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Delete if not needed anymore </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8hpp_source.html#l00049">49</a> of file <a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>;</div>
-<div class="line"><span class="lineno">   52</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>;</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>.str();</div>
-<div class="line"><span class="lineno">   54</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8hpp_source.html#l00050">50</a> of file <a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
+<div class="line"><span class="lineno">   52</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>;</div>
+<div class="line"><span class="lineno">   53</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>;</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>.str();</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

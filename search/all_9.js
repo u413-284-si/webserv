@@ -18,5 +18,6 @@ var searchData=
   ['isduplicateservertest_15',['isduplicateservertest',['../classis_duplicate_server_test.html#a0e2f41b2d82d9dde33f6101e43668666',1,'isDuplicateServerTest::isDuplicateServerTest()'],['../classis_duplicate_server_test.html',1,'isDuplicateServerTest']]],
   ['isexistingfile_16',['isExistingFile',['../class_file_system_policy.html#a041c67f56f9a96ace0e2b6d5a4b88e75',1,'FileSystemPolicy']]],
   ['isipaddressvalid_17',['isIpAddressValid',['../namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed',1,'webutils']]],
-  ['isportvalid_18',['isPortValid',['../namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d',1,'webutils']]]
+  ['isportvalid_18',['isPortValid',['../namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d',1,'webutils']]],
+  ['isredirectionstatus_19',['isRedirectionStatus',['../namespacewebutils.html#a4cc9980ab07ede124181a637b5db5c28',1,'webutils']]]
 ];

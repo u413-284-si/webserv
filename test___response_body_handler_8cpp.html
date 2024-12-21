@@ -112,11 +112,8 @@ $(document).ready(function(){initNavTree('test___response_body_handler_8cpp.html
 <div class="contents">
 <div class="textblock"><code>#include &lt;gtest/gtest.h&gt;</code><br />
 <code>#include &lt;gmock/gmock.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_mock_file_system_policy_8hpp_source.html">MockFileSystemPolicy.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_response_body_handler_8hpp_source.html">ResponseBodyHandler.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_status_code_8hpp_source.html">StatusCode.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_ResponseBodyHandler.cpp:</div>
 <div class="dyncontent">
@@ -132,6 +129,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a63b873aa5534e41bb0abef3982e8125a" id="r_a63b873aa5534e41bb0abef3982e8125a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_config_file.html">ConfigFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#a63b873aa5534e41bb0abef3982e8125a">createTestConfigfile</a> ()</td></tr>
+<tr class="separator:a63b873aa5534e41bb0abef3982e8125a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b036980eea1b2dc1e3ebd3a48cad4ff" id="r_a8b036980eea1b2dc1e3ebd3a48cad4ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#a8b036980eea1b2dc1e3ebd3a48cad4ff">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">IndexCreated</a>)</td></tr>
 <tr class="separator:a8b036980eea1b2dc1e3ebd3a48cad4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aec8f50cfe2afb682c4488bf91d97b9" id="r_a2aec8f50cfe2afb682c4488bf91d97b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#a2aec8f50cfe2afb682c4488bf91d97b9">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">DirectoryThrow</a>)</td></tr>
@@ -148,12 +147,58 @@ Functions</h2></td></tr>
 <tr class="separator:aa72e05518aac9cb13d82f5bdc56bec93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2fb03a559604cce27f8d8c7e073a168" id="r_ac2fb03a559604cce27f8d8c7e073a168"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#ac2fb03a559604cce27f8d8c7e073a168">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">CustomErrorPageOpenFails</a>)</td></tr>
 <tr class="separator:ac2fb03a559604cce27f8d8c7e073a168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accfbc577f2b25014d7e2c8d9c77c2b7d" id="r_accfbc577f2b25014d7e2c8d9c77c2b7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#accfbc577f2b25014d7e2c8d9c77c2b7d">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnAsSimpleRedirect</a>)</td></tr>
+<tr class="separator:accfbc577f2b25014d7e2c8d9c77c2b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce998965254ff7e7cda9c1b95b38daf" id="r_a8ce998965254ff7e7cda9c1b95b38daf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#a8ce998965254ff7e7cda9c1b95b38daf">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithNonErrorCodeAndNoContent</a>)</td></tr>
+<tr class="separator:a8ce998965254ff7e7cda9c1b95b38daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11d86ebdef206bc8d48f7d9eb3672f4d" id="r_a11d86ebdef206bc8d48f7d9eb3672f4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#a11d86ebdef206bc8d48f7d9eb3672f4d">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithNoRedirectAndCustomContent</a>)</td></tr>
+<tr class="separator:a11d86ebdef206bc8d48f7d9eb3672f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec74046ebb8685c4e8f6625b7e35b41c" id="r_aec74046ebb8685c4e8f6625b7e35b41c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#aec74046ebb8685c4e8f6625b7e35b41c">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithErrorCodeAndNoContentFindsDefaultErrorPage</a>)</td></tr>
+<tr class="separator:aec74046ebb8685c4e8f6625b7e35b41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae298825c63cbb0db89e455f33d047f3" id="r_aae298825c63cbb0db89e455f33d047f3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#aae298825c63cbb0db89e455f33d047f3">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithErrorCodeAndNoContentFindsCustomErrorPageWithReturnNoContent</a>)</td></tr>
+<tr class="separator:aae298825c63cbb0db89e455f33d047f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff531558974dde9333d6125761873d5e" id="r_aff531558974dde9333d6125761873d5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#aff531558974dde9333d6125761873d5e">TEST_F</a> (<a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithErrorCodeAndNoContentFindsCustomErrorPageWithReturnWithContent</a>)</td></tr>
+<tr class="separator:aff531558974dde9333d6125761873d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb5c61eff992bb676d6ca60222f4c70" id="r_a6fb5c61eff992bb676d6ca60222f4c70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test___response_body_handler_8cpp.html#a6fb5c61eff992bb676d6ca60222f4c70">TEST</a> (<a class="el" href="class_response_body_handler.html">ResponseBodyHandler</a>, <a class="el" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>)</td></tr>
 <tr class="separator:a6fb5c61eff992bb676d6ca60222f4c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a63b873aa5534e41bb0abef3982e8125a" name="a63b873aa5534e41bb0abef3982e8125a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63b873aa5534e41bb0abef3982e8125a">&#9670;&#160;</a></span>createTestConfigfile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_config_file.html">ConfigFile</a> createTestConfigfile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__helpers_8cpp_source.html#l00003">3</a> of file <a class="el" href="test__helpers_8cpp_source.html">test_helpers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    4</span>{</div>
+<div class="line"><span class="lineno">    5</span>    <a class="code hl_struct" href="struct_config_server.html">ConfigServer</a> server;</div>
+<div class="line"><span class="lineno">    6</span>    server.<a class="code hl_variable" href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">host</a> = <span class="stringliteral">&quot;127.0.0.1&quot;</span>;</div>
+<div class="line"><span class="lineno">    7</span>    server.<a class="code hl_variable" href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">port</a> = <span class="stringliteral">&quot;8080&quot;</span>;</div>
+<div class="line"><span class="lineno">    8</span> </div>
+<div class="line"><span class="lineno">    9</span>    <a class="code hl_struct" href="struct_config_file.html">ConfigFile</a> configFile;</div>
+<div class="line"><span class="lineno">   10</span>    configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.emplace_back(server);</div>
+<div class="line"><span class="lineno">   11</span> </div>
+<div class="line"><span class="lineno">   12</span>    <span class="keywordflow">return</span> (configFile);</div>
+<div class="line"><span class="lineno">   13</span>}</div>
+<div class="ttc" id="astruct_config_file_html"><div class="ttname"><a href="struct_config_file.html">ConfigFile</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00048">ConfigFile.hpp:48</a></div></div>
+<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00049">ConfigFile.hpp:49</a></div></div>
+<div class="ttc" id="astruct_config_server_html"><div class="ttname"><a href="struct_config_server.html">ConfigServer</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00033">ConfigFile.hpp:33</a></div></div>
+<div class="ttc" id="astruct_config_server_html_ab05a55795c20b46356d35adb3355c0ee"><div class="ttname"><a href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">ConfigServer::port</a></div><div class="ttdeci">std::string port</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00042">ConfigFile.hpp:42</a></div></div>
+<div class="ttc" id="astruct_config_server_html_af3382ae5512707639126d2eee3269b86"><div class="ttname"><a href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">ConfigServer::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00041">ConfigFile.hpp:41</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a8b036980eea1b2dc1e3ebd3a48cad4ff" name="a8b036980eea1b2dc1e3ebd3a48cad4ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b036980eea1b2dc1e3ebd3a48cad4ff">&#9670;&#160;</a></span>TEST_F() <span class="overload">[1/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b036980eea1b2dc1e3ebd3a48cad4ff">&#9670;&#160;</a></span>TEST_F() <span class="overload">[1/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,28 +223,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00032">32</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, openDirectory)</div>
-<div class="line"><span class="lineno">   35</span>    .Times(1);</div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, readDirectory);</div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, closeDirectory)</div>
-<div class="line"><span class="lineno">   38</span>    .Times(1);</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/&quot;</span>;</div>
-<div class="line"><span class="lineno">   41</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><span class="lineno">   42</span>    m_request.hasAutoindex = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   43</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.targetResource, <span class="stringliteral">&quot;/proc/self/autoindex.html&quot;</span>);</div>
-<div class="line"><span class="lineno">   46</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00052">52</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, openDirectory)</div>
+<div class="line"><span class="lineno">   55</span>    .Times(1);</div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, readDirectory);</div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, closeDirectory)</div>
+<div class="line"><span class="lineno">   58</span>    .Times(1);</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/&quot;</span>;</div>
+<div class="line"><span class="lineno">   61</span>    m_request.hasAutoindex = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   62</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.targetResource, <span class="stringliteral">&quot;/proc/self/autoindex.html&quot;</span>);</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00006">StatusCode.hpp:6</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></div><div class="ttdeci">@ StatusOK</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00007">StatusCode.hpp:7</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a2aec8f50cfe2afb682c4488bf91d97b9" name="a2aec8f50cfe2afb682c4488bf91d97b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2aec8f50cfe2afb682c4488bf91d97b9">&#9670;&#160;</a></span>TEST_F() <span class="overload">[2/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aec8f50cfe2afb682c4488bf91d97b9">&#9670;&#160;</a></span>TEST_F() <span class="overload">[2/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,35 +268,34 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00048">48</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, openDirectory)</div>
-<div class="line"><span class="lineno">   51</span>    .Times(2)</div>
-<div class="line"><span class="lineno">   52</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;openDirectory failed&quot;</span>)))</div>
-<div class="line"><span class="lineno">   53</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">nullptr</span>));</div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, readDirectory)</div>
-<div class="line"><span class="lineno">   55</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;readDirectory failed&quot;</span>)));</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, closeDirectory)</div>
-<div class="line"><span class="lineno">   57</span>    .Times(1);</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/&quot;</span>;</div>
-<div class="line"><span class="lineno">   60</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><span class="lineno">   61</span>    m_request.hasAutoindex = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">   70</span>}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00017">StatusCode.hpp:17</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00067">67</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, openDirectory)</div>
+<div class="line"><span class="lineno">   70</span>    .Times(2)</div>
+<div class="line"><span class="lineno">   71</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;openDirectory failed&quot;</span>)))</div>
+<div class="line"><span class="lineno">   72</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">nullptr</span>));</div>
+<div class="line"><span class="lineno">   73</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, readDirectory)</div>
+<div class="line"><span class="lineno">   74</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;readDirectory failed&quot;</span>)));</div>
+<div class="line"><span class="lineno">   75</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, closeDirectory)</div>
+<div class="line"><span class="lineno">   76</span>    .Times(1);</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/&quot;</span>;</div>
+<div class="line"><span class="lineno">   79</span>    m_request.hasAutoindex = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">   82</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">   87</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">   88</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00018">StatusCode.hpp:18</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a8cfaf0224efb053508b4bffbfb3e4458" name="a8cfaf0224efb053508b4bffbfb3e4458"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cfaf0224efb053508b4bffbfb3e4458">&#9670;&#160;</a></span>TEST_F() <span class="overload">[3/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cfaf0224efb053508b4bffbfb3e4458">&#9670;&#160;</a></span>TEST_F() <span class="overload">[3/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,17 +320,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00072">72</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{</div>
-<div class="line"><span class="lineno">   74</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/&quot;</span>;</div>
-<div class="line"><span class="lineno">   75</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
-<div class="line"><span class="lineno">   76</span>    m_request.hasAutoindex = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">   79</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(m_request.httpStatus));</div>
-<div class="line"><span class="lineno">   80</span>}</div>
-<div class="ttc" id="a_response_body_handler_8hpp_html_a7078ddb45e485ceb0635faaee4075156"><div class="ttname"><a href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a></div><div class="ttdeci">std::string getDefaultErrorPage(statusCode status)</div><div class="ttdoc">Get Default Error Page for a given status code.</div><div class="ttdef"><b>Definition</b> <a href="_response_body_handler_8cpp_source.html#l00145">ResponseBodyHandler.cpp:145</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00011">StatusCode.hpp:11</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00090">90</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{</div>
+<div class="line"><span class="lineno">   92</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/&quot;</span>;</div>
+<div class="line"><span class="lineno">   93</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">   96</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(m_request.httpStatus));</div>
+<div class="line"><span class="lineno">   97</span>}</div>
+<div class="ttc" id="a_response_body_handler_8hpp_html_a7078ddb45e485ceb0635faaee4075156"><div class="ttname"><a href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a></div><div class="ttdeci">std::string getDefaultErrorPage(statusCode status)</div><div class="ttdoc">Get Default Error Page for a given status code.</div><div class="ttdef"><b>Definition</b> <a href="_response_body_handler_8cpp_source.html#l00177">ResponseBodyHandler.cpp:177</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -297,7 +338,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a0c4dcbdacc9d3507bf5622d8f60081c5" name="a0c4dcbdacc9d3507bf5622d8f60081c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c4dcbdacc9d3507bf5622d8f60081c5">&#9670;&#160;</a></span>TEST_F() <span class="overload">[4/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c4dcbdacc9d3507bf5622d8f60081c5">&#9670;&#160;</a></span>TEST_F() <span class="overload">[4/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,20 +363,18 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00082">82</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{</div>
-<div class="line"><span class="lineno">   84</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
-<div class="line"><span class="lineno">   85</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;openFile failed&quot;</span>)));</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>    m_request.hasAutoindex = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   88</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><span class="lineno">   89</span>    m_request.method = <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>;</div>
-<div class="line"><span class="lineno">   90</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/cmdline&quot;</span>;</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">   93</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">   94</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(m_request.httpStatus));</div>
-<div class="line"><span class="lineno">   95</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00099">99</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>{</div>
+<div class="line"><span class="lineno">  101</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
+<div class="line"><span class="lineno">  102</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;openFile failed&quot;</span>)));</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>    m_request.method = <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>;</div>
+<div class="line"><span class="lineno">  105</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/cmdline&quot;</span>;</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  108</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">  109</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(m_request.httpStatus));</div>
+<div class="line"><span class="lineno">  110</span>}</div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a></div><div class="ttdeci">@ MethodGet</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00003">Method.hpp:3</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -346,7 +385,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a4185463d0bab2883359f53824c8afe35" name="a4185463d0bab2883359f53824c8afe35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4185463d0bab2883359f53824c8afe35">&#9670;&#160;</a></span>TEST_F() <span class="overload">[5/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4185463d0bab2883359f53824c8afe35">&#9670;&#160;</a></span>TEST_F() <span class="overload">[5/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -371,25 +410,23 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00097">97</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
-<div class="line"><span class="lineno">   99</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
-<div class="line"><span class="lineno">  100</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="stringliteral">&quot;Hello World&quot;</span>));</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>    m_request.hasAutoindex = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  103</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><span class="lineno">  104</span>    m_request.method = <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>;</div>
-<div class="line"><span class="lineno">  105</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/cmdline&quot;</span>;</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">  108</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
-<div class="line"><span class="lineno">  109</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;Hello World&quot;</span>);</div>
-<div class="line"><span class="lineno">  110</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00112">112</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
+<div class="line"><span class="lineno">  114</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
+<div class="line"><span class="lineno">  115</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="stringliteral">&quot;Hello World&quot;</span>));</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>    m_request.method = <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>;</div>
+<div class="line"><span class="lineno">  118</span>    m_request.targetResource = <span class="stringliteral">&quot;/proc/self/cmdline&quot;</span>;</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  121</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
+<div class="line"><span class="lineno">  122</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;Hello World&quot;</span>);</div>
+<div class="line"><span class="lineno">  123</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a5f91e43e02cb878d1d6e555bff90bc50" name="a5f91e43e02cb878d1d6e555bff90bc50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f91e43e02cb878d1d6e555bff90bc50">&#9670;&#160;</a></span>TEST_F() <span class="overload">[6/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f91e43e02cb878d1d6e555bff90bc50">&#9670;&#160;</a></span>TEST_F() <span class="overload">[6/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,27 +451,27 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00112">112</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
-<div class="line"><span class="lineno">  114</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType)</div>
-<div class="line"><span class="lineno">  115</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>));</div>
-<div class="line"><span class="lineno">  116</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
-<div class="line"><span class="lineno">  117</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="stringliteral">&quot;error_page_content&quot;</span>));</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
-<div class="line"><span class="lineno">  120</span>    m_request.targetResource = <span class="stringliteral">&quot;/not_existing&quot;</span>;</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">  123</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>);</div>
-<div class="line"><span class="lineno">  124</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;error_page_content&quot;</span>);</div>
-<div class="line"><span class="lineno">  125</span>}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00012">StatusCode.hpp:12</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00125">125</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span>{</div>
+<div class="line"><span class="lineno">  127</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType)</div>
+<div class="line"><span class="lineno">  128</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>));</div>
+<div class="line"><span class="lineno">  129</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
+<div class="line"><span class="lineno">  130</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="stringliteral">&quot;error_page_content&quot;</span>));</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
+<div class="line"><span class="lineno">  133</span>    m_request.targetResource = <span class="stringliteral">&quot;/not_existing&quot;</span>;</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  136</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>);</div>
+<div class="line"><span class="lineno">  137</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;error_page_content&quot;</span>);</div>
+<div class="line"><span class="lineno">  138</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00013">StatusCode.hpp:13</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a></div><div class="ttdeci">@ FileRegular</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00027">FileSystemPolicy.hpp:27</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="aa72e05518aac9cb13d82f5bdc56bec93" name="aa72e05518aac9cb13d82f5bdc56bec93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa72e05518aac9cb13d82f5bdc56bec93">&#9670;&#160;</a></span>TEST_F() <span class="overload">[7/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa72e05518aac9cb13d82f5bdc56bec93">&#9670;&#160;</a></span>TEST_F() <span class="overload">[7/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -459,18 +496,18 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00127">127</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
-<div class="line"><span class="lineno">  129</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType)</div>
-<div class="line"><span class="lineno">  130</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a>));</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
-<div class="line"><span class="lineno">  133</span>    m_request.targetResource = <span class="stringliteral">&quot;/not_existing&quot;</span>;</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">  136</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">  137</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>));</div>
-<div class="line"><span class="lineno">  138</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00140">140</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
+<div class="line"><span class="lineno">  142</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType)</div>
+<div class="line"><span class="lineno">  143</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a>));</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
+<div class="line"><span class="lineno">  146</span>    m_request.targetResource = <span class="stringliteral">&quot;/not_existing&quot;</span>;</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  149</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">  150</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>));</div>
+<div class="line"><span class="lineno">  151</span>}</div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a></div><div class="ttdeci">@ FileOther</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00027">FileSystemPolicy.hpp:27</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -481,7 +518,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="ac2fb03a559604cce27f8d8c7e073a168" name="ac2fb03a559604cce27f8d8c7e073a168"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2fb03a559604cce27f8d8c7e073a168">&#9670;&#160;</a></span>TEST_F() <span class="overload">[8/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2fb03a559604cce27f8d8c7e073a168">&#9670;&#160;</a></span>TEST_F() <span class="overload">[8/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,26 +543,280 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00140">140</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
-<div class="line"><span class="lineno">  142</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType)</div>
-<div class="line"><span class="lineno">  143</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>));</div>
-<div class="line"><span class="lineno">  144</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
-<div class="line"><span class="lineno">  145</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;openFile failed&quot;</span>)));</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
-<div class="line"><span class="lineno">  148</span>    m_request.targetResource = <span class="stringliteral">&quot;/not_existing&quot;</span>;</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>    m_responseBodyHandler.execute();</div>
-<div class="line"><span class="lineno">  151</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">  152</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>));</div>
-<div class="line"><span class="lineno">  153</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00153">153</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  154</span>{</div>
+<div class="line"><span class="lineno">  155</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType)</div>
+<div class="line"><span class="lineno">  156</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>));</div>
+<div class="line"><span class="lineno">  157</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, getFileContents)</div>
+<div class="line"><span class="lineno">  158</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Throw</a>(std::runtime_error(<span class="stringliteral">&quot;openFile failed&quot;</span>)));</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
+<div class="line"><span class="lineno">  161</span>    m_request.targetResource = <span class="stringliteral">&quot;/not_existing&quot;</span>;</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  164</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">  165</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>));</div>
+<div class="line"><span class="lineno">  166</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="test___response_body_handler_8cpp_ac2fb03a559604cce27f8d8c7e073a168_cgraph.svg" width="282" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
+</div>
+</div>
+<a id="accfbc577f2b25014d7e2c8d9c77c2b7d" name="accfbc577f2b25014d7e2c8d9c77c2b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accfbc577f2b25014d7e2c8d9c77c2b7d">&#9670;&#160;</a></span>TEST_F() <span class="overload">[9/14]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnAsSimpleRedirect</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00168">168</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  169</span>{</div>
+<div class="line"><span class="lineno">  170</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>;</div>
+<div class="line"><span class="lineno">  171</span>    m_request.targetResource = <span class="stringliteral">&quot;/new_location&quot;</span>;</div>
+<div class="line"><span class="lineno">  172</span>    m_request.hasReturn = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  175</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
+<div class="line"><span class="lineno">  176</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>));</div>
+<div class="line"><span class="lineno">  177</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a></div><div class="ttdeci">@ StatusPermanentRedirect</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00010">StatusCode.hpp:10</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="test___response_body_handler_8cpp_accfbc577f2b25014d7e2c8d9c77c2b7d_cgraph.svg" width="282" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8ce998965254ff7e7cda9c1b95b38daf" name="a8ce998965254ff7e7cda9c1b95b38daf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce998965254ff7e7cda9c1b95b38daf">&#9670;&#160;</a></span>TEST_F() <span class="overload">[10/14]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithNonErrorCodeAndNoContent</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00179">179</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
+<div class="line"><span class="lineno">  181</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
+<div class="line"><span class="lineno">  182</span>    m_request.targetResource = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  183</span>    m_request.hasReturn = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  186</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
+<div class="line"><span class="lineno">  187</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">  188</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a11d86ebdef206bc8d48f7d9eb3672f4d" name="a11d86ebdef206bc8d48f7d9eb3672f4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11d86ebdef206bc8d48f7d9eb3672f4d">&#9670;&#160;</a></span>TEST_F() <span class="overload">[11/14]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithNoRedirectAndCustomContent</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00190">190</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
+<div class="line"><span class="lineno">  192</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>;</div>
+<div class="line"><span class="lineno">  193</span>    m_request.targetResource = <span class="stringliteral">&quot;Return Message&quot;</span>;</div>
+<div class="line"><span class="lineno">  194</span>    m_request.hasReturn = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  197</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>);</div>
+<div class="line"><span class="lineno">  198</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;Return Message&quot;</span>);</div>
+<div class="line"><span class="lineno">  199</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a></div><div class="ttdeci">@ StatusNonSupportedVersion</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00021">StatusCode.hpp:20</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aec74046ebb8685c4e8f6625b7e35b41c" name="aec74046ebb8685c4e8f6625b7e35b41c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec74046ebb8685c4e8f6625b7e35b41c">&#9670;&#160;</a></span>TEST_F() <span class="overload">[12/14]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithErrorCodeAndNoContentFindsDefaultErrorPage</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00201">201</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  202</span>{</div>
+<div class="line"><span class="lineno">  203</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>;</div>
+<div class="line"><span class="lineno">  204</span>    m_request.targetResource = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  205</span>    m_request.hasReturn = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  208</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>);</div>
+<div class="line"><span class="lineno">  209</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>));</div>
+<div class="line"><span class="lineno">  210</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a></div><div class="ttdeci">@ StatusMethodNotAllowed</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="test___response_body_handler_8cpp_aec74046ebb8685c4e8f6625b7e35b41c_cgraph.svg" width="282" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aae298825c63cbb0db89e455f33d047f3" name="aae298825c63cbb0db89e455f33d047f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae298825c63cbb0db89e455f33d047f3">&#9670;&#160;</a></span>TEST_F() <span class="overload">[13/14]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithErrorCodeAndNoContentFindsCustomErrorPageWithReturnNoContent</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00212">212</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  213</span>{</div>
+<div class="line"><span class="lineno">  214</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>;</div>
+<div class="line"><span class="lineno">  215</span>    m_request.targetResource = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  216</span>    m_request.hasReturn = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  219</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>);</div>
+<div class="line"><span class="lineno">  220</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>));</div>
+<div class="line"><span class="lineno">  221</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a></div><div class="ttdeci">@ StatusBadRequest</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00011">StatusCode.hpp:11</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="test___response_body_handler_8cpp_aae298825c63cbb0db89e455f33d047f3_cgraph.svg" width="282" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aff531558974dde9333d6125761873d5e" name="aff531558974dde9333d6125761873d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff531558974dde9333d6125761873d5e">&#9670;&#160;</a></span>TEST_F() <span class="overload">[14/14]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_response_body_handler_test.html">ResponseBodyHandlerTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ReturnWithErrorCodeAndNoContentFindsCustomErrorPageWithReturnWithContent</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00223">223</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
+<div class="line"><span class="lineno">  225</span>    m_request.httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
+<div class="line"><span class="lineno">  226</span>    m_request.targetResource = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  227</span>    m_request.hasReturn = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>    m_responseBodyHandler.execute();</div>
+<div class="line"><span class="lineno">  230</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_request.httpStatus, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>);</div>
+<div class="line"><span class="lineno">  231</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_responseBody, <span class="stringliteral">&quot;Return Message&quot;</span>);</div>
+<div class="line"><span class="lineno">  232</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00012">StatusCode.hpp:12</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a6fb5c61eff992bb676d6ca60222f4c70" name="a6fb5c61eff992bb676d6ca60222f4c70"></a>
@@ -554,31 +845,27 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00155">155</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  156</span>{</div>
-<div class="line"><span class="lineno">  157</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>);</div>
-<div class="line"><span class="lineno">  159</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
-<div class="line"><span class="lineno">  160</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>);</div>
-<div class="line"><span class="lineno">  161</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>);</div>
-<div class="line"><span class="lineno">  162</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>);</div>
-<div class="line"><span class="lineno">  163</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>);</div>
-<div class="line"><span class="lineno">  164</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>);</div>
-<div class="line"><span class="lineno">  165</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>);</div>
-<div class="line"><span class="lineno">  166</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>);</div>
-<div class="line"><span class="lineno">  167</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
-<div class="line"><span class="lineno">  168</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>);</div>
-<div class="line"><span class="lineno">  169</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>);</div>
-<div class="line"><span class="lineno">  170</span>}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a></div><div class="ttdeci">@ StatusPermanentRedirect</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a></div><div class="ttdeci">@ StatusMethodNotAllowed</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00013">StatusCode.hpp:13</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a></div><div class="ttdeci">@ StatusMethodNotImplemented</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00018">StatusCode.hpp:18</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a></div><div class="ttdeci">@ StatusRequestEntityTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00015">StatusCode.hpp:15</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a></div><div class="ttdeci">@ StatusRequestHeaderFieldsTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00016">StatusCode.hpp:16</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a></div><div class="ttdeci">@ StatusBadRequest</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00010">StatusCode.hpp:10</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a></div><div class="ttdeci">@ StatusRequestTimeout</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a></div><div class="ttdeci">@ StatusNonSupportedVersion</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00020">StatusCode.hpp:19</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test___response_body_handler_8cpp_source.html#l00234">234</a> of file <a class="el" href="test___response_body_handler_8cpp_source.html">test_ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  235</span>{</div>
+<div class="line"><span class="lineno">  236</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>);</div>
+<div class="line"><span class="lineno">  237</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>);</div>
+<div class="line"><span class="lineno">  238</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
+<div class="line"><span class="lineno">  239</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>);</div>
+<div class="line"><span class="lineno">  240</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>);</div>
+<div class="line"><span class="lineno">  241</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>);</div>
+<div class="line"><span class="lineno">  242</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>);</div>
+<div class="line"><span class="lineno">  243</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>);</div>
+<div class="line"><span class="lineno">  244</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>);</div>
+<div class="line"><span class="lineno">  245</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>);</div>
+<div class="line"><span class="lineno">  246</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>);</div>
+<div class="line"><span class="lineno">  247</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>);</div>
+<div class="line"><span class="lineno">  248</span>    <a class="code hl_function" href="_response_body_handler_8hpp.html#a7078ddb45e485ceb0635faaee4075156">getDefaultErrorPage</a>(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>);</div>
+<div class="line"><span class="lineno">  249</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a></div><div class="ttdeci">@ StatusMethodNotImplemented</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00019">StatusCode.hpp:19</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a></div><div class="ttdeci">@ StatusRequestEntityTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00016">StatusCode.hpp:16</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a></div><div class="ttdeci">@ StatusRequestHeaderFieldsTooLarge</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00017">StatusCode.hpp:17</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a></div><div class="ttdeci">@ StatusRequestTimeout</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00015">StatusCode.hpp:15</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

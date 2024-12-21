@@ -10,5 +10,5 @@ var struct_location =
     [ "maxBodySize", "struct_location.html#a68f01d8ebb15037e62a92ff2e55b50f1", null ],
     [ "errorPage", "struct_location.html#a895fc9b39ff104e1df7ff03ccc09b536", null ],
     [ "allowedMethods", "struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7", null ],
-    [ "returns", "struct_location.html#ac0784739243de5d60bcd6730d7e63786", null ]
+    [ "returns", "struct_location.html#aec7fd7934f8ccc45a5dac6026e6660d0", null ]
 ];
