@@ -267,5 +267,6 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 			lineStart = lineEnd + 2;
 			lineEnd = headers.find("\r\n", lineStart);
 		}
+		m_responseBody = m_responseBody.substr(posHeadersEnd + 4);
 	}
 }
