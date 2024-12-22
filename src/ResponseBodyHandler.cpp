@@ -24,7 +24,6 @@ ResponseBodyHandler::ResponseBodyHandler(
  * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
  * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
  * body.
- * @todo FIXME: Implement other methods than GET.
  */
 void ResponseBodyHandler::execute()
 {
