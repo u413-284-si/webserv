@@ -4,7 +4,7 @@
  * @brief Virtual destructor for FileSystemPolicy object
  *
  */
-FileSystemPolicy::~FileSystemPolicy() {}
+FileSystemPolicy::~FileSystemPolicy() { }
 
 /**
  * @brief Check the file type of a given path.
@@ -86,7 +86,7 @@ std::string FileSystemPolicy::getFileContents(const char* filename) const
 DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 {
 	errno = 0;
-	DIR *dir = opendir(path.c_str());
+	DIR* dir = opendir(path.c_str());
 	if (dir == NULL)
 		throw std::runtime_error("opendir(): " + std::string(strerror(errno)));
 	return dir;
@@ -102,7 +102,7 @@ DIR* FileSystemPolicy::openDirectory(const std::string& path) const
 struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
 {
 	errno = 0;
-	struct dirent *entry = readdir(dir);
+	struct dirent* entry = readdir(dir);
 	if (entry == NULL && errno != 0)
 		throw std::runtime_error("readdir(): " + std::string(strerror(errno)));
 	return entry;
@@ -152,6 +152,7 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
 void FileSystemPolicy::writeToFile(const std::string& path, const std::string& content) const
 {
 	std::ofstream file(path.c_str(), std::ios::binary | std::ios::app);
+	errno = 0;
 	if (!file.good())
 		throw std::runtime_error("openFile(): \"" + path + "\", " + std::string(strerror(errno)));
 	file << content;
@@ -181,4 +182,21 @@ long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
 	if (S_ISDIR(fileStat.st_mode))
 		return 0;
 	return fileStat.st_size;
+}
+
+/**
+ * @brief Deletes a file at the specified path.
+ *
+ * This function attempts to delete the file located at the given path.
+ * If the file cannot be deleted, it throws a runtime error with the
+ * appropriate error message.
+ *
+ * @param path The path to the file to be deleted.
+ * @throws std::runtime_error if the file cannot be deleted.
+ */
+void FileSystemPolicy::deleteFile(const std::string& path) const
+{
+	errno = 0;
+	if (std::remove(path.c_str()) != 0)
+		throw std::runtime_error("remove(): " + std::string(strerror(errno)));
 }
