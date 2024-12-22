@@ -198,19 +198,28 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 	if (m_responseBody.empty())
 		return;
 
+	std::string httpString = "HTTP/1.1";
 	size_t posStatusEnd = 0;
+	size_t httpStringSize = httpString.size();
 	std::vector<std::string> statusIdentifiers;
 	statusIdentifiers.push_back("Status");
-	statusIdentifiers.push_back("HTTP/1.1");
+	statusIdentifiers.push_back(httpString);
+	
 
 	for (std::vector<std::string>::const_iterator iter = statusIdentifiers.begin(); iter != statusIdentifiers.end();
 		 ++iter) {
 		size_t posStatus = m_responseBody.find(*iter);
+
 		if (posStatus != std::string::npos) {
 			std::string statusLine;
+
+			if (*iter == httpString)
+				posStatus += httpStringSize;
+
 			posStatusEnd = m_responseBody.find("\r\n", posStatus);
 			statusLine = m_responseBody.substr(posStatus, posStatusEnd - posStatus);
 			request.httpStatus = webutils::extractStatusCode(statusLine);
+			LOG_DEBUG << "Parsed response status: " << request.httpStatus;
 			posStatusEnd += 2;
 		}
 	}
