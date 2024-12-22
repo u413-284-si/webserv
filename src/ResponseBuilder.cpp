@@ -49,13 +49,8 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
 	responseBodyHandler.execute();
-
 	parseResponseBody(request);
-
 	appendStatusLine(request);
-	// if (request.hasCGI && request.httpStatus == StatusOK)
-	// 	appendHeadersCGI(request);
-	// else
 	appendHeaders(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeader.str();
@@ -148,31 +143,6 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	// Delimiter
 	m_responseHeader << "\r\n";
 }
-
-// /**
-//  * @brief Append headers to the response for CGI.
-//  *
-//  * The following headers are appended:
-//  * Content-Length: Length of the response body.
-//  * Server: TriHard.
-//  * Date: Current date in GMT.
-//  * Location: Target resource if status is StatusMovedPermanently.
-//  * @param request HTTP request.
-//  */
-// void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
-// {
-// 	// Content-Length
-// 	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
-// 	// Server
-// 	m_responseHeader << "Server: TriHard\r\n";
-// 	// Date
-// 	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
-// 	// Connection
-// 	if (request.shallCloseConnection)
-// 		m_responseHeader << "Connection: close\r\n";
-// 	else
-// 		m_responseHeader << "Connection: keep-alive\r\n";
-// }
 
 /**
  * @brief Init the MIME types map.
@@ -302,6 +272,14 @@ void ResponseBuilder::parseResponseHeaders()
 	}
 }
 
+/**
+ * @brief Processes the response headers and updates the HTTPRequest object.
+ * 
+ * This function processes the response headers and updates the HTTPRequest object
+ * with relevant information, such as whether the connection should be closed.
+ * 
+ * @param request The HTTPRequest object to be updated with the processed headers.
+ */
 void ResponseBuilder::processResponseHeaders(HTTPRequest& request)
 {
 	// Connection
