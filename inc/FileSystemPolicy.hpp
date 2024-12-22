@@ -19,8 +19,6 @@
  *
  * This class is a wrapper for C functions on the file system.
  * It is used to make the code more testable.
- * It contains a nested DirectoryGuard class for managing directory pointers.
- * The class ensures that open pointers are closed when they go out of scope.
  */
 class FileSystemPolicy {
 

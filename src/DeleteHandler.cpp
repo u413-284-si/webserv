@@ -47,20 +47,20 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			// 		   << "\"message\": \"Directory deleted successfully\",\n"
 			// 		   << "\"directory\": \"" << path << "\"\n"
 			// 		   << "}\n";
-			break;
+			// break;
 
 		case FileSystemPolicy::FileNotExist:
 			httpStatus = StatusNotFound;
 			break;
 
 		case FileSystemPolicy::FileOther:
-			httpStatus = StatusInternalServerError;
+			httpStatus = StatusForbidden;
 			break;
 		}
 	} catch (const std::runtime_error& e) {
 		std::string error = e.what();
 		LOG_ERROR << error;
-		if (error.find("Permission denied") != std::string::npos)
+		if (error.find("Permission denied") != std::string::npos) // FIXME: use custom exception
 			httpStatus = StatusForbidden;
 		else
 			httpStatus = StatusInternalServerError;
@@ -80,18 +80,18 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 //  * @param path The path to the directory to be deleted.
 //  * @throws std::runtime_error if any file or directory cannot be deleted.
 //  */
-// NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
+// // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 // void DeleteHandler::deleteDirectory(const std::string& path) const
 // {
 // 	Directory dir(m_fileSystemPolicy, path);
 
-// 	struct dirent* entry = NULL;
-// 	while ((entry = m_fileSystemPolicy.readDirectory(dir.getDir())) != NULL) {
+// 	std::vector<std::string> entries = dir.getEntries();
+// 	for (std::vector<std::string>::const_iterator iter = entries.begin(); iter != entries.end(); ++iter) {
 // 		// Skip `.` and `..` entries
-// 		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+// 		if (strcmp((*iter).c_str(), ".") == 0 || strcmp((*iter).c_str(), "..") == 0)
 // 			continue;
 
-// 		std::string fullPath = std::string(path) + "/" + entry->d_name;
+// 		std::string fullPath = std::string(path) + "/" + *iter;
 
 // 		struct stat info = m_fileSystemPolicy.getFileStat(fullPath);
 // 		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
