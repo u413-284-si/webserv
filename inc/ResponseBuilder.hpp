@@ -34,6 +34,7 @@ private:
 	void parseResponseBody(HTTPRequest& request);
 	void parseResponseStatusLine(HTTPRequest& request);
 	void parseResponseHeaders();
+	void processResponseHeaders(HTTPRequest& request);
 	void resetBuilder();
 
 	std::map<std::string, std::string> m_mimeTypes;

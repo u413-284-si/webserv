@@ -220,9 +220,17 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 
 	parseResponseStatusLine(request);
 	parseResponseHeaders();
-	
+	processResponseHeaders(request);
 }
 
+/**
+ * @brief Parses the response status line from the HTTP response body, if given.
+ * 
+ * This function searches for the status line in the HTTP response body and extracts
+ * the HTTP status code. It updates the HTTPRequest object with the parsed status code.
+ * 
+ * @param request The HTTPRequest object to be updated with the parsed status code.
+ */
 void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
 {
 	size_t posStatusEnd = 0;
@@ -254,6 +262,13 @@ void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
 		m_responseBody = m_responseBody.substr(posStatusEnd);
 }
 
+/**
+ * @brief Parses the response headers from the HTTP response body.
+ * 
+ * This function searches for the headers in the HTTP response body and extracts
+ * them into a map of header names and values. It updates the response headers map
+ * with the parsed headers.
+ */
 void ResponseBuilder::parseResponseHeaders()
 {
 	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
@@ -284,5 +299,15 @@ void ResponseBuilder::parseResponseHeaders()
 		}
 
 		m_responseBody = m_responseBody.substr(posHeadersEnd + 4);
+	}
+}
+
+void ResponseBuilder::processResponseHeaders(HTTPRequest& request)
+{
+	// Connection
+	if (m_responseHeaders.find("Connection") != m_responseHeaders.end()) {
+		if (m_responseHeaders.at("Connection") == "close")
+			request.shallCloseConnection = true;
+		m_responseHeaders.erase("Connection");
 	}
 }
