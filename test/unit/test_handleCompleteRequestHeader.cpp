@@ -60,7 +60,7 @@ TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
 
-	EXPECT_EQ(m_connection.m_status, Connection::ReceiveBody);
+	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
 	EXPECT_EQ(m_connection.m_buffer, "This is body");
 }
 
