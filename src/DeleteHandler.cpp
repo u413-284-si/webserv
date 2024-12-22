@@ -23,6 +23,7 @@ DeleteHandler::DeleteHandler(const FileSystemPolicy& fileSystemPolicy)
  * @param path The path of the file or directory to delete.
  * @param httpStatus Reference to the HTTP status code to be set based on the operation result.
  * @return A JSON string containing the result of the delete operation.
+ * @todo use custom exception
  */
 std::string DeleteHandler::execute(const std::string& path, statusCode& httpStatus)
 {
