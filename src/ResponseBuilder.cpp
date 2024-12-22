@@ -216,8 +216,17 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 	if (m_responseBody.empty())
 		return;
 
-	std::string httpString = "HTTP/1.1";
+	LOG_DEBUG << "Parsing received CGI response body...";
+
+	parseResponseStatusLine(request);
+	parseResponseHeaders();
+	
+}
+
+void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
+{
 	size_t posStatusEnd = 0;
+	std::string httpString = "HTTP/1.1";
 	size_t httpStringSize = httpString.size();
 	std::vector<std::string> statusIdentifiers;
 	statusIdentifiers.push_back("Status");
@@ -241,11 +250,17 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 		}
 	}
 
+	if (posStatusEnd != 0)
+		m_responseBody = m_responseBody.substr(posStatusEnd);
+}
+
+void ResponseBuilder::parseResponseHeaders()
+{
 	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 
 	if (posHeadersEnd != std::string::npos) {
 		// Include one CRLF at the end of last header line
-		std::string headers = m_responseBody.substr(posStatusEnd, posHeadersEnd - posStatusEnd + 2);
+		std::string headers = m_responseBody.substr(0, posHeadersEnd + 2);
 		size_t lineStart = 0;
 		size_t lineEnd = headers.find("\r\n");
 
@@ -267,6 +282,7 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 			lineStart = lineEnd + 2;
 			lineEnd = headers.find("\r\n", lineStart);
 		}
+
 		m_responseBody = m_responseBody.substr(posHeadersEnd + 4);
 	}
 }
