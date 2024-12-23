@@ -1,5 +1,4 @@
 #include "utilities.hpp"
-#include "StatusCode.hpp"
 
 namespace webutils {
 
