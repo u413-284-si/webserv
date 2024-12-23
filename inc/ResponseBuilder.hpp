@@ -5,8 +5,11 @@
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "ResponseBodyHandler.hpp"
+#include "StatusCode.hpp"
 
+#include <cstddef>
 #include <string>
+#include <vector>
 
 /**
  * @brief Class to build a HTTP response.

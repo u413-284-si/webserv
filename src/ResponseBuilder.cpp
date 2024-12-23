@@ -1,7 +1,4 @@
 #include "ResponseBuilder.hpp"
-#include "StatusCode.hpp"
-#include <cstddef>
-#include <vector>
 
 /**
  * @brief Construct a new ResponseBuilder object
@@ -105,16 +102,14 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		if (m_responseHeaders.find("Content-Type") != m_responseHeaders.end()) {
 			m_responseHeader << "Content-Type: " << m_responseHeaders.at("Content-Type") << "\r\n";
 			m_responseHeaders.erase("Content-Type");
-		}
-		else
+		} else
 			m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
 							 << "\r\n";
 		// Content-Length
 		if (m_responseHeaders.find("Content-Length") != m_responseHeaders.end()) {
 			m_responseHeader << "Content-Length: " << m_responseHeaders.at("Content-Length") << "\r\n";
 			m_responseHeaders.erase("Content-Length");
-		}
-		else
+		} else
 			m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
@@ -122,7 +117,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
 		 iter != m_responseHeaders.end(); ++iter)
 		m_responseHeader << iter->first << ": " << iter->second << "\r\n";
-	
+
 	// Server
 	m_responseHeader << "Server: TriHard\r\n";
 
@@ -140,7 +135,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseHeader << "Connection: close\r\n";
 	else
 		m_responseHeader << "Connection: keep-alive\r\n";
-	
+
 	// Delimiter
 	m_responseHeader << "\r\n";
 }
@@ -196,10 +191,10 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 
 /**
  * @brief Parses the response status line from the HTTP response body, if given.
- * 
+ *
  * This function searches for the status line in the HTTP response body and extracts
  * the HTTP status code. It updates the HTTPRequest object with the parsed status code.
- * 
+ *
  * @param request The HTTPRequest object to be updated with the parsed status code.
  */
 void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
@@ -235,7 +230,7 @@ void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
 
 /**
  * @brief Parses the response headers from the HTTP response body.
- * 
+ *
  * This function searches for the headers in the HTTP response body and extracts
  * them into a map of header names and values. It updates the response headers map
  * with the parsed headers.
@@ -275,10 +270,10 @@ void ResponseBuilder::parseResponseHeaders()
 
 /**
  * @brief Processes the response headers and updates the HTTPRequest object.
- * 
+ *
  * This function processes the response headers and updates the HTTPRequest object
  * with relevant information, such as whether the connection should be closed.
- * 
+ *
  * @param request The HTTPRequest object to be updated with the processed headers.
  */
 void ResponseBuilder::processResponseHeaders(HTTPRequest& request)
