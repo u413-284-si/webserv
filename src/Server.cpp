@@ -254,7 +254,7 @@ void Server::removeCGIFileDescriptor(int& delfd)
 {
 	this->removeEvent(delfd);
 	this->getCGIConnections().erase(delfd);
-    LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
+	LOG_DEBUG << "CGI File Descriptor: " << delfd << " removed from server";
 	webutils::closeFd(delfd);
 }
 
@@ -480,10 +480,7 @@ void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
  *
  * @param connection The Connection to build the response for.
  */
-void Server::buildResponse(Connection& connection)
-{
-	m_responseBuilder.buildResponse(connection);
-}
+void Server::buildResponse(Connection& connection) { m_responseBuilder.buildResponse(connection); }
 
 /**
  * @brief Wrapper function to ResponseBuilder::getResponse.
@@ -499,10 +496,7 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection)
-{
-	m_targetResourceHandler.execute(connection);
-}
+void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
 
 /* ====== INITIALIZATION ====== */
 
@@ -923,7 +917,7 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		handleCompleteRequestHeader(server, activeFd, connection);
 	} else {
 		LOG_DEBUG << "Received partial request header: " << '\n' << connection.m_buffer;
-		if (connection.m_buffer.size() == Server::s_clientHeaderBufferSize) {
+		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) {
 			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
 			connection.m_status = Connection::BuildResponse;
@@ -944,11 +938,20 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
  * - Parses the request header.
  * - Sets the active server configuration based on the "Host" header.
  * - Finds the target resource for the request.
+ * - Handles redirection if applicable by adding a "Location" header.
+ * - Checks if the request method is allowed by the location.
  * - Handles CGI requests if applicable.
  * - Determines the next connection status based on the request type.
  *
  * If an error occurs during header parsing, the function logs the error, sets
  * the connection status to BuildResponse, and modifies the event to EPOLLOUT.
+ *
+ * If an error occurs while inserting the "Location" header, the function sets
+ * the HTTP status code to 500 Internal Server Error, sets the connection status
+ * to BuildResponse, and modifies the event to EPOLLOUT.
+ *
+ * If the request is for a location with a return directive, the function sets
+ * the connection status to BuildResponse and modifies the event to EPOLLOUT.
  *
  * If the request is a CGI request, the function initializes and executes the
  * CGI handler, and registers the CGI file descriptors for EPOLLOUT and EPOLLIN
@@ -987,6 +990,15 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	server.findTargetResource(connection);
 
+	if (webutils::isRedirectionStatus(connection.m_request.httpStatus))
+		connection.m_request.headers["location"] = connection.m_request.targetResource;
+
+	if (connection.m_request.hasReturn) {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
 	// Allow for non-existing files when POST is used
 	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusNotFound)
 		connection.m_request.httpStatus = StatusOK;
@@ -995,6 +1007,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 	if (!connection.location->allowedMethods[connection.m_request.method])
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
+
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
 		ProcessOps processOps;
@@ -1005,7 +1018,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost && !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
+		if ((connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
 			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;
@@ -1015,6 +1029,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
+		if (!connection.m_buffer.empty())
+			handleBody(server, clientFd, connection);
 	} else if (connection.m_request.hasCGI)
 		connection.m_status = Connection::ReceiveFromCGI;
 	else {
@@ -1088,7 +1104,10 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		buffer.resize(Server::s_clientBodyBufferSize);
 	buffer.clear();
 
-	const size_t bytesToRead = Server::s_clientBodyBufferSize - connection.m_buffer.size();
+	const size_t bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
+	size_t bytesToRead = Server::s_clientBodyBufferSize;
+	if (bytesAvailable <= Server::s_clientBodyBufferSize)
+		bytesToRead -= bytesAvailable;
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
 
 	const ssize_t bytesRead = server.readFromSocket(activeFd, &buffer[0], bytesToRead, 0);
@@ -1109,8 +1128,27 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 
 	connection.m_buffer.append(buffer.begin(), buffer.begin() + bytesRead);
 	connection.m_timeSinceLastEvent = std::time(0);
+	handleBody(server, activeFd, connection);
+}
+
+/**
+ * @brief Handles the body of the HTTP request.
+ *
+ * This function processes the body of the HTTP request. If the complete body
+ * is received, it parses the body and updates the connection status based on
+ * whether CGI is involved. If only a partial body is received, it checks for
+ * errors such as bad request or exceeding the maximum allowed body size.
+ *
+ * @param server Reference to the Server object.
+ * @param activeFd The file descriptor of the active connection.
+ * @param connection Reference to the Connection object.
+ */
+void handleBody(Server& server, int activeFd, Connection& connection)
+{
 	if (isCompleteBody(connection)) {
-		LOG_DEBUG << "Received complete request body: " << '\n' << connection.m_buffer;
+		LOG_DEBUG << "Received complete request body";
+		// Printing body can be confusing for big files.
+		//LOG_DEBUG << connection.m_buffer;
 		try {
 			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
@@ -1122,12 +1160,14 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 			connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(activeFd, EPOLLOUT);
 	} else {
-		LOG_DEBUG << "Received partial request body: " << '\n' << connection.m_buffer;
+		LOG_DEBUG << "Received partial request body";
+		// Printing body can be confusing for big files.
+		//LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-		} else if (connection.m_buffer.size() == Server::s_clientMaxBodySize) {
+		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
 			connection.m_status = Connection::BuildResponse;

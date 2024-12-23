@@ -31,6 +31,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 		zlib1g-dev \
 		libdw-dev \
 		libiberty-dev \
+	# Dependencies for tests with python
+		python3-requests \
+		python3-pytest \
 	# Remove valgrind because we build newer version
 	&& apt-get remove -y \
 		valgrind \

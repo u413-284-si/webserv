@@ -17,6 +17,7 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemP
  * Recursively searches for the target resource with locateTargetResource() using the information in the LocatingInfo.
  * Uses updateConnection() to write found information into Connection.
  * @param connection Connection object.
+ * @throws std::runtime_error If no location block is found for the path.
  */
 void TargetResourceHandler::execute(Connection& connection)
 {
@@ -31,7 +32,10 @@ void TargetResourceHandler::execute(Connection& connection)
  *
  * This function is called recursively. To exit recursion it keeps track of recursion depth.
  * Checks which location block most closely matches path with matchLocation().
- * Then constructs target resource by appending the path to location root.
+ * If the found location has a return directive, set Status to the return status and set target resource to the return
+ * value. Exits.
+ * Else constructs target resource by appending the path to location root.
+ *
  * Determines the type with stat() and take different action:
  * - FileRegular: break, nothing more to do.
  * - FileDirectory: further action with handleFileDirectory()
@@ -41,7 +45,7 @@ void TargetResourceHandler::execute(Connection& connection)
  * @param locInfo Struct containing info for locating the target resource.
  * @param depth Current depth in recursion.
  * @return TargetResourceHandler::LocatingInfo
- * @todo Remove check for no location found if default location implemented.
+ * @throws std::runtime_error If no location block is found for the path.
  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
@@ -55,9 +59,14 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 
 	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
 
-	// No location found > do we also set a default location to not make extra check?
-	if (locInfo.activeLocation == locInfo.locations->end()) {
-		locInfo.statusCode = StatusInternalServerError;
+	LOG_DEBUG << "Active location: " << locInfo.activeLocation->path;
+
+	if (locInfo.activeLocation->returns.first != NoStatus) {
+		LOG_DEBUG << "Location returns [" << locInfo.activeLocation->returns.first
+				  << "]: " << locInfo.activeLocation->returns.second;
+		locInfo.hasReturn = true;
+		locInfo.statusCode = locInfo.activeLocation->returns.first;
+		locInfo.targetResource = locInfo.activeLocation->returns.second;
 		return (locInfo);
 	}
 
@@ -103,7 +112,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 std::vector<Location>::const_iterator matchLocation(const std::vector<Location>& locations, const std::string& path)
 {
 	std::size_t longestMatch = 0;
-	std::vector<Location>::const_iterator locationMatch = locations.end();
+	std::vector<Location>::const_iterator locationMatch = locations.begin();
 
 	for (std::vector<Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
 		if (path.find(it->path) == 0) {
@@ -125,6 +134,7 @@ TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 	: statusCode(connection.m_request.httpStatus)
 	, path(connection.m_request.uri.path)
 	, hasAutoindex(false)
+	, hasReturn(false)
 	, locations(&connection.serverConfig->locations)
 	, activeLocation(connection.location)
 {
@@ -142,6 +152,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 	connection.m_request.uri.path = locInfo.path;
 	connection.m_request.targetResource = locInfo.targetResource;
 	connection.m_request.hasAutoindex = locInfo.hasAutoindex;
+	connection.m_request.hasReturn = locInfo.hasReturn;
 	connection.location = locInfo.activeLocation;
 }
 
@@ -161,7 +172,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int currentDepth)
 {
 	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
-		locInfo.targetResource += "/";
+		locInfo.targetResource = locInfo.path + "/";
 		locInfo.statusCode = StatusMovedPermanently;
 		return;
 	}
@@ -171,7 +182,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 			return;
 	}
 
-	if (locInfo.activeLocation->isAutoindex) {
+	if (locInfo.activeLocation->hasAutoindex) {
 		locInfo.hasAutoindex = true;
 		return;
 	}
@@ -188,6 +199,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
  * Appends the index to path and tries to find it with locateTargetResource(), which is saved in a copy of locInfo.
  * If status code is not StatusNotFound it indicates that the file was found or an error occured. The passed locInfo is
  * overwritten with the copy.
+ * Likewise if hasReturn was set to true the location had a Return directive, ending the search.
  * Else the path is reset to the saved path and the next index file is tried.
  * At the end compares the saved path with the path in locInfo, which indicates if an index was found.
  * @param locInfo Reference to LocationInfo which gets overwritten.
@@ -202,7 +214,7 @@ bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDe
 		 iter != locInfo.activeLocation->indices.end(); ++iter) {
 		locInfo.path += *iter;
 		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth);
-		if (tmp.statusCode != StatusNotFound) {
+		if (tmp.statusCode != StatusNotFound && !tmp.hasReturn) {
 			locInfo = tmp;
 			break;
 		}

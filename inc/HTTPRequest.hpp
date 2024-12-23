@@ -31,6 +31,7 @@ struct HTTPRequest {
 	std::string targetResource;
 	bool hasAutoindex;
 	bool hasCGI;
+	bool hasReturn;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
