@@ -63,13 +63,14 @@ void ResponseBuilder::buildResponse(Connection& connection)
  * @brief Reset the builder.
  *
  * The stringstream m_responseHeader is reset to an empty string and cleared to removed any potential error flags.
- * The string m_responseBody is cleared.
+ * The string m_responseBody is cleared as well as the map m_responseHeaders.
  */
 void ResponseBuilder::resetBuilder()
 {
 	m_responseHeader.str(std::string());
 	m_responseHeader.clear();
 	m_responseBody.clear();
+	m_responseHeaders.clear();
 }
 
 /**
