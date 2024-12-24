@@ -200,8 +200,8 @@ void ResponseBuilder::parseResponseBody(HTTPRequest& request)
 void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
 {
 	size_t posStatusEnd = 0;
-	std::string httpString = "HTTP/1.1";
-	size_t httpStringSize = httpString.size();
+	const std::string httpString = "HTTP/1.1";
+	const size_t httpStringSize = httpString.size();
 	std::vector<std::string> statusIdentifiers;
 	statusIdentifiers.push_back("Status");
 	statusIdentifiers.push_back(httpString);
@@ -237,11 +237,13 @@ void ResponseBuilder::parseResponseStatusLine(HTTPRequest& request)
  */
 void ResponseBuilder::parseResponseHeaders()
 {
+	const size_t sizeCRLF = 2;
+	const size_t sizeCRLFCRLF = 4;
 	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 
 	if (posHeadersEnd != std::string::npos) {
 		// Include one CRLF at the end of last header line
-		std::string headers = m_responseBody.substr(0, posHeadersEnd + 2);
+		std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
 		size_t lineStart = 0;
 		size_t lineEnd = headers.find("\r\n");
 
@@ -264,7 +266,7 @@ void ResponseBuilder::parseResponseHeaders()
 			lineEnd = headers.find("\r\n", lineStart);
 		}
 
-		m_responseBody = m_responseBody.substr(posHeadersEnd + 4);
+		m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
 	}
 }
 
