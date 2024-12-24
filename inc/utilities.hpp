@@ -28,6 +28,8 @@ std::string getGMTString(time_t now, const std::string& format);
 std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
+statusCode stringToStatusCode(std::string& str);
+statusCode extractStatusCode(const std::string& statusLine);
 bool isRedirectionStatus(statusCode statusCode);
 
 std::string methodToString(Method method);

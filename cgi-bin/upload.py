@@ -40,8 +40,7 @@ if not os.path.exists(directory_path):
     os.makedirs(directory_path)
     
 # Set the content type for the response
-print("Content-Type: text/html;charset=utf-8")
-print()
+print("Content-Type: text/html;charset=utf-8\r\n\r\n", end="")
 
 try:
     # Read from stdin
