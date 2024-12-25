@@ -37,6 +37,7 @@ public:
 
 private:
 	std::istringstream m_requestStream;
+    std::string m_boundary;
 
 	// RequestLine Parsing
 	void parseRequestLine(HTTPRequest& request);
@@ -48,6 +49,7 @@ private:
 
 	// Header Parsing
 	void parseHeaders(HTTPRequest& request);
+    void extractBoundary(HTTPRequest& request);
 
 	// Body Parsing
 	void parseChunkedBody(HTTPRequest& request);
@@ -71,4 +73,5 @@ private:
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
+    static bool isMultipartFormdata(HTTPRequest& request);
 };
