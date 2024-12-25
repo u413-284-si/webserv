@@ -30,6 +30,30 @@ TEST_F(ParseBodyTest, ChunkedBody)
 	EXPECT_EQ(request.body, "hello world!");
 }
 
+TEST_F(ParseBodyTest, ChunkedBodyWithNewline)
+{
+	// Arrange
+	request.isChunked = true;
+
+	// Act
+	p.parseBody("6\r\nhello \r\n8\r\nw\n\norld!\r\n0\r\n\r\n", request, buffer);
+
+	// Assert
+	EXPECT_EQ(request.body, "hello w\n\norld!");
+}
+
+TEST_F(ParseBodyTest, ChunkedBodyWithCRLF)
+{
+	// Arrange
+	request.isChunked = true;
+
+	// Act
+	p.parseBody("6\r\nhello \r\n8\r\nw\r\norld!\r\n0\r\n\r\n", request, buffer);
+
+	// Assert
+	EXPECT_EQ(request.body, "hello w\r\norld!");
+}
+
 TEST_F(ParseBodyTest, NonChunkedBodySize14)
 {
 	// Arrange
