@@ -30,13 +30,13 @@ void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& re
 	parseRequestLine(request);
 	parseHeaders(request);
 	if (isMultipartFormdata(request))
-		extractBoundary();
+		extractBoundary(request);
 	resetRequestStream();
 }
 
 void RequestParser::extractBoundary(HTTPRequest& request)
 {
-	const std::string denominator = "boundary=";
+	const std::string denominator = "boundary=----";
 
 	std::string temp = request.headers.at("content-type");
 	size_t posBoundary = temp.find(denominator);

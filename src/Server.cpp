@@ -1026,6 +1026,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		}
 	}
 
+    LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
+
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
@@ -1164,7 +1166,6 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		// Printing body can be confusing for big files.
 		//LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
-			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
