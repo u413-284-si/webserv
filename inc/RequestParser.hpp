@@ -3,14 +3,15 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
-#include "constants.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include "error.hpp"
 #include "utilities.hpp"
 
 #include <cassert>
+#include <cstring>
 #include <cstddef>
 #include <iostream>
 #include <map>
@@ -31,7 +32,7 @@ public:
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer);
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
@@ -50,7 +51,7 @@ private:
 	void parseHeaders(HTTPRequest& request);
 
 	// Body Parsing
-	void parseChunkedBody(HTTPRequest& request);
+	void parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer);
 	void parseNonChunkedBody(HTTPRequest& request);
 
 	// Checks

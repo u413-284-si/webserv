@@ -45,11 +45,11 @@ void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& re
  * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
  * message.
  */
-void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
+void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer)
 {
 	m_requestStream.str(bodyString);
 	if (request.isChunked)
-		parseChunkedBody(request);
+		parseChunkedBody(request, buffer);
 	else
 		parseNonChunkedBody(request);
 	resetRequestStream();
@@ -416,16 +416,17 @@ void RequestParser::parseHeaders(HTTPRequest& request)
  * parser.parseChunkedBody(requestStream);
  * @endcode
  */
-void RequestParser::parseChunkedBody(HTTPRequest& request)
+void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer)
 {
+    LOG_DEBUG << "Parsing chunked body...";
+
 	size_t length = 0;
 	std::string strChunkSize;
-	std::string chunkData;
 	size_t numChunkSize = 0;
 
 	do {
 		std::getline(m_requestStream, strChunkSize);
-		if (strChunkSize[strChunkSize.size() - 1] == '\r')
+		if (!strChunkSize.empty() && strChunkSize[strChunkSize.size() - 1] == '\r')
 			strChunkSize.erase(strChunkSize.size() - 1);
 		else {
 			request.httpStatus = StatusBadRequest;
@@ -433,20 +434,25 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 		numChunkSize = convertHex(strChunkSize);
-		std::getline(m_requestStream, chunkData);
-		if (chunkData[chunkData.size() - 1] == '\r')
-			chunkData.erase(chunkData.size() - 1);
-		else {
+        buffer.resize(numChunkSize + 2);
+
+		errno = 0;
+		m_requestStream.read(buffer.data(), static_cast<long>(numChunkSize + 2));
+		if (m_requestStream.gcount() != static_cast<std::streamsize>(numChunkSize + 2)) {
+			request.httpStatus = StatusInternalServerError;
+			request.shallCloseConnection = true;
+			throw std::runtime_error("read(): " + std::string(strerror(errno)));
+		}
+
+		if (buffer[buffer.size() - 2] == '\r' && buffer[buffer.size() - 1] == '\n') {
+			request.body.append(buffer.data(), numChunkSize);
+            buffer.clear();
+		} else {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
-		if (chunkData.size() != numChunkSize) {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_CHUNK_SIZE);
-		}
-		request.body += chunkData;
+
 		length += numChunkSize;
 	} while (numChunkSize > 0);
 	request.headers["content-length"] = webutils::toString(length);
@@ -490,7 +496,8 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
+	const long contentLength
+		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;
@@ -686,27 +693,27 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	}
 
 	if (iter->second.find(':') != std::string::npos) {
-		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
-			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
-				request.httpStatus = StatusBadRequest;
-				request.shallCloseConnection = true;
-				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
-			}
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))
+			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
+		}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
-	 } else {
+	} else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
-	 }
+	}
 
-	 LOG_DEBUG << "Valid host header: " << iter->second;
+	LOG_DEBUG << "Valid host header: " << iter->second;
 }
 
 /**
@@ -957,15 +964,14 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	return false;
 }
 
-
 /**
  * @brief Checks if a character is valid in a hostname and updates the alpha flag.
- * 
+ *
  * This function determines if the given character is a valid part of a hostname.
  * A valid hostname character is either an alphanumeric character or a hyphen ('-').
- * Additionally, if the character is an alphabetic character, the function sets the 
+ * Additionally, if the character is an alphabetic character, the function sets the
  * hasAlpha flag to true.
- * 
+ *
  * @param character The character to be checked.
  * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
  * @return true if the character is a valid hostname character, false otherwise.
