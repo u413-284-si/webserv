@@ -41,6 +41,7 @@ void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& re
  *
  * @param bodyString The string representation of the request body.
  * @param request The HTTPRequest object to populate with the parsed data.
+ * @param buffer The buffer to temporarily store the chunked body data.
  *
  * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
  * message.
@@ -403,6 +404,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
  * entry "Content-Length".
  *
  * @param request The HTTP request object to be filled.
+ * @param buffer The buffer to temporarily store the chunked body data.
  * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
  *
  * Error codes:
@@ -456,6 +458,8 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
 		length += numChunkSize;
 	} while (numChunkSize > 0);
 	request.headers["content-length"] = webutils::toString(length);
+
+    LOG_DEBUG << "Successfully parsed chunked body";
 }
 
 /**
@@ -483,6 +487,8 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
  */
 void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
+    LOG_DEBUG << "Parsing body...";
+
 	std::string body;
 	long length = 0;
 
@@ -503,6 +509,8 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
 	}
+
+    LOG_DEBUG << "Successfully parsed body";
 }
 
 /* ====== CHECKS ====== */
