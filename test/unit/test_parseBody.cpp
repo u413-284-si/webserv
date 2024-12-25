@@ -11,6 +11,7 @@ protected:
 	}
 	~ParseBodyTest() override { }
 
+    std::vector<char> buffer;
 	RequestParser p;
 	HTTPRequest request;
 };
@@ -23,7 +24,7 @@ TEST_F(ParseBodyTest, ChunkedBody)
 	request.isChunked = true;
 
 	// Act
-	p.parseBody("6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
+	p.parseBody("6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 
 	// Assert
 	EXPECT_EQ(request.body, "hello world!");
@@ -35,7 +36,7 @@ TEST_F(ParseBodyTest, NonChunkedBodySize14)
 	request.headers["content-length"] = "14";
 
 	// Act
-	p.parseBody("hello \r\nworld!", request);
+	p.parseBody("hello \r\nworld!", request, buffer);
 
 	// Assert
 	EXPECT_EQ(request.body, "hello \nworld!");
@@ -47,7 +48,7 @@ TEST_F(ParseBodyTest, NonChunkedBodySize16)
 	request.headers["content-length"] = "16";
 
 	// Act
-	p.parseBody("hello \r\nworld!\r\n", request);
+	p.parseBody("hello \r\nworld!\r\n", request, buffer);
 
 	// Assert
 	EXPECT_EQ(request.body, "hello \nworld!\n");
@@ -64,9 +65,9 @@ TEST_F(ParseBodyTest, DifferingChunkSize)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
+				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
 				throw;
 			}
 		},
@@ -82,7 +83,7 @@ TEST_F(ParseBodyTest, DifferingContentLength)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("hello \r\nworld!\r\n", request);
+				p.parseBody("hello \r\nworld!\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(
 					"Invalid HTTP request: Indicated content length different than actual body size", e.what());
@@ -101,9 +102,9 @@ TEST_F(ParseBodyTest, MissingCRLFInChunk)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseBody("6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
+				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
 				throw;
 			}
 		},
@@ -119,7 +120,7 @@ TEST_F(ParseBodyTest, MissingCRInChunk)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
+				p.parseBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
 				throw;
