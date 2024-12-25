@@ -105,7 +105,7 @@ public:
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer);
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
