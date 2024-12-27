@@ -105,6 +105,19 @@ TEST_F(ParseRequestLineTest, RequestLineWithDotSegments)
 	EXPECT_EQ(request.version, "1.1");
 }
 
+TEST_F(ParseRequestLineTest, RequestLineWithDotSegmentsOnlySlashLeft)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search/.. HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+
+	// Assert
+	EXPECT_EQ(request.method, MethodGet);
+	EXPECT_EQ(request.uri.path, "/");
+	EXPECT_EQ(request.version, "1.1");
+}
+
 TEST_F(ParseRequestLineTest, RequestLineWithDotsInName)
 {
 	// Arrange
