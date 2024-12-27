@@ -1065,12 +1065,12 @@ std::string RequestParser::decodePercentEncoding(const std::string& encoded, HTT
 	std::string::const_iterator iter = encoded.begin();
 
 	while (iter != encoded.end()) {
-		if (*iter == '%' && std::distance(iter, encoded.end()) < 3) {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
-		}
-		if (*iter == '%' && std::distance(iter, encoded.end()) >= 3) {
+		if (*iter == '%') {
+			if (std::distance(iter, encoded.end()) < 3) {
+				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
+				throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
+			}
 			if ((std::isxdigit(*(iter + 1)) == 0) || (std::isxdigit(*(iter + 2)) == 0)) {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
