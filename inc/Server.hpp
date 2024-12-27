@@ -72,8 +72,6 @@ public:
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();
 	std::vector<char>& getBuffer();
-	std::vector<char>& getClientBodyBuffer();
-	std::vector<char>& getCGIBodyBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
