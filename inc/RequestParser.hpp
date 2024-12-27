@@ -28,6 +28,7 @@ class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
 	static const int s_maxHostNameLength = 253; /**< Maximum length for DNS hostname */
+    static const int s_maxChunkSize = 8000; /**< Maximum size for a chunk in chunked encoding */
 
 	RequestParser();
 

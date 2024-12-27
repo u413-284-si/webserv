@@ -435,7 +435,14 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
+
 		numChunkSize = convertHex(strChunkSize);
+        if (numChunkSize > s_maxChunkSize) {
+            request.httpStatus = StatusRequestEntityTooLarge;
+            request.shallCloseConnection = true;
+            throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
+        }
+        
 		if (buffer.capacity() < numChunkSize + 2)
 			buffer.resize(numChunkSize + 2);
 
