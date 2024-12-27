@@ -218,7 +218,7 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 			request.uri.path.push_back(requestLine.at(index));
 	}
 
-	request.uri.path = removeDotSegments(request.uri.path);
+	request.uri.path = removeDotSegments(request.uri.path, request);
 	return (requestLine.substr(index));
 }
 
@@ -1074,17 +1074,14 @@ static bool isDoubleDot(const std::string::const_iterator& iter, const std::stri
 /**
  * @brief Removes last segment of a path denoted by '/'.
  *
+ * Output buffer always has at least one '/': a request needs to start with '/' per RFC 9110. Function is not entered if
+ * output is empty.
  * @param output Reference to buffer containing path.
  */
 static void removeLastSegment(std::string& output)
 {
-	if (!output.empty()) {
-		size_t lastSlash = output.find_last_of('/');
-		if (lastSlash != std::string::npos)
-			output.erase(lastSlash);
-		else
-			output.clear();
-	}
+	size_t lastSlash = output.find_last_of('/');
+	output.erase(lastSlash);
 }
 
 /**
@@ -1092,10 +1089,10 @@ static void removeLastSegment(std::string& output)
  *
  * Iterates through the string. If it finds a '/', increments and checks for
  * - isSingleDot() = "/." - increment to ignore dot segment.
- * - isDoubleDot() = "/.." - increment to ignore double dot segment and removeLastSegment() of output.
+ * - isDoubleDot() = "/.." - if output buffer is empty throw and set status to BadRequest since it travels outside of
+ * root. Else increment to ignore double dot segment and removeLastSegment() of output.
  * - else - append a '/' to output buffer.
  * If not a '/' append to buffer.
- * If buffer is empty at the end append a '/' to it.
  *
  * This implements the algorithm as described in RFC 3986 Sect. 5.2.4.
  * However it does not handle all described algorithm conditions
@@ -1106,8 +1103,9 @@ static void removeLastSegment(std::string& output)
  * @sa https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.4
  * @param path Where to remove possible dot segments from.
  * @return std::string String with dot segments removed.
+ * @throws std::runtime_error If double dot segment is encountered while output is empty.
  */
-std::string RequestParser::removeDotSegments(const std::string& path)
+std::string RequestParser::removeDotSegments(const std::string& path, HTTPRequest& request)
 {
 	std::string output;
 	std::string::const_iterator iter = path.begin();
@@ -1122,6 +1120,11 @@ std::string RequestParser::removeDotSegments(const std::string& path)
 			}
 
 			if (isDoubleDot(iter, path.end())) {
+				if (output.empty()) {
+					request.httpStatus = StatusBadRequest;
+					request.shallCloseConnection = true;
+					throw std::runtime_error(ERR_DIRECTORY_TRAVERSAL);
+				}
 				iter += 2;
 				removeLastSegment(output);
 				continue;
@@ -1133,5 +1136,5 @@ std::string RequestParser::removeDotSegments(const std::string& path)
 			iter++;
 		}
 	}
-	return output.empty() ? "/" : output;
+	return output;
 }
