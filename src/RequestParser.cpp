@@ -420,7 +420,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
  */
 void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer)
 {
-    LOG_DEBUG << "Parsing chunked body...";
+	LOG_DEBUG << "Parsing chunked body...";
 
 	size_t length = 0;
 	std::string strChunkSize;
@@ -436,7 +436,8 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 		numChunkSize = convertHex(strChunkSize);
-        buffer.resize(numChunkSize + 2);
+		if (buffer.capacity() < numChunkSize + 2)
+			buffer.resize(numChunkSize + 2);
 
 		errno = 0;
 		m_requestStream.read(buffer.data(), static_cast<long>(numChunkSize + 2));
@@ -446,9 +447,8 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
 			throw std::runtime_error("read(): " + std::string(strerror(errno)));
 		}
 
-		if (buffer[buffer.size() - 2] == '\r' && buffer[buffer.size() - 1] == '\n') {
+		if (buffer.at(numChunkSize) == '\r' && buffer.at(numChunkSize + 1) == '\n') {
 			request.body.append(buffer.data(), numChunkSize);
-            buffer.clear();
 		} else {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
@@ -459,7 +459,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
 	} while (numChunkSize > 0);
 	request.headers["content-length"] = webutils::toString(length);
 
-    LOG_DEBUG << "Successfully parsed chunked body";
+	LOG_DEBUG << "Successfully parsed chunked body";
 }
 
 /**
@@ -487,7 +487,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
  */
 void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 {
-    LOG_DEBUG << "Parsing body...";
+	LOG_DEBUG << "Parsing body...";
 
 	std::string body;
 	long length = 0;
@@ -510,7 +510,7 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
 	}
 
-    LOG_DEBUG << "Successfully parsed body";
+	LOG_DEBUG << "Successfully parsed body";
 }
 
 /* ====== CHECKS ====== */
