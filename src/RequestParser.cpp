@@ -1136,5 +1136,5 @@ std::string RequestParser::removeDotSegments(const std::string& path, HTTPReques
 			iter++;
 		}
 	}
-	return output;
+	return output.empty() ? "/" : output;
 }
