@@ -39,7 +39,6 @@ Location::Location(void)
 	, hasAutoindex(false)
 	, maxBodySize(constants::g_oneMegabyte)
 	, allowedMethods()
-	, alias(std::pair<bool, std::string>(false, ""))
 {
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();
@@ -111,7 +110,7 @@ ConfigFile createDummyConfig()
 	Location location11;
 	location11.path = "/alias/";
 	location11.root = "/workspaces/webserv/html";
-	location11.alias = std::make_pair(true, "/workspaces/webserv/html/images/");
+	location11.alias = "/workspaces/webserv/html/images/";
 
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();

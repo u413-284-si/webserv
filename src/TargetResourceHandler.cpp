@@ -70,10 +70,10 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		return (locInfo);
 	}
 
-	if (locInfo.activeLocation->alias.first) {
-		LOG_DEBUG << "Alias found: " << locInfo.activeLocation->alias.second;
+	if (!locInfo.activeLocation->alias.empty()) {
+		LOG_DEBUG << "Alias found: " << locInfo.activeLocation->alias;
 		locInfo.targetResource
-			= webutils::replaceAlias(locInfo.path, locInfo.activeLocation->path, locInfo.activeLocation->alias.second);
+			= webutils::replaceAlias(locInfo.path, locInfo.activeLocation->path, locInfo.activeLocation->alias);
 	} else
 		locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
