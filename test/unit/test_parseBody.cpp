@@ -11,7 +11,7 @@ protected:
 	}
 	~ParseBodyTest() override { }
 
-    std::vector<char> buffer;
+	std::vector<char> buffer;
 	RequestParser p;
 	HTTPRequest request;
 };

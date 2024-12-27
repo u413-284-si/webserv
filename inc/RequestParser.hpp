@@ -11,8 +11,8 @@
 #include "utilities.hpp"
 
 #include <cassert>
-#include <cstring>
 #include <cstddef>
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -28,7 +28,7 @@ class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
 	static const int s_maxHostNameLength = 253; /**< Maximum length for DNS hostname */
-    static const int s_maxChunkSize = 8000; /**< Maximum size for a chunk in chunked encoding */
+	static const int s_maxChunkSize = 8000; /**< Maximum size for a chunk in chunked encoding */
 
 	RequestParser();
 
