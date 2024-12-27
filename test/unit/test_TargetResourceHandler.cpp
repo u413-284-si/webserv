@@ -48,7 +48,7 @@ protected:
 		Location location7;
 		location7.path = "/alias";
 		location7.root = "/sixth/location";
-		location7.alias = std::make_pair(true, "/new/path");
+		location7.alias = "/new/path";
 
 		m_configFile.servers[0].locations.pop_back();
 		m_configFile.servers[0].locations.push_back(location3);
