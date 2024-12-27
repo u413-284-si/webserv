@@ -442,16 +442,20 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
             request.shallCloseConnection = true;
             throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
         }
-        
+
 		if (buffer.capacity() < numChunkSize + 2)
 			buffer.resize(numChunkSize + 2);
 
 		errno = 0;
 		m_requestStream.read(buffer.data(), static_cast<long>(numChunkSize + 2));
 		if (m_requestStream.gcount() != static_cast<std::streamsize>(numChunkSize + 2)) {
-			request.httpStatus = StatusInternalServerError;
+            if (!m_requestStream.good() && !m_requestStream.eof()) {
+                request.httpStatus = StatusInternalServerError;
+                throw std::runtime_error("read(): " + std::string(strerror(errno)));
+            }
+			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
-			throw std::runtime_error("read(): " + std::string(strerror(errno)));
+			throw std::runtime_error(ERR_CHUNKSIZE_INCONSISTENT);
 		}
 
 		if (buffer.at(numChunkSize) == '\r' && buffer.at(numChunkSize + 1) == '\n') {

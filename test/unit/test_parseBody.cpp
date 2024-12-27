@@ -98,6 +98,24 @@ TEST_F(ParseBodyTest, DifferingChunkSize)
 		std::runtime_error);
 }
 
+TEST_F(ParseBodyTest, IndicatedTooLargeChunkSize)
+{
+	// Arrange
+	request.isChunked = true;
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseBody("35\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(ParseBodyTest, DifferingContentLength)
 {
 	// Arrange
