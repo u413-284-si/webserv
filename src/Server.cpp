@@ -1137,7 +1137,6 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		// LOG_DEBUG << connection.m_buffer;
 		try {
 			std::vector<char>& buffer = server.getBuffer();
-			buffer.clear();
 			server.parseBody(connection.m_buffer, connection.m_request, buffer);
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
