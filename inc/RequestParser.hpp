@@ -54,6 +54,7 @@ private:
 	// Body Parsing
 	void parseChunkedBody(HTTPRequest& request);
 	void parseNonChunkedBody(HTTPRequest& request);
+    void decodeMultipartFormdata(HTTPRequest& request);
 
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);

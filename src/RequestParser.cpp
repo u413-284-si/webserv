@@ -72,6 +72,8 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
 		parseChunkedBody(request);
 	else
 		parseNonChunkedBody(request);
+    if (request.hasMultipartFormdata)
+        decodeMultipartFormdata(request);
 	resetRequestStream();
 }
 
@@ -517,6 +519,15 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_CONTENT_LENGTH);
 	}
+}
+
+void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
+{
+    // while loop going through each line
+    // if line contains boundary, remove line
+    // save form-data into a map?
+    // save filename as targetresource
+    // replace request.body with file content
 }
 
 /* ====== CHECKS ====== */
