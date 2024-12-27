@@ -71,4 +71,4 @@ def test_invalid_directory_traversal():
 
         # Receive the response
         response = parse_http_response(sock)
-        assert response["status_code"] == 404
+        assert response["status_code"] == 400
