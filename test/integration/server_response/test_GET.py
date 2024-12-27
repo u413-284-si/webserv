@@ -32,3 +32,11 @@ def test_GET_directory_redirect():
 # does not work right now
 #    assert response.headers["location"] == "/directory/"
     assert response.status_code == 301
+
+def test_GET_location_with_alias():
+    print("Request for /alias/cat.jpg")
+    response = requests.get("http://localhost:8080/alias/cat.jpg")
+    file_path = "/workspaces/webserv/html/images/cat.jpg"
+    file_size = os.path.getsize(file_path)
+    assert int(response.headers["content-length"]) == file_size
+    assert response.status_code == 200
