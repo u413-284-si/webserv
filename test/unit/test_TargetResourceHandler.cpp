@@ -45,6 +45,11 @@ protected:
 		location6.root = "/sixth/location";
 		location6.returns = std::make_pair(StatusMovedPermanently, "/newlocation");
 
+		Location location7;
+		location7.path = "/alias";
+		location7.root = "/sixth/location";
+		location7.alias = "/new/path";
+
 		m_configFile.servers[0].locations.pop_back();
 		m_configFile.servers[0].locations.push_back(location3);
 		m_configFile.servers[0].locations.push_back(location2);
@@ -52,6 +57,7 @@ protected:
 		m_configFile.servers[0].locations.push_back(location1);
 		m_configFile.servers[0].locations.push_back(location5);
 		m_configFile.servers[0].locations.push_back(location6);
+		m_configFile.servers[0].locations.push_back(location7);
 	}
 	~TargetResourceHandlerTest() override { }
 
@@ -239,4 +245,17 @@ TEST_F(TargetResourceHandlerTest, SimpleRedirection)
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
 	EXPECT_EQ(m_request.targetResource, "/newlocation");
 	EXPECT_TRUE(m_request.hasReturn);
+}
+
+TEST_F(TargetResourceHandlerTest, LocationWithAlias)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
+
+	m_request.uri.path = "/alias/test";
+
+	m_targetResourceHandler.execute(m_connection);
+
+	EXPECT_EQ(m_request.targetResource, "/new/path/test");
+	EXPECT_EQ(m_request.httpStatus, StatusOK);
 }
