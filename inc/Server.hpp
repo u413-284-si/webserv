@@ -5,7 +5,6 @@
 #include "CGIHandler.hpp"
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
-#include "constants.hpp"
 #include "EpollWrapper.hpp"
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"
@@ -16,6 +15,7 @@
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
+#include "constants.hpp"
 #include "error.hpp"
 #include "signalHandler.hpp"
 
@@ -88,7 +88,7 @@ public:
 	bool addEvent(int newfd, uint32_t eventMask) const;
 	bool modifyEvent(int modfd, uint32_t eventMask) const;
 	void removeEvent(int delfd) const;
-    int getEpollFd() const;
+	int getEpollFd() const;
 
 	// Dispatch to SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
@@ -99,9 +99,9 @@ public:
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
-    // Dispatch to ProcessOps
-    ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
-    ssize_t writeProcess(int fileDescriptor, const char* buffer, size_t size) const;
+	// Dispatch to ProcessOps
+	ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
+	ssize_t writeProcess(int fileDescriptor, const char* buffer, size_t size) const;
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
@@ -119,7 +119,7 @@ private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
 	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
-    const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
+	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
