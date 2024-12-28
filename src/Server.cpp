@@ -1148,7 +1148,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+		// LOG_DEBUG << connection.m_buffer;
 		try {
 			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
@@ -1162,7 +1162,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+		// LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
