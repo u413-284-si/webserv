@@ -6,7 +6,7 @@
  * @brief Constructor for the Server class.
 
  * The Server constructor initializes a Server object with the provided configuration file, EpollWrapper, and
- * SocketPoolicy, along with other member variables.
+ * SocketPolicy, along with other member variables.
  * The passed EpollWrapper is saved as a non-const ref as it needs to be modifiable.
  * The passed SocketPolicy is saved as a const ref.
  *
@@ -14,15 +14,17 @@
  * `Server` constructor. It is used to configure the server with settings such especially the number and
  * configuration of virtual servers.
  * @param epollWrapper A ready to use epoll instance. Can be mocked for testing.
- * @param socketPolicy Policy class for functions related to mocking. Can be mocked for testing.
+ * @param fileSystemPolicy Class for filesystem related functions. Can be mocked for testing.
+ * @param socketPolicy Policy class for socket related functions. Can be mocked for testing.
  * @param processOps Wrapper for process-related functions. Can be mocked for testing.
 
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
-Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy,
-	const ProcessOps& processOps)
+Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemPolicy& fileSystemPolicy,
+	const SocketPolicy& socketPolicy, const ProcessOps& processOps)
 	: m_configFile(configFile)
 	, m_epollWrapper(epollWrapper)
+	, m_fileSystemPolicy(fileSystemPolicy)
 	, m_socketPolicy(socketPolicy)
 	, m_processOps(processOps)
 	, m_backlog(s_backlog)

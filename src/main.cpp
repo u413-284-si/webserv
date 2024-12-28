@@ -44,6 +44,7 @@ int main(const int argc, const char* argv[])
 
 	try {
 		EpollWrapper epollWrapper(10, -1);
+		FileSystemPolicy fileSystemPolicy;
 		SocketPolicy socketPolicy;
 		ProcessOps processOps;
 
@@ -52,7 +53,7 @@ int main(const int argc, const char* argv[])
 
 		configFile = createDummyConfig();
 
-		Server server(configFile, epollWrapper, socketPolicy, processOps);
+		Server server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		runServer(server);
 	} catch (std::exception& e) {
