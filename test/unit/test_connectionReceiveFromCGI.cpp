@@ -2,12 +2,11 @@
 #include <gtest/gtest.h>
 #include <unistd.h>
 
-#include "Connection.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
-#include "StatusCode.hpp"
 
 using ::testing::_;
 using ::testing::DoAll;
@@ -18,7 +17,6 @@ using ::testing::SetArrayArgument;
 class ConnectionReceiveFromCGITest : public ::testing::Test {
 protected:
 	ConnectionReceiveFromCGITest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		serverConfig.host = serverSock.host;
 		serverConfig.port = serverSock.port;
@@ -35,11 +33,13 @@ protected:
 	const int dummyFd = 10;
 	Socket serverSock = { "127.0.0.1", "8080" };
 	Socket clientSocket = { "192.168.0.1", "12345" };
+
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
 	MockProcessOps processOps;
-	Server server;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 	ConfigServer serverConfig;
 	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
 	int pipefd[2];

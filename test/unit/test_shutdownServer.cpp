@@ -2,17 +2,18 @@
 #include <gtest/gtest.h>
 
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
 
 using ::testing::NiceMock;
 using ::testing::Return;
+ConfigFile createTestConfigfile();
 
 class ShutdownServerTest : public ::testing::Test {
 protected:
 	ShutdownServerTest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		struct epoll_event dummyEvent;
 		dummyEvent.events = EPOLLIN;
@@ -27,11 +28,12 @@ protected:
 	}
 	~ShutdownServerTest() override { }
 
-	ConfigFile configFile = createDummyConfig();
+	ConfigFile configFile = createTestConfigfile();
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
+	MockProcessOps processOps;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 	std::vector<struct epoll_event> dummyEventsVector;
 
 	const int dummyFd = 10;

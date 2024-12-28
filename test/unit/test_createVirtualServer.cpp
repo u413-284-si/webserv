@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
@@ -13,7 +14,7 @@ using ::testing::NiceMock;
 
 class CreateVirtualServerTest : public ::testing::Test {
 	protected:
-	CreateVirtualServerTest() : server(configFile, epollWrapper, socketPolicy, processOps)
+	CreateVirtualServerTest()
 	{
 		ON_CALL(epollWrapper, addEvent)
 		.WillByDefault(Return(true));
@@ -22,9 +23,10 @@ class CreateVirtualServerTest : public ::testing::Test {
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
+	MockProcessOps processOps;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 
 	std::string host = "127.0.0.1";
 	std::string port = "8080";

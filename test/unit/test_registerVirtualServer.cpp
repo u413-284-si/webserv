@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
@@ -12,14 +12,18 @@ using ::testing::NiceMock;
 
 class RegisterVirtualServerTest : public ::testing::Test {
 	protected:
-	RegisterVirtualServerTest() : server(configFile, epollWrapper, socketPolicy, processOps) { }
+	RegisterVirtualServerTest()
+	{
+
+	}
 	~RegisterVirtualServerTest() override { }
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
+	MockProcessOps processOps;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 
 	Socket socket = {
 		"127.0.0.1",

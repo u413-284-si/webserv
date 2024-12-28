@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
@@ -12,7 +13,6 @@ using ::testing::Return;
 class AcceptConnectionsTest : public ::testing::Test {
 protected:
 	AcceptConnectionsTest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ConfigServer serverConfig;
 		serverConfig.host = serverSock.host;
@@ -26,9 +26,10 @@ protected:
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
+	MockProcessOps processOps;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 
 	const int dummyServerFd = 10;
 	Socket serverSock = { "127.0.0.1", "8080" };

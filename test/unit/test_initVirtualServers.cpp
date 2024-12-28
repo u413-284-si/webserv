@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "MockSocketPolicy.hpp"
 #include "Server.hpp"
@@ -13,7 +13,6 @@ using ::testing::Return;
 class InitVirtualServersTest : public ::testing::Test {
 protected:
 	InitVirtualServersTest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ConfigServer serverConfig;
 		serverConfig.host = "127.0.0.1";
@@ -33,9 +32,10 @@ protected:
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
 	MockProcessOps processOps;
-	Server server;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 
 	const int backlog = 10;
 

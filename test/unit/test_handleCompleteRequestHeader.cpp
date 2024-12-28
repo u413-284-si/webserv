@@ -2,18 +2,18 @@
 #include <gtest/gtest.h>
 
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
-#include "StatusCode.hpp"
 
 using ::testing::NiceMock;
 using ::testing::Return;
+ConfigFile createTestConfigfile();
 
 class HandleCompleteRequestHeaderTest : public ::testing::Test {
 protected:
 	HandleCompleteRequestHeaderTest()
-		: m_server(m_configFile, m_epollWrapper, m_socketPolicy, processOps)
 	{
 		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
 
@@ -22,21 +22,25 @@ protected:
 	}
 	~HandleCompleteRequestHeaderTest() override { }
 
-    const int m_dummyFd = 10;
-	ConfigFile m_configFile = createDummyConfig();
+	const int m_dummyFd = 10;
+	ConfigFile m_configFile = createTestConfigfile();
 	NiceMock<MockEpollWrapper> m_epollWrapper;
+	MockFileSystemPolicy m_fileSystemPolicy;
 	MockSocketPolicy m_socketPolicy;
-    MockProcessOps processOps;
-	Server m_server;
+	MockProcessOps processOps;
+	Server m_server = Server(m_configFile, m_epollWrapper, m_fileSystemPolicy, m_socketPolicy, processOps);
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 
 	Connection m_connection = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
 
-	
+
 };
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequest)
 {
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(Return(FileSystemPolicy::FileRegular));
+
 	m_connection.m_buffer.assign("GET / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
@@ -47,6 +51,9 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequest)
 
 TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 {
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(Return(FileSystemPolicy::FileRegular));
+
 	m_connection.m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
@@ -57,6 +64,9 @@ TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 
 TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 {
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(Return(FileSystemPolicy::FileRegular));
+
 	m_connection.m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body");
 	m_configFile.servers[0].locations[0].allowedMethods[MethodPost] = true;
 

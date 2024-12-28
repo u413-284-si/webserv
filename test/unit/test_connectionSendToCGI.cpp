@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 #include <unistd.h>
 
-#include "Connection.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
@@ -14,13 +14,12 @@ using ::testing::Return;
 class ConnectionSendToCGITest : public ::testing::Test {
 protected:
 	ConnectionSendToCGITest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		serverConfig.host = serverSock.host;
 		serverConfig.port = serverSock.port;
 		configFile.servers.push_back(serverConfig);
-       	connection.m_pipeToCGIWriteEnd = pipefd[1];
-        connection.m_request.body = "test body";
+    	connection.m_pipeToCGIWriteEnd = pipefd[1];
+    	connection.m_request.body = "test body";
 
 		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 
@@ -34,12 +33,13 @@ protected:
 	Socket clientSocket = { "192.168.0.1", "12345" };
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
+	MockProcessOps processOps;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 	ConfigServer serverConfig;
-   	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
-    int pipefd[2];
+	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
+	int pipefd[2];
 
     void SetUp() override {
         // Create a pipe

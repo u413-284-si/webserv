@@ -3,6 +3,7 @@
 
 #include "Server.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 
@@ -10,6 +11,7 @@ using ::testing::DoAll;
 using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::SetArrayArgument;
+ConfigFile createTestConfigfile();
 
 class ConnectionReceiveBodyTest : public ::testing::Test {
 protected:
@@ -22,11 +24,12 @@ protected:
 	}
 	~ConnectionReceiveBodyTest() override { }
 
-	ConfigFile m_configFile = createDummyConfig();
+	ConfigFile m_configFile = createTestConfigfile();
 	NiceMock<MockEpollWrapper> m_epollWrapper;
+	MockFileSystemPolicy m_fileSystemPolicy;
 	MockSocketPolicy m_socketPolicy;
 	MockProcessOps m_processOps;
-	Server m_server = Server(m_configFile, m_epollWrapper, m_socketPolicy, m_processOps);
+	Server m_server = Server(m_configFile, m_epollWrapper, m_fileSystemPolicy, m_socketPolicy, m_processOps);
 
 	Socket m_serverSock = {
 		.host = "127.0.0.1",

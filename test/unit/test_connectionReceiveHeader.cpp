@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
+#include "MockFileSystemPolicy.hpp"
 #include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
 #include "Server.hpp"
@@ -15,7 +15,6 @@ using ::testing::SetArrayArgument;
 class ConnectionReceiveHeaderTest : public ::testing::Test {
 protected:
 	ConnectionReceiveHeaderTest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
 		ON_CALL(epollWrapper, modifyEvent)
 			.WillByDefault(Return(true));
@@ -25,11 +24,13 @@ protected:
 	}
 	~ConnectionReceiveHeaderTest() override { }
 
-	ConfigFile configFile = createDummyConfig();
+	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
+	MockFileSystemPolicy fileSystemPolicy;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
+	MockProcessOps processOps;
+	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
+	
 	Socket m_serverSock = {
 		.host = "127.0.0.1",
 		.port = "8080"

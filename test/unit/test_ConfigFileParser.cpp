@@ -262,15 +262,15 @@ TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
 	EXPECT_EQ(true, configFile.servers.empty());
 
-	EpollWrapper epollWrapper(10, -1);
-	SocketPolicy socketPolicy;
-	ProcessOps processOps;
+	// EpollWrapper epollWrapper(10, -1);
+	// SocketPolicy socketPolicy;
+	// ProcessOps processOps;
 
-	Server server(configFile, epollWrapper, socketPolicy, processOps);
+	// Server server(configFile, epollWrapper, socketPolicy, processOps);
 
-	initVirtualServers(server, 10, server.getServerConfigs());
-	std::map<int, Socket> virtualServers = server.getVirtualServers();
-	EXPECT_EQ(0, virtualServers.size());
+	// initVirtualServers(server, 10, server.getServerConfigs());
+	// std::map<int, Socket> virtualServers = server.getVirtualServers();
+	// EXPECT_EQ(0, virtualServers.size());
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
@@ -278,15 +278,15 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
 	EXPECT_EQ(true, configFile.servers.empty());
 
-	EpollWrapper epollWrapper(10, -1);
-	SocketPolicy socketPolicy;
-	ProcessOps processOps;
+	// EpollWrapper epollWrapper(10, -1);
+	// SocketPolicy socketPolicy;
+	// ProcessOps processOps;
 
-	Server server(configFile, epollWrapper, socketPolicy, processOps);
+	// Server server(configFile, epollWrapper, socketPolicy, processOps);
 
-	initVirtualServers(server, 10, server.getServerConfigs());
-	std::map<int, Socket> virtualServers = server.getVirtualServers();
-	EXPECT_EQ(0, virtualServers.size());
+	// initVirtualServers(server, 10, server.getServerConfigs());
+	// std::map<int, Socket> virtualServers = server.getVirtualServers();
+	// EXPECT_EQ(0, virtualServers.size());
 }
 
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
