@@ -37,3 +37,11 @@ def test_GET_percent_encoded():
     print("Request for /images/grüne äpfel.jpg")
     response = requests.get("http://localhost:8080/images/grüne äpfel.jpg")
     assert response.status_code == 200
+
+def test_GET_location_with_alias():
+    print("Request for /alias/cat.jpg")
+    response = requests.get("http://localhost:8080/alias/cat.jpg")
+    file_path = "/workspaces/webserv/html/images/cat.jpg"
+    file_size = os.path.getsize(file_path)
+    assert int(response.headers["content-length"]) == file_size
+    assert response.status_code == 200
