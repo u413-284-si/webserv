@@ -10,12 +10,16 @@ var namespaceserver__response =
       [ "test_GET_simple", "namespaceserver__response_1_1test___g_e_t.html#a8266fddc7bf1debe38627a7c50abc1cf", null ],
       [ "test_GET_index_file", "namespaceserver__response_1_1test___g_e_t.html#a16e3d1cf9607cfa3f8fac4a85b199e7e", null ],
       [ "test_GET_directory_listing", "namespaceserver__response_1_1test___g_e_t.html#a9ff87ff3ea6df6a80b9316f4c23a03d0", null ],
-      [ "test_GET_directory_redirect", "namespaceserver__response_1_1test___g_e_t.html#a975f6fb5a79f55c1678cd51c0c9fb936", null ]
+      [ "test_GET_directory_redirect", "namespaceserver__response_1_1test___g_e_t.html#a975f6fb5a79f55c1678cd51c0c9fb936", null ],
+      [ "test_GET_percent_encoded", "namespaceserver__response_1_1test___g_e_t.html#ace1110ebb5d7b133467172602207fd11", null ]
     ] ],
     [ "test_invalid", "namespaceserver__response_1_1test__invalid.html", [
       [ "parse_http_response", "namespaceserver__response_1_1test__invalid.html#afa1f05e636e91423afac143f874bc912", null ],
       [ "test_invalid_method_not_implemented", "namespaceserver__response_1_1test__invalid.html#a15ede1064d574a203ea5178e9bcc6a31", null ],
       [ "test_invalid_missing_host_header", "namespaceserver__response_1_1test__invalid.html#a9d5da492eefd64a3e55bf317cf00419c", null ],
+      [ "test_invalid_percent_encoding_invalid_char", "namespaceserver__response_1_1test__invalid.html#a575ca8c686032237b821a81b819cf3e9", null ],
+      [ "test_invalid_percent_encoding_incomplete", "namespaceserver__response_1_1test__invalid.html#a0e3a3e34d455274041d418c7f0831bf1", null ],
+      [ "test_invalid_percent_encoding_non_hex", "namespaceserver__response_1_1test__invalid.html#a6d9ee4ebbf018956474217c903665037", null ],
       [ "host", "namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b", null ],
       [ "port", "namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64", null ]
     ] ],

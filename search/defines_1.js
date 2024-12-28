@@ -28,7 +28,10 @@ var searchData=
   ['err_5fnon_5ffinal_5fchunked_5fencoding_25',['ERR_NON_FINAL_CHUNKED_ENCODING',['../error_8hpp.html#a921d1cf264a755c9ef65a0493569011a',1,'error.hpp']]],
   ['err_5fnonsupported_5fversion_26',['ERR_NONSUPPORTED_VERSION',['../error_8hpp.html#a815b2c17f803d458c5e4931b4d5eb51a',1,'error.hpp']]],
   ['err_5fobsolete_5fline_5ffolding_27',['ERR_OBSOLETE_LINE_FOLDING',['../error_8hpp.html#acd2321beeb370570a6a3898a9949d936',1,'error.hpp']]],
-  ['err_5funexpected_5fbody_28',['ERR_UNEXPECTED_BODY',['../error_8hpp.html#afef097336b6960957a448f3b0c632802',1,'error.hpp']]],
-  ['err_5furi_5finvalid_5fchar_29',['ERR_URI_INVALID_CHAR',['../error_8hpp.html#a1417817850f6443a48364c138035db6b',1,'error.hpp']]],
-  ['err_5furi_5fmiss_5fslash_30',['ERR_URI_MISS_SLASH',['../error_8hpp.html#a6f2eebf5a5e43404d9d68b669c1d942c',1,'error.hpp']]]
+  ['err_5fpercent_5fincomplete_28',['ERR_PERCENT_INCOMPLETE',['../error_8hpp.html#a944e032ed9f210923fb00fcf64291f10',1,'error.hpp']]],
+  ['err_5fpercent_5finvalid_5fhex_29',['ERR_PERCENT_INVALID_HEX',['../error_8hpp.html#a4b8f85a1e221481da89896dc93d34059',1,'error.hpp']]],
+  ['err_5fpercent_5fnonsupported_5fnul_30',['ERR_PERCENT_NONSUPPORTED_NUL',['../error_8hpp.html#ae4fe3ea2a5ab7c6f909650dcf3f40737',1,'error.hpp']]],
+  ['err_5funexpected_5fbody_31',['ERR_UNEXPECTED_BODY',['../error_8hpp.html#afef097336b6960957a448f3b0c632802',1,'error.hpp']]],
+  ['err_5furi_5finvalid_5fchar_32',['ERR_URI_INVALID_CHAR',['../error_8hpp.html#a1417817850f6443a48364c138035db6b',1,'error.hpp']]],
+  ['err_5furi_5fmiss_5fslash_33',['ERR_URI_MISS_SLASH',['../error_8hpp.html#a6f2eebf5a5e43404d9d68b669c1d942c',1,'error.hpp']]]
 ];
