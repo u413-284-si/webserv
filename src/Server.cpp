@@ -118,6 +118,13 @@ const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_con
 time_t Server::getClientTimeout() const { return m_clientTimeout; }
 
 /**
+ * @brief Const Getter for ProcessOps.
+ *
+ * @return const ProcessOps& Registered ProcessOps object.
+ */
+const ProcessOps& Server::getProcessOps() const { return m_processOps; }
+
+/**
  * @brief Getter for client header buffer.
  *
  * @return std::vector<char>& Client header buffer.
@@ -1012,8 +1019,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
-		ProcessOps processOps;
-		CGIHandler cgiHandler(connection, processOps);
+		CGIHandler cgiHandler(connection, server.getProcessOps());
 		if (connection.m_request.httpStatus == StatusInternalServerError) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
