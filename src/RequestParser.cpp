@@ -216,6 +216,9 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		else
 			request.uri.path.push_back(requestLine.at(index));
 	}
+	request.uri.path = decodePercentEncoding(request.uri.path, request);
+	request.uri.fragment = decodePercentEncoding(request.uri.fragment, request);
+	request.uri.query = decodePercentEncoding(request.uri.query, request);
 	return (requestLine.substr(index));
 }
 
@@ -490,7 +493,8 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 		length += static_cast<long>(body.size());
 		request.body += body;
 	}
-	const long contentLength = std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
+	const long contentLength
+		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
 	if (contentLength != length) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;
@@ -686,27 +690,27 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	}
 
 	if (iter->second.find(':') != std::string::npos) {
-		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))) ||
-			!webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
-				request.httpStatus = StatusBadRequest;
-				request.shallCloseConnection = true;
-				throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
-			}
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))
+			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
+		}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
 		}
-	 } else {
+	} else {
 		if (!isValidHostname(iter->second)) {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
 		}
-	 }
+	}
 
-	 LOG_DEBUG << "Valid host header: " << iter->second;
+	LOG_DEBUG << "Valid host header: " << iter->second;
 }
 
 /**
@@ -782,6 +786,7 @@ void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
  *
  * This function determines if the provided character `character` is a valid character in a URI.
  * It checks against both unreserved and reserved characters as per the URI specification.
+ * It also accepts `%` as encoding character.
  *
  * The unreserved characters include:
  * - Alphanumeric characters (letters and digits)
@@ -817,7 +822,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
 	if ((std::isalnum(chr) != 0) || chr == '-' || chr == '.' || chr == '_' || chr == '~')
 		return false;
 
-	// Check for reserved characters
+	// Check for reserved characters and encoding char `%`
 	switch (chr) {
 	case ':':
 	case '/':
@@ -837,6 +842,7 @@ bool RequestParser::isNotValidURIChar(uint8_t chr)
 	case ',':
 	case ';':
 	case '=':
+	case '%':
 		return false;
 	default:
 		return true;
@@ -957,15 +963,14 @@ bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
 	return false;
 }
 
-
 /**
  * @brief Checks if a character is valid in a hostname and updates the alpha flag.
- * 
+ *
  * This function determines if the given character is a valid part of a hostname.
  * A valid hostname character is either an alphanumeric character or a hyphen ('-').
- * Additionally, if the character is an alphabetic character, the function sets the 
+ * Additionally, if the character is an alphabetic character, the function sets the
  * hasAlpha flag to true.
- * 
+ *
  * @param character The character to be checked.
  * @param hasAlpha A reference to a boolean flag that will be set to true if the character is alphabetic.
  * @return true if the character is a valid hostname character, false otherwise.
@@ -1033,4 +1038,59 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 		labelStart = labelEnd + 1;
 	}
 	return hasAlpha;
+}
+
+/**
+ * @brief Decodes a percent encoded string.
+ *
+ * Iterates through the string. If it finds a '%' it converts the next two chars to hex and appends the char to the
+ * buffer. Then jumps over the triplet. Else it just adds the char to the buffer.
+ * Sets HTTP status to StatusBadRequest, shallCloseConnection to true, and throws if
+ * - '%' is not followed by two chars.
+ * - "%00" is encountered ('\0' or NUL terminator). This char is not supported.
+ * - a percent encoded triplet consists of non-hex chars.
+ *
+ * According to RFV 3986 Sect 2.1. percent encoding is used to represent a char which is outside of the allowed set.
+ * This could either be a unicode character like 'ö' or a reserved char with special meaning. Char is encoded with a
+ * triplet consisting of percent char '%' followed by the two hexadecimal digits representing the chars numeric value.
+ * @param encoded The percent encoded string.
+ * @param request The HTTP request object to be filled.
+ * @return std::string The decoded string.
+ * @throws std::runtime_error if invalid "%00" is encountered or '%' is not followed by two chars.
+ * @sa https://datatracker.ietf.org/doc/html/rfc3986#section-2.1
+ */
+std::string RequestParser::decodePercentEncoding(const std::string& encoded, HTTPRequest& request)
+{
+	std::string decoded;
+	std::string::const_iterator iter = encoded.begin();
+
+	while (iter != encoded.end()) {
+		if (*iter == '%') {
+			if (std::distance(iter, encoded.end()) < 3) {
+				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
+				throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
+			}
+			if ((std::isxdigit(*(iter + 1)) == 0) || (std::isxdigit(*(iter + 2)) == 0)) {
+				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
+				throw std::runtime_error(ERR_PERCENT_INVALID_HEX);
+			}
+			std::string hex = std::string(iter + 1, iter + 3);
+			unsigned int value = 0;
+			std::istringstream(hex) >> std::hex >> value;
+			if (value == 0) {
+				request.httpStatus = StatusBadRequest;
+				request.shallCloseConnection = true;
+				throw std::runtime_error(ERR_PERCENT_NONSUPPORTED_NUL);
+			}
+			decoded += static_cast<char>(value);
+			iter += 3;
+		} else {
+			decoded += *iter;
+			++iter;
+		}
+	}
+
+	return decoded;
 }

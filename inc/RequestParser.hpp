@@ -3,10 +3,10 @@
 /* ====== LIBRARIES ====== */
 
 #include "ConfigFile.hpp"
-#include "constants.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
+#include "constants.hpp"
 #include "error.hpp"
 #include "utilities.hpp"
 
@@ -45,6 +45,7 @@ private:
 	static void parseUriQuery(const std::string& requestLine, int& index, HTTPRequest& request);
 	static void parseUriFragment(const std::string& requestLine, int& index, HTTPRequest& request);
 	static std::string parseVersion(const std::string& requestLine, HTTPRequest& request);
+	static std::string decodePercentEncoding(const std::string& encoded, HTTPRequest& request);
 
 	// Header Parsing
 	void parseHeaders(HTTPRequest& request);
@@ -72,3 +73,4 @@ private:
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
 };
+
