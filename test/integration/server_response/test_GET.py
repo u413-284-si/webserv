@@ -33,6 +33,11 @@ def test_GET_directory_redirect():
 #    assert response.headers["location"] == "/directory/"
     assert response.status_code == 301
 
+def test_GET_percent_encoded():
+    print("Request for /images/grüne äpfel.jpg")
+    response = requests.get("http://localhost:8080/images/grüne äpfel.jpg")
+    assert response.status_code == 200
+
 def test_GET_location_with_alias():
     print("Request for /alias/cat.jpg")
     response = requests.get("http://localhost:8080/alias/cat.jpg")
