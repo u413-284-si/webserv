@@ -71,7 +71,12 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		return (locInfo);
 	}
 
-	locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
+	if (!locInfo.activeLocation->alias.empty()) {
+		LOG_DEBUG << "Alias found: " << locInfo.activeLocation->alias;
+		locInfo.targetResource
+			= webutils::replaceAlias(locInfo.path, locInfo.activeLocation->path, locInfo.activeLocation->alias);
+	} else
+		locInfo.targetResource = locInfo.activeLocation->root + locInfo.path;
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
 
 	try {
