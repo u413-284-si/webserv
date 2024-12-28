@@ -122,6 +122,8 @@ Functions</h2></td></tr>
 <tr class="separator:a975f6fb5a79f55c1678cd51c0c9fb936"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace1110ebb5d7b133467172602207fd11" id="r_ace1110ebb5d7b133467172602207fd11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___g_e_t.html#ace1110ebb5d7b133467172602207fd11">test_GET_percent_encoded</a> ()</td></tr>
 <tr class="separator:ace1110ebb5d7b133467172602207fd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90504a1c04de543eff0122ebfc3901da" id="r_a90504a1c04de543eff0122ebfc3901da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___g_e_t.html#a90504a1c04de543eff0122ebfc3901da">test_GET_location_with_alias</a> ()</td></tr>
+<tr class="separator:a90504a1c04de543eff0122ebfc3901da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a8266fddc7bf1debe38627a7c50abc1cf" name="a8266fddc7bf1debe38627a7c50abc1cf"></a>
@@ -251,6 +253,33 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>    print(<span class="stringliteral">&quot;Request for /images/grüne äpfel.jpg&quot;</span>)</div>
 <div class="line"><span class="lineno">   38</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://localhost:8080/images/grüne äpfel.jpg&quot;</span>)</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   40</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a90504a1c04de543eff0122ebfc3901da" name="a90504a1c04de543eff0122ebfc3901da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90504a1c04de543eff0122ebfc3901da">&#9670;&#160;</a></span>test_GET_location_with_alias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_GET.test_GET_location_with_alias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___g_e_t_8py_source.html#l00041">41</a> of file <a class="el" href="test___g_e_t_8py_source.html">test_GET.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span><span class="keyword">def </span>test_GET_location_with_alias():</div>
+<div class="line"><span class="lineno">   42</span>    print(<span class="stringliteral">&quot;Request for /alias/cat.jpg&quot;</span>)</div>
+<div class="line"><span class="lineno">   43</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.get</a>(<span class="stringliteral">&quot;http://localhost:8080/alias/cat.jpg&quot;</span>)</div>
+<div class="line"><span class="lineno">   44</span>    file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/images/cat.jpg&quot;</span></div>
+<div class="line"><span class="lineno">   45</span>    file_size = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.getsize</a>(file_path)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keyword">assert</span> int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;content-length&quot;</span>]) == file_size</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
 </div><!-- fragment -->
 </div>
 </div>

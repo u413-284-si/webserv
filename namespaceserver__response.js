@@ -11,7 +11,8 @@ var namespaceserver__response =
       [ "test_GET_index_file", "namespaceserver__response_1_1test___g_e_t.html#a16e3d1cf9607cfa3f8fac4a85b199e7e", null ],
       [ "test_GET_directory_listing", "namespaceserver__response_1_1test___g_e_t.html#a9ff87ff3ea6df6a80b9316f4c23a03d0", null ],
       [ "test_GET_directory_redirect", "namespaceserver__response_1_1test___g_e_t.html#a975f6fb5a79f55c1678cd51c0c9fb936", null ],
-      [ "test_GET_percent_encoded", "namespaceserver__response_1_1test___g_e_t.html#ace1110ebb5d7b133467172602207fd11", null ]
+      [ "test_GET_percent_encoded", "namespaceserver__response_1_1test___g_e_t.html#ace1110ebb5d7b133467172602207fd11", null ],
+      [ "test_GET_location_with_alias", "namespaceserver__response_1_1test___g_e_t.html#a90504a1c04de543eff0122ebfc3901da", null ]
     ] ],
     [ "test_invalid", "namespaceserver__response_1_1test__invalid.html", [
       [ "parse_http_response", "namespaceserver__response_1_1test__invalid.html#afa1f05e636e91423afac143f874bc912", null ],

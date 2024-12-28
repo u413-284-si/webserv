@@ -150,6 +150,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a81d8421d47b55041d0e1336855f72229" id="r_a81d8421d47b55041d0e1336855f72229"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a81d8421d47b55041d0e1336855f72229">lowercase</a> (std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>)</td></tr>
 <tr class="memdesc:a81d8421d47b55041d0e1336855f72229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts all characters in a string to lowercase.  <br /></td></tr>
 <tr class="separator:a81d8421d47b55041d0e1336855f72229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e52566fd329d782c68e2ca871ce2e62" id="r_a7e52566fd329d782c68e2ca871ce2e62"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a7e52566fd329d782c68e2ca871ce2e62">replaceAlias</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;alias, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">replacement</a>)</td></tr>
+<tr class="memdesc:a7e52566fd329d782c68e2ca871ce2e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a substring at the beginning of input string and replaces it with another string.  <br /></td></tr>
+<tr class="separator:a7e52566fd329d782c68e2ca871ce2e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd1710fd588c15830d10aef146da8ddb" id="r_afd1710fd588c15830d10aef146da8ddb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">typename</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Type</a> &gt; </td></tr>
 <tr class="memitem:afd1710fd588c15830d10aef146da8ddb"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb">toString</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Type</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>)</td></tr>
 <tr class="memdesc:afd1710fd588c15830d10aef146da8ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a type to a string.  <br /></td></tr>
@@ -772,6 +775,63 @@ false If the port is invalid </dd></dl>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a7e52566fd329d782c68e2ca871ce2e62" name="a7e52566fd329d782c68e2ca871ce2e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e52566fd329d782c68e2ca871ce2e62">&#9670;&#160;</a></span>replaceAlias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string webutils::replaceAlias </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;&#160;</td>
+          <td class="paramname"><em>alias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;&#160;</td>
+          <td class="paramname"><em>replacement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds a substring at the beginning of input string and replaces it with another string. </p>
+<p>If alias is not found at beginning, returns empty string. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>String which may contain alias </td></tr>
+    <tr><td class="paramname">alias</td><td>Alias to be replaced </td></tr>
+    <tr><td class="paramname">replacement</td><td>String to replace alias </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string String with alias replaced </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00288">288</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  289</span>{</div>
+<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>.find(alias) == 0)</div>
+<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">replacement</a> + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>.substr(alias.length());</div>
+<div class="line"><span class="lineno">  292</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  293</span>}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacewebutils_a7e52566fd329d782c68e2ca871ce2e62_icgraph.svg" width="279" height="332"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="afd1710fd588c15830d10aef146da8ddb" name="afd1710fd588c15830d10aef146da8ddb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd1710fd588c15830d10aef146da8ddb">&#9670;&#160;</a></span>toString()</h2>
 
@@ -806,12 +866,12 @@ template&lt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5ea
 <dl class="section return"><dt>Returns</dt><dd>std::string The string representation of the type </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Delete if not needed anymore </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8hpp_source.html#l00050">50</a> of file <a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>;</div>
-<div class="line"><span class="lineno">   53</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>;</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>.str();</div>
-<div class="line"><span class="lineno">   55</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8hpp_source.html#l00051">51</a> of file <a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
+<div class="line"><span class="lineno">   53</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>;</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>;</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>.str();</div>
+<div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

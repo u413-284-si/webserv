@@ -204,18 +204,24 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location6</a>.root = <span class="stringliteral">&quot;/sixth/location&quot;</span>;</div>
 <div class="line"><span class="lineno">   46</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location6</a>.returns = std::make_pair(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>, <span class="stringliteral">&quot;/newlocation&quot;</span>);</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.pop_back();</div>
-<div class="line"><span class="lineno">   49</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location3</a>);</div>
-<div class="line"><span class="lineno">   50</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location2</a>);</div>
-<div class="line"><span class="lineno">   51</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location4</a>);</div>
-<div class="line"><span class="lineno">   52</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location1</a>);</div>
-<div class="line"><span class="lineno">   53</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location5</a>);</div>
-<div class="line"><span class="lineno">   54</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location6</a>);</div>
-<div class="line"><span class="lineno">   55</span>    }</div>
+<div class="line"><span class="lineno">   48</span>        <a class="code hl_struct" href="struct_location.html">Location</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location7</a>;</div>
+<div class="line"><span class="lineno">   49</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location7</a>.<a class="code hl_variable" href="struct_location.html#a11102d52a8508daf01be1d666c57531b">path</a> = <span class="stringliteral">&quot;/alias&quot;</span>;</div>
+<div class="line"><span class="lineno">   50</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location7</a>.root = <span class="stringliteral">&quot;/sixth/location&quot;</span>;</div>
+<div class="line"><span class="lineno">   51</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location7</a>.alias = <span class="stringliteral">&quot;/new/path&quot;</span>;</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.pop_back();</div>
+<div class="line"><span class="lineno">   54</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location3</a>);</div>
+<div class="line"><span class="lineno">   55</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location2</a>);</div>
+<div class="line"><span class="lineno">   56</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location4</a>);</div>
+<div class="line"><span class="lineno">   57</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location1</a>);</div>
+<div class="line"><span class="lineno">   58</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location5</a>);</div>
+<div class="line"><span class="lineno">   59</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location6</a>);</div>
+<div class="line"><span class="lineno">   60</span>        <a class="code hl_variable" href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">m_configFile</a>.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[0].locations.push_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">location7</a>);</div>
+<div class="line"><span class="lineno">   61</span>    }</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
-<div class="ttc" id="aclass_target_resource_handler_test_html_a3020521612521d9f58e30612c3202506"><div class="ttname"><a href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">TargetResourceHandlerTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition</b> <a href="test___target_resource_handler_8cpp_source.html#l00060">test_TargetResourceHandler.cpp:60</a></div></div>
-<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00050">ConfigFile.hpp:50</a></div></div>
+<div class="ttc" id="aclass_target_resource_handler_test_html_a3020521612521d9f58e30612c3202506"><div class="ttname"><a href="class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506">TargetResourceHandlerTest::m_configFile</a></div><div class="ttdeci">ConfigFile m_configFile</div><div class="ttdef"><b>Definition</b> <a href="test___target_resource_handler_8cpp_source.html#l00066">test_TargetResourceHandler.cpp:66</a></div></div>
+<div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00051">ConfigFile.hpp:51</a></div></div>
 <div class="ttc" id="astruct_location_html"><div class="ttname"><a href="struct_location.html">Location</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00017">ConfigFile.hpp:17</a></div></div>
 <div class="ttc" id="astruct_location_html_a11102d52a8508daf01be1d666c57531b"><div class="ttname"><a href="struct_location.html#a11102d52a8508daf01be1d666c57531b">Location::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00022">ConfigFile.hpp:22</a></div></div>
 </div><!-- fragment -->
@@ -244,8 +250,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00056">56</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ }</div>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00062">62</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,7 +276,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00058">58</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00064">64</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -294,8 +300,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00059">59</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ .host = <span class="stringliteral">&quot;127.0.0.1&quot;</span>, .port = <span class="stringliteral">&quot;8080&quot;</span> };</div>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00065">65</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{ .host = <span class="stringliteral">&quot;127.0.0.1&quot;</span>, .port = <span class="stringliteral">&quot;8080&quot;</span> };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -319,7 +325,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00060">60</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00066">66</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -343,7 +349,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00061">61</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00067">67</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -367,7 +373,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00063">63</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00069">69</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -391,7 +397,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00065">65</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00071">71</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -415,7 +421,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00066">66</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___target_resource_handler_8cpp_source.html#l00072">72</a> of file <a class="el" href="test___target_resource_handler_8cpp_source.html">test_TargetResourceHandler.cpp</a>.</p>
 
 </div>
 </div>

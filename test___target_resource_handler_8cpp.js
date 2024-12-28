@@ -14,5 +14,6 @@ var test___target_resource_handler_8cpp =
     [ "TEST_F", "test___target_resource_handler_8cpp.html#adc197b5002ddac4f267b463d7361ad1d", null ],
     [ "TEST_F", "test___target_resource_handler_8cpp.html#a08ef11896d4e249357098924fb01669b", null ],
     [ "TEST_F", "test___target_resource_handler_8cpp.html#ae6b860166090a1b32b5be2435adc358e", null ],
-    [ "TEST_F", "test___target_resource_handler_8cpp.html#ae36ab9a28196c58e8b38587c59af378d", null ]
+    [ "TEST_F", "test___target_resource_handler_8cpp.html#ae36ab9a28196c58e8b38587c59af378d", null ],
+    [ "TEST_F", "test___target_resource_handler_8cpp.html#ae60cdc76476ba5d6d74b76e1e2131459", null ]
 ];

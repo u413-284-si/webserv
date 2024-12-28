@@ -12,5 +12,6 @@ var utilities_8cpp =
     [ "closeFd", "utilities_8cpp.html#ad74875f464c74bd45589002fc385605e", null ],
     [ "isIpAddressValid", "utilities_8cpp.html#a6748cf6b6dd81b72c9e46ed8b800ffed", null ],
     [ "isPortValid", "utilities_8cpp.html#a2abb972ac583db43b6bad84e0e37c22d", null ],
-    [ "lowercase", "utilities_8cpp.html#a81d8421d47b55041d0e1336855f72229", null ]
+    [ "lowercase", "utilities_8cpp.html#a81d8421d47b55041d0e1336855f72229", null ],
+    [ "replaceAlias", "utilities_8cpp.html#a7e52566fd329d782c68e2ca871ce2e62", null ]
 ];
