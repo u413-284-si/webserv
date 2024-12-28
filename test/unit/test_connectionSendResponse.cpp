@@ -1,22 +1,15 @@
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
-#include "MockEpollWrapper.hpp"
-#include "MockFileSystemPolicy.hpp"
-#include "MockSocketPolicy.hpp"
-#include "MockProcessOps.hpp"
-#include "Server.hpp"
+#include "test_helpers.hpp"
 
 using ::testing::DoAll;
-using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::SetArrayArgument;
 
-class ConnectionSendResponseTest : public ::testing::Test {
+class ConnectionSendResponseTest : public ServerTestBase {
 protected:
 	ConnectionSendResponseTest()
 	{
-		ON_CALL(epollWrapper, modifyEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, modifyEvent)
+			.WillByDefault(Return(true));
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_buffer = response;
@@ -24,24 +17,17 @@ protected:
 	}
 	~ConnectionSendResponseTest() override { }
 
-	ConfigFile configFile;
-	NiceMock<MockEpollWrapper> epollWrapper;
-	MockFileSystemPolicy fileSystemPolicy;
-	MockSocketPolicy socketPolicy;
-	MockProcessOps processOps;
-	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
-
 	const int dummyFd = 10;
 
-	Connection connection = Connection(Socket(), Socket(), dummyFd, configFile.servers);
+	Connection connection = Connection(Socket(), Socket(), dummyFd, m_configFile.servers);
 	std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nABCD";
 };
 
 TEST_F(ConnectionSendResponseTest, SendFullResponseKeepAlive)
 {
-	EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
+	EXPECT_CALL(m_socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
 
-	connectionSendResponse(server, dummyFd, connection);
+	connectionSendResponse(m_server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer.size(), 0);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));
@@ -52,9 +38,9 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
 {
 	connection.m_request.shallCloseConnection = true;
 
-	EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
+	EXPECT_CALL(m_socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
 
-	connectionSendResponse(server, dummyFd, connection);
+	connectionSendResponse(m_server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, response);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
@@ -65,11 +51,11 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 {
 	std::string partialResponse = "ntent-Length: 4\r\n\r\nABCD";
 
-	EXPECT_CALL(socketPolicy, writeToSocket)
+	EXPECT_CALL(m_socketPolicy, writeToSocket)
 		.Times(1)
 		.WillOnce(Return(connection.m_buffer.size() - partialResponse.size()));
 
-	connectionSendResponse(server, dummyFd, connection);
+	connectionSendResponse(m_server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, partialResponse);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, std::time(0));
@@ -78,9 +64,9 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 
 TEST_F(ConnectionSendResponseTest, SendFail)
 {
-	EXPECT_CALL(socketPolicy, writeToSocket).Times(1).WillOnce(Return(-1));
+	EXPECT_CALL(m_socketPolicy, writeToSocket).Times(1).WillOnce(Return(-1));
 
-	connectionSendResponse(server, dummyFd, connection);
+	connectionSendResponse(m_server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer, response);
 	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);

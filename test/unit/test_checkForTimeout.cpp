@@ -1,35 +1,15 @@
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include "test_helpers.hpp"
 
-#include "MockEpollWrapper.hpp"
-#include "MockFileSystemPolicy.hpp"
-#include "MockSocketPolicy.hpp"
-#include "MockProcessOps.hpp"
-#include "Server.hpp"
-
-using ::testing::NiceMock;
 using ::testing::Return;
 
-class CheckForTimeoutTest : public ::testing::Test {
+class CheckForTimeoutTest : public ServerTestBase {
 protected:
 	CheckForTimeoutTest()
 	{
-		ConfigServer serverConfig;
-		serverConfig.host = serverSock.host;
-		serverConfig.port = serverSock.port;
-		configFile.servers.push_back(serverConfig);
-
-		ON_CALL(epollWrapper, addEvent)
+		ON_CALL(m_epollWrapper, addEvent)
 			.WillByDefault(Return(true));
 	}
 	~CheckForTimeoutTest() override { }
-
-	ConfigFile configFile;
-	NiceMock<MockEpollWrapper> epollWrapper;
-	MockFileSystemPolicy fileSystemPolicy;
-	MockSocketPolicy socketPolicy;
-	MockProcessOps processOps;
-	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
 
 	const int dummyFd = 10;
 	const int dummyFd2 = 20;
@@ -41,37 +21,37 @@ protected:
 
 TEST_F(CheckForTimeoutTest, Timeout)
 {
-	server.setClientTimeout(-1);
+	m_server.setClientTimeout(-1);
 
-	server.registerConnection(serverSock, dummyFd, dummySocket);
+	m_server.registerConnection(serverSock, dummyFd, dummySocket);
 
-	checkForTimeout(server);
+	checkForTimeout(m_server);
 
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::Timeout);
+	EXPECT_EQ(m_server.getConnections().at(dummyFd).m_status, Connection::Timeout);
 }
 
 TEST_F(CheckForTimeoutTest, NoTimeout)
 {
-	server.setClientTimeout(100);
+	m_server.setClientTimeout(100);
 
-	server.registerConnection(serverSock, dummyFd, dummySocket);
+	m_server.registerConnection(serverSock, dummyFd, dummySocket);
 
-	checkForTimeout(server);
+	checkForTimeout(m_server);
 
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::Idle);
+	EXPECT_EQ(m_server.getConnections().at(dummyFd).m_status, Connection::Idle);
 }
 
 TEST_F(CheckForTimeoutTest, MultipleTimeouts)
 {
-	server.setClientTimeout(-1);
+	m_server.setClientTimeout(-1);
 
-	server.registerConnection(serverSock, dummyFd, dummySocket);
-	server.registerConnection(serverSock, dummyFd2, dummySocket);
-	server.registerConnection(serverSock, dummyFd3, dummySocket);
+	m_server.registerConnection(serverSock, dummyFd, dummySocket);
+	m_server.registerConnection(serverSock, dummyFd2, dummySocket);
+	m_server.registerConnection(serverSock, dummyFd3, dummySocket);
 
-	checkForTimeout(server);
+	checkForTimeout(m_server);
 
-	EXPECT_EQ(server.getConnections().at(dummyFd).m_status, Connection::Timeout);
-	EXPECT_EQ(server.getConnections().at(dummyFd2).m_status, Connection::Timeout);
-	EXPECT_EQ(server.getConnections().at(dummyFd3).m_status, Connection::Timeout);
+	EXPECT_EQ(m_server.getConnections().at(dummyFd).m_status, Connection::Timeout);
+	EXPECT_EQ(m_server.getConnections().at(dummyFd2).m_status, Connection::Timeout);
+	EXPECT_EQ(m_server.getConnections().at(dummyFd3).m_status, Connection::Timeout);
 }

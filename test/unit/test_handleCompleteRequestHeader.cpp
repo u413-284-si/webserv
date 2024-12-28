@@ -1,21 +1,13 @@
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include "test_helpers.hpp"
 
-#include "MockEpollWrapper.hpp"
-#include "MockFileSystemPolicy.hpp"
-#include "MockSocketPolicy.hpp"
-#include "MockProcessOps.hpp"
-#include "Server.hpp"
-
-using ::testing::NiceMock;
 using ::testing::Return;
-ConfigFile createTestConfigfile();
 
-class HandleCompleteRequestHeaderTest : public ::testing::Test {
+class HandleCompleteRequestHeaderTest : public ServerTestBase {
 protected:
 	HandleCompleteRequestHeaderTest()
 	{
-		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, modifyEvent)
+			.WillByDefault(Return(true));
 
 		m_connection.m_timeSinceLastEvent = 0;
 		m_connection.m_status = Connection::ReceiveHeader;
@@ -23,17 +15,9 @@ protected:
 	~HandleCompleteRequestHeaderTest() override { }
 
 	const int m_dummyFd = 10;
-	ConfigFile m_configFile = createTestConfigfile();
-	NiceMock<MockEpollWrapper> m_epollWrapper;
-	MockFileSystemPolicy m_fileSystemPolicy;
-	MockSocketPolicy m_socketPolicy;
-	MockProcessOps processOps;
-	Server m_server = Server(m_configFile, m_epollWrapper, m_fileSystemPolicy, m_socketPolicy, processOps);
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 
 	Connection m_connection = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
-
-
 };
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequest)

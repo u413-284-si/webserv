@@ -1,32 +1,23 @@
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include "test_helpers.hpp"
 #include <unistd.h>
-
-#include "MockEpollWrapper.hpp"
-#include "MockFileSystemPolicy.hpp"
-#include "MockProcessOps.hpp"
-#include "MockSocketPolicy.hpp"
-#include "Server.hpp"
 
 using ::testing::_;
 using ::testing::DoAll;
-using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::SetArrayArgument;
 
-class ConnectionReceiveFromCGITest : public ::testing::Test {
+class ConnectionReceiveFromCGITest : public ServerTestBase {
 protected:
 	ConnectionReceiveFromCGITest()
 	{
-		serverConfig.host = serverSock.host;
-		serverConfig.port = serverSock.port;
-		configFile.servers.push_back(serverConfig);
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_pipeFromCGIReadEnd = pipefd[0];
 
-		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, addEvent)
+			.WillByDefault(Return(true));
 
-		ON_CALL(epollWrapper, removeEvent).WillByDefault(Return());
+		ON_CALL(m_epollWrapper, removeEvent)
+			.WillByDefault(Return());
 	}
 	~ConnectionReceiveFromCGITest() override { }
 
@@ -34,14 +25,7 @@ protected:
 	Socket serverSock = { "127.0.0.1", "8080" };
 	Socket clientSocket = { "192.168.0.1", "12345" };
 
-	ConfigFile configFile;
-	NiceMock<MockEpollWrapper> epollWrapper;
-	MockFileSystemPolicy fileSystemPolicy;
-	MockSocketPolicy socketPolicy;
-	MockProcessOps processOps;
-	Server server = Server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
-	ConfigServer serverConfig;
-	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
+	Connection connection = Connection(serverSock, clientSocket, dummyFd, m_configFile.servers);
 	int pipefd[2];
 
     void SetUp() override {
@@ -58,10 +42,10 @@ protected:
 TEST_F(ConnectionReceiveFromCGITest, ReadError)
 {
 	// Arrange
-	EXPECT_CALL(processOps, readProcess).Times(1).WillOnce(Return(-1));
+	EXPECT_CALL(m_processOps, readProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
-	connectionReceiveFromCGI(server, pipefd[0], connection);
+	connectionReceiveFromCGI(m_server, pipefd[0], connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -74,14 +58,14 @@ TEST_F(ConnectionReceiveFromCGITest, PartialRead)
 	const char* response = "CGI response";
     const ssize_t responseSize = strlen(response);
 
-	EXPECT_CALL(processOps, readProcess)
+	EXPECT_CALL(m_processOps, readProcess)
         .Times(1)
 		.WillOnce(DoAll(
 			SetArrayArgument<1>(response, response + responseSize),
 			Return(responseSize)));
 
 	// Act
-	connectionReceiveFromCGI(server, pipefd[0], connection);
+	connectionReceiveFromCGI(m_server, pipefd[0], connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.body, response);
