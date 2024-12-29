@@ -8,8 +8,7 @@ class ConnectionSendResponseTest : public ServerTestBase {
 protected:
 	ConnectionSendResponseTest()
 	{
-		ON_CALL(m_epollWrapper, modifyEvent)
-			.WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_buffer = response;
@@ -25,7 +24,7 @@ protected:
 
 TEST_F(ConnectionSendResponseTest, SendFullResponseKeepAlive)
 {
-	EXPECT_CALL(m_socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
+	EXPECT_CALL(m_socketOps, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
 
 	connectionSendResponse(m_server, dummyFd, connection);
 
@@ -38,7 +37,7 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
 {
 	connection.m_request.shallCloseConnection = true;
 
-	EXPECT_CALL(m_socketPolicy, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
+	EXPECT_CALL(m_socketOps, writeToSocket).Times(1).WillOnce(Return(connection.m_buffer.size()));
 
 	connectionSendResponse(m_server, dummyFd, connection);
 
@@ -51,7 +50,7 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 {
 	std::string partialResponse = "ntent-Length: 4\r\n\r\nABCD";
 
-	EXPECT_CALL(m_socketPolicy, writeToSocket)
+	EXPECT_CALL(m_socketOps, writeToSocket)
 		.Times(1)
 		.WillOnce(Return(connection.m_buffer.size() - partialResponse.size()));
 
@@ -64,7 +63,7 @@ TEST_F(ConnectionSendResponseTest, SendPartialResponse)
 
 TEST_F(ConnectionSendResponseTest, SendFail)
 {
-	EXPECT_CALL(m_socketPolicy, writeToSocket).Times(1).WillOnce(Return(-1));
+	EXPECT_CALL(m_socketOps, writeToSocket).Times(1).WillOnce(Return(-1));
 
 	connectionSendResponse(m_server, dummyFd, connection);
 

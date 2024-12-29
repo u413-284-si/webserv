@@ -263,10 +263,10 @@ TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
 	EXPECT_EQ(true, configFile.servers.empty());
 
 	// EpollWrapper epollWrapper(10, -1);
-	// SocketPolicy socketPolicy;
+	// SocketOps socketOps;
 	// ProcessOps processOps;
 
-	// Server server(configFile, epollWrapper, socketPolicy, processOps);
+	// Server server(configFile, epollWrapper, socketOps, processOps);
 
 	// initVirtualServers(server, 10, server.getServerConfigs());
 	// std::map<int, Socket> virtualServers = server.getVirtualServers();
@@ -279,10 +279,10 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 	EXPECT_EQ(true, configFile.servers.empty());
 
 	// EpollWrapper epollWrapper(10, -1);
-	// SocketPolicy socketPolicy;
+	// SocketOps socketOps;
 	// ProcessOps processOps;
 
-	// Server server(configFile, epollWrapper, socketPolicy, processOps);
+	// Server server(configFile, epollWrapper, socketOps, processOps);
 
 	// initVirtualServers(server, 10, server.getServerConfigs());
 	// std::map<int, Socket> virtualServers = server.getVirtualServers();

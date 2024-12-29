@@ -12,8 +12,7 @@ protected:
 
 		m_configFile.servers.push_back(serverConfig2);
 
-		ON_CALL(m_epollWrapper, addEvent)
-			.WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, addEvent).WillByDefault(Return(true));
 	}
 
 	~InitVirtualServersTest() override { }
@@ -36,14 +35,11 @@ TEST_F(InitVirtualServersTest, ServerInitSuccess)
 	*addrinfo = { .ai_addr = addr, .ai_next = nullptr };
 	*addrinfo2 = { .ai_addr = addr2, .ai_next = nullptr };
 
-	EXPECT_CALL(m_socketPolicy, resolveListeningAddresses)
-		.Times(2)
-		.WillOnce(Return(addrinfo))
-		.WillOnce(Return(addrinfo2));
+	EXPECT_CALL(m_socketOps, resolveListeningAddresses).Times(2).WillOnce(Return(addrinfo)).WillOnce(Return(addrinfo2));
 
-	EXPECT_CALL(m_socketPolicy, createListeningSocket).Times(2).WillOnce(Return(dummyFd)).WillOnce(Return(dummyFd2));
+	EXPECT_CALL(m_socketOps, createListeningSocket).Times(2).WillOnce(Return(dummyFd)).WillOnce(Return(dummyFd2));
 
-	EXPECT_CALL(m_socketPolicy, retrieveSocketInfo).Times(2).WillOnce(Return(serverSock1)).WillOnce(Return(serverSock2));
+	EXPECT_CALL(m_socketOps, retrieveSocketInfo).Times(2).WillOnce(Return(serverSock1)).WillOnce(Return(serverSock2));
 
 	EXPECT_EQ(initVirtualServers(m_server, backlog, m_server.getServerConfigs()), true);
 	EXPECT_EQ(m_server.getVirtualServers().size(), 2);
@@ -64,11 +60,11 @@ TEST_F(InitVirtualServersTest, OneDuplicateServer)
 	struct sockaddr* addr = (struct sockaddr*)malloc(sizeof(*addr));
 	*addrinfo = { .ai_addr = addr, .ai_next = nullptr };
 
-	EXPECT_CALL(m_socketPolicy, resolveListeningAddresses).Times(1).WillOnce(Return(addrinfo));
+	EXPECT_CALL(m_socketOps, resolveListeningAddresses).Times(1).WillOnce(Return(addrinfo));
 
-	EXPECT_CALL(m_socketPolicy, createListeningSocket).Times(1).WillOnce(Return(dummyFd));
+	EXPECT_CALL(m_socketOps, createListeningSocket).Times(1).WillOnce(Return(dummyFd));
 
-	EXPECT_CALL(m_socketPolicy, retrieveSocketInfo).Times(1).WillOnce(Return(serverSock1));
+	EXPECT_CALL(m_socketOps, retrieveSocketInfo).Times(1).WillOnce(Return(serverSock1));
 
 	EXPECT_EQ(initVirtualServers(m_server, backlog, m_server.getServerConfigs()), true);
 	EXPECT_EQ(m_server.getVirtualServers().size(), 1);

@@ -11,12 +11,9 @@ protected:
 		dummyEvent.data.fd = dummyFd;
 		dummyEventsVector.push_back(dummyEvent);
 
-		ON_CALL(m_epollWrapper, addEvent)
-			.WillByDefault(Return(true));
-		ON_CALL(m_epollWrapper, waitForEvents)
-			.WillByDefault(Return(0));
-		ON_CALL(m_epollWrapper, eventsBegin)
-			.WillByDefault(Return((dummyEventsVector.begin())));
+		ON_CALL(m_epollWrapper, addEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, waitForEvents).WillByDefault(Return(0));
+		ON_CALL(m_epollWrapper, eventsBegin).WillByDefault(Return((dummyEventsVector.begin())));
 
 		g_signalStatus = SIGQUIT;
 	}
@@ -29,10 +26,7 @@ protected:
 	const int dummyFd3 = 30;
 	const int dummyFd4 = 40;
 
-	const Socket serverSock = {
-		.host = m_configFile.servers[0].host,
-		.port = m_configFile.servers[0].port
-	};
+	const Socket serverSock = { .host = m_configFile.servers[0].host, .port = m_configFile.servers[0].port };
 	const Socket clientSock = { "192.168.0.1", "1234" };
 };
 
@@ -59,7 +53,7 @@ TEST_F(ShutdownServerTest, NonIdleConnection)
 	m_server.getConnections().at(dummyFd).m_status = Connection::ReceiveHeader;
 
 	EXPECT_CALL(m_epollWrapper, waitForEvents).WillOnce(Return(1));
-	EXPECT_CALL(m_socketPolicy, readFromSocket).WillOnce(Return(0));
+	EXPECT_CALL(m_socketOps, readFromSocket).WillOnce(Return(0));
 
 	shutdownServer(m_server);
 

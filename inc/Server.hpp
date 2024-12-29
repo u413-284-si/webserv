@@ -12,7 +12,7 @@
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
 #include "Socket.hpp"
-#include "SocketPolicy.hpp"
+#include "SocketOps.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
 #include "constants.hpp"
@@ -58,7 +58,7 @@ public:
 	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
 	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemOps& fileSystemOps,
-		const SocketPolicy& socketPolicy, const ProcessOps& processOps);
+		const SocketOps& socketOps, const ProcessOps& processOps);
 	~Server();
 
 	// Getters
@@ -91,7 +91,7 @@ public:
 	void removeEvent(int delfd) const;
 	int getEpollFd() const;
 
-	// Dispatch to SocketPolicy
+	// Dispatch to SocketOps
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	int createListeningSocket(const struct addrinfo* addrinfo, int backlog) const;
 	Socket retrieveSocketInfo(struct sockaddr* sockaddr) const;
@@ -120,7 +120,7 @@ private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
 	const FileSystemOps& m_fileSystemOps; /**< Handles functions for file system manipulation */
-	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
+	const SocketOps& m_socketOps; /**< Policy class for socket related functions */
 	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 
 	int m_backlog; /**< Backlog for listening sockets */

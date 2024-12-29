@@ -6,26 +6,26 @@
  * @brief Constructor for the Server class.
 
  * The Server constructor initializes a Server object with the provided configuration file, EpollWrapper, and
- * SocketPolicy, along with other member variables.
+ * SocketOps, along with other member variables.
  * The passed EpollWrapper is saved as a non-const ref as it needs to be modifiable.
- * The passed SocketPolicy is saved as a const ref.
+ * The passed SocketOps is saved as a const ref.
  *
  * @param configFile The `configFile` parameter is an object of type `ConfigFile` that is passed to the
  * `Server` constructor. It is used to configure the server with settings such especially the number and
  * configuration of virtual servers.
  * @param epollWrapper A ready to use epoll instance. Can be mocked for testing.
  * @param fileSystemOps Class for filesystem related functions. Can be mocked for testing.
- * @param socketPolicy Policy class for socket related functions. Can be mocked for testing.
+ * @param socketOps Policy class for socket related functions. Can be mocked for testing.
  * @param processOps Wrapper for process-related functions. Can be mocked for testing.
 
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
 Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemOps& fileSystemOps,
-	const SocketPolicy& socketPolicy, const ProcessOps& processOps)
+	const SocketOps& socketOps, const ProcessOps& processOps)
 	: m_configFile(configFile)
 	, m_epollWrapper(epollWrapper)
 	, m_fileSystemOps(fileSystemOps)
-	, m_socketPolicy(socketPolicy)
+	, m_socketOps(socketOps)
 	, m_processOps(processOps)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
@@ -323,10 +323,10 @@ void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
  */
 int Server::getEpollFd() const { return m_epollWrapper.getEpollFd(); }
 
-/* ====== DISPATCH TO SOCKETPOLICY ====== */
+/* ====== DISPATCH TO SOCKETOPS ====== */
 
 /**
- * @brief Wrapper function to SocketPolicy::resolveListeningAddresses.
+ * @brief Wrapper function to SocketOps::resolveListeningAddresses.
  *
  * @param host The host address.
  * @param port The port number.
@@ -334,11 +334,11 @@ int Server::getEpollFd() const { return m_epollWrapper.getEpollFd(); }
  */
 struct addrinfo* Server::resolveListeningAddresses(const std::string& host, const std::string& port) const
 {
-	return m_socketPolicy.resolveListeningAddresses(host, port);
+	return m_socketOps.resolveListeningAddresses(host, port);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::createListeningSocket.
+ * @brief Wrapper function to SocketOps::createListeningSocket.
  *
  * @param addrinfo The address information.
  * @param backlog The maximum length to which the queue of pending connections may grow.
@@ -348,11 +348,11 @@ int Server::createListeningSocket(const struct addrinfo* addrinfo, int backlog) 
 {
 	assert(addrinfo != NULL);
 
-	return m_socketPolicy.createListeningSocket(addrinfo, backlog);
+	return m_socketOps.createListeningSocket(addrinfo, backlog);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::retrieveSocketInfo.
+ * @brief Wrapper function to SocketOps::retrieveSocketInfo.
  *
  * @param sockaddr The socket address.
  * @return Socket The socket information.
@@ -361,19 +361,19 @@ Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr) const
 {
 	assert(sockaddr != NULL);
 
-	return m_socketPolicy.retrieveSocketInfo(sockaddr);
+	return m_socketOps.retrieveSocketInfo(sockaddr);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::retrieveBoundSocketInfo.
+ * @brief Wrapper function to SocketOps::retrieveBoundSocketInfo.
  *
  * @param sockfd The socket fd which is bound to a socket.
  * @return Socket The socket information of the bound socket.
  */
-Socket Server::retrieveBoundSocketInfo(int sockfd) const { return m_socketPolicy.retrieveBoundSocketInfo(sockfd); }
+Socket Server::retrieveBoundSocketInfo(int sockfd) const { return m_socketOps.retrieveBoundSocketInfo(sockfd); }
 
 /**
- * @brief Wrapper function to SocketPolicy::acceptSingleConnection().
+ * @brief Wrapper function to SocketOps::acceptSingleConnection().
  *
  * @param sockfd The file descriptor of the socket.
  * @param addr The socket address.
@@ -385,11 +385,11 @@ int Server::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t*
 	assert(addr != NULL);
 	assert(addrlen != NULL);
 
-	return m_socketPolicy.acceptSingleConnection(sockfd, addr, addrlen);
+	return m_socketOps.acceptSingleConnection(sockfd, addr, addrlen);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::readFromSocket.
+ * @brief Wrapper function to SocketOps::readFromSocket.
  *
  * @param sockfd The file descriptor of the socket.
  * @param buffer The buffer to read into.
@@ -401,11 +401,11 @@ ssize_t Server::readFromSocket(int sockfd, char* buffer, size_t size, int flags)
 {
 	assert(buffer != NULL);
 
-	return m_socketPolicy.readFromSocket(sockfd, buffer, size, flags);
+	return m_socketOps.readFromSocket(sockfd, buffer, size, flags);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::writeToSocket.
+ * @brief Wrapper function to SocketOps::writeToSocket.
  *
  * @param sockfd The file descriptor of the socket.
  * @param buffer The buffer to write from.
@@ -417,7 +417,7 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 {
 	assert(buffer != NULL);
 
-	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
+	return m_socketOps.writeToSocket(sockfd, buffer, size, flags);
 }
 
 /* ====== DISPATCH TO PROCESSOPS ====== */

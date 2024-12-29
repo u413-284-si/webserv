@@ -6,7 +6,7 @@
 #include "MockEpollWrapper.hpp"
 #include "MockFileSystemOps.hpp"
 #include "MockProcessOps.hpp"
-#include "MockSocketPolicy.hpp"
+#include "MockSocketOps.hpp"
 #include "Server.hpp"
 
 using ::testing::NiceMock;
@@ -21,7 +21,7 @@ protected:
 	ConfigFile m_configFile = createTestConfigfile();
 	NiceMock<MockEpollWrapper> m_epollWrapper;
 	MockFileSystemOps m_fileSystemOps;
-	MockSocketPolicy m_socketPolicy;
+	MockSocketOps m_socketOps;
 	MockProcessOps m_processOps;
-	Server m_server = Server(m_configFile, m_epollWrapper, m_fileSystemOps, m_socketPolicy, m_processOps);
+	Server m_server = Server(m_configFile, m_epollWrapper, m_fileSystemOps, m_socketOps, m_processOps);
 };

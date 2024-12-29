@@ -20,11 +20,11 @@
  * to an address and port, listen on a socket and accept a connection on a socket.
  * It can also be mocked for testing purposes.
  */
-class SocketPolicy {
+class SocketOps {
 
 public:
-	SocketPolicy();
-	virtual ~SocketPolicy();
+	SocketOps();
+	virtual ~SocketOps();
 
 	virtual struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	virtual int createListeningSocket(const struct addrinfo* addrinfo, int backlog) const;
@@ -35,6 +35,6 @@ public:
 	virtual ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
 private:
-	SocketPolicy(const SocketPolicy&);
-	SocketPolicy& operator=(const SocketPolicy&);
+	SocketOps(const SocketOps&);
+	SocketOps& operator=(const SocketOps&);
 };
