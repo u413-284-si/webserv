@@ -1022,6 +1022,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		CGIHandler cgiHandler(connection, server.getProcessOps());
 		if (connection.m_request.httpStatus == StatusInternalServerError) {
 			connection.m_status = Connection::BuildResponse;
+			connection.m_request.hasCGI = false;
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
