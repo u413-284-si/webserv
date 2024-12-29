@@ -876,7 +876,6 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientHeaderBufferSize)
 		buffer.resize(Server::s_clientHeaderBufferSize);
-	buffer.clear();
 
 	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_buffer.size();
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
@@ -1088,7 +1087,6 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientBodyBufferSize)
 		buffer.resize(Server::s_clientBodyBufferSize);
-	buffer.clear();
 
 	const size_t bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
 	size_t bytesToRead = Server::s_clientBodyBufferSize;
@@ -1280,7 +1278,6 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_cgiBodyBufferSize)
 		buffer.resize(Server::s_cgiBodyBufferSize);
-	buffer.clear();
 
 	const ssize_t bytesRead
 		= server.readProcess(connection.m_pipeFromCGIReadEnd, &buffer[0], Server::s_cgiBodyBufferSize);
