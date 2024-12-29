@@ -23,6 +23,7 @@
  * - execve()
  * - read()
  * - write()
+ * - waitpid()
  * It can also be mocked for testing purposes.
  */
 class ProcessOps {
@@ -37,6 +38,7 @@ public:
 	virtual int execProcess(const char* pathname, char* const argv[], char* const envp[]) const;
 	virtual ssize_t readProcess(int fileDescriptor, char* buf, size_t count) const;
 	virtual ssize_t writeProcess(int fileDescriptor, const char* buf, size_t count) const;
+	virtual pid_t waitForProcess(pid_t pid, int* wstatus, int options) const;
 
 private:
 	ProcessOps(const ProcessOps&);

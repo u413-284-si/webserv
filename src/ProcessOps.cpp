@@ -153,3 +153,14 @@ ssize_t ProcessOps::writeProcess(int fileDescriptor, const char* buf, size_t cou
 	}
 	return bytesWritten;
 }
+
+pid_t ProcessOps::waitForProcess(pid_t pid, int* wstatus, int options) const
+{
+	errno = 0;
+	pid_t ret = waitpid(pid, wstatus, options);
+	if (ret == -1) {
+			LOG_ERROR << "waitpid(): " << std::strerror(errno);
+			return -1;
+	}
+	return ret;
+}
