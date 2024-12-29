@@ -154,13 +154,22 @@ ssize_t ProcessOps::writeProcess(int fileDescriptor, const char* buf, size_t cou
 	return bytesWritten;
 }
 
+/**
+ * @brief Waits for a process to change state.
+ *
+ * Wrapper for waitpid().
+ * @param pid Pid of the child process to wait for.
+ * @param wstatus Stores status information which can be inspected with macros.
+ * @param options Options to influence behavior.
+ * @return pid_t Process ID of child whose state has changed, or -1 on failure.
+ */
 pid_t ProcessOps::waitForProcess(pid_t pid, int* wstatus, int options) const
 {
 	errno = 0;
 	pid_t ret = waitpid(pid, wstatus, options);
 	if (ret == -1) {
-			LOG_ERROR << "waitpid(): " << std::strerror(errno);
-			return -1;
+		LOG_ERROR << "waitpid(): " << std::strerror(errno);
+		return -1;
 	}
 	return ret;
 }
