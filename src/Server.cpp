@@ -453,6 +453,11 @@ ssize_t Server::writeProcess(int fileDescriptor, const char* buffer, size_t size
 	return m_processOps.writeProcess(fileDescriptor, buffer, size);
 }
 
+pid_t Server::waitForProcess(pid_t pid, int* wstatus, int options) const
+{
+	return m_processOps.waitForProcess(pid, wstatus, options);
+}
+
 /* ====== DISPATCH TO REQUESTPARSER ====== */
 
 /**
@@ -1329,9 +1334,9 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		int status = 0;
-		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
-			LOG_ERROR << "waitpid(): " << std::strerror(errno);
+		if (server.waitForProcess(connection.m_cgiPid, &status, 0) == -1) {
 			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_request.hasCGI = false;
 			return;
 		}
 		// Check if the child exited normally with exit() or returning from main()

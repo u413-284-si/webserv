@@ -103,6 +103,7 @@ public:
 	// Dispatch to ProcessOps
 	ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
 	ssize_t writeProcess(int fileDescriptor, const char* buffer, size_t size) const;
+	pid_t waitForProcess(pid_t pid, int* wstatus, int options) const;
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
