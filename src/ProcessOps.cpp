@@ -8,17 +8,16 @@ ProcessOps::~ProcessOps() { }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
-
 /**
  * @brief Creates a pipe and stores the file descriptors in the provided array.
- * 
- * This function wraps the `pipe` system call to create a unidirectional data channel 
- * that can be used for inter-process communication. The file descriptors for the read 
+ *
+ * This function wraps the `pipe` system call to create a unidirectional data channel
+ * that can be used for inter-process communication. The file descriptors for the read
  * and write ends of the pipe are stored in the array provided by the caller.
- * 
- * @param pipefd An array of two integers where the file descriptors for the read and 
+ *
+ * @param pipefd An array of two integers where the file descriptors for the read and
  * write ends of the pipe will be stored.
- * @return int Returns 0 on success, or -1 if an error occurs. In case of an error, 
+ * @return int Returns 0 on success, or -1 if an error occurs. In case of an error,
  * an error message is logged and the global variable `errno` is set to indicate the error.
  */
 int ProcessOps::pipeProcess(int pipefd[2]) const
@@ -102,7 +101,7 @@ int ProcessOps::forkProcess(pid_t& pid) const
  * @return Returns 0 on success. On failure, returns -1 and logs an error
  *         message with the reason for the failure.
  */
-int ProcessOps::execProcess(const char *pathname, char *const argv[], char *const envp[]) const
+int ProcessOps::execProcess(const char* pathname, char* const argv[], char* const envp[]) const
 {
 	if (execve(pathname, argv, envp) == -1) {
 		LOG_ERROR << "execve(): " << std::strerror(errno);
@@ -123,14 +122,14 @@ int ProcessOps::execProcess(const char *pathname, char *const argv[], char *cons
  * @return The number of bytes read on success, or -1 on error.
  *         If an error occurs, an error message is logged.
  */
-ssize_t ProcessOps::readProcess(int fileDescriptor, char *buf, size_t count) const
+ssize_t ProcessOps::readProcess(int fileDescriptor, char* buf, size_t count) const
 {
-    ssize_t bytesRead = read(fileDescriptor, buf, count);
-    if (bytesRead == -1) {
-        LOG_ERROR << "read(): " << std::strerror(errno);
-        return -1;
-    }
-    return bytesRead;
+	ssize_t bytesRead = read(fileDescriptor, buf, count);
+	if (bytesRead == -1) {
+		LOG_ERROR << "read(): " << std::strerror(errno);
+		return -1;
+	}
+	return bytesRead;
 }
 
 /**
@@ -145,12 +144,12 @@ ssize_t ProcessOps::readProcess(int fileDescriptor, char *buf, size_t count) con
  * @return The number of bytes written on success, or -1 on error.
  *         If an error occurs, an error message is logged.
  */
-ssize_t ProcessOps::writeProcess(int fileDescriptor, const char *buf, size_t count) const
+ssize_t ProcessOps::writeProcess(int fileDescriptor, const char* buf, size_t count) const
 {
-    ssize_t bytesWritten = write(fileDescriptor, buf, count);
-    if (bytesWritten == -1) {
-        LOG_ERROR << "write(): " << std::strerror(errno);
-        return -1;
-    }
-    return bytesWritten;
+	ssize_t bytesWritten = write(fileDescriptor, buf, count);
+	if (bytesWritten == -1) {
+		LOG_ERROR << "write(): " << std::strerror(errno);
+		return -1;
+	}
+	return bytesWritten;
 }
