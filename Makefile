@@ -169,6 +169,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_FileWriteHandler.cpp \
 			test_handleBody.cpp \
 			test_handleCompleteRequestHeader.cpp \
+			test_handleEvent.cpp \
 			test_helpers.cpp \
 			test_initVirtualServers.cpp \
 			test_isDuplicateServer.cpp \
