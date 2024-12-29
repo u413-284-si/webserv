@@ -3,7 +3,7 @@
 /**
  * @brief Construct a new ResponseBuilder object
  *
- * @param fileSystemOps File system policy. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 ResponseBuilder::ResponseBuilder(const FileSystemOps& fileSystemOps)
 	: m_fileSystemOps(fileSystemOps)

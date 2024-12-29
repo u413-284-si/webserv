@@ -3,7 +3,7 @@
 /**
  * @brief Construct a new FileWriteHandler object
  *
- * @param fileSystemOps File system policy object. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 FileWriteHandler::FileWriteHandler(const FileSystemOps& fileSystemOps)
 	: m_fileSystemOps(fileSystemOps)

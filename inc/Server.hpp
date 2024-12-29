@@ -120,7 +120,7 @@ private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
 	const FileSystemOps& m_fileSystemOps; /**< Handles functions for file system manipulation */
-	const SocketOps& m_socketOps; /**< Policy class for socket related functions */
+	const SocketOps& m_socketOps; /**< Wrapper for socket-related functions */
 	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 
 	int m_backlog; /**< Backlog for listening sockets */

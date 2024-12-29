@@ -14,8 +14,8 @@
  * `Server` constructor. It is used to configure the server with settings such especially the number and
  * configuration of virtual servers.
  * @param epollWrapper A ready to use epoll instance. Can be mocked for testing.
- * @param fileSystemOps Class for filesystem related functions. Can be mocked for testing.
- * @param socketOps Policy class for socket related functions. Can be mocked for testing.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked for testing.
+ * @param socketOps Wrapper for socket-related functions. Can be mocked for testing.
  * @param processOps Wrapper for process-related functions. Can be mocked for testing.
 
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.

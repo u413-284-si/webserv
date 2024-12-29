@@ -11,8 +11,8 @@ TEST(SocketOps_retrieveSocketInfo, IPv4)
 	char temp[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &addr.sin_addr, temp, INET_ADDRSTRLEN);
 
-	SocketOps policy;
-	Socket test = policy.retrieveSocketInfo(reinterpret_cast<struct sockaddr*>(&addr));
+	SocketOps socketOps;
+	Socket test = socketOps.retrieveSocketInfo(reinterpret_cast<struct sockaddr*>(&addr));
 
 	EXPECT_EQ(test.host, temp);
 	EXPECT_EQ(test.port, "80");
@@ -26,8 +26,8 @@ TEST(SocketOps_retrieveSocketInfo, IPv4AllZero)
 	char temp[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &addr.sin_addr, temp, INET_ADDRSTRLEN);
 
-	SocketOps policy;
-	Socket test = policy.retrieveSocketInfo(reinterpret_cast<struct sockaddr*>(&addr));
+	SocketOps socketOps;
+	Socket test = socketOps.retrieveSocketInfo(reinterpret_cast<struct sockaddr*>(&addr));
 
 	EXPECT_EQ(test.host, temp);
 	EXPECT_EQ(test.port, "10101");
@@ -41,8 +41,8 @@ TEST(SocketOps_retrieveSocketInfo, IPv4NonZero)
 	char temp[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &addr.sin_addr, temp, INET_ADDRSTRLEN);
 
-	SocketOps policy;
-	Socket test = policy.retrieveSocketInfo(reinterpret_cast<struct sockaddr*>(&addr));
+	SocketOps socketOps;
+	Socket test = socketOps.retrieveSocketInfo(reinterpret_cast<struct sockaddr*>(&addr));
 
 	EXPECT_EQ(test.host, temp);
 	EXPECT_EQ(test.port, "65535");

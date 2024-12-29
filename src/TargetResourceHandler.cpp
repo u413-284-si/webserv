@@ -3,7 +3,7 @@
 /**
  * @brief Construct a new TargetResourceHandler object
  *
- * @param fileSystemOps File system policy to be used. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 TargetResourceHandler::TargetResourceHandler(const FileSystemOps& fileSystemOps)
 	: m_fileSystemOps(fileSystemOps)

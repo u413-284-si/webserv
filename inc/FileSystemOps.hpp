@@ -14,10 +14,15 @@
 #include "utilities.hpp"
 
 /**
- * @brief Class for C functions on the file system.
+ * @brief Wrapper class for filesystem-related functions.
  *
- * This class is a wrapper for C functions on the file system.
- * It is used to make the code more testable.
+ * This class provides wrappers for c-functions interacting with the filesystem. The following functions are wrapped:
+ * - stat()
+ * - opendir()
+ * - readdir()
+ * - closedir()
+ * It also provides a wrapper for filestreams to get the content of a file and write to a file.
+ * It can also be mocked for testing purposes.
  */
 class FileSystemOps {
 

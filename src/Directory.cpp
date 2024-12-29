@@ -3,7 +3,7 @@
 /**
  * @brief Construct a new Directory object
  *
- * @param fileSystemOps File system policy object. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  * @param path Path to directory.
  */
 Directory::Directory(const FileSystemOps& fileSystemOps, const std::string& path)

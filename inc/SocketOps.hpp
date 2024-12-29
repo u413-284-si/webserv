@@ -14,10 +14,19 @@
 #include <unistd.h>
 
 /**
- * @brief Policy class for socket functions.
+ * @brief Wrapper class for process-related functions.
  *
- * This class provides wrappers for functions regarding sockets. It provides functions to create a socket, bind a socket
- * to an address and port, listen on a socket and accept a connection on a socket.
+ * This class provides wrappers for functions interacting with sockets. The following functions are wrapped:
+ * - getaddrinfo()
+ * - socket()
+ * - setsockopt()
+ * - bind()
+ * - listen()
+ * - ntohs()
+ * - getsockname()
+ * - accept()
+ * - recv()
+ * - send()
  * It can also be mocked for testing purposes.
  */
 class SocketOps {

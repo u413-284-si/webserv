@@ -5,7 +5,7 @@
  *
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
- * @param fileSystemOps File system policy. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(
 	Connection& connection, std::string& responseBody, const FileSystemOps& fileSystemOps)

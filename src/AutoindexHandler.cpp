@@ -3,7 +3,7 @@
 /**
  * @brief Construct a new AutoindexHandler object
  *
- * @param fileSystemOps File system policy object. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 AutoindexHandler::AutoindexHandler(const FileSystemOps& fileSystemOps)
 	: m_fileSystemOps(fileSystemOps)
