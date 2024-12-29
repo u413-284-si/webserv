@@ -435,7 +435,7 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
-		numChunkSize = convertHex(strChunkSize);
+		numChunkSize = convertHex(strChunkSize, request);
 		std::getline(m_requestStream, chunkData);
 		if (chunkData[chunkData.size() - 1] == '\r')
 			chunkData.erase(chunkData.size() - 1);
@@ -914,22 +914,31 @@ bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-size_t RequestParser::convertHex(const std::string& chunkSize)
+size_t RequestParser::convertHex(const std::string& chunkSize, HTTPRequest& request)
 {
-	if (chunkSize.empty())
+	if (chunkSize.empty()) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
+	}
 
 	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
-		if (std::isxdigit(*it) == 0)
+		if (std::isxdigit(*it) == 0) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
+		}
 	}
 
 	std::istringstream iss(chunkSize);
 	size_t value = 0;
 
 	iss >> std::hex >> value;
-	if (iss.fail())
+	if (iss.fail()) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+	}
 	return value;
 }
 
