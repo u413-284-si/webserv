@@ -165,6 +165,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_connectionSendToCGI.cpp \
 			test_createVirtualServer.cpp \
 			test_FileWriteHandler.cpp \
+			test_handleBody.cpp \
 			test_handleCompleteRequestHeader.cpp \
 			test_helpers.cpp \
 			test_initVirtualServers.cpp \
