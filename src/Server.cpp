@@ -1346,12 +1346,14 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 			if (exitCode != 0) {
 				LOG_ERROR << "child returned with: " << exitCode;
 				connection.m_request.httpStatus = StatusInternalServerError;
+				connection.m_request.hasCGI = false;
 				return;
 			}
 		} else if (WIFSIGNALED(status)) { // NOLINT: misinterpretation by HIC++ standard
 			int signalNumber = WTERMSIG(status); // NOLINT: misinterpretation by HIC++ standard
 			LOG_ERROR << "child terminated by signal: " << signalNumber << " (" << signalNumToName(signalNumber) << ")";
 			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_request.hasCGI = false;
 			return;
 		}
 	}
