@@ -1,5 +1,4 @@
 #include "test_helpers.hpp"
-#include <unistd.h>
 
 using ::testing::Return;
 
@@ -7,33 +6,20 @@ class ConnectionSendToCGITest : public ServerTestBase {
 protected:
 	ConnectionSendToCGITest()
 	{
-		connection.m_pipeToCGIWriteEnd = pipefd[1];
-    	connection.m_request.body = "test body";
+		connection.m_pipeToCGIWriteEnd = dummyPipeFd;
+		connection.m_request.body = "test body";
 
-		ON_CALL(m_epollWrapper, addEvent)
-			.WillByDefault(Return(true));
-
-		ON_CALL(m_epollWrapper, removeEvent)
-			.WillByDefault(Return());
+		ON_CALL(m_epollWrapper, addEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, removeEvent).WillByDefault(Return());
 	}
 	~ConnectionSendToCGITest() override { }
 
-	const int dummyFd = 10;
-	const int dummyPipeFd = 11;
 	Socket serverSock = { "127.0.0.1", "8080" };
 	Socket clientSocket = { "192.168.0.1", "12345" };
+	const int dummyFd = 10;
 	Connection connection = Connection(serverSock, clientSocket, dummyFd, m_configFile.servers);
-	int pipefd[2];
 
-    void SetUp() override {
-        // Create a pipe
-        pipe(pipefd);
-    }
-
-    void TearDown() override {
-        close(pipefd[0]);
-        close(pipefd[1]);
-    }
+	const int dummyPipeFd = 11;
 };
 
 TEST_F(ConnectionSendToCGITest, EmptyBody)
@@ -52,7 +38,7 @@ TEST_F(ConnectionSendToCGITest, EmptyBody)
 TEST_F(ConnectionSendToCGITest, WriteError)
 {
 	// Arrange
- 	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(-1));
+	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
 	connectionSendToCGI(m_server, dummyPipeFd, connection);
@@ -65,14 +51,12 @@ TEST_F(ConnectionSendToCGITest, WriteError)
 TEST_F(ConnectionSendToCGITest, FullBodySent)
 {
 	// Arrange
-    const ssize_t bodySize = connection.m_request.body.size();
+	const ssize_t bodySize = connection.m_request.body.size();
 
-	EXPECT_CALL(m_processOps, writeProcess)
-        .Times(1)
-		.WillOnce(Return(bodySize));
+	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(bodySize));
 
 	// Act
-	connectionSendToCGI(m_server, pipefd[1], connection);
+	connectionSendToCGI(m_server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_TRUE(connection.m_request.body.empty());
