@@ -1162,6 +1162,9 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+			return;
 		}
 		if (connection.m_request.hasCGI)
 			connection.m_status = Connection::SendToCGI;
