@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new ResponseBuilder object
  *
- * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ * @param fileSystemOps File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 	initMIMETypes();
 }
@@ -44,7 +44,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemOps);
 	responseBodyHandler.execute();
 
 	appendStatusLine(request);
@@ -83,7 +83,8 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
 	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
 		return;
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' ' << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
+					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**
@@ -101,9 +102,10 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
-	// Content-Type
-		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
-	// Content-Length
+		// Content-Type
+		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
+						 << "\r\n";
+		// Content-Length
 		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 	// Server

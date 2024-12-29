@@ -6,7 +6,7 @@
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "EpollWrapper.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "Log.hpp"
 #include "ProcessOps.hpp"
 #include "RequestParser.hpp"
@@ -57,7 +57,7 @@ public:
 	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
 	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
-	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemPolicy& fileSystemPolicy,
+	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemOps& fileSystemOps,
 		const SocketPolicy& socketPolicy, const ProcessOps& processOps);
 	~Server();
 
@@ -119,7 +119,7 @@ public:
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
-	const FileSystemPolicy& m_fileSystemPolicy; /**< Handles functions for file system manipulation */
+	const FileSystemOps& m_fileSystemOps; /**< Handles functions for file system manipulation */
 	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
 	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 

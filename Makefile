@@ -130,7 +130,7 @@ SRC:=	main.cpp \
 		constants.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
-		FileSystemPolicy.cpp \
+		FileSystemOps.cpp \
 		FileWriteHandler.cpp \
 		HTTPRequest.cpp \
 		LogData.cpp \

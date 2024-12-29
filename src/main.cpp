@@ -21,7 +21,7 @@
 #define STRINGIZE(s) #s
 
 #ifndef DEFAULT_CONFIG_PATH
-#define DEFAULT_CONFIG_PATH ./config_files/standard_config.conf
+#define DEFAULT_CONFIG_PATH ./ config_files / standard_config.conf
 #endif
 
 int main(const int argc, const char* argv[])
@@ -44,7 +44,7 @@ int main(const int argc, const char* argv[])
 
 	try {
 		EpollWrapper epollWrapper(10, -1);
-		FileSystemPolicy fileSystemPolicy;
+		FileSystemOps fileSystemOps;
 		SocketPolicy socketPolicy;
 		ProcessOps processOps;
 
@@ -53,7 +53,7 @@ int main(const int argc, const char* argv[])
 
 		configFile = createDummyConfig();
 
-		Server server(configFile, epollWrapper, fileSystemPolicy, socketPolicy, processOps);
+		Server server(configFile, epollWrapper, fileSystemOps, socketPolicy, processOps);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		runServer(server);
 	} catch (std::exception& e) {

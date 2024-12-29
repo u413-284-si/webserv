@@ -5,14 +5,14 @@
  *
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
- * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ * @param fileSystemOps File system policy. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(
-	Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+	Connection& connection, std::string& responseBody, const FileSystemOps& fileSystemOps)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
-	, m_fileSystemPolicy(fileSystemPolicy)
+	, m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -55,7 +55,7 @@ void ResponseBodyHandler::execute()
 		return;
 	}
 	if (m_request.hasAutoindex) {
-		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
+		AutoindexHandler autoindexHandler(m_fileSystemOps);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
@@ -68,7 +68,7 @@ void ResponseBodyHandler::execute()
 	}
 	if (m_request.method == MethodGet) {
 		try {
-			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
+			m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusInternalServerError;
@@ -78,7 +78,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodPost) {
-		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
+		FileWriteHandler fileWriteHandler(m_fileSystemOps);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body);
 		if (m_responseBody.find("created") != std::string::npos) {
 			m_request.httpStatus = StatusCreated;
@@ -129,7 +129,7 @@ void ResponseBodyHandler::handleErrorBody()
 	m_request.hasReturn = false;
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
-	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
+	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
 	targetResourceHandler.execute(m_connection);
 
 	if (m_request.hasReturn) {
@@ -147,7 +147,7 @@ void ResponseBodyHandler::handleErrorBody()
 	}
 
 	try {
-		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
+		m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
 		m_request.httpStatus = oldStatus;
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();

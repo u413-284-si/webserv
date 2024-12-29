@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new FileWriteHandler object
  *
- * @param fileSystemPolicy File system policy object. Can be mocked if needed.
+ * @param fileSystemOps File system policy object. Can be mocked if needed.
  */
-FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+FileWriteHandler::FileWriteHandler(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -28,24 +28,24 @@ FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
 std::string FileWriteHandler::execute(const std::string& path, const std::string& content)
 {
 	try {
-		const bool isExistingFile = m_fileSystemPolicy.isExistingFile(path);
-		m_fileSystemPolicy.writeToFile(path, content);
-		struct stat fileStat = m_fileSystemPolicy.getFileStat(path);
+		const bool isExistingFile = m_fileSystemOps.isExistingFile(path);
+		m_fileSystemOps.writeToFile(path, content);
+		struct stat fileStat = m_fileSystemOps.getFileStat(path);
 
 		if (isExistingFile) {
 			m_response << "{\n"
 					   << "\"message\": \"Data appended successfully\",\n"
 					   << "\"file\": \"" << path << "\",\n"
-					   << "\"file_size\": " << m_fileSystemPolicy.getFileSize(fileStat) << ",\n"
-					   << "\"last_modified\": \"" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "\",\n"
+					   << "\"file_size\": " << m_fileSystemOps.getFileSize(fileStat) << ",\n"
+					   << "\"last_modified\": \"" << m_fileSystemOps.getLastModifiedTime(fileStat) << "\",\n"
 					   << "\"status\": \"updated\"\n"
 					   << "}\n";
 		} else {
 			m_response << "{\n"
 					   << "\"message\": \"File created successfully\",\n"
 					   << "\"file\": \"" << path << "\",\n"
-					   << "\"file_size\": " << m_fileSystemPolicy.getFileSize(fileStat) << ",\n"
-					   << "\"last_modified\": \"" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "\",\n"
+					   << "\"file_size\": " << m_fileSystemOps.getFileSize(fileStat) << ",\n"
+					   << "\"last_modified\": \"" << m_fileSystemOps.getLastModifiedTime(fileStat) << "\",\n"
 					   << "\"status\": \"created\"\n"
 					   << "}\n";
 		}

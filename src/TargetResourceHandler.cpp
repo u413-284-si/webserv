@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new TargetResourceHandler object
  *
- * @param fileSystemPolicy File system policy to be used. Can be mocked if needed.
+ * @param fileSystemOps File system policy to be used. Can be mocked if needed.
  */
-TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+TargetResourceHandler::TargetResourceHandler(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -79,22 +79,22 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
 
 	try {
-		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(locInfo.targetResource);
+		FileSystemOps::fileType fileType = m_fileSystemOps.checkFileType(locInfo.targetResource);
 
 		switch (fileType) {
 
-		case FileSystemPolicy::FileRegular:
+		case FileSystemOps::FileRegular:
 			break;
 
-		case FileSystemPolicy::FileDirectory:
+		case FileSystemOps::FileDirectory:
 			handleFileDirectory(locInfo, currentDepth);
 			break;
 
-		case FileSystemPolicy::FileNotExist:
+		case FileSystemOps::FileNotExist:
 			locInfo.statusCode = StatusNotFound;
 			break;
 
-		case FileSystemPolicy::FileOther:
+		case FileSystemOps::FileOther:
 			locInfo.statusCode = StatusInternalServerError;
 			break;
 		}

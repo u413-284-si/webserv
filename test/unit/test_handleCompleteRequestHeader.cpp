@@ -6,8 +6,7 @@ class HandleCompleteRequestHeaderTest : public ServerTestBase {
 protected:
 	HandleCompleteRequestHeaderTest()
 	{
-		ON_CALL(m_epollWrapper, modifyEvent)
-			.WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
 
 		m_connection.m_timeSinceLastEvent = 0;
 		m_connection.m_status = Connection::ReceiveHeader;
@@ -22,8 +21,7 @@ protected:
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequest)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
 	m_connection.m_buffer.assign("GET / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
@@ -35,8 +33,7 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequest)
 
 TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
 	m_connection.m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
@@ -48,8 +45,7 @@ TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 
 TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
 	m_connection.m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body");
 	m_configFile.servers[0].locations[0].allowedMethods[MethodPost] = true;

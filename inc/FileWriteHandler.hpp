@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Directory.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "Log.hpp"
 #include "utilities.hpp"
 
@@ -16,10 +16,10 @@
 class FileWriteHandler {
 
 public:
-	explicit FileWriteHandler(const FileSystemPolicy& fileSystemPolicy);
+	explicit FileWriteHandler(const FileSystemOps& fileSystemOps);
 	std::string execute(const std::string& path, const std::string& content);
 
 private:
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 	std::stringstream m_response;
 };

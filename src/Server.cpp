@@ -14,23 +14,23 @@
  * `Server` constructor. It is used to configure the server with settings such especially the number and
  * configuration of virtual servers.
  * @param epollWrapper A ready to use epoll instance. Can be mocked for testing.
- * @param fileSystemPolicy Class for filesystem related functions. Can be mocked for testing.
+ * @param fileSystemOps Class for filesystem related functions. Can be mocked for testing.
  * @param socketPolicy Policy class for socket related functions. Can be mocked for testing.
  * @param processOps Wrapper for process-related functions. Can be mocked for testing.
 
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
-Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemPolicy& fileSystemPolicy,
+Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemOps& fileSystemOps,
 	const SocketPolicy& socketPolicy, const ProcessOps& processOps)
 	: m_configFile(configFile)
 	, m_epollWrapper(epollWrapper)
-	, m_fileSystemPolicy(fileSystemPolicy)
+	, m_fileSystemOps(fileSystemOps)
 	, m_socketPolicy(socketPolicy)
 	, m_processOps(processOps)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
-	, m_responseBuilder(m_fileSystemPolicy)
-	, m_targetResourceHandler(m_fileSystemPolicy)
+	, m_responseBuilder(m_fileSystemOps)
+	, m_targetResourceHandler(m_fileSystemOps)
 {
 }
 

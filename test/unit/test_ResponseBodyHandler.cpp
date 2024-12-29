@@ -1,7 +1,7 @@
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 #include "ResponseBodyHandler.hpp"
 
 ConfigFile createTestConfigfile();
@@ -10,7 +10,7 @@ using ::testing::Return;
 using ::testing::Throw;
 
 class ResponseBodyHandlerTest : public ::testing::Test {
-	protected:
+protected:
 	ResponseBodyHandlerTest()
 	{
 		m_configFile.servers[0].locations[0].errorPage[StatusNotFound] = "/error";
@@ -44,18 +44,15 @@ class ResponseBodyHandlerTest : public ::testing::Test {
 	HTTPRequest& m_request = m_connection.m_request;
 
 	std::string m_responseBody;
-	MockFileSystemPolicy m_fileSystemPolicy;
-	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemPolicy);
-
+	MockFileSystemOps m_fileSystemOps;
+	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemOps);
 };
 
 TEST_F(ResponseBodyHandlerTest, IndexCreated)
 {
-	EXPECT_CALL(m_fileSystemPolicy, openDirectory)
-	.Times(1);
-	EXPECT_CALL(m_fileSystemPolicy, readDirectory);
-	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
-	.Times(1);
+	EXPECT_CALL(m_fileSystemOps, openDirectory).Times(1);
+	EXPECT_CALL(m_fileSystemOps, readDirectory);
+	EXPECT_CALL(m_fileSystemOps, closeDirectory).Times(1);
 
 	m_request.targetResource = "/proc/self/";
 	m_request.hasAutoindex = true;
@@ -66,14 +63,12 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 
 TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
 {
-	EXPECT_CALL(m_fileSystemPolicy, openDirectory)
-	.Times(2)
-	.WillOnce(Throw(std::runtime_error("openDirectory failed")))
-	.WillOnce(Return(nullptr));
-	EXPECT_CALL(m_fileSystemPolicy, readDirectory)
-	.WillOnce(Throw(std::runtime_error("readDirectory failed")));
-	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
-	.Times(1);
+	EXPECT_CALL(m_fileSystemOps, openDirectory)
+		.Times(2)
+		.WillOnce(Throw(std::runtime_error("openDirectory failed")))
+		.WillOnce(Return(nullptr));
+	EXPECT_CALL(m_fileSystemOps, readDirectory).WillOnce(Throw(std::runtime_error("readDirectory failed")));
+	EXPECT_CALL(m_fileSystemOps, closeDirectory).Times(1);
 
 	m_request.targetResource = "/proc/self/";
 	m_request.hasAutoindex = true;
@@ -98,8 +93,7 @@ TEST_F(ResponseBodyHandlerTest, ErrorPage)
 
 TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 {
-	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-	.WillOnce(Throw(std::runtime_error("openFile failed")));
+	EXPECT_CALL(m_fileSystemOps, getFileContents).WillOnce(Throw(std::runtime_error("openFile failed")));
 
 	m_request.method = MethodGet;
 	m_request.targetResource = "/proc/self/cmdline";
@@ -111,8 +105,7 @@ TEST_F(ResponseBodyHandlerTest, FileNotOpened)
 
 TEST_F(ResponseBodyHandlerTest, FileFound)
 {
-	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-	.WillOnce(Return("Hello World"));
+	EXPECT_CALL(m_fileSystemOps, getFileContents).WillOnce(Return("Hello World"));
 
 	m_request.method = MethodGet;
 	m_request.targetResource = "/proc/self/cmdline";
@@ -124,10 +117,8 @@ TEST_F(ResponseBodyHandlerTest, FileFound)
 
 TEST_F(ResponseBodyHandlerTest, CustomErrorPage)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
-	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-	.WillOnce(Return("error_page_content"));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, getFileContents).WillOnce(Return("error_page_content"));
 
 	m_request.httpStatus = StatusNotFound;
 	m_request.targetResource = "/not_existing";
@@ -139,8 +130,7 @@ TEST_F(ResponseBodyHandlerTest, CustomErrorPage)
 
 TEST_F(ResponseBodyHandlerTest, CustomErrorPageStrangeType)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileOther));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileOther));
 
 	m_request.httpStatus = StatusNotFound;
 	m_request.targetResource = "/not_existing";
@@ -152,10 +142,8 @@ TEST_F(ResponseBodyHandlerTest, CustomErrorPageStrangeType)
 
 TEST_F(ResponseBodyHandlerTest, CustomErrorPageOpenFails)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
-	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-	.WillOnce(Throw(std::runtime_error("openFile failed")));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, getFileContents).WillOnce(Throw(std::runtime_error("openFile failed")));
 
 	m_request.httpStatus = StatusNotFound;
 	m_request.targetResource = "/not_existing";

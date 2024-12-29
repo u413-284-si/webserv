@@ -1,17 +1,17 @@
 #pragma once
 
-#include <string>
 #include <cerrno>
 #include <cstring>
-#include <sys/stat.h>
-#include <fstream>
-#include <stdexcept>
-#include <iostream>
-#include <sys/types.h>
 #include <dirent.h>
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-#include "utilities.hpp"
 #include "Log.hpp"
+#include "utilities.hpp"
 
 /**
  * @brief Class for C functions on the file system.
@@ -19,10 +19,10 @@
  * This class is a wrapper for C functions on the file system.
  * It is used to make the code more testable.
  */
-class FileSystemPolicy {
+class FileSystemOps {
 
 public:
-	virtual ~FileSystemPolicy();
+	virtual ~FileSystemOps();
 
 	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
 	virtual fileType checkFileType(const std::string& path) const;
