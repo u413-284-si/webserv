@@ -80,6 +80,7 @@ public:
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	void removeVirtualServer(int delfd);
 	void removeCGIFileDescriptor(int& delfd);
 	void setClientTimeout(time_t clientTimeout);
 

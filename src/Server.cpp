@@ -249,6 +249,19 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 }
 
 /**
+ * @brief Removes a virtual server.
+ *
+ * @param delfd file descriptor of the server to be removed.
+ */
+void Server::removeVirtualServer(int delfd)
+{
+	removeEvent(delfd);
+	getVirtualServers().erase(delfd);
+	close(delfd);
+	LOG_DEBUG << "Removed virtual server with FD: " << delfd;
+}
+
+/**
  * @brief Removes a CGI file descriptor from the server.
  *
  * This function removes a CGI file descriptor from the server by performing the following steps:
@@ -726,7 +739,7 @@ void handleEvent(Server& server, struct epoll_event event)
 	if (iter != server.getVirtualServers().end()) {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_ERROR << "Error condition happened on the associated file descriptor of " << iter->second;
-			close(event.data.fd);
+			server.removeVirtualServer(event.data.fd);
 			return;
 		}
 		acceptConnections(server, iter->first, iter->second, eventMask);
