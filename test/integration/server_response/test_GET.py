@@ -78,3 +78,9 @@ def test_character_device():
     print("Request for /tty")
     response = requests.get("http://localhost:8080/tty")
     assert response.status_code == 500
+
+def test_GET_empty_return_directive():
+    print("Request for /empty")
+    response = requests.get("http://localhost:8080/empty")
+    assert response.status_code == 200
+    assert len(response.content) == 0

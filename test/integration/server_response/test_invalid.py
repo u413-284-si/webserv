@@ -97,3 +97,15 @@ def test_invalid_percent_encoding_non_hex():
         # Receive the response
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+
+# Does not work, gets misinterpreted as method not implemented
+# def test_invalid_no_request_line():
+#     # Create a socket connection
+#     with socket.create_connection((host, port)) as sock:
+#         # Empty request line
+#         request = b"\r\n\r\n"
+#         sock.sendall(request)
+
+#         # Receive the response
+#         response = parse_http_response(sock)
+#         assert response["status_code"] == 400

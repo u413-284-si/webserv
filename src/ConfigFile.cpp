@@ -132,6 +132,10 @@ ConfigFile createDummyConfig()
 	location15.path = "/tty";
 	location15.root = "/dev";
 
+	Location location16;
+	location16.path = "/empty";
+	location16.returns = std::make_pair(StatusOK, "");
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
@@ -148,6 +152,7 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location13);
 	serverConfig8080.locations.push_back(location14);
 	serverConfig8080.locations.push_back(location15);
+	serverConfig8080.locations.push_back(location16);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";
