@@ -52,7 +52,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 {
 	const int currentDepth = depth + 1;
 	if (currentDepth == s_maxRecursion) {
-		LOG_DEBUG << "Max recursion reached: " << currentDepth;
+		LOG_ERROR << "Max recursion reached: " << currentDepth;
 		locInfo.statusCode = StatusInternalServerError;
 		return (locInfo);
 	}
