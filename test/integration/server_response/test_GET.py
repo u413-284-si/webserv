@@ -45,3 +45,31 @@ def test_GET_location_with_alias():
     file_size = os.path.getsize(file_path)
     assert int(response.headers["content-length"]) == file_size
     assert response.status_code == 200
+
+def test_GET_directory_forbidden():
+    print("Request for /secret/")
+    response = requests.get("http://localhost:8080/secret/")
+    assert response.status_code == 403
+
+def test_GET_simple_redirect():
+    print("Request for /redirect")
+    response = requests.get("http://localhost:8080/redirect")
+    assert response.history[0].status_code == 301
+    assert response.history[0].headers["Location"] == "/secret"
+    assert response.status_code == 403
+
+def test_GET_return_forbidden_error_page_returns_also():
+    print("Request for /another")
+    response = requests.get("http://localhost:8080/another")
+    assert response.status_code == 403
+    assert "Return Message" in response.text
+
+def test_GET_missing_indices():
+    print("Request for /missingIndex/")
+    response = requests.get("http://localhost:8080/missingIndex/")
+    assert response.status_code == 403
+
+def test_infinite_recurision():
+    print("Request for /recursion/")
+    response = requests.get("http://localhost:8080/recursion/")
+    assert response.status_code == 500
