@@ -27,26 +27,29 @@ protected:
  * 8. Listen directive contains no value
  * 9. Root directive contains no root path
  * 10. Root directive contains multiple root paths
- * 11. Max body size directive contains no number
- * 12. Max body size directive contains invalid char within number
- * 13. Max body size directive contains invalid unit char
- * 14. Max body size directive contains invalid unit lenght
- * 15. Max body size directive contains no value
- * 16. Autoindex directive contains invalid value
- * 17. Allow methods directive contains invalid value
- * 18. Allow methods contains no value
- * 19. Error page contains invalid error code
- * 20. Error page path contains no value
- * 21. Error page contains no value
- * 22. CGI extension contains no dot at beginning
- * 23. CGI extension contains multiple extensions
- * 24. CGI extension contains multiple dots
- * 25. CGI extension contains no value
- * 26. CGI path contains no value
- * 27. CGI index contains no value
- * 28. Invalid directives outside of server block
- * 29. Several server names
- * 30. Server name contains no value
+ * 11. Alias directive contains no alias path
+ * 12. Alias directive contains multiple alias paths
+ * 13. Alias directive contains slash at the beginning
+ * 14. Max body size directive contains no number
+ * 15. Max body size directive contains invalid char within number
+ * 16. Max body size directive contains invalid unit char
+ * 17. Max body size directive contains invalid unit lenght
+ * 18. Max body size directive contains no value
+ * 19. Autoindex directive contains invalid value
+ * 20. Allow methods directive contains invalid value
+ * 21. Allow methods contains no value
+ * 22. Error page contains invalid error code
+ * 23. Error page path contains no value
+ * 24. Error page contains no value
+ * 25. CGI extension contains no dot at beginning
+ * 26. CGI extension contains multiple extensions
+ * 27. CGI extension contains multiple dots
+ * 28. CGI extension contains no value
+ * 29. CGI path contains no value
+ * 30. CGI index contains no value
+ * 31. Invalid directives outside of server block
+ * 32. Several server names
+ * 33. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -239,6 +242,48 @@ TEST_F(InvalidConfigFileTests, RootDirectiveContainsMultipleRootPaths)
 				m_configFileParser.parseConfigFile("config_files/root_multiple_paths.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("More than one root path", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, AliasDirectiveContainsNoPath)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/alias_no_path.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("'alias' directive has no value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, AliasDirectiveContainsMultipleRootPaths)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/alias_multiple_paths.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("More than one alias path", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, AliasDirectiveContainsNoSlash)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/alias_no_slash.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Alias path does not start with a slash", e.what());
 				throw;
 			}
 		},
@@ -540,31 +585,32 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  * 9. Listen contains ip and port
  * 10. Listen contains only localhost
  * 11. Listen contains localhost and port
- * 12. Max body size contains only number
- * 13. Max body size contains number and k unit
- * 14. Max body size contains number and K unit
- * 15. Max body size contains number and m unit
- * 16. Max body size contains number and M unit
- * 17. Max body size contains number and g unit
- * 18. Max body size contains number and G unit
- * 19. Autoindex contains on
- * 20. Autoindex contains off
- * 21. Allow methods contains GET
- * 22. Allow methods contains POST
- * 23. Allow methods contains DELETE
- * 24. Allow methods contains GET, POST and DELETE
- * 25. Error page contains mutliple error codes and error page paths
- * 26. CGI extension contains one extension
- * 27. CGI path contains one path
- * 28. Index contains multiple indices
- * 29. Bracket under server directive
- * 30. Bracket under location directive
- * 31. Whitespaces between server directive and opening bracket
- * 32. Directive and opening bracket on the same line
- * 33. Directive and closing bracket on the same line
- * 34. Directive and closing bracket on the same line under server directive
- * 35. Location path
- * 36. Inheritance of the server directives root, max_body_size and error_page to location
+ * 12. Alias path contains one path
+ * 13. Max body size contains only number
+ * 15. Max body size contains number and k unit
+ * 16. Max body size contains number and K unit
+ * 17. Max body size contains number and m unit
+ * 18. Max body size contains number and M unit
+ * 19. Max body size contains number and g unit
+ * 20. Max body size contains number and G unit
+ * 21. Autoindex contains on
+ * 22. Autoindex contains off
+ * 23. Allow methods contains GET
+ * 24. Allow methods contains POST
+ * 25. Allow methods contains DELETE
+ * 26. Allow methods contains GET, POST and DELETE
+ * 27. Error page contains mutliple error codes and error page paths
+ * 28. CGI extension contains one extension
+ * 29. CGI path contains one path
+ * 30. Index contains multiple indices
+ * 31. Bracket under server directive
+ * 32. Bracket under location directive
+ * 33. Whitespaces between server directive and opening bracket
+ * 34. Directive and opening bracket on the same line
+ * 35. Directive and closing bracket on the same line
+ * 36. Directive and closing bracket on the same line under server directive
+ * 37. Location path
+ * 38. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -598,6 +644,9 @@ TEST_F(ValidConfigFileTests, ValidFile)
 	EXPECT_EQ("/var/www", configFile.servers[0].locations[3].root);
 	EXPECT_EQ(".py", configFile.servers[0].locations[3].cgiExt);
 	EXPECT_EQ("/usr/bin/python3", configFile.servers[0].locations[3].cgiPath);
+
+	// location '/images' block
+	EXPECT_EQ("/var/www/images", configFile.servers[0].locations[4].alias);
 }
 
 TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
@@ -691,6 +740,13 @@ TEST_F(ValidConfigFileTests, ListenContainsLocalhostAndPort)
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/listen_localhost_and_port.conf"));
 	EXPECT_EQ("127.0.0.1", configFile.servers[0].host);
 	EXPECT_EQ("9090", configFile.servers[0].port);
+}
+
+TEST_F(ValidConfigFileTests, AliasContainsOnlyPath)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/alias_one_path.conf"));
+	EXPECT_EQ("/var/www/images", configFile.servers[0].locations[4].alias);
 }
 
 TEST_F(ValidConfigFileTests, MaxBodySizeContainsOnlyNumber)

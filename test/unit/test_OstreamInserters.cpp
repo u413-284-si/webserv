@@ -100,6 +100,7 @@ protected:
 	{
 		m_location.path = "/path/to/resource";
 		m_location.root = "/root";
+		m_location.alias = "/alias";
 		m_location.indices = { "index.html", "index.php" };
 		m_location.cgiExt = ".php";
 		m_location.cgiPath = "/cgi-bin";
@@ -145,6 +146,7 @@ TEST_F(OstreamInsertersTest, Location)
 
 	const std::string expected = "Path: /path/to/resource\n"
 								 "Root: /root\n"
+								 "Alias: /alias\n"
 								 "Indices: \n"
 								 "  index.html\n"
 								 "  index.php\n"
