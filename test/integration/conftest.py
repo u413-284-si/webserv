@@ -27,10 +27,18 @@ def start_server():
     return start_server_function
 
 @pytest.fixture(scope="session")
+def stop_server():
+    def stop_server_function(server_process):
+        server_process.terminate()
+        server_process.wait()
+        print("Server stopped from test fixture start_cpp_server.")
+    return stop_server_function
+
+@pytest.fixture(scope="session")
 def wait_for_startup():
     def wait_for_startup_function():
     # Wait for the server to start
-        timeout = 10
+        timeout = 15
         start_time = time.time()
         while time.time() - start_time < timeout:
             try:
@@ -43,13 +51,6 @@ def wait_for_startup():
             time.sleep(0.1)  # Small delay between retries
         else:
             # If the loop ends without breaking, raise an error
+            stop_server()
             pytest.fail("Server did not start within the timeout period.")
     return wait_for_startup_function
-
-@pytest.fixture(scope="session")
-def stop_server():
-    def stop_server_function(server_process):
-        server_process.terminate()
-        server_process.wait()
-        print("Server stopped from test fixture start_cpp_server.")
-    return stop_server_function
