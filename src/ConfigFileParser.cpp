@@ -386,6 +386,7 @@ void ConfigFileParser::readLocationBlockPath(void)
  *
  * It makes sure that the path is valid in the following ways:
  * 1. There is only one root path
+ * 2. There is a slash at the beginning of the path
  *
  * If at the end of the path is a slash, it removes it.
  *
@@ -398,6 +399,9 @@ void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
 	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one root path");
+
+	if (rootPath.at(0) != '/')
+		throw std::runtime_error("Root path does not start with a slash");
 
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath.erase(rootPath.end() - 1);
@@ -415,7 +419,7 @@ void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
  *
  * It makes sure that the path is valid in the following ways:
  * 1. There is only one alias path
- * 2. There is a slash at the beginning
+ * 2. There is a slash at the beginning of the path
  *
  * @param aliasPath The value of the directive alias
  */
