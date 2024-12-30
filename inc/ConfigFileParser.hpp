@@ -68,6 +68,7 @@ private:
 	void readServerName(const std::string& serverName);
 	void readSocket(const std::string& value);
 	void readRootPath(const Block& block, std::string rootPath);
+	void readAliasPath(const std::string& aliasPath);
 	void readMaxBodySize(const Block& block, const std::string& maxBodySize);
 	void readAutoIndex(const std::string& autoindex);
 	void readAllowMethods(const std::string& allowMethods);

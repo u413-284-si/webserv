@@ -18,6 +18,7 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 {
 	ostream << "Path: " << location.path << '\n';
 	ostream << "Root: " << location.root << '\n';
+	ostream << "Alias: " << location.alias << '\n';
 	ostream << "Indices: " << '\n';
 	for (std::vector<std::string>::const_iterator it = location.indices.begin(); it != location.indices.end(); ++it)
 		ostream << "  " << *it << '\n';

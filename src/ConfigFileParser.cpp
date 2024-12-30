@@ -17,8 +17,8 @@ ConfigFileParser::ConfigFileParser(void)
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
 	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
-	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "client_max_body_size",
-		"autoindex", "error_page", "allow_methods", "location", "return" };
+	const char* validLocationDirectiveNames[] = { "root", "alias", "index", "cgi_ext", "cgi_path",
+		"client_max_body_size", "autoindex", "error_page", "allow_methods", "location", "return" };
 	const int validLocationDirectiveNamesSize
 		= sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
 
@@ -409,6 +409,28 @@ void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 }
 
 /**
+ * @brief Reads the alias path
+ *
+ * The function checks if the alias path is valid and reads it if that is the case.
+ *
+ * It makes sure that the path is valid in the following ways:
+ * 1. There is only one alias path
+ * 2. There is a slash at the beginning
+ *
+ * @param aliasPath The value of the directive alias
+ */
+void ConfigFileParser::readAliasPath(const std::string& aliasPath)
+{
+	if (aliasPath.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("More than one alias path");
+
+	if (aliasPath.at(0) != '/')
+		throw std::runtime_error("Alias path does not start with a slash");
+
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].alias = aliasPath;
+}
+
+/**
  * @brief Reads the server name
  *
  * The function checks if there is only one server name and reads it if that is the case
@@ -741,6 +763,8 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 {
 	if (directive == "root")
 		readRootPath(LocationBlock, value);
+	else if (directive == "alias")
+		readAliasPath(value);
 	else if (directive == "client_max_body_size")
 		readMaxBodySize(LocationBlock, value);
 	else if (directive == "autoindex")

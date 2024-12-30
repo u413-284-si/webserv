@@ -21,6 +21,7 @@ public:
 
 	std::string path;
 	std::string root;
+	std::string alias;
 	std::vector<std::string> indices;
 	std::string cgiExt;
 	std::string cgiPath;
