@@ -56,30 +56,6 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
 }
 
 /**
- * @brief Clears the contents of the given HTTPRequest object.
- *
- * This function resets all the fields of the provided HTTPRequest object
- * to their default states. It sets the HTTP method to `MethodCount`,
- * clears the URI fragment, path, and query, sets the version to an
- * empty string, clears the headers and body, sets the error code to 0,
- * and indicates that the connection should not be closed.
- *
- * @param request The HTTPRequest object to be cleared.
- */
-void RequestParser::clearRequest(HTTPRequest& request)
-{
-	request.method = MethodCount;
-	request.uri.fragment = "";
-	request.uri.path = "";
-	request.uri.query = "";
-	request.version = "";
-	request.headers.clear();
-	request.body = "";
-	request.httpStatus = StatusOK;
-	request.shallCloseConnection = false;
-}
-
-/**
  * @brief Clears the contents of the RequestParser object.
  *
  * This function resets the internal request stream of the RequestParser object

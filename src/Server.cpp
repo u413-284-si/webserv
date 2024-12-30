@@ -495,11 +495,6 @@ void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
 	m_requestParser.parseBody(bodyString, request);
 }
 
-/**
- * @brief Wrapper function to RequestParser::clearParser.
- */
-void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
-
 /* ====== DISPATCH TO RESPONSEBUILDER ====== */
 
 /**
