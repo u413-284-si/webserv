@@ -587,7 +587,7 @@ TEST_F(ValidConfigFileTests, ValidFile)
 
 	// location '/list' block
 	EXPECT_EQ("/var/www", configFile.servers[0].locations[1].root);
-	EXPECT_EQ(true, configFile.servers[0].locations[1].isAutoindex);
+	EXPECT_EQ(true, configFile.servers[0].locations[1].hasAutoindex);
 
 	// location '/upload' block
 	EXPECT_EQ("/var/www", configFile.servers[0].locations[2].root);
@@ -752,14 +752,14 @@ TEST_F(ValidConfigFileTests, AutoindexContainsOn)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_on.conf"));
-	EXPECT_EQ(true, configFile.servers[0].locations[0].isAutoindex);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].hasAutoindex);
 }
 
 TEST_F(ValidConfigFileTests, AutoindexContainsOff)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_off.conf"));
-	EXPECT_EQ(false, configFile.servers[0].locations[0].isAutoindex);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].hasAutoindex);
 }
 
 TEST_F(ValidConfigFileTests, AllowMethodsContainsGet)
