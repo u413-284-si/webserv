@@ -128,6 +128,10 @@ ConfigFile createDummyConfig()
 	location14.root = "/workspaces/webserv/html";
 	location14.indices.push_back("recursion/");
 
+	Location location15;
+	location15.path = "/tty";
+	location15.root = "/dev";
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
@@ -143,6 +147,7 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location12);
 	serverConfig8080.locations.push_back(location13);
 	serverConfig8080.locations.push_back(location14);
+	serverConfig8080.locations.push_back(location15);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";

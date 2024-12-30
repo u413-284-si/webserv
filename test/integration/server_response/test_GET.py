@@ -69,7 +69,12 @@ def test_GET_missing_indices():
     response = requests.get("http://localhost:8080/missingIndex/")
     assert response.status_code == 403
 
-def test_infinite_recurision():
+def test_max_recurision():
     print("Request for /recursion/")
     response = requests.get("http://localhost:8080/recursion/")
+    assert response.status_code == 500
+
+def test_character_device():
+    print("Request for /tty")
+    response = requests.get("http://localhost:8080/tty")
     assert response.status_code == 500
