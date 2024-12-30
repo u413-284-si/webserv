@@ -250,7 +250,7 @@ $(TEST): $(TEST_OBJS)
 .PHONY: test2
 test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)pytest ./$(INTEGRATION_TEST_DIR)
+	$(SILENT)pytest --server-executable=./$(NAME) --config-file=./$(CONFIG_DIR)/valid_config.conf ./$(INTEGRATION_TEST_DIR)
 
 # This target uses the file standard_config.conf as argument to run the program.
 .PHONY: run
@@ -309,7 +309,7 @@ coverage: $(TEST) | $(COV_DIR)
 .PHONY: coverage2
 coverage2: $(NAME) | $(COV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)pytest --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
+	$(SILENT)pytest --server-executable=./$(NAME) --config-file=./$(CONFIG_DIR)/valid_config.conf --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
 
 # ******************************
 # *     Object compiling and   *
