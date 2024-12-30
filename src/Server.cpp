@@ -947,6 +947,7 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) {
 			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
@@ -1200,6 +1201,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
