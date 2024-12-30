@@ -26,14 +26,14 @@ std::ostream& operator<<(std::ostream& ostream, const Location& location)
 	ostream << "Autoindex: " << location.hasAutoindex << '\n';
 	ostream << "Max body size: " << location.maxBodySize << '\n';
 	ostream << "Error Page:\n";
-	for (std::map<statusCode, std::string>::const_iterator it = location.errorPage.begin(); it != location.errorPage.end();
-		 ++it) {
+	for (std::map<statusCode, std::string>::const_iterator it = location.errorPage.begin();
+		 it != location.errorPage.end(); ++it) {
 		ostream << "  " << it->first << ": " << it->second << '\n';
 	}
 	ostream << "Allowed methods:\n";
-	ostream << "  GET: " << location.allowedMethods[0] << '\n';
-	ostream << "  POST: " << location.allowedMethods[1] << '\n';
-	ostream << "  DELETE: " << location.allowedMethods[2] << '\n';
+	ostream << "  GET: " << location.allowMethods[0] << '\n';
+	ostream << "  POST: " << location.allowMethods[1] << '\n';
+	ostream << "  DELETE: " << location.allowMethods[2] << '\n';
 	ostream << "Returns: "
 			<< "[" << location.returns.first << "]: " << location.returns.second << '\n';
 	return ostream;

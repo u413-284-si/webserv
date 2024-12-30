@@ -105,10 +105,10 @@ protected:
 		m_location.cgiPath = "/cgi-bin";
 		m_location.hasAutoindex = true;
 		m_location.maxBodySize = 123;
-		m_location.errorPage = { {StatusNotFound, "error404.html"}, {StatusForbidden, "error403.html"} };
-		m_location.allowedMethods[0] = true;
-		m_location.allowedMethods[1] = false;
-		m_location.allowedMethods[2] = false;
+		m_location.errorPage = { { StatusNotFound, "error404.html" }, { StatusForbidden, "error403.html" } };
+		m_location.allowMethods[0] = true;
+		m_location.allowMethods[1] = false;
+		m_location.allowMethods[2] = false;
 		m_location.returns = std::make_pair(StatusOK, "OK.html");
 
 		m_uri.path = "/path/to/resource";

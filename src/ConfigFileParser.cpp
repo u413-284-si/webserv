@@ -561,9 +561,9 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 {
 	if (autoindex == "on")
-		m_configFile.servers[m_serverIndex].locations[m_locationIndex].isAutoindex = true;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = true;
 	else if (autoindex == "off")
-		m_configFile.servers[m_serverIndex].locations[m_locationIndex].isAutoindex = false;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = false;
 	else
 		throw std::runtime_error("Invalid autoindex value");
 }

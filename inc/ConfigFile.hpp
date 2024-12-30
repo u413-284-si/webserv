@@ -9,8 +9,8 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 /* ====== DEFINITIONS ====== */
 
@@ -27,7 +27,7 @@ public:
 	bool hasAutoindex;
 	unsigned long maxBodySize;
 	std::map<statusCode, std::string> errorPage;
-	bool allowedMethods[MethodCount];
+	bool allowMethods[MethodCount];
 	std::pair<statusCode, std::string> returns;
 };
 
