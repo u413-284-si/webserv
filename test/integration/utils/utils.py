@@ -49,17 +49,20 @@ def stop_server(server_process: subprocess.Popen) -> None:
     server_process.terminate()
     server_process.wait()
 
-def wait_for_startup() -> None:
+def wait_for_startup(server_process: subprocess.Popen) -> None:
     """
     Waits for the server to start by checking its health endpoint.
 
     If the server does not start within the timeout period, it stops the server
     and exits the test with an error.
 
+    Args:
+        server_process (subprocess.Popen): The process object of the server.
+
     Returns:
         None
     """
-    timeout = 15 # Timeout period in seconds
+    timeout = 10 # Timeout period in seconds
     start_time = time.time()
     # Keep checking the server health until the timeout is reached
     while time.time() - start_time < timeout:
@@ -72,7 +75,7 @@ def wait_for_startup() -> None:
         time.sleep(0.1)  # Small delay between retries
     else:
         # If the loop ends without breaking, raise an error
-        stop_server()
+        stop_server(server_process)
         pytest.exit("Server did not start within the timeout period.")
 
 

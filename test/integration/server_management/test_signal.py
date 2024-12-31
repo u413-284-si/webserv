@@ -18,7 +18,7 @@ def test_signal_graceful_shutdown(request):
 
     server_process = start_server(server_executable, config_file, with_coverage, kcov_output_dir, kcov_excl_path)
 
-    wait_for_startup()
+    wait_for_startup(server_process)
 
     if with_coverage:
         pid = int(subprocess.check_output(["pgrep", "webserv"]).decode().strip())

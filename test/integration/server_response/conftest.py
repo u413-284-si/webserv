@@ -34,7 +34,7 @@ def init_server_instance(request: FixtureRequest) -> Generator[subprocess.Popen,
 
     server_process = start_server(server_executable, config_file, with_coverage, kcov_output_dir, kcov_excl_path)
 
-    wait_for_startup()
+    wait_for_startup(server_process)
 
     # Provide the server process to the tests
     yield server_process
