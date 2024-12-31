@@ -6,6 +6,12 @@ var namespaceserver__response =
     [ "test_CGI", "namespaceserver__response_1_1test___c_g_i.html", [
       [ "test_no_CGI_defined", "namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49", null ]
     ] ],
+    [ "test_error", "namespaceserver__response_1_1test__error.html", [
+      [ "test_file_not_found", "namespaceserver__response_1_1test__error.html#a6d5021674b44d7cb5d2c4f99067ff936", null ],
+      [ "test_permission_denied_for_file", "namespaceserver__response_1_1test__error.html#a446b79a620a7e9752ed54a83eefa2808", null ],
+      [ "test_permission_denied_in_path", "namespaceserver__response_1_1test__error.html#ae042b9079347949270f7b00c6fb7f895", null ],
+      [ "test_directory_no_autoindex", "namespaceserver__response_1_1test__error.html#a0202b3f18cfa1f51995b20308843e255", null ]
+    ] ],
     [ "test_GET", "namespaceserver__response_1_1test___g_e_t.html", [
       [ "test_GET_simple", "namespaceserver__response_1_1test___g_e_t.html#a8266fddc7bf1debe38627a7c50abc1cf", null ],
       [ "test_GET_index_file", "namespaceserver__response_1_1test___g_e_t.html#a16e3d1cf9607cfa3f8fac4a85b199e7e", null ],

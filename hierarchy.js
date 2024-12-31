@@ -29,6 +29,10 @@ var hierarchy =
     [ "RequestParser", "class_request_parser.html", null ],
     [ "ResponseBodyHandler", "class_response_body_handler.html", null ],
     [ "ResponseBuilder", "class_response_builder.html", null ],
+    [ "std::runtime_error", null, [
+      [ "FileSystemPolicy::FileNotFoundException", "struct_file_system_policy_1_1_file_not_found_exception.html", null ],
+      [ "FileSystemPolicy::NoPermissionException", "struct_file_system_policy_1_1_no_permission_exception.html", null ]
+    ] ],
     [ "Server", "class_server.html", null ],
     [ "ServerBlockConfig", "struct_server_block_config.html", null ],
     [ "Socket", "struct_socket.html", null ],

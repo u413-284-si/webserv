@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ostreaminserterstest_0',['OstreamInsertersTest',['../class_ostream_inserters_test.html',1,'']]]
+  ['nopermissionexception_0',['NoPermissionException',['../struct_file_system_policy_1_1_no_permission_exception.html',1,'FileSystemPolicy']]]
 ];
