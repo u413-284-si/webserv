@@ -1,10 +1,9 @@
 import pytest
-import time
-import requests
+from utils.utils import start_server, wait_for_startup, stop_server
 
 # Fixture to start the server for normal tests
 @pytest.fixture(scope="package", autouse=True)
-def start_cpp_server(request, start_server, wait_for_startup, stop_server):
+def start_cpp_server(request):
     server_executable = request.config.getoption("--server-executable")
     config_file = request.config.getoption("--config-file")
 

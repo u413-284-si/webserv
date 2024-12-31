@@ -3,8 +3,9 @@
 import signal
 import os
 import subprocess
+from utils.utils import start_server, wait_for_startup
 
-def test_server_graceful_shutdown(request, start_server, wait_for_startup):
+def test_server_graceful_shutdown(request):
 
     server_executable = request.config.getoption("--server-executable")
     config_file = config_file = request.config.getoption("--config-file")
