@@ -13,7 +13,7 @@ def test_5xx_max_recurision():
     response = make_request(url)
     assert response.status_code == 500
 
-def test_invalid_method_not_implemented():
+def test_5xx_method_not_implemented():
 
     # Create a socket connection
     with socket.create_connection((host, port)) as sock:
