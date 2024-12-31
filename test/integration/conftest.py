@@ -3,6 +3,7 @@ import os
 import subprocess
 import time
 import requests
+from typing import Callable
 
 def pytest_addoption(parser):
     print("Registering custom pytest options")
@@ -13,8 +14,8 @@ def pytest_addoption(parser):
     parser.addoption("--kcov-excl-path", action="store", default="--exclude-path=/usr/include,/usr/lib,/usr/local", help="Path to exclude from kcov coverage")
 
 @pytest.fixture(scope="session")
-def start_server():
-    def start_server_function(server_executable, config_file, with_coverage, kcov_output_dir, kcov_excl_path):
+def start_server() -> Callable[[str, str, bool, str, str], subprocess.Popen]:
+    def start_server_function(server_executable: str, config_file: str, with_coverage: bool, kcov_output_dir: str, kcov_excl_path: str) -> subprocess.Popen:
         if with_coverage:
         # Create the kcov output directory if it doesn't exist
             os.makedirs(kcov_output_dir, exist_ok=True)
@@ -27,16 +28,16 @@ def start_server():
     return start_server_function
 
 @pytest.fixture(scope="session")
-def stop_server():
-    def stop_server_function(server_process):
+def stop_server() -> Callable[[subprocess.Popen], None]:
+    def stop_server_function(server_process: subprocess.Popen) -> None:
         server_process.terminate()
         server_process.wait()
         print("Server stopped from test fixture start_cpp_server.")
     return stop_server_function
 
 @pytest.fixture(scope="session")
-def wait_for_startup():
-    def wait_for_startup_function():
+def wait_for_startup()  -> Callable[[], None]:
+    def wait_for_startup_function() -> None:
     # Wait for the server to start
         timeout = 15
         start_time = time.time()
