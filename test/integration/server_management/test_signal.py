@@ -13,7 +13,6 @@ def test_server_graceful_shutdown(request):
     # Check if the user passed the --with-coverage option
     with_coverage = request.config.getoption("--with-coverage")
 
-    # Path to the C++ server executable
     kcov_output_dir = request.config.getoption("--kcov-output-dir")
     kcov_excl_path = request.config.getoption("--kcov-excl-path")
 
@@ -26,7 +25,7 @@ def test_server_graceful_shutdown(request):
     else:
         pid = server_process.pid
 
-    print("Testing server shutdown behavior...")
+    print("Sending SIGQUIT for graceful shutdown")
     os.kill(pid, signal.SIGQUIT)
     server_process.wait()
     exit_status = server_process.returncode
