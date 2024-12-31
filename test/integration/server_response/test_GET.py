@@ -48,8 +48,8 @@ def test_GET_location_with_alias():
     assert response.status_code == 200
 
 def test_GET_empty_return_directive():
-    print("Request for /empty")
-    url = "http://localhost:8080/empty"
+    print("Request for /health")
+    url = "http://localhost:8080/health"
     response = make_request(url)
     assert response.status_code == 200
     assert len(response.content) == 0
