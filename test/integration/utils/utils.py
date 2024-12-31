@@ -3,7 +3,7 @@ import os
 import time
 import requests
 import pytest
-from typing import Optional
+from typing import Optional, Callable
 
 def start_server(
     server_executable: str,
@@ -87,8 +87,8 @@ def make_request(
 
     Args:
         url (str): The URL to request.
-        method (str): The HTTP method to use ('GET', 'POST', 'DELETE', etc.).
-        data (Optional[dict]): The payload for POST or DELETE requests.
+        method (str): The HTTP method to use ('GET', 'POST', 'DELETE').
+        data (Optional[dict]): The payload for POST or DELETE requests, or a callable that generates chunks.
         headers (Optional[dict]): The headers to include in the request.
         timeout (int): The timeout in seconds for the request.
 
@@ -99,14 +99,28 @@ def make_request(
         pytest.fail: If the request fails.
     """
     try:
+        # Handle GET request
         if method.upper() == "GET":
             response = requests.get(url, headers=headers, timeout=timeout)
+
+        # Handle POST request
         elif method.upper() == "POST":
-            response = requests.post(url, json=data, headers=headers, timeout=timeout)
+            if callable(data):
+                response = requests.post(url, data=data(), headers=headers, timeout=timeout)
+            else:
+                response = requests.post(url, data=data, headers=headers, timeout=timeout)
+
+        # Handle DELETE request
         elif method.upper() == "DELETE":
-            response = requests.delete(url, json=data, headers=headers, timeout=timeout)
+            if callable(data):
+                response = requests.delete(url, data=data(), headers=headers, timeout=timeout)
+            else:
+                response = requests.delete(url, data=data, headers=headers, timeout=timeout)
+
         else:
             pytest.fail(f"Unsupported HTTP method: {method}")
+
         return response
+
     except requests.RequestException as e:
         pytest.fail(f"Failed to make request to {url} with method {method}: {e}")
