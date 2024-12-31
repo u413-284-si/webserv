@@ -93,7 +93,7 @@ DEP_DIR := $(BASE_OBJ_DIR)/dep
 LOG_DIR := log
 
 # Directory for coverage report
-COV_DIR := .vscode/coverage
+KCOV_DIR := .vscode/coverage
 
 # Directory for configuration files
 CONFIG_DIR := config_files
@@ -213,6 +213,13 @@ LOG_VALGRIND = $(LOG_FILE)_valgrind.log
 LOG_PERF = $(LOG_FILE)_perf.data
 
 # ******************************
+# *     Special Vars           *
+# ******************************
+
+CONFIGFILE = $(CONFIG_DIR)/valid_config.conf
+KCOV_EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
+
+# ******************************
 # *     Default target        *
 # ******************************
 
@@ -250,13 +257,16 @@ $(TEST): $(TEST_OBJS)
 .PHONY: test2
 test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)pytest --server-executable=./$(NAME) --config-file=./$(CONFIG_DIR)/valid_config.conf ./$(INTEGRATION_TEST_DIR)
+	$(SILENT)pytest \
+	--server-executable=./$(NAME) \
+	--config-file=./$(CONFIGFILE) \
+	./$(INTEGRATION_TEST_DIR)
 
-# This target uses the file standard_config.conf as argument to run the program.
+# This target uses CONFIGFILE as argument to run the program.
 .PHONY: run
 run: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
-	./$(NAME) $(CONFIG_DIR)/standard_config.conf
+	./$(NAME) $(CONFIGFILE)
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -300,16 +310,21 @@ check_bear_installed:
 	}
 
 # Create coverage report to display with coverage gutter
-EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 .PHONY: coverage
-coverage: $(TEST) | $(COV_DIR)
+coverage: $(TEST) | $(KCOV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)kcov $(EXCL_PATH) $(COV_DIR) ./$(TEST)
+	$(SILENT)kcov $(KCOV_EXCL_PATH) $(KCOV_DIR) ./$(TEST)
 
 .PHONY: coverage2
-coverage2: $(NAME) | $(COV_DIR)
+coverage2: $(NAME) | $(KCOV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)pytest --server-executable=./$(NAME) --config-file=./$(CONFIG_DIR)/valid_config.conf --with-coverage --kcov-output-dir=$(COV_DIR) --kcov-excl-path=$(EXCL_PATH) ./$(INTEGRATION_TEST_DIR)
+	$(SILENT)pytest \
+	--server-executable=./$(NAME) \
+	--config-file=./$(CONFIGFILE) \
+	--with-coverage \
+	--kcov-output-dir=$(KCOV_DIR) \
+	--kcov-excl-path=$(KCOV_EXCL_PATH) \
+	./$(INTEGRATION_TEST_DIR)
 
 # ******************************
 # *     Object compiling and   *
@@ -347,7 +362,7 @@ message:
 	@printf "$(YELLOW)$(BOLD)compile objects$(RESET) [$(BLUE)$@$(RESET)]\n"
 
 # Create subdirectory if it doesn't exist
-$(DEP_DIR) $(LOG_DIR) $(COV_DIR) $(OBJ_DIR):
+$(DEP_DIR) $(LOG_DIR) $(KCOV_DIR) $(OBJ_DIR):
 	@printf "$(YELLOW)$(BOLD)create subdir$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@echo $@
 	$(SILENT)mkdir -p $@
@@ -373,8 +388,8 @@ fclean: clean
 	@printf "$(RED)removed binaries $(NAME)* $(TEST)*$(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
-	@rm -rf $(COV_DIR)
-	@printf "$(RED)removed subdir $(COV_DIR)$(RESET)\n"
+	@rm -rf $(KCOV_DIR)
+	@printf "$(RED)removed subdir $(KCOV_DIR)$(RESET)\n"
 	@rm -rf $(INTEGRATION_TEST_DIR)/__pycache__ \
 			$(INTEGRATION_TEST_DIR)/*/__pycache__ \
 			$(INTEGRATION_TEST_DIR)/.pytest_cache
