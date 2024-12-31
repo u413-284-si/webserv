@@ -81,7 +81,8 @@ def make_request(
     method: str = "GET",
     data: Optional[dict] = None,
     headers: Optional[dict] = None,
-    timeout: int = 10
+    timeout: int = 10,
+    allow_redirects: bool = True
 ) -> requests.Response:
     """
     Make an HTTP request with the specified method, URL, and parameters.
@@ -92,6 +93,7 @@ def make_request(
         data (Optional[dict]): The payload for POST or DELETE requests, or a callable that generates chunks.
         headers (Optional[dict]): The headers to include in the request.
         timeout (int): The timeout in seconds for the request.
+        allow_redirects (bool): Whether to follow redirects automatically.
 
     Returns:
         requests.Response: The response object from the request.
@@ -102,29 +104,29 @@ def make_request(
     try:
         # Handle GET request
         if method.upper() == "GET":
-            response = requests.get(url, headers=headers, timeout=timeout)
+            response = requests.get(url, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
 
         # Handle POST request
         elif method.upper() == "POST":
             if callable(data):
-                response = requests.post(url, data=data(), headers=headers, timeout=timeout)
+                response = requests.post(url, data=data(), headers=headers, timeout=timeout, allow_redirects=allow_redirects)
             else:
-                response = requests.post(url, data=data, headers=headers, timeout=timeout)
+                response = requests.post(url, data=data, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
 
         # Handle DELETE request
         elif method.upper() == "DELETE":
             if callable(data):
-                response = requests.delete(url, data=data(), headers=headers, timeout=timeout)
+                response = requests.delete(url, data=data(), headers=headers, timeout=timeout, allow_redirects=allow_redirects)
             else:
-                response = requests.delete(url, data=data, headers=headers, timeout=timeout)
+                response = requests.delete(url, data=data, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
 
         else:
             pytest.fail(f"Unsupported HTTP method: {method}")
 
         return response
 
-    except requests.RequestException as e:
-        pytest.fail(f"Failed to make request to {url} with method {method}: {e}")
+    except requests.exceptions.RequestException as e:
+        pytest.fail(f"Failed to make request to {url} with method {method}: {e}", pytrace=False)
 
 def parse_http_response(sock: socket.socket) -> Dict[str, str]:
     """
