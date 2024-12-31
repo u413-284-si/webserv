@@ -6,6 +6,9 @@ import requests
 from utils.utils import parse_http_response
 import socket
 
+host = "localhost"
+port = 8080
+
 def test_GET_simple():
     print("Request for /index.html")
     url = "http://localhost:8080/index.html"
@@ -65,7 +68,7 @@ def test_GET_reuse_connection():
     session.close()
 
 def test_GET_sent_partial_request():
-    with socket.create_connection(("localhost", "8080")) as sock:
+    with socket.create_connection((host, port)) as sock:
         partial_request = b"GET / HTTP/1.1\r\n"
         sock.sendall(partial_request)
         partial_request = b"Host: localhost\r\n\r\n"
