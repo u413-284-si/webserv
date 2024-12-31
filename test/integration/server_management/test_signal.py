@@ -5,7 +5,7 @@ import os
 import subprocess
 from utils.utils import start_server, wait_for_startup
 
-def test_server_graceful_shutdown(request):
+def test_signal_graceful_shutdown(request):
 
     server_executable = request.config.getoption("--server-executable")
     config_file = config_file = request.config.getoption("--config-file")
@@ -31,7 +31,7 @@ def test_server_graceful_shutdown(request):
     exit_status = server_process.returncode
     assert exit_status == 0
 
-# def test_server_forced_shutdown(request, start_server, wait_for_startup):
+# def test_signal_forced_shutdown(request):
 
 #     server_executable = request.config.getoption("--server-executable")
 #     config_file = config_file = request.config.getoption("--config-file")
@@ -39,7 +39,6 @@ def test_server_graceful_shutdown(request):
 #     # Check if the user passed the --with-coverage option
 #     with_coverage = request.config.getoption("--with-coverage")
 
-#     # Path to the C++ server executable
 #     kcov_output_dir = request.config.getoption("--kcov-output-dir")
 #     kcov_excl_path = request.config.getoption("--kcov-excl-path")
 
