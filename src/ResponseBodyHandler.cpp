@@ -69,11 +69,18 @@ void ResponseBodyHandler::execute()
 	if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		} catch (std::exception& e) {
+		} catch (FileSystemPolicy::FileNotFoundException& e) {
+			LOG_ERROR << e.what();
+			m_request.httpStatus = StatusNotFound;
+		} catch (FileSystemPolicy::NoPermissionException& e) {
+			LOG_ERROR << e.what();
+			m_request.httpStatus = StatusForbidden;
+		} catch (const std::runtime_error& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusInternalServerError;
-			handleErrorBody();
 		}
+		if (m_request.httpStatus != StatusOK)
+			handleErrorBody();
 		return;
 	}
 
@@ -148,12 +155,20 @@ void ResponseBodyHandler::handleErrorBody()
 
 	try {
 		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		m_request.httpStatus = oldStatus;
-	} catch (std::exception& e) {
+	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusNotFound;
+	} catch (FileSystemPolicy::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusForbidden;
+	} catch (const std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusInternalServerError;
-		setDefaultErrorPage();
 	}
+	if (m_request.httpStatus != StatusOK)
+		setDefaultErrorPage();
+	else
+		m_request.httpStatus = oldStatus;
 }
 
 /**

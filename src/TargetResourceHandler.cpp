@@ -36,16 +36,17 @@ void TargetResourceHandler::execute(Connection& connection)
  * value. Exits.
  * Else constructs target resource by appending the path to location root.
  *
- * Determines the type with stat() and take different action:
+ * Determines the type with FileSystemPolicy::checkFileType() and take different action:
  * - FileRegular: break, nothing more to do.
  * - FileDirectory: further action with handleFileDirectory()
- * - FileNotExist: set Status to StatusNotFound.
  * - FileOther: set Status to StatusInternalServerError.
- * If stat fails, set Status to StatusInternalServerError.
+ * If FileSystemPolicy::checkFileType() throws, sets status depending on exception type:
+ * - FileSystemPolicy::FileNotFoundException: StatusNotFound
+ * - FileSystemPolicy::NoPermissionException: StatusForbidden
+ * - std::runtime_error: StatusInternalServerError.
  * @param locInfo Struct containing info for locating the target resource.
  * @param depth Current depth in recursion.
  * @return TargetResourceHandler::LocatingInfo
- * @throws std::runtime_error If no location block is found for the path.
  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
@@ -84,20 +85,26 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		switch (fileType) {
 
 		case FileSystemPolicy::FileRegular:
+			LOG_DEBUG << "File type: regular";
 			break;
 
 		case FileSystemPolicy::FileDirectory:
+			LOG_DEBUG << "File type: directory";
 			handleFileDirectory(locInfo, currentDepth);
 			break;
 
-		case FileSystemPolicy::FileNotExist:
-			locInfo.statusCode = StatusNotFound;
+		case FileSystemPolicy::FileOther:
+			LOG_DEBUG << "File type: other";
+			locInfo.statusCode = StatusForbidden;
 			break;
 
-		case FileSystemPolicy::FileOther:
-			locInfo.statusCode = StatusInternalServerError;
-			break;
+		case FileSystemPolicy::FileNotFound:
+			LOG_DEBUG << "File not found";
+			locInfo.statusCode = StatusNotFound;
 		}
+	} catch (FileSystemPolicy::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		locInfo.statusCode = StatusForbidden;
 	} catch (const std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		locInfo.statusCode = StatusInternalServerError;
@@ -138,6 +145,7 @@ std::vector<Location>::const_iterator matchLocation(const std::vector<Location>&
 TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
 	: statusCode(connection.m_request.httpStatus)
 	, path(connection.m_request.uri.path)
+	, isDirectory(false)
 	, hasAutoindex(false)
 	, hasReturn(false)
 	, locations(&connection.serverConfig->locations)
@@ -156,6 +164,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
 	connection.m_request.httpStatus = locInfo.statusCode;
 	connection.m_request.uri.path = locInfo.path;
 	connection.m_request.targetResource = locInfo.targetResource;
+	connection.m_request.isDirectory = locInfo.isDirectory;
 	connection.m_request.hasAutoindex = locInfo.hasAutoindex;
 	connection.m_request.hasReturn = locInfo.hasReturn;
 	connection.location = locInfo.activeLocation;
@@ -170,6 +179,7 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
  * - if index vector is not empty, try to locate a index file with locateIndexFile().
  * - if autoindex is set, set hasAutoindex to true.
  * - else set Status to StatusForbidden.
+ * If the file is a directory and no index is appended, isDirectory is set to true.
  * @param locInfo Reference to LocationInfo which gets overwritten.
  * @param currentDepth Current depth in recursion.
  */
@@ -178,6 +188,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 {
 	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
 		locInfo.targetResource = locInfo.path + "/";
+		locInfo.isDirectory = true;
 		locInfo.statusCode = StatusMovedPermanently;
 		return;
 	}
@@ -188,10 +199,12 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 	}
 
 	if (locInfo.activeLocation->hasAutoindex) {
+		locInfo.isDirectory = true;
 		locInfo.hasAutoindex = true;
 		return;
 	}
 
+	locInfo.isDirectory = true;
 	locInfo.statusCode = StatusForbidden;
 }
 
