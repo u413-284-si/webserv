@@ -108,3 +108,11 @@ def test_invalid_char_in_header_name():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+
+def test_invalid_request_too_long():
+    with socket.create_connection((host, port)) as sock:
+        request = b"A"*2000
+        sock.sendall(request)
+
+        response = parse_http_response(sock)
+        assert response["status_code"] == 431

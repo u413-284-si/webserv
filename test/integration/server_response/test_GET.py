@@ -2,6 +2,9 @@
 
 import os
 from utils.utils import make_request
+import requests
+from utils.utils import parse_http_response
+import socket
 
 def test_GET_simple():
     print("Request for /index.html")
@@ -50,3 +53,25 @@ def test_GET_empty_return_directive():
     response = make_request(url)
     assert response.status_code == 200
     assert len(response.content) == 0
+
+def test_GET_reuse_connection():
+    print("Request for / and then /directory/")
+    session = requests.Session()
+    base_url = "http://localhost:8080"
+    response1 = session.get(f"{base_url}/")
+    assert response1.status_code == 200
+    response2 = session.get(f"{base_url}/directory/")
+    assert response2.status_code == 200
+    session.close()
+
+def test_GET_sent_partial_request():
+    with socket.create_connection(("localhost", "8080")) as sock:
+        partial_request = b"GET / HTTP/1.1\r\n"
+        sock.sendall(partial_request)
+        partial_request = b"Host: localhost\r\n\r\n"
+        sock.sendall(partial_request)
+
+        # Receive the response
+        response = parse_http_response(sock)
+        print(response["status_code"])
+        assert response["status_code"] == 200
