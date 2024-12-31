@@ -3,7 +3,8 @@ import os
 import time
 import requests
 import pytest
-from typing import Optional, Callable
+from typing import Optional, Dict
+import socket
 
 def start_server(
     server_executable: str,
@@ -124,3 +125,47 @@ def make_request(
 
     except requests.RequestException as e:
         pytest.fail(f"Failed to make request to {url} with method {method}: {e}")
+
+def parse_http_response(sock: socket.socket) -> Dict[str, str]:
+    """
+    Parse the HTTP response from a socket object and return the status code, headers, and body.
+
+    Args:
+        sock (socket.socket): The socket object from which to receive the HTTP response.
+
+    Returns:
+        dict: A dictionary containing:
+            - "status_code" (str): The HTTP status code.
+            - "headers" (dict): The HTTP headers, as a dictionary of key-value pairs.
+            - "body" (str): The body content of the HTTP response, if any.
+    """
+    # Receive the full response (4096 bytes at a time)
+    response_data = sock.recv(4096)
+
+    # Decode response into a string using UTF-8 encoding
+    response_str = response_data.decode('utf-8')
+
+    # Split the response string into lines (separated by \r\n)
+    response_lines = response_str.split('\r\n')
+
+    # Extract the status line (first line of the response)
+    status_line = response_lines[0]
+    status_code = int(status_line.split()[1])  # Extract the status code from the status line
+
+    # Parse the headers from the remaining lines
+    headers = {}
+    for line in response_lines[1:]:
+        if line.strip() == "":  # An empty line indicates the end of headers
+            break
+        key, value = line.split(":", 1)  # Split header line into key and value
+        headers[key.strip()] = value.strip()  # Store header in dictionary, stripping whitespace
+
+    # Extract the body, which comes after a double CRLF sequence (\r\n\r\n)
+    body = response_str.split('\r\n\r\n', 1)[1] if '\r\n\r\n' in response_str else ""
+
+    # Return the parsed response as a dictionary
+    return {
+        "status_code": status_code,
+        "headers": headers,
+        "body": body
+    }
