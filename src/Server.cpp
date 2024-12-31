@@ -920,6 +920,7 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) {
 			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
+			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
@@ -1005,8 +1006,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-	if (!connection.location->allowedMethods[connection.m_request.method])
+	if (!connection.location->allowedMethods[connection.m_request.method]) {
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
+		connection.m_request.shallCloseConnection = true;
+	}
 
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
@@ -1170,6 +1173,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
