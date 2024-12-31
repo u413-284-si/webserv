@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18":[2,0,9,2],
+"struct_connection.html#aef664543be678acdc3121965feadc51b":[2,0,9,12],
 "struct_connection.html#af433353beabb6990235b13b24c8b6bbe":[2,0,9,6],
 "struct_connection.html#afff86c74740618d83bab5af4f34d10af":[2,0,9,10],
 "struct_file_system_policy_1_1_file_not_found_exception.html":[2,0,18,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "test__handle_complete_request_header_8cpp.html#a7e6245bb424d27191d406b619a2fe40b":[3,0,3,1,12,3],
 "test__handle_complete_request_header_8cpp_source.html":[3,0,3,1,12],
 "test__helpers_8cpp.html":[3,0,3,1,13],
-"test__helpers_8cpp.html#a63b873aa5534e41bb0abef3982e8125a":[3,0,3,1,13,0],
-"test__helpers_8cpp_source.html":[3,0,3,1,13],
-"test__init_virtual_servers_8cpp.html":[3,0,3,1,14]
+"test__helpers_8cpp.html#a63b873aa5534e41bb0abef3982e8125a":[3,0,3,1,13,0]
 };

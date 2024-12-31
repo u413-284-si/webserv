@@ -15,6 +15,7 @@ var error_8hpp =
     [ "ERR_PERCENT_NONSUPPORTED_NUL", "error_8hpp.html#ae4fe3ea2a5ab7c6f909650dcf3f40737", null ],
     [ "ERR_PERCENT_INCOMPLETE", "error_8hpp.html#a944e032ed9f210923fb00fcf64291f10", null ],
     [ "ERR_PERCENT_INVALID_HEX", "error_8hpp.html#a4b8f85a1e221481da89896dc93d34059", null ],
+    [ "ERR_DIRECTORY_TRAVERSAL", "error_8hpp.html#a57325028ed4b9909ae02c5c95a65a6b8", null ],
     [ "ERR_HEADER_COLON_WHITESPACE", "error_8hpp.html#add1c6699207e7ab0331cac67d5e4068d", null ],
     [ "ERR_HEADER_NAME_INVALID_CHAR", "error_8hpp.html#a472efb775760ddac6a3a1795802f2285", null ],
     [ "ERR_MISSING_HOST_HEADER", "error_8hpp.html#a6be7fbe374119bd611e1a0e8080123fd", null ],
