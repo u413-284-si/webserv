@@ -93,6 +93,7 @@ ConfigFile createDummyConfig()
 	location7.path = "/uploads/";
 	location7.root = "/workspaces/webserv/html";
 	location7.allowedMethods[MethodPost] = true;
+	location7.allowedMethods[MethodDelete] = true;
 
 	Location location8;
 	location8.path = "/redirect";
