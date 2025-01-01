@@ -8,5 +8,6 @@ var class_mock_file_system_policy =
     [ "MOCK_METHOD", "class_mock_file_system_policy.html#aec918bd1e9907b38608d0fc4959c3846", null ],
     [ "MOCK_METHOD", "class_mock_file_system_policy.html#abcad2888c239a98645fafb7a90b4e067", null ],
     [ "MOCK_METHOD", "class_mock_file_system_policy.html#a398fbe4ce3a8f2b987d460f2c0e719dc", null ],
-    [ "MOCK_METHOD", "class_mock_file_system_policy.html#ab480f8796e8729a71ef47d78cfbc6441", null ]
+    [ "MOCK_METHOD", "class_mock_file_system_policy.html#ab480f8796e8729a71ef47d78cfbc6441", null ],
+    [ "MOCK_METHOD", "class_mock_file_system_policy.html#ac6691d7f3b982e595b6f2899ef821e39", null ]
 ];

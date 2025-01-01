@@ -22,6 +22,8 @@ var annotated_dup =
     [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", "class_connection_send_response_test" ],
     [ "ConnectionSendToCGITest", "class_connection_send_to_c_g_i_test.html", "class_connection_send_to_c_g_i_test" ],
     [ "CreateVirtualServerTest", "class_create_virtual_server_test.html", "class_create_virtual_server_test" ],
+    [ "DeleteHandler", "class_delete_handler.html", "class_delete_handler" ],
+    [ "DeleteHandlerTest", "class_delete_handler_test.html", "class_delete_handler_test" ],
     [ "Directory", "class_directory.html", "class_directory" ],
     [ "EpollWrapper", "class_epoll_wrapper.html", "class_epoll_wrapper" ],
     [ "FileSystemPolicy", "class_file_system_policy.html", "class_file_system_policy" ],

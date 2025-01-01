@@ -7,6 +7,7 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "ConfigFileParser.hpp", "_config_file_parser_8hpp.html", "_config_file_parser_8hpp" ],
     [ "Connection.hpp", "_connection_8hpp.html", "_connection_8hpp" ],
     [ "constants.hpp", "constants_8hpp.html", "constants_8hpp" ],
+    [ "DeleteHandler.hpp", "_delete_handler_8hpp.html", "_delete_handler_8hpp" ],
     [ "Directory.hpp", "_directory_8hpp.html", "_directory_8hpp" ],
     [ "EpollWrapper.hpp", "_epoll_wrapper_8hpp.html", "_epoll_wrapper_8hpp" ],
     [ "error.hpp", "error_8hpp.html", "error_8hpp" ],

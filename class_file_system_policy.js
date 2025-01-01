@@ -20,5 +20,6 @@ var class_file_system_policy =
     [ "getFileStat", "class_file_system_policy.html#ad2571bc684c5f8db457d8e282729f832", null ],
     [ "writeToFile", "class_file_system_policy.html#a16fb846b30be84537cca1fc8a9697fe3", null ],
     [ "getLastModifiedTime", "class_file_system_policy.html#a0f46a15649cfbec298a4a2fcfd15676a", null ],
-    [ "getFileSize", "class_file_system_policy.html#afc59bac08d6e98c19f4d9b62c5f66b4a", null ]
+    [ "getFileSize", "class_file_system_policy.html#afc59bac08d6e98c19f4d9b62c5f66b4a", null ],
+    [ "deleteFile", "class_file_system_policy.html#a677c9e8ed681935c47a72a5bd8684208", null ]
 ];

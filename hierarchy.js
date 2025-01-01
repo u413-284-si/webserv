@@ -10,6 +10,7 @@ var hierarchy =
     [ "ConfigFileParser", "class_config_file_parser.html", null ],
     [ "ConfigServer", "struct_config_server.html", null ],
     [ "Connection", "struct_connection.html", null ],
+    [ "DeleteHandler", "class_delete_handler.html", null ],
     [ "Directory", "class_directory.html", null ],
     [ "EpollWrapper", "class_epoll_wrapper.html", [
       [ "MockEpollWrapper", "class_mock_epoll_wrapper.html", null ]
@@ -50,6 +51,7 @@ var hierarchy =
       [ "ConnectionSendResponseTest", "class_connection_send_response_test.html", null ],
       [ "ConnectionSendToCGITest", "class_connection_send_to_c_g_i_test.html", null ],
       [ "CreateVirtualServerTest", "class_create_virtual_server_test.html", null ],
+      [ "DeleteHandlerTest", "class_delete_handler_test.html", null ],
       [ "FileWriteHandlerTest", "class_file_write_handler_test.html", null ],
       [ "HandleCompleteRequestHeaderTest", "class_handle_complete_request_header_test.html", null ],
       [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", null ],
