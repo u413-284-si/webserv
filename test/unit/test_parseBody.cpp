@@ -1,4 +1,5 @@
 #include "RequestParser.hpp"
+#include "error.hpp"
 #include "gtest/gtest.h"
 
 class ParseBodyTest : public ::testing::Test {
@@ -91,7 +92,7 @@ TEST_F(ParseBodyTest, DifferingChunkSize)
 			try {
 				p.parseBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
+				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
 				throw;
 			}
 		},
@@ -109,7 +110,7 @@ TEST_F(ParseBodyTest, IndicatedTooLargeChunkSize)
 			try {
 				p.parseBody("35\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
+				EXPECT_STREQ(ERR_CHUNKSIZE_INCONSISTENT, e.what());
 				throw;
 			}
 		},
@@ -127,8 +128,7 @@ TEST_F(ParseBodyTest, DifferingContentLength)
 			try {
 				p.parseBody("hello \r\nworld!\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ(
-					"Invalid HTTP request: Indicated content length different than actual body size", e.what());
+				EXPECT_STREQ(ERR_CONTENT_LENGTH, e.what());
 				throw;
 			}
 		},
@@ -146,7 +146,7 @@ TEST_F(ParseBodyTest, MissingCRLFInChunk)
 			try {
 				p.parseBody("6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
+				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
 				throw;
 			}
 		},
@@ -164,7 +164,7 @@ TEST_F(ParseBodyTest, MissingCRInChunk)
 			try {
 				p.parseBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
 			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ("Invalid HTTP request: missing CRLF", e.what());
+				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
 				throw;
 			}
 		},
