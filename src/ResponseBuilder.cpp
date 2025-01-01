@@ -98,17 +98,11 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 		// Content-Type
-		if (m_responseHeaders.find("Content-Type") != m_responseHeaders.end()) {
-			m_responseHeaderStream << "Content-Type: " << m_responseHeaders.at("Content-Type") << "\r\n";
-			m_responseHeaders.erase("Content-Type");
-		} else
-			m_responseHeaderStream << "Content-Type: "
+		if (!isCGIHeader("Content-Type"))
+            m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 		// Content-Length
-		if (m_responseHeaders.find("Content-Length") != m_responseHeaders.end()) {
-			m_responseHeaderStream << "Content-Length: " << m_responseHeaders.at("Content-Length") << "\r\n";
-			m_responseHeaders.erase("Content-Length");
-		} else
+        if (!isCGIHeader("Content-Length"))
 			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
@@ -118,16 +112,20 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
 
 	// Server
-	m_responseHeaderStream << "Server: TriHard\r\n";
+	if (!isCGIHeader("Server"))
+		m_responseHeaderStream << "Server: TriHard\r\n";
 
 	// Date
-	m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+    if (!isCGIHeader("Date"))
+	    m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
-	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
-	if (iter != request.headers.end()) {
-		m_responseHeaderStream << "Location: " << iter->second << "\r\n";
-	}
+    if (!isCGIHeader("Location")) {
+        std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
+        if (iter != request.headers.end()) {
+            m_responseHeaderStream << "Location: " << iter->second << "\r\n";
+        }
+    }
 
 	// Connection
 	if (request.shallCloseConnection)
@@ -137,6 +135,17 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 
 	// Delimiter
 	m_responseHeaderStream << "\r\n";
+}
+
+bool ResponseBuilder::isCGIHeader(const std::string& headerName)
+{
+	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
+	if (iter != m_responseHeaders.end()) {
+		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
+		m_responseHeaders.erase(iter);
+		return true;
+	}
+	return false;
 }
 
 /**
