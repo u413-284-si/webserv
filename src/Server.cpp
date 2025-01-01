@@ -449,9 +449,9 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
  * @param bodyString The body string to parse.
  * @param request The HTTPRequest object to store the parsed body.
  */
-void Server::parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer)
+void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
-	m_requestParser.parseBody(bodyString, request, buffer);
+	m_requestParser.parseBody(bodyString, request, getBuffer());
 }
 
 /**
@@ -1134,8 +1134,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		// Printing body can be confusing for big files.
 		// LOG_DEBUG << connection.m_buffer;
 		try {
-			std::vector<char>& buffer = server.getBuffer();
-			server.parseBody(connection.m_buffer, connection.m_request, buffer);
+			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
 		}
