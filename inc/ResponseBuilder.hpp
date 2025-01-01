@@ -38,7 +38,7 @@ private:
 
 	std::map<std::string, std::string> m_mimeTypes;
 	const FileSystemPolicy& m_fileSystemPolicy;
-	std::stringstream m_responseHeader;
+	std::stringstream m_responseHeaderStream;
 	std::string m_responseBody;
 	std::map<std::string, std::string> m_responseHeaders;
 };

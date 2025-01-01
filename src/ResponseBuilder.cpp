@@ -22,9 +22,9 @@ ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 std::string ResponseBuilder::getResponse() const
 {
 	if (m_responseBody.empty())
-		return m_responseHeader.str();
+		return m_responseHeaderStream.str();
 
-	return m_responseHeader.str() + m_responseBody;
+	return m_responseHeaderStream.str() + m_responseBody;
 }
 
 /**
@@ -49,7 +49,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 	appendStatusLine(request);
 	appendHeaders(request);
 
-	LOG_DEBUG << "Response header: \n" << m_responseHeader.str();
+	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
 
 	// Response Body often contains binary data, so it is not logged.
 	// LOG_DEBUG << "Response body: \n" << m_responseBody;
@@ -63,8 +63,8 @@ void ResponseBuilder::buildResponse(Connection& connection)
  */
 void ResponseBuilder::resetBuilder()
 {
-	m_responseHeader.str(std::string());
-	m_responseHeader.clear();
+	m_responseHeaderStream.str(std::string());
+	m_responseHeaderStream.clear();
 	m_responseBody.clear();
 	m_responseHeaders.clear();
 }
@@ -78,8 +78,8 @@ void ResponseBuilder::resetBuilder()
  */
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
-					 << statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+	m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' ' << statusCodeToReasonPhrase(request.httpStatus)
+						   << "\r\n";
 }
 
 /**
@@ -99,44 +99,44 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	if (!m_responseBody.empty()) {
 		// Content-Type
 		if (m_responseHeaders.find("Content-Type") != m_responseHeaders.end()) {
-			m_responseHeader << "Content-Type: " << m_responseHeaders.at("Content-Type") << "\r\n";
+			m_responseHeaderStream << "Content-Type: " << m_responseHeaders.at("Content-Type") << "\r\n";
 			m_responseHeaders.erase("Content-Type");
 		} else
-			m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
-							 << "\r\n";
+			m_responseHeaderStream << "Content-Type: "
+								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 		// Content-Length
 		if (m_responseHeaders.find("Content-Length") != m_responseHeaders.end()) {
-			m_responseHeader << "Content-Length: " << m_responseHeaders.at("Content-Length") << "\r\n";
+			m_responseHeaderStream << "Content-Length: " << m_responseHeaders.at("Content-Length") << "\r\n";
 			m_responseHeaders.erase("Content-Length");
 		} else
-			m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
 	// Various headers from response
 	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
 		 iter != m_responseHeaders.end(); ++iter)
-		m_responseHeader << iter->first << ": " << iter->second << "\r\n";
+		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
 
 	// Server
-	m_responseHeader << "Server: TriHard\r\n";
+	m_responseHeaderStream << "Server: TriHard\r\n";
 
 	// Date
-	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
 	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
 	if (iter != request.headers.end()) {
-		m_responseHeader << "Location: " << iter->second << "\r\n";
+		m_responseHeaderStream << "Location: " << iter->second << "\r\n";
 	}
 
 	// Connection
 	if (request.shallCloseConnection)
-		m_responseHeader << "Connection: close\r\n";
+		m_responseHeaderStream << "Connection: close\r\n";
 	else
-		m_responseHeader << "Connection: keep-alive\r\n";
+		m_responseHeaderStream << "Connection: keep-alive\r\n";
 
 	// Delimiter
-	m_responseHeader << "\r\n";
+	m_responseHeaderStream << "\r\n";
 }
 
 /**
