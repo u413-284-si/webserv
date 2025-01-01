@@ -3,9 +3,9 @@
 #include "AutoindexHandler.hpp"
 #include "Connection.hpp"
 #include "FileSystemPolicy.hpp"
+#include "FileWriteHandler.hpp"
 #include "Log.hpp"
 #include "Method.hpp"
-#include "FileWriteHandler.hpp"
 #include "TargetResourceHandler.hpp"
 
 #include "cassert"
@@ -18,17 +18,22 @@
  */
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(
-		Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBodyHandler(Connection& connection, std::string& responseBody,
+		std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:
 	void handleErrorBody();
 	void setDefaultErrorPage();
+	void parseCGIResponseBody(HTTPRequest& request);
+	void parseCGIResponseStatusLine(HTTPRequest& request);
+	void parseCGIResponseHeaders();
+	void processCGIResponseHeaders(HTTPRequest& request);
 
 	Connection& m_connection;
 	HTTPRequest& m_request;
 	std::string& m_responseBody;
+    std::map<std::string, std::string>& m_responseHeaders;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
 

@@ -44,8 +44,9 @@ class ResponseBodyHandlerTest : public ::testing::Test {
 	HTTPRequest& m_request = m_connection.m_request;
 
 	std::string m_responseBody;
+    std::map<std::string, std::string> m_responseHeaders;
 	MockFileSystemPolicy m_fileSystemPolicy;
-	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemPolicy);
+	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
 
 };
 

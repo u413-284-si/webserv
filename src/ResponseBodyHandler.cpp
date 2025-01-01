@@ -5,13 +5,15 @@
  *
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
+ * @param responseHeaders Saves the response headers.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(
-	Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+	Connection& connection, std::string& responseBody, std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
+    , m_responseHeaders(responseHeaders)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
 }
@@ -88,6 +90,117 @@ void ResponseBodyHandler::execute()
 			handleErrorBody();
 		}
 		return;
+	}
+}
+
+void ResponseBodyHandler::parseCGIResponseBody(HTTPRequest& request)
+{
+	if (m_responseBody.empty())
+		return;
+
+	LOG_DEBUG << "Parsing received CGI response body...";
+
+	parseCGIResponseStatusLine(request);
+	parseCGIResponseHeaders();
+	processCGIResponseHeaders(request);
+}
+
+/**
+ * @brief Parses the response status line from the HTTP response body, if given.
+ *
+ * This function searches for the status line in the HTTP response body and extracts
+ * the HTTP status code. It updates the HTTPRequest object with the parsed status code.
+ *
+ * @param request The HTTPRequest object to be updated with the parsed status code.
+ */
+void ResponseBodyHandler::parseCGIResponseStatusLine(HTTPRequest& request)
+{
+	size_t posStatusEnd = 0;
+	const std::string httpString = "HTTP/1.1";
+	const size_t httpStringSize = httpString.size();
+	std::vector<std::string> statusIdentifiers;
+	statusIdentifiers.push_back("Status");
+	statusIdentifiers.push_back(httpString);
+
+	for (std::vector<std::string>::const_iterator iter = statusIdentifiers.begin(); iter != statusIdentifiers.end();
+		 ++iter) {
+		size_t posStatus = m_responseBody.find(*iter);
+
+		if (posStatus != std::string::npos) {
+			std::string statusLine;
+
+			if (*iter == httpString)
+				posStatus += httpStringSize;
+
+			posStatusEnd = m_responseBody.find("\r\n", posStatus);
+			statusLine = m_responseBody.substr(posStatus, posStatusEnd - posStatus);
+			request.httpStatus = webutils::extractStatusCode(statusLine);
+			LOG_DEBUG << "Parsed response status: " << request.httpStatus;
+			posStatusEnd += 2;
+		}
+	}
+
+	if (posStatusEnd != 0)
+		m_responseBody = m_responseBody.substr(posStatusEnd);
+}
+
+/**
+ * @brief Parses the response headers from the HTTP response body.
+ *
+ * This function searches for the headers in the HTTP response body and extracts
+ * them into a map of header names and values. It updates the response headers map
+ * with the parsed headers.
+ */
+void ResponseBodyHandler::parseCGIResponseHeaders()
+{
+	const size_t sizeCRLF = 2;
+	const size_t sizeCRLFCRLF = 4;
+	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
+
+	if (posHeadersEnd != std::string::npos) {
+		// Include one CRLF at the end of last header line
+		std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
+		size_t lineStart = 0;
+		size_t lineEnd = headers.find("\r\n");
+
+		while (lineEnd != std::string::npos) {
+			std::string header = headers.substr(lineStart, lineEnd - lineStart);
+
+			std::string headerName;
+			std::string headerValue;
+			const std::size_t delimiterPos = header.find_first_of(':');
+			if (delimiterPos != std::string::npos) {
+				headerName = header.substr(0, delimiterPos);
+				headerValue = header.substr(delimiterPos + 1);
+				headerValue = webutils::trimLeadingWhitespaces(headerValue);
+				webutils::trimTrailingWhiteSpaces(headerValue);
+				m_responseHeaders[headerName] = headerValue;
+				LOG_DEBUG << "Parsed response header: " << headerName << " -> " << headerValue;
+			}
+
+			lineStart = lineEnd + 2;
+			lineEnd = headers.find("\r\n", lineStart);
+		}
+
+		m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
+	}
+}
+
+/**
+ * @brief Processes the response headers and updates the HTTPRequest object.
+ *
+ * This function processes the response headers and updates the HTTPRequest object
+ * with relevant information, such as whether the connection should be closed.
+ *
+ * @param request The HTTPRequest object to be updated with the processed headers.
+ */
+void ResponseBodyHandler::processCGIResponseHeaders(HTTPRequest& request)
+{
+	// Connection
+	if (m_responseHeaders.find("Connection") != m_responseHeaders.end()) {
+		if (m_responseHeaders.at("Connection") == "close")
+			request.shallCloseConnection = true;
+		m_responseHeaders.erase("Connection");
 	}
 }
 
