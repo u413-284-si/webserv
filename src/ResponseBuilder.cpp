@@ -79,7 +79,7 @@ void ResponseBuilder::resetBuilder()
 void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 {
 	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' '
-					 << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
+					 << statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 }
 
 /**

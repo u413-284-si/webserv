@@ -37,7 +37,7 @@ void ResponseBodyHandler::execute()
 		const bool isEmpty = m_request.targetResource.empty();
 		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
 			return;
-		if (!isEmpty && !webutils::isRedirectionStatus(m_request.httpStatus)) {
+		if (!isEmpty && !isRedirectionStatus(m_request.httpStatus)) {
 			m_responseBody = m_request.targetResource;
 			return;
 		}
@@ -134,7 +134,7 @@ void ResponseBodyHandler::parseCGIResponseStatusLine(HTTPRequest& request)
 
 			posStatusEnd = m_responseBody.find("\r\n", posStatus);
 			statusLine = m_responseBody.substr(posStatus, posStatusEnd - posStatus);
-			request.httpStatus = webutils::extractStatusCode(statusLine);
+			request.httpStatus = extractStatusCode(statusLine);
 			LOG_DEBUG << "Parsed response status: " << request.httpStatus;
 			posStatusEnd += 2;
 		}

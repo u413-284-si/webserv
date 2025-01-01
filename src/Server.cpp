@@ -990,7 +990,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	server.findTargetResource(connection);
 
-	if (webutils::isRedirectionStatus(connection.m_request.httpStatus))
+	if (isRedirectionStatus(connection.m_request.httpStatus))
 		connection.m_request.headers["location"] = connection.m_request.targetResource;
 
 	if (connection.m_request.hasReturn) {

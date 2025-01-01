@@ -146,6 +146,7 @@ SRC:=	main.cpp \
 		Server.cpp \
 		signalHandler.cpp \
 		SocketPolicy.cpp \
+		StatusCode.cpp \
 		TargetResourceHandler.cpp \
 		utilities.cpp
 
