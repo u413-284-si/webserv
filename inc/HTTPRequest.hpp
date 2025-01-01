@@ -29,8 +29,10 @@ struct HTTPRequest {
 	bool hasBody;
 	bool isChunked;
 	std::string targetResource;
+	bool isDirectory;
 	bool hasAutoindex;
 	bool hasCGI;
+	bool hasReturn;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);

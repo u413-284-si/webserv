@@ -25,6 +25,9 @@ TEST(OstreamInserters, Method)
 TEST(OstreamInserters, StatusCode)
 {
 	std::ostringstream ostream;
+	ostream << NoStatus;
+	EXPECT_EQ(ostream.str(), "0");
+	ostream.str("");
 	ostream << StatusOK;
 	EXPECT_EQ(ostream.str(), "200");
 	ostream.str("");
@@ -97,14 +100,16 @@ protected:
 	{
 		m_location.path = "/path/to/resource";
 		m_location.root = "/root";
-		m_location.indices = { "index.html" };
+		m_location.indices = { "index.html", "index.php" };
 		m_location.cgiExt = ".php";
 		m_location.cgiPath = "/cgi-bin";
-		m_location.isAutoindex = true;
+		m_location.hasAutoindex = true;
+		m_location.maxBodySize = 123;
+		m_location.errorPage = { {StatusNotFound, "error404.html"}, {StatusForbidden, "error403.html"} };
 		m_location.allowedMethods[0] = true;
 		m_location.allowedMethods[1] = false;
 		m_location.allowedMethods[2] = false;
-		m_location.returns = { { StatusOK, "OK.html" }, { StatusBadRequest, "BadRequest.html" } };
+		m_location.returns = std::make_pair(StatusOK, "OK.html");
 
 		m_uri.path = "/path/to/resource";
 		m_uri.query = "query=value";
@@ -126,6 +131,12 @@ protected:
 		m_httpRequest.body = "Hello, World!";
 		m_httpRequest.httpStatus = StatusOK;
 		m_httpRequest.shallCloseConnection = false;
+		m_httpRequest.hasBody = true;
+		m_httpRequest.isChunked = false;
+		m_httpRequest.targetResource = "/path/to/resource";
+		m_httpRequest.isDirectory = false;
+		m_httpRequest.hasAutoindex = false;
+		m_httpRequest.hasCGI = false;
 
 		m_connection.m_timeSinceLastEvent = 1234;
 		m_connection.m_buffer = "GET / HTTP/1.1";
@@ -142,16 +153,19 @@ TEST_F(OstreamInsertersTest, Location)
 								 "Root: /root\n"
 								 "Indices: \n"
 								 "  index.html\n"
+								 "  index.php\n"
 								 "CGI extension: .php\n"
 								 "CGI path: /cgi-bin\n"
 								 "Autoindex: 1\n"
+								 "Max body size: 123\n"
+								 "Error Page:\n"
+								 "  403: error403.html\n"
+								 "  404: error404.html\n"
 								 "Allowed methods:\n"
 								 "  GET: 1\n"
 								 "  POST: 0\n"
 								 "  DELETE: 0\n"
-								 "Returns:\n"
-								 "  200: OK.html\n"
-								 "  400: BadRequest.html\n";
+								 "Returns: [200]: OK.html\n";
 
 	EXPECT_EQ(ostream.str(), expected);
 }
@@ -203,11 +217,9 @@ TEST_F(OstreamInsertersTest, HTTPRequest)
 	ostream << m_httpRequest;
 
 	std::ostringstream expected;
-	expected << "Method: " << m_httpRequest.method
-			 << "\n"
-				"URI:\n"
-			 << m_uri
-			 << "Version: HTTP/1.1\n"
+	expected << "Method: " << m_httpRequest.method << "\n"
+			"URI:\n" << m_uri <<
+			"Version: HTTP/1.1\n"
 				"Headers:\n"
 				"  Host: localhost\n"
 				"  User-Agent: curl/7.68.0\n"
@@ -215,7 +227,13 @@ TEST_F(OstreamInsertersTest, HTTPRequest)
 				"HTTP status: "
 			 << m_httpRequest.httpStatus
 			 << "\n"
-				"Shall close connection: 0\n";
+				"Shall close connection: 0\n"
+				"Has body: 1\n"
+				"Is chunked: 0\n"
+				"Target resource: /path/to/resource\n"
+				"Is directory: 0\n"
+				"Has autoindex: 0\n"
+				"Has CGI: 0\n";
 	EXPECT_EQ(ostream.str(), expected.str());
 }
 

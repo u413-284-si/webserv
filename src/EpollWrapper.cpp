@@ -31,9 +31,9 @@ EpollWrapper::~EpollWrapper() { close(m_epfd); }
 
 /**
  * @brief Getter for epoll file descriptor
- * 
+ *
  * ! Only to be used in the forked child process to close the fd
- * 
+ *
  * @return int fd of the epoll instance
  */
 int EpollWrapper::getEpollFd() const { return m_epfd; }
@@ -60,8 +60,9 @@ int EpollWrapper::waitForEvents()
 		throw std::runtime_error("epoll_wait:" + std::string(strerror(errno)));
 	}
 
-	if (nfds == 0)
+	if (nfds == 0) {
 		LOG_DEBUG << "epoll_wait: Timeout";
+	}
 	else
 		LOG_DEBUG << "epoll_wait: " << nfds << " events";
 	return nfds;

@@ -1,18 +1,18 @@
 #pragma once
 
-#include <string>
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
-#include <sys/stat.h>
-#include <fstream>
-#include <stdexcept>
-#include <iostream>
-#include <sys/types.h>
 #include <dirent.h>
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-#include "utilities.hpp"
 #include "Log.hpp"
+#include "utilities.hpp"
 
 /**
  * @brief Class for C functions on the file system.
@@ -23,9 +23,19 @@
 class FileSystemPolicy {
 
 public:
+	FileSystemPolicy();
 	virtual ~FileSystemPolicy();
 
-	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+	enum fileType { FileNotFound = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+
+	// custom exceptions
+	struct FileNotFoundException : public std::runtime_error {
+		explicit FileNotFoundException(const std::string& msg);
+	};
+	struct NoPermissionException : public std::runtime_error {
+		explicit NoPermissionException(const std::string& msg);
+	};
+
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
 	virtual bool isExistingFile(const std::string& path) const;
@@ -38,4 +48,8 @@ public:
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
 	virtual void deleteFile(const std::string& path) const;
+
+private:
+	FileSystemPolicy(const FileSystemPolicy& ref);
+	FileSystemPolicy& operator=(const FileSystemPolicy& ref);
 };

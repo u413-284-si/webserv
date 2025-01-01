@@ -28,6 +28,7 @@ std::string getGMTString(time_t now, const std::string& format);
 std::string getLocaltimeString(time_t now, const std::string& format);
 
 std::string statusCodeToReasonPhrase(statusCode status);
+bool isRedirectionStatus(statusCode statusCode);
 
 std::string methodToString(Method method);
 
@@ -37,6 +38,7 @@ bool isIpAddressValid(const std::string& ipAddress);
 bool isPortValid(const std::string& port);
 
 void lowercase(std::string& str);
+std::string replaceAlias(const std::string& input, const std::string& alias, const std::string& replacement);
 
 /**
  * @brief Convert a type to a string

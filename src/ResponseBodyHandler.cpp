@@ -20,6 +20,10 @@ ResponseBodyHandler::ResponseBodyHandler(
  * @brief Create the response body.
  *
  * Depending on the HTTP Request status, the body will be created:
+ * - If the request had a location with Return directive additional checks are made.
+ *  - If there is no Return message and status code is not an error code no body is sent.
+ *  - If there is a Return message and it is not a redirection status, the target resource will be set as
+ * the body.
  * - If the status is an error status an error page will be created.
  * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
  * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
@@ -29,10 +33,20 @@ ResponseBodyHandler::ResponseBodyHandler(
  */
 void ResponseBodyHandler::execute()
 {
+	if (m_request.hasReturn) {
+		const bool isEmpty = m_request.targetResource.empty();
+		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
+			return;
+		if (!isEmpty && !webutils::isRedirectionStatus(m_request.httpStatus)) {
+			m_responseBody = m_request.targetResource;
+			return;
+		}
+	}
+
 	if (m_request.httpStatus >= StatusMovedPermanently) {
 		handleErrorBody();
 		return;
-	} 
+	}
 	if (m_request.hasCGI) {
 		m_responseBody = m_request.body;
 		if (m_responseBody.find("Content-Type: ") == std::string::npos) {
@@ -52,16 +66,25 @@ void ResponseBodyHandler::execute()
 		m_request.httpStatus = StatusOK;
 		m_request.targetResource += "autoindex.html";
 		return;
-	} 
+	}
 	if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		} catch (std::exception& e) {
+		} catch (FileSystemPolicy::FileNotFoundException& e) {
+			LOG_ERROR << e.what();
+			m_request.httpStatus = StatusNotFound;
+		} catch (FileSystemPolicy::NoPermissionException& e) {
+			LOG_ERROR << e.what();
+			m_request.httpStatus = StatusForbidden;
+		} catch (const std::runtime_error& e) {
+			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusInternalServerError;
-			handleErrorBody();
 		}
+		if (m_request.httpStatus != StatusOK)
+			handleErrorBody();
 		return;
 	}
+
 	if (m_request.method == MethodPost) {
 		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body);
@@ -91,12 +114,17 @@ void ResponseBodyHandler::execute()
  * Checks if the active location has a custom error page for HTTP Status Code.
  * If yes tries to locate the error page via the provided URI.
  * - The current Status Code is saved and reset to StatusOK.
+ * - The request hasReturn is set to false (in case it was set to true).
  * - The request.uri.path is set to the error page URI.
  * - Then tries to find it with a TargetResourceHandler.
+ *
+ * If the request hasReturn is set to true the status is set back to the saved one. Depending on whether the target
+ * resource is empty error page is set via setDefaultErrorPage() or the return string is set as the error page.
+ *
  * If no error happened while locating the error page indicated via Status == OK the error page is read into the
  * body and the status set back to the saved one.
  *
- * In case of any error a default error page is constructed via setDefaultErrorPage()
+ * In case of any error a default error page is constructed via setDefaultErrorPage().
  */
 void ResponseBodyHandler::handleErrorBody()
 {
@@ -113,11 +141,21 @@ void ResponseBodyHandler::handleErrorBody()
 
 	LOG_DEBUG << "Custom error page: " << iter->second;
 
-	statusCode oldStatus = m_request.httpStatus;
+	const statusCode oldStatus = m_request.httpStatus;
+	m_request.hasReturn = false;
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
 	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
 	targetResourceHandler.execute(m_connection);
+
+	if (m_request.hasReturn) {
+		m_request.httpStatus = oldStatus;
+		if (m_request.targetResource.empty())
+			setDefaultErrorPage();
+		else
+			m_responseBody = m_request.targetResource;
+		return;
+	}
 
 	if (m_request.httpStatus != StatusOK) {
 		setDefaultErrorPage();
@@ -126,11 +164,20 @@ void ResponseBodyHandler::handleErrorBody()
 
 	try {
 		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		m_request.httpStatus = oldStatus;
-	} catch (std::exception& e) {
+	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusNotFound;
+	} catch (FileSystemPolicy::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusForbidden;
+	} catch (const std::runtime_error& e) {
+		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusInternalServerError;
-		setDefaultErrorPage();
 	}
+	if (m_request.httpStatus != StatusOK)
+		setDefaultErrorPage();
+	else
+		m_request.httpStatus = oldStatus;
 }
 
 /**
@@ -153,7 +200,8 @@ void ResponseBodyHandler::setDefaultErrorPage()
  */
 std::string getDefaultErrorPage(statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
+		statusCode = StatusInternalServerError;
 
 	static const char* error301Page = "<html>\r\n"
 									  "<head><title>301 Moved permanently</title></head>\r\n"
@@ -222,6 +270,7 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	std::string ret;
 
 	switch (statusCode) {
+	case NoStatus:
 	case StatusOK:
 	case StatusCreated:
 		return ("");

@@ -47,7 +47,9 @@ struct TargetResourceHandler::LocatingInfo {
 	statusCode statusCode;
 	std::string path;
 	std::string targetResource;
+	bool isDirectory;
 	bool hasAutoindex;
+	bool hasReturn;
 	const std::vector<Location>* locations;
 	std::vector<Location>::const_iterator activeLocation;
 };

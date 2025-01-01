@@ -6,7 +6,9 @@ HTTPRequest::HTTPRequest()
 	, shallCloseConnection(false)
 	, hasBody(false)
 	, isChunked(false)
+	, isDirectory(false)
 	, hasAutoindex(false)
 	, hasCGI(false)
+	, hasReturn(false)
 {
 }

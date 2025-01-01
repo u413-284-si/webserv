@@ -128,14 +128,18 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 /**
  * @brief Returns reason phrase for a given status code.
  *
+ * In case of NoStatus returns the string "NO STATUS CODE".
  * @param statusCode Status code.
  * @return std::string Reason phrase.
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
-	assert(statusCode >= StatusOK && statusCode <= StatusNonSupportedVersion);
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
+		statusCode = StatusInternalServerError;
 
 	switch (statusCode) {
+	case NoStatus:
+		return "NO STATUS CODE";
 	case StatusOK:
 		return "OK";
 	case StatusCreated:
@@ -165,9 +169,19 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	case StatusNonSupportedVersion:
 		return "HTTP Version Not Supported";
 	}
+}
 
-	assert(false && "Unhandled enum value");
-	return "";
+/**
+ * @brief Check if a given status code is a redirection.
+ *
+ * A redirection is a 3xx status code.
+ * @param statusCode Status code to check.
+ * @return true If the status code is a redirection.
+ * @return false If the status code is not a redirection.
+ */
+bool isRedirectionStatus(statusCode statusCode)
+{
+	return (statusCode >= StatusMovedPermanently && statusCode <= StatusPermanentRedirect);
 }
 
 std::string methodToString(Method method)
@@ -261,5 +275,21 @@ bool isPortValid(const std::string& port)
  * @param str The string to be converted to lowercase.
  */
 void lowercase(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::tolower); }
+
+/**
+ * @brief Finds a substring at the beginning of input string and replaces it with another string.
+ *
+ * If alias is not found at beginning, returns empty string.
+ * @param input String which may contain alias
+ * @param alias Alias to be replaced
+ * @param replacement String to replace alias
+ * @return std::string String with alias replaced
+ */
+std::string replaceAlias(const std::string& input, const std::string& alias, const std::string& replacement)
+{
+	if (input.find(alias) == 0)
+		return replacement + input.substr(alias.length());
+	return "";
+}
 
 } // webutils
