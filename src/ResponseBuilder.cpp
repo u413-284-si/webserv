@@ -98,11 +98,11 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 		// Content-Type
-		if (!isCGIHeader("Content-Type"))
-            m_responseHeaderStream << "Content-Type: "
+		if (!hasCGIHeader("Content-Type"))
+			m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 		// Content-Length
-        if (!isCGIHeader("Content-Length"))
+		if (!hasCGIHeader("Content-Length"))
 			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
@@ -112,20 +112,20 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
 
 	// Server
-	if (!isCGIHeader("Server"))
+	if (!hasCGIHeader("Server"))
 		m_responseHeaderStream << "Server: TriHard\r\n";
 
 	// Date
-    if (!isCGIHeader("Date"))
-	    m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	if (!hasCGIHeader("Date"))
+		m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
-    if (!isCGIHeader("Location")) {
-        std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
-        if (iter != request.headers.end()) {
-            m_responseHeaderStream << "Location: " << iter->second << "\r\n";
-        }
-    }
+	if (!hasCGIHeader("Location")) {
+		std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
+		if (iter != request.headers.end()) {
+			m_responseHeaderStream << "Location: " << iter->second << "\r\n";
+		}
+	}
 
 	// Connection
 	if (request.shallCloseConnection)
@@ -137,7 +137,18 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	m_responseHeaderStream << "\r\n";
 }
 
-bool ResponseBuilder::isCGIHeader(const std::string& headerName)
+/**
+ * @brief Checks if the specified CGI header exists in the response headers.
+ *
+ * This function searches for the specified header name in the response headers.
+ * If the header is found, it appends the header and its value to the response
+ * header stream, removes the header from the response headers map, and returns true.
+ * If the header is not found, it returns false.
+ *
+ * @param headerName The name of the header to search for.
+ * @return true if the header is found and processed, false otherwise.
+ */
+bool ResponseBuilder::hasCGIHeader(const std::string& headerName)
 {
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
 	if (iter != m_responseHeaders.end()) {
