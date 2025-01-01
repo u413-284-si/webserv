@@ -53,6 +53,7 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
+        parseCGIResponseBody();
 		return;
 	}
 	if (m_request.hasAutoindex) {
@@ -93,16 +94,13 @@ void ResponseBodyHandler::execute()
 	}
 }
 
-void ResponseBodyHandler::parseCGIResponseBody(HTTPRequest& request)
+void ResponseBodyHandler::parseCGIResponseBody()
 {
-	if (m_responseBody.empty())
-		return;
-
 	LOG_DEBUG << "Parsing received CGI response body...";
 
-	parseCGIResponseStatusLine(request);
+	parseCGIResponseStatusLine();
 	parseCGIResponseHeaders();
-	processCGIResponseHeaders(request);
+	processCGIResponseHeaders();
 }
 
 /**
@@ -110,10 +108,8 @@ void ResponseBodyHandler::parseCGIResponseBody(HTTPRequest& request)
  *
  * This function searches for the status line in the HTTP response body and extracts
  * the HTTP status code. It updates the HTTPRequest object with the parsed status code.
- *
- * @param request The HTTPRequest object to be updated with the parsed status code.
  */
-void ResponseBodyHandler::parseCGIResponseStatusLine(HTTPRequest& request)
+void ResponseBodyHandler::parseCGIResponseStatusLine()
 {
 	size_t posStatusEnd = 0;
 	const std::string httpString = "HTTP/1.1";
@@ -134,8 +130,8 @@ void ResponseBodyHandler::parseCGIResponseStatusLine(HTTPRequest& request)
 
 			posStatusEnd = m_responseBody.find("\r\n", posStatus);
 			statusLine = m_responseBody.substr(posStatus, posStatusEnd - posStatus);
-			request.httpStatus = extractStatusCode(statusLine);
-			LOG_DEBUG << "Parsed response status: " << request.httpStatus;
+			m_request.httpStatus = extractStatusCode(statusLine);
+			LOG_DEBUG << "Parsed response status: " << m_request.httpStatus;
 			posStatusEnd += 2;
 		}
 	}
@@ -191,15 +187,13 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
  *
  * This function processes the response headers and updates the HTTPRequest object
  * with relevant information, such as whether the connection should be closed.
- *
- * @param request The HTTPRequest object to be updated with the processed headers.
  */
-void ResponseBodyHandler::processCGIResponseHeaders(HTTPRequest& request)
+void ResponseBodyHandler::processCGIResponseHeaders()
 {
 	// Connection
 	if (m_responseHeaders.find("Connection") != m_responseHeaders.end()) {
 		if (m_responseHeaders.at("Connection") == "close")
-			request.shallCloseConnection = true;
+			m_request.shallCloseConnection = true;
 		m_responseHeaders.erase("Connection");
 	}
 }

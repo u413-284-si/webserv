@@ -25,10 +25,10 @@ public:
 private:
 	void handleErrorBody();
 	void setDefaultErrorPage();
-	void parseCGIResponseBody(HTTPRequest& request);
-	void parseCGIResponseStatusLine(HTTPRequest& request);
+	void parseCGIResponseBody();
+	void parseCGIResponseStatusLine();
 	void parseCGIResponseHeaders();
-	void processCGIResponseHeaders(HTTPRequest& request);
+	void processCGIResponseHeaders();
 
 	Connection& m_connection;
 	HTTPRequest& m_request;
