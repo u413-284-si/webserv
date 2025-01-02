@@ -1,6 +1,6 @@
 # This module is for succesful POST requests
 
-import requests
+from utils.utils import make_request
 import os
 
 def test_POST_simple():
@@ -8,9 +8,8 @@ def test_POST_simple():
     # Body to send
     payload = "Beam me up, Scotty!"
     dst_file_path = "/workspaces/webserv/html/uploads/testfile.txt"
-
-    response = requests.post("http://localhost:8080/uploads/testfile.txt", data=payload)
-
+    url = "http://localhost:8080/uploads/testfile.txt"
+    response = make_request(url, method="POST", data=payload)
     assert response.status_code == 201
     assert response.headers["location"] == "/uploads/testfile.txt"
     # Check if file exists
@@ -29,8 +28,9 @@ def test_POST_chunked_encoding():
     print("Chunked Request for /uploads/testfile_chunked.txt")
 
     dst_file_path = "/workspaces/webserv/html/uploads/testfile_chunked.txt"
+    url = "http://localhost:8080/uploads/testfile_chunked.txt"
 
-    response = requests.post("http://localhost:8080/uploads/testfile_chunked.txt", data=generate_chunks())
+    response = make_request(url, method="POST", data=generate_chunks())
 
     assert response.status_code == 201
     assert response.headers["location"] == "/uploads/testfile_chunked.txt"
@@ -46,8 +46,9 @@ def test_POST_bigger_file():
     with open(src_file_path, 'rb') as f:
         binary_data = f.read()
     dst_file_path = "/workspaces/webserv/html/uploads/butterfly.jpg"
+    url = "http://localhost:8080/uploads/butterfly.jpg"
 
-    response = requests.post("http://localhost:8080/uploads/butterfly.jpg", data=binary_data)
+    response = make_request(url, method="POST", data=binary_data)
 
     assert response.status_code == 201
     assert response.headers["location"] == "/uploads/butterfly.jpg"
@@ -65,8 +66,9 @@ def test_POST_file_too_big():
     with open(src_file_path, 'rb') as f:
         binary_data = f.read()
     dst_file_path = "/workspaces/webserv/html/uploads/cat.jpg"
+    url = "http://localhost:8080/uploads/cat.jpg"
 
-    response = requests.post("http://localhost:8080/uploads/cat.jpg", data=binary_data)
+    response = make_request(url, method="POST", data=binary_data)
 
     assert response.status_code == 413
     # Check that file does not exist

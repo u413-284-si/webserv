@@ -100,12 +100,11 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
-	if (!m_responseBody.empty()) {
-	// Content-Type
-		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Content-Length
-		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
-	}
+	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+	// Content-Type
+	if (!m_responseBody.empty())
+		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 	// Server
 	m_responseHeader << "Server: TriHard\r\n";
 	// Date
