@@ -73,7 +73,6 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadWaitpidError)
 	EXPECT_EQ(connection.m_pipeFromCGIReadEnd, -1);
 	EXPECT_EQ(connection.m_pipeToCGIWriteEnd, -1);
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_FALSE(connection.m_request.hasCGI);
 }
 
 TEST_F(ConnectionReceiveFromCGITest, FullReadChildExitSuccess)
@@ -115,7 +114,6 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadChildExitFailure)
 	EXPECT_EQ(connection.m_pipeFromCGIReadEnd, -1);
 	EXPECT_EQ(connection.m_pipeToCGIWriteEnd, -1);
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_FALSE(connection.m_request.hasCGI);
 }
 
 TEST_F(ConnectionReceiveFromCGITest, FullReadChildReceivedSignal)
@@ -138,5 +136,4 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadChildReceivedSignal)
 	EXPECT_EQ(connection.m_pipeFromCGIReadEnd, -1);
 	EXPECT_EQ(connection.m_pipeToCGIWriteEnd, -1);
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_FALSE(connection.m_request.hasCGI);
 }

@@ -115,7 +115,6 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequestWithCGIhasError)
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
 
 	EXPECT_EQ(m_connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_FALSE(m_connection.m_request.hasCGI);
 	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
 }
 
@@ -157,6 +156,5 @@ TEST_F(HandleCompleteRequestHeaderTest, POSTRequestWithCGIhasError)
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
 
 	EXPECT_EQ(m_connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_FALSE(m_connection.m_request.hasCGI);
 	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
 }

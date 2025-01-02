@@ -1036,7 +1036,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		CGIHandler cgiHandler(connection, server.getProcessOps());
 		if (connection.m_request.httpStatus == StatusInternalServerError) {
 			connection.m_status = Connection::BuildResponse;
-			connection.m_request.hasCGI = false;
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
@@ -1044,12 +1043,17 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		if ((connection.m_request.method == MethodPost
 				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
 			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
-			connection.m_request.hasCGI = false;
 			connection.m_request.httpStatus = StatusInternalServerError;
 		}
 	}
 
-	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
+	if (connection.m_request.httpStatus != StatusOK) {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
+	if (connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 		if (!connection.m_buffer.empty())
@@ -1346,7 +1350,6 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		int status = 0;
 		if (server.waitForProcess(connection.m_cgiPid, &status, 0) == -1) {
 			connection.m_request.httpStatus = StatusInternalServerError;
-			connection.m_request.hasCGI = false;
 			return;
 		}
 		// Check if the child exited normally with exit() or returning from main()
@@ -1356,14 +1359,12 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 			if (exitCode != 0) {
 				LOG_ERROR << "child returned with: " << exitCode;
 				connection.m_request.httpStatus = StatusInternalServerError;
-				connection.m_request.hasCGI = false;
 				return;
 			}
 		} else if (WIFSIGNALED(status)) { // NOLINT: misinterpretation by HIC++ standard
 			int signalNumber = WTERMSIG(status); // NOLINT: misinterpretation by HIC++ standard
 			LOG_ERROR << "child terminated by signal: " << signalNumber << " (" << signalNumToName(signalNumber) << ")";
 			connection.m_request.httpStatus = StatusInternalServerError;
-			connection.m_request.hasCGI = false;
 			return;
 		}
 	}
