@@ -20,9 +20,11 @@
  */
 #define STRINGIZE(s) #s
 
+// clang-format off
 #ifndef DEFAULT_CONFIG_PATH
-#define DEFAULT_CONFIG_PATH ./ config_files / standard_config.conf
+#define DEFAULT_CONFIG_PATH ./config_files/standard_config.conf
 #endif
+// clang-format on
 
 int main(const int argc, const char* argv[])
 {
