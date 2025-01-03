@@ -5,13 +5,15 @@
  *
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
+ * @param responseHeaders Saves the response headers.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBodyHandler::ResponseBodyHandler(
-	Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& responseBody,
+	std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
+	, m_responseHeaders(responseHeaders)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
 }
@@ -37,7 +39,7 @@ void ResponseBodyHandler::execute()
 		const bool isEmpty = m_request.targetResource.empty();
 		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
 			return;
-		if (!isEmpty && !webutils::isRedirectionStatus(m_request.httpStatus)) {
+		if (!isEmpty && !isRedirectionStatus(m_request.httpStatus)) {
 			m_responseBody = m_request.targetResource;
 			return;
 		}
@@ -53,6 +55,7 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
+		parseCGIResponseBody();
 		return;
 	}
 	if (m_request.hasAutoindex) {
@@ -99,12 +102,97 @@ void ResponseBodyHandler::execute()
 		m_request.targetResource = "posted.json";
 		return;
 	}
+
 	if (m_request.method == MethodDelete) {
 		DeleteHandler deleteHandler(m_fileSystemPolicy);
 		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 		if (m_responseBody.empty())
 			handleErrorBody();
 		m_request.targetResource = "deleted.json";
+	}
+}
+
+void ResponseBodyHandler::parseCGIResponseBody()
+{
+	LOG_DEBUG << "Parsing received CGI response body...";
+
+	parseCGIResponseHeaders();
+	validateCGIResponseHeaders();
+}
+
+/**
+ * @brief Parses the response headers from the HTTP response body.
+ *
+ * This function searches for the headers in the HTTP response body and extracts
+ * them into a map of header names and values. It updates the response headers map
+ * with the parsed headers.
+ */
+void ResponseBodyHandler::parseCGIResponseHeaders()
+{
+	const size_t sizeCRLF = 2;
+	const size_t sizeCRLFCRLF = 4;
+	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
+
+	if (posHeadersEnd != std::string::npos) {
+		// Include one CRLF at the end of last header line
+		std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
+		size_t lineStart = 0;
+		size_t lineEnd = headers.find("\r\n");
+
+		while (lineEnd != std::string::npos) {
+			std::string header = headers.substr(lineStart, lineEnd - lineStart);
+			const std::size_t delimiterPos = header.find_first_of(':');
+			if (delimiterPos != std::string::npos) {
+				std::string headerName = header.substr(0, delimiterPos);
+				webutils::lowercase(headerName);
+				std::string headerValue = header.substr(delimiterPos + 1);
+				headerValue = webutils::trimLeadingWhitespaces(headerValue);
+				webutils::trimTrailingWhiteSpaces(headerValue);
+				m_responseHeaders[headerName] = headerValue;
+				LOG_DEBUG << "Parsed response header: " << headerName << " -> " << headerValue;
+			}
+
+			lineStart = lineEnd + 2;
+			lineEnd = headers.find("\r\n", lineStart);
+		}
+
+		m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
+	}
+}
+
+/**
+ * @brief Processes and validates the response headers and updates the HTTPRequest object.
+ *
+ * This function processes the response headers and updates the HTTPRequest object
+ * with relevant information, such as whether the connection should be closed.
+ */
+void ResponseBodyHandler::validateCGIResponseHeaders()
+{
+	// Status
+	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("status");
+	if (iter != m_responseHeaders.end()) {
+		m_request.httpStatus = extractStatusCode(iter->second);
+		if (m_request.httpStatus == StatusInternalServerError) {
+			handleErrorBody();
+			LOG_ERROR << "Invalid Status header value encountered in CGI response";
+			return;
+		}
+		m_responseHeaders.erase(iter);
+	}
+
+	// Connection
+	iter = m_responseHeaders.find("connection");
+	if (iter != m_responseHeaders.end()) {
+		if (iter->second != "keep-alive" && iter->second != "close") {
+			m_request.httpStatus = StatusInternalServerError;
+			handleErrorBody();
+			LOG_ERROR << "Invalid Connection header value: " << iter->second;
+			return;
+		}
+
+		if (iter->second == "close")
+			m_request.shallCloseConnection = true;
+		m_responseHeaders.erase(iter);
 	}
 }
 

@@ -5,7 +5,7 @@ import sys
 from urllib.parse import parse_qs
 
 # Define the base directory where the file will be saved
-base_save_dir = os.getcwd() + '/uploads/'
+base_save_dir = os.path.abspath(os.path.join(os.getcwd(), '../html/uploads/'))
 
 # List of allowed directories
 allowed_directories = ['tmp', 'images', 'documents']
@@ -40,8 +40,8 @@ if not os.path.exists(directory_path):
     os.makedirs(directory_path)
     
 # Set the content type for the response
-print("Content-Type: text/html;charset=utf-8")
-print()
+print("Content-Type: text/html;charset=utf-8\r\n", end="")
+print("Location: " + file_path + "\r\n\r\n", end="")
 
 try:
     # Read from stdin

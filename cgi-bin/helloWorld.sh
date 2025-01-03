@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Output the Content-Type header
-printf "Content-Type: text/plain\r\n"
+printf "Content-Type: text/html\r\n"
 printf "\r\n"
 
 # Output the HTML content
