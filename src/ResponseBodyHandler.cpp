@@ -123,14 +123,11 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 
 		while (lineEnd != std::string::npos) {
 			std::string header = headers.substr(lineStart, lineEnd - lineStart);
-
-			std::string headerName;
-			std::string headerValue;
 			const std::size_t delimiterPos = header.find_first_of(':');
 			if (delimiterPos != std::string::npos) {
-				headerName = header.substr(0, delimiterPos);
+				std::string headerName = header.substr(0, delimiterPos);
 				webutils::lowercase(headerName);
-				headerValue = header.substr(delimiterPos + 1);
+				std::string headerValue = header.substr(delimiterPos + 1);
 				headerValue = webutils::trimLeadingWhitespaces(headerValue);
 				webutils::trimTrailingWhiteSpaces(headerValue);
 				m_responseHeaders[headerName] = headerValue;
