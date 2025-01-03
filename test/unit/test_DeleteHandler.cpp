@@ -59,7 +59,7 @@ TEST_F(DeleteHandlerTest, DeleteFile)
 // 			+ "\"\n}\n");
 // }
 
-TEST_F(DeleteHandlerTest, FileNotExist)
+TEST_F(DeleteHandlerTest, FileNotFound)
 {
 	// Arrange
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileNotFound));
