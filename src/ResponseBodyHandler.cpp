@@ -98,46 +98,8 @@ void ResponseBodyHandler::parseCGIResponseBody()
 {
 	LOG_DEBUG << "Parsing received CGI response body...";
 
-	parseCGIResponseStatusLine();
 	parseCGIResponseHeaders();
 	processCGIResponseHeaders();
-}
-
-/**
- * @brief Parses the response status line from the HTTP response body, if given.
- *
- * This function searches for the status line in the HTTP response body and extracts
- * the HTTP status code. It updates the HTTPRequest object with the parsed status code.
- */
-void ResponseBodyHandler::parseCGIResponseStatusLine()
-{
-	size_t posStatusEnd = 0;
-	const std::string httpString = "HTTP/1.1";
-	const size_t httpStringSize = httpString.size();
-	std::vector<std::string> statusIdentifiers;
-	statusIdentifiers.push_back("Status");
-	statusIdentifiers.push_back(httpString);
-
-	for (std::vector<std::string>::const_iterator iter = statusIdentifiers.begin(); iter != statusIdentifiers.end();
-		 ++iter) {
-		size_t posStatus = m_responseBody.find(*iter);
-
-		if (posStatus != std::string::npos) {
-			std::string statusLine;
-
-			if (*iter == httpString)
-				posStatus += httpStringSize;
-
-			posStatusEnd = m_responseBody.find("\r\n", posStatus);
-			statusLine = m_responseBody.substr(posStatus, posStatusEnd - posStatus);
-			m_request.httpStatus = extractStatusCode(statusLine);
-			LOG_DEBUG << "Parsed response status: " << m_request.httpStatus;
-			posStatusEnd += 2;
-		}
-	}
-
-	if (posStatusEnd != 0)
-		m_responseBody = m_responseBody.substr(posStatusEnd);
 }
 
 /**
@@ -190,11 +152,19 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
  */
 void ResponseBodyHandler::processCGIResponseHeaders()
 {
+	// Status
+	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("Status");
+	if (iter != m_responseHeaders.end()) {
+		m_request.httpStatus = extractStatusCode(iter->second);
+		m_responseHeaders.erase(iter);
+	}
+
 	// Connection
-	if (m_responseHeaders.find("Connection") != m_responseHeaders.end()) {
-		if (m_responseHeaders.at("Connection") == "close")
+	iter = m_responseHeaders.find("Connection");
+	if (iter != m_responseHeaders.end()) {
+		if (iter->second == "close")
 			m_request.shallCloseConnection = true;
-		m_responseHeaders.erase("Connection");
+		m_responseHeaders.erase(iter);
 	}
 }
 
