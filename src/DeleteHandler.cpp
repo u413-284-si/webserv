@@ -58,13 +58,12 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			httpStatus = StatusForbidden;
 			break;
 		}
-	} catch (const std::runtime_error& e) {
-		std::string error = e.what();
-		LOG_ERROR << error;
-		if (error.find("Permission denied") != std::string::npos) // FIXME: use custom exception
+	} catch (FileSystemPolicy::NoPermissionException& e) {
+			LOG_ERROR << e.what();
 			httpStatus = StatusForbidden;
-		else
-			httpStatus = StatusInternalServerError;
+	} catch (const std::runtime_error& e) {
+		LOG_ERROR << e.what();
+		httpStatus = StatusInternalServerError;
 	}
 	return m_response.str();
 }
