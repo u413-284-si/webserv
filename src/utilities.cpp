@@ -245,4 +245,20 @@ std::string capitalizeWords(const std::string& input)
 	return result;
 }
 
+/**
+ * @brief Finds a substring at the beginning of input string and replaces it with another string.
+ *
+ * If alias is not found at beginning, returns empty string.
+ * @param input String which may contain alias
+ * @param alias Alias to be replaced
+ * @param replacement String to replace alias
+ * @return std::string String with alias replaced
+ */
+std::string replaceAlias(const std::string& input, const std::string& alias, const std::string& replacement)
+{
+	if (input.find(alias) == 0)
+		return replacement + input.substr(alias.length());
+	return "";
+}
+
 } // webutils

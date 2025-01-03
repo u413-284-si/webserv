@@ -94,6 +94,7 @@ ConfigFile createDummyConfig()
 	location7.path = "/uploads/";
 	location7.root = "/workspaces/webserv/html";
 	location7.allowedMethods[MethodPost] = true;
+	location7.allowedMethods[MethodDelete] = true;
 
 	Location location8;
 	location8.path = "/redirect";
@@ -108,6 +109,11 @@ ConfigFile createDummyConfig()
 	location10.returns = std::make_pair(StatusForbidden, "");
 	location10.errorPage[StatusForbidden] = "/strange";
 
+	Location location11;
+	location11.path = "/alias/";
+	location11.root = "/workspaces/webserv/html";
+	location11.alias = "/workspaces/webserv/html/images/";
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
@@ -119,6 +125,7 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location8);
 	serverConfig8080.locations.push_back(location9);
 	serverConfig8080.locations.push_back(location10);
+	serverConfig8080.locations.push_back(location11);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";

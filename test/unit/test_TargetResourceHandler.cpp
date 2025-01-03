@@ -45,6 +45,11 @@ protected:
 		location6.root = "/sixth/location";
 		location6.returns = std::make_pair(StatusMovedPermanently, "/newlocation");
 
+		Location location7;
+		location7.path = "/alias";
+		location7.root = "/sixth/location";
+		location7.alias = "/new/path";
+
 		m_configFile.servers[0].locations.pop_back();
 		m_configFile.servers[0].locations.push_back(location3);
 		m_configFile.servers[0].locations.push_back(location2);
@@ -52,6 +57,7 @@ protected:
 		m_configFile.servers[0].locations.push_back(location1);
 		m_configFile.servers[0].locations.push_back(location5);
 		m_configFile.servers[0].locations.push_back(location6);
+		m_configFile.servers[0].locations.push_back(location7);
 	}
 	~TargetResourceHandlerTest() override { }
 
@@ -95,7 +101,7 @@ TEST_F(TargetResourceHandlerTest, TwoLocationsMatchOneIsLonger)
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileNotExist));
+	.WillOnce(Return(FileSystemPolicy::FileNotFound));
 
 	m_request.uri.path = "/test";
 
@@ -114,7 +120,20 @@ TEST_F(TargetResourceHandlerTest, FileOther)
 
 	m_targetResourceHandler.execute(m_connection);
 
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_EQ(m_request.targetResource, "/second/location/test");
+}
+
+TEST_F(TargetResourceHandlerTest, FileNoPermission)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException("No permission")));
+
+	m_request.uri.path = "/test";
+
+	m_targetResourceHandler.execute(m_connection);
+
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test");
 }
 
@@ -128,10 +147,11 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
+	EXPECT_TRUE(m_request.isDirectory);
 	EXPECT_EQ(m_request.targetResource, "/test/");
 }
 
-TEST_F(TargetResourceHandlerTest, DirectoryIndex)
+TEST_F(TargetResourceHandlerTest, HitDirectoryAppendIndexFile)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(Return(FileSystemPolicy::FileDirectory))
@@ -145,18 +165,19 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndex)
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/index.html");
 }
 
-TEST_F(TargetResourceHandlerTest, DirectoryIndexNotFound)
+TEST_F(TargetResourceHandlerTest, HitDirectoryIndexfileNotFound)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(Return(FileSystemPolicy::FileNotExist))
-	.WillOnce(Return(FileSystemPolicy::FileNotExist));
+	.WillOnce(Return(FileSystemPolicy::FileNotFound))
+	.WillOnce(Return(FileSystemPolicy::FileNotFound));
 
 	m_request.uri.path = "/test/secret/";
 
 	m_targetResourceHandler.execute(m_connection);
 
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_TRUE(m_request.isDirectory);
 	EXPECT_EQ(m_request.targetResource, "/third/location/test/secret/");
 }
 
@@ -200,9 +221,10 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 	EXPECT_EQ(m_request.httpStatus, StatusOK);
 	EXPECT_EQ(m_request.targetResource, "/fourth/location/test/autoindex/");
 	EXPECT_TRUE(m_request.hasAutoindex);
+	EXPECT_TRUE(m_request.isDirectory);
 }
 
-TEST_F(TargetResourceHandlerTest, DirectoryWithoutAutoindexIsForbidden)
+TEST_F(TargetResourceHandlerTest, DirectoryWithNoAutoindex)
 {
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
 	.WillOnce(Return(FileSystemPolicy::FileDirectory));
@@ -214,6 +236,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryWithoutAutoindexIsForbidden)
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_request.targetResource, "/second/location/test/");
 	EXPECT_FALSE(m_request.hasAutoindex);
+	EXPECT_TRUE(m_request.isDirectory);
 }
 
 TEST_F(TargetResourceHandlerTest, ServerError)
@@ -239,4 +262,17 @@ TEST_F(TargetResourceHandlerTest, SimpleRedirection)
 	EXPECT_EQ(m_request.httpStatus, StatusMovedPermanently);
 	EXPECT_EQ(m_request.targetResource, "/newlocation");
 	EXPECT_TRUE(m_request.hasReturn);
+}
+
+TEST_F(TargetResourceHandlerTest, LocationWithAlias)
+{
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
+	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
+
+	m_request.uri.path = "/alias/test";
+
+	m_targetResourceHandler.execute(m_connection);
+
+	EXPECT_EQ(m_request.targetResource, "/new/path/test");
+	EXPECT_EQ(m_request.httpStatus, StatusOK);
 }

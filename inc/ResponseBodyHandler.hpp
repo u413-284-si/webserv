@@ -2,6 +2,7 @@
 
 #include "AutoindexHandler.hpp"
 #include "Connection.hpp"
+#include "DeleteHandler.hpp"
 #include "FileSystemPolicy.hpp"
 #include "FileWriteHandler.hpp"
 #include "Log.hpp"

@@ -36,6 +36,7 @@ bool isPortValid(const std::string& port);
 
 void lowercase(std::string& str);
 std::string capitalizeWords(const std::string& input);
+std::string replaceAlias(const std::string& input, const std::string& alias, const std::string& replacement);
 
 /**
  * @brief Convert a type to a string
