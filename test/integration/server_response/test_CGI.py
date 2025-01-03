@@ -1,5 +1,6 @@
 # This module is for succesful CGI requests
 
+import os
 import requests
 
 def test_no_CGI_defined():
@@ -26,9 +27,15 @@ def test_CGI_upload_file():
    }
    # Define body
    payload = "This is the content of the dudu."
+   dst_file_path = "/workspaces/webserv/html/uploads/documents/myfile.txt"
 
    response = requests.post("http://127.0.0.1:8081/cgi-bin/upload.py", params=query_params, data=payload)
    assert response.status_code == 200
+   assert response.headers["location"] == "/workspaces/webserv/html/uploads/documents/myfile.txt"
+   # Check if file exists
+   assert os.path.isfile(dst_file_path)
+   # Delete created file
+   os.remove(dst_file_path)
 
 def test_CGI_toUpper():
     print("Change to upper case with /cgi-bin/upperCase.sh")
