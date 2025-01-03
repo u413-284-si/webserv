@@ -129,6 +129,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 			const std::size_t delimiterPos = header.find_first_of(':');
 			if (delimiterPos != std::string::npos) {
 				headerName = header.substr(0, delimiterPos);
+				webutils::lowercase(headerName);
 				headerValue = header.substr(delimiterPos + 1);
 				headerValue = webutils::trimLeadingWhitespaces(headerValue);
 				webutils::trimTrailingWhiteSpaces(headerValue);
@@ -153,14 +154,14 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 void ResponseBodyHandler::processCGIResponseHeaders()
 {
 	// Status
-	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("Status");
+	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("status");
 	if (iter != m_responseHeaders.end()) {
 		m_request.httpStatus = extractStatusCode(iter->second);
 		m_responseHeaders.erase(iter);
 	}
 
 	// Connection
-	iter = m_responseHeaders.find("Connection");
+	iter = m_responseHeaders.find("connection");
 	if (iter != m_responseHeaders.end()) {
 		if (iter->second == "close")
 			m_request.shallCloseConnection = true;

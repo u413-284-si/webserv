@@ -145,24 +145,24 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 		// Content-Type
-		if (!hasCGIHeader("Content-Type"))
+		if (!hasCGIHeader("content-type"))
 			m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 		// Content-Length
-		if (!hasCGIHeader("Content-Length"))
+		if (!hasCGIHeader("content-length"))
 			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
 	// Server
-	if (!hasCGIHeader("Server"))
+	if (!hasCGIHeader("server"))
 		m_responseHeaderStream << "Server: TriHard\r\n";
 
 	// Date
-	if (!hasCGIHeader("Date"))
+	if (!hasCGIHeader("date"))
 		m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
-	if (!hasCGIHeader("Location")) {
+	if (!hasCGIHeader("location")) {
 		std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
 		if (iter != request.headers.end()) {
 			m_responseHeaderStream << "Location: " << iter->second << "\r\n";
@@ -172,7 +172,7 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
 	// Various headers from response
 	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
 		 iter != m_responseHeaders.end(); ++iter)
-		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
+		m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
 
 	// Connection
 	if (request.shallCloseConnection)
@@ -199,7 +199,7 @@ bool ResponseBuilder::hasCGIHeader(const std::string& headerName)
 {
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
 	if (iter != m_responseHeaders.end()) {
-		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
+		m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
 		m_responseHeaders.erase(iter);
 		return true;
 	}
