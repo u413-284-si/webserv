@@ -11,6 +11,7 @@ var dir_6a07fdbc4b50e86806a88566ca8f66e4 =
     [ "test_connectionSendResponse.cpp", "test__connection_send_response_8cpp.html", "test__connection_send_response_8cpp" ],
     [ "test_connectionSendToCGI.cpp", "test__connection_send_to_c_g_i_8cpp.html", "test__connection_send_to_c_g_i_8cpp" ],
     [ "test_createVirtualServer.cpp", "test__create_virtual_server_8cpp.html", "test__create_virtual_server_8cpp" ],
+    [ "test_DeleteHandler.cpp", "test___delete_handler_8cpp.html", "test___delete_handler_8cpp" ],
     [ "test_FileWriteHandler.cpp", "test___file_write_handler_8cpp.html", "test___file_write_handler_8cpp" ],
     [ "test_handleCompleteRequestHeader.cpp", "test__handle_complete_request_header_8cpp.html", "test__handle_complete_request_header_8cpp" ],
     [ "test_helpers.cpp", "test__helpers_8cpp.html", "test__helpers_8cpp" ],
