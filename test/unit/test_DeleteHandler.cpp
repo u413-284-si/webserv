@@ -90,7 +90,7 @@ TEST_F(DeleteHandlerTest, Forbidden)
 	// Arrange
 	std::string errorMessage = "remove(): Permission denied";
 	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileRegular));
-	EXPECT_CALL(m_fileSystemPolicy, deleteFile).WillOnce(testing::Throw(std::runtime_error(errorMessage)));
+	EXPECT_CALL(m_fileSystemPolicy, deleteFile).WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException(errorMessage)));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);
