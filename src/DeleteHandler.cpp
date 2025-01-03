@@ -50,7 +50,7 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			// 		   << "}\n";
 			// break;
 
-		case FileSystemPolicy::FileNotExist:
+		case FileSystemPolicy::FileNotFound:
 			httpStatus = StatusNotFound;
 			break;
 
