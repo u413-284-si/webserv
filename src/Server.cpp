@@ -240,6 +240,20 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 }
 
 /**
+ * @brief Removes a Connection from the Server.
+ *
+ * @param delFd File descriptor to be removed.
+ */
+void Server::removeConnection(int delFd)
+{
+	const Socket clientSocket = getConnections().at(delFd).m_clientSocket;
+	removeEvent(delFd);
+	getConnections().erase(delFd);
+	close(delFd);
+	LOG_DEBUG << "Removed Connection: " << clientSocket << " on fd: " << delFd;
+}
+
+/**
  * @brief Removes a CGI file descriptor from the server.
  *
  * This function removes a CGI file descriptor from the server by performing the following steps:
@@ -900,14 +914,12 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -982,8 +994,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
 			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
-			close(clientFd);
-			connection.m_status = Connection::Closed;
+			server.removeConnection(clientFd);
 			return;
 		}
 	}
@@ -1122,14 +1133,12 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -1402,8 +1411,7 @@ void connectionSendResponse(Server& server, int activeFd, Connection& connection
 	const ssize_t sentBytes = server.writeToSocket(activeFd, connection.m_buffer.c_str(), bytesToSend, 0);
 	if (sentBytes == -1) {
 		LOG_ERROR << "Internal server error";
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -1416,8 +1424,7 @@ void connectionSendResponse(Server& server, int activeFd, Connection& connection
 
 	if (connection.m_request.shallCloseConnection) {
 		LOG_DEBUG << "Closing connection";
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 	} else {
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(activeFd, EPOLLIN);
