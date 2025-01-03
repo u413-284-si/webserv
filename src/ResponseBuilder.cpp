@@ -153,11 +153,6 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
 			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
-	// Various headers from response
-	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
-		 iter != m_responseHeaders.end(); ++iter)
-		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
-
 	// Server
 	if (!hasCGIHeader("Server"))
 		m_responseHeaderStream << "Server: TriHard\r\n";
@@ -173,6 +168,11 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
 			m_responseHeaderStream << "Location: " << iter->second << "\r\n";
 		}
 	}
+
+	// Various headers from response
+	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
+		 iter != m_responseHeaders.end(); ++iter)
+		m_responseHeaderStream << iter->first << ": " << iter->second << "\r\n";
 
 	// Connection
 	if (request.shallCloseConnection)
