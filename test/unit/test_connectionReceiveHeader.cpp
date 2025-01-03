@@ -17,9 +17,13 @@ protected:
 	ConnectionReceiveHeaderTest()
 		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
+		ON_CALL(epollWrapper, addEvent)
+			.WillByDefault(Return(true));
 		ON_CALL(epollWrapper, modifyEvent)
 			.WillByDefault(Return(true));
 
+		server.registerConnection(m_serverSock, dummyFd, Socket());
+		connection = server.getConnections().at(dummyFd);
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_status = Connection::ReceiveHeader;
 	}
@@ -36,8 +40,8 @@ protected:
 	};
 
 	const int dummyFd = 10;
-
-	Connection connection = Connection(m_serverSock, Socket(), dummyFd, configFile.servers);
+	Connection temp = Connection(m_serverSock, Socket(), dummyFd, configFile.servers);
+	Connection& connection = temp;
 };
 
 TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)
@@ -80,9 +84,7 @@ TEST_F(ConnectionReceiveHeaderTest, RecvFail)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, "");
-	EXPECT_EQ(connection.m_buffer.size(), 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
@@ -91,8 +93,7 @@ TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
 
 	connectionReceiveHeader(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer.size(), 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveHeaderTest, RequestSizeTooBig)

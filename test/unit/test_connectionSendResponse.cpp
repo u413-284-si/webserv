@@ -16,7 +16,12 @@ protected:
 	ConnectionSendResponseTest()
 		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
+		ON_CALL(epollWrapper, addEvent)
+			.WillByDefault(Return(true));
 		ON_CALL(epollWrapper, modifyEvent).WillByDefault(Return(true));
+
+		server.registerConnection(serverSock, dummyFd, Socket());
+		connection = server.getConnections().at(dummyFd);
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_buffer = response;
@@ -24,15 +29,21 @@ protected:
 	}
 	~ConnectionSendResponseTest() override { }
 
-	ConfigFile configFile;
+	ConfigFile configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
     MockProcessOps processOps;
 	Server server;
 
+	Socket serverSock = {
+		.host = "127.0.0.1",
+		.port = "8080"
+	};
 	const int dummyFd = 10;
 
-	Connection connection = Connection(Socket(), Socket(), dummyFd, configFile.servers);
+	Connection temp = Connection(serverSock, Socket(), dummyFd, configFile.servers);
+	Connection& connection = temp;
+
 	std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nABCD";
 };
 
@@ -55,9 +66,7 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
 
 	connectionSendResponse(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, response);
-	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionSendResponseTest, SendPartialResponse)
@@ -81,7 +90,5 @@ TEST_F(ConnectionSendResponseTest, SendFail)
 
 	connectionSendResponse(server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, response);
-	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(server.getConnections().size(), 0);
 }
