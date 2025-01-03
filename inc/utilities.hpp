@@ -35,6 +35,7 @@ bool isIpAddressValid(const std::string& ipAddress);
 bool isPortValid(const std::string& port);
 
 void lowercase(std::string& str);
+std::string capitalizeWords(const std::string& input);
 
 /**
  * @brief Convert a type to a string

@@ -217,4 +217,32 @@ bool isPortValid(const std::string& port)
  */
 void lowercase(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::tolower); }
 
+/**
+ * @brief Capitalizes the first letter of each word in a string.
+ *
+ * This function takes a string as input and capitalizes the first letter of each word.
+ * Words are considered to be sequences of characters separated by spaces or hyphens.
+ * All other characters in the words are converted to lowercase.
+ *
+ * @param input The input string to be transformed.
+ * @return A new string with the first letter of each word capitalized.
+ */
+std::string capitalizeWords(const std::string& input)
+{
+	std::string result = input;
+	bool capitalizeNext = true;
+
+	for (size_t i = 0; i < result.size(); ++i) {
+		if (result.at(i) == ' ' || result.at(i) == '-') {
+			capitalizeNext = true;
+		} else if (capitalizeNext) {
+			result.at(i) = static_cast<signed char>(std::toupper(result.at(i)));
+			capitalizeNext = false;
+		} else {
+			result.at(i) = static_cast<signed char>(std::tolower(result.at(i)));
+		}
+	}
+	return result;
+}
+
 } // webutils
