@@ -303,7 +303,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   90</span>    <span class="comment">// Arrange</span></div>
 <div class="line"><span class="lineno">   91</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorMessage</a> = <span class="stringliteral">&quot;remove(): Permission denied&quot;</span>;</div>
 <div class="line"><span class="lineno">   92</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, checkFileType).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>));</div>
-<div class="line"><span class="lineno">   93</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, deleteFile).WillOnce(testing::Throw(std::runtime_error(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorMessage</a>)));</div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_fileSystemPolicy, deleteFile).WillOnce(testing::Throw(<a class="code hl_struct" href="struct_file_system_policy_1_1_no_permission_exception.html">FileSystemPolicy::NoPermissionException</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorMessage</a>)));</div>
 <div class="line"><span class="lineno">   94</span> </div>
 <div class="line"><span class="lineno">   95</span>    <span class="comment">// Act</span></div>
 <div class="line"><span class="lineno">   96</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a> = m_deleteHandler.execute(m_path, m_statusCode);</div>
@@ -312,6 +312,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   99</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">responseBody</a>, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">  100</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_statusCode, <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>);</div>
 <div class="line"><span class="lineno">  101</span>}</div>
+<div class="ttc" id="astruct_file_system_policy_1_1_no_permission_exception_html"><div class="ttname"><a href="struct_file_system_policy_1_1_no_permission_exception.html">FileSystemPolicy::NoPermissionException</a></div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00035">FileSystemPolicy.hpp:35</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

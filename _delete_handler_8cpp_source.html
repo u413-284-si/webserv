@@ -155,56 +155,55 @@ $(document).ready(function(){initNavTree('_delete_handler_8cpp_source.html','');
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; e) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        std::string error = e.what();</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; error;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">if</span> (error.find(<span class="stringliteral">&quot;Permission denied&quot;</span>) != std::string::npos) <span class="comment">// FIXME: use custom exception</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> m_response.str();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    } <span class="keywordflow">catch</span> (<a class="code hl_struct" href="struct_file_system_policy_1_1_no_permission_exception.html">FileSystemPolicy::NoPermissionException</a>&amp; e) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; e.what();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; e) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; e.what();</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">return</span> m_response.str();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// FIXME: reactivate after eval</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">// /**</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">//  * @brief Deletes a directory at the specified path.</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">//  *</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">//  * This function attempts to delete the directory located at the given path.</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">//  * It recursively deletes all files and subdirectories within the directory.</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">//  * If any file or directory cannot be deleted, it throws a runtime error with</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">//  * the appropriate error message.</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">//  *</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">//  * @param path The path to the directory to be deleted.</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">//  * @throws std::runtime_error if any file or directory cannot be deleted.</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">//  */</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">// void DeleteHandler::deleteDirectory(const std::string&amp; path) const</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">// {</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">//  Directory dir(m_fileSystemPolicy, path);</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">//  std::vector&lt;std::string&gt; entries = dir.getEntries();</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">//  for (std::vector&lt;std::string&gt;::const_iterator iter = entries.begin(); iter != entries.end(); ++iter) {</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">//      // Skip `.` and `..` entries</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">//      if (strcmp((*iter).c_str(), &quot;.&quot;) == 0 || strcmp((*iter).c_str(), &quot;..&quot;) == 0)</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">//          continue;</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">//      std::string fullPath = std::string(path) + &quot;/&quot; + *iter;</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">//      struct stat info = m_fileSystemPolicy.getFileStat(fullPath);</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">//      // NOLINTNEXTLINE: misinterpretation by HIC++ standard</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">//      if (S_ISDIR(info.st_mode))</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">//          deleteDirectory(fullPath);</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">//      else</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">//          m_fileSystemPolicy.deleteFile(fullPath);</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">//  }</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">//  // Remove the empty directory itself</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">//  errno = 0;</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">//  if (rmdir(path.c_str()) != 0)</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">//      throw std::runtime_error(&quot;rmdir(): &quot; + std::string(strerror(errno)));</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// }</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">// FIXME: reactivate after eval</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// /**</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">//  * @brief Deletes a directory at the specified path.</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">//  *</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">//  * This function attempts to delete the directory located at the given path.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">//  * It recursively deletes all files and subdirectories within the directory.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">//  * If any file or directory cannot be deleted, it throws a runtime error with</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">//  * the appropriate error message.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">//  *</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">//  * @param path The path to the directory to be deleted.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">//  * @throws std::runtime_error if any file or directory cannot be deleted.</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">//  */</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// void DeleteHandler::deleteDirectory(const std::string&amp; path) const</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">//  Directory dir(m_fileSystemPolicy, path);</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">//  std::vector&lt;std::string&gt; entries = dir.getEntries();</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">//  for (std::vector&lt;std::string&gt;::const_iterator iter = entries.begin(); iter != entries.end(); ++iter) {</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">//      // Skip `.` and `..` entries</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">//      if (strcmp((*iter).c_str(), &quot;.&quot;) == 0 || strcmp((*iter).c_str(), &quot;..&quot;) == 0)</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">//          continue;</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">//      std::string fullPath = std::string(path) + &quot;/&quot; + *iter;</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">//      struct stat info = m_fileSystemPolicy.getFileStat(fullPath);</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">//      // NOLINTNEXTLINE: misinterpretation by HIC++ standard</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">//      if (S_ISDIR(info.st_mode))</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">//          deleteDirectory(fullPath);</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">//      else</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">//          m_fileSystemPolicy.deleteFile(fullPath);</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">//  }</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">//  // Remove the empty directory itself</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">//  errno = 0;</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">//  if (rmdir(path.c_str()) != 0)</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">//      throw std::runtime_error(&quot;rmdir(): &quot; + std::string(strerror(errno)));</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">// }</span></div>
 <div class="ttc" id="a_delete_handler_8hpp_html"><div class="ttname"><a href="_delete_handler_8hpp.html">DeleteHandler.hpp</a></div></div>
 <div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00018">Log.hpp:18</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
@@ -214,13 +213,14 @@ $(document).ready(function(){initNavTree('_delete_handler_8cpp_source.html','');
 <div class="ttc" id="aclass_delete_handler_html_a94704734b720366a43b3a91f87aae194"><div class="ttname"><a href="class_delete_handler.html#a94704734b720366a43b3a91f87aae194">DeleteHandler::DeleteHandler</a></div><div class="ttdeci">DeleteHandler(const FileSystemPolicy &amp;fileSystemPolicy)</div><div class="ttdoc">Construct a new DeleteHandler object.</div><div class="ttdef"><b>Definition</b> <a href="_delete_handler_8cpp_source.html#l00008">DeleteHandler.cpp:8</a></div></div>
 <div class="ttc" id="aclass_delete_handler_html_af57c89c025cd0def3d16bad186a7f3e8"><div class="ttname"><a href="class_delete_handler.html#af57c89c025cd0def3d16bad186a7f3e8">DeleteHandler::execute</a></div><div class="ttdeci">std::string execute(const std::string &amp;path, statusCode &amp;httpStatus)</div><div class="ttdoc">Executes the delete operation on the specified path.</div><div class="ttdef"><b>Definition</b> <a href="_delete_handler_8cpp_source.html#l00028">DeleteHandler.cpp:28</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html"><div class="ttname"><a href="class_file_system_policy.html">FileSystemPolicy</a></div><div class="ttdoc">Class for C functions on the file system.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00023">FileSystemPolicy.hpp:23</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_a677c9e8ed681935c47a72a5bd8684208"><div class="ttname"><a href="class_file_system_policy.html#a677c9e8ed681935c47a72a5bd8684208">FileSystemPolicy::deleteFile</a></div><div class="ttdeci">virtual void deleteFile(const std::string &amp;path) const</div><div class="ttdoc">Deletes a file at the specified path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8cpp_source.html#l00242">FileSystemPolicy.cpp:242</a></div></div>
+<div class="ttc" id="aclass_file_system_policy_html_a677c9e8ed681935c47a72a5bd8684208"><div class="ttname"><a href="class_file_system_policy.html#a677c9e8ed681935c47a72a5bd8684208">FileSystemPolicy::deleteFile</a></div><div class="ttdeci">virtual void deleteFile(const std::string &amp;path) const</div><div class="ttdoc">Deletes a file at the specified path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8cpp_source.html#l00243">FileSystemPolicy.cpp:243</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_a6fa9dbd0b2ea4656d86bbe4dc966bf71"><div class="ttname"><a href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71">FileSystemPolicy::checkFileType</a></div><div class="ttdeci">virtual fileType checkFileType(const std::string &amp;path) const</div><div class="ttdoc">Check the file type of a given path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8cpp_source.html#l00048">FileSystemPolicy.cpp:48</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765">FileSystemPolicy::fileType</a></div><div class="ttdeci">fileType</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed">FileSystemPolicy::FileDirectory</a></div><div class="ttdeci">@ FileDirectory</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a></div><div class="ttdeci">@ FileRegular</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a3baa8bde70bea32adc872ec5adf20296"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a3baa8bde70bea32adc872ec5adf20296">FileSystemPolicy::FileNotFound</a></div><div class="ttdeci">@ FileNotFound</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
 <div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a></div><div class="ttdeci">@ FileOther</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
+<div class="ttc" id="astruct_file_system_policy_1_1_no_permission_exception_html"><div class="ttname"><a href="struct_file_system_policy_1_1_no_permission_exception.html">FileSystemPolicy::NoPermissionException</a></div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00035">FileSystemPolicy.hpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

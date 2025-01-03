@@ -910,7 +910,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Deletes a file at the specified path. </p>
-<p>This function attempts to delete the file located at the given path. If the file cannot be deleted, it throws a runtime error with the appropriate error message.</p>
+<p>This function attempts to delete the file located at the given path. If the file cannot be deleted, it throws a <a class="el" href="struct_file_system_policy_1_1_no_permission_exception.html">NoPermissionException</a> if the errno code is 13 (= EACCES), else it throws a runtime error with the appropriate error message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td>The path to the file to be deleted. </td></tr>
@@ -924,12 +924,15 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_file_system_policy_8cpp_source.html#l00242">242</a> of file <a class="el" href="_file_system_policy_8cpp_source.html">FileSystemPolicy.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  243</span>{</div>
-<div class="line"><span class="lineno">  244</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a> = 0;</div>
-<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">if</span> (std::remove(path.c_str()) != 0)</div>
-<div class="line"><span class="lineno">  246</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;remove(): &quot;</span> + std::string(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">strerror</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a>)));</div>
-<div class="line"><span class="lineno">  247</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_file_system_policy_8cpp_source.html#l00243">243</a> of file <a class="el" href="_file_system_policy_8cpp_source.html">FileSystemPolicy.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  244</span>{</div>
+<div class="line"><span class="lineno">  245</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a> = 0;</div>
+<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">if</span> (std::remove(path.c_str()) != 0) {</div>
+<div class="line"><span class="lineno">  247</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a> == <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EACCES</a>)</div>
+<div class="line"><span class="lineno">  248</span>            <span class="keywordflow">throw</span> NoPermissionException(<span class="stringliteral">&quot;remove(): &quot;</span> + std::string(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">strerror</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a>)));</div>
+<div class="line"><span class="lineno">  249</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;remove(): &quot;</span> + std::string(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">strerror</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a>)));</div>
+<div class="line"><span class="lineno">  250</span>    }</div>
+<div class="line"><span class="lineno">  251</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
