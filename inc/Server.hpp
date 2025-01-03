@@ -164,7 +164,6 @@ void connectionHandleTimeout(Server& server, int activeFd, Connection& connectio
 
 void checkForTimeout(Server& server);
 
-void cleanupClosedConnections(Server& server);
 void cleanupIdleConnections(Server& server);
 
 void shutdownServer(Server& server);
