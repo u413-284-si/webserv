@@ -59,10 +59,10 @@ TEST_F(DeleteHandlerTest, DeleteFile)
 // 			+ "\"\n}\n");
 // }
 
-TEST_F(DeleteHandlerTest, FileNotExist)
+TEST_F(DeleteHandlerTest, FileNotFound)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileNotExist));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileNotFound));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);
