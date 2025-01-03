@@ -52,3 +52,4 @@ def test_CGI_toUpper():
     )
     response = requests.post("http://127.0.0.1:8080/cgi-bin/upperCase.sh", data=payload)
     assert response.status_code == 200
+    assert payload.upper() in response.text
