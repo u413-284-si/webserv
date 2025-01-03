@@ -170,9 +170,11 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
 	}
 
 	// Various headers from response
-	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
-		 iter != m_responseHeaders.end(); ++iter)
-		m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
+	if (request.httpStatus < StatusMovedPermanently) {
+		for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
+			iter != m_responseHeaders.end(); ++iter)
+			m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
+	}
 
 	// Connection
 	if (request.shallCloseConnection)

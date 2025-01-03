@@ -8,12 +8,12 @@
  * @param responseHeaders Saves the response headers.
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBodyHandler::ResponseBodyHandler(
-	Connection& connection, std::string& responseBody, std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy)
+ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& responseBody,
+	std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
-    , m_responseHeaders(responseHeaders)
+	, m_responseHeaders(responseHeaders)
 	, m_fileSystemPolicy(fileSystemPolicy)
 {
 }
@@ -53,7 +53,7 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
-        parseCGIResponseBody();
+		parseCGIResponseBody();
 		return;
 	}
 	if (m_request.hasAutoindex) {
@@ -99,7 +99,7 @@ void ResponseBodyHandler::parseCGIResponseBody()
 	LOG_DEBUG << "Parsing received CGI response body...";
 
 	parseCGIResponseHeaders();
-	processCGIResponseHeaders();
+	validateCGIResponseHeaders();
 }
 
 /**
@@ -143,23 +143,35 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 }
 
 /**
- * @brief Processes the response headers and updates the HTTPRequest object.
+ * @brief Processes and validates the response headers and updates the HTTPRequest object.
  *
  * This function processes the response headers and updates the HTTPRequest object
  * with relevant information, such as whether the connection should be closed.
  */
-void ResponseBodyHandler::processCGIResponseHeaders()
+void ResponseBodyHandler::validateCGIResponseHeaders()
 {
 	// Status
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("status");
 	if (iter != m_responseHeaders.end()) {
 		m_request.httpStatus = extractStatusCode(iter->second);
+		if (m_request.httpStatus == StatusInternalServerError) {
+			handleErrorBody();
+			LOG_ERROR << "Invalid Status header value encountered in CGI response";
+			return;
+		}
 		m_responseHeaders.erase(iter);
 	}
 
 	// Connection
 	iter = m_responseHeaders.find("connection");
 	if (iter != m_responseHeaders.end()) {
+		if (iter->second != "keep-alive" && iter->second != "close") {
+			m_request.httpStatus = StatusInternalServerError;
+			handleErrorBody();
+			LOG_ERROR << "Invalid Connection header value: " << iter->second;
+			return;
+		}
+
 		if (iter->second == "close")
 			m_request.shallCloseConnection = true;
 		m_responseHeaders.erase(iter);

@@ -28,12 +28,12 @@ private:
 	void parseCGIResponseBody();
 	void parseCGIResponseStatusLine();
 	void parseCGIResponseHeaders();
-	void processCGIResponseHeaders();
+	void validateCGIResponseHeaders();
 
 	Connection& m_connection;
 	HTTPRequest& m_request;
 	std::string& m_responseBody;
-    std::map<std::string, std::string>& m_responseHeaders;
+	std::map<std::string, std::string>& m_responseHeaders;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
 
