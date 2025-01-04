@@ -184,6 +184,11 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<body>\r\n"
 									  "<center><h1>301 Moved permanently</h1></center>\r\n";
 
+	static const char* error302Page = "<html>\r\n"
+									  "<head><title>302 Found</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>302 Found</h1></center>\r\n";
+
 	static const char* error308Page = "<html>\r\n"
 									  "<head><title>308 Permanent redirect</title></head>\r\n"
 									  "<body>\r\n"
@@ -252,6 +257,9 @@ std::string getDefaultErrorPage(statusCode statusCode)
 		return ("");
 	case StatusMovedPermanently:
 		ret = error301Page;
+		break;
+	case StatusMovedTemporarily:
+		ret = error302Page;
 		break;
 	case StatusPermanentRedirect:
 		ret = error308Page;
