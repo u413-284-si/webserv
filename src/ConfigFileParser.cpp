@@ -960,6 +960,14 @@ statusCode ConfigFileParser::convertStringToStatusCode(const std::string& status
 	return static_cast<enum statusCode>(code);
 }
 
+/**
+ * @brief Removes double quotes from a string
+ *
+ * The double quotes are removed from the beginning and the end of the string
+ * If there is an odd number of double quotes, an error is thrown
+ *
+ * @param str The string to remove double quotes from
+ */
 void ConfigFileParser::removeDoubleQuotes(std::string& str)
 {
 	size_t leadingDoubleQuotes = 0;
