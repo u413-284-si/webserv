@@ -953,7 +953,7 @@ statusCode ConfigFileParser::convertStringToStatusCode(const std::string& status
 {
 	unsigned long code = std::strtoul(statusCode.c_str(), NULL, constants::g_decimalBase);
 	if (code == 0)
-		throw std::runtime_error("Status code contains invalid characters");
+		throw std::runtime_error("Invalid status code");
 	return static_cast<enum statusCode>(code);
 }
 
