@@ -84,6 +84,7 @@ private:
 	std::string getValue(void) const;
 	std::string convertBlockToString(Block block) const;
 	statusCode convertStringToStatusCode(const std::string& statusCodeString) const;
+	void removeDoubleQuotes(std::string& str);
 	void skipBlockBegin(Block block);
 	void skipLocationBlockPath(size_t& index);
 };

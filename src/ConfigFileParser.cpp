@@ -702,12 +702,15 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
 			throw std::runtime_error("Invalid return code");
 
-		size_t returnUrlStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);
-		size_t returnUrlEndIndex = returns.length();
-		std::string returnUrl = returns.substr(returnUrlStartIndex, returnUrlEndIndex - returnUrlStartIndex);
+		size_t returnUrlOrTextStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);
+		size_t returnUrlOrTextEndIndex = returns.length();
+		std::string returnUrlOrText
+			= returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);
+
+		removeDoubleQuotes(returnUrlOrText);
 
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
-		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrl;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;
 	} else {
 		size_t endIndex = returns.length();
 		size_t startIndex = returnCodeStartIndex;
@@ -955,6 +958,37 @@ statusCode ConfigFileParser::convertStringToStatusCode(const std::string& status
 	if (code == 0)
 		throw std::runtime_error("Invalid status code");
 	return static_cast<enum statusCode>(code);
+}
+
+void ConfigFileParser::removeDoubleQuotes(std::string& str)
+{
+	size_t leadingDoubleQuotes = 0;
+	size_t trailingDoubleQuotes = 0;
+	size_t index = 0;
+	while (index < str.length()) {
+		if (str[index] == '"')
+			leadingDoubleQuotes++;
+		else
+			break;
+		;
+		index++;
+	}
+	while (str[index] != '"' && index < str.length())
+		index++;
+	while (index < str.length()) {
+		if (str[index] == '"')
+			trailingDoubleQuotes++;
+		else
+			break;
+		;
+		index++;
+	}
+	if (leadingDoubleQuotes != trailingDoubleQuotes)
+		throw std::runtime_error("Open double quotes");
+
+	str.erase(0, leadingDoubleQuotes);
+	str.erase(str.length() - trailingDoubleQuotes, trailingDoubleQuotes);
+	std::cout << "string: " << str << std::endl;
 }
 
 /**
