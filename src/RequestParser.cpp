@@ -10,6 +10,26 @@ RequestParser::RequestParser() { }
 
 /* ====== GETTERS/SETTERS ====== */
 
+/**
+ * @brief Retrieves the boundary string used in multipart/form-data requests.
+ *
+ * This function returns the boundary string that is used to separate parts
+ * in a multipart/form-data request.
+ *
+ * @return A constant reference to the boundary string.
+ */
+const std::string& RequestParser::getBoundary() const { return m_boundary; }
+
+/**
+ * @brief Sets the boundary string used in multipart/form-data requests.
+ *
+ * This function sets the boundary string that is used to separate parts
+ * in a multipart/form-data request.
+ *
+ * @param boundary The boundary string to be set.
+ */
+void RequestParser::setBoundary(const std::string& boundary) { m_boundary = boundary; }
+
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
@@ -70,8 +90,9 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
 	m_requestStream.str(bodyString);
 	if (request.isChunked)
 		parseChunkedBody(request);
-	else
-		parseNonChunkedBody(request);
+	// else
+	// 	parseNonChunkedBody(request);
+	request.body = bodyString;
 	if (request.hasMultipartFormdata)
 		decodeMultipartFormdata(request);
 	resetRequestStream();
@@ -523,11 +544,42 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 
 void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 {
-	// while loop going through each line
-	// if line contains boundary, remove line
-	// save form-data into a map?
-	// save filename as targetresource
-	// replace request.body with file content
+	const std::string filename = "filename=\"";
+	size_t filenamePos = request.body.find(filename);
+	if (filenamePos == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error("one");
+	}
+	filenamePos += filename.size();
+	size_t filenameEndPos = request.body.find('\"', filenamePos);
+	request.targetResource += "/" + request.body.substr(filenamePos, filenameEndPos - filenamePos);
+
+	const std::string contentTypeHeader = "Content-Type:";
+	size_t contentTypePos = request.body.find(contentTypeHeader, filenameEndPos);
+	if (contentTypePos == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error("two");
+	}
+
+	size_t contentStartPos = request.body.find("\r\n\r\n", contentTypePos);
+	if (contentStartPos == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error("three");
+	}
+	contentStartPos += 4;
+
+	const std::string endBoundary = "------" + m_boundary;
+	size_t contentEndPos = request.body.find(endBoundary, contentStartPos);
+	if (contentEndPos == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error("four");
+	}
+	contentEndPos -= 2; // Remove CRLF
+	request.body = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
 }
 
 /* ====== CHECKS ====== */

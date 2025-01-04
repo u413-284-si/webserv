@@ -35,6 +35,9 @@ public:
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
+	const std::string& getBoundary() const;
+	void setBoundary(const std::string& boundary);
+
 private:
 	std::istringstream m_requestStream;
     std::string m_boundary;
