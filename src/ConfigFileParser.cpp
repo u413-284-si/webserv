@@ -675,6 +675,59 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 }
 
 /**
+ * @brief Reads the return codes and corresponding return urls
+ *
+ * The function handles three cases:
+ *
+ * 1. Return code and return url
+ * 2. Only return url
+ * 3. Only return code
+ *
+ * When a return code is present, its validity is checked.
+ * If only a return URL is provided, it is verified to ensure it starts with either 'http://' or 'https://'.
+ *
+ * @param returns The value of the directive returns
+ */
+
+void ConfigFileParser::readReturns(const std::string& returns)
+{
+	size_t index = returns.find_first_not_of(s_whitespace);
+	size_t returnCodeStartIndex = index;
+	size_t returnCodeEndIndex = returns.find_first_of(s_whitespace, index);
+
+	if (returnCodeEndIndex != std::string::npos) {
+		std::string returnCodeStr = returns.substr(returnCodeStartIndex, returnCodeEndIndex - returnCodeStartIndex);
+
+		statusCode returnCode = convertStringToStatusCode(returnCodeStr);
+		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
+			throw std::runtime_error("Invalid return code");
+
+		size_t returnUrlStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);
+		size_t returnUrlEndIndex = returns.length();
+		std::string returnUrl = returns.substr(returnUrlStartIndex, returnUrlEndIndex - returnUrlStartIndex);
+
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrl;
+	} else {
+		size_t endIndex = returns.length();
+		size_t startIndex = returnCodeStartIndex;
+
+		std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);
+		if (returnCodeOrUrl.substr(0, sizeof("http://") - 1) == "http://"
+			|| returnCodeOrUrl.substr(0, sizeof("https://") - 1) == "https://") {
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusMovedTemporarily;
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;
+		} else {
+			statusCode returnCode = convertStringToStatusCode(returnCodeOrUrl);
+			if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
+				throw std::runtime_error("Invalid return code");
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = "";
+		}
+	}
+}
+
+/**
  * @brief Reads the CGI extension
  *
  * The function checks if there is only one CGI extension and if it starts with a dot and does not contain any other dot
@@ -783,6 +836,8 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 		readCGIPath(value);
 	else if (directive == "index")
 		readIndices(value);
+	else if (directive == "return")
+		readReturns(value);
 }
 
 /**

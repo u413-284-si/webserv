@@ -73,6 +73,7 @@ private:
 	void readAutoIndex(const std::string& autoindex);
 	void readAllowMethods(const std::string& allowMethods);
 	void readErrorPage(const Block& block, const std::string& errorPage);
+	void readReturns(const std::string& returns);
 	void readCGIExtension(const std::string& extension);
 	void readCGIPath(const std::string& path);
 	void readIndices(const std::string& indices);
