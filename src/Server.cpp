@@ -1025,12 +1025,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost
-				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
-			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
-			connection.m_request.hasCGI = false;
-			connection.m_request.httpStatus = StatusInternalServerError;
-		}
 	}
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
@@ -1040,9 +1034,13 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			handleBody(server, clientFd, connection);
 	} else if (connection.m_request.hasCGI) {
 		connection.m_status = Connection::ReceiveFromCGI;
-		server.removeEvent(clientFd);
-	}
-	else {
+		if (!server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		} else
+			server.removeEvent(clientFd);
+	} else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 	}
@@ -1157,7 +1155,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+		// LOG_DEBUG << connection.m_buffer;
 		try {
 			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
@@ -1165,16 +1163,22 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		}
 		if (connection.m_request.hasCGI) {
 			connection.m_status = Connection::SendToCGI;
+			if (connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)) {
+				connection.m_request.httpStatus = StatusInternalServerError;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(activeFd, EPOLLOUT);
+				return;
+			}
 			server.removeEvent(activeFd);
-		}
-		else {
+		} else {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+		// LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
 			connection.m_status = Connection::BuildResponse;
@@ -1255,7 +1259,6 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.addEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
@@ -1269,7 +1272,6 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
 		server.addEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
@@ -1278,6 +1280,11 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
+		if (!server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.addEvent(connection.m_clientFd, EPOLLOUT);
+		}
 		return;
 	}
 	connection.m_request.body.erase(0, bytesSent);
