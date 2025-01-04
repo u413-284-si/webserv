@@ -19,7 +19,7 @@ protected:
 		serverConfig.host = serverSock.host;
 		serverConfig.port = serverSock.port;
 		configFile.servers.push_back(serverConfig);
-       	connection.m_pipeToCGIWriteEnd = pipefd[1];
+       	connection.m_pipeToCGIWriteEnd = dummyPipeFd;
         connection.m_request.body = "test body";
 
 		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
@@ -39,17 +39,6 @@ protected:
 	Server server;
 	ConfigServer serverConfig;
    	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
-    int pipefd[2];
-
-    void SetUp() override {
-        // Create a pipe
-        pipe(pipefd);
-    }
-
-    void TearDown() override {
-        close(pipefd[0]);
-        close(pipefd[1]);
-    }
 };
 
 TEST_F(ConnectionSendToCGITest, EmptyBody)
@@ -88,7 +77,7 @@ TEST_F(ConnectionSendToCGITest, FullBodySent)
 		.WillOnce(Return(bodySize));
 
 	// Act
-	connectionSendToCGI(server, pipefd[1], connection);
+	connectionSendToCGI(server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_TRUE(connection.m_request.body.empty());
