@@ -29,7 +29,7 @@
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
 #define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
-#define ERR_BAD_MULITPLEPART_FORMDATA "Invalid HTTP request: Multiplepart/form-data invalid"
+#define ERR_BAD_MULTIPART_FORMDATA "Invalid HTTP request: Multipart/form-data invalid"
 
 // HTTP REQUEST BODY ERRORS
 #define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"
