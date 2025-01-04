@@ -90,9 +90,10 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
 	m_requestStream.str(bodyString);
 	if (request.isChunked)
 		parseChunkedBody(request);
-	// else
+	else
+		request.body = bodyString;
 	// 	parseNonChunkedBody(request);
-	request.body = bodyString;
+	
 	if (request.hasMultipartFormdata)
 		decodeMultipartFormdata(request);
 	resetRequestStream();
