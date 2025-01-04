@@ -1038,8 +1038,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 		if (!connection.m_buffer.empty())
 			handleBody(server, clientFd, connection);
-	} else if (connection.m_request.hasCGI)
+	} else if (connection.m_request.hasCGI) {
 		connection.m_status = Connection::ReceiveFromCGI;
+		server.removeEvent(clientFd);
+	}
 	else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
@@ -1161,11 +1163,14 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
 		}
-		if (connection.m_request.hasCGI)
+		if (connection.m_request.hasCGI) {
 			connection.m_status = Connection::SendToCGI;
-		else
+			server.removeEvent(activeFd);
+		}
+		else {
 			connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(activeFd, EPOLLOUT);
+			server.modifyEvent(activeFd, EPOLLOUT);
+		}
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
@@ -1249,7 +1254,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		LOG_ERROR << "empty body: can't send to CGI";
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
@@ -1263,7 +1268,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		LOG_ERROR << "write(): can't send to CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
@@ -1311,7 +1316,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		LOG_ERROR << "read(): can't read from CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
@@ -1320,7 +1325,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
