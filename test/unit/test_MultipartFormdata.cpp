@@ -31,18 +31,39 @@ TEST_F(MultipartFormdataTest, ParseHeader)
 TEST_F(MultipartFormdataTest, ParseHeaderNoBoundary)
 {
 	// Arrange
-	const std::string headerString = "POST /upload HTTP/1.1\r\nHost: example.com\r\nContent-Type: multipart/form-data\r\n"
-									 "Content-Length: 195";
+	const std::string headerString
+		= "POST /upload HTTP/1.1\r\nHost: example.com\r\nContent-Type: multipart/form-data\r\n"
+		  "Content-Length: 195";
 	// Act & Assert
 	EXPECT_THROW(
-	{
-		try {
-			p.parseHeader(headerString, request);
-		} catch (const std::runtime_error& e) {
-			EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-			EXPECT_EQ(request.shallCloseConnection, true);
-			throw;
-		}
-	},
-	std::runtime_error);
+		{
+			try {
+				p.parseHeader(headerString, request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(MultipartFormdataTest, DecodeBody)
+{
+	// Arrange
+	request.hasMultipartFormdata = true;
+	request.targetResource = "/workspaces/webserv/html/uploads";
+	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
+	const std::string bodyString
+		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+	// Act
+	p.parseBody(bodyString, request);
+
+	// Assert
+	EXPECT_EQ(request.targetResource, "/workspaces/webserv/html/uploads/darkknight.txt");
+	EXPECT_EQ(request.body, "Some men just want to watch the world burn.");
 }
