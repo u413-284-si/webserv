@@ -52,7 +52,7 @@ TEST_F(MultipartFormdataTest, DecodeBody)
 {
 	// Arrange
 	request.hasMultipartFormdata = true;
-	request.targetResource = "/workspaces/webserv/html/uploads";
+	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
 	const std::string bodyString
 		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"

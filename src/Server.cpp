@@ -1004,6 +1004,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusNotFound)
 		connection.m_request.httpStatus = StatusOK;
 
+	// Allow access to directories w/o autoindex when POST is used
+	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusForbidden)
+		connection.m_request.httpStatus = StatusOK;
+
 	// Allow directories to be deleted
 	if (connection.m_request.method == MethodDelete && connection.m_request.httpStatus == StatusForbidden)
 		connection.m_request.httpStatus = StatusOK;

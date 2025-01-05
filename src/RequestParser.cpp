@@ -576,7 +576,8 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 	size_t filenameStartPos = checkForString(filename, 0, request);
 	filenameStartPos += filename.size();
 	size_t filenameEndPos = checkForString("\"", filenameStartPos, request);
-	request.targetResource += "/" + request.body.substr(filenameStartPos, filenameEndPos - filenameStartPos);
+	request.targetResource += request.body.substr(filenameStartPos, filenameEndPos - filenameStartPos);
+	LOG_DEBUG << "New target resource: " << request.targetResource;
 
 	size_t contentTypePos = checkForString("Content-Type:", filenameEndPos, request);
 
