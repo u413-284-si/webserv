@@ -586,6 +586,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 
 	const std::string endBoundary = "------" + m_boundary;
 	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
+	contentEndPos -= 2; // Remove the CRLF at the end
 
 	request.body = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
 }
