@@ -65,5 +65,5 @@ TEST_F(MultipartFormdataTest, DecodeBody)
 
 	// Assert
 	EXPECT_EQ(request.targetResource, "/workspaces/webserv/html/uploads/darkknight.txt");
-	EXPECT_EQ(request.body, "Some men just want to watch the world burn.\r\n");
+	EXPECT_EQ(request.body, "Some men just want to watch the world burn.");
 }
