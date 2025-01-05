@@ -67,3 +67,111 @@ TEST_F(MultipartFormdataTest, DecodeBody)
 	EXPECT_EQ(request.targetResource, "/workspaces/webserv/html/uploads/darkknight.txt");
 	EXPECT_EQ(request.body, "Some men just want to watch the world burn.");
 }
+
+TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
+{
+	// Arrange
+	request.hasMultipartFormdata = true;
+	request.targetResource = "/workspaces/webserv/html/uploads/";
+	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
+	const std::string bodyString
+		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\";"
+		  "\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseBody(bodyString, request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(MultipartFormdataTest, DecodeBodyNoContentType)
+{
+	// Arrange
+	request.hasMultipartFormdata = true;
+	request.targetResource = "/workspaces/webserv/html/uploads/";
+	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
+	const std::string bodyString
+		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"darkknight.txt\"\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseBody(bodyString, request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(MultipartFormdataTest, DecodeBodyNoCRLFCRLF)
+{
+	// Arrange
+	request.hasMultipartFormdata = true;
+	request.targetResource = "/workspaces/webserv/html/uploads/";
+	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
+	const std::string bodyString
+		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\nSome men just want to watch the world "
+		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseBody(bodyString, request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
+{
+	// Arrange
+	request.hasMultipartFormdata = true;
+	request.targetResource = "/workspaces/webserv/html/uploads/";
+	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
+	const std::string bodyString
+		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\nWebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseBody(bodyString, request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
