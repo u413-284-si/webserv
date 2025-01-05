@@ -54,6 +54,17 @@ void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& re
 	resetRequestStream();
 }
 
+/**
+ * @brief Extracts the boundary string from the Content-Type header of an HTTP request.
+ *
+ * This function extracts the boundary string used in multipart/form-data requests
+ * from the Content-Type header of the provided HTTP request. If the boundary string
+ * is not found, it sets the HTTP status to Bad Request and indicates that the connection
+ * should be closed.
+ *
+ * @param request The HTTP request from which to extract the boundary string.
+ * @throws std::runtime_error if the boundary string is not found in the Content-Type header.
+ */
 void RequestParser::extractBoundary(HTTPRequest& request)
 {
 	const std::string denominator = "boundary=----";
@@ -70,33 +81,6 @@ void RequestParser::extractBoundary(HTTPRequest& request)
 	m_boundary = temp.substr(posBoundary + denominator.size());
 
 	LOG_DEBUG << "Extracted boundary string: " << m_boundary;
-}
-
-/**
- * @brief Parses the body of an HTTP request.
- *
- * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
- * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
- * is chunked or non-chunked.
- *
- * @param bodyString The string representation of the request body.
- * @param request The HTTPRequest object to populate with the parsed data.
- *
- * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
- * message.
- */
-void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
-{
-	m_requestStream.str(bodyString);
-	if (request.isChunked)
-		parseChunkedBody(request);
-	else
-		request.body = bodyString;
-	// 	parseNonChunkedBody(request);
-	
-	if (request.hasMultipartFormdata)
-		decodeMultipartFormdata(request);
-	resetRequestStream();
 }
 
 /**
@@ -437,6 +421,33 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 }
 
 /* ====== BODY PARSING ====== */
+
+/**
+ * @brief Parses the body of an HTTP request.
+ *
+ * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
+ * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
+ * is chunked or non-chunked.
+ *
+ * @param bodyString The string representation of the request body.
+ * @param request The HTTPRequest object to populate with the parsed data.
+ *
+ * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
+ * message.
+ */
+void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
+{
+	m_requestStream.str(bodyString);
+	if (request.isChunked)
+		parseChunkedBody(request);
+	else
+		request.body = bodyString;
+	// 	parseNonChunkedBody(request);
+	
+	if (request.hasMultipartFormdata)
+		decodeMultipartFormdata(request);
+	resetRequestStream();
+}
 
 /**
  * @brief Parses a chunked body from the provided input stream.
