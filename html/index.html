@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,26 +12,32 @@
 			padding: 20px;
 			background-color: #f4f4f4;
 		}
+
 		h1 {
 			color: #333;
 			text-align: center;
 		}
+
 		ul {
 			list-style-type: none;
 			padding: 0;
 		}
+
 		li {
 			margin: 10px 0;
 		}
+
 		a {
 			text-decoration: none;
 			color: #0066cc;
 		}
+
 		a:hover {
 			text-decoration: underline;
 		}
 	</style>
 </head>
+
 <body>
 	<h1>A Simple Webpage</h1>
 	<p>Welcome! Below are some links to test different functionality:</p>
@@ -45,6 +52,9 @@
 		<li><a href="upload.html">Page to upload files</a></li>
 		<li><a href="broken_link">Nonexistent page - custom error page for 404</a></li>
 		<li><a href="secret">Links to a directory with missing slash, auto redirect. Also custom error for 403</a></li>
+		<li><a href="/alias/cat.jpg">This link points to /alias/cat.jpg - but there is not /alias directory. It will be
+				replaced and then point to the correct location</a></li>
 	</ul>
 </body>
+
 </html>
