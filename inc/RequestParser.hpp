@@ -78,4 +78,5 @@ private:
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
     static bool isMultipartFormdata(HTTPRequest& request);
+	static size_t checkForString(const std::string& string, size_t startPos, HTTPRequest& request);
 };

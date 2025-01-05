@@ -554,47 +554,62 @@ void RequestParser::parseNonChunkedBody(HTTPRequest& request)
 	}
 }
 
+/**
+ * @brief Decodes the multipart/form-data content of an HTTP request.
+ *
+ * This function processes the multipart/form-data content of the provided HTTP request.
+ * It extracts the filename and appends it to the target resource.
+ * The extracted content from the request body is then stored back into the request body.
+ *
+ * @param request The HTTP request containing the multipart/form-data content to decode.
+ * @throws std::runtime_error if the format of the request is invalid.
+ */
 void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 {
 	const std::string filename = "filename=\"";
-	size_t filenamePos = request.body.find(filename);
-	if (filenamePos == std::string::npos) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error("one");
-	}
-	filenamePos += filename.size();
-	size_t filenameEndPos = request.body.find('\"', filenamePos);
-	request.targetResource += "/" + request.body.substr(filenamePos, filenameEndPos - filenamePos);
+	size_t filenameStartPos = checkForString(filename, 0, request);
+	filenameStartPos += filename.size();
+	size_t filenameEndPos = checkForString("\"", filenameStartPos, request);
+	request.targetResource += "/" + request.body.substr(filenameStartPos, filenameEndPos - filenameStartPos);
 
-	const std::string contentTypeHeader = "Content-Type:";
-	size_t contentTypePos = request.body.find(contentTypeHeader, filenameEndPos);
-	if (contentTypePos == std::string::npos) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error("two");
-	}
+	size_t contentTypePos = checkForString("Content-Type:", filenameEndPos, request);
 
-	size_t contentStartPos = request.body.find("\r\n\r\n", contentTypePos);
-	if (contentStartPos == std::string::npos) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error("three");
-	}
+	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request);
 	contentStartPos += 4;
 
 	const std::string endBoundary = "------" + m_boundary;
-	size_t contentEndPos = request.body.find(endBoundary, contentStartPos);
-	if (contentEndPos == std::string::npos) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error("four");
-	}
-	contentEndPos -= 2; // Remove CRLF
+	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
+
 	request.body = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
 }
 
+
+
 /* ====== CHECKS ====== */
+
+/**
+ * @brief Checks for the presence of a specific string in the HTTP request body starting from a given position.
+ *
+ * This function searches for the specified string in the body of the provided HTTP request,
+ * starting from the given position. If the string is not found, it sets the HTTP status to Bad Request,
+ * indicates that the connection should be closed, and throws a runtime error.
+ *
+ * @param string The string to search for in the request body.
+ * @param startPos The position in the request body to start the search from.
+ * @param request The HTTP request containing the body to search.
+ * @return The position of the found string in the request body.
+ * @throws std::runtime_error if the string is not found in the request body.
+ */
+size_t RequestParser::checkForString(const std::string& string, size_t startPos, HTTPRequest& request)
+{
+	size_t pos = request.body.find(string, startPos);
+	if (pos == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
+	}
+	return pos;
+}
 
 /**
  * @brief Checks the validity of an HTTP header field name.
@@ -1130,6 +1145,17 @@ bool RequestParser::isValidHostname(const std::string& hostname)
 	return hasAlpha;
 }
 
+/**
+ * @brief Checks if the HTTP request contains multipart/form-data content.
+ *
+ * This function checks the Content-Type header of the provided HTTP request
+ * to determine if it contains multipart/form-data content. If the content type
+ * is multipart/form-data, it sets the hasMultipartFormdata flag in the request
+ * and logs the detection.
+ *
+ * @param request The HTTP request to check.
+ * @return true if the request contains multipart/form-data content, false otherwise.
+ */
 bool RequestParser::isMultipartFormdata(HTTPRequest& request)
 {
 	if (request.headers.find("content-type") != request.headers.end()
