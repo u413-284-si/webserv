@@ -618,14 +618,19 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  * 28. CGI extension contains one extension
  * 29. CGI path contains one path
  * 30. Index contains multiple indices
- * 31. Bracket under server directive
- * 32. Bracket under location directive
- * 33. Whitespaces between server directive and opening bracket
- * 34. Directive and opening bracket on the same line
- * 35. Directive and closing bracket on the same line
- * 36. Directive and closing bracket on the same line under server directive
- * 37. Location path
- * 38. Inheritance of the server directives root, max_body_size and error_page to location
+ * 31. Return contains code and text
+ * 32. Return conains code and url
+ * 33. Return contains only code
+ * 34. Return contains only http url
+ * 35. Return contains only https url
+ * 36. Bracket under server directive
+ * 37. Bracket under location directive
+ * 38. Whitespaces between server directive and opening bracket
+ * 39. Directive and opening bracket on the same line
+ * 40. Directive and closing bracket on the same line
+ * 41. Directive and closing bracket on the same line under server directive
+ * 42. Location path
+ * 43. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -900,6 +905,46 @@ TEST_F(ValidConfigFileTests, IndexContainsMultipleIndices)
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/index_multiple_indices.conf"));
 	EXPECT_EQ("index.html", configFile.servers[0].locations[0].indices[0]);
 	EXPECT_EQ("default.html", configFile.servers[0].locations[0].indices[1]);
+}
+
+TEST_F(ValidConfigFileTests, ReturnContainsCodeAndText)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_code_and_text.conf"));
+	EXPECT_EQ(StatusOK, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ("42 is the answer!", configFile.servers[0].locations[1].returns.second);
+}
+
+TEST_F(ValidConfigFileTests, ReturnContainsCodeAndUrl)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_code_and_url.conf"));
+	EXPECT_EQ(StatusOK, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ("/secret/index.html", configFile.servers[0].locations[1].returns.second);
+}
+
+TEST_F(ValidConfigFileTests, ReturnContainsOnlyCode)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_only_code.conf"));
+	EXPECT_EQ(StatusNotFound, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ("", configFile.servers[0].locations[1].returns.second);
+}
+
+TEST_F(ValidConfigFileTests, ReturnContainsOnlyUrlHttp)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_only_url_http.conf"));
+	EXPECT_EQ(StatusMovedTemporarily, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ("http://google.com", configFile.servers[0].locations[1].returns.second);
+}
+
+TEST_F(ValidConfigFileTests, ReturnContainsOnlyUrlHttps)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_only_url_https.conf"));
+	EXPECT_EQ(StatusMovedTemporarily, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ("https://google.com", configFile.servers[0].locations[1].returns.second);
 }
 
 TEST_F(ValidConfigFileTests, BracketUnderServerDirective)
