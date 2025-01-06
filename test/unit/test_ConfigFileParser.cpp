@@ -48,9 +48,13 @@ protected:
  * 29. CGI extension contains no value
  * 30. CGI path contains no value
  * 31. CGI index contains no value
- * 32. Invalid directives outside of server block
- * 33. Several server names
- * 34. Server name contains no value
+ * 32. Return contains invalid code
+ * 33. Return contains invalid url
+ * 34. Return contains invalid amount of parameters
+ * 35. Return contains no value
+ * 36. Invalid directives outside of server block
+ * 37. Several server names
+ * 38. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -523,6 +527,62 @@ TEST_F(InvalidConfigFileTests, CGIPathContainsEmptyValue)
 				m_configFileParser.parseConfigFile("config_files/cgi_path_no_value.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("'cgi_path' directive has no value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidCode)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_invalid_code.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid return code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidUrl)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_invalid_url.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid return code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidAmountOfParameters)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_invalid_amount_parameters.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for return", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsEmptyValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("'return' directive has no value", e.what());
 				throw;
 			}
 		},
