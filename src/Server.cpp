@@ -1037,7 +1037,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		}
 	}
 
-    LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
+	LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
@@ -1117,7 +1117,11 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		buffer.resize(Server::s_clientBodyBufferSize);
 	buffer.clear();
 
-	const size_t bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
+	size_t bytesAvailable = 0;
+	if (connection.m_request.contentLength + 1 < connection.location->maxBodySize)
+		bytesAvailable = connection.m_request.contentLength - connection.m_buffer.size();
+	else
+		bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
 	size_t bytesToRead = Server::s_clientBodyBufferSize;
 	if (bytesAvailable <= Server::s_clientBodyBufferSize)
 		bytesToRead -= bytesAvailable;
@@ -1161,7 +1165,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+		// LOG_DEBUG << connection.m_buffer;
 		try {
 			server.parseBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
@@ -1175,7 +1179,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+		// LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
@@ -1207,7 +1211,8 @@ bool isCompleteBody(Connection& connection)
 	if (!connection.m_request.isChunked) {
 		if (connection.m_request.contentLength < connection.m_buffer.size()) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
-			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength << ", Buffer size: " << connection.m_buffer.size();
+			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength
+					  << ", Buffer size: " << connection.m_buffer.size();
 			connection.m_request.httpStatus = StatusBadRequest;
 			connection.m_request.shallCloseConnection = true;
 			return false;
