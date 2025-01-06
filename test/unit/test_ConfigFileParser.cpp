@@ -40,30 +40,31 @@ protected:
  * 20. Alias directive contains no alias path
  * 21. Alias directive contains multiple alias paths
  * 22. Alias directive contains no slash at the beginning
- * 23. Max body size directive contains no number
- * 24. Max body size directive contains invalid char within number
- * 25. Max body size directive contains invalid unit char
- * 26. Max body size directive contains invalid unit length
- * 27. Max body size directive contains no value
- * 28. Autoindex directive contains invalid value
- * 29. Allow methods directive contains invalid value
- * 30. Allow methods contains no value
- * 31. Error page contains invalid error code
- * 32. Error page path contains no value
- * 33. Error page contains no value
- * 34. CGI extension contains no dot at beginning
- * 35. CGI extension contains multiple extensions
- * 36. CGI extension contains multiple dots
- * 37. CGI extension contains no value
- * 38. CGI path contains no value
- * 39. CGI index contains no value
- * 40. Return contains invalid code
- * 41. Return contains invalid url
- * 42. Return contains invalid amount of parameters
- * 43. Return contains no value
- * 44. Invalid directives outside of server block
- * 45. Several server names
- * 46. Server name contains no value
+ * 23. Root and alias are defined in the same location
+ * 24. Max body size directive contains no number
+ * 25. Max body size directive contains invalid char within number
+ * 26. Max body size directive contains invalid unit char
+ * 27. Max body size directive contains invalid unit length
+ * 28. Max body size directive contains no value
+ * 29. Autoindex directive contains invalid value
+ * 30. Allow methods directive contains invalid value
+ * 31. Allow methods contains no value
+ * 32. Error page contains invalid error code
+ * 33. Error page path contains no value
+ * 34. Error page contains no value
+ * 35. CGI extension contains no dot at beginning
+ * 36. CGI extension contains multiple extensions
+ * 37. CGI extension contains multiple dots
+ * 38. CGI extension contains no value
+ * 39. CGI path contains no value
+ * 40. CGI index contains no value
+ * 41. Return contains invalid code
+ * 42. Return contains invalid url
+ * 43. Return contains invalid amount of parameters
+ * 44. Return contains no value
+ * 45. Invalid directives outside of server block
+ * 46. Several server names
+ * 47. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -424,6 +425,20 @@ TEST_F(InvalidConfigFileTests, AliasDirectiveContainsNoSlash)
 				m_configFileParser.parseConfigFile("config_files/alias_no_slash.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Alias path does not start with a slash", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, RootAndAliasInSameLocation)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/location_root_and_alias.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Defining root and alias in the same location block is not allowed", e.what());
 				throw;
 			}
 		},
