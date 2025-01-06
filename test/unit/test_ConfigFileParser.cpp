@@ -17,7 +17,7 @@ protected:
 /**
  * @brief Tests for an invalid file
  *
- * Checks if the following configuration are seen as invalid:
+ * Checks if the following configurations are seen as invalid:
  * 1. File could not be opened (because the path is wrong, such a file does not exist etc.)
  * 2. File is empty
  * 3. File does not contain the http block
@@ -25,43 +25,45 @@ protected:
  * 5. File contains open brackets (including missing brackets and too many brackets)
  * 6. File contains invalid directive (including server and location)
  * 7. File contains missing semicolon
- * 8. Listen directive contains invalid ip address
- * 9. Listen directive contains invalid port
- * 10. Listen contains invalid amount of parameters with a host and port
- * 11. Listen contains invalid amount of parameters with an ip address
- * 12. Listen contains invalid amount of parameters with a port
- * 13. Listen contains invalid amount of parameters with localhost as host
- * 14. Listen directive contains no value
- * 15. Root directive contains no root path
- * 16. Root directive contains multiple root paths
- * 17. Root directive contains no slash at the beginning
- * 18. Alias directive contains no alias path
- * 19. Alias directive contains multiple alias paths
- * 20. Alias directive contains no slash at the beginning
- * 21. Max body size directive contains no number
- * 22. Max body size directive contains invalid char within number
- * 23. Max body size directive contains invalid unit char
- * 24. Max body size directive contains invalid unit length
- * 25. Max body size directive contains no value
- * 26. Autoindex directive contains invalid value
- * 27. Allow methods directive contains invalid value
- * 28. Allow methods contains no value
- * 29. Error page contains invalid error code
- * 30. Error page path contains no value
- * 31. Error page contains no value
- * 32. CGI extension contains no dot at beginning
- * 33. CGI extension contains multiple extensions
- * 34. CGI extension contains multiple dots
- * 35. CGI extension contains no value
- * 36. CGI path contains no value
- * 37. CGI index contains no value
- * 38. Return contains invalid code
- * 39. Return contains invalid url
- * 40. Return contains invalid amount of parameters
- * 41. Return contains no value
- * 42. Invalid directives outside of server block
- * 43. Several server names
- * 44. Server name contains no value
+ * 8. Server contains duplicate location
+ * 9. Server contains duplicate location with default path
+ * 10. Listen directive contains invalid ip address
+ * 11. Listen directive contains invalid port
+ * 12. Listen contains invalid amount of parameters with a host and port
+ * 13. Listen contains invalid amount of parameters with an ip address
+ * 14. Listen contains invalid amount of parameters with a port
+ * 15. Listen contains invalid amount of parameters with localhost as host
+ * 16. Listen directive contains no value
+ * 17. Root directive contains no root path
+ * 18. Root directive contains multiple root paths
+ * 19. Root directive contains no slash at the beginning
+ * 20. Alias directive contains no alias path
+ * 21. Alias directive contains multiple alias paths
+ * 22. Alias directive contains no slash at the beginning
+ * 23. Max body size directive contains no number
+ * 24. Max body size directive contains invalid char within number
+ * 25. Max body size directive contains invalid unit char
+ * 26. Max body size directive contains invalid unit length
+ * 27. Max body size directive contains no value
+ * 28. Autoindex directive contains invalid value
+ * 29. Allow methods directive contains invalid value
+ * 30. Allow methods contains no value
+ * 31. Error page contains invalid error code
+ * 32. Error page path contains no value
+ * 33. Error page contains no value
+ * 34. CGI extension contains no dot at beginning
+ * 35. CGI extension contains multiple extensions
+ * 36. CGI extension contains multiple dots
+ * 37. CGI extension contains no value
+ * 38. CGI path contains no value
+ * 39. CGI index contains no value
+ * 40. Return contains invalid code
+ * 41. Return contains invalid url
+ * 42. Return contains invalid amount of parameters
+ * 43. Return contains no value
+ * 44. Invalid directives outside of server block
+ * 45. Several server names
+ * 46. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -184,6 +186,34 @@ TEST_F(InvalidConfigFileTests, FileContainsMissingSemicolon)
 				m_configFileParser.parseConfigFile("config_files/missing_semicolon.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Unexpected '}'", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ServerContainsDuplicateLocation)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/duplicate_location.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Duplicate location", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ServerContainsDuplicateLocationDefaultPath)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/duplicate_location_default_path.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Duplicate location", e.what());
 				throw;
 			}
 		},
