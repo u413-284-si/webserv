@@ -43,10 +43,12 @@ private:
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;
 	std::vector<std::string> m_validLocationDirectives;
+	bool m_isDefaultLocationDefined;
 	static const char* const s_whitespace;
 	static const char* const s_number;
 
 	// Checker functions
+	bool isLocationDuplicate(void) const;
 	bool isBracketOpen(void);
 	bool isSemicolonMissing(const std::string& content) const;
 	bool isKeyword(const std::string& keyword, size_t startIndex) const;

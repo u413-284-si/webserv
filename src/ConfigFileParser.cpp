@@ -84,6 +84,9 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		m_serverIndex++;
 	}
 
+	if (isLocationDuplicate())
+		throw std::runtime_error("Duplicate location");
+
 	return m_configFile;
 }
 
@@ -198,6 +201,27 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block bloc
 	return true;
 }
 
+/**
+ * @brief Checks if there are duplicate locations
+ *
+ * @return true If there are duplicate locations
+ * @return false If there are no duplicate locations
+ */
+bool ConfigFileParser::isLocationDuplicate(void) const
+{
+	for (std::vector<ConfigServer>::const_iterator serverIt = m_configFile.servers.begin();
+		 serverIt != m_configFile.servers.end(); serverIt++) {
+		std::set<std::string> paths;
+		for (std::vector<Location>::const_iterator locationIt = serverIt->locations.begin();
+			 locationIt != serverIt->locations.end(); locationIt++) {
+			if (paths.find(locationIt->path) != paths.end())
+				return true;
+			paths.insert(locationIt->path);
+		}
+	}
+	return false;
+}
+
 /*********************/
 /* READER FUNCTIONS */
 /*********************/
@@ -270,6 +294,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
 
+	m_isDefaultLocationDefined = false;
 	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
 		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
 		processLocationContent(*it);
@@ -284,8 +309,8 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  *
  * If the path of the location block is "/", the m_locationIndex will be set to 0 in readLocationBlockPath
  * This is necessary because the following functions need to store the parsed values in the default location.
- * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used if
- * the location index is 0
+ * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used
+ * if the location index is 0
  *
  * If no values are specified for the root, max_body_size, and error_page directives in a location block,
  * they inherit their corresponding values from the server block.
@@ -320,8 +345,8 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 }
 
 /**
- * @brief Reads the current line of the content, delimited by a provided char and removes leading and trailing spaces
- * If the end of the content is reached, the function returns false, otherwise it returns true
+ * @brief Reads the current line of the content, delimited by a provided char and removes leading and trailing
+ * spaces If the end of the content is reached, the function returns false, otherwise it returns true
  *
  * @param content The string from which the line should be read
  * @param delimiter The char which delimits the line
@@ -359,8 +384,11 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
  *
  * If the path is "/", the m_locationIndex will be set to 0 because the default location has an index of 0
  * Therefore the following functions will store the values correctly in the default location
+ * A boolean is set to indicate that the default location has been defined.
+ * If there is also another location block with
  *
- * Otherwise a new location will be created, added to the locations vector and the m_locationIndex will be incremented
+ * Otherwise a new location will be created, added to the locations vector and the m_locationIndex will be
+ * incremented
  *
  */
 void ConfigFileParser::readLocationBlockPath(void)
@@ -374,9 +402,10 @@ void ConfigFileParser::readLocationBlockPath(void)
 		endIndex++;
 
 	std::string path = pathWithBracketAtEnd.substr(0, endIndex);
-	if (path == "/")
+	if (path == "/" && !m_isDefaultLocationDefined) {
 		m_locationIndex = 0;
-	else {
+		m_isDefaultLocationDefined = true;
+	} else {
 		Location location;
 		m_configFile.servers[m_serverIndex].locations.push_back(location);
 		m_locationIndex++;
@@ -748,8 +777,8 @@ void ConfigFileParser::readReturns(const std::string& returns)
 /**
  * @brief Reads the CGI extension
  *
- * The function checks if there is only one CGI extension and if it starts with a dot and does not contain any other dot
- * Otherwise it will throw an exception
+ * The function checks if there is only one CGI extension and if it starts with a dot and does not contain any other
+ * dot Otherwise it will throw an exception
  *
  * @param extension The value of the directive cgi_extension
  */
@@ -1009,7 +1038,6 @@ void ConfigFileParser::removeDoubleQuotes(std::string& str)
 
 	str.erase(0, leadingDoubleQuotes);
 	str.erase(str.length() - trailingDoubleQuotes, trailingDoubleQuotes);
-	std::cout << "string: " << str << std::endl;
 }
 
 /**
