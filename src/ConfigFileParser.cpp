@@ -707,7 +707,11 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		std::string returnUrlOrText
 			= returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);
 
-		removeDoubleQuotes(returnUrlOrText);
+		if (returnUrlOrText.find_first_of(s_whitespace) != std::string::npos
+			&& returnUrlOrText.find('\"') == std::string::npos)
+			throw std::runtime_error("Invalid amount of parameters for return");
+		if (returnUrlOrText.find('\"') != std::string::npos)
+			removeDoubleQuotes(returnUrlOrText);
 
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;
