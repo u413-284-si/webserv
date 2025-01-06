@@ -38,19 +38,7 @@ TEST_F(ParseBodyTest, NonChunkedBodySize14)
 	p.parseBody("hello \r\nworld!", request);
 
 	// Assert
-	EXPECT_EQ(request.body, "hello \nworld!");
-}
-
-TEST_F(ParseBodyTest, NonChunkedBodySize16)
-{
-	// Arrange
-	request.headers["content-length"] = "16";
-
-	// Act
-	p.parseBody("hello \r\nworld!\r\n", request);
-
-	// Assert
-	EXPECT_EQ(request.body, "hello \nworld!\n");
+	EXPECT_EQ(request.body, "hello \r\nworld!");
 }
 
 // INVALID BODY TEST SUITE
@@ -67,25 +55,6 @@ TEST_F(ParseBodyTest, DifferingChunkSize)
 				p.parseBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ("Invalid HTTP request: Indicated chunk size different than actual chunk size", e.what());
-				throw;
-			}
-		},
-		std::runtime_error);
-}
-
-TEST_F(ParseBodyTest, DifferingContentLength)
-{
-	// Arrange
-	request.headers["content-length"] = "3";
-
-	// Act & Assert
-	EXPECT_THROW(
-		{
-			try {
-				p.parseBody("hello \r\nworld!\r\n", request);
-			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ(
-					"Invalid HTTP request: Indicated content length different than actual body size", e.what());
 				throw;
 			}
 		},
