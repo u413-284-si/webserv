@@ -24,37 +24,41 @@ protected:
  * 5. File contains missing semicolon
  * 6. Listen directive contains invalid ip address
  * 7. Listen directive contains invalid port
- * 8. Listen directive contains no value
- * 9. Root directive contains no root path
- * 10. Root directive contains multiple root paths
- * 11. Root directive contains no slash at the beginning
- * 12. Alias directive contains no alias path
- * 13. Alias directive contains multiple alias paths
- * 14. Alias directive contains no slash at the beginning
- * 15. Max body size directive contains no number
- * 16. Max body size directive contains invalid char within number
- * 17. Max body size directive contains invalid unit char
- * 18. Max body size directive contains invalid unit lenght
- * 19. Max body size directive contains no value
- * 20. Autoindex directive contains invalid value
- * 21. Allow methods directive contains invalid value
- * 22. Allow methods contains no value
- * 23. Error page contains invalid error code
- * 24. Error page path contains no value
- * 25. Error page contains no value
- * 26. CGI extension contains no dot at beginning
- * 27. CGI extension contains multiple extensions
- * 28. CGI extension contains multiple dots
- * 29. CGI extension contains no value
- * 30. CGI path contains no value
- * 31. CGI index contains no value
- * 32. Return contains invalid code
- * 33. Return contains invalid url
- * 34. Return contains invalid amount of parameters
- * 35. Return contains no value
- * 36. Invalid directives outside of server block
- * 37. Several server names
- * 38. Server name contains no value
+ * 8. Listen contains invalid amount of parameters with a host and port
+ * 9. Listen contains invalid amount of parameters with an ip address
+ * 10. Listen contains invalid amount of parameters with a port
+ * 11. Listen contains invalid amount of parameters with localhost as host
+ * 12. Listen directive contains no value
+ * 13. Root directive contains no root path
+ * 14. Root directive contains multiple root paths
+ * 15. Root directive contains no slash at the beginning
+ * 16. Alias directive contains no alias path
+ * 17. Alias directive contains multiple alias paths
+ * 18. Alias directive contains no slash at the beginning
+ * 19. Max body size directive contains no number
+ * 20. Max body size directive contains invalid char within number
+ * 21. Max body size directive contains invalid unit char
+ * 22. Max body size directive contains invalid unit lenght
+ * 23. Max body size directive contains no value
+ * 24. Autoindex directive contains invalid value
+ * 25. Allow methods directive contains invalid value
+ * 26. Allow methods contains no value
+ * 27. Error page contains invalid error code
+ * 28. Error page path contains no value
+ * 29. Error page contains no value
+ * 30. CGI extension contains no dot at beginning
+ * 31. CGI extension contains multiple extensions
+ * 32. CGI extension contains multiple dots
+ * 33. CGI extension contains no value
+ * 34. CGI path contains no value
+ * 35. CGI index contains no value
+ * 36. Return contains invalid code
+ * 37. Return contains invalid url
+ * 38. Return contains invalid amount of parameters
+ * 39. Return contains no value
+ * 40. Invalid directives outside of server block
+ * 41. Several server names
+ * 42. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -205,6 +209,62 @@ TEST_F(InvalidConfigFileTests, ListenDirectiveContainsTooLowPort)
 				m_configFileParser.parseConfigFile("config_files/listen_invalid_port_low.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid port", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsInvalidAmountOfParametersWithHostAndPorWithHostAndPort)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/listen_invalid_amount_parameters_host_and_port.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for listen", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsInvalidAmountOfParametersWithIp)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/listen_invalid_amount_parameters_ip.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for listen", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsInvalidAmountOfParametersWithPort)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/listen_invalid_amount_parameters_port.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for listen", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ListenDirectiveContainsInvalidAmountOfParametersWithLocalhost)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/listen_invalid_amount_parameters_localhost.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for listen", e.what());
 				throw;
 			}
 		},
