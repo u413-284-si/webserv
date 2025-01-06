@@ -47,10 +47,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
 	responseBodyHandler.execute();
 	appendStatusLine(request);
-	if (request.hasCGI)
-		appendCGIHeaders(request);
-	else
-		appendHeaders(request);
+	appendHeaders(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
 
@@ -86,7 +83,7 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
 }
 
 /**
- * @brief Append headers to the response.
+ * @brief Append CGI headers to the response.
  *
  * The following headers are appended:
  * - Content-Type: MIME type of the target resource (only if response has body)
@@ -101,68 +98,24 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!m_responseBody.empty()) {
 		// Content-Type
-		m_responseHeaderStream << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource))
-							   << "\r\n";
-		// Content-Length
-		m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
-	}
-
-	// Server
-	m_responseHeaderStream << "Server: TriHard\r\n";
-
-	// Date
-	m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
-
-	// Location
-	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
-	if (iter != request.headers.end()) {
-		m_responseHeaderStream << "Location: " << iter->second << "\r\n";
-	}
-
-	// Connection
-	if (request.shallCloseConnection)
-		m_responseHeaderStream << "Connection: close\r\n";
-	else
-		m_responseHeaderStream << "Connection: keep-alive\r\n";
-
-	// Delimiter
-	m_responseHeaderStream << "\r\n";
-}
-
-/**
- * @brief Append CGI headers to the response.
- *
- * The following headers are appended:
- * - Content-Type: MIME type of the target resource (only if response has body)
- * - Content-Length: Length of the response body (only if response has body)
- * - Server: TriHard.
- * - Date: Current date in GMT.
- * - Location: Target resource if status is StatusMovedPermanently.
- * Delimiter.
- * @param request HTTP request.
- */
-void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
-{
-	if (!m_responseBody.empty()) {
-		// Content-Type
-		if (!hasCGIHeader("content-type"))
+		if (!checkForCGIHeader("content-type"))
 			m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 		// Content-Length
-		if (!hasCGIHeader("content-length"))
+		if (!checkForCGIHeader("content-length"))
 			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
 	// Server
-	if (!hasCGIHeader("server"))
+	if (!checkForCGIHeader("server"))
 		m_responseHeaderStream << "Server: TriHard\r\n";
 
 	// Date
-	if (!hasCGIHeader("date"))
+	if (!checkForCGIHeader("date"))
 		m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
-	if (!hasCGIHeader("location")) {
+	if (!checkForCGIHeader("location")) {
 		std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
 		if (iter != request.headers.end()) {
 			m_responseHeaderStream << "Location: " << iter->second << "\r\n";
@@ -172,7 +125,7 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
 	// Various headers from response
 	if (request.httpStatus < StatusMovedPermanently) {
 		for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
-			iter != m_responseHeaders.end(); ++iter)
+			 iter != m_responseHeaders.end(); ++iter)
 			m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
 	}
 
@@ -197,7 +150,7 @@ void ResponseBuilder::appendCGIHeaders(const HTTPRequest& request)
  * @param headerName The name of the header to search for.
  * @return true if the header is found and processed, false otherwise.
  */
-bool ResponseBuilder::hasCGIHeader(const std::string& headerName)
+bool ResponseBuilder::checkForCGIHeader(const std::string& headerName)
 {
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
 	if (iter != m_responseHeaders.end()) {

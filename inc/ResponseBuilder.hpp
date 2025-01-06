@@ -30,12 +30,11 @@ public:
 
 private:
 	void appendStatusLine(const HTTPRequest& request);
-	void appendCGIHeaders(const HTTPRequest& request);
 	void appendHeaders(const HTTPRequest& request);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void resetBuilder();
-	bool hasCGIHeader(const std::string& headerName);
+	bool checkForCGIHeader(const std::string& headerName);
 
 	std::map<std::string, std::string> m_mimeTypes;
 	const FileSystemPolicy& m_fileSystemPolicy;
