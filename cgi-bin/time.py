@@ -2,7 +2,7 @@
 
 import datetime
 
-print("Status: 200 OK\r\n", end="")
+print("Status: 200 Hobdy Dopdy\r\n", end="")
 print("Content-Type: text/html\r\n", end="")
 print("Connection: close\r\n", end="")
 print("Cache-Control: no-cache\r\n", end="")
