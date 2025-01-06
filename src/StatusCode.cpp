@@ -110,5 +110,5 @@ statusCode extractStatusCode(const std::string& statusLine)
 		std::string statusCodeString = statusLine.substr(pos, statusLine.find_first_not_of("0123456789", pos) - pos);
 		return stringToStatusCode(statusCodeString);
 	}
-    return StatusInternalServerError;
+    return StatusBadRequest;
 }

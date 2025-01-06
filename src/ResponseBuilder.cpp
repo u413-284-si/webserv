@@ -47,7 +47,6 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
 	responseBodyHandler.execute();
-	appendStatusLine(request);
 	appendHeaders(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
@@ -71,19 +70,6 @@ void ResponseBuilder::resetBuilder()
 }
 
 /**
- * @brief Append status line to the response.
- *
- * The status line is appended in the following format:
- * HTTP/1.1 <status code> <reason phrase> CRLF
- * @param request HTTP request.
- */
-void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
-{
-	m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' ' << statusCodeToReasonPhrase(request.httpStatus)
-						   << "\r\n";
-}
-
-/**
  * @brief Append CGI headers to the response.
  *
  * The following headers are appended:
@@ -97,6 +83,10 @@ void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
+	if (!checkForCGIHeader("status"))
+		m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' ' << statusCodeToReasonPhrase(request.httpStatus)
+							   << "\r\n";
+
 	if (!m_responseBody.empty()) {
 		// Content-Type
 		if (!checkForCGIHeader("content-type"))
@@ -150,7 +140,10 @@ bool ResponseBuilder::checkForCGIHeader(const std::string& headerName)
 {
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
 	if (iter != m_responseHeaders.end()) {
-		m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
+		if (iter->first == "status")
+			m_responseHeaderStream << "HTTP/1.1 " << iter->second << "\r\n";
+		else
+			m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
 		m_responseHeaders.erase(iter);
 		return true;
 	}

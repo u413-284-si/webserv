@@ -171,12 +171,12 @@ void ResponseBodyHandler::validateCGIResponseHeaders()
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("status");
 	if (iter != m_responseHeaders.end()) {
 		m_request.httpStatus = extractStatusCode(iter->second);
-		if (m_request.httpStatus == StatusInternalServerError) {
+		if (m_request.httpStatus == StatusBadRequest) {
 			handleErrorBody();
+			m_responseHeaders.erase(iter);
 			LOG_ERROR << "Invalid Status header value encountered in CGI response";
 			return;
 		}
-		m_responseHeaders.erase(iter);
 	}
 
 	// Connection
