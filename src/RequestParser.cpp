@@ -633,17 +633,17 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		}
 
 		std::vector<std::string> strValues = webutils::split(headerValue, ", ");
-		std::vector<long> numValues;
+		std::vector<unsigned long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, constants::g_decimalBase);
-			if ((contentLength == 0) || *endptr != '\0') {
+			request.contentLength = std::strtoul(strValues[i].c_str(), &endptr, constants::g_decimalBase);
+			if ((request.contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 			}
-			numValues.push_back(contentLength);
-			if (i != 0 && contentLength != numValues[i - 1]) {
+			numValues.push_back(request.contentLength);
+			if (i != 0 && request.contentLength != numValues[i - 1]) {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);

@@ -1205,16 +1205,14 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 bool isCompleteBody(Connection& connection)
 {
 	if (!connection.m_request.isChunked) {
-		unsigned long contentLength
-			= std::strtoul(connection.m_request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
-		if (contentLength < connection.m_buffer.size()) {
+		if (connection.m_request.contentLength < connection.m_buffer.size()) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
-			LOG_ERROR << "Content-Length: " << contentLength << ", Buffer size: " << connection.m_buffer.size();
+			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength << ", Buffer size: " << connection.m_buffer.size();
 			connection.m_request.httpStatus = StatusBadRequest;
 			connection.m_request.shallCloseConnection = true;
 			return false;
 		}
-		if (contentLength == connection.m_buffer.size())
+		if (connection.m_request.contentLength == connection.m_buffer.size())
 			return true;
 	}
 	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
