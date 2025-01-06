@@ -23,7 +23,8 @@
  */
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy, std::map<std::string, std::string>& responseHeaders);
+	explicit ResponseBuilder(
+		const FileSystemPolicy& fileSystemPolicy, std::map<std::string, std::string>& responseHeaders);
 
 	void buildResponse(Connection& connection);
 	std::string getResponse() const;

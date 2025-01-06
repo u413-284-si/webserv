@@ -5,7 +5,8 @@
  *
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy, std::map<std::string, std::string>& responseHeaders)
+ResponseBuilder::ResponseBuilder(
+	const FileSystemPolicy& fileSystemPolicy, std::map<std::string, std::string>& responseHeaders)
 	: m_fileSystemPolicy(fileSystemPolicy)
 	, m_responseHeaders(responseHeaders)
 {
@@ -84,8 +85,8 @@ void ResponseBuilder::resetBuilder()
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
 	if (!checkForCGIHeader("status"))
-		m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' ' << statusCodeToReasonPhrase(request.httpStatus)
-							   << "\r\n";
+		m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' '
+							   << statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 
 	if (!m_responseBody.empty()) {
 		// Content-Type
