@@ -217,6 +217,12 @@ std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest)
 	ostream << "Body: " << httpRequest.body << '\n';
 	ostream << "HTTP status: " << httpRequest.httpStatus << '\n';
 	ostream << "Shall close connection: " << httpRequest.shallCloseConnection << '\n';
+	ostream << "Has body: " << httpRequest.hasBody << '\n';
+	ostream << "Is chunked: " << httpRequest.isChunked << '\n';
+	ostream << "Target resource: " << httpRequest.targetResource << '\n';
+	ostream << "Is directory: " << httpRequest.isDirectory << '\n';
+	ostream << "Has autoindex: " << httpRequest.hasAutoindex << '\n';
+	ostream << "Has CGI: " << httpRequest.hasCGI << '\n';
 	return ostream;
 }
 

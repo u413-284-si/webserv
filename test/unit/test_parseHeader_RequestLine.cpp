@@ -92,6 +92,157 @@ TEST_F(ParseRequestLineTest, BasicRequestLine_NoFragment)
 	EXPECT_EQ(request.version, "1.1");
 }
 
+TEST_F(ParseRequestLineTest, RequestLinePercentEncoded)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search%20maschine?query=%C3%B6sterreich&dialekt=%23#%F0%9F%98%8A HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+
+	// Assert
+	EXPECT_EQ(request.method, MethodGet);
+	EXPECT_EQ(request.uri.path, "/search maschine");
+	EXPECT_EQ(request.uri.query, "query=österreich&dialekt=#");
+	EXPECT_EQ(request.uri.fragment, "😊");
+	EXPECT_EQ(request.version, "1.1");
+}
+
+TEST_F(ParseRequestLineTest, RequestLinePercentEncodedInvalidNUL)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search%00 HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_EQ(request.httpStatus, StatusBadRequest);
+				EXPECT_TRUE(request.shallCloseConnection);
+				EXPECT_STREQ(ERR_PERCENT_NONSUPPORTED_NUL, e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseRequestLineTest, RequestLinePercentEncodedNotComplete)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search%F HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_EQ(request.httpStatus, StatusBadRequest);
+				EXPECT_TRUE(request.shallCloseConnection);
+				EXPECT_STREQ(ERR_PERCENT_INCOMPLETE, e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseRequestLineTest, RequestLinePercentEncodedNonHex)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search%4& HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_EQ(request.httpStatus, StatusBadRequest);
+				EXPECT_TRUE(request.shallCloseConnection);
+				EXPECT_STREQ(ERR_PERCENT_INVALID_HEX, e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseRequestLineTest, RequestLineWithDotSegments)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search/.././hello/ HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+
+	// Assert
+	EXPECT_EQ(request.method, MethodGet);
+	EXPECT_EQ(request.uri.path, "/hello/");
+	EXPECT_EQ(request.version, "1.1");
+}
+
+TEST_F(ParseRequestLineTest, RequestLineWithDotSegmentsOnlySlashLeft)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search/.. HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+
+	// Assert
+	EXPECT_EQ(request.method, MethodGet);
+	EXPECT_EQ(request.uri.path, "/");
+	EXPECT_EQ(request.version, "1.1");
+}
+
+TEST_F(ParseRequestLineTest, RequestLineWithDotsInName)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("GET /search../ HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+
+	// Assert
+	EXPECT_EQ(request.method, MethodGet);
+	EXPECT_EQ(request.uri.path, "/search../");
+	EXPECT_EQ(request.version, "1.1");
+}
+
+TEST_F(ParseRequestLineTest, RequestLineOnlyDoubleDots)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /.. HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_DIRECTORY_TRAVERSAL, e.what());
+				EXPECT_EQ(request.httpStatus, StatusBadRequest);
+				EXPECT_TRUE(request.shallCloseConnection);
+
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(ParseRequestLineTest, RequestLineWithTooManyDotSegments)
+{
+	// Arrange
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search/../../hello HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_DIRECTORY_TRAVERSAL, e.what());
+				EXPECT_EQ(request.httpStatus, StatusBadRequest);
+				EXPECT_TRUE(request.shallCloseConnection);
+
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(ParseRequestLineTest, Version1_0)
 {
 	// Arrange
