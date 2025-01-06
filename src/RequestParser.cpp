@@ -1327,7 +1327,7 @@ bool RequestParser::isMultipartFormdata(HTTPRequest& request)
 	if (request.headers.find("content-type") != request.headers.end()
 		&& request.headers["content-type"].find("multipart/form-data") != std::string::npos) {
 		request.hasMultipartFormdata = true;
-		LOG_DEBUG << "Multiplepart/form-data detected";
+		LOG_DEBUG << "Multipart/form-data detected";
 		return true;
 	}
 	return false;
