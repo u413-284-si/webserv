@@ -48,12 +48,12 @@ private:
 	static const char* const s_number;
 
 	// Checker functions
-	bool isLocationDuplicate(void) const;
 	bool isBracketOpen(void);
 	bool isSemicolonMissing(const std::string& content) const;
 	bool isKeyword(const std::string& keyword, size_t startIndex) const;
 	bool isValidBlockBeginn(Block block);
 	bool isDirectiveValid(const std::string& directive, Block block) const;
+	bool isLocationDuplicate(void) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
 	static bool isPortValid(const std::string& port);
 

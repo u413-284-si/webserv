@@ -312,6 +312,8 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used
  * if the location index is 0
  *
+ * If root and alias are defined in the same location block, an exception will be thrown
+ *
  * If no values are specified for the root, max_body_size, and error_page directives in a location block,
  * they inherit their corresponding values from the server block.
  *
@@ -333,6 +335,9 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 
 	ConfigServer& server = m_configFile.servers[m_serverIndex];
 	Location& location = server.locations[m_locationIndex];
+
+	if (location.root != "html" && !location.alias.empty())
+		throw std::runtime_error("Defining root and alias in the same location block is not allowed");
 	if (location.root == "html")
 		location.root = server.root;
 	else if (location.maxBodySize == 1)
