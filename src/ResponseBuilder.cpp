@@ -5,8 +5,9 @@
  *
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy, std::map<std::string, std::string>& responseHeaders)
 	: m_fileSystemPolicy(fileSystemPolicy)
+	, m_responseHeaders(responseHeaders)
 {
 	initMIMETypes();
 }
@@ -115,12 +116,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 		m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
-	if (!checkForCGIHeader("location")) {
-		std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
-		if (iter != request.headers.end()) {
-			m_responseHeaderStream << "Location: " << iter->second << "\r\n";
-		}
-	}
+	checkForCGIHeader("location");
 
 	// Various headers from response
 	if (request.httpStatus < StatusMovedPermanently) {

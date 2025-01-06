@@ -93,7 +93,7 @@ void ResponseBodyHandler::execute()
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body);
 		if (m_responseBody.find("created") != std::string::npos) {
 			m_request.httpStatus = StatusCreated;
-			m_request.headers["location"] = m_request.uri.path;
+			m_responseHeaders["location"] = m_request.uri.path;
 		}
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
@@ -155,7 +155,6 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 			lineStart = lineEnd + 2;
 			lineEnd = headers.find("\r\n", lineStart);
 		}
-
 		m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
 	}
 }
