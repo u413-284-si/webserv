@@ -37,7 +37,9 @@ ConfigFileParser::ConfigFileParser(void)
  * 1. Can be opened
  * 2. Is not empty
  * 3. Does not contain open brackets
- * 4. Does not contain invalid directives
+ * 4. Is not missing the http block
+ * 5. Does not contain invalid directives
+ * 6. Is not missing server block(s)
  *
  * @param configFilePath Path to the config file
  * @return const ConfigFile& Created ConfigFile object
