@@ -486,12 +486,16 @@ void ConfigFileParser::readSocket(const std::string& value)
 			m_configFile.servers[m_serverIndex].host = ipAddress;
 
 		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
+		if (port.find_first_of(s_whitespace) != std::string::npos)
+			throw std::runtime_error("Invalid amount of parameters for listen");
 		if (!webutils::isPortValid(port))
 			throw std::runtime_error("Invalid port");
 		m_configFile.servers[m_serverIndex].port = port;
 	} else {
 		if (dot == std::string::npos) {
 			std::string hostOrPort = value.substr(0, semicolonIndex);
+			if (hostOrPort.find_first_of(s_whitespace) != std::string::npos)
+				throw std::runtime_error("Invalid amount of parameters for listen");
 			if (hostOrPort.empty())
 				throw std::runtime_error("'listen' value has no value");
 			if (hostOrPort == "localhost")
@@ -503,6 +507,8 @@ void ConfigFileParser::readSocket(const std::string& value)
 			}
 		} else {
 			std::string ipAddress = value.substr(0, semicolonIndex);
+			if (ipAddress.find_first_of(s_whitespace) != std::string::npos)
+				throw std::runtime_error("Invalid amount of parameters for listen");
 			if (!webutils::isIpAddressValid(ipAddress))
 				throw std::runtime_error("Invalid ip address");
 
