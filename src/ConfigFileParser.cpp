@@ -60,7 +60,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		throw std::runtime_error("Open bracket(s) in config file");
 
 	if (!isValidBlockBeginn(HttpBlock))
-		return m_configFile;
+		throw std::runtime_error("Missing http block");
 
 	skipBlockBegin(HttpBlock);
 
@@ -72,6 +72,9 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		}
 		m_configFileIndex++;
 	}
+
+	if (m_serverBlocksConfig.empty())
+		throw std::runtime_error("Missing server block(s)");
 
 	for (std::vector<ServerBlockConfig>::const_iterator serverIt = m_serverBlocksConfig.begin();
 		 serverIt != m_serverBlocksConfig.end(); serverIt++) {
