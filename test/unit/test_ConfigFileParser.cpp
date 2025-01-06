@@ -19,46 +19,48 @@ protected:
  * Checks if the following configuration are seen as invalid:
  * 1. File could not be opened (because the path is wrong, such a file does not exist etc.)
  * 2. File is empty
- * 3. File contains open brackets (including missing brackets and too many brackets)
- * 4. File contains invalid directive (including server and location)
- * 5. File contains missing semicolon
- * 6. Listen directive contains invalid ip address
- * 7. Listen directive contains invalid port
- * 8. Listen contains invalid amount of parameters with a host and port
- * 9. Listen contains invalid amount of parameters with an ip address
- * 10. Listen contains invalid amount of parameters with a port
- * 11. Listen contains invalid amount of parameters with localhost as host
- * 12. Listen directive contains no value
- * 13. Root directive contains no root path
- * 14. Root directive contains multiple root paths
- * 15. Root directive contains no slash at the beginning
- * 16. Alias directive contains no alias path
- * 17. Alias directive contains multiple alias paths
- * 18. Alias directive contains no slash at the beginning
- * 19. Max body size directive contains no number
- * 20. Max body size directive contains invalid char within number
- * 21. Max body size directive contains invalid unit char
- * 22. Max body size directive contains invalid unit lenght
- * 23. Max body size directive contains no value
- * 24. Autoindex directive contains invalid value
- * 25. Allow methods directive contains invalid value
- * 26. Allow methods contains no value
- * 27. Error page contains invalid error code
- * 28. Error page path contains no value
- * 29. Error page contains no value
- * 30. CGI extension contains no dot at beginning
- * 31. CGI extension contains multiple extensions
- * 32. CGI extension contains multiple dots
- * 33. CGI extension contains no value
- * 34. CGI path contains no value
- * 35. CGI index contains no value
- * 36. Return contains invalid code
- * 37. Return contains invalid url
- * 38. Return contains invalid amount of parameters
- * 39. Return contains no value
- * 40. Invalid directives outside of server block
- * 41. Several server names
- * 42. Server name contains no value
+ * 3. File does not contain the http block
+ * 4. File does not contain any server block
+ * 5. File contains open brackets (including missing brackets and too many brackets)
+ * 6. File contains invalid directive (including server and location)
+ * 7. File contains missing semicolon
+ * 8. Listen directive contains invalid ip address
+ * 9. Listen directive contains invalid port
+ * 10. Listen contains invalid amount of parameters with a host and port
+ * 11. Listen contains invalid amount of parameters with an ip address
+ * 12. Listen contains invalid amount of parameters with a port
+ * 13. Listen contains invalid amount of parameters with localhost as host
+ * 14. Listen directive contains no value
+ * 15. Root directive contains no root path
+ * 16. Root directive contains multiple root paths
+ * 17. Root directive contains no slash at the beginning
+ * 18. Alias directive contains no alias path
+ * 19. Alias directive contains multiple alias paths
+ * 20. Alias directive contains no slash at the beginning
+ * 21. Max body size directive contains no number
+ * 22. Max body size directive contains invalid char within number
+ * 23. Max body size directive contains invalid unit char
+ * 24. Max body size directive contains invalid unit length
+ * 25. Max body size directive contains no value
+ * 26. Autoindex directive contains invalid value
+ * 27. Allow methods directive contains invalid value
+ * 28. Allow methods contains no value
+ * 29. Error page contains invalid error code
+ * 30. Error page path contains no value
+ * 31. Error page contains no value
+ * 32. CGI extension contains no dot at beginning
+ * 33. CGI extension contains multiple extensions
+ * 34. CGI extension contains multiple dots
+ * 35. CGI extension contains no value
+ * 36. CGI path contains no value
+ * 37. CGI index contains no value
+ * 38. Return contains invalid code
+ * 39. Return contains invalid url
+ * 40. Return contains invalid amount of parameters
+ * 41. Return contains no value
+ * 42. Invalid directives outside of server block
+ * 43. Several server names
+ * 44. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -83,6 +85,34 @@ TEST_F(InvalidConfigFileTests, FileIsEmpty)
 				m_configFileParser.parseConfigFile("config_files/empty_file.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Config file is empty", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, FileContainsMissingHttpBlock)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Missing http block", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, FileContainsMissingServerBlock)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Missing server block(s)", e.what());
 				throw;
 			}
 		},
@@ -710,48 +740,46 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  *
  * Checks if the following configuration are seen as valid:
  * 1. A standard valid file
- * 2. File does not contain the http block
- * 3. File does not contain any server block
- * 4. Several directives on one line
- * 5. Server name contains one name
- * 6. Server name contains empty string
- * 7. Listen contains only ip
- * 8. Listen contains only port
- * 9. Listen contains ip and port
- * 10. Listen contains only localhost
- * 11. Listen contains localhost and port
- * 12. Alias path contains one path
- * 13. Max body size contains only number
- * 15. Max body size contains number and k unit
- * 16. Max body size contains number and K unit
- * 17. Max body size contains number and m unit
- * 18. Max body size contains number and M unit
- * 19. Max body size contains number and g unit
- * 20. Max body size contains number and G unit
- * 21. Autoindex contains on
- * 22. Autoindex contains off
- * 23. Allow methods contains GET
- * 24. Allow methods contains POST
- * 25. Allow methods contains DELETE
- * 26. Allow methods contains GET, POST and DELETE
- * 27. Error page contains mutliple error codes and error page paths
- * 28. CGI extension contains one extension
- * 29. CGI path contains one path
- * 30. Index contains multiple indices
- * 31. Return contains code and text with double quotes
- * 32. Return contains code and text without double quotes
- * 33. Return conains code and url
- * 34. Return contains only code
- * 35. Return contains only http url
- * 36. Return contains only https url
- * 37. Bracket under server directive
- * 38. Bracket under location directive
- * 39. Whitespaces between server directive and opening bracket
- * 40. Directive and opening bracket on the same line
- * 41. Directive and closing bracket on the same line
- * 42. Directive and closing bracket on the same line under server directive
- * 43. Location path
- * 44. Inheritance of the server directives root, max_body_size and error_page to location
+ * 2. Several directives on one line
+ * 3. Server name contains one name
+ * 4. Server name contains empty string
+ * 5. Listen contains only ip
+ * 6. Listen contains only port
+ * 7. Listen contains ip and port
+ * 8. Listen contains only localhost
+ * 9. Listen contains localhost and port
+ * 10. Alias path contains one path
+ * 11. Max body size contains only number
+ * 12. Max body size contains number and k unit
+ * 13. Max body size contains number and K unit
+ * 14. Max body size contains number and m unit
+ * 15. Max body size contains number and M unit
+ * 16. Max body size contains number and g unit
+ * 17. Max body size contains number and G unit
+ * 18. Autoindex contains on
+ * 19. Autoindex contains off
+ * 20. Allow methods contains GET
+ * 21. Allow methods contains POST
+ * 22. Allow methods contains DELETE
+ * 23. Allow methods contains GET, POST and DELETE
+ * 24. Error page contains multiple error codes and error page paths
+ * 25. CGI extension contains one extension
+ * 26. CGI path contains one path
+ * 27. Index contains multiple indices
+ * 28. Return contains code and text with double quotes
+ * 29. Return contains code and text without double quotes
+ * 30. Return contains code and url
+ * 31. Return contains only code
+ * 32. Return contains only http url
+ * 33. Return contains only https url
+ * 34. Bracket under server directive
+ * 35. Bracket under location directive
+ * 36. Whitespaces between server directive and opening bracket
+ * 37. Directive and opening bracket on the same line
+ * 38. Directive and closing bracket on the same line
+ * 39. Directive and closing bracket on the same line under server directive
+ * 40. Location path
+ * 41. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -788,38 +816,6 @@ TEST_F(ValidConfigFileTests, ValidFile)
 
 	// location '/images' block
 	EXPECT_EQ("/var/www/images", configFile.servers[0].locations[4].alias);
-}
-
-TEST_F(InvalidConfigFileTests, FileMissesHtppBlock)
-{
-	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_http_block.conf");
-	EXPECT_EQ(true, configFile.servers.empty());
-
-	EpollWrapper epollWrapper(10, -1);
-	SocketPolicy socketPolicy;
-	ProcessOps processOps;
-
-	Server server(configFile, epollWrapper, socketPolicy, processOps);
-
-	initVirtualServers(server, 10, server.getServerConfigs());
-	std::map<int, Socket> virtualServers = server.getVirtualServers();
-	EXPECT_EQ(0, virtualServers.size());
-}
-
-TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
-{
-	ConfigFile configFile = m_configFileParser.parseConfigFile("config_files/missing_server_block.conf");
-	EXPECT_EQ(true, configFile.servers.empty());
-
-	EpollWrapper epollWrapper(10, -1);
-	SocketPolicy socketPolicy;
-	ProcessOps processOps;
-
-	Server server(configFile, epollWrapper, socketPolicy, processOps);
-
-	initVirtualServers(server, 10, server.getServerConfigs());
-	std::map<int, Socket> virtualServers = server.getVirtualServers();
-	EXPECT_EQ(0, virtualServers.size());
 }
 
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
