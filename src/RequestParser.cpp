@@ -433,7 +433,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
  *
  * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
  * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
- * is chunked or non-chunked.
+ * is chunked or is encoded in multipart-formdata.
  *
  * @param bodyString The string representation of the request body.
  * @param request The HTTPRequest object to populate with the parsed data.
@@ -448,7 +448,6 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
 		parseChunkedBody(request);
 	else
 		request.body = bodyString;
-	// 	parseNonChunkedBody(request);
 	
 	if (request.hasMultipartFormdata)
 		decodeMultipartFormdata(request);
@@ -511,53 +510,6 @@ void RequestParser::parseChunkedBody(HTTPRequest& request)
 		length += numChunkSize;
 	} while (numChunkSize > 0);
 	request.headers["content-length"] = webutils::toString(length);
-}
-
-/**
- * @brief Parses a non-chunked body from the provided input stream.
- *
- * This function reads the entire body from the input stream, ensuring that the
- * total length of the body matches the "Content-Length" header specified in the request.
- * It processes each line, removing trailing carriage returns and concatenates
- * the lines to form the complete body.
- *
- * @param request The HTTP request object to be filled.
- * @throws std::runtime_error If there is an error converting the "Content-Length" header
- *                            to a size_t or if the body length does not match the "Content-Length" value.
- *
- * Error codes:
- * - ERR_CONVERSION_STRING_TO_SIZE_T: Thrown when the conversion of "Content-Length" header to size_t fails.
- * - ERR_CONTENT_LENGTH: Thrown when the length of the parsed body does not match the "Content-Length" value.
- *
- * Example usage:
- * @code
- * std::istringstream requestStream("This is the body of the request.\r\n");
- * RequestParser parser;
- * parser.parseNonChunkedBody(requestStream);
- * @endcode
- */
-void RequestParser::parseNonChunkedBody(HTTPRequest& request)
-{
-	std::string body;
-	long length = 0;
-
-	while (!std::getline(m_requestStream, body).fail()) {
-		if (body[body.size() - 1] == '\r') {
-			body.erase(body.size() - 1);
-			length += 1;
-		}
-		if (!m_requestStream.eof())
-			body += '\n';
-		length += static_cast<long>(body.size());
-		request.body += body;
-	}
-	const long contentLength
-		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
-	if (contentLength != length) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error(ERR_CONTENT_LENGTH);
-	}
 }
 
 /**

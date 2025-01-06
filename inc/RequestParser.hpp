@@ -57,7 +57,6 @@ private:
 
 	// Body Parsing
 	void parseChunkedBody(HTTPRequest& request);
-	void parseNonChunkedBody(HTTPRequest& request);
     void decodeMultipartFormdata(HTTPRequest& request);
 
 	// Checks
