@@ -707,6 +707,8 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 		size_t errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);
 		std::string errorPagePath
 			= errorPage.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
+		if (errorPagePath.at(0) != '/')
+			throw std::runtime_error("Error page path does not start with a slash");
 
 		index = errorPagePathEndIndex;
 
