@@ -45,26 +45,28 @@ protected:
  * 25. Max body size directive contains invalid char within number
  * 26. Max body size directive contains invalid unit char
  * 27. Max body size directive contains invalid unit length
- * 28. Max body size directive contains no value
- * 29. Autoindex directive contains invalid value
- * 30. Allow methods directive contains invalid value
- * 31. Allow methods contains no value
- * 32. Error page contains invalid error code
- * 33. Error page path contains no value
- * 34. Error page contains no value
- * 35. CGI extension contains no dot at beginning
- * 36. CGI extension contains multiple extensions
- * 37. CGI extension contains multiple dots
- * 38. CGI extension contains no value
- * 39. CGI path contains no value
- * 40. CGI index contains no value
- * 41. Return contains invalid code
- * 42. Return contains invalid url
- * 43. Return contains invalid amount of parameters
- * 44. Return contains no value
- * 45. Invalid directives outside of server block
- * 46. Several server names
- * 47. Server name contains no value
+ * 28. Max body size contains invalid amount of parameters
+ * 29. Max body size directive contains no value
+ * 30. Autoindex directive contains invalid value
+ * 31. Allow methods directive contains invalid value
+ * 32. Allow methods contains no value
+ * 33. Error page contains invalid error code
+ * 34. Error page path contains no slash at the beginning
+ * 35. Error page path contains no value
+ * 36. Error page contains no value
+ * 37. CGI extension contains no dot at beginning
+ * 38. CGI extension contains multiple extensions
+ * 39. CGI extension contains multiple dots
+ * 40. CGI extension contains no value
+ * 41. CGI path contains no value
+ * 42. CGI index contains no value
+ * 43. Return contains invalid code
+ * 44. Return contains invalid url
+ * 45. Return contains invalid amount of parameters
+ * 46. Return contains no value
+ * 47. Invalid directives outside of server block
+ * 48. Several server names
+ * 49. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -495,6 +497,20 @@ TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidUnitLenght)
 				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_unit_lenght.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid client_max_body_size unit", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidAmountOfParameters)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_amount_parameters.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for client_max_body_size", e.what());
 				throw;
 			}
 		},
