@@ -712,6 +712,8 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 			throw std::runtime_error("Invalid error code");
 
 		index = errorPage.find_first_not_of(s_whitespace, errorCodeEndIndex);
+		if (index == std::string::npos)
+			throw std::runtime_error("error_page directive path has no value");
 
 		size_t errorPagePathStartIndex = index;
 		size_t errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);
