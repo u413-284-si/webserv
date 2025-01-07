@@ -28,6 +28,7 @@ struct HTTPRequest {
 	statusCode httpStatus;
 	bool shallCloseConnection;
 	bool hasBody;
+	bool isCompleteBody;
 	bool isChunked;
 	std::string targetResource;
 	bool isDirectory;
