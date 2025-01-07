@@ -637,9 +637,12 @@ void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 	if (autoindex.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("Invalid amount of parameters for autoindex");
 
-	if (autoindex == "on")
+	std::string lowercaseAutoindex = autoindex;
+	webutils::lowercase(lowercaseAutoindex);
+
+	if (lowercaseAutoindex == "on")
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = true;
-	else if (autoindex == "off")
+	else if (lowercaseAutoindex == "off")
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = false;
 	else
 		throw std::runtime_error("Invalid autoindex value");
