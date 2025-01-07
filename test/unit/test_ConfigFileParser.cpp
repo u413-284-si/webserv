@@ -624,7 +624,7 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyErrorPagePath)
 			try {
 				m_configFileParser.parseConfigFile("config_files/error_page_empty_error_page_path.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("'error_page' directive path has no value", e.what());
+				EXPECT_STREQ("Invalid amount of parameters for error_page", e.what());
 				throw;
 			}
 		},
