@@ -864,28 +864,29 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  * 17. Max body size contains number and G unit
  * 18. Autoindex contains on
  * 19. Autoindex contains off
- * 20. Allow methods contains GET
- * 21. Allow methods contains POST
- * 22. Allow methods contains DELETE
- * 23. Allow methods contains GET, POST and DELETE
- * 24. Error page contains multiple error codes and error page paths
- * 25. CGI extension contains one extension
- * 26. CGI path contains one path
- * 27. Index contains multiple indices
- * 28. Return contains code and text with double quotes
- * 29. Return contains code and text without double quotes
- * 30. Return contains code and url
- * 31. Return contains only code
- * 32. Return contains only http url
- * 33. Return contains only https url
- * 34. Bracket under server directive
- * 35. Bracket under location directive
- * 36. Whitespaces between server directive and opening bracket
- * 37. Directive and opening bracket on the same line
- * 38. Directive and closing bracket on the same line
- * 39. Directive and closing bracket on the same line under server directive
- * 40. Location path
- * 41. Inheritance of the server directives root, max_body_size and error_page to location
+ * 20. Autoindex contains valid mix of lowercase and uppercase
+ * 21. Allow methods contains GET
+ * 22. Allow methods contains POST
+ * 23. Allow methods contains DELETE
+ * 24. Allow methods contains GET, POST and DELETE
+ * 25. Error page contains multiple error codes and error page paths
+ * 26. CGI extension contains one extension
+ * 27. CGI path contains one path
+ * 28. Index contains multiple indices
+ * 29. Return contains code and text with double quotes
+ * 30. Return contains code and text without double quotes
+ * 31. Return contains code and url
+ * 32. Return contains only code
+ * 33. Return contains only http url
+ * 34. Return contains only https url
+ * 35. Bracket under server directive
+ * 36. Bracket under location directive
+ * 37. Whitespaces between server directive and opening bracket
+ * 38. Directive and opening bracket on the same line
+ * 39. Directive and closing bracket on the same line
+ * 40. Directive and closing bracket on the same line under server directive
+ * 41. Location path
+ * 42. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -1058,6 +1059,13 @@ TEST_F(ValidConfigFileTests, AutoindexContainsOff)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_off.conf"));
+	EXPECT_EQ(false, configFile.servers[0].locations[0].hasAutoindex);
+}
+
+TEST_F(ValidConfigFileTests, AutoindexContainsValidLowerCaseUpperCaseMix)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_lowercase_upercase.conf"));
 	EXPECT_EQ(false, configFile.servers[0].locations[0].hasAutoindex);
 }
 
