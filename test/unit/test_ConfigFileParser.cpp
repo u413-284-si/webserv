@@ -601,6 +601,20 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyErrorPagePath)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, ErrorPagePathContainsNoSlashAtBeginning)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_path_no_slash.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Error page path does not start with a slash", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyValue)
 {
 	EXPECT_THROW(
