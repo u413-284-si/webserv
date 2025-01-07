@@ -48,25 +48,27 @@ protected:
  * 28. Max body size contains invalid amount of parameters
  * 29. Max body size directive contains no value
  * 30. Autoindex directive contains invalid value
- * 31. Allow methods directive contains invalid value
- * 32. Allow methods contains no value
- * 33. Error page contains invalid error code
- * 34. Error page path contains no slash at the beginning
- * 35. Error page path contains no value
- * 36. Error page contains no value
- * 37. CGI extension contains no dot at beginning
- * 38. CGI extension contains multiple extensions
- * 39. CGI extension contains multiple dots
- * 40. CGI extension contains no value
- * 41. CGI path contains no value
- * 42. CGI index contains no value
- * 43. Return contains invalid code
- * 44. Return contains invalid url
- * 45. Return contains invalid amount of parameters
- * 46. Return contains no value
- * 47. Invalid directives outside of server block
- * 48. Several server names
- * 49. Server name contains no value
+ * 31. Autoindex contains invalid amount of parameters
+ * 32. Autoindex contains no value
+ * 33. Allow methods directive contains invalid value
+ * 34. Allow methods contains no value
+ * 35. Error page contains invalid error code
+ * 36. Error page path contains no slash at the beginning
+ * 37. Error page path contains no value
+ * 38. Error page contains no value
+ * 39. CGI extension contains no dot at beginning
+ * 40. CGI extension contains multiple extensions
+ * 41. CGI extension contains multiple dots
+ * 42. CGI extension contains no value
+ * 43. CGI path contains no value
+ * 44. CGI index contains no value
+ * 45. Return contains invalid code
+ * 46. Return contains invalid url
+ * 47. Return contains invalid amount of parameters
+ * 48. Return contains no value
+ * 49. Invalid directives outside of server block
+ * 50. Several server names
+ * 51. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -539,6 +541,34 @@ TEST_F(InvalidConfigFileTests, AutoIndexContainsInvalidValue)
 				m_configFileParser.parseConfigFile("config_files/autoindex_invalid.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid autoindex value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, AutoIndexContainsInvalidAmountOfParameters)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/autoindex_invalid_amount_parameters.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for autoindex", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, AutoIndexContainsNoValue)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/autoindex_no_value.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("'autoindex' directive has no value", e.what());
 				throw;
 			}
 		},
