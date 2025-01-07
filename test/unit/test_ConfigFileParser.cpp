@@ -52,23 +52,24 @@ protected:
  * 32. Autoindex contains no value
  * 33. Allow methods directive contains invalid value
  * 34. Allow methods contains no value
- * 35. Error page contains invalid error code
- * 36. Error page path contains no slash at the beginning
- * 37. Error page path contains no value
- * 38. Error page contains no value
- * 39. CGI extension contains no dot at beginning
- * 40. CGI extension contains multiple extensions
- * 41. CGI extension contains multiple dots
- * 42. CGI extension contains no value
- * 43. CGI path contains no value
- * 44. CGI index contains no value
- * 45. Return contains invalid code
- * 46. Return contains invalid url
- * 47. Return contains invalid amount of parameters
- * 48. Return contains no value
- * 49. Invalid directives outside of server block
- * 50. Several server names
- * 51. Server name contains no value
+ * 35. Error page contains invalid amount of parameters
+ * 36. Error page contains invalid error code
+ * 37. Error page path contains no slash at the beginning
+ * 38. Error page path contains no value
+ * 39. Error page contains no value
+ * 40. CGI extension contains no dot at beginning
+ * 41. CGI extension contains multiple extensions
+ * 42. CGI extension contains multiple dots
+ * 43. CGI extension contains no value
+ * 44. CGI path contains no value
+ * 45. CGI index contains no value
+ * 46. Return contains invalid code
+ * 47. Return contains invalid url
+ * 48. Return contains invalid amount of parameters
+ * 49. Return contains no value
+ * 50. Invalid directives outside of server block
+ * 51. Several server names
+ * 52. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -603,6 +604,20 @@ TEST_F(InvalidConfigFileTests, AllowMethodsContainsNoValue)
 		std::runtime_error);
 }
 
+TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidAmountOfParameters)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_invalid_amount_parameters.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for error_page", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidErrorCode)
 {
 	EXPECT_THROW(
@@ -624,7 +639,7 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsEmptyErrorPagePath)
 			try {
 				m_configFileParser.parseConfigFile("config_files/error_page_empty_error_page_path.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("Invalid amount of parameters for error_page", e.what());
+				EXPECT_STREQ("error_page directive path has no value", e.what());
 				throw;
 			}
 		},
