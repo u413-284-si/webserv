@@ -634,6 +634,9 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
  */
 void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 {
+	if (autoindex.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("Invalid amount of parameters for autoindex");
+
 	if (autoindex == "on")
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = true;
 	else if (autoindex == "off")
