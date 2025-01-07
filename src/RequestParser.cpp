@@ -437,15 +437,15 @@ void RequestParser::parseHeaders(HTTPRequest& request)
  *
  * @param bodyString The string representation of the request body.
  * @param request The HTTPRequest object to populate with the parsed data.
- *
+ * @param buffer The buffer to temporarily store the chunked body data.
  * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
  * message.
  */
-void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
+void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer)
 {
 	m_requestStream.str(bodyString);
 	if (request.isChunked)
-		parseChunkedBody(request);
+		parseChunkedBody(request, buffer);
 	else
 		request.body += bodyString;
 	
@@ -526,6 +526,8 @@ void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& bu
 		length += numChunkSize;
 	} while (numChunkSize > 0);
 	request.headers["content-length"] = webutils::toString(length);
+
+	LOG_DEBUG << "Successfully parsed chunked body";
 }
 
 /**

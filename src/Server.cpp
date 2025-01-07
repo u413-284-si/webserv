@@ -1107,7 +1107,6 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientBodyBufferSize)
 		buffer.resize(Server::s_clientBodyBufferSize);
-	buffer.clear();
 
 	size_t bytesAvailable = 0;
 	if (connection.m_request.contentLength + 1 < connection.location->maxBodySize)
