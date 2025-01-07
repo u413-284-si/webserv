@@ -106,6 +106,7 @@ public:
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
 	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void decodeMultipartFormdata(HTTPRequest& request);
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder

@@ -447,10 +447,8 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
 	if (request.isChunked)
 		parseChunkedBody(request);
 	else
-		request.body = bodyString;
+		request.body += bodyString;
 	
-	if (request.hasMultipartFormdata)
-		decodeMultipartFormdata(request);
 	resetRequestStream();
 }
 

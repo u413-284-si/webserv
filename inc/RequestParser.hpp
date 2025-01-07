@@ -32,6 +32,7 @@ public:
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
 	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void decodeMultipartFormdata(HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
@@ -57,7 +58,6 @@ private:
 
 	// Body Parsing
 	void parseChunkedBody(HTTPRequest& request);
-    void decodeMultipartFormdata(HTTPRequest& request);
 
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);

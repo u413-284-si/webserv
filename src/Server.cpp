@@ -469,6 +469,13 @@ void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
 }
 
 /**
+ * @brief Wrapper function to RequestParser::decodeMultipartFormdata.
+ *
+ * @param request The HTTP request containing the multipart/form-data content to decode.
+ */
+void Server::decodeMultipartFormdata(HTTPRequest& request) { m_requestParser.decodeMultipartFormdata(request); }
+
+/**
  * @brief Wrapper function to RequestParser::clearParser.
  */
 void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
@@ -1162,15 +1169,19 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
  */
 void handleBody(Server& server, int activeFd, Connection& connection)
 {
+	try {
+		server.parseBody(connection.m_buffer, connection.m_request);
+	} catch (std::exception& e) {
+		LOG_ERROR << e.what();
+	}
+
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body";
 		// Printing body can be confusing for big files.
 		// LOG_DEBUG << connection.m_buffer;
-		try {
-			server.parseBody(connection.m_buffer, connection.m_request);
-		} catch (std::exception& e) {
-			LOG_ERROR << e.what();
-		}
+		if (connection.m_request.hasMultipartFormdata)
+			server.decodeMultipartFormdata(connection.m_request);
+
 		if (connection.m_request.hasCGI)
 			connection.m_status = Connection::SendToCGI;
 		else
@@ -1220,7 +1231,7 @@ bool isCompleteBody(Connection& connection)
 		if (connection.m_request.contentLength == connection.m_buffer.size())
 			return true;
 	}
-	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
+	return connection.m_request.isCompleteBody;
 }
 
 /**
