@@ -970,6 +970,14 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		return;
 	}
 
+	if (connection.m_request.contentLength > connection.location->maxBodySize) {
+		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		connection.m_request.shallCloseConnection = true;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
 	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("host");
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
@@ -1109,7 +1117,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		buffer.resize(Server::s_clientBodyBufferSize);
 
 	size_t bytesAvailable = 0;
-	if (connection.m_request.contentLength + 1 < connection.location->maxBodySize)
+	if (!connection.m_request.isChunked && connection.m_request.contentLength + 1 < connection.location->maxBodySize)
 		bytesAvailable = connection.m_request.contentLength - connection.m_buffer.size();
 	else
 		bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
@@ -1177,10 +1185,19 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		// LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus == StatusBadRequest) {
 			connection.m_status = Connection::BuildResponse;
+			connection.m_request.shallCloseConnection = true;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_request.shallCloseConnection = true;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+		} else if (!connection.m_request.isChunked && connection.m_request.contentLength < connection.m_buffer.size()) {
+			LOG_ERROR << ERR_CONTENT_LENGTH;
+			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength
+					  << ", Buffer size: " << connection.m_buffer.size();
+			connection.m_request.httpStatus = StatusBadRequest;
 			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
@@ -1204,16 +1221,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 bool isCompleteBody(Connection& connection)
 {
 	if (!connection.m_request.isChunked) {
-		if (connection.m_request.contentLength < connection.m_buffer.size()) {
-			LOG_ERROR << ERR_CONTENT_LENGTH;
-			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength
-					  << ", Buffer size: " << connection.m_buffer.size();
-			connection.m_request.httpStatus = StatusBadRequest;
-			connection.m_request.shallCloseConnection = true;
-			return false;
-		}
-		if (connection.m_request.contentLength == connection.m_buffer.size())
-			return true;
+		return connection.m_request.contentLength == connection.m_buffer.size();
 	}
 	return connection.m_request.isCompleteBody;
 }
