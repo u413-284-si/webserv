@@ -116,25 +116,11 @@ const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_con
 time_t Server::getClientTimeout() const { return m_clientTimeout; }
 
 /**
- * @brief Getter for client header buffer.
+ * @brief Getter for internal buffer.
  *
- * @return std::vector<char>& Client header buffer.
+ * @return std::vector<char>& buffer.
  */
-std::vector<char>& Server::getClientHeaderBuffer() { return m_clientHeaderBuffer; }
-
-/**
- * @brief Getter for client body buffer.
- *
- * @return std::vector<char>& Client body buffer.
- */
-std::vector<char>& Server::getClientBodyBuffer() { return m_clientBodyBuffer; }
-
-/**
- * @brief Getter for CGI body buffer.
- *
- * @return std::vector<char>& CGI body buffer.
- */
-std::vector<char>& Server::getCGIBodyBuffer() { return m_cgiBodyBuffer; }
+std::vector<char>& Server::getBuffer() { return m_buffer; }
 
 /* ====== SETTERS ====== */
 
@@ -465,7 +451,7 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
  */
 void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
 {
-	m_requestParser.parseBody(bodyString, request);
+	m_requestParser.parseBody(bodyString, request, getBuffer());
 }
 
 /**
@@ -894,10 +880,9 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		return;
 	LOG_DEBUG << "Receive Request Header for: " << connection.m_clientSocket;
 
-	std::vector<char>& buffer = server.getClientHeaderBuffer();
+	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientHeaderBufferSize)
 		buffer.resize(Server::s_clientHeaderBufferSize);
-	buffer.clear();
 
 	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_buffer.size();
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
@@ -1119,7 +1104,7 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		return;
 	LOG_DEBUG << "Receive Body for: " << connection.m_clientSocket;
 
-	std::vector<char>& buffer = server.getClientBodyBuffer();
+	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientBodyBufferSize)
 		buffer.resize(Server::s_clientBodyBufferSize);
 	buffer.clear();
@@ -1317,10 +1302,9 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
-	std::vector<char>& buffer = server.getCGIBodyBuffer();
+	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_cgiBodyBufferSize)
 		buffer.resize(Server::s_cgiBodyBufferSize);
-	buffer.clear();
 
 	const ssize_t bytesRead
 		= server.readProcess(connection.m_pipeFromCGIReadEnd, &buffer[0], Server::s_cgiBodyBufferSize);

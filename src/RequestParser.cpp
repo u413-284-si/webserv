@@ -461,6 +461,7 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
  * entry "Content-Length".
  *
  * @param request The HTTP request object to be filled.
+ * @param buffer The buffer to temporarily store the chunked body data.
  * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
  *
  * Error codes:
@@ -474,37 +475,54 @@ void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& reques
  * parser.parseChunkedBody(requestStream);
  * @endcode
  */
-void RequestParser::parseChunkedBody(HTTPRequest& request)
+void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer)
 {
+	LOG_DEBUG << "Parsing chunked body...";
+
 	size_t length = 0;
 	std::string strChunkSize;
-	std::string chunkData;
 	size_t numChunkSize = 0;
 
 	do {
 		std::getline(m_requestStream, strChunkSize);
-		if (strChunkSize[strChunkSize.size() - 1] == '\r')
+		if (!strChunkSize.empty() && strChunkSize[strChunkSize.size() - 1] == '\r')
 			strChunkSize.erase(strChunkSize.size() - 1);
 		else {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
+
 		numChunkSize = convertHex(strChunkSize);
-		std::getline(m_requestStream, chunkData);
-		if (chunkData[chunkData.size() - 1] == '\r')
-			chunkData.erase(chunkData.size() - 1);
-		else {
+		if (numChunkSize > s_maxChunkSize) {
+			request.httpStatus = StatusRequestEntityTooLarge;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
+		}
+
+		if (buffer.capacity() < numChunkSize + 2)
+			buffer.resize(numChunkSize + 2);
+
+		errno = 0;
+		m_requestStream.read(buffer.data(), static_cast<long>(numChunkSize + 2));
+		if (m_requestStream.gcount() != static_cast<std::streamsize>(numChunkSize + 2)) {
+			if (!m_requestStream.good() && !m_requestStream.eof()) {
+				request.httpStatus = StatusInternalServerError;
+				throw std::runtime_error("read(): " + std::string(strerror(errno)));
+			}
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_CHUNKSIZE_INCONSISTENT);
+		}
+
+		if (buffer.at(numChunkSize) == '\r' && buffer.at(numChunkSize + 1) == '\n') {
+			request.body.append(buffer.data(), numChunkSize);
+		} else {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
-		if (chunkData.size() != numChunkSize) {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_CHUNK_SIZE);
-		}
-		request.body += chunkData;
+
 		length += numChunkSize;
 	} while (numChunkSize > 0);
 	request.headers["content-length"] = webutils::toString(length);
