@@ -61,15 +61,17 @@ protected:
  * 41. CGI extension contains multiple extensions
  * 42. CGI extension contains multiple dots
  * 43. CGI extension contains no value
- * 44. CGI path contains no value
- * 45. CGI index contains no value
- * 46. Return contains invalid code
- * 47. Return contains invalid url
- * 48. Return contains invalid amount of parameters
- * 49. Return contains no value
- * 50. Invalid directives outside of server block
- * 51. Several server names
- * 52. Server name contains no value
+ * 44. CGI path contains no slash at the beginning
+ * 45. CGI path contains multiple paths
+ * 46. CGI path contains no value
+ * 47. CGI index contains no value
+ * 48. Return contains invalid code
+ * 49. Return contains invalid url
+ * 10. Return contains invalid amount of parameters
+ * 11. Return contains no value
+ * 12. Invalid directives outside of server block
+ * 13. Several server names
+ * 14. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -724,6 +726,34 @@ TEST_F(InvalidConfigFileTests, CGIExtensionContainsEmptyValue)
 				m_configFileParser.parseConfigFile("config_files/cgi_extension_no_value.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("'cgi_ext' directive has no value", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIPathContainsPathWithoutSlashAtBeginning)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_path_no_slash.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("CGI path does not start with a slash", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIPathContainsMultiplePaths)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_path_multiple_paths.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("More than one CGI path", e.what());
 				throw;
 			}
 		},
