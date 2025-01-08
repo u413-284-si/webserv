@@ -744,7 +744,11 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
  * 3. Only return code
  *
  * When a return code is present, its validity is checked.
+ *
  * If only a return URL is provided, it is verified to ensure it starts with either 'http://' or 'https://'.
+ *
+ * When a text in double quotes is provided, there is a check to ensure they are closed.
+ * If that is the case, the double quotes get removed and the text is saved.
  *
  * @param returns The value of the directive returns
  */
