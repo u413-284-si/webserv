@@ -511,7 +511,7 @@ void ConfigFileParser::readServerName(const std::string& serverName)
 void ConfigFileParser::readSocket(const std::string& value)
 {
 	const size_t colonIndex = value.find(':');
-	const size_t semicolonIndex = value.find(';');
+	const size_t endIndex = value.length();
 	const size_t dot = value.find('.');
 
 	if (colonIndex != std::string::npos) {
@@ -524,7 +524,7 @@ void ConfigFileParser::readSocket(const std::string& value)
 		else
 			m_configFile.servers[m_serverIndex].host = ipAddress;
 
-		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
+		std::string port = value.substr(colonIndex + 1, endIndex - colonIndex - 1);
 		if (port.find_first_of(s_whitespace) != std::string::npos)
 			throw std::runtime_error("Invalid amount of parameters for listen");
 		if (!webutils::isPortValid(port))
@@ -532,7 +532,7 @@ void ConfigFileParser::readSocket(const std::string& value)
 		m_configFile.servers[m_serverIndex].port = port;
 	} else {
 		if (dot == std::string::npos) {
-			std::string hostOrPort = value.substr(0, semicolonIndex);
+			std::string hostOrPort = value.substr(0, endIndex);
 			if (hostOrPort.find_first_of(s_whitespace) != std::string::npos)
 				throw std::runtime_error("Invalid amount of parameters for listen");
 			if (hostOrPort.empty())
@@ -545,7 +545,7 @@ void ConfigFileParser::readSocket(const std::string& value)
 				m_configFile.servers[m_serverIndex].port = hostOrPort;
 			}
 		} else {
-			std::string ipAddress = value.substr(0, semicolonIndex);
+			std::string ipAddress = value.substr(0, endIndex);
 			if (ipAddress.find_first_of(s_whitespace) != std::string::npos)
 				throw std::runtime_error("Invalid amount of parameters for listen");
 			if (!webutils::isIpAddressValid(ipAddress))
