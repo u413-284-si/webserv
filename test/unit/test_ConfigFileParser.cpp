@@ -67,11 +67,13 @@ protected:
  * 47. CGI index contains no value
  * 48. Return contains invalid code
  * 49. Return contains invalid url
- * 10. Return contains invalid amount of parameters
- * 11. Return contains no value
- * 12. Invalid directives outside of server block
- * 13. Several server names
- * 14. Server name contains no value
+ * 50. Return contains invalid amount of parameters
+ * 50. Return contains invalid amount of parameters with double quotes
+ * 51. Return contains unclosed double quote
+ * 52. Return contains no value
+ * 53. Invalid directives outside of server block
+ * 54. Several server names
+ * 55. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -810,6 +812,34 @@ TEST_F(InvalidConfigFileTests, ReturnContainsInvalidAmountOfParameters)
 				m_configFileParser.parseConfigFile("config_files/return_invalid_amount_parameters.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid amount of parameters for return", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidAmountOfParametersWithDoubleQuotes)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_invalid_amount_parameters_quotes.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for return", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsUnclosedQuote)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_unclosed_quote.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Open double quotes", e.what());
 				throw;
 			}
 		},
