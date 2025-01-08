@@ -822,6 +822,9 @@ void ConfigFileParser::readCGIExtension(const std::string& extension)
  */
 void ConfigFileParser::readCGIPath(const std::string& path)
 {
+	if (path.at(0) != '/')
+		throw std::runtime_error("CGI path does not start with a slash");
+
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiPath = path;
 }
 
