@@ -797,7 +797,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
  * @brief Reads the CGI extension
  *
  * The function checks if there is only one CGI extension and if it starts with a dot and does not contain any other
- * dot Otherwise it will throw an exception
+ * dots, otherwise it will throw an exception
  *
  * @param extension The value of the directive cgi_extension
  */
