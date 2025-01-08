@@ -736,9 +736,10 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 /**
  * @brief Reads the return codes and corresponding return urls
  *
- * The function handles three cases:
+ * The function handles four cases:
  *
  * 1. Return code and return url
+ * 2. Return code and return text
  * 2. Only return url
  * 3. Only return code
  *
