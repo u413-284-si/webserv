@@ -767,11 +767,13 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		std::string returnUrlOrText
 			= returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);
 
-		if (returnUrlOrText.find_first_of(s_whitespace) != std::string::npos
-			&& returnUrlOrText.find('\"') == std::string::npos)
+		if (returnUrlOrText.at(0) != '\"' && returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)
 			throw std::runtime_error("Invalid amount of parameters for return");
-		if (returnUrlOrText.find('\"') != std::string::npos)
+		if (returnUrlOrText.find('\"') != std::string::npos) {
 			removeDoubleQuotes(returnUrlOrText);
+			if (returns.at(returns.length() - 1) != '\"')
+				throw std::runtime_error("Invalid amount of parameters for return");
+		}
 
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;
@@ -1045,7 +1047,6 @@ void ConfigFileParser::removeDoubleQuotes(std::string& str)
 			leadingDoubleQuotes++;
 		else
 			break;
-		;
 		index++;
 	}
 	while (str[index] != '"' && index < str.length())
@@ -1055,7 +1056,6 @@ void ConfigFileParser::removeDoubleQuotes(std::string& str)
 			trailingDoubleQuotes++;
 		else
 			break;
-		;
 		index++;
 	}
 	if (leadingDoubleQuotes != trailingDoubleQuotes)
