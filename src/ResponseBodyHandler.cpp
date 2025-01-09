@@ -184,6 +184,7 @@ void ResponseBodyHandler::validateCGIResponseHeaders()
 		if (m_request.httpStatus == StatusBadRequest) {
 			if (iter->second.find("400") != std::string::npos)
 				return;
+			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 			m_responseHeaders.clear();
 			LOG_ERROR << "Invalid Status header value encountered in CGI response";
