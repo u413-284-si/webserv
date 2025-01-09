@@ -27,7 +27,6 @@ private:
 	void handleErrorBody();
 	void setDefaultErrorPage();
 	void parseCGIResponseBody();
-	void parseCGIResponseStatusLine();
 	void parseCGIResponseHeaders();
 	void validateCGIResponseHeaders();
 
