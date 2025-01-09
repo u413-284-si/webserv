@@ -52,18 +52,13 @@ void ResponseBodyHandler::execute()
 		handleErrorBody();
 		return;
 	}
+
 	if (m_request.hasCGI) {
 		m_responseBody = m_request.body;
-		if (m_responseBody.find("Content-Type: ") != std::string::npos
-			|| m_responseBody.find("Location: ") != std::string::npos
-			|| m_responseBody.find("Status: ") != std::string::npos)
-			parseCGIResponseBody();
-		else {
-			m_request.httpStatus = StatusInternalServerError;
-			handleErrorBody();
-		}
+		parseCGIResponseBody();
 		return;
 	}
+
 	if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
@@ -76,6 +71,7 @@ void ResponseBodyHandler::execute()
 		m_request.targetResource += "autoindex.html";
 		return;
 	}
+
 	if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
@@ -138,31 +134,39 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	const size_t sizeCRLF = 2;
 	const size_t sizeCRLFCRLF = 4;
 	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
+	// Include one CRLF at the end of last header line
+	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
 
-	if (posHeadersEnd != std::string::npos) {
-		// Include one CRLF at the end of last header line
-		std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
-		size_t lineStart = 0;
-		size_t lineEnd = headers.find("\r\n");
-
-		while (lineEnd != std::string::npos) {
-			std::string header = headers.substr(lineStart, lineEnd - lineStart);
-			const std::size_t delimiterPos = header.find_first_of(':');
-			if (delimiterPos != std::string::npos) {
-				std::string headerName = header.substr(0, delimiterPos);
-				webutils::lowercase(headerName);
-				std::string headerValue = header.substr(delimiterPos + 1);
-				headerValue = webutils::trimLeadingWhitespaces(headerValue);
-				webutils::trimTrailingWhiteSpaces(headerValue);
-				m_responseHeaders[headerName] = headerValue;
-				LOG_DEBUG << "Parsed response header: " << headerName << " -> " << headerValue;
-			}
-
-			lineStart = lineEnd + 2;
-			lineEnd = headers.find("\r\n", lineStart);
-		}
-		m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
+	if (posHeadersEnd == std::string::npos
+		|| (headers.find("Content-Type: ") == std::string::npos
+			&& headers.find("Location: ") == std::string::npos
+			&& headers.find("Status: ") == std::string::npos)) {
+		m_request.httpStatus = StatusInternalServerError;
+		handleErrorBody();
+		LOG_ERROR << "Invalid CGI response headers";
+		return;
 	}
+	
+	size_t lineStart = 0;
+	size_t lineEnd = headers.find("\r\n");
+
+	while (lineEnd != std::string::npos) {
+		std::string header = headers.substr(lineStart, lineEnd - lineStart);
+		const std::size_t delimiterPos = header.find_first_of(':');
+		if (delimiterPos != std::string::npos) {
+			std::string headerName = header.substr(0, delimiterPos);
+			webutils::lowercase(headerName);
+			std::string headerValue = header.substr(delimiterPos + 1);
+			headerValue = webutils::trimLeadingWhitespaces(headerValue);
+			webutils::trimTrailingWhiteSpaces(headerValue);
+			m_responseHeaders[headerName] = headerValue;
+			LOG_DEBUG << "Parsed response header: " << headerName << " -> " << headerValue;
+		}
+
+		lineStart = lineEnd + 2;
+		lineEnd = headers.find("\r\n", lineStart);
+	}
+	m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
 }
 
 /**
