@@ -464,6 +464,12 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 			}
 
 			if (request.chunkSize == 0) { // Zero chunk size indicates the end of the body
+				if (bodyBuffer.size() - request.currParsingPos != 2 || bodyBuffer.at(request.currParsingPos) != '\r'
+					|| bodyBuffer.at(request.currParsingPos + 1) != '\n') { // Check for final CRLF
+					request.httpStatus = StatusBadRequest;
+					request.shallCloseConnection = true;
+					throw std::runtime_error(ERR_MISS_CRLF);
+				}
 				request.isCompleteBody = true;
 				request.headers["content-length"] = webutils::toString(length);
 				LOG_DEBUG << "Successfully parsed chunked body";
