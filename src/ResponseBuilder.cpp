@@ -84,30 +84,30 @@ void ResponseBuilder::resetBuilder()
  */
 void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 {
-	if (!checkForCGIHeader("status"))
+	if (!checkForExistingHeader("status"))
 		m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' '
 							   << statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 
 	if (!m_responseBody.empty()) {
 		// Content-Type
-		if (!checkForCGIHeader("content-type"))
+		if (!checkForExistingHeader("content-type"))
 			m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
 		// Content-Length
-		if (!checkForCGIHeader("content-length"))
+		if (!checkForExistingHeader("content-length"))
 			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
 
 	// Server
-	if (!checkForCGIHeader("server"))
+	if (!checkForExistingHeader("server"))
 		m_responseHeaderStream << "Server: TriHard\r\n";
 
 	// Date
-	if (!checkForCGIHeader("date"))
+	if (!checkForExistingHeader("date"))
 		m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
 
 	// Location
-	checkForCGIHeader("location");
+	checkForExistingHeader("location");
 
 	// Various headers from response
 	if (request.httpStatus < StatusMovedPermanently) {
@@ -137,7 +137,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
  * @param headerName The name of the header to search for.
  * @return true if the header is found and processed, false otherwise.
  */
-bool ResponseBuilder::checkForCGIHeader(const std::string& headerName)
+bool ResponseBuilder::checkForExistingHeader(const std::string& headerName)
 {
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
 	if (iter != m_responseHeaders.end()) {
