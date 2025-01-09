@@ -133,7 +133,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 {
 	const size_t sizeCRLF = 2;
 	const size_t sizeCRLFCRLF = 4;
-	size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
+	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
 
