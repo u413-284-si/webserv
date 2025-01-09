@@ -54,11 +54,14 @@ void ResponseBodyHandler::execute()
 	}
 	if (m_request.hasCGI) {
 		m_responseBody = m_request.body;
-		if (m_responseBody.find("Content-Type: ") == std::string::npos) {
+		if (m_responseBody.find("Content-Type: ") != std::string::npos
+			|| m_responseBody.find("Location: ") != std::string::npos
+			|| m_responseBody.find("Status: ") != std::string::npos)
+			parseCGIResponseBody();
+		else {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
-		parseCGIResponseBody();
 		return;
 	}
 	if (m_request.hasAutoindex) {
