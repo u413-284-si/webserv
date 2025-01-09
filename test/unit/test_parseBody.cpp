@@ -122,3 +122,21 @@ TEST_F(ParseBodyTest, MissingCRInChunk)
 		},
 		std::runtime_error);
 }
+
+TEST_F(ParseBodyTest, MissingFinalCRLFInZeroChunk)
+{
+	// Arrange
+	request.isChunked = true;
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseChunkedBody("6\r\nhello \r\n6\r\nworld!\r\n0\r\n", request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
