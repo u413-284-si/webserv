@@ -71,8 +71,8 @@ void ResponseBuilder::resetBuilder()
 /**
  * @brief Appends the response status line and headers to the response header stream.
  *
- * This function constructs and appends the necessary HTTP status line and response headers to the response header stream
- * based on the provided HTTP request and the current state of the response.
+ * This function constructs and appends the necessary HTTP status line and response headers to the response header
+ * stream based on the provided HTTP request and the current state of the response.
  *
  * @param request The HTTP request object containing the request details.
  */
@@ -104,11 +104,9 @@ void ResponseBuilder::appendResponseHeader(const HTTPRequest& request)
 	checkForExistingHeader("location");
 
 	// Various headers from response
-	if (request.httpStatus < StatusMovedPermanently || request.hasCGIStatusBadRequest) {
-		for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
-			 iter != m_responseHeaders.end(); ++iter)
-			m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
-	}
+	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
+		 iter != m_responseHeaders.end(); ++iter)
+		m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
 
 	// Connection
 	if (request.shallCloseConnection)

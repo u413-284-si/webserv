@@ -10,6 +10,5 @@ HTTPRequest::HTTPRequest()
 	, hasAutoindex(false)
 	, hasCGI(false)
 	, hasReturn(false)
-	, hasCGIStatusBadRequest(false)
 {
 }

@@ -182,12 +182,10 @@ void ResponseBodyHandler::validateCGIResponseHeaders()
 	if (iter != m_responseHeaders.end()) {
 		m_request.httpStatus = extractStatusCode(iter->second);
 		if (m_request.httpStatus == StatusBadRequest) {
-			if (iter->second.find("400") != std::string::npos) {
-				m_request.hasCGIStatusBadRequest = true;
+			if (iter->second.find("400") != std::string::npos)
 				return;
-			}
 			handleErrorBody();
-			m_responseHeaders.erase(iter);
+			m_responseHeaders.clear();
 			LOG_ERROR << "Invalid Status header value encountered in CGI response";
 			return;
 		}
@@ -199,6 +197,7 @@ void ResponseBodyHandler::validateCGIResponseHeaders()
 		if (iter->second != "keep-alive" && iter->second != "close") {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
+			m_responseHeaders.clear();
 			LOG_ERROR << "Invalid Connection header value: " << iter->second;
 			return;
 		}

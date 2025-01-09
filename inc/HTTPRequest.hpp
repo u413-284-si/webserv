@@ -33,7 +33,6 @@ struct HTTPRequest {
 	bool hasAutoindex;
 	bool hasCGI;
 	bool hasReturn;
-	bool hasCGIStatusBadRequest;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
