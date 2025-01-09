@@ -24,7 +24,7 @@ def generate_chunks():
     yield "First chunk of data".encode("utf-8")
     yield "Second chunk of\n data".encode("utf-8")
     yield "Third chunk of data".encode("utf-8")
-
+    
 def test_POST_chunked_encoding():
     print("Chunked Request for /uploads/testfile_chunked.txt")
 
@@ -39,6 +39,26 @@ def test_POST_chunked_encoding():
     # Delete created file
     os.remove(dst_file_path)
 
+def generate_chunks_with_zero_chunk():
+    yield ("A"*8000).encode("utf-8") # ensure clientHeader buffer size is reached
+    yield "Hello 0\r\n\r\nWorld".encode("utf-8") # contains "zero chunk"
+    yield ("A"*8000).encode("utf-8") # ensure clientBody buffer size is reached
+    yield ("A"*8000).encode("utf-8")
+
+def test_POST_chunked_encoding_with_zero_chunk():
+    print("Chunked Request with zero chunk for /uploads/testfile_chunked.txt")
+
+    dst_file_path = "/workspaces/webserv/html/uploads/testfile_chunked.txt"
+
+    response = requests.post("http://localhost:8080/uploads/testfile_chunked.txt", data=generate_chunks_with_zero_chunk())
+
+    assert response.status_code == 201
+    assert response.headers["location"] == "/uploads/testfile_chunked.txt"
+    # Check if file exists
+    assert os.path.isfile(dst_file_path)
+    # Delete created file
+    os.remove(dst_file_path)
+    
 def test_POST_bigger_file():
     print("Request for /uploads/butterfly.jpg")
 
