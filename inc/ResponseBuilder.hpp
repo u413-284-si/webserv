@@ -23,14 +23,13 @@
  */
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(
-		const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy);
 
 	void buildResponse(Connection& connection);
 	std::string getResponse() const;
 
 private:
-	void appendHeaders(const HTTPRequest& request);
+	void appendResponseHeader(const HTTPRequest& request);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void resetBuilder();

@@ -46,7 +46,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
 	responseBodyHandler.execute();
-	appendHeaders(request);
+	appendResponseHeader(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
 
@@ -69,18 +69,14 @@ void ResponseBuilder::resetBuilder()
 }
 
 /**
- * @brief Append CGI headers to the response.
+ * @brief Appends the response status line and headers to the response header stream.
  *
- * The following headers are appended:
- * - Content-Type: MIME type of the target resource (only if response has body)
- * - Content-Length: Length of the response body (only if response has body)
- * - Server: TriHard.
- * - Date: Current date in GMT.
- * - Location: Target resource if status is StatusMovedPermanently.
- * Delimiter.
- * @param request HTTP request.
+ * This function constructs and appends the necessary HTTP status line and response headers to the response header stream
+ * based on the provided HTTP request and the current state of the response.
+ *
+ * @param request The HTTP request object containing the request details.
  */
-void ResponseBuilder::appendHeaders(const HTTPRequest& request)
+void ResponseBuilder::appendResponseHeader(const HTTPRequest& request)
 {
 	if (!checkForExistingHeader("status"))
 		m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' '
