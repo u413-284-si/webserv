@@ -151,7 +151,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCGIRequested(Connection& connection);
 void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
 void handleBody(Server& server, int activeFd, Connection& connection);
-bool isCompleteBody(Connection& connection);
 void connectionSendToCGI(Server& server, int activeFd, Connection& connection);
 void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection);
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection);

@@ -1160,6 +1160,9 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
  */
 void handleBody(Server& server, int activeFd, Connection& connection)
 {
+	if (!connection.m_request.isChunked && connection.m_request.contentLength == connection.m_buffer.size())
+		connection.m_request.isCompleteBody = true;
+
 	if (connection.m_request.isChunked) {
 		try {
 			server.parseChunkedBody(connection.m_buffer, connection.m_request);
@@ -1168,7 +1171,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		}
 	}
 
-	if (isCompleteBody(connection)) {
+	if (connection.m_request.isCompleteBody) {
 		LOG_DEBUG << "Received complete request body";
 		// Printing body can be confusing for big files.
 		// LOG_DEBUG << connection.m_buffer;
@@ -1207,27 +1210,6 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
 	}
-}
-
-/**
- * @brief Checks if the HTTP request body has been completely received.
- *
- * This function determines whether the HTTP request body in the given connection
- * has been completely received. If the request is not chunked, it checks whether
- * the content length matches the buffer size. In case the buffer size is larger than
- * the content length, the request status is set to StatusBadRequest.
- * If the request is chunked, it checks for the presence of the chunked transfer
- * termination sequence ("0\r\n\r\n").
- *
- * @param connection A reference to the Connection object representing the current HTTP connection.
- * @return true if the request body has been completely received, false otherwise.
- */
-bool isCompleteBody(Connection& connection)
-{
-	if (!connection.m_request.isChunked) {
-		return connection.m_request.contentLength == connection.m_buffer.size();
-	}
-	return connection.m_request.isCompleteBody;
 }
 
 /**
