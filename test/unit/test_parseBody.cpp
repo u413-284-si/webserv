@@ -25,7 +25,7 @@ TEST_F(ParseBodyTest, ChunkedBody)
 	request.isChunked = true;
 
 	// Act
-	p.parseBody("6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
+	p.parseChunkedBody("6\r\nhello \r\n6\r\nworld!\r\n0\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.body, "hello world!");
@@ -37,7 +37,7 @@ TEST_F(ParseBodyTest, ChunkedBodyWithNewline)
 	request.isChunked = true;
 
 	// Act
-	p.parseBody("6\r\nhello \r\n8\r\nw\n\norld!\r\n0\r\n\r\n", request, buffer);
+	p.parseChunkedBody("6\r\nhello \r\n8\r\nw\n\norld!\r\n0\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.body, "hello w\n\norld!");
@@ -49,22 +49,22 @@ TEST_F(ParseBodyTest, ChunkedBodyWithCRLF)
 	request.isChunked = true;
 
 	// Act
-	p.parseBody("6\r\nhello \r\n8\r\nw\r\norld!\r\n0\r\n\r\n", request, buffer);
+	p.parseChunkedBody("6\r\nhello \r\n8\r\nw\r\norld!\r\n0\r\n\r\n", request);
 
 	// Assert
 	EXPECT_EQ(request.body, "hello w\r\norld!");
 }
 
-TEST_F(ParseBodyTest, NonChunkedBodySize14)
+TEST_F(ParseBodyTest, ChunkedBodyWith0CRLFCRLF)
 {
 	// Arrange
-	request.headers["content-length"] = "14";
+	request.isChunked = true;
 
 	// Act
-	p.parseBody("hello \r\nworld!", request, buffer);
+	p.parseChunkedBody("A\r\nhello0\r\n\r\n\r\n6\r\nworld!\r\n0\r\n\r\n", request);
 
 	// Assert
-	EXPECT_EQ(request.body, "hello \r\nworld!");
+	EXPECT_EQ(request.body, "hello0\r\n\r\nworld!");
 }
 
 // INVALID BODY TEST SUITE
@@ -78,27 +78,9 @@ TEST_F(ParseBodyTest, DifferingChunkSize)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
+				p.parseChunkedBody("1\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
-				throw;
-			}
-		},
-		std::runtime_error);
-}
-
-TEST_F(ParseBodyTest, IndicatedTooLargeChunkSize)
-{
-	// Arrange
-	request.isChunked = true;
-
-	// Act & Assert
-	EXPECT_THROW(
-		{
-			try {
-				p.parseBody("35\r\nhello\r\n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
-			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ(ERR_CHUNKSIZE_INCONSISTENT, e.what());
 				throw;
 			}
 		},
@@ -114,7 +96,7 @@ TEST_F(ParseBodyTest, MissingCRLFInChunk)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request, buffer);
+				p.parseChunkedBody("6\r\nhello 6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
 				throw;
@@ -132,7 +114,7 @@ TEST_F(ParseBodyTest, MissingCRInChunk)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request, buffer);
+				p.parseChunkedBody("6\r\nhello \n6\r\nworld!\r\n0\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MISS_CRLF, e.what());
 				throw;

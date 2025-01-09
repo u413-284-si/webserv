@@ -7,11 +7,9 @@ protected:
 	MultipartFormdataTest()
 		: request()
 	{
-		request.hasMultipartFormdata = false;
 	}
 	~MultipartFormdataTest() override { }
 
-	std::vector<char> m_buffer;
 	RequestParser p;
 	HTTPRequest request;
 };
@@ -52,17 +50,16 @@ TEST_F(MultipartFormdataTest, ParseHeaderNoBoundary)
 TEST_F(MultipartFormdataTest, DecodeBody)
 {
 	// Arrange
-	request.hasMultipartFormdata = true;
 	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
-	const std::string bodyString
+	request.body
 		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
 		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
 		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
 		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 	// Act
-	p.parseBody(bodyString, request, m_buffer);
+	p.decodeMultipartFormdata(request);
 
 	// Assert
 	EXPECT_EQ(request.targetResource, "/workspaces/webserv/html/uploads/darkknight.txt");
@@ -75,7 +72,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
 	request.hasMultipartFormdata = true;
 	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
-	const std::string bodyString
+	request.body
 		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
 		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\";"
@@ -86,7 +83,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody(bodyString, request, m_buffer);
+				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
 				EXPECT_EQ(request.shallCloseConnection, true);
@@ -102,7 +99,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoContentType)
 	request.hasMultipartFormdata = true;
 	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
-	const std::string bodyString
+	request.body
 		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
 		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
@@ -113,7 +110,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoContentType)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody(bodyString, request, m_buffer);
+				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
 				EXPECT_EQ(request.shallCloseConnection, true);
@@ -129,7 +126,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoCRLFCRLF)
 	request.hasMultipartFormdata = true;
 	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
-	const std::string bodyString
+	request.body
 		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
 		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
@@ -140,7 +137,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoCRLFCRLF)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody(bodyString, request, m_buffer);
+				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
 				EXPECT_EQ(request.shallCloseConnection, true);
@@ -156,7 +153,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
 	request.hasMultipartFormdata = true;
 	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
-	const std::string bodyString
+	request.body
 		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
 		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
@@ -167,7 +164,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
 	EXPECT_THROW(
 		{
 			try {
-				p.parseBody(bodyString, request, m_buffer);
+				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
 				EXPECT_EQ(request.shallCloseConnection, true);
