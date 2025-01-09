@@ -429,105 +429,69 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 /* ====== BODY PARSING ====== */
 
 /**
- * @brief Parses the body of an HTTP request.
+ * @brief Parses the chunked body of an HTTP request.
  *
- * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
- * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
- * is chunked or is encoded in multipart-formdata.
+ * This function processes the chunked transfer encoding body of the provided HTTP request.
+ * It handles partial chunk sizes and chunk data, retaining the last parsed position between calls.
+ * The function updates the request body as chunks are parsed and sets the appropriate HTTP status
+ * if any errors are encountered.
  *
- * @param bodyString The string representation of the request body.
- * @param request The HTTPRequest object to populate with the parsed data.
- * @param buffer The buffer to temporarily store the chunked body data.
- * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
- * message.
+ * @param bodyBuffer The buffer containing the chunked body data.
+ * @param request The HTTP request object to be filled with the parsed body data.
+ * @throws std::runtime_error if the chunk size is too large or if the chunk data is malformed.
  */
-void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer)
-{
-	m_requestStream.str(bodyString);
-	if (request.isChunked)
-		parseChunkedBody(request, buffer);
-	else
-		request.body += bodyString;
-	
-	resetRequestStream();
-}
-
-/**
- * @brief Parses a chunked body from the provided input stream.
- *
- * This function reads and processes the chunked transfer encoding format from the input stream.
- * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
- * request body, and handles any formatting errors. The actual body size is stored in the header
- * entry "Content-Length".
- *
- * @param request The HTTP request object to be filled.
- * @param buffer The buffer to temporarily store the chunked body data.
- * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
- *
- * Error codes:
- * - ERR_MISS_CRLF: Thrown when a line does not end with a CRLF.
- * - ERR_CHUNK_SIZE: Thrown when the chunk size does not match the specified size.
- *
- * Example usage:
- * @code
- * std::istringstream requestStream("4\r\nWiki\r\n5\r\npedia\r\n0\r\n\r\n");
- * RequestParser parser;
- * parser.parseChunkedBody(requestStream);
- * @endcode
- */
-void RequestParser::parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer)
+void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
 {
 	LOG_DEBUG << "Parsing chunked body...";
-
 	size_t length = 0;
-	std::string strChunkSize;
-	size_t numChunkSize = 0;
 
-	do {
-		std::getline(m_requestStream, strChunkSize);
-		if (!strChunkSize.empty() && strChunkSize[strChunkSize.size() - 1] == '\r')
-			strChunkSize.erase(strChunkSize.size() - 1);
-		else {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_MISS_CRLF);
-		}
+	while (request.currParsingPos < bodyBuffer.size()) {
 
-		numChunkSize = convertHex(strChunkSize);
-		if (numChunkSize > s_maxChunkSize) {
-			request.httpStatus = StatusRequestEntityTooLarge;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
-		}
+		// Step 1: Parse chunk size
+		if (request.chunkSize == -1) { // Not currently parsing a chunk
+			size_t newlinePos = bodyBuffer.find("\r\n", request.currParsingPos);
+			if (newlinePos == std::string::npos) // Incomplete chunk size indication, wait for more data
+				return;
 
-		if (buffer.capacity() < numChunkSize + 2)
-			buffer.resize(numChunkSize + 2);
+			std::string strChunkSize = bodyBuffer.substr(request.currParsingPos, newlinePos - request.currParsingPos);
+			request.currParsingPos = newlinePos + 2; // Move past \r\n
 
-		errno = 0;
-		m_requestStream.read(buffer.data(), static_cast<long>(numChunkSize + 2));
-		if (m_requestStream.gcount() != static_cast<std::streamsize>(numChunkSize + 2)) {
-			if (!m_requestStream.good() && !m_requestStream.eof()) {
-				request.httpStatus = StatusInternalServerError;
-				throw std::runtime_error("read(): " + std::string(strerror(errno)));
+			request.chunkSize = convertHex(strChunkSize);
+			if (request.chunkSize > s_maxChunkSize) {
+				request.httpStatus = StatusRequestEntityTooLarge;
+				request.shallCloseConnection = true;
+				throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
 			}
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_CHUNKSIZE_INCONSISTENT);
+
+			if (request.chunkSize == 0) { // Zero chunk size indicates the end of the body
+				request.isCompleteBody = true;
+				request.headers["content-length"] = webutils::toString(length);
+				LOG_DEBUG << "Successfully parsed chunked body";
+				return;
+			}
 		}
 
-		if (buffer.at(numChunkSize) == '\r' && buffer.at(numChunkSize + 1) == '\n') {
-			request.body.append(buffer.data(), numChunkSize);
-		} else {
+		// Step 2: Parse chunk data
+		size_t remainingData = bodyBuffer.size() - request.currParsingPos;
+		size_t requiredData = request.chunkSize + 2; // Chunk data + \r\n
+
+		if (remainingData < requiredData) // Incomplete chunk data, wait for more data
+			return;
+
+		if (bodyBuffer.at(request.currParsingPos + request.chunkSize) != '\r'
+			|| bodyBuffer.at(request.currParsingPos + request.chunkSize + 1) != '\n') {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 
-		length += numChunkSize;
-	} while (numChunkSize > 0);
-	request.headers["content-length"] = webutils::toString(length);
+		request.body.append(bodyBuffer, request.currParsingPos, request.chunkSize);
+		request.currParsingPos += requiredData; // Move past the current chunk
+		length += request.chunkSize;
 
-	LOG_DEBUG << "Successfully parsed chunked body";
+		// Reset for next chunk
+		request.chunkSize = -1;
+	}
 }
 
 /**
@@ -560,8 +524,6 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 
 	request.body = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
 }
-
-
 
 /* ====== CHECKS ====== */
 
@@ -994,12 +956,12 @@ bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
  * validates it, and converts it to a size_t value.
  *
  * @param chunkSize The string containing the hexadecimal number.
- * @return The converted size_t value.
+ * @return The converted long value.
  *
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-size_t RequestParser::convertHex(const std::string& chunkSize)
+long RequestParser::convertHex(const std::string& chunkSize)
 {
 	if (chunkSize.empty())
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
@@ -1010,11 +972,13 @@ size_t RequestParser::convertHex(const std::string& chunkSize)
 	}
 
 	std::istringstream iss(chunkSize);
-	size_t value = 0;
+	long value = 0;
 
 	iss >> std::hex >> value;
 	if (iss.fail())
 		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+
+	LOG_DEBUG << "Converted hex value: " << value;
 	return value;
 }
 

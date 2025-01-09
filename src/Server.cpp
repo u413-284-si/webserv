@@ -446,12 +446,11 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
 /**
  * @brief Wrapper function to RequestParser::parseBody.
  *
- * @param bodyString The body string to parse.
  * @param request The HTTPRequest object to store the parsed body.
  */
-void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
+void Server::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
 {
-	m_requestParser.parseBody(bodyString, request, getBuffer());
+	RequestParser::parseChunkedBody(bodyBuffer, request);
 }
 
 /**
@@ -1161,16 +1160,21 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
  */
 void handleBody(Server& server, int activeFd, Connection& connection)
 {
-	try {
-		server.parseBody(connection.m_buffer, connection.m_request);
-	} catch (std::exception& e) {
-		LOG_ERROR << e.what();
+	if (connection.m_request.isChunked) {
+		try {
+			server.parseChunkedBody(connection.m_buffer, connection.m_request);
+		} catch (std::exception& e) {
+			LOG_ERROR << e.what();
+		}
 	}
 
 	if (isCompleteBody(connection)) {
 		LOG_DEBUG << "Received complete request body";
 		// Printing body can be confusing for big files.
 		// LOG_DEBUG << connection.m_buffer;
+		if (!connection.m_request.isChunked)
+			connection.m_request.body = connection.m_buffer;
+
 		if (connection.m_request.hasMultipartFormdata)
 			server.decodeMultipartFormdata(connection.m_request);
 
@@ -1183,7 +1187,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
 		// LOG_DEBUG << connection.m_buffer;
-		if (connection.m_request.httpStatus == StatusBadRequest) {
+		if (connection.m_request.httpStatus != StatusOK) {
 			connection.m_status = Connection::BuildResponse;
 			connection.m_request.shallCloseConnection = true;
 			server.modifyEvent(activeFd, EPOLLOUT);

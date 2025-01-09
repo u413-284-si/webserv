@@ -24,6 +24,8 @@ struct HTTPRequest {
 	std::string version;
 	std::map<std::string, std::string> headers;
 	std::string body;
+	size_t currParsingPos;
+	long chunkSize;
 	unsigned long contentLength;
 	statusCode httpStatus;
 	bool shallCloseConnection;
