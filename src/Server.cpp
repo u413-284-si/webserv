@@ -27,7 +27,7 @@ Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const S
 	, m_processOps(processOps)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
-	, m_responseBuilder(m_fileSystemPolicy, m_responseHeaders)
+	, m_responseBuilder(m_fileSystemPolicy)
 	, m_targetResourceHandler(m_fileSystemPolicy)
 {
 }
@@ -135,15 +135,6 @@ std::vector<char>& Server::getClientBodyBuffer() { return m_clientBodyBuffer; }
  * @return std::vector<char>& CGI body buffer.
  */
 std::vector<char>& Server::getCGIBodyBuffer() { return m_cgiBodyBuffer; }
-
-/**
- * @brief Retrieves the response headers.
- *
- * This function returns a reference to the map containing the response headers.
- *
- * @return A reference to the map of response headers.
- */
-std::map<std::string, std::string>& Server::getResponseHeaders() { return m_responseHeaders; }
 
 /* ====== SETTERS ====== */
 
@@ -999,9 +990,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	LOG_DEBUG << "Active server: " << connection.m_serverSocket;
 
 	server.findTargetResource(connection);
-
-	if (isRedirectionStatus(connection.m_request.httpStatus))
-		server.getResponseHeaders()["location"] = connection.m_request.targetResource;
 
 	if (connection.m_request.hasReturn) {
 		connection.m_status = Connection::BuildResponse;

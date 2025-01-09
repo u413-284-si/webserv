@@ -6,9 +6,8 @@
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
 ResponseBuilder::ResponseBuilder(
-	const FileSystemPolicy& fileSystemPolicy, std::map<std::string, std::string>& responseHeaders)
+	const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
-	, m_responseHeaders(responseHeaders)
 {
 	initMIMETypes();
 }

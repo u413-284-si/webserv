@@ -74,7 +74,6 @@ public:
 	std::vector<char>& getClientHeaderBuffer();
 	std::vector<char>& getClientBodyBuffer();
 	std::vector<char>& getCGIBodyBuffer();
-	std::map<std::string, std::string>& getResponseHeaders();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
@@ -129,7 +128,6 @@ private:
 	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
 	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
 	std::vector<char> m_cgiBodyBuffer; /**< Buffer for reading CGI response body */
-	std::map<std::string, std::string> m_responseHeaders; /**< Response headers */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
