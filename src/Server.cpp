@@ -116,25 +116,11 @@ const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_con
 time_t Server::getClientTimeout() const { return m_clientTimeout; }
 
 /**
- * @brief Getter for client header buffer.
+ * @brief Getter for internal buffer.
  *
- * @return std::vector<char>& Client header buffer.
+ * @return std::vector<char>& buffer.
  */
-std::vector<char>& Server::getClientHeaderBuffer() { return m_clientHeaderBuffer; }
-
-/**
- * @brief Getter for client body buffer.
- *
- * @return std::vector<char>& Client body buffer.
- */
-std::vector<char>& Server::getClientBodyBuffer() { return m_clientBodyBuffer; }
-
-/**
- * @brief Getter for CGI body buffer.
- *
- * @return std::vector<char>& CGI body buffer.
- */
-std::vector<char>& Server::getCGIBodyBuffer() { return m_cgiBodyBuffer; }
+std::vector<char>& Server::getBuffer() { return m_buffer; }
 
 /* ====== SETTERS ====== */
 
@@ -460,13 +446,19 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
 /**
  * @brief Wrapper function to RequestParser::parseBody.
  *
- * @param bodyString The body string to parse.
  * @param request The HTTPRequest object to store the parsed body.
  */
-void Server::parseBody(const std::string& bodyString, HTTPRequest& request)
+void Server::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
 {
-	m_requestParser.parseBody(bodyString, request);
+	RequestParser::parseChunkedBody(bodyBuffer, request);
 }
+
+/**
+ * @brief Wrapper function to RequestParser::decodeMultipartFormdata.
+ *
+ * @param request The HTTP request containing the multipart/form-data content to decode.
+ */
+void Server::decodeMultipartFormdata(HTTPRequest& request) { m_requestParser.decodeMultipartFormdata(request); }
 
 /**
  * @brief Wrapper function to RequestParser::clearParser.
@@ -887,10 +879,9 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		return;
 	LOG_DEBUG << "Receive Request Header for: " << connection.m_clientSocket;
 
-	std::vector<char>& buffer = server.getClientHeaderBuffer();
+	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientHeaderBufferSize)
 		buffer.resize(Server::s_clientHeaderBufferSize);
-	buffer.clear();
 
 	const size_t bytesToRead = Server::s_clientHeaderBufferSize - connection.m_buffer.size();
 	LOG_DEBUG << "Bytes to read: " << bytesToRead;
@@ -978,6 +969,14 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		return;
 	}
 
+	if (connection.m_request.contentLength > connection.location->maxBodySize) {
+		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		connection.m_request.shallCloseConnection = true;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
 	std::map<std::string, std::string>::iterator iter = connection.m_request.headers.find("host");
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
@@ -1002,6 +1001,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	// Allow for non-existing files when POST is used
 	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusNotFound)
+		connection.m_request.httpStatus = StatusOK;
+
+	// Allow access to directories w/o autoindex when POST is used
+	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusForbidden)
 		connection.m_request.httpStatus = StatusOK;
 
 	// Allow directories to be deleted
@@ -1032,6 +1035,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			connection.m_request.httpStatus = StatusInternalServerError;
 		}
 	}
+
+	LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
@@ -1106,12 +1111,15 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 		return;
 	LOG_DEBUG << "Receive Body for: " << connection.m_clientSocket;
 
-	std::vector<char>& buffer = server.getClientBodyBuffer();
+	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_clientBodyBufferSize)
 		buffer.resize(Server::s_clientBodyBufferSize);
-	buffer.clear();
 
-	const size_t bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
+	size_t bytesAvailable = 0;
+	if (!connection.m_request.isChunked && connection.m_request.contentLength + 1 < connection.location->maxBodySize)
+		bytesAvailable = connection.m_request.contentLength - connection.m_buffer.size();
+	else
+		bytesAvailable = connection.location->maxBodySize - connection.m_buffer.size();
 	size_t bytesToRead = Server::s_clientBodyBufferSize;
 	if (bytesAvailable <= Server::s_clientBodyBufferSize)
 		bytesToRead -= bytesAvailable;
@@ -1152,15 +1160,27 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
  */
 void handleBody(Server& server, int activeFd, Connection& connection)
 {
-	if (isCompleteBody(connection)) {
-		LOG_DEBUG << "Received complete request body";
-		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
+	if (!connection.m_request.isChunked && connection.m_request.contentLength == connection.m_buffer.size())
+		connection.m_request.isCompleteBody = true;
+
+	if (connection.m_request.isChunked) {
 		try {
-			server.parseBody(connection.m_buffer, connection.m_request);
+			server.parseChunkedBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
 		}
+	}
+
+	if (connection.m_request.isCompleteBody) {
+		LOG_DEBUG << "Received complete request body";
+		// Printing body can be confusing for big files.
+		// LOG_DEBUG << connection.m_buffer;
+		if (!connection.m_request.isChunked)
+			connection.m_request.body = connection.m_buffer;
+
+		if (connection.m_request.hasMultipartFormdata)
+			server.decodeMultipartFormdata(connection.m_request);
+
 		if (connection.m_request.hasCGI)
 			connection.m_status = Connection::SendToCGI;
 		else
@@ -1169,10 +1189,10 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
-		//LOG_DEBUG << connection.m_buffer;
-		if (connection.m_request.httpStatus == StatusBadRequest) {
-			LOG_ERROR << ERR_CONTENT_LENGTH;
+		// LOG_DEBUG << connection.m_buffer;
+		if (connection.m_request.httpStatus != StatusOK) {
 			connection.m_status = Connection::BuildResponse;
+			connection.m_request.shallCloseConnection = true;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
@@ -1180,39 +1200,16 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
-		}
-	}
-}
-
-/**
- * @brief Checks if the HTTP request body has been completely received.
- *
- * This function determines whether the HTTP request body in the given connection
- * has been completely received. If the request is not chunked, it checks whether
- * the content length matches the buffer size. In case the buffer size is larger than
- * the content length, the request status is set to StatusBadRequest.
- * If the request is chunked, it checks for the presence of the chunked transfer
- * termination sequence ("0\r\n\r\n").
- *
- * @param connection A reference to the Connection object representing the current HTTP connection.
- * @return true if the request body has been completely received, false otherwise.
- */
-bool isCompleteBody(Connection& connection)
-{
-	if (!connection.m_request.isChunked) {
-		unsigned long contentLength
-			= std::strtoul(connection.m_request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
-		if (contentLength < connection.m_buffer.size()) {
+		} else if (!connection.m_request.isChunked && connection.m_request.contentLength < connection.m_buffer.size()) {
 			LOG_ERROR << ERR_CONTENT_LENGTH;
-			LOG_ERROR << "Content-Length: " << contentLength << ", Buffer size: " << connection.m_buffer.size();
+			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength
+					  << ", Buffer size: " << connection.m_buffer.size();
 			connection.m_request.httpStatus = StatusBadRequest;
 			connection.m_request.shallCloseConnection = true;
-			return false;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
 		}
-		if (contentLength == connection.m_buffer.size())
-			return true;
 	}
-	return connection.m_buffer.find("0\r\n\r\n") != std::string::npos;
 }
 
 /**
@@ -1298,10 +1295,9 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
-	std::vector<char>& buffer = server.getCGIBodyBuffer();
+	std::vector<char>& buffer = server.getBuffer();
 	if (buffer.capacity() < Server::s_cgiBodyBufferSize)
 		buffer.resize(Server::s_cgiBodyBufferSize);
-	buffer.clear();
 
 	const ssize_t bytesRead
 		= server.readProcess(connection.m_pipeFromCGIReadEnd, &buffer[0], Server::s_cgiBodyBufferSize);

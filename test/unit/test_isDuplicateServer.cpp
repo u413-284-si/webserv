@@ -3,26 +3,26 @@
 
 #include "ConfigFile.hpp"
 #include "MockEpollWrapper.hpp"
-#include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
+#include "MockSocketPolicy.hpp"
 #include "Server.hpp"
 
-using ::testing::Return;
 using ::testing::NiceMock;
+using ::testing::Return;
 
 class isDuplicateServerTest : public ::testing::Test {
-	protected:
-	isDuplicateServerTest() : server(configFile, epollWrapper, socketPolicy, processOps)
+protected:
+	isDuplicateServerTest()
+		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
-		ON_CALL(epollWrapper, addEvent)
-		.WillByDefault(Return(true));
+		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 	}
 	~isDuplicateServerTest() override { }
 
 	ConfigFile configFile;
 	NiceMock<MockEpollWrapper> epollWrapper;
 	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
+	MockProcessOps processOps;
 	Server server;
 };
 

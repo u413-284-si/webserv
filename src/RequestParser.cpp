@@ -10,6 +10,26 @@ RequestParser::RequestParser() { }
 
 /* ====== GETTERS/SETTERS ====== */
 
+/**
+ * @brief Retrieves the boundary string used in multipart/form-data requests.
+ *
+ * This function returns the boundary string that is used to separate parts
+ * in a multipart/form-data request.
+ *
+ * @return A constant reference to the boundary string.
+ */
+const std::string& RequestParser::getBoundary() const { return m_boundary; }
+
+/**
+ * @brief Sets the boundary string used in multipart/form-data requests.
+ *
+ * This function sets the boundary string that is used to separate parts
+ * in a multipart/form-data request.
+ *
+ * @param boundary The boundary string to be set.
+ */
+void RequestParser::setBoundary(const std::string& boundary) { m_boundary = boundary; }
+
 /* ====== MEMBER FUNCTIONS ====== */
 
 /**
@@ -29,30 +49,38 @@ void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& re
 	m_requestStream.str(headerString);
 	parseRequestLine(request);
 	parseHeaders(request);
+	if (isMultipartFormdata(request))
+		extractBoundary(request);
 	resetRequestStream();
 }
 
 /**
- * @brief Parses the body of an HTTP request.
+ * @brief Extracts the boundary string from the Content-Type header of an HTTP request.
  *
- * This function is responsible for parsing the body of an HTTP request. It takes a string representation of the body
- * and populates the provided HTTPRequest object with the parsed data. The parsing logic depends on whether the request
- * is chunked or non-chunked.
+ * This function extracts the boundary string used in multipart/form-data requests
+ * from the Content-Type header of the provided HTTP request. If the boundary string
+ * is not found, it sets the HTTP status to Bad Request and indicates that the connection
+ * should be closed.
  *
- * @param bodyString The string representation of the request body.
- * @param request The HTTPRequest object to populate with the parsed data.
- *
- * @throws std::runtime_error If there is an error parsing the body, an exception is thrown with an appropriate error
- * message.
+ * @param request The HTTP request from which to extract the boundary string.
+ * @throws std::runtime_error if the boundary string is not found in the Content-Type header.
  */
-void RequestParser::parseBody(const std::string& bodyString, HTTPRequest& request)
+void RequestParser::extractBoundary(HTTPRequest& request)
 {
-	m_requestStream.str(bodyString);
-	if (request.isChunked)
-		parseChunkedBody(request);
-	else
-		parseNonChunkedBody(request);
-	resetRequestStream();
+	const std::string denominator = "boundary=----";
+
+	std::string temp = request.headers.at("content-type");
+	size_t posBoundary = temp.find(denominator);
+
+	if (posBoundary == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
+	}
+
+	m_boundary = temp.substr(posBoundary + denominator.size());
+
+	LOG_DEBUG << "Extracted boundary string: " << m_boundary;
 }
 
 /**
@@ -401,111 +429,133 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 /* ====== BODY PARSING ====== */
 
 /**
- * @brief Parses a chunked body from the provided input stream.
+ * @brief Parses the chunked body of an HTTP request.
  *
- * This function reads and processes the chunked transfer encoding format from the input stream.
- * It reads chunks of data prefixed by their size in hexadecimal format, appends the data to the
- * request body, and handles any formatting errors. The actual body size is stored in the header
- * entry "Content-Length".
+ * This function processes the chunked transfer encoding body of the provided HTTP request.
+ * It handles partial chunk sizes and chunk data, retaining the last parsed position between calls.
+ * The function updates the request body as chunks are parsed and sets the appropriate HTTP status
+ * if any errors are encountered.
  *
- * @param request The HTTP request object to be filled.
- * @throws std::runtime_error If the chunked body format is invalid (missing CRLF or incorrect chunk size).
- *
- * Error codes:
- * - ERR_MISS_CRLF: Thrown when a line does not end with a CRLF.
- * - ERR_CHUNK_SIZE: Thrown when the chunk size does not match the specified size.
- *
- * Example usage:
- * @code
- * std::istringstream requestStream("4\r\nWiki\r\n5\r\npedia\r\n0\r\n\r\n");
- * RequestParser parser;
- * parser.parseChunkedBody(requestStream);
- * @endcode
+ * @param bodyBuffer The buffer containing the chunked body data.
+ * @param request The HTTP request object to be filled with the parsed body data.
+ * @throws std::runtime_error if the chunk size is too large or if the chunk data is malformed.
  */
-void RequestParser::parseChunkedBody(HTTPRequest& request)
+void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
 {
+	LOG_DEBUG << "Parsing chunked body...";
 	size_t length = 0;
-	std::string strChunkSize;
-	std::string chunkData;
-	size_t numChunkSize = 0;
 
-	do {
-		std::getline(m_requestStream, strChunkSize);
-		if (strChunkSize[strChunkSize.size() - 1] == '\r')
-			strChunkSize.erase(strChunkSize.size() - 1);
-		else {
+	while (request.currParsingPos < bodyBuffer.size()) {
+
+		// Step 1: Parse chunk size
+		if (request.chunkSize == -1) { // Not currently parsing a chunk
+			size_t newlinePos = bodyBuffer.find("\r\n", request.currParsingPos);
+			if (newlinePos == std::string::npos) // Incomplete chunk size indication, wait for more data
+				return;
+
+			std::string strChunkSize = bodyBuffer.substr(request.currParsingPos, newlinePos - request.currParsingPos);
+			request.currParsingPos = newlinePos + 2; // Move past \r\n
+
+			request.chunkSize = convertHex(strChunkSize);
+			if (request.chunkSize > s_maxChunkSize) {
+				request.httpStatus = StatusRequestEntityTooLarge;
+				request.shallCloseConnection = true;
+				throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
+			}
+
+			if (request.chunkSize == 0) { // Zero chunk size indicates the end of the body
+				if (bodyBuffer.size() - request.currParsingPos != 2 || bodyBuffer.at(request.currParsingPos) != '\r'
+					|| bodyBuffer.at(request.currParsingPos + 1) != '\n') { // Check for final CRLF
+					request.httpStatus = StatusBadRequest;
+					request.shallCloseConnection = true;
+					throw std::runtime_error(ERR_MISS_CRLF);
+				}
+				request.isCompleteBody = true;
+				request.headers["content-length"] = webutils::toString(length);
+				LOG_DEBUG << "Successfully parsed chunked body";
+				return;
+			}
+		}
+
+		// Step 2: Parse chunk data
+		size_t remainingData = bodyBuffer.size() - request.currParsingPos;
+		size_t requiredData = request.chunkSize + 2; // Chunk data + \r\n
+
+		if (remainingData < requiredData) // Incomplete chunk data, wait for more data
+			return;
+
+		if (bodyBuffer.at(request.currParsingPos + request.chunkSize) != '\r'
+			|| bodyBuffer.at(request.currParsingPos + request.chunkSize + 1) != '\n') {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
-		numChunkSize = convertHex(strChunkSize);
-		std::getline(m_requestStream, chunkData);
-		if (chunkData[chunkData.size() - 1] == '\r')
-			chunkData.erase(chunkData.size() - 1);
-		else {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_MISS_CRLF);
-		}
-		if (chunkData.size() != numChunkSize) {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_CHUNK_SIZE);
-		}
-		request.body += chunkData;
-		length += numChunkSize;
-	} while (numChunkSize > 0);
-	request.headers["content-length"] = webutils::toString(length);
+
+		request.body.append(bodyBuffer, request.currParsingPos, request.chunkSize);
+		request.currParsingPos += requiredData; // Move past the current chunk
+		length += request.chunkSize;
+
+		// Reset for next chunk
+		request.chunkSize = -1;
+	}
 }
 
 /**
- * @brief Parses a non-chunked body from the provided input stream.
+ * @brief Decodes the multipart/form-data content of an HTTP request.
  *
- * This function reads the entire body from the input stream, ensuring that the
- * total length of the body matches the "Content-Length" header specified in the request.
- * It processes each line, removing trailing carriage returns and concatenates
- * the lines to form the complete body.
+ * This function processes the multipart/form-data content of the provided HTTP request.
+ * It extracts the filename and appends it to the target resource.
+ * The extracted content from the request body is then stored back into the request body.
  *
- * @param request The HTTP request object to be filled.
- * @throws std::runtime_error If there is an error converting the "Content-Length" header
- *                            to a size_t or if the body length does not match the "Content-Length" value.
- *
- * Error codes:
- * - ERR_CONVERSION_STRING_TO_SIZE_T: Thrown when the conversion of "Content-Length" header to size_t fails.
- * - ERR_CONTENT_LENGTH: Thrown when the length of the parsed body does not match the "Content-Length" value.
- *
- * Example usage:
- * @code
- * std::istringstream requestStream("This is the body of the request.\r\n");
- * RequestParser parser;
- * parser.parseNonChunkedBody(requestStream);
- * @endcode
+ * @param request The HTTP request containing the multipart/form-data content to decode.
+ * @throws std::runtime_error if the format of the request is invalid.
  */
-void RequestParser::parseNonChunkedBody(HTTPRequest& request)
+void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 {
-	std::string body;
-	long length = 0;
+	const std::string filename = "filename=\"";
+	size_t filenameStartPos = checkForString(filename, 0, request);
+	filenameStartPos += filename.size();
+	size_t filenameEndPos = checkForString("\"", filenameStartPos, request);
+	request.targetResource += request.body.substr(filenameStartPos, filenameEndPos - filenameStartPos);
+	LOG_DEBUG << "New target resource: " << request.targetResource;
 
-	while (!std::getline(m_requestStream, body).fail()) {
-		if (body[body.size() - 1] == '\r') {
-			body.erase(body.size() - 1);
-			length += 1;
-		}
-		if (!m_requestStream.eof())
-			body += '\n';
-		length += static_cast<long>(body.size());
-		request.body += body;
-	}
-	const long contentLength
-		= std::strtol(request.headers.at("content-length").c_str(), NULL, constants::g_decimalBase);
-	if (contentLength != length) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error(ERR_CONTENT_LENGTH);
-	}
+	size_t contentTypePos = checkForString("Content-Type:", filenameEndPos, request);
+
+	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request);
+	contentStartPos += 4;
+
+	const std::string endBoundary = "------" + m_boundary;
+	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
+	contentEndPos -= 2; // Remove the CRLF at the end
+
+	request.body = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
 }
 
 /* ====== CHECKS ====== */
+
+/**
+ * @brief Checks for the presence of a specific string in the HTTP request body starting from a given position.
+ *
+ * This function searches for the specified string in the body of the provided HTTP request,
+ * starting from the given position. If the string is not found, it sets the HTTP status to Bad Request,
+ * indicates that the connection should be closed, and throws a runtime error.
+ *
+ * @param string The string to search for in the request body.
+ * @param startPos The position in the request body to start the search from.
+ * @param request The HTTP request containing the body to search.
+ * @return The position of the found string in the request body.
+ * @throws std::runtime_error if the string is not found in the request body.
+ */
+size_t RequestParser::checkForString(const std::string& string, size_t startPos, HTTPRequest& request)
+{
+	size_t pos = request.body.find(string, startPos);
+	if (pos == std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
+	}
+	return pos;
+}
 
 /**
  * @brief Checks the validity of an HTTP header field name.
@@ -569,17 +619,17 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		}
 
 		std::vector<std::string> strValues = webutils::split(headerValue, ", ");
-		std::vector<long> numValues;
+		std::vector<unsigned long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-			const long contentLength = std::strtol(strValues[i].c_str(), &endptr, constants::g_decimalBase);
-			if ((contentLength == 0) || *endptr != '\0') {
+			request.contentLength = std::strtoul(strValues[i].c_str(), &endptr, constants::g_decimalBase);
+			if ((request.contentLength == 0) || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
 			}
-			numValues.push_back(contentLength);
-			if (i != 0 && contentLength != numValues[i - 1]) {
+			numValues.push_back(request.contentLength);
+			if (i != 0 && request.contentLength != numValues[i - 1]) {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
@@ -912,12 +962,12 @@ bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
  * validates it, and converts it to a size_t value.
  *
  * @param chunkSize The string containing the hexadecimal number.
- * @return The converted size_t value.
+ * @return The converted long value.
  *
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-size_t RequestParser::convertHex(const std::string& chunkSize)
+long RequestParser::convertHex(const std::string& chunkSize)
 {
 	if (chunkSize.empty())
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
@@ -928,11 +978,13 @@ size_t RequestParser::convertHex(const std::string& chunkSize)
 	}
 
 	std::istringstream iss(chunkSize);
-	size_t value = 0;
+	long value = 0;
 
 	iss >> std::hex >> value;
 	if (iss.fail())
 		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+
+	LOG_DEBUG << "Converted hex value: " << value;
 	return value;
 }
 
@@ -1197,4 +1249,26 @@ std::string RequestParser::removeDotSegments(const std::string& path, HTTPReques
 		}
 	}
 	return output.empty() ? "/" : output;
+}
+
+/**
+ * @brief Checks if the HTTP request contains multipart/form-data content.
+ *
+ * This function checks the Content-Type header of the provided HTTP request
+ * to determine if it contains multipart/form-data content. If the content type
+ * is multipart/form-data, it sets the hasMultipartFormdata flag in the request
+ * and logs the detection.
+ *
+ * @param request The HTTP request to check.
+ * @return true if the request contains multipart/form-data content, false otherwise.
+ */
+bool RequestParser::isMultipartFormdata(HTTPRequest& request)
+{
+	if (request.headers.find("content-type") != request.headers.end()
+		&& request.headers["content-type"].find("multipart/form-data") != std::string::npos) {
+		request.hasMultipartFormdata = true;
+		LOG_DEBUG << "Multipart/form-data detected";
+		return true;
+	}
+	return false;
 }

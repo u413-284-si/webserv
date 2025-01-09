@@ -12,6 +12,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -27,16 +28,22 @@ class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
 	static const int s_maxHostNameLength = 253; /**< Maximum length for DNS hostname */
+	static const int s_maxChunkSize = 8000; /**< Maximum size for a chunk in chunked encoding */
 
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	static void parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request);
+	void decodeMultipartFormdata(HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
+	const std::string& getBoundary() const;
+	void setBoundary(const std::string& boundary);
+
 private:
 	std::istringstream m_requestStream;
+	std::string m_boundary;
 
 	// RequestLine Parsing
 	void parseRequestLine(HTTPRequest& request);
@@ -49,10 +56,7 @@ private:
 
 	// Header Parsing
 	void parseHeaders(HTTPRequest& request);
-
-	// Body Parsing
-	void parseChunkedBody(HTTPRequest& request);
-	void parseNonChunkedBody(HTTPRequest& request);
+	void extractBoundary(HTTPRequest& request);
 
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);
@@ -67,11 +71,12 @@ private:
 	static void checkForCRLF(const std::string& str, HTTPRequest& request);
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
-	static size_t convertHex(const std::string& chunkSize);
+	static long convertHex(const std::string& chunkSize);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
 	static std::string removeDotSegments(const std::string& path, HTTPRequest& request);
+	static bool isMultipartFormdata(HTTPRequest& request);
+	static size_t checkForString(const std::string& string, size_t startPos, HTTPRequest& request);
 };
-

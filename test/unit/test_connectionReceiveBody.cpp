@@ -38,6 +38,7 @@ protected:
 
 TEST_F(ConnectionReceiveBodyTest, ReceiveFullBody)
 {
+	// Arrange
 	const char* body = "This is a body";
 	const ssize_t bodySize = strlen(body) + 1;
 
@@ -45,10 +46,12 @@ TEST_F(ConnectionReceiveBodyTest, ReceiveFullBody)
 	.Times(1)
 	.WillOnce(DoAll(SetArrayArgument<1>(body, body + bodySize), Return(bodySize)));
 
-	m_connection.m_request.headers["content-length"] = std::to_string(bodySize);
+	m_connection.m_request.contentLength = bodySize;
 
+	// Act
 	connectionReceiveBody(m_server, m_dummyFd, m_connection);
 
+	// Assert
 	EXPECT_EQ(m_connection.m_buffer.size(), bodySize);
 	EXPECT_NE(m_connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
@@ -56,6 +59,7 @@ TEST_F(ConnectionReceiveBodyTest, ReceiveFullBody)
 
 TEST_F(ConnectionReceiveBodyTest, ReceiveFullBodyForCGI)
 {
+	// Arrange
 	const char* body = "This is a body";
 	const ssize_t bodySize = strlen(body) + 1;
 
@@ -63,11 +67,13 @@ TEST_F(ConnectionReceiveBodyTest, ReceiveFullBodyForCGI)
 	.Times(1)
 	.WillOnce(DoAll(SetArrayArgument<1>(body, body + bodySize), Return(bodySize)));
 
-	m_connection.m_request.headers["content-length"] = std::to_string(bodySize);
+	m_connection.m_request.contentLength = bodySize;
 	m_connection.m_request.hasCGI = true;
 
+	// Act
 	connectionReceiveBody(m_server, m_dummyFd, m_connection);
 
+	// Assert
 	EXPECT_EQ(m_connection.m_buffer.size(), bodySize);
 	EXPECT_NE(m_connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(m_connection.m_status, Connection::SendToCGI);
@@ -75,6 +81,7 @@ TEST_F(ConnectionReceiveBodyTest, ReceiveFullBodyForCGI)
 
 TEST_F(ConnectionReceiveBodyTest, ReceivePartialBody)
 {
+	// Arrange
 	const char* body = "This is a body";
 	const ssize_t bodySize = strlen(body) + 1;
 
@@ -82,10 +89,12 @@ TEST_F(ConnectionReceiveBodyTest, ReceivePartialBody)
 	.Times(1)
 	.WillOnce(DoAll(SetArrayArgument<1>(body, body + bodySize), Return(bodySize)));
 
-	m_connection.m_request.headers["content-length"] = std::to_string(bodySize + 1);
+	m_connection.m_request.contentLength = bodySize + 1; // Simulate more data to come 
 
+	// Act
 	connectionReceiveBody(m_server, m_dummyFd, m_connection);
 
+	// Assert
 	EXPECT_EQ(m_connection.m_buffer.size(), bodySize);
 	EXPECT_NE(m_connection.m_timeSinceLastEvent, 0);
 	EXPECT_EQ(m_connection.m_status, Connection::ReceiveBody);
@@ -119,7 +128,7 @@ TEST_F(ConnectionReceiveBodyTest, MaxBodySizeReached)
 	.Times(1)
 	.WillOnce(DoAll(SetArrayArgument<1>(body, body + bodySize), Return(bodySize)));
 
-	m_connection.m_request.headers["content-length"] = std::to_string(bodySize + 1);
+	m_connection.m_request.contentLength = bodySize + 1;
 	m_configFile.servers[0].locations[0].maxBodySize = 1;
 
 	connectionReceiveBody(m_server, m_dummyFd, m_connection);
