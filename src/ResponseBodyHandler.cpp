@@ -137,12 +137,18 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
 
-	if (posHeadersEnd == std::string::npos
-		|| (headers.find("Content-Type: ") == std::string::npos && headers.find("Location: ") == std::string::npos
-			&& headers.find("Status: ") == std::string::npos)) {
+	if (posHeadersEnd == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
 		handleErrorBody();
-		LOG_ERROR << "Invalid CGI response headers";
+		LOG_ERROR << ERR_MISSING_CGI_HEADER;
+		return;
+	}
+
+	if (headers.find("Content-Type: ") == std::string::npos && headers.find("Location: ") == std::string::npos
+		&& headers.find("Status: ") == std::string::npos) {
+		m_request.httpStatus = StatusInternalServerError;
+		handleErrorBody();
+		LOG_ERROR << ERR_MISSING_CGI_FIELD;
 		return;
 	}
 

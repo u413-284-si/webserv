@@ -8,6 +8,7 @@
 #include "Log.hpp"
 #include "Method.hpp"
 #include "TargetResourceHandler.hpp"
+#include "error.hpp"
 
 #include "cassert"
 
