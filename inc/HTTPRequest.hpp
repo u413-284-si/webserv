@@ -37,7 +37,7 @@ struct HTTPRequest {
 	bool hasAutoindex;
 	bool hasCGI;
 	bool hasReturn;
-    bool hasMultipartFormdata;
+	bool hasMultipartFormdata;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);

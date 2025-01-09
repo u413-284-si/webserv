@@ -43,7 +43,7 @@ public:
 
 private:
 	std::istringstream m_requestStream;
-    std::string m_boundary;
+	std::string m_boundary;
 
 	// RequestLine Parsing
 	void parseRequestLine(HTTPRequest& request);
@@ -56,7 +56,7 @@ private:
 
 	// Header Parsing
 	void parseHeaders(HTTPRequest& request);
-    void extractBoundary(HTTPRequest& request);
+	void extractBoundary(HTTPRequest& request);
 
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);
@@ -77,7 +77,6 @@ private:
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
 	static std::string removeDotSegments(const std::string& path, HTTPRequest& request);
-    static bool isMultipartFormdata(HTTPRequest& request);
+	static bool isMultipartFormdata(HTTPRequest& request);
 	static size_t checkForString(const std::string& string, size_t startPos, HTTPRequest& request);
 };
-

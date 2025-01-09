@@ -14,6 +14,6 @@ HTTPRequest::HTTPRequest()
 	, hasAutoindex(false)
 	, hasCGI(false)
 	, hasReturn(false)
-    , hasMultipartFormdata(false)
+	, hasMultipartFormdata(false)
 {
 }
