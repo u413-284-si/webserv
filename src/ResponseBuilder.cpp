@@ -5,8 +5,7 @@
  *
  * @param fileSystemPolicy File system policy. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(
-	const FileSystemPolicy& fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 	: m_fileSystemPolicy(fileSystemPolicy)
 {
 	initMIMETypes();
@@ -109,7 +108,7 @@ void ResponseBuilder::appendHeaders(const HTTPRequest& request)
 	checkForExistingHeader("location");
 
 	// Various headers from response
-	if (request.httpStatus < StatusMovedPermanently) {
+	if (request.httpStatus < StatusMovedPermanently || request.hasCGIStatusBadRequest) {
 		for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
 			 iter != m_responseHeaders.end(); ++iter)
 			m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";

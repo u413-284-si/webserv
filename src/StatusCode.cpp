@@ -71,6 +71,8 @@ bool isRedirectionStatus(statusCode statusCode)
  */
 statusCode stringToStatusCode(std::string& str)
 {
+	if (str == "0")
+		return NoStatus;
 	if (str == "200")
 		return StatusOK;
 	if (str == "201")

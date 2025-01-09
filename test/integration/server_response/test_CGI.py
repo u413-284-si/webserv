@@ -13,6 +13,12 @@ def test_CGI_helloWorld():
    response = requests.get("http://127.0.0.1:8080/cgi-bin/helloWorld.sh")
    assert response.status_code == 200
 
+def test_CGI_badBoi():
+   print("Request for /cgi-bin/badBoi.sh")
+   response = requests.get("http://127.0.0.1:8080/cgi-bin/badBoi.sh")
+   assert response.status_code == 400
+   assert response.headers["BB"] == "4Life"
+
 def test_CGI_time():
    print("Request for /cgi-bin/time.py")
    response = requests.get("http://127.0.0.1:8081/cgi-bin/time.py")

@@ -138,15 +138,14 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
 
 	if (posHeadersEnd == std::string::npos
-		|| (headers.find("Content-Type: ") == std::string::npos
-			&& headers.find("Location: ") == std::string::npos
+		|| (headers.find("Content-Type: ") == std::string::npos && headers.find("Location: ") == std::string::npos
 			&& headers.find("Status: ") == std::string::npos)) {
 		m_request.httpStatus = StatusInternalServerError;
 		handleErrorBody();
 		LOG_ERROR << "Invalid CGI response headers";
 		return;
 	}
-	
+
 	size_t lineStart = 0;
 	size_t lineEnd = headers.find("\r\n");
 
@@ -182,6 +181,10 @@ void ResponseBodyHandler::validateCGIResponseHeaders()
 	if (iter != m_responseHeaders.end()) {
 		m_request.httpStatus = extractStatusCode(iter->second);
 		if (m_request.httpStatus == StatusBadRequest) {
+			if (iter->second.find("400") != std::string::npos) {
+				m_request.hasCGIStatusBadRequest = true;
+				return;
+			}
 			handleErrorBody();
 			m_responseHeaders.erase(iter);
 			LOG_ERROR << "Invalid Status header value encountered in CGI response";
