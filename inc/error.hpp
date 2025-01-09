@@ -44,5 +44,5 @@
 #define ERR_UNEXPECTED_BODY "Invalid HTTP request: Method should not have a body"
 
 // HTTP CGI RESPONSE HEADER ERRORS
-#define ERR_MISSING_CGI_HEADER "Invalid CGI response: Missing CGI header"
+#define ERR_MISSING_CGI_HEADER "Invalid CGI response: No header section found in CGI output"
 #define ERR_MISSING_CGI_FIELD "Invalid CGI response: No CGI field (Content-type | Status | Location) found"

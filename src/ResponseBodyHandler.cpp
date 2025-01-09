@@ -55,7 +55,7 @@ void ResponseBodyHandler::execute()
 
 	if (m_request.hasCGI) {
 		m_responseBody = m_request.body;
-		parseCGIResponseBody();
+		parseCGIResponseHeaders();
 		return;
 	}
 
@@ -114,14 +114,6 @@ void ResponseBodyHandler::execute()
 	}
 }
 
-void ResponseBodyHandler::parseCGIResponseBody()
-{
-	LOG_DEBUG << "Parsing received CGI response body...";
-
-	parseCGIResponseHeaders();
-	validateCGIResponseHeaders();
-}
-
 /**
  * @brief Parses the response headers from the HTTP response body.
  *
@@ -131,6 +123,8 @@ void ResponseBodyHandler::parseCGIResponseBody()
  */
 void ResponseBodyHandler::parseCGIResponseHeaders()
 {
+	LOG_DEBUG << "Parsing received CGI response...";
+
 	const size_t sizeCRLF = 2;
 	const size_t sizeCRLFCRLF = 4;
 	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
@@ -172,6 +166,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		lineEnd = headers.find("\r\n", lineStart);
 	}
 	m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
+	validateCGIResponseHeaders();
 }
 
 /**
