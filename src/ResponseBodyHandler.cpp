@@ -165,7 +165,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		lineStart = lineEnd + 2;
 		lineEnd = headers.find("\r\n", lineStart);
 	}
-	m_responseBody = m_responseBody.substr(posHeadersEnd + sizeCRLFCRLF);
+	m_responseBody.erase(0, posHeadersEnd + sizeCRLFCRLF);
 	validateCGIResponseHeaders();
 }
 
