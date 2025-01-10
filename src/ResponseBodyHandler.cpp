@@ -28,7 +28,8 @@ ResponseBodyHandler::ResponseBodyHandler(
  * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
  * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
  * body.
- * @todo FIXME: Implement other methods than GET.
+ * - In case of a POST request, the request body will be written to the target resource.
+ * - In case of a DELETE request, the target resource will be deleted.
  */
 void ResponseBodyHandler::execute()
 {
@@ -69,11 +70,18 @@ void ResponseBodyHandler::execute()
 	if (m_request.method == MethodGet) {
 		try {
 			m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
-		} catch (std::exception& e) {
+		} catch (FileSystemOps::FileNotFoundException& e) {
+			LOG_ERROR << e.what();
+			m_request.httpStatus = StatusNotFound;
+		} catch (FileSystemOps::NoPermissionException& e) {
+			LOG_ERROR << e.what();
+			m_request.httpStatus = StatusForbidden;
+		} catch (const std::runtime_error& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusInternalServerError;
-			handleErrorBody();
 		}
+		if (m_request.httpStatus != StatusOK)
+			handleErrorBody();
 		return;
 	}
 
@@ -88,7 +96,15 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
+		m_request.targetResource = "posted.json";
 		return;
+	}
+	if (m_request.method == MethodDelete) {
+		DeleteHandler deleteHandler(m_fileSystemOps);
+		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
+		if (m_responseBody.empty())
+			handleErrorBody();
+		m_request.targetResource = "deleted.json";
 	}
 }
 
@@ -148,12 +164,20 @@ void ResponseBodyHandler::handleErrorBody()
 
 	try {
 		m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
-		m_request.httpStatus = oldStatus;
-	} catch (std::exception& e) {
+	} catch (FileSystemOps::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusNotFound;
+	} catch (FileSystemOps::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusForbidden;
+	} catch (const std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusInternalServerError;
-		setDefaultErrorPage();
 	}
+	if (m_request.httpStatus != StatusOK)
+		setDefaultErrorPage();
+	else
+		m_request.httpStatus = oldStatus;
 }
 
 /**

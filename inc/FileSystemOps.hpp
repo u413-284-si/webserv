@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cerrno>
+#include <cstdio>
 #include <cstring>
 #include <dirent.h>
 #include <fstream>
@@ -27,9 +28,19 @@
 class FileSystemOps {
 
 public:
+	FileSystemOps();
 	virtual ~FileSystemOps();
 
-	enum fileType { FileNotExist = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+	enum fileType { FileNotFound = 0, FileDirectory = 1, FileRegular = 2, FileOther = 3 };
+
+	// custom exceptions
+	struct FileNotFoundException : public std::runtime_error {
+		explicit FileNotFoundException(const std::string& msg);
+	};
+	struct NoPermissionException : public std::runtime_error {
+		explicit NoPermissionException(const std::string& msg);
+	};
+
 	virtual fileType checkFileType(const std::string& path) const;
 	virtual bool isDirectory(const std::string& path) const;
 	virtual bool isExistingFile(const std::string& path) const;
@@ -41,4 +52,9 @@ public:
 	virtual void writeToFile(const std::string& path, const std::string& content) const;
 	virtual std::string getLastModifiedTime(const struct stat& fileStat) const;
 	virtual long getFileSize(const struct stat& fileStat) const;
+	virtual void deleteFile(const std::string& path) const;
+
+private:
+	FileSystemOps(const FileSystemOps& ref);
+	FileSystemOps& operator=(const FileSystemOps& ref);
 };

@@ -80,6 +80,7 @@ ConfigFile createDummyConfig()
 	location5.root = "/workspaces/webserv";
 	location5.cgiPath = "/usr/bin/bash";
 	location5.cgiExt = ".sh";
+	location5.allowedMethods[MethodPost] = true;
 
 	Location location6;
 	location6.path = "/cgi-bin";
@@ -93,6 +94,7 @@ ConfigFile createDummyConfig()
 	location7.path = "/uploads/";
 	location7.root = "/workspaces/webserv/html";
 	location7.allowedMethods[MethodPost] = true;
+	location7.allowedMethods[MethodDelete] = true;
 
 	Location location8;
 	location8.path = "/redirect";

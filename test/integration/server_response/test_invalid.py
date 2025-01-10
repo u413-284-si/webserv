@@ -97,3 +97,26 @@ def test_invalid_percent_encoding_non_hex():
         # Receive the response
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+
+def test_invalid_big_chunk_size():
+
+    # Create a socket connection
+    with socket.create_connection((host, port)) as sock:
+        # Craft a malformed HTTP request
+        request = b"POST /uploads/badboy.txt HTTP/1.1\r\nHost: localhost\r\nTransfer-Encoding: chunked\r\n\r\nFFFFFFFFFFFFFF\r\n0\r\n\r\n"
+        sock.sendall(request)
+
+        # Receive the response
+        response = parse_http_response(sock)
+        assert response["status_code"] == 413
+
+def test_invalid_directory_traversal():
+    # Create a socket connection
+    with socket.create_connection((host, port)) as sock:
+        # Craft HTTP request with directory traversal try
+        request = b"GET /../../../etc/passwd HTTP/1.1\r\nHost: localhost\r\n\r\n"
+        sock.sendall(request)
+
+        # Receive the response
+        response = parse_http_response(sock)
+        assert response["status_code"] == 400

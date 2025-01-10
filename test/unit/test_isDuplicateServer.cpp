@@ -7,7 +7,7 @@ class isDuplicateServerTest : public ServerTestBase {
 	isDuplicateServerTest()
 	{
 		ON_CALL(m_epollWrapper, addEvent)
-			.WillByDefault(Return(true));
+		.WillByDefault(Return(true));
 	}
 	~isDuplicateServerTest() override { }
 

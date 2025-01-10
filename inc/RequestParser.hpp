@@ -12,6 +12,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -27,11 +28,12 @@ class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
 	static const int s_maxHostNameLength = 253; /**< Maximum length for DNS hostname */
+	static const int s_maxChunkSize = 8000; /**< Maximum size for a chunk in chunked encoding */
 
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	void parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer);
 	void resetRequestStream();
 
 private:
@@ -50,7 +52,7 @@ private:
 	void parseHeaders(HTTPRequest& request);
 
 	// Body Parsing
-	void parseChunkedBody(HTTPRequest& request);
+	void parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer);
 	void parseNonChunkedBody(HTTPRequest& request);
 
 	// Checks
@@ -71,5 +73,6 @@ private:
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
+	static std::string removeDotSegments(const std::string& path, HTTPRequest& request);
 };
 

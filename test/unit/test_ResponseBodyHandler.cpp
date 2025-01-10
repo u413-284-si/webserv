@@ -115,6 +115,24 @@ TEST_F(ResponseBodyHandlerTest, FileFound)
 	EXPECT_EQ(m_responseBody, "Hello World");
 }
 
+TEST_F(ResponseBodyHandlerTest, FileWentMissing)
+{
+	EXPECT_CALL(m_fileSystemOps, getFileContents)
+	.WillOnce(Throw(FileSystemOps::FileNotFoundException("getFileContents failed")))
+	.WillOnce(Return("error_page_content"));
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+	.WillOnce(Return(FileSystemOps::FileRegular));
+
+	m_request.hasAutoindex = false;
+	m_request.httpStatus = StatusOK;
+	m_request.method = MethodGet;
+	m_request.targetResource = "/proc/self/cmdline";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusNotFound);
+	EXPECT_EQ(m_responseBody, "error_page_content");
+}
+
 TEST_F(ResponseBodyHandlerTest, CustomErrorPage)
 {
 	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
@@ -136,8 +154,8 @@ TEST_F(ResponseBodyHandlerTest, CustomErrorPageStrangeType)
 	m_request.targetResource = "/not_existing";
 
 	m_responseBodyHandler.execute();
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusForbidden));
 }
 
 TEST_F(ResponseBodyHandlerTest, CustomErrorPageOpenFails)
@@ -217,6 +235,36 @@ TEST_F(ResponseBodyHandlerTest, ReturnWithErrorCodeAndNoContentFindsCustomErrorP
 	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
 	EXPECT_EQ(m_responseBody, "Return Message");
+}
+
+TEST_F(ResponseBodyHandlerTest, CustomErrorPageWentMissing)
+{
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+	.WillOnce(Return(FileSystemOps::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, getFileContents)
+	.WillOnce(Throw(FileSystemOps::FileNotFoundException("File not found")));
+
+	m_request.httpStatus = StatusNotFound;
+	m_request.targetResource = "/not_existing";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusNotFound);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusNotFound));
+}
+
+TEST_F(ResponseBodyHandlerTest, CustomErrorPageNoPermission)
+{
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+	.WillOnce(Return(FileSystemOps::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, getFileContents)
+	.WillOnce(Throw(FileSystemOps::NoPermissionException("No permission")));
+
+	m_request.httpStatus = StatusNotFound;
+	m_request.targetResource = "/not_existing";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusForbidden);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusForbidden));
 }
 
 TEST(ResponseBodyHandler, getDefaultErrorPage)

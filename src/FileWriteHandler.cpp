@@ -30,6 +30,7 @@ std::string FileWriteHandler::execute(const std::string& path, const std::string
 	try {
 		const bool isExistingFile = m_fileSystemOps.isExistingFile(path);
 		m_fileSystemOps.writeToFile(path, content);
+		LOG_DEBUG << "Data successfully written/appended to the file: " << path;
 		struct stat fileStat = m_fileSystemOps.getFileStat(path);
 
 		if (isExistingFile) {
@@ -52,6 +53,7 @@ std::string FileWriteHandler::execute(const std::string& path, const std::string
 		return m_response.str();
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
+		LOG_ERROR << "Failed to write data to the file: " << path;
 		return "";
 	}
 }

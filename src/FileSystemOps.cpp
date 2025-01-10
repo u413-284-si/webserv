@@ -1,20 +1,47 @@
 #include "FileSystemOps.hpp"
 
 /**
+ * @brief Construct a new FileSystemOps::FileSystemOps object
+ *
+ */
+FileSystemOps::FileSystemOps() { }
+
+/**
  * @brief Virtual destructor for FileSystemOps object
  *
  */
-FileSystemOps::~FileSystemOps() { }
+FileSystemOps::~FileSystemOps() {  }
+
+/**
+ * @brief Construct a new FileSystemOps::FileNotFoundException::FileNotFoundException object
+ *
+ * @param msg Error message.
+ */
+FileSystemOps::FileNotFoundException::FileNotFoundException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
+
+/**
+ * @brief Construct a new FileSystemOps::NoPermissionException::NoPermissionException object
+ *
+ * @param msg Error message.
+ */
+FileSystemOps::NoPermissionException::NoPermissionException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
 
 /**
  * @brief Check the file type of a given path.
  *
  * Uses stat() to check the file type of a given path.
- * If the file does not exist, FileNotExist is returned.
  * If the file is a regular file, FileRegular is returned.
  * If the file is a directory, FileDirectory is returned.
  * If the file is neither a regular file nor a directory, FileOther is returned.
- * @throws std::runtime_error with strerror() of errno.
+ * If the file does not exist, FileNotFound is returned
+ * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
+ * @throws std::runtime_error in other cases with strerror() of errno.
  * @param path Path to check.
  * @return FileSystemOps::fileType File type.
  */
@@ -24,7 +51,9 @@ FileSystemOps::fileType FileSystemOps::checkFileType(const std::string& path) co
 	errno = 0;
 	if (stat(path.c_str(), &fileStat) == -1) {
 		if (errno == ENOENT)
-			return FileNotExist;
+			return FileNotFound;
+		if (errno == EACCES)
+			throw NoPermissionException("stat(): " + std::string(strerror(errno)));
 		throw std::runtime_error("stat(): " + std::string(strerror(errno)));
 	}
 	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
@@ -52,12 +81,16 @@ bool FileSystemOps::isDirectory(const std::string& path) const { return checkFil
  * @return true Path is an existing file.
  * @return false Path is not an existing file.
  */
-bool FileSystemOps::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotExist; }
+bool FileSystemOps::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotFound; }
 
 /**
  * @brief Gets the contents of a file.
  *
- * @throws std::runtime_error with strerror() of errno.
+ * Opens a file stream. Checks if it could open wirh is_open(). If not throws custom exceptions.
+ * If the stream has other errors, throws a std::runtime_error.
+ * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
+ * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
+ * @throws std::runtime_error in other cases with strerror() of errno.
  * @param filename File to read.
  * @return std::string File contents.
  */
@@ -65,9 +98,14 @@ std::string FileSystemOps::getFileContents(const char* filename) const
 {
 	errno = 0;
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
-	if (!fileStream.good()) {
-		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
+	if (!fileStream.is_open()) {
+		if (errno == ENOENT)
+			throw FileNotFoundException("std::ifstream: " + std::string(strerror(errno)));
+		if (errno == EACCES)
+			throw NoPermissionException("std::ifstream: " + std::string(strerror(errno)));
 	}
+	if (fileStream.fail())
+		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
 	std::string contents;
 	fileStream.seekg(0, std::ios::end);
 	contents.resize(fileStream.tellg());
@@ -145,17 +183,25 @@ struct stat FileSystemOps::getFileStat(const std::string& path) const
  * If the file cannot be created, an error is logged and the function returns false.
  * If the file exists already, the content is appended to the file.
  *
- * @throws std::runtime_error with strerror() of errno.
+ * @throws FileSystemPolicy::FileNotFoundException if the file does not exist.
+ * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
+ * @throws std::runtime_error in other cases with strerror() of errno.
  * @param path The path where the file should be created.
  * @param content The content to be written to the file.
  */
 void FileSystemOps::writeToFile(const std::string& path, const std::string& content) const
 {
+	errno = 0;
 	std::ofstream file(path.c_str(), std::ios::binary | std::ios::app);
-	if (!file.good())
-		throw std::runtime_error("openFile(): \"" + path + "\", " + std::string(strerror(errno)));
+	if (!file.is_open()) {
+		if (errno == ENOENT)
+			throw FileNotFoundException("std::ifstream: " + std::string(strerror(errno)));
+		if (errno == EACCES)
+			throw NoPermissionException("std::ifstream: " + std::string(strerror(errno)));
+	}
+	if (file.fail())
+		throw std::runtime_error("std::ifstream: " + std::string(strerror(errno)));
 	file << content;
-	LOG_DEBUG << "Data successfully written/appended to the file: " << path;
 }
 
 /**
@@ -181,4 +227,25 @@ long FileSystemOps::getFileSize(const struct stat& fileStat) const
 	if (S_ISDIR(fileStat.st_mode))
 		return 0;
 	return fileStat.st_size;
+}
+
+/**
+ * @brief Deletes a file at the specified path.
+ *
+ * This function attempts to delete the file located at the given path.
+ * If the file cannot be deleted, it throws a NoPermissionException if the errno
+ * code is 13 (= EACCES), else it throws a runtime error with the
+ * appropriate error message.
+ *
+ * @param path The path to the file to be deleted.
+ * @throws std::runtime_error if the file cannot be deleted.
+ */
+void FileSystemOps::deleteFile(const std::string& path) const
+{
+	errno = 0;
+	if (std::remove(path.c_str()) != 0) {
+		if (errno == EACCES)
+			throw NoPermissionException("remove(): " + std::string(strerror(errno)));
+		throw std::runtime_error("remove(): " + std::string(strerror(errno)));
+	}
 }

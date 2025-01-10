@@ -72,9 +72,7 @@ public:
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();
-	std::vector<char>& getClientHeaderBuffer();
-	std::vector<char>& getClientBodyBuffer();
-	std::vector<char>& getCGIBodyBuffer();
+	std::vector<char>& getBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
@@ -123,16 +121,12 @@ private:
 	const FileSystemOps& m_fileSystemOps; /**< Handles functions for file system manipulation */
 	const SocketOps& m_socketOps; /**< Wrapper for socket-related functions */
 	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
-
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	std::map<int, Connection*> m_cgiConnections; /**< Connections that are currently handling CGI */
-	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
-	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
-	std::vector<char> m_cgiBodyBuffer; /**< Buffer for reading CGI response body */
-
+	std::vector<char> m_buffer; /**< Buffer for reading various data, such as headers or bodies */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 	TargetResourceHandler m_targetResourceHandler; /**< Handles target resource of request */

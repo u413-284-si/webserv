@@ -60,7 +60,7 @@ TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 
 TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 {
-	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileNotExist));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileNotFound));
 
 	m_connection.m_buffer.assign("POST /new.txt "
 								 "HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body");

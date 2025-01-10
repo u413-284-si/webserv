@@ -18,7 +18,7 @@
 #define ERR_PERCENT_NONSUPPORTED_NUL "Invalid HTTP request: %00 (NUL) is not supported."
 #define ERR_PERCENT_INCOMPLETE "Invalid HTTP request: Incomplete percent encoding at end of string."
 #define ERR_PERCENT_INVALID_HEX "Invalid HTTP request: Percent encoding triplet consists of non hex values"
-
+#define ERR_DIRECTORY_TRAVERSAL "Invalid HTTP request: request traverses outside of root"
 
 // HTTP REQUEST HEADER ERRORS
 #define ERR_HEADER_COLON_WHITESPACE "Invalid HTTP request: Whitespace between header field-name and colon detected"
@@ -36,9 +36,10 @@
 
 // HTTP REQUEST BODY ERRORS
 #define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"
+#define ERR_TOO_LARGE_CHUNKSIZE "Invalid HTTP request: Chunk size too large"
 #define ERR_INVALID_HEX_CHAR "Invalid HTTP request: Invalid hex character detected"
 #define ERR_CONVERSION_STRING_TO_HEX "String to hex conversion error"
-#define ERR_CHUNK_SIZE "Invalid HTTP request: Indicated chunk size different than actual chunk size"
+#define ERR_CHUNKSIZE_INCONSISTENT "Invalid HTTP request: Indicated chunk size different than actual chunk size"
 #define ERR_CONVERSION_STRING_TO_SIZE_T "String to size_t conversion error"
 #define ERR_CONTENT_LENGTH "Invalid HTTP request: Indicated content length different than actual body size"
 #define ERR_UNEXPECTED_BODY "Invalid HTTP request: Method should not have a body"
