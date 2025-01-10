@@ -170,3 +170,11 @@ def test_4xx_request_too_long():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 431
+
+def test_4xx_chunk_size_too_big():
+    with socket.create_connection((host, port)) as sock:
+        request = b"POST /uploads/badboy.txt HTTP/1.1\r\nHost: localhost\r\nTransfer-Encoding: chunked\r\n\r\nFFFFFFFFFFFFFF\r\n0\r\n\r\n"
+        sock.sendall(request)
+
+        response = parse_http_response(sock)
+        assert response["status_code"] == 413

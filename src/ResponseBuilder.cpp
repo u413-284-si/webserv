@@ -165,6 +165,7 @@ void ResponseBuilder::initMIMETypes()
 	m_mimeTypes["js"] = "application/javascript";
 	m_mimeTypes["pdf"] = "application/pdf";
 	m_mimeTypes["txt"] = "text/plain";
+	m_mimeTypes["json"] = "application/json";
 	m_mimeTypes["default"] = "application/octet-stream";
 }
 

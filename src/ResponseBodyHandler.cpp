@@ -28,7 +28,8 @@ ResponseBodyHandler::ResponseBodyHandler(
  * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
  * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
  * body.
- * @todo FIXME: Implement other methods than GET.
+ * - In case of a POST request, the request body will be written to the target resource.
+ * - In case of a DELETE request, the target resource will be deleted.
  */
 void ResponseBodyHandler::execute()
 {
@@ -95,7 +96,15 @@ void ResponseBodyHandler::execute()
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 		}
+		m_request.targetResource = "posted.json";
 		return;
+	}
+	if (m_request.method == MethodDelete) {
+		DeleteHandler deleteHandler(m_fileSystemPolicy);
+		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
+		if (m_responseBody.empty())
+			handleErrorBody();
+		m_request.targetResource = "deleted.json";
 	}
 }
 

@@ -21,7 +21,7 @@ def test_POST_simple():
 # sa https://requests.readthedocs.io/en/latest/user/advanced/#chunk-encoded-requests
 def generate_chunks():
     yield "First chunk of data".encode("utf-8")
-    yield "Second chunk of data".encode("utf-8")
+    yield "Second chunk of\n data".encode("utf-8")
     yield "Third chunk of data".encode("utf-8")
 
 def test_POST_chunked_encoding():

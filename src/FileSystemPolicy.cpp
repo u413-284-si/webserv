@@ -228,3 +228,24 @@ long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
 		return 0;
 	return fileStat.st_size;
 }
+
+/**
+ * @brief Deletes a file at the specified path.
+ *
+ * This function attempts to delete the file located at the given path.
+ * If the file cannot be deleted, it throws a NoPermissionException if the errno
+ * code is 13 (= EACCES), else it throws a runtime error with the
+ * appropriate error message.
+ *
+ * @param path The path to the file to be deleted.
+ * @throws std::runtime_error if the file cannot be deleted.
+ */
+void FileSystemPolicy::deleteFile(const std::string& path) const
+{
+	errno = 0;
+	if (std::remove(path.c_str()) != 0) {
+		if (errno == EACCES)
+			throw NoPermissionException("remove(): " + std::string(strerror(errno)));
+		throw std::runtime_error("remove(): " + std::string(strerror(errno)));
+	}
+}
