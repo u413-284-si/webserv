@@ -66,9 +66,9 @@ var sectionId = 'dynsection-28';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="class_server.html#aa6eec7b99c50847aeef2b0746f46a8f6" target="_top" xlink:title="Getter for CGI body buffer.">
-<polygon fill="white" stroke="#666666" points="345.5,-231 204.5,-231 204.5,-212 345.5,-212 345.5,-231"/>
-<text text-anchor="middle" x="275" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getCGIBodyBuffer</text>
+<g id="a_Node000002"><a xlink:href="class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e" target="_top" xlink:title="Getter for internal buffer.">
+<polygon fill="white" stroke="#666666" points="324.5,-231 225.5,-231 225.5,-212 324.5,-212 324.5,-231"/>
+<text text-anchor="middle" x="275" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">Server::getBuffer</text>
 </a>
 </g>
 </g>
@@ -76,8 +76,8 @@ var sectionId = 'dynsection-28';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M92.02,-157.04C112.88,-169.47 151.47,-191.07 187,-203.5 193.36,-205.72 200.08,-207.71 206.85,-209.48"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="206.24,-212.94 216.78,-211.92 207.9,-206.14 206.24,-212.94"/>
+<path fill="none" stroke="#63b8ff" d="M92.02,-157.04C112.88,-169.47 151.47,-191.07 187,-203.5 195.97,-206.64 205.66,-209.31 215.2,-211.55"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="214.54,-214.99 225.06,-213.74 216.06,-208.16 214.54,-214.99"/>
 </a>
 </g>
 </g>

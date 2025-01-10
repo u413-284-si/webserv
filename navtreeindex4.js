@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"struct_connection.html#a4157497e77aed0e8b399a47eba498683":[2,0,9,7],
 "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7":[2,0,9,0],
 "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251":[2,0,9,0,2],
 "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614":[2,0,9,0,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "test__connection_send_to_c_g_i_8cpp.html#ab009e8595170fb19af2600ddd2f4362a":[3,0,3,1,9,3],
 "test__connection_send_to_c_g_i_8cpp_source.html":[3,0,3,1,9],
 "test__create_virtual_server_8cpp.html":[3,0,3,1,10],
-"test__create_virtual_server_8cpp.html#a0dab7ae2d51f771c7d651de64d6fd66a":[3,0,3,1,10,1],
-"test__create_virtual_server_8cpp.html#a2743f6a457a97451e9a4d5dec394c64b":[3,0,3,1,10,4]
+"test__create_virtual_server_8cpp.html#a0dab7ae2d51f771c7d651de64d6fd66a":[3,0,3,1,10,1]
 };

@@ -13,17 +13,17 @@
 <area shape="rect" id="Node000009" href="$_server_8cpp.html#af0fb17fe53a5e9e72824e5df3fba1322" title="Handles the body of the HTTP request." alt="" coords="351,259,449,285"/>
 <area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="235,284,337,275,338,280,235,290"/>
 <area shape="rect" id="Node000011" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="586,310,741,335"/>
-<area shape="poly" id="edge19_Node000001_Node000011" title=" " alt="" coords="235,300,572,316,572,321,235,305"/>
-<area shape="rect" id="Node000016" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="320,361,480,386"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="168,307,340,354,338,360,167,313"/>
-<area shape="rect" id="Node000018" href="$_server_8cpp.html#a92411155dbfc5d7f43c3f1ac0fe54548" title="Checks if a CGI request is made based on the connection details." alt="" coords="337,410,463,435"/>
-<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="139,308,201,351,241,375,284,395,325,408,323,413,282,400,239,379,198,355,136,312"/>
-<area shape="rect" id="Node000019" href="$namespacewebutils.html#a4cc9980ab07ede124181a637b5db5c28" title="Check if a given status code is a redirection." alt="" coords="295,459,505,485"/>
-<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="133,309,192,375,235,414,284,446,299,452,297,457,281,450,232,418,188,379,129,312"/>
-<area shape="rect" id="Node000020" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="323,509,477,534"/>
-<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="130,309,151,346,184,397,229,451,256,475,284,495,310,507,308,512,281,500,252,479,226,455,180,401,146,349,125,311"/>
-<area shape="rect" id="Node000022" href="$class_server.html#abcfb45414689863da69c2e72ac8fc946" title="Register a CGI file descriptor." alt="" coords="283,558,517,583"/>
-<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="128,309,146,355,178,419,224,488,252,518,284,544,293,550,291,555,281,549,249,522,220,491,173,422,141,357,123,311"/>
+<area shape="poly" id="edge20_Node000001_Node000011" title=" " alt="" coords="235,300,572,316,572,321,235,305"/>
+<area shape="rect" id="Node000017" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="320,361,480,386"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="168,307,340,354,338,360,167,313"/>
+<area shape="rect" id="Node000019" href="$_server_8cpp.html#a92411155dbfc5d7f43c3f1ac0fe54548" title="Checks if a CGI request is made based on the connection details." alt="" coords="337,410,463,435"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="139,308,201,351,241,375,284,395,325,408,323,413,282,400,239,379,198,355,136,312"/>
+<area shape="rect" id="Node000020" href="$namespacewebutils.html#a4cc9980ab07ede124181a637b5db5c28" title="Check if a given status code is a redirection." alt="" coords="295,459,505,485"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="133,309,192,375,235,414,284,446,299,452,297,457,281,450,232,418,188,379,129,312"/>
+<area shape="rect" id="Node000021" href="$class_server.html#a34bc61299318fe1918293b1d656ee5f9" title="Wrapper function to RequestParser::parseHeader." alt="" coords="323,509,477,534"/>
+<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="130,309,151,346,184,397,229,451,256,475,284,495,310,507,308,512,281,500,252,479,226,455,180,401,146,349,125,311"/>
+<area shape="rect" id="Node000023" href="$class_server.html#abcfb45414689863da69c2e72ac8fc946" title="Register a CGI file descriptor." alt="" coords="283,558,517,583"/>
+<area shape="poly" id="edge24_Node000001_Node000023" title=" " alt="" coords="128,309,146,355,178,419,224,488,252,518,284,544,293,550,291,555,281,549,249,522,220,491,173,422,141,357,123,311"/>
 <area shape="rect" id="Node000003" href="$class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282" title="Determine target resource based on the request path and handle different file types and statuses acco..." alt="" coords="577,5,750,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="498,23,563,23,563,28,498,28"/>
 <area shape="rect" id="Node000007" href="$class_epoll_wrapper.html#af9b96396ae751ae1189a2c1f9da64ae0" title="Getter for epoll file descriptor." alt="" coords="570,161,757,186"/>
@@ -35,17 +35,19 @@
 <area shape="poly" id="edge12_Node000009_Node000013" title=" " alt="" coords="449,260,579,237,580,242,450,266"/>
 <area shape="rect" id="Node000012" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="813,310,1012,335"/>
 <area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="741,320,800,320,800,325,741,325"/>
-<area shape="rect" id="Node000014" href="$class_request_parser.html#a5111f16124d227775d963e6ca24ddca0" title="Parses the body of an HTTP request." alt="" coords="817,237,1009,262"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="734,228,803,236,802,241,734,234"/>
-<area shape="rect" id="Node000015" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="1064,345,1273,385"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="943,260,1112,337,1110,342,941,265"/>
-<area shape="rect" id="Node000017" href="$_connection_8cpp.html#af96f533f342bd6cf42899f3c9fd30a99" title="Find matching server configurations for a server socket." alt="" coords="565,361,761,386"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="480,371,551,371,551,376,480,376"/>
-<area shape="rect" id="Node000021" href="$class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" title="Parses the header of an HTTP request." alt="" coords="809,402,1016,427"/>
-<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="462,506,517,495,837,428,838,433,518,500,463,511"/>
-<area shape="poly" id="edge22_Node000021_Node000015" title=" " alt="" coords="979,399,1051,385,1052,391,980,405"/>
-<area shape="rect" id="Node000023" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="574,582,753,607"/>
-<area shape="poly" id="edge24_Node000022_Node000023" title=" " alt="" coords="518,579,561,583,560,588,517,584"/>
-<area shape="rect" id="Node000024" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="596,533,731,558"/>
-<area shape="poly" id="edge25_Node000022_Node000024" title=" " alt="" coords="517,557,582,550,582,556,518,562"/>
+<area shape="rect" id="Node000014" href="$class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e" title="Getter for internal buffer." alt="" coords="847,211,979,237"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="734,221,833,221,833,227,734,227"/>
+<area shape="rect" id="Node000015" href="$class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05" title="Parses the body of an HTTP request." alt="" coords="817,261,1009,286"/>
+<area shape="poly" id="edge14_Node000013_Node000015" title=" " alt="" coords="729,234,835,255,834,261,728,239"/>
+<area shape="rect" id="Node000016" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="1064,345,1273,385"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="977,283,1017,295,1117,337,1115,342,1015,300,976,289"/>
+<area shape="rect" id="Node000018" href="$_connection_8cpp.html#af96f533f342bd6cf42899f3c9fd30a99" title="Find matching server configurations for a server socket." alt="" coords="565,361,761,386"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="480,371,551,371,551,376,480,376"/>
+<area shape="rect" id="Node000022" href="$class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" title="Parses the header of an HTTP request." alt="" coords="809,402,1016,427"/>
+<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="462,506,517,495,837,428,838,433,518,500,463,511"/>
+<area shape="poly" id="edge23_Node000022_Node000016" title=" " alt="" coords="979,399,1051,385,1052,391,980,405"/>
+<area shape="rect" id="Node000024" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="574,582,753,607"/>
+<area shape="poly" id="edge25_Node000023_Node000024" title=" " alt="" coords="518,579,561,583,560,588,517,584"/>
+<area shape="rect" id="Node000025" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="596,533,731,558"/>
+<area shape="poly" id="edge26_Node000023_Node000025" title=" " alt="" coords="517,557,582,550,582,556,518,562"/>
 </map>

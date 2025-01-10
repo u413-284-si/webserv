@@ -895,12 +895,13 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  270</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  271</span>                p.parseHeader(<span class="stringliteral">&quot;PUT /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  272</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  273</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: method not implemented&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  273</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a64b8e3ac14e76f4e932182cf5ffd1240">ERR_METHOD_NOT_IMPLEMENTED</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  274</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  275</span>            }</div>
 <div class="line"><span class="lineno">  276</span>        },</div>
 <div class="line"><span class="lineno">  277</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  278</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a64b8e3ac14e76f4e932182cf5ffd1240"><div class="ttname"><a href="error_8hpp.html#a64b8e3ac14e76f4e932182cf5ffd1240">ERR_METHOD_NOT_IMPLEMENTED</a></div><div class="ttdeci">#define ERR_METHOD_NOT_IMPLEMENTED</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00010">error.hpp:10</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -940,7 +941,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  287</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  288</span>                p.parseHeader(<span class="stringliteral">&quot;get /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  289</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  290</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: method not implemented&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  290</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a64b8e3ac14e76f4e932182cf5ffd1240">ERR_METHOD_NOT_IMPLEMENTED</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  291</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  292</span>            }</div>
 <div class="line"><span class="lineno">  293</span>        },</div>
@@ -985,13 +986,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  304</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  305</span>                p.parseHeader(<span class="stringliteral">&quot;GET/search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  306</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  307</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: missing single space&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  307</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a72be332e183aad07063c7bc5d3b62312">ERR_MISS_SINGLE_SPACE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  308</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  309</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  310</span>            }</div>
 <div class="line"><span class="lineno">  311</span>        },</div>
 <div class="line"><span class="lineno">  312</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  313</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a72be332e183aad07063c7bc5d3b62312"><div class="ttname"><a href="error_8hpp.html#a72be332e183aad07063c7bc5d3b62312">ERR_MISS_SINGLE_SPACE</a></div><div class="ttdeci">#define ERR_MISS_SINGLE_SPACE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00006">error.hpp:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1031,13 +1033,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  322</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  323</span>                p.parseHeader(<span class="stringliteral">&quot;GET search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  324</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  325</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: missing slash in URI&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  325</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a6f2eebf5a5e43404d9d68b669c1d942c">ERR_URI_MISS_SLASH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  326</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  327</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  328</span>            }</div>
 <div class="line"><span class="lineno">  329</span>        },</div>
 <div class="line"><span class="lineno">  330</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  331</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a6f2eebf5a5e43404d9d68b669c1d942c"><div class="ttname"><a href="error_8hpp.html#a6f2eebf5a5e43404d9d68b669c1d942c">ERR_URI_MISS_SLASH</a></div><div class="ttdeci">#define ERR_URI_MISS_SLASH</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00011">error.hpp:11</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1077,13 +1080,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  340</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  341</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?? HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  342</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  343</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid char in URI&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  343</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a1417817850f6443a48364c138035db6b">ERR_URI_INVALID_CHAR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  344</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  345</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  346</span>            }</div>
 <div class="line"><span class="lineno">  347</span>        },</div>
 <div class="line"><span class="lineno">  348</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  349</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a1417817850f6443a48364c138035db6b"><div class="ttname"><a href="error_8hpp.html#a1417817850f6443a48364c138035db6b">ERR_URI_INVALID_CHAR</a></div><div class="ttdeci">#define ERR_URI_INVALID_CHAR</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00012">error.hpp:12</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1123,7 +1127,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  358</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  359</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?## HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  360</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  361</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid char in URI&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  361</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a1417817850f6443a48364c138035db6b">ERR_URI_INVALID_CHAR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  362</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  363</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  364</span>            }</div>
@@ -1169,7 +1173,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  376</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  377</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search§blabla/index.html HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  378</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  379</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid char in URI&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  379</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a1417817850f6443a48364c138035db6b">ERR_URI_INVALID_CHAR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  380</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  381</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  382</span>            }</div>
@@ -1215,7 +1219,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  394</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  395</span>                p.parseHeader(<span class="stringliteral">&quot;GET /searchHTTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  396</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  397</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid char in URI&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  397</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a1417817850f6443a48364c138035db6b">ERR_URI_INVALID_CHAR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  398</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  399</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  400</span>            }</div>
@@ -1261,13 +1265,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  412</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  413</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html TTP/1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  414</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  415</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid format of version&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  415</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a0b6712cd095db4bdc25b07a7fea80e53">ERR_INVALID_VERSION_FORMAT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  416</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  417</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  418</span>            }</div>
 <div class="line"><span class="lineno">  419</span>        },</div>
 <div class="line"><span class="lineno">  420</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  421</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a0b6712cd095db4bdc25b07a7fea80e53"><div class="ttname"><a href="error_8hpp.html#a0b6712cd095db4bdc25b07a7fea80e53">ERR_INVALID_VERSION_FORMAT</a></div><div class="ttdeci">#define ERR_INVALID_VERSION_FORMAT</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00013">error.hpp:13</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1307,7 +1312,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  430</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  431</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html HTTP1.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  432</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  433</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid format of version&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  433</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a0b6712cd095db4bdc25b07a7fea80e53">ERR_INVALID_VERSION_FORMAT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  434</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  435</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  436</span>            }</div>
@@ -1353,13 +1358,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  448</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  449</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html HTTP/x.1\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  450</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  451</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid version major&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  451</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a6e126c353df3c5e9b962e5f13970e165">ERR_INVALID_VERSION_MAJOR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  452</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  453</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  454</span>            }</div>
 <div class="line"><span class="lineno">  455</span>        },</div>
 <div class="line"><span class="lineno">  456</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  457</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a6e126c353df3c5e9b962e5f13970e165"><div class="ttname"><a href="error_8hpp.html#a6e126c353df3c5e9b962e5f13970e165">ERR_INVALID_VERSION_MAJOR</a></div><div class="ttdeci">#define ERR_INVALID_VERSION_MAJOR</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00014">error.hpp:14</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1399,13 +1405,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  466</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  467</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html HTTP/11\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  468</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  469</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid version delimiter&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  469</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a033489843e824f9909fb26fa22135a44">ERR_INVALID_VERSION_DELIM</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  470</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  471</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  472</span>            }</div>
 <div class="line"><span class="lineno">  473</span>        },</div>
 <div class="line"><span class="lineno">  474</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  475</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a033489843e824f9909fb26fa22135a44"><div class="ttname"><a href="error_8hpp.html#a033489843e824f9909fb26fa22135a44">ERR_INVALID_VERSION_DELIM</a></div><div class="ttdeci">#define ERR_INVALID_VERSION_DELIM</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00015">error.hpp:15</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1445,13 +1452,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  484</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  485</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html HTTP/1.x\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  486</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  487</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: invalid version minor&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  487</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#aa54ebb955428c2475c7eb4472191e602">ERR_INVALID_VERSION_MINOR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  488</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  489</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  490</span>            }</div>
 <div class="line"><span class="lineno">  491</span>        },</div>
 <div class="line"><span class="lineno">  492</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  493</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_aa54ebb955428c2475c7eb4472191e602"><div class="ttname"><a href="error_8hpp.html#aa54ebb955428c2475c7eb4472191e602">ERR_INVALID_VERSION_MINOR</a></div><div class="ttdeci">#define ERR_INVALID_VERSION_MINOR</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00016">error.hpp:16</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1491,12 +1499,13 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  502</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  503</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html HTTP/2.0\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  504</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  505</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: version not supported&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  505</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a815b2c17f803d458c5e4931b4d5eb51a">ERR_NONSUPPORTED_VERSION</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  506</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  507</span>            }</div>
 <div class="line"><span class="lineno">  508</span>        },</div>
 <div class="line"><span class="lineno">  509</span>        std::runtime_error);</div>
 <div class="line"><span class="lineno">  510</span>}</div>
+<div class="ttc" id="aerror_8hpp_html_a815b2c17f803d458c5e4931b4d5eb51a"><div class="ttname"><a href="error_8hpp.html#a815b2c17f803d458c5e4931b4d5eb51a">ERR_NONSUPPORTED_VERSION</a></div><div class="ttdeci">#define ERR_NONSUPPORTED_VERSION</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00017">error.hpp:17</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1536,7 +1545,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  519</span>            <span class="keywordflow">try</span> {</div>
 <div class="line"><span class="lineno">  520</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search.html HTTP/1.3\r\n\r\n&quot;</span>, request);</div>
 <div class="line"><span class="lineno">  521</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  522</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<span class="stringliteral">&quot;Invalid HTTP request: version not supported&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  522</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a815b2c17f803d458c5e4931b4d5eb51a">ERR_NONSUPPORTED_VERSION</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
 <div class="line"><span class="lineno">  523</span>                <span class="keywordflow">throw</span>;</div>
 <div class="line"><span class="lineno">  524</span>            }</div>
 <div class="line"><span class="lineno">  525</span>        },</div>

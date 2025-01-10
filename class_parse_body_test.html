@@ -131,6 +131,8 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a76388ec62e843dc4b4676b200d7d2b5d" id="r_a76388ec62e843dc4b4676b200d7d2b5d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">char</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parse_body_test.html#a76388ec62e843dc4b4676b200d7d2b5d">buffer</a></td></tr>
+<tr class="separator:a76388ec62e843dc4b4676b200d7d2b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3d7a05503ac2b65b44782ea2f27838c" id="r_af3d7a05503ac2b65b44782ea2f27838c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_request_parser.html">RequestParser</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parse_body_test.html#af3d7a05503ac2b65b44782ea2f27838c">p</a></td></tr>
 <tr class="separator:af3d7a05503ac2b65b44782ea2f27838c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b2f8ed4f9fe0de1981f4230ef197cd9" id="r_a4b2f8ed4f9fe0de1981f4230ef197cd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a></td></tr>
@@ -138,7 +140,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00004">4</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00005">5</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a16168d7fbc73314baaa68a461b00ca22" name="a16168d7fbc73314baaa68a461b00ca22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a16168d7fbc73314baaa68a461b00ca22">&#9670;&#160;</a></span>ParseBodyTest()</h2>
@@ -163,13 +165,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00006">6</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    7</span>        : <a class="code hl_variable" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a>()</div>
-<div class="line"><span class="lineno">    8</span>    {</div>
-<div class="line"><span class="lineno">    9</span>        <a class="code hl_variable" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a>.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff">hasBody</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   10</span>        <a class="code hl_variable" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a>.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">isChunked</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   11</span>    }</div>
-<div class="ttc" id="aclass_parse_body_test_html_a4b2f8ed4f9fe0de1981f4230ef197cd9"><div class="ttname"><a href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">ParseBodyTest::request</a></div><div class="ttdeci">HTTPRequest request</div><div class="ttdef"><b>Definition</b> <a href="test__parse_body_8cpp_source.html#l00015">test_parseBody.cpp:15</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00007">7</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span>        : <a class="code hl_variable" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a>()</div>
+<div class="line"><span class="lineno">    9</span>    {</div>
+<div class="line"><span class="lineno">   10</span>        <a class="code hl_variable" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a>.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff">hasBody</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   11</span>        <a class="code hl_variable" href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">request</a>.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">isChunked</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   12</span>    }</div>
+<div class="ttc" id="aclass_parse_body_test_html_a4b2f8ed4f9fe0de1981f4230ef197cd9"><div class="ttname"><a href="class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9">ParseBodyTest::request</a></div><div class="ttdeci">HTTPRequest request</div><div class="ttdef"><b>Definition</b> <a href="test__parse_body_8cpp_source.html#l00017">test_parseBody.cpp:17</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_ab3f30f449eb8a8b6df63cd67986961ff"><div class="ttname"><a href="struct_h_t_t_p_request.html#ab3f30f449eb8a8b6df63cd67986961ff">HTTPRequest::hasBody</a></div><div class="ttdeci">bool hasBody</div><div class="ttdef"><b>Definition</b> <a href="_h_t_t_p_request_8hpp_source.html#l00029">HTTPRequest.hpp:29</a></div></div>
 <div class="ttc" id="astruct_h_t_t_p_request_html_ac894099e690bcad5b4c6423c00b75017"><div class="ttname"><a href="struct_h_t_t_p_request.html#ac894099e690bcad5b4c6423c00b75017">HTTPRequest::isChunked</a></div><div class="ttdeci">bool isChunked</div><div class="ttdef"><b>Definition</b> <a href="_h_t_t_p_request_8hpp_source.html#l00030">HTTPRequest.hpp:30</a></div></div>
 </div><!-- fragment -->
@@ -198,12 +200,36 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00012">12</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span>{ }</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00013">13</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span>{ }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a76388ec62e843dc4b4676b200d7d2b5d" name="a76388ec62e843dc4b4676b200d7d2b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76388ec62e843dc4b4676b200d7d2b5d">&#9670;&#160;</a></span>buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">char</a>&gt; ParseBodyTest::buffer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00015">15</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
+
+</div>
+</div>
 <a id="af3d7a05503ac2b65b44782ea2f27838c" name="af3d7a05503ac2b65b44782ea2f27838c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3d7a05503ac2b65b44782ea2f27838c">&#9670;&#160;</a></span>p</h2>
 
@@ -224,7 +250,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00014">14</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00016">16</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
 
 </div>
 </div>
@@ -248,7 +274,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00015">15</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__parse_body_8cpp_source.html#l00017">17</a> of file <a class="el" href="test__parse_body_8cpp_source.html">test_parseBody.cpp</a>.</p>
 
 </div>
 </div>

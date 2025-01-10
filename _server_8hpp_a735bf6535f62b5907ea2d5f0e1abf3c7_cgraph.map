@@ -1,7 +1,7 @@
 <map id="connectionReceiveFromCGI" name="connectionReceiveFromCGI">
 <area shape="rect" id="Node000001" title="Handles receiving data from a CGI script and processes it accordingly." alt="" coords="5,104,207,129"/>
-<area shape="rect" id="Node000002" href="$class_server.html#aa6eec7b99c50847aeef2b0746f46a8f6" title="Getter for CGI body buffer." alt="" coords="278,5,466,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,102,183,71,254,39,280,31,282,37,256,45,185,75,129,106"/>
+<area shape="rect" id="Node000002" href="$class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e" title="Getter for internal buffer." alt="" coords="306,5,438,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,102,183,71,254,39,292,29,293,34,256,45,185,75,129,106"/>
 <area shape="rect" id="Node000003" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="295,55,449,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,101,289,80,290,85,176,107"/>
 <area shape="rect" id="Node000005" href="$class_server.html#a8aa46a2d98652ee4c70ac7528f614422" title="Wrapper function to ProcessOps::readProcess." alt="" coords="297,104,447,129"/>

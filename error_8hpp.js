@@ -29,9 +29,10 @@ var error_8hpp =
     [ "ERR_NON_FINAL_CHUNKED_ENCODING", "error_8hpp.html#a921d1cf264a755c9ef65a0493569011a", null ],
     [ "ERR_NON_EXISTENT_TRANSFER_ENCODING", "error_8hpp.html#a9d32af3cad8071ff47072efebf7d8b36", null ],
     [ "ERR_NON_EXISTENT_CHUNKSIZE", "error_8hpp.html#a79d0e6e5e82b33abfceed71cf4debe27", null ],
+    [ "ERR_TOO_LARGE_CHUNKSIZE", "error_8hpp.html#a946a0f969f3164d7654f4565c507d6f6", null ],
     [ "ERR_INVALID_HEX_CHAR", "error_8hpp.html#a9517efbcce7f663c13d78c61f55c6ba5", null ],
     [ "ERR_CONVERSION_STRING_TO_HEX", "error_8hpp.html#a4ef1196daa4be81bd22cadb5d75314d6", null ],
-    [ "ERR_CHUNK_SIZE", "error_8hpp.html#a748a4b4ee61f82715386b37db4de124b", null ],
+    [ "ERR_CHUNKSIZE_INCONSISTENT", "error_8hpp.html#af23277c79bef4faab2998d693819ebfd", null ],
     [ "ERR_CONVERSION_STRING_TO_SIZE_T", "error_8hpp.html#aac96487ebb5bcb2269002646865153ab", null ],
     [ "ERR_CONTENT_LENGTH", "error_8hpp.html#a683508ef2f2400bcd0f5f5e02dfd85c5", null ],
     [ "ERR_UNEXPECTED_BODY", "error_8hpp.html#afef097336b6960957a448f3b0c632802", null ]

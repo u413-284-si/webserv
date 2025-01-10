@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['err_5fchunk_5fsize_0',['ERR_CHUNK_SIZE',['../error_8hpp.html#a748a4b4ee61f82715386b37db4de124b',1,'error.hpp']]],
+  ['err_5fchunksize_5finconsistent_0',['ERR_CHUNKSIZE_INCONSISTENT',['../error_8hpp.html#af23277c79bef4faab2998d693819ebfd',1,'error.hpp']]],
   ['err_5fcontent_5flength_1',['ERR_CONTENT_LENGTH',['../error_8hpp.html#a683508ef2f2400bcd0f5f5e02dfd85c5',1,'error.hpp']]],
   ['err_5fconversion_5fstring_5fto_5fhex_2',['ERR_CONVERSION_STRING_TO_HEX',['../error_8hpp.html#a4ef1196daa4be81bd22cadb5d75314d6',1,'error.hpp']]],
   ['err_5fconversion_5fstring_5fto_5fsize_5ft_3',['ERR_CONVERSION_STRING_TO_SIZE_T',['../error_8hpp.html#aac96487ebb5bcb2269002646865153ab',1,'error.hpp']]],
@@ -32,7 +32,8 @@ var searchData=
   ['err_5fpercent_5fincomplete_29',['ERR_PERCENT_INCOMPLETE',['../error_8hpp.html#a944e032ed9f210923fb00fcf64291f10',1,'error.hpp']]],
   ['err_5fpercent_5finvalid_5fhex_30',['ERR_PERCENT_INVALID_HEX',['../error_8hpp.html#a4b8f85a1e221481da89896dc93d34059',1,'error.hpp']]],
   ['err_5fpercent_5fnonsupported_5fnul_31',['ERR_PERCENT_NONSUPPORTED_NUL',['../error_8hpp.html#ae4fe3ea2a5ab7c6f909650dcf3f40737',1,'error.hpp']]],
-  ['err_5funexpected_5fbody_32',['ERR_UNEXPECTED_BODY',['../error_8hpp.html#afef097336b6960957a448f3b0c632802',1,'error.hpp']]],
-  ['err_5furi_5finvalid_5fchar_33',['ERR_URI_INVALID_CHAR',['../error_8hpp.html#a1417817850f6443a48364c138035db6b',1,'error.hpp']]],
-  ['err_5furi_5fmiss_5fslash_34',['ERR_URI_MISS_SLASH',['../error_8hpp.html#a6f2eebf5a5e43404d9d68b669c1d942c',1,'error.hpp']]]
+  ['err_5ftoo_5flarge_5fchunksize_32',['ERR_TOO_LARGE_CHUNKSIZE',['../error_8hpp.html#a946a0f969f3164d7654f4565c507d6f6',1,'error.hpp']]],
+  ['err_5funexpected_5fbody_33',['ERR_UNEXPECTED_BODY',['../error_8hpp.html#afef097336b6960957a448f3b0c632802',1,'error.hpp']]],
+  ['err_5furi_5finvalid_5fchar_34',['ERR_URI_INVALID_CHAR',['../error_8hpp.html#a1417817850f6443a48364c138035db6b',1,'error.hpp']]],
+  ['err_5furi_5fmiss_5fslash_35',['ERR_URI_MISS_SLASH',['../error_8hpp.html#a6f2eebf5a5e43404d9d68b669c1d942c',1,'error.hpp']]]
 ];

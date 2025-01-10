@@ -125,6 +125,8 @@ Functions</h2></td></tr>
 <tr class="separator:a0e3a3e34d455274041d418c7f0831bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d9ee4ebbf018956474217c903665037" id="r_a6d9ee4ebbf018956474217c903665037"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#a6d9ee4ebbf018956474217c903665037">test_invalid_percent_encoding_non_hex</a> ()</td></tr>
 <tr class="separator:a6d9ee4ebbf018956474217c903665037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbfc0c090ee141c4aabc5a80929daf9d" id="r_afbfc0c090ee141c4aabc5a80929daf9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#afbfc0c090ee141c4aabc5a80929daf9d">test_invalid_big_chunk_size</a> ()</td></tr>
+<tr class="separator:afbfc0c090ee141c4aabc5a80929daf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf0a7ad915a86ac5b1ac2c5a215695f" id="r_a1cf0a7ad915a86ac5b1ac2c5a215695f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#a1cf0a7ad915a86ac5b1ac2c5a215695f">test_invalid_directory_traversal</a> ()</td></tr>
 <tr class="separator:a1cf0a7ad915a86ac5b1ac2c5a215695f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -188,7 +190,7 @@ Variables</h2></td></tr>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_afa1f05e636e91423afac143f874bc912_icgraph.svg" width="502" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_afa1f05e636e91423afac143f874bc912_icgraph.svg" width="502" height="538"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -374,6 +376,42 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="afbfc0c090ee141c4aabc5a80929daf9d" name="afbfc0c090ee141c4aabc5a80929daf9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbfc0c090ee141c4aabc5a80929daf9d">&#9670;&#160;</a></span>test_invalid_big_chunk_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_invalid.test_invalid_big_chunk_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00101">101</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span>test_invalid_big_chunk_size():</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">  104</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">  105</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
+<div class="line"><span class="lineno">  106</span>        request = b<span class="stringliteral">&quot;POST /uploads/badboy.txt HTTP/1.1\r\nHost: localhost\r\nTransfer-Encoding: chunked\r\n\r\nFFFFFFFFFFFFFF\r\n0\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  107</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">  110</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">  111</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 413</div>
+<div class="line"><span class="lineno">  112</span> </div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_afbfc0c090ee141c4aabc5a80929daf9d_cgraph.svg" width="430" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a1cf0a7ad915a86ac5b1ac2c5a215695f" name="a1cf0a7ad915a86ac5b1ac2c5a215695f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1cf0a7ad915a86ac5b1ac2c5a215695f">&#9670;&#160;</a></span>test_invalid_directory_traversal()</h2>
 
@@ -389,17 +427,17 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00101">101</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span>test_invalid_directory_traversal():</div>
-<div class="line"><span class="lineno">  102</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">  103</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">  104</span>        <span class="comment"># Craft HTTP request with directory traversal try</span></div>
-<div class="line"><span class="lineno">  105</span>        request = b<span class="stringliteral">&quot;GET /../../../etc/passwd HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  106</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">  109</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00113">113</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span><span class="keyword">def </span>test_invalid_directory_traversal():</div>
+<div class="line"><span class="lineno">  114</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">  115</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">  116</span>        <span class="comment"># Craft HTTP request with directory traversal try</span></div>
+<div class="line"><span class="lineno">  117</span>        request = b<span class="stringliteral">&quot;GET /../../../etc/passwd HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  118</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">  121</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">  122</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

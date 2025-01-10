@@ -248,6 +248,6 @@ var NAVTREEINDEX1 =
 "class_ostream_inserters_test.html#abe94d48536ee96be35ba5e74434199a4":[2,0,33,1],
 "class_parse_body_test.html":[2,0,34],
 "class_parse_body_test.html#a16168d7fbc73314baaa68a461b00ca22":[2,0,34,0],
-"class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9":[2,0,34,3],
+"class_parse_body_test.html#a4b2f8ed4f9fe0de1981f4230ef197cd9":[2,0,34,4],
 "class_parse_body_test.html#a6485ce2df143c632abca071cd9a59085":[2,0,34,1]
 };
