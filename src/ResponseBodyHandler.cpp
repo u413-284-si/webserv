@@ -130,6 +130,8 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
+    std::string loweredHeaders = headers;
+    webutils::lowercase(loweredHeaders);
 
 	if (posHeadersEnd == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
@@ -138,8 +140,8 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		return;
 	}
 
-	if (headers.find("Content-Type: ") == std::string::npos && headers.find("Location: ") == std::string::npos
-		&& headers.find("Status: ") == std::string::npos) {
+	if (loweredHeaders.find("content-type: ") == std::string::npos && loweredHeaders.find("location: ") == std::string::npos
+		&& loweredHeaders.find("status: ") == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
 		handleErrorBody();
 		LOG_ERROR << ERR_MISSING_CGI_FIELD;
