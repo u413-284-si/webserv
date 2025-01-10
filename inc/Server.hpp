@@ -77,6 +77,7 @@ public:
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	void removeConnection(int delFd);
 	void removeCGIFileDescriptor(int& delfd);
 	void setClientTimeout(time_t clientTimeout);
 
@@ -159,7 +160,6 @@ void connectionHandleTimeout(Server& server, int activeFd, Connection& connectio
 
 void checkForTimeout(Server& server);
 
-void cleanupClosedConnections(Server& server);
 void cleanupIdleConnections(Server& server);
 
 void shutdownServer(Server& server);
