@@ -8,7 +8,7 @@ from utils.utils import start_server, wait_for_startup
 def test_signal_graceful_shutdown(request):
 
     server_executable = request.config.getoption("--server-executable")
-    config_file = config_file = request.config.getoption("--config-file")
+    config_file = request.config.getoption("--config-file")
 
     # Check if the user passed the --with-coverage option
     with_coverage = request.config.getoption("--with-coverage")
