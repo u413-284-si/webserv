@@ -8,7 +8,12 @@ class ConnectionSendResponseTest : public ServerTestBase {
 protected:
 	ConnectionSendResponseTest()
 	{
+		ON_CALL(m_epollWrapper, addEvent)
+			.WillByDefault(Return(true));
 		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
+
+		m_server.registerConnection(serverSock, dummyFd, Socket());
+		connection = m_server.getConnections().at(dummyFd);
 
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_buffer = response;
@@ -16,9 +21,15 @@ protected:
 	}
 	~ConnectionSendResponseTest() override { }
 
+	Socket serverSock = {
+		.host = "127.0.0.1",
+		.port = "8080"
+	};
 	const int dummyFd = 10;
 
-	Connection connection = Connection(Socket(), Socket(), dummyFd, m_configFile.servers);
+	Connection temp = Connection(serverSock, Socket(), dummyFd, m_configFile.servers);
+	Connection& connection = temp;
+
 	std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nABCD";
 };
 
@@ -41,9 +52,7 @@ TEST_F(ConnectionSendResponseTest, SendFullResponseCloseConnection)
 
 	connectionSendResponse(m_server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, response);
-	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionSendResponseTest, SendPartialResponse)
@@ -67,7 +76,5 @@ TEST_F(ConnectionSendResponseTest, SendFail)
 
 	connectionSendResponse(m_server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, response);
-	EXPECT_EQ(connection.m_timeSinceLastEvent, 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }

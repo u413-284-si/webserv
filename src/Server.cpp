@@ -248,6 +248,20 @@ void Server::removeVirtualServer(int delfd)
 }
 
 /**
+ * @brief Removes a Connection from the Server.
+ *
+ * @param delFd File descriptor to be removed.
+ */
+void Server::removeConnection(int delFd)
+{
+	const Socket clientSocket = getConnections().at(delFd).m_clientSocket;
+	removeEvent(delFd);
+	getConnections().erase(delFd);
+	close(delFd);
+	LOG_DEBUG << "Removed Connection: " << clientSocket << " on fd: " << delFd;
+}
+
+/**
  * @brief Removes a CGI file descriptor from the server.
  *
  * This function removes a CGI file descriptor from the server by performing the following steps:
@@ -671,7 +685,7 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
  * It waits for events with the EpollWrapper.
  * If a vector of events is returned it processes all of them via handleEvent().
  * When events are processed or the server.waitForEvents() timeout happens checks for connection timeouts with
- * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
+ * checkForTimeout().
  * The loop continues until a signal is received and saved in g_SignalStatus. It then logs the signal.
  * If the signal is SIGQUIT it performs a graceful shutdown with shutdownServer().
  *
@@ -690,7 +704,6 @@ void runServer(Server& server)
 			handleEvent(server, *iter);
 		}
 		checkForTimeout(server);
-		cleanupClosedConnections(server);
 	}
 	LOG_INFO << "Received signal " << signalNumToName(g_signalStatus);
 	if (g_signalStatus == SIGQUIT)
@@ -915,14 +928,12 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -997,8 +1008,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
 			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
-			close(clientFd);
-			connection.m_status = Connection::Closed;
+			server.removeConnection(clientFd);
 			return;
 		}
 	}
@@ -1140,14 +1150,12 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -1421,8 +1429,7 @@ void connectionSendResponse(Server& server, int activeFd, Connection& connection
 	const ssize_t sentBytes = server.writeToSocket(activeFd, connection.m_buffer.c_str(), bytesToSend, 0);
 	if (sentBytes == -1) {
 		LOG_ERROR << "Internal server error";
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -1435,8 +1442,7 @@ void connectionSendResponse(Server& server, int activeFd, Connection& connection
 
 	if (connection.m_request.shallCloseConnection) {
 		LOG_DEBUG << "Closing connection";
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 	} else {
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(activeFd, EPOLLIN);
@@ -1479,8 +1485,6 @@ void checkForTimeout(Server& server)
 {
 	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
 		 iter != server.getConnections().end(); ++iter) {
-		if (iter->second.m_status == Connection::Closed)
-			continue;
 		const time_t timeSinceLastEvent = std::time(0) - iter->second.m_timeSinceLastEvent;
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
@@ -1492,27 +1496,6 @@ void checkForTimeout(Server& server)
 }
 
 /* ====== CLEANUP ====== */
-
-/**
- * @brief Iterates through all connections and removes closed ones.
- *
- * The for loop through the connections map has no increment statement because the
- * iterator is incremented in the loop body. If .erase() is called on an iterator,
- * it is invalidated.
- *
- * @param server The server object to cleanup closed connections for.
- */
-void cleanupClosedConnections(Server& server)
-{
-	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
-		 iter != server.getConnections().end();
-		/* no iter*/) {
-		if (iter->second.m_status == Connection::Closed)
-			server.getConnections().erase(iter++);
-		else
-			++iter;
-	}
-}
 
 /**
  * @brief Iterates through all connections, closes and removes idle ones.
@@ -1561,7 +1544,6 @@ void shutdownServer(Server& server)
 
 	LOG_DEBUG << "Cleanup idle connections";
 	cleanupIdleConnections(server);
-	cleanupClosedConnections(server);
 
 	LOG_DEBUG << "Waiting for connections to finish";
 	while (g_signalStatus == SIGQUIT && !server.getConnections().empty()) {
@@ -1573,7 +1555,6 @@ void shutdownServer(Server& server)
 		}
 		checkForTimeout(server);
 		cleanupIdleConnections(server);
-		cleanupClosedConnections(server);
 	}
 	if (g_signalStatus != SIGQUIT)
 		LOG_INFO << "Graceful shutdown interrupted with signal " << g_signalStatus;

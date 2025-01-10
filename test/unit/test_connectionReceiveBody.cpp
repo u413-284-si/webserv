@@ -8,15 +8,21 @@ class ConnectionReceiveBodyTest : public ServerTestBase {
 protected:
 	ConnectionReceiveBodyTest()
 	{
-		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, addEvent)
+			.WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, modifyEvent)
+			.WillByDefault(Return(true));
 
+		m_server.registerConnection(m_serverSock, m_dummyFd, Socket());
+		m_connection = m_server.getConnections().at(m_dummyFd);
 		m_connection.m_status = Connection::ReceiveBody;
 	}
 	~ConnectionReceiveBodyTest() override { }
 
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 	const int m_dummyFd = 10;
-	Connection m_connection = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
+	Connection temp = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
+	Connection& m_connection = temp;
 };
 
 TEST_F(ConnectionReceiveBodyTest, ReceiveFullBody)
@@ -119,8 +125,7 @@ TEST_F(ConnectionReceiveBodyTest, RecvFail)
 
 	connectionReceiveBody(m_server, m_dummyFd, m_connection);
 
-	EXPECT_EQ(m_connection.m_buffer.size(), 0);
-	EXPECT_EQ(m_connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveBodyTest, RecvReturnedZero)
@@ -129,6 +134,5 @@ TEST_F(ConnectionReceiveBodyTest, RecvReturnedZero)
 
 	connectionReceiveBody(m_server, m_dummyFd, m_connection);
 
-	EXPECT_EQ(m_connection.m_buffer.size(), 0);
-	EXPECT_EQ(m_connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }

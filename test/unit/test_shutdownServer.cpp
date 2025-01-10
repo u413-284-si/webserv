@@ -24,22 +24,19 @@ protected:
 	const int dummyFd = 10;
 	const int dummyFd2 = 20;
 	const int dummyFd3 = 30;
-	const int dummyFd4 = 40;
 
 	const Socket serverSock = { .host = m_configFile.servers[0].host, .port = m_configFile.servers[0].port };
 	const Socket clientSock = { "192.168.0.1", "1234" };
 };
 
-TEST_F(ShutdownServerTest, OnlyClosedAndIdleConnections)
+TEST_F(ShutdownServerTest, OnlyIdleConnections)
 {
 	m_server.registerVirtualServer(dummyFd, clientSock);
 	m_server.registerConnection(serverSock, dummyFd2, clientSock);
 	m_server.registerConnection(serverSock, dummyFd3, clientSock);
-	m_server.registerConnection(serverSock, dummyFd4, clientSock);
 
 	m_server.getConnections().at(dummyFd2).m_status = Connection::Idle;
-	m_server.getConnections().at(dummyFd3).m_status = Connection::Closed;
-	m_server.getConnections().at(dummyFd4).m_status = Connection::Idle;
+	m_server.getConnections().at(dummyFd3).m_status = Connection::Idle;
 
 	shutdownServer(m_server);
 

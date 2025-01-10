@@ -8,8 +8,13 @@ class ConnectionReceiveHeaderTest : public ServerTestBase {
 protected:
 	ConnectionReceiveHeaderTest()
 	{
-		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, addEvent)
+			.WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, modifyEvent)
+			.WillByDefault(Return(true));
 
+		m_server.registerConnection(m_serverSock, dummyFd, Socket());
+		connection = m_server.getConnections().at(dummyFd);
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_status = Connection::ReceiveHeader;
 	}
@@ -17,8 +22,8 @@ protected:
 
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 	const int dummyFd = 10;
-
-	Connection connection = Connection(m_serverSock, Socket(), dummyFd, m_configFile.servers);
+	Connection temp = Connection(m_serverSock, Socket(), dummyFd, m_configFile.servers);
+	Connection& connection = temp;
 };
 
 TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)
@@ -61,9 +66,7 @@ TEST_F(ConnectionReceiveHeaderTest, RecvFail)
 
 	connectionReceiveHeader(m_server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer, "");
-	EXPECT_EQ(connection.m_buffer.size(), 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
@@ -72,8 +75,7 @@ TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
 
 	connectionReceiveHeader(m_server, dummyFd, connection);
 
-	EXPECT_EQ(connection.m_buffer.size(), 0);
-	EXPECT_EQ(connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveHeaderTest, RequestSizeTooBig)
