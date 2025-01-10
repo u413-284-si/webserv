@@ -5,6 +5,7 @@ import stat
 from utils.utils import make_request
 from utils.utils import parse_http_response
 import socket
+import time
 
 host = "localhost"
 port = 8080
@@ -178,3 +179,32 @@ def test_4xx_chunk_size_too_big():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 413
+
+def test_epoll_partial_and_complete_requests():
+    # Create two sockets
+    client1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Connect first client socket and send half of the request
+    client1.connect((host, port))
+    client1.sendall(b"GET /partial ")
+
+    # Wait a bit to ensure the next parts trigger epoll simultaneously
+    time.sleep(0.1)
+
+    # Send the second half of the first request and create second client socket
+    client1.sendall(b"HTTP/1.1\r\n\r\n")
+    client2.connect((host, port))
+
+    # And send full new request
+    client2.sendall(b"GET / HTTP/1.1\r\nHost: localhost\r\n\r\n")
+
+    # Read responses
+    response1 = parse_http_response(client1)
+    response2 = parse_http_response(client2)
+
+    assert response1["status_code"] == 400
+    assert response2["status_code"] == 200
+
+    client1.close()
+    client2.close()
