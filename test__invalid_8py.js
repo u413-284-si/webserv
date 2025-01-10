@@ -8,6 +8,7 @@ var test__invalid_8py =
     [ "test_invalid_percent_encoding_non_hex", "test__invalid_8py.html#a6d9ee4ebbf018956474217c903665037", null ],
     [ "test_invalid_big_chunk_size", "test__invalid_8py.html#afbfc0c090ee141c4aabc5a80929daf9d", null ],
     [ "test_invalid_directory_traversal", "test__invalid_8py.html#a1cf0a7ad915a86ac5b1ac2c5a215695f", null ],
+    [ "test_epoll_partial_and_complete_requests", "test__invalid_8py.html#aabd9408df6c0dea3a956cfdebca51b18", null ],
     [ "host", "test__invalid_8py.html#a344cce51b585da57ae304cd53640858b", null ],
     [ "port", "test__invalid_8py.html#abad8d4fce10bcc0f3ec893f25f29ab64", null ]
 ];

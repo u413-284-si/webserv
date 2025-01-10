@@ -1,23 +1,31 @@
 <map id="TEST_F" name="TEST_F">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,75,129"/>
-<area shape="rect" id="Node000002" href="$_server_8cpp.html#a43e9e764c97aacfc12f233b33ffa3342" title="Sends the response to a client connection." alt="" coords="123,104,311,129"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,114,109,114,109,119,75,119"/>
-<area shape="rect" id="Node000003" href="$_connection_8cpp.html#a1787b72853fa3a6146cea621fa1d0d65" title="Clears the state of a given Connection object and resets its attributes." alt="" coords="387,29,513,55"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="250,101,358,63,384,56,386,61,359,69,252,107"/>
-<area shape="rect" id="Node000007" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="359,79,541,104"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="311,104,345,100,345,105,311,109"/>
-<area shape="rect" id="Node000008" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="373,128,527,153"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="311,124,359,129,359,134,311,129"/>
-<area shape="rect" id="Node000010" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="369,177,531,203"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="253,127,359,163,386,171,384,176,358,169,251,132"/>
-<area shape="rect" id="Node000004" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="623,5,757,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="513,33,609,23,609,29,514,38"/>
-<area shape="rect" id="Node000005" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="610,55,770,80"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="514,46,597,55,596,60,513,51"/>
-<area shape="rect" id="Node000006" href="$_connection_8cpp.html#af96f533f342bd6cf42899f3c9fd30a99" title="Find matching server configurations for a server socket." alt="" coords="839,55,1035,80"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="770,65,825,65,825,70,770,70"/>
-<area shape="rect" id="Node000009" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="591,128,789,153"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="528,138,576,138,576,143,528,143"/>
-<area shape="rect" id="Node000011" href="$class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1" title="Write to a socket." alt="" coords="589,177,791,203"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="532,187,576,187,576,193,532,193"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,141,75,167"/>
+<area shape="rect" id="Node000002" href="$_server_8cpp.html#a43e9e764c97aacfc12f233b33ffa3342" title="Sends the response to a client connection." alt="" coords="123,141,311,167"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,151,109,151,109,157,75,157"/>
+<area shape="rect" id="Node000003" href="$_connection_8cpp.html#a1787b72853fa3a6146cea621fa1d0d65" title="Clears the state of a given Connection object and resets its attributes." alt="" coords="393,43,519,68"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="237,139,290,108,358,77,380,69,382,74,360,82,293,113,240,144"/>
+<area shape="rect" id="Node000007" href="$class_server.html#a54745950beb9e321d9a56084501c18e9" title="Const Getter for server configs." alt="" coords="365,92,547,117"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="278,139,380,118,381,123,279,144"/>
+<area shape="rect" id="Node000008" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="379,141,533,167"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="311,151,365,151,365,157,311,157"/>
+<area shape="rect" id="Node000010" href="$class_server.html#ae04a9076862f2163c562e20fa2207681" title="Removes a Connection from the Server." alt="" coords="359,191,553,216"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="279,164,381,185,380,190,278,169"/>
+<area shape="rect" id="Node000014" href="$class_server.html#a8bf2a41e8ddcccd54b5832b58211a283" title="Wrapper function to SocketPolicy::writeToSocket." alt="" coords="375,240,537,265"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="240,164,293,194,360,225,386,234,384,239,358,230,291,199,237,169"/>
+<area shape="rect" id="Node000004" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="635,5,769,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="519,43,621,28,622,33,520,48"/>
+<area shape="rect" id="Node000005" href="$_connection_8cpp.html#a354192f8dd87ca049cf8b7e6de9000da" title="Selects the server configuration for a connection." alt="" coords="622,55,782,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="519,56,608,60,608,65,519,61"/>
+<area shape="rect" id="Node000006" href="$_connection_8cpp.html#af96f533f342bd6cf42899f3c9fd30a99" title="Find matching server configurations for a server socket." alt="" coords="855,55,1051,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="782,65,841,65,841,70,782,70"/>
+<area shape="rect" id="Node000009" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="603,128,801,153"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="534,147,589,144,589,149,534,152"/>
+<area shape="rect" id="Node000011" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="615,177,789,203"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="553,195,601,193,601,198,554,201"/>
+<area shape="rect" id="Node000012" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="623,227,781,252"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="544,213,610,223,609,228,543,219"/>
+<area shape="rect" id="Node000013" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="851,227,1055,252"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="781,237,837,237,837,242,781,242"/>
+<area shape="rect" id="Node000015" href="$class_socket_policy.html#a2be07593236ccf70a7ddd7fc8d8b0af1" title="Write to a socket." alt="" coords="601,276,803,301"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="538,262,601,271,601,277,537,267"/>
 </map>

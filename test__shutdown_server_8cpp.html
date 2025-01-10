@@ -131,16 +131,16 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae0ede4f52ef6c742c532c14b92b6179a" id="r_ae0ede4f52ef6c742c532c14b92b6179a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__shutdown_server_8cpp.html#ae0ede4f52ef6c742c532c14b92b6179a">TEST_F</a> (<a class="el" href="class_shutdown_server_test.html">ShutdownServerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OnlyClosedAndIdleConnections</a>)</td></tr>
-<tr class="separator:ae0ede4f52ef6c742c532c14b92b6179a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a224e0b58937c3db439ffeef179620439" id="r_a224e0b58937c3db439ffeef179620439"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__shutdown_server_8cpp.html#a224e0b58937c3db439ffeef179620439">TEST_F</a> (<a class="el" href="class_shutdown_server_test.html">ShutdownServerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OnlyIdleConnections</a>)</td></tr>
+<tr class="separator:a224e0b58937c3db439ffeef179620439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69fea7b0fb329821fdd955271edc65ee" id="r_a69fea7b0fb329821fdd955271edc65ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__shutdown_server_8cpp.html#a69fea7b0fb329821fdd955271edc65ee">TEST_F</a> (<a class="el" href="class_shutdown_server_test.html">ShutdownServerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NonIdleConnection</a>)</td></tr>
 <tr class="separator:a69fea7b0fb329821fdd955271edc65ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6462dc91a572c9969b759806ed15590b" id="r_a6462dc91a572c9969b759806ed15590b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__shutdown_server_8cpp.html#a6462dc91a572c9969b759806ed15590b">TEST_F</a> (<a class="el" href="class_shutdown_server_test.html">ShutdownServerTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">InterruptedBySignal</a>)</td></tr>
 <tr class="separator:a6462dc91a572c9969b759806ed15590b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ae0ede4f52ef6c742c532c14b92b6179a" name="ae0ede4f52ef6c742c532c14b92b6179a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0ede4f52ef6c742c532c14b92b6179a">&#9670;&#160;</a></span>TEST_F() <span class="overload">[1/3]</span></h2>
+<a id="a224e0b58937c3db439ffeef179620439" name="a224e0b58937c3db439ffeef179620439"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a224e0b58937c3db439ffeef179620439">&#9670;&#160;</a></span>TEST_F() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,7 +154,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OnlyClosedAndIdleConnections</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">OnlyIdleConnections</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -165,29 +165,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00049">49</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>    server.registerVirtualServer(dummyFd, clientSock);</div>
-<div class="line"><span class="lineno">   52</span>    server.registerConnection(serverSock, dummyFd2, clientSock);</div>
-<div class="line"><span class="lineno">   53</span>    server.registerConnection(serverSock, dummyFd3, clientSock);</div>
-<div class="line"><span class="lineno">   54</span>    server.registerConnection(serverSock, dummyFd4, clientSock);</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    server.getConnections().at(dummyFd2).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>;</div>
-<div class="line"><span class="lineno">   57</span>    server.getConnections().at(dummyFd3).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a>;</div>
-<div class="line"><span class="lineno">   58</span>    server.getConnections().at(dummyFd4).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>;</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_function" href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a>(server);</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 0);</div>
-<div class="line"><span class="lineno">   63</span>}</div>
-<div class="ttc" id="a_server_8hpp_html_a115ecd76e344c1007bedc48b9bbdc0fa"><div class="ttname"><a href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a></div><div class="ttdeci">void shutdownServer(Server &amp;server)</div><div class="ttdoc">Performs a graceful shutdown of the server.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l01516">Server.cpp:1516</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00048">48</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>    server.registerVirtualServer(dummyFd, clientSock);</div>
+<div class="line"><span class="lineno">   51</span>    server.registerConnection(serverSock, dummyFd2, clientSock);</div>
+<div class="line"><span class="lineno">   52</span>    server.registerConnection(serverSock, dummyFd3, clientSock);</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>    server.getConnections().at(dummyFd2).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>;</div>
+<div class="line"><span class="lineno">   55</span>    server.getConnections().at(dummyFd3).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>;</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_function" href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a>(server);</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 0);</div>
+<div class="line"><span class="lineno">   60</span>}</div>
+<div class="ttc" id="a_server_8hpp_html_a115ecd76e344c1007bedc48b9bbdc0fa"><div class="ttname"><a href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a></div><div class="ttdeci">void shutdownServer(Server &amp;server)</div><div class="ttdoc">Performs a graceful shutdown of the server.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l01499">Server.cpp:1499</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00031">Connection.hpp:30</a></div></div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00022">Connection.hpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__shutdown_server_8cpp_ae0ede4f52ef6c742c532c14b92b6179a_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__shutdown_server_8cpp_a224e0b58937c3db439ffeef179620439_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -218,19 +215,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00065">65</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
-<div class="line"><span class="lineno">   67</span>    server.registerConnection(serverSock, dummyFd, clientSock);</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    server.getConnections().at(dummyFd).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00062">62</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>    server.registerConnection(serverSock, dummyFd, clientSock);</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>    server.getConnections().at(dummyFd).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(epollWrapper, waitForEvents).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(1));</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, readFromSocket).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(0));</div>
 <div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(epollWrapper, waitForEvents).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(1));</div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(socketPolicy, readFromSocket).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(0));</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_function" href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a>(server);</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 0);</div>
-<div class="line"><span class="lineno">   77</span>}</div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_function" href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a>(server);</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 0);</div>
+<div class="line"><span class="lineno">   74</span>}</div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00023">Connection.hpp:23</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -266,18 +263,18 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00079">79</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
-<div class="line"><span class="lineno">   81</span>    server.registerConnection(serverSock, dummyFd, clientSock);</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    server.getConnections().at(dummyFd).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    <a class="code hl_variable" href="signal_handler_8hpp.html#a8dcc1e48e0bf890094e11efb58edafa1">g_signalStatus</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGINT</a>;</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>    <a class="code hl_function" href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a>(server);</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 1);</div>
-<div class="line"><span class="lineno">   90</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__shutdown_server_8cpp_source.html#l00076">76</a> of file <a class="el" href="test__shutdown_server_8cpp_source.html">test_shutdownServer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{</div>
+<div class="line"><span class="lineno">   78</span>    server.registerConnection(serverSock, dummyFd, clientSock);</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>    server.getConnections().at(dummyFd).m_status = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a>;</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <a class="code hl_variable" href="signal_handler_8hpp.html#a8dcc1e48e0bf890094e11efb58edafa1">g_signalStatus</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGINT</a>;</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <a class="code hl_function" href="_server_8hpp.html#a115ecd76e344c1007bedc48b9bbdc0fa">shutdownServer</a>(server);</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 1);</div>
+<div class="line"><span class="lineno">   87</span>}</div>
 <div class="ttc" id="asignal_handler_8hpp_html_a8dcc1e48e0bf890094e11efb58edafa1"><div class="ttname"><a href="signal_handler_8hpp.html#a8dcc1e48e0bf890094e11efb58edafa1">g_signalStatus</a></div><div class="ttdeci">volatile std::sig_atomic_t g_signalStatus</div><div class="ttdef"><b>Definition</b> <a href="signal_handler_8cpp_source.html#l00005">signalHandler.cpp:5</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

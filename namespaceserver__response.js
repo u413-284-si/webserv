@@ -29,6 +29,7 @@ var namespaceserver__response =
       [ "test_invalid_percent_encoding_non_hex", "namespaceserver__response_1_1test__invalid.html#a6d9ee4ebbf018956474217c903665037", null ],
       [ "test_invalid_big_chunk_size", "namespaceserver__response_1_1test__invalid.html#afbfc0c090ee141c4aabc5a80929daf9d", null ],
       [ "test_invalid_directory_traversal", "namespaceserver__response_1_1test__invalid.html#a1cf0a7ad915a86ac5b1ac2c5a215695f", null ],
+      [ "test_epoll_partial_and_complete_requests", "namespaceserver__response_1_1test__invalid.html#aabd9408df6c0dea3a956cfdebca51b18", null ],
       [ "host", "namespaceserver__response_1_1test__invalid.html#a344cce51b585da57ae304cd53640858b", null ],
       [ "port", "namespaceserver__response_1_1test__invalid.html#abad8d4fce10bcc0f3ec893f25f29ab64", null ]
     ] ],

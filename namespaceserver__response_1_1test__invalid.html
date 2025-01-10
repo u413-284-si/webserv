@@ -129,6 +129,8 @@ Functions</h2></td></tr>
 <tr class="separator:afbfc0c090ee141c4aabc5a80929daf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cf0a7ad915a86ac5b1ac2c5a215695f" id="r_a1cf0a7ad915a86ac5b1ac2c5a215695f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#a1cf0a7ad915a86ac5b1ac2c5a215695f">test_invalid_directory_traversal</a> ()</td></tr>
 <tr class="separator:a1cf0a7ad915a86ac5b1ac2c5a215695f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd9408df6c0dea3a956cfdebca51b18" id="r_aabd9408df6c0dea3a956cfdebca51b18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__invalid.html#aabd9408df6c0dea3a956cfdebca51b18">test_epoll_partial_and_complete_requests</a> ()</td></tr>
+<tr class="separator:aabd9408df6c0dea3a956cfdebca51b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -154,43 +156,43 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00009">9</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>parse_http_response(sock):</div>
-<div class="line"><span class="lineno">   10</span>    <span class="comment"># Receive the full response</span></div>
-<div class="line"><span class="lineno">   11</span>    response_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.recv</a>(4096)</div>
-<div class="line"><span class="lineno">   12</span> </div>
-<div class="line"><span class="lineno">   13</span>    <span class="comment"># Decode response</span></div>
-<div class="line"><span class="lineno">   14</span>    response_str = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_data.decode</a>(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
-<div class="line"><span class="lineno">   15</span> </div>
-<div class="line"><span class="lineno">   16</span>    <span class="comment"># Split into lines</span></div>
-<div class="line"><span class="lineno">   17</span>    response_lines = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_str.split</a>(<span class="stringliteral">&#39;\r\n&#39;</span>)</div>
-<div class="line"><span class="lineno">   18</span> </div>
-<div class="line"><span class="lineno">   19</span>    <span class="comment"># Status line (first line)</span></div>
-<div class="line"><span class="lineno">   20</span>    status_line = response_lines[0]</div>
-<div class="line"><span class="lineno">   21</span>    status_code = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">status_line.split</a>()[1])</div>
-<div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span>    <span class="comment"># Headers (remaining lines)</span></div>
-<div class="line"><span class="lineno">   24</span>    headers = {}</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">for</span> line <span class="keywordflow">in</span> response_lines[1:]:</div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">line.strip</a>() == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">   27</span>            <span class="comment"># End of headers</span></div>
-<div class="line"><span class="lineno">   28</span>            <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   29</span>        key, value = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">line.split</a>(<span class="stringliteral">&quot;:&quot;</span>, 1)</div>
-<div class="line"><span class="lineno">   30</span>        headers[<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">key.strip</a>()] = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">value.strip</a>()</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">return</span> {</div>
-<div class="line"><span class="lineno">   33</span>        <span class="stringliteral">&quot;status_code&quot;</span>: status_code,</div>
-<div class="line"><span class="lineno">   34</span>        <span class="stringliteral">&quot;headers&quot;</span>: headers,</div>
-<div class="line"><span class="lineno">   35</span>        <span class="stringliteral">&quot;body&quot;</span>: <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_str.split</a>(<span class="stringliteral">&#39;\r\n\r\n&#39;</span>, 1)[1] <span class="keywordflow">if</span> <span class="stringliteral">&#39;\r\n\r\n&#39;</span> <span class="keywordflow">in</span> response_str <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   36</span>    }</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00011">11</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>parse_http_response(sock):</div>
+<div class="line"><span class="lineno">   12</span>    <span class="comment"># Receive the full response</span></div>
+<div class="line"><span class="lineno">   13</span>    response_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.recv</a>(4096)</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span>    <span class="comment"># Decode response</span></div>
+<div class="line"><span class="lineno">   16</span>    response_str = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_data.decode</a>(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
+<div class="line"><span class="lineno">   17</span> </div>
+<div class="line"><span class="lineno">   18</span>    <span class="comment"># Split into lines</span></div>
+<div class="line"><span class="lineno">   19</span>    response_lines = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_str.split</a>(<span class="stringliteral">&#39;\r\n&#39;</span>)</div>
+<div class="line"><span class="lineno">   20</span> </div>
+<div class="line"><span class="lineno">   21</span>    <span class="comment"># Status line (first line)</span></div>
+<div class="line"><span class="lineno">   22</span>    status_line = response_lines[0]</div>
+<div class="line"><span class="lineno">   23</span>    status_code = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">status_line.split</a>()[1])</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span>    <span class="comment"># Headers (remaining lines)</span></div>
+<div class="line"><span class="lineno">   26</span>    headers = {}</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">for</span> line <span class="keywordflow">in</span> response_lines[1:]:</div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">if</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">line.strip</a>() == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><span class="lineno">   29</span>            <span class="comment"># End of headers</span></div>
+<div class="line"><span class="lineno">   30</span>            <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">   31</span>        key, value = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">line.split</a>(<span class="stringliteral">&quot;:&quot;</span>, 1)</div>
+<div class="line"><span class="lineno">   32</span>        headers[<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">key.strip</a>()] = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">value.strip</a>()</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">return</span> {</div>
+<div class="line"><span class="lineno">   35</span>        <span class="stringliteral">&quot;status_code&quot;</span>: status_code,</div>
+<div class="line"><span class="lineno">   36</span>        <span class="stringliteral">&quot;headers&quot;</span>: headers,</div>
+<div class="line"><span class="lineno">   37</span>        <span class="stringliteral">&quot;body&quot;</span>: <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response_str.split</a>(<span class="stringliteral">&#39;\r\n\r\n&#39;</span>, 1)[1] <span class="keywordflow">if</span> <span class="stringliteral">&#39;\r\n\r\n&#39;</span> <span class="keywordflow">in</span> response_str <span class="keywordflow">else</span> <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>    }</div>
 <div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span> </div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_afa1f05e636e91423afac143f874bc912_icgraph.svg" width="502" height="538"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_afa1f05e636e91423afac143f874bc912_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -210,20 +212,20 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00040">40</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span><span class="keyword">def </span>test_invalid_method_not_implemented():</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">   44</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
-<div class="line"><span class="lineno">   45</span>        request = b<span class="stringliteral">&quot;INVALIDREQUEST / HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   46</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">   49</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">   50</span>        print(response[<span class="stringliteral">&quot;status_code&quot;</span>])</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 501</div>
-<div class="line"><span class="lineno">   52</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00042">42</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span><span class="keyword">def </span>test_invalid_method_not_implemented():</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">   45</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   46</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
+<div class="line"><span class="lineno">   47</span>        request = b<span class="stringliteral">&quot;INVALIDREQUEST / HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   48</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">   51</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">   52</span>        print(response[<span class="stringliteral">&quot;status_code&quot;</span>])</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 501</div>
+<div class="line"><span class="lineno">   54</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -247,19 +249,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00053">53</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>test_invalid_missing_host_header():</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">   57</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
-<div class="line"><span class="lineno">   58</span>        request = b<span class="stringliteral">&quot;GET / HTTP/1.1\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   59</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">   62</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">   63</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
-<div class="line"><span class="lineno">   64</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00055">55</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span><span class="keyword">def </span>test_invalid_missing_host_header():</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   59</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
+<div class="line"><span class="lineno">   60</span>        request = b<span class="stringliteral">&quot;GET / HTTP/1.1\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   61</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">   64</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">   65</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<div class="line"><span class="lineno">   66</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -283,19 +285,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00065">65</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span><span class="keyword">def </span>test_invalid_percent_encoding_invalid_char():</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   68</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">   69</span>        <span class="comment"># %00 is NUL char</span></div>
-<div class="line"><span class="lineno">   70</span>        request = b<span class="stringliteral">&quot;GET /search%00maschine HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   71</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">   74</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">   75</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
-<div class="line"><span class="lineno">   76</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00067">67</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span><span class="keyword">def </span>test_invalid_percent_encoding_invalid_char():</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">   70</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   71</span>        <span class="comment"># %00 is NUL char</span></div>
+<div class="line"><span class="lineno">   72</span>        request = b<span class="stringliteral">&quot;GET /search%00maschine HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   73</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">   76</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">   77</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<div class="line"><span class="lineno">   78</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -319,19 +321,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00077">77</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span><span class="keyword">def </span>test_invalid_percent_encoding_incomplete():</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">   81</span>        <span class="comment"># %00 is NUL char</span></div>
-<div class="line"><span class="lineno">   82</span>        request = b<span class="stringliteral">&quot;GET /search%3 HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   83</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">   86</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">   87</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
-<div class="line"><span class="lineno">   88</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00079">79</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span><span class="keyword">def </span>test_invalid_percent_encoding_incomplete():</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   83</span>        <span class="comment"># %00 is NUL char</span></div>
+<div class="line"><span class="lineno">   84</span>        request = b<span class="stringliteral">&quot;GET /search%3 HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   85</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">   88</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<div class="line"><span class="lineno">   90</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -355,19 +357,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00089">89</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   89</span><span class="keyword">def </span>test_invalid_percent_encoding_non_hex():</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">   92</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">   93</span>        <span class="comment"># %00 is NUL char</span></div>
-<div class="line"><span class="lineno">   94</span>        request = b<span class="stringliteral">&quot;GET /search%1$ HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">   95</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">   98</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">   99</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
-<div class="line"><span class="lineno">  100</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00091">91</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span><span class="keyword">def </span>test_invalid_percent_encoding_non_hex():</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   95</span>        <span class="comment"># %00 is NUL char</span></div>
+<div class="line"><span class="lineno">   96</span>        request = b<span class="stringliteral">&quot;GET /search%1$ HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   97</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">  100</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">  101</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<div class="line"><span class="lineno">  102</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -391,19 +393,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00101">101</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span>test_invalid_big_chunk_size():</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">  104</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">  105</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
-<div class="line"><span class="lineno">  106</span>        request = b<span class="stringliteral">&quot;POST /uploads/badboy.txt HTTP/1.1\r\nHost: localhost\r\nTransfer-Encoding: chunked\r\n\r\nFFFFFFFFFFFFFF\r\n0\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  107</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">  110</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">  111</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 413</div>
-<div class="line"><span class="lineno">  112</span> </div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00103">103</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span><span class="keyword">def </span>test_invalid_big_chunk_size():</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">  106</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">  107</span>        <span class="comment"># Craft a malformed HTTP request</span></div>
+<div class="line"><span class="lineno">  108</span>        request = b<span class="stringliteral">&quot;POST /uploads/badboy.txt HTTP/1.1\r\nHost: localhost\r\nTransfer-Encoding: chunked\r\n\r\nFFFFFFFFFFFFFF\r\n0\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  109</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">  112</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 413</div>
+<div class="line"><span class="lineno">  114</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -427,21 +429,74 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00113">113</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span><span class="keyword">def </span>test_invalid_directory_traversal():</div>
-<div class="line"><span class="lineno">  114</span>    <span class="comment"># Create a socket connection</span></div>
-<div class="line"><span class="lineno">  115</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
-<div class="line"><span class="lineno">  116</span>        <span class="comment"># Craft HTTP request with directory traversal try</span></div>
-<div class="line"><span class="lineno">  117</span>        request = b<span class="stringliteral">&quot;GET /../../../etc/passwd HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  118</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>        <span class="comment"># Receive the response</span></div>
-<div class="line"><span class="lineno">  121</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00115">115</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span><span class="keyword">def </span>test_invalid_directory_traversal():</div>
+<div class="line"><span class="lineno">  116</span>    <span class="comment"># Create a socket connection</span></div>
+<div class="line"><span class="lineno">  117</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">  118</span>        <span class="comment"># Craft HTTP request with directory traversal try</span></div>
+<div class="line"><span class="lineno">  119</span>        request = b<span class="stringliteral">&quot;GET /../../../etc/passwd HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  120</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>        <span class="comment"># Receive the response</span></div>
+<div class="line"><span class="lineno">  123</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">  124</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<div class="line"><span class="lineno">  125</span> </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_a1cf0a7ad915a86ac5b1ac2c5a215695f_cgraph.svg" width="430" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aabd9408df6c0dea3a956cfdebca51b18" name="aabd9408df6c0dea3a956cfdebca51b18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabd9408df6c0dea3a956cfdebca51b18">&#9670;&#160;</a></span>test_epoll_partial_and_complete_requests()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_invalid.test_epoll_partial_and_complete_requests </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00126">126</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span><span class="keyword">def </span>test_epoll_partial_and_complete_requests():</div>
+<div class="line"><span class="lineno">  127</span>    <span class="comment"># Create two socket</span></div>
+<div class="line"><span class="lineno">  128</span>    client1 = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.socket</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.AF_INET</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.SOCK_STREAM</a>)</div>
+<div class="line"><span class="lineno">  129</span>    client2 = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.socket</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.AF_INET</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.SOCK_STREAM</a>)</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment"># Connect first client socket and send half of the request</span></div>
+<div class="line"><span class="lineno">  132</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client1.connect</a>((host, port))</div>
+<div class="line"><span class="lineno">  133</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client1.sendall</a>(b<span class="stringliteral">&quot;GET /partial &quot;</span>)</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>    <span class="comment"># Wait a bit to ensure the next parts trigger epoll simultaneously</span></div>
+<div class="line"><span class="lineno">  136</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">time.sleep</a>(0.1)</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>    <span class="comment"># Send the second half of the first request and create second client socket</span></div>
+<div class="line"><span class="lineno">  139</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client1.sendall</a>(b<span class="stringliteral">&quot;HTTP/1.1\r\n\r\n&quot;</span>)</div>
+<div class="line"><span class="lineno">  140</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client2.connect</a>((host, port))</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>    <span class="comment"># And send full new request</span></div>
+<div class="line"><span class="lineno">  143</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client2.sendall</a>(b<span class="stringliteral">&quot;GET / HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;</span>)</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>    <span class="comment"># Read responses</span></div>
+<div class="line"><span class="lineno">  146</span>    response1 = parse_http_response(client1)</div>
+<div class="line"><span class="lineno">  147</span>    response2 = parse_http_response(client2)</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>    <span class="keyword">assert</span> response1[<span class="stringliteral">&quot;status_code&quot;</span>] == 400</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keyword">assert</span> response2[<span class="stringliteral">&quot;status_code&quot;</span>] == 200</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client1.close</a>()</div>
+<div class="line"><span class="lineno">  153</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client2.close</a>()</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test__invalid_aabd9408df6c0dea3a956cfdebca51b18_cgraph.svg" width="462" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -459,7 +514,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00006">6</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00008">8</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
 
 </div>
 </div>
@@ -475,7 +530,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00007">7</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test__invalid_8py_source.html#l00009">9</a> of file <a class="el" href="test__invalid_8py_source.html">test_invalid.py</a>.</p>
 
 </div>
 </div>

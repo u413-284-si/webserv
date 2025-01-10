@@ -13,6 +13,7 @@ var class_server =
     [ "registerVirtualServer", "class_server.html#aae8cc5a8fc07a6ce97d468d94cd08a6e", null ],
     [ "registerConnection", "class_server.html#ac145e9f668db85b10a66829bd2677746", null ],
     [ "registerCGIFileDescriptor", "class_server.html#abcfb45414689863da69c2e72ac8fc946", null ],
+    [ "removeConnection", "class_server.html#ae04a9076862f2163c562e20fa2207681", null ],
     [ "removeCGIFileDescriptor", "class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a", null ],
     [ "setClientTimeout", "class_server.html#a9dc90838b48fae329562928cdfd685ca", null ],
     [ "waitForEvents", "class_server.html#acbcbebe2c30446acc9a90f40f9986b62", null ],

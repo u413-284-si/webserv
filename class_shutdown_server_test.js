@@ -11,7 +11,6 @@ var class_shutdown_server_test =
     [ "dummyFd", "class_shutdown_server_test.html#a4f27a0798701c9efb8a94530aa76e7a1", null ],
     [ "dummyFd2", "class_shutdown_server_test.html#a8ac7e85c2c313a0a02399086bed515a3", null ],
     [ "dummyFd3", "class_shutdown_server_test.html#aa324f46912b626e92c4b8fde8aaf07ec", null ],
-    [ "dummyFd4", "class_shutdown_server_test.html#a8e8dabf9ea34eb8d5765e0300b455d88", null ],
     [ "serverSock", "class_shutdown_server_test.html#a2cbcefa602c5ba54343bd978bc08cdc7", null ],
     [ "clientSock", "class_shutdown_server_test.html#a27c4693083a25495804f4c9055b579c5", null ]
 ];

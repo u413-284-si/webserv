@@ -20,7 +20,6 @@ var _server_8cpp =
     [ "connectionSendResponse", "_server_8cpp.html#a43e9e764c97aacfc12f233b33ffa3342", null ],
     [ "connectionHandleTimeout", "_server_8cpp.html#ad132a77471376bd48681070a795df914", null ],
     [ "checkForTimeout", "_server_8cpp.html#a28fd29ec48bd9459c678980cfccca4cf", null ],
-    [ "cleanupClosedConnections", "_server_8cpp.html#a9e2693ba11e20b84de090bcdd0b665db", null ],
     [ "cleanupIdleConnections", "_server_8cpp.html#af2feae308a0fa968c84525fcdfb19251", null ],
     [ "shutdownServer", "_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa", null ]
 ];

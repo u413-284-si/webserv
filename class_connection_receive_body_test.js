@@ -9,5 +9,6 @@ var class_connection_receive_body_test =
     [ "m_server", "class_connection_receive_body_test.html#a061b6cf2e9be949e134e31b71e4cc57b", null ],
     [ "m_serverSock", "class_connection_receive_body_test.html#a5d1f7a72b01c6e2201ff6ad506c0b41a", null ],
     [ "m_dummyFd", "class_connection_receive_body_test.html#ab684d271441c42d34822fb41480d3a4c", null ],
-    [ "m_connection", "class_connection_receive_body_test.html#a6c4c0d6de549966746bd4a450047a241", null ]
+    [ "temp", "class_connection_receive_body_test.html#a75df08ff8c38312b23831d654ebfd754", null ],
+    [ "m_connection", "class_connection_receive_body_test.html#a29f3c9f3a3c38c3ddab4866afb61ba2a", null ]
 ];
