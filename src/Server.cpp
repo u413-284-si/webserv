@@ -466,6 +466,14 @@ ssize_t Server::writeProcess(int fileDescriptor, const char* buffer, size_t size
 	return m_processOps.writeProcess(fileDescriptor, buffer, size);
 }
 
+/**
+ * @brief Wrapper function to ProcessOps::waitForProcess.
+ *
+ * @param pid Pid of the child process to wait for.
+ * @param wstatus Stores status information which can be inspected with macros.
+ * @param options Options to influence behavior.
+ * @return pid_t Process ID of child whose state has changed, or -1 on failure.
+ */
 pid_t Server::waitForProcess(pid_t pid, int* wstatus, int options) const
 {
 	return m_processOps.waitForProcess(pid, wstatus, options);
