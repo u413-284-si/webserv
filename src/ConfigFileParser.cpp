@@ -589,9 +589,10 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 	if (number.find_first_not_of(s_number) != std::string::npos)
 		throw std::runtime_error("Invalid client_max_body_size value");
 
-	std::stringstream sstream(number);
-	size_t size = 0;
-	sstream >> size;
+	errno = 0;
+	size_t size = std::strtoul(number.c_str(), NULL, constants::g_decimalBase);
+	if (errno == ERANGE)
+		throw std::runtime_error("Invalid client_max_body_size unit: Overflow");
 
 	if (lastNumberIndex != maxBodySize.size() - 1) {
 		const std::string letter = maxBodySize.substr(lastNumberIndex + 1);
