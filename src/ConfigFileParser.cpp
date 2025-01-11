@@ -567,10 +567,13 @@ void ConfigFileParser::readSocket(const std::string& value)
  *
  * At first it will be checked if there is a number as value
  * If that is the case the function will check if the number is valid and does not contain any other characters
+ * Additionly it will be checked if the number itself causes an overflow
  *
  * When the checks for number are passed, the function will check if there is a unit
  * If that is the case the function will check if the unit is valid and
  * only consists of one character which is a valid unit
+ *
+ * Furthermore the function checks if the multiplication of the number with the unit causes an overflow
  *
  * @param block The block which surounds the directive
  * @param maxBodySize The value of the directive client_max_body_size
@@ -598,24 +601,30 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 		const std::string letter = maxBodySize.substr(lastNumberIndex + 1);
 		if (letter.length() != 1)
 			throw std::runtime_error("Invalid client_max_body_size unit");
-		const char unit = letter.at(0);
+		// const char unit = letter.at(0);
 
-		switch (unit) {
+		size_t unit = 1;
+		switch (letter.at(0)) {
 		case 'k':
 		case 'K':
-			size *= bytesPerKiloByte;
+			unit *= bytesPerKiloByte;
 			break;
 		case 'm':
 		case 'M':
-			size *= bytesPerKiloByte * bytesPerKiloByte;
+			unit *= bytesPerKiloByte * bytesPerKiloByte;
 			break;
 		case 'g':
 		case 'G':
-			size *= bytesPerKiloByte * bytesPerKiloByte * bytesPerKiloByte;
+			unit *= bytesPerKiloByte * bytesPerKiloByte * bytesPerKiloByte;
 			break;
 		default:
 			throw std::runtime_error("Invalid client_max_body_size unit");
 		}
+
+		if (size > std::numeric_limits<size_t>::max() / unit)
+			throw std::runtime_error("Invalid client_max_body_size unit: Overflow");
+
+		size *= unit;
 	}
 
 	if (block == ServerBlock)
