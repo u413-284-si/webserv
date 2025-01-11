@@ -12,6 +12,7 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
 	, m_locationIndex(0)
+	, m_isDefaultLocationDefined(false)
 {
 	const char* validServerDirectiveNames[]
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
