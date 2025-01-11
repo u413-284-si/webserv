@@ -46,34 +46,36 @@ protected:
  * 26. Max body size directive contains invalid unit char
  * 27. Max body size directive contains invalid unit length
  * 28. Max body size contains invalid amount of parameters
- * 29. Max body size directive contains no value
- * 30. Autoindex directive contains invalid value
- * 31. Autoindex contains invalid amount of parameters
- * 32. Autoindex contains no value
- * 33. Allow methods directive contains invalid value
- * 34. Allow methods contains no value
- * 35. Error page contains invalid amount of parameters
- * 36. Error page contains invalid error code
- * 37. Error page path contains no slash at the beginning
- * 38. Error page path contains no value
- * 39. Error page contains no value
- * 40. CGI extension contains no dot at beginning
- * 41. CGI extension contains multiple extensions
- * 42. CGI extension contains multiple dots
- * 43. CGI extension contains no value
- * 44. CGI path contains no slash at the beginning
- * 45. CGI path contains multiple paths
- * 46. CGI path contains no value
- * 47. CGI index contains no value
- * 48. Return contains invalid code
- * 49. Return contains invalid url
- * 50. Return contains invalid amount of parameters
- * 50. Return contains invalid amount of parameters with double quotes
- * 51. Return contains unclosed double quote
- * 52. Return contains no value
- * 53. Invalid directives outside of server block
- * 54. Several server names
- * 55. Server name contains no value
+ * 29. Max body size contains number which causes an overflow
+ * 30. Max body size contains unit which causes an overflow
+ * 31. Max body size directive contains no value
+ * 32. Autoindex directive contains invalid value
+ * 33. Autoindex contains invalid amount of parameters
+ * 34. Autoindex contains no value
+ * 35. Allow methods directive contains invalid value
+ * 36. Allow methods contains no value
+ * 37. Error page contains invalid amount of parameters
+ * 38. Error page contains invalid error code
+ * 39. Error page path contains no slash at the beginning
+ * 40. Error page path contains no value
+ * 41. Error page contains no value
+ * 42. CGI extension contains no dot at beginning
+ * 43. CGI extension contains multiple extensions
+ * 44. CGI extension contains multiple dots
+ * 45. CGI extension contains no value
+ * 46. CGI path contains no slash at the beginning
+ * 47. CGI path contains multiple paths
+ * 48. CGI path contains no value
+ * 49. CGI index contains no value
+ * 50. Return contains invalid code
+ * 51. Return contains invalid url
+ * 52. Return contains invalid amount of parameters
+ * 53. Return contains invalid amount of parameters with double quotes
+ * 54. Return contains unclosed double quote
+ * 55. Return contains no value
+ * 56. Invalid directives outside of server block
+ * 57. Several server names
+ * 58. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -518,6 +520,34 @@ TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidAmountOfParameters)
 				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_amount_parameters.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid amount of parameters for client_max_body_size", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsNumberWhichCausesOverflow)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_overflow_number.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid client_max_body_size number: Overflow", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, MaxBodySizeContainsUnitWhichCausesOverflow)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/max_body_size_overflow_unit.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid client_max_body_size unit: Overflow", e.what());
 				throw;
 			}
 		},
