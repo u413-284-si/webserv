@@ -26,7 +26,7 @@ public:
 	std::string cgiExt;
 	std::string cgiPath;
 	bool hasAutoindex;
-	unsigned long maxBodySize;
+	size_t maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	bool allowMethods[MethodCount];
 	std::pair<statusCode, std::string> returns;
