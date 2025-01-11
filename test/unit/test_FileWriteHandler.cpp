@@ -27,6 +27,7 @@ protected:
 	std::string m_path = "/workspaces/webserv/test/";
 	std::string m_content = "Hello, World!";
 	struct stat m_fakeStat = {};
+	statusCode m_httpStatus = StatusOK;
 
 	NiceMock<MockFileSystemPolicy> m_fileSystemPolicy;
 	FileWriteHandler m_fileWriteHandler = FileWriteHandler(m_fileSystemPolicy);
@@ -38,7 +39,7 @@ TEST_F(FileWriteHandlerTest, NonExistingFile)
 	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(false));
 
 	// Act
-	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
 
 	// Assert
 	EXPECT_EQ(responseBody,
@@ -46,6 +47,7 @@ TEST_F(FileWriteHandlerTest, NonExistingFile)
 			+ "\",\n\"file_size\": " + std::to_string(m_fakeStat.st_size) + ",\n\"last_modified\": \""
 			+ webutils::getLocaltimeString(m_fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S")
 			+ "\",\n\"status\": \"created\"\n}\n");
+	EXPECT_EQ(m_httpStatus, StatusCreated);
 }
 
 TEST_F(FileWriteHandlerTest, ExistingFile)
@@ -54,7 +56,7 @@ TEST_F(FileWriteHandlerTest, ExistingFile)
 	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(true));
 
 	// Act
-	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
 
 	// Assert
 	EXPECT_EQ(responseBody,
@@ -62,6 +64,7 @@ TEST_F(FileWriteHandlerTest, ExistingFile)
 			+ "\",\n\"file_size\": " + std::to_string(m_fakeStat.st_size) + ",\n\"last_modified\": \""
 			+ webutils::getLocaltimeString(m_fakeStat.st_mtime, "%Y-%m-%d %H:%M:%S")
 			+ "\",\n\"status\": \"updated\"\n}\n");
+	EXPECT_EQ(m_httpStatus, StatusOK);
 }
 
 TEST_F(FileWriteHandlerTest, GetFileStatThrow)
@@ -72,8 +75,23 @@ TEST_F(FileWriteHandlerTest, GetFileStatThrow)
 	EXPECT_CALL(m_fileSystemPolicy, getFileStat).WillOnce(testing::Throw(std::runtime_error(errorMessage)));
 
 	// Act
-	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content);
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
 
 	// Assert
 	EXPECT_EQ(responseBody, "");
+	EXPECT_EQ(m_httpStatus, StatusInternalServerError);
+}
+
+TEST_F(FileWriteHandlerTest, NoPermission)
+{
+	// Arrange
+	EXPECT_CALL(m_fileSystemPolicy, isExistingFile)
+	.WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException("No permission")));
+
+	// Act
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
+
+	// Assert
+	EXPECT_EQ(responseBody, "");
+	EXPECT_EQ(m_httpStatus, StatusForbidden);
 }
