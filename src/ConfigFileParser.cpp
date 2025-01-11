@@ -352,7 +352,7 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 
 /**
  * @brief Reads the current line of the content, delimited by a provided char and removes leading and trailing
- * spaces If the end of the content is reached, the function returns false, otherwise it returns true
+ * spaces. If the end of the content is reached, the function returns false, otherwise it returns true
  *
  * @param content The string from which the line should be read
  * @param delimiter The char which delimits the line
@@ -573,6 +573,7 @@ void ConfigFileParser::readSocket(const std::string& value)
  * When the checks for number are passed, the function will check if there is a unit
  * If that is the case the function will check if the unit is valid and
  * only consists of one character which is a valid unit
+ * Valid units are: k (for kilobyte), m (for megabyte) and g (for gigabyte)
  *
  * Furthermore the function checks if the multiplication of the number with the unit causes an overflow
  *
@@ -660,7 +661,7 @@ void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 }
 
 /**
- * @brief Reads the allow methods
+ * @brief Reads the allow_methods
  *
  * The function checks if the value of the directive is either "GET", "POST" or "DELETE".
  * If that is the case the function will set the corresponding allow method to true.
