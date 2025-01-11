@@ -282,7 +282,7 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	case StatusMovedPermanently:
 		ret = error301Page;
 		break;
-	case StatusMovedTemporarily:
+	case StatusFound:
 		ret = error302Page;
 		break;
 	case StatusPermanentRedirect:

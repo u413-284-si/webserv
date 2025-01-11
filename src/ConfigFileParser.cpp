@@ -788,7 +788,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);
 		if (returnCodeOrUrl.substr(0, sizeof("http://") - 1) == "http://"
 			|| returnCodeOrUrl.substr(0, sizeof("https://") - 1) == "https://") {
-			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusMovedTemporarily;
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusFound;
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;
 		} else {
 			statusCode returnCode = convertStringToStatusCode(returnCodeOrUrl);

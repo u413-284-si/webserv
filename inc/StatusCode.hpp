@@ -7,7 +7,7 @@ enum statusCode {
 	StatusOK = 200,
 	StatusCreated = 201,
 	StatusMovedPermanently = 301,
-	StatusMovedTemporarily = 302,
+	StatusFound = 302,
 	StatusPermanentRedirect = 308,
 	StatusBadRequest = 400,
 	StatusForbidden = 403,

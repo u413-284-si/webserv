@@ -1250,7 +1250,7 @@ TEST_F(ValidConfigFileTests, ReturnContainsOnlyUrlHttp)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_only_url_http.conf"));
-	EXPECT_EQ(StatusMovedTemporarily, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ(StatusFound, configFile.servers[0].locations[1].returns.first);
 	EXPECT_EQ("http://google.com", configFile.servers[0].locations[1].returns.second);
 }
 
@@ -1258,7 +1258,7 @@ TEST_F(ValidConfigFileTests, ReturnContainsOnlyUrlHttps)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/return_only_url_https.conf"));
-	EXPECT_EQ(StatusMovedTemporarily, configFile.servers[0].locations[1].returns.first);
+	EXPECT_EQ(StatusFound, configFile.servers[0].locations[1].returns.first);
 	EXPECT_EQ("https://google.com", configFile.servers[0].locations[1].returns.second);
 }
 
