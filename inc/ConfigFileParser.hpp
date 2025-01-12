@@ -69,7 +69,7 @@ private:
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
 	void readLocationDirectiveValue(const std::string& directive, const std::string& value);
 	void readServerName(const std::string& serverName);
-	void readSocket(const std::string& value);
+	void readListen(const std::string& value);
 	void readRootPath(const Block& block, std::string rootPath);
 	void readAliasPath(const std::string& aliasPath);
 	void readMaxBodySize(const Block& block, const std::string& maxBodySize);

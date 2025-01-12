@@ -509,7 +509,7 @@ void ConfigFileParser::readServerName(const std::string& serverName)
  *
  * @param value The value of the directive listen
  */
-void ConfigFileParser::readSocket(const std::string& value)
+void ConfigFileParser::readListen(const std::string& value)
 {
 	const size_t colonIndex = value.find(':');
 	const size_t endIndex = value.length();
@@ -886,7 +886,7 @@ void ConfigFileParser::readIndex(const std::string& indices)
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
 	if (directive == "listen")
-		readSocket(value);
+		readListen(value);
 	else if (directive == "root")
 		readRootPath(ServerBlock, value);
 	else if (directive == "server_name")
