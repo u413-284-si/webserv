@@ -3,13 +3,13 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "SocketPolicy.hpp"
+#include "SocketOps.hpp"
 
 /**
- * @brief Mock class for SocketPolicy.
+ * @brief Mock class for SocketOps.
  *
  */
-class MockSocketPolicy : public SocketPolicy {
+class MockSocketOps : public SocketOps {
 public:
 	MOCK_METHOD(
 		struct addrinfo*, resolveListeningAddresses, (const std::string&, const std::string&), (const, override));

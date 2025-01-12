@@ -1,8 +1,8 @@
-#include "SocketPolicy.hpp"
+#include "SocketOps.hpp"
 
-SocketPolicy::SocketPolicy() { }
+SocketOps::SocketOps() { }
 
-SocketPolicy::~SocketPolicy() { }
+SocketOps::~SocketOps() { }
 
 /**
  * @brief Resolves the passed host and port to a list of addresses suitable for listening.
@@ -31,7 +31,7 @@ SocketPolicy::~SocketPolicy() { }
  * @param port The port number to resolve.
  * @return struct addrinfo* A pointer to the list of addresses if successful, NULL otherwise.
  */
-struct addrinfo* SocketPolicy::resolveListeningAddresses(const std::string& host, const std::string& port) const
+struct addrinfo* SocketOps::resolveListeningAddresses(const std::string& host, const std::string& port) const
 {
 	const char* node = NULL;
 
@@ -70,7 +70,7 @@ struct addrinfo* SocketPolicy::resolveListeningAddresses(const std::string& host
  *
  * @return The file descriptor of the new socket if successful, -1 otherwise.
  */
-int SocketPolicy::createListeningSocket(const struct addrinfo* addrinfo, int backlog) const
+int SocketOps::createListeningSocket(const struct addrinfo* addrinfo, int backlog) const
 {
 	assert(addrinfo != NULL);
 
@@ -119,7 +119,7 @@ int SocketPolicy::createListeningSocket(const struct addrinfo* addrinfo, int bac
  *
  * @return A Socket object containing the host and port information.
  */
-Socket SocketPolicy::retrieveSocketInfo(struct sockaddr* sockaddr) const
+Socket SocketOps::retrieveSocketInfo(struct sockaddr* sockaddr) const
 {
 	assert(sockaddr != NULL);
 
@@ -155,13 +155,13 @@ Socket SocketPolicy::retrieveSocketInfo(struct sockaddr* sockaddr) const
  * @brief Retrieves info of socket to which sockfd is bound.
  *
  * Uses getsockname() to retrieve the current address to which the socket sockfd is bound.
- * Then uses SocketPolicy::retrieveSocketInfo to convert this information into a Socket struct.
+ * Then uses SocketOps::retrieveSocketInfo to convert this information into a Socket struct.
  * On error returns an empty Socket.
  *
  * @param sockfd The socket fd which is bound to a socket.
  * @return Socket The socket information of the bound socket.
  */
-Socket SocketPolicy::retrieveBoundSocketInfo(int sockfd) const
+Socket SocketOps::retrieveBoundSocketInfo(int sockfd) const
 {
 	struct sockaddr_storage boundAddr = {};
 	socklen_t boundLen = sizeof(boundAddr);
@@ -193,7 +193,7 @@ Socket SocketPolicy::retrieveBoundSocketInfo(int sockfd) const
  * @retval -1 If accept(2) failed and errno is not EAGAIN or EWOULDBLOCK.
  * @return -2 No more pending connections.
  */
-int SocketPolicy::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
+int SocketOps::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t* addrlen) const
 {
 	assert(addr != NULL);
 	assert(addrlen != NULL);
@@ -220,7 +220,7 @@ int SocketPolicy::acceptSingleConnection(int sockfd, struct sockaddr* addr, sock
  * @retval The number of bytes read if successful.
  * @retval -1 If read() failed.
  */
-ssize_t SocketPolicy::readFromSocket(int sockfd, char* buffer, size_t size, int flags) const
+ssize_t SocketOps::readFromSocket(int sockfd, char* buffer, size_t size, int flags) const
 {
 	assert(buffer != NULL);
 
@@ -244,7 +244,7 @@ ssize_t SocketPolicy::readFromSocket(int sockfd, char* buffer, size_t size, int 
  * @retval The number of bytes written if successful.
  * @retval -1 If write() failed.
  */
-ssize_t SocketPolicy::writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const
+ssize_t SocketOps::writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const
 {
 	assert(buffer != NULL);
 

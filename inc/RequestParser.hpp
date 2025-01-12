@@ -34,7 +34,6 @@ public:
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
 	void parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer);
-	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
 private:
@@ -69,7 +68,7 @@ private:
 	static void checkForCRLF(const std::string& str, HTTPRequest& request);
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
-	static size_t convertHex(const std::string& chunkSize);
+	static size_t convertHex(const std::string& chunkSize, HTTPRequest& request);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);

@@ -5,14 +5,14 @@
  *
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
- * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(
-	Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy)
+	Connection& connection, std::string& responseBody, const FileSystemOps& fileSystemOps)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
-	, m_fileSystemPolicy(fileSystemPolicy)
+	, m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -56,7 +56,7 @@ void ResponseBodyHandler::execute()
 		return;
 	}
 	if (m_request.hasAutoindex) {
-		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
+		AutoindexHandler autoindexHandler(m_fileSystemOps);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
@@ -69,11 +69,11 @@ void ResponseBodyHandler::execute()
 	}
 	if (m_request.method == MethodGet) {
 		try {
-			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		} catch (FileSystemPolicy::FileNotFoundException& e) {
+			m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
+		} catch (FileSystemOps::FileNotFoundException& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusNotFound;
-		} catch (FileSystemPolicy::NoPermissionException& e) {
+		} catch (FileSystemOps::NoPermissionException& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusForbidden;
 		} catch (const std::runtime_error& e) {
@@ -86,7 +86,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodPost) {
-		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
+		FileWriteHandler fileWriteHandler(m_fileSystemOps);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
 		if (m_request.httpStatus == StatusCreated)
 			m_request.headers["location"] = m_request.uri.path;
@@ -96,7 +96,7 @@ void ResponseBodyHandler::execute()
 		return;
 	}
 	if (m_request.method == MethodDelete) {
-		DeleteHandler deleteHandler(m_fileSystemPolicy);
+		DeleteHandler deleteHandler(m_fileSystemOps);
 		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 		if (m_responseBody.empty())
 			handleErrorBody();
@@ -141,7 +141,7 @@ void ResponseBodyHandler::handleErrorBody()
 	m_request.hasReturn = false;
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
-	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
+	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
 	targetResourceHandler.execute(m_connection);
 
 	if (m_request.hasReturn) {
@@ -159,11 +159,11 @@ void ResponseBodyHandler::handleErrorBody()
 	}
 
 	try {
-		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
+	} catch (FileSystemOps::FileNotFoundException& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusNotFound;
-	} catch (FileSystemPolicy::NoPermissionException& e) {
+	} catch (FileSystemOps::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusForbidden;
 	} catch (const std::runtime_error& e) {

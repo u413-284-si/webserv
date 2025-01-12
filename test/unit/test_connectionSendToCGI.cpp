@@ -1,55 +1,25 @@
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <unistd.h>
+#include "test_helpers.hpp"
 
-#include "Connection.hpp"
-#include "MockEpollWrapper.hpp"
-#include "MockSocketPolicy.hpp"
-#include "MockProcessOps.hpp"
-#include "Server.hpp"
-
-using ::testing::NiceMock;
 using ::testing::Return;
 
-class ConnectionSendToCGITest : public ::testing::Test {
+class ConnectionSendToCGITest : public ServerTestBase {
 protected:
 	ConnectionSendToCGITest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
-		serverConfig.host = serverSock.host;
-		serverConfig.port = serverSock.port;
-		configFile.servers.push_back(serverConfig);
-       	connection.m_pipeToCGIWriteEnd = pipefd[1];
-        connection.m_request.body = "test body";
+		connection.m_pipeToCGIWriteEnd = dummyPipeFd;
+		connection.m_request.body = "test body";
 
-		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
-
-		ON_CALL(epollWrapper, removeEvent).WillByDefault(Return());
+		ON_CALL(m_epollWrapper, addEvent).WillByDefault(Return(true));
+		ON_CALL(m_epollWrapper, removeEvent).WillByDefault(Return());
 	}
 	~ConnectionSendToCGITest() override { }
 
-    const int dummyFd = 10;
-	const int dummyPipeFd = 11;
 	Socket serverSock = { "127.0.0.1", "8080" };
 	Socket clientSocket = { "192.168.0.1", "12345" };
-	ConfigFile configFile;
-	NiceMock<MockEpollWrapper> epollWrapper;
-	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
-	ConfigServer serverConfig;
-   	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
-    int pipefd[2];
+	const int dummyFd = 10;
+	Connection connection = Connection(serverSock, clientSocket, dummyFd, m_configFile.servers);
 
-    void SetUp() override {
-        // Create a pipe
-        pipe(pipefd);
-    }
-
-    void TearDown() override {
-        close(pipefd[0]);
-        close(pipefd[1]);
-    }
+	const int dummyPipeFd = 11;
 };
 
 TEST_F(ConnectionSendToCGITest, EmptyBody)
@@ -58,7 +28,7 @@ TEST_F(ConnectionSendToCGITest, EmptyBody)
 	connection.m_request.body = "";
 
 	// Act
-	connectionSendToCGI(server, dummyPipeFd, connection);
+	connectionSendToCGI(m_server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -68,10 +38,10 @@ TEST_F(ConnectionSendToCGITest, EmptyBody)
 TEST_F(ConnectionSendToCGITest, WriteError)
 {
 	// Arrange
- 	EXPECT_CALL(processOps, writeProcess).Times(1).WillOnce(Return(-1));
+	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
-	connectionSendToCGI(server, dummyPipeFd, connection);
+	connectionSendToCGI(m_server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -81,14 +51,12 @@ TEST_F(ConnectionSendToCGITest, WriteError)
 TEST_F(ConnectionSendToCGITest, FullBodySent)
 {
 	// Arrange
-    const ssize_t bodySize = connection.m_request.body.size();
+	const ssize_t bodySize = connection.m_request.body.size();
 
-	EXPECT_CALL(processOps, writeProcess)
-        .Times(1)
-		.WillOnce(Return(bodySize));
+	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(bodySize));
 
 	// Act
-	connectionSendToCGI(server, pipefd[1], connection);
+	connectionSendToCGI(m_server, dummyPipeFd, connection);
 
 	// Assert
 	EXPECT_TRUE(connection.m_request.body.empty());

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ConfigFile.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "ResponseBodyHandler.hpp"
@@ -15,12 +15,12 @@
  * It uses a stringstream m_responseHeader to convert variables to string. The stringstream is reused.
  * It uses the class ResponseBodyHandler to construct the body of the response.
  * Each time a new response is built the old one is overwritten.
- * The FileSystemPolicy passed in the constructor needs to outlive this class. It is passed to subclasses.
- * A mock of FileSystemPolicy can be used for testing.
+ * The FileSystemOps passed in the constructor needs to outlive this class. It is passed to subclasses.
+ * A mock of FileSystemOps can be used for testing.
  */
 class ResponseBuilder {
 public:
-	explicit ResponseBuilder(const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBuilder(const FileSystemOps& fileSystemOps);
 
 	void buildResponse(Connection& connection);
 	std::string getResponse() const;
@@ -34,7 +34,7 @@ private:
 	void resetBuilder();
 
 	std::map<std::string, std::string> m_mimeTypes;
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 	std::stringstream m_responseHeader;
 	std::string m_responseBody;
 };

@@ -1,46 +1,28 @@
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
-#include "ConfigFile.hpp"
-#include "MockEpollWrapper.hpp"
-#include "MockSocketPolicy.hpp"
-#include "MockProcessOps.hpp"
-#include "Server.hpp"
+#include "test_helpers.hpp"
 
 using ::testing::DoAll;
-using ::testing::NiceMock;
 using ::testing::Return;
 using ::testing::SetArrayArgument;
 
-class ConnectionReceiveHeaderTest : public ::testing::Test {
+class ConnectionReceiveHeaderTest : public ServerTestBase {
 protected:
 	ConnectionReceiveHeaderTest()
-		: server(configFile, epollWrapper, socketPolicy, processOps)
 	{
-		ON_CALL(epollWrapper, addEvent)
+		ON_CALL(m_epollWrapper, addEvent)
 			.WillByDefault(Return(true));
-		ON_CALL(epollWrapper, modifyEvent)
+		ON_CALL(m_epollWrapper, modifyEvent)
 			.WillByDefault(Return(true));
 
-		server.registerConnection(m_serverSock, dummyFd, Socket());
-		connection = server.getConnections().at(dummyFd);
+		m_server.registerConnection(m_serverSock, dummyFd, Socket());
+		connection = m_server.getConnections().at(dummyFd);
 		connection.m_timeSinceLastEvent = 0;
 		connection.m_status = Connection::ReceiveHeader;
 	}
 	~ConnectionReceiveHeaderTest() override { }
 
-	ConfigFile configFile = createDummyConfig();
-	NiceMock<MockEpollWrapper> epollWrapper;
-	MockSocketPolicy socketPolicy;
-    MockProcessOps processOps;
-	Server server;
-	Socket m_serverSock = {
-		.host = "127.0.0.1",
-		.port = "8080"
-	};
-
+	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 	const int dummyFd = 10;
-	Connection temp = Connection(m_serverSock, Socket(), dummyFd, configFile.servers);
+	Connection temp = Connection(m_serverSock, Socket(), dummyFd, m_configFile.servers);
 	Connection& connection = temp;
 };
 
@@ -49,11 +31,11 @@ TEST_F(ConnectionReceiveHeaderTest, ReceiveFullRequest)
 	const char* request = "GET / HTTP/1.0\r\n\r\n";
 	const ssize_t requestSize = strlen(request) + 1;
 
-	EXPECT_CALL(socketPolicy, readFromSocket)
+	EXPECT_CALL(m_socketOps, readFromSocket)
 		.Times(1)
 		.WillOnce(DoAll(SetArrayArgument<1>(request, request + requestSize), Return(requestSize)));
 
-	connectionReceiveHeader(server, dummyFd, connection);
+	connectionReceiveHeader(m_server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer.size(), requestSize);
 	EXPECT_EQ(connection.m_request.method, MethodGet);
@@ -66,11 +48,11 @@ TEST_F(ConnectionReceiveHeaderTest, ReceivePartialRequest)
 	const char* request = "GET / HTTP/1.";
 	const ssize_t requestSize = strlen(request) + 1;
 
-	EXPECT_CALL(socketPolicy, readFromSocket)
+	EXPECT_CALL(m_socketOps, readFromSocket)
 		.Times(1)
 		.WillOnce(DoAll(SetArrayArgument<1>(request, request + requestSize), Return(requestSize)));
 
-	connectionReceiveHeader(server, dummyFd, connection);
+	connectionReceiveHeader(m_server, dummyFd, connection);
 
 	EXPECT_STREQ(connection.m_buffer.c_str(), request);
 	EXPECT_EQ(connection.m_buffer.size(), requestSize);
@@ -80,20 +62,20 @@ TEST_F(ConnectionReceiveHeaderTest, ReceivePartialRequest)
 
 TEST_F(ConnectionReceiveHeaderTest, RecvFail)
 {
-	EXPECT_CALL(socketPolicy, readFromSocket).Times(1).WillOnce(Return(-1));
+	EXPECT_CALL(m_socketOps, readFromSocket).Times(1).WillOnce(Return(-1));
 
-	connectionReceiveHeader(server, dummyFd, connection);
+	connectionReceiveHeader(m_server, dummyFd, connection);
 
-	EXPECT_EQ(server.getConnections().size(), 0);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveHeaderTest, RecvReturnedZero)
 {
-	EXPECT_CALL(socketPolicy, readFromSocket).Times(1).WillOnce(Return(0));
+	EXPECT_CALL(m_socketOps, readFromSocket).Times(1).WillOnce(Return(0));
 
-	connectionReceiveHeader(server, dummyFd, connection);
+	connectionReceiveHeader(m_server, dummyFd, connection);
 
-	EXPECT_EQ(server.getConnections().size(), 0);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
 
 TEST_F(ConnectionReceiveHeaderTest, RequestSizeTooBig)
@@ -103,11 +85,11 @@ TEST_F(ConnectionReceiveHeaderTest, RequestSizeTooBig)
 
 	connection.m_buffer = std::string(995, 'A');
 
-	EXPECT_CALL(socketPolicy, readFromSocket)
+	EXPECT_CALL(m_socketOps, readFromSocket)
 		.Times(1)
 		.WillOnce(DoAll(SetArrayArgument<1>(request, request + requestSize), Return(requestSize)));
 
-	connectionReceiveHeader(server, dummyFd, connection);
+	connectionReceiveHeader(m_server, dummyFd, connection);
 
 	EXPECT_EQ(connection.m_buffer.size(), 1000);
 	EXPECT_NE(connection.m_timeSinceLastEvent, 0);

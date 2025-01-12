@@ -3,7 +3,7 @@
 
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 
 #include "TargetResourceHandler.hpp"
 
@@ -68,14 +68,13 @@ protected:
 
 	HTTPRequest& m_request = m_connection.m_request;
 
-	MockFileSystemPolicy m_fileSystemPolicy;
-	TargetResourceHandler m_targetResourceHandler = TargetResourceHandler(m_fileSystemPolicy);
+	MockFileSystemOps m_fileSystemOps;
+	TargetResourceHandler m_targetResourceHandler = TargetResourceHandler(m_fileSystemOps);
 };
 
 TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
 	m_request.uri.path = "/test";
 
@@ -87,8 +86,7 @@ TEST_F(TargetResourceHandlerTest, FindCorrectLocation)
 
 TEST_F(TargetResourceHandlerTest, TwoLocationsMatchOneIsLonger)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
 	m_request.uri.path = "/test/secret";
 
@@ -100,8 +98,7 @@ TEST_F(TargetResourceHandlerTest, TwoLocationsMatchOneIsLonger)
 
 TEST_F(TargetResourceHandlerTest, FileNotFound)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileNotFound));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileNotFound));
 
 	m_request.uri.path = "/test";
 
@@ -113,8 +110,7 @@ TEST_F(TargetResourceHandlerTest, FileNotFound)
 
 TEST_F(TargetResourceHandlerTest, FileOther)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileOther));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileOther));
 
 	m_request.uri.path = "/test";
 
@@ -126,8 +122,8 @@ TEST_F(TargetResourceHandlerTest, FileOther)
 
 TEST_F(TargetResourceHandlerTest, FileNoPermission)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException("No permission")));
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+	.WillOnce(testing::Throw(FileSystemOps::NoPermissionException("No permission")));
 
 	m_request.uri.path = "/test";
 
@@ -139,8 +135,7 @@ TEST_F(TargetResourceHandlerTest, FileNoPermission)
 
 TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileDirectory));
 
 	m_request.uri.path = "/test";
 
@@ -153,9 +148,9 @@ TEST_F(TargetResourceHandlerTest, DirectoryRedirect)
 
 TEST_F(TargetResourceHandlerTest, HitDirectoryAppendIndexFile)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+		.WillOnce(Return(FileSystemOps::FileDirectory))
+		.WillOnce(Return(FileSystemOps::FileRegular));
 
 	m_request.uri.path = "/test/secret/";
 
@@ -167,10 +162,10 @@ TEST_F(TargetResourceHandlerTest, HitDirectoryAppendIndexFile)
 
 TEST_F(TargetResourceHandlerTest, HitDirectoryIndexfileNotFound)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(Return(FileSystemPolicy::FileNotFound))
-	.WillOnce(Return(FileSystemPolicy::FileNotFound));
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+	.WillOnce(Return(FileSystemOps::FileDirectory))
+	.WillOnce(Return(FileSystemOps::FileNotFound))
+	.WillOnce(Return(FileSystemOps::FileNotFound));
 
 	m_request.uri.path = "/test/secret/";
 
@@ -183,10 +178,10 @@ TEST_F(TargetResourceHandlerTest, HitDirectoryIndexfileNotFound)
 
 TEST_F(TargetResourceHandlerTest, DirectoryIndexErrorInRecursion)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(Return(FileSystemPolicy::FileDirectory))
-	.WillOnce(Throw(std::runtime_error("Stat error")));
+	EXPECT_CALL(m_fileSystemOps, checkFileType)
+		.WillOnce(Return(FileSystemOps::FileDirectory))
+		.WillOnce(Return(FileSystemOps::FileDirectory))
+		.WillOnce(Throw(std::runtime_error("Stat error")));
 
 	m_request.uri.path = "/recursion/";
 
@@ -198,8 +193,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexErrorInRecursion)
 
 TEST_F(TargetResourceHandlerTest, DirectoryIndexMaxRecursion)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillRepeatedly(Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillRepeatedly(Return(FileSystemOps::FileDirectory));
 
 	m_request.uri.path = "/recursion/";
 
@@ -211,8 +205,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryIndexMaxRecursion)
 
 TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileDirectory));
 
 	m_request.uri.path = "/test/autoindex/";
 
@@ -226,8 +219,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryAutoIndex)
 
 TEST_F(TargetResourceHandlerTest, DirectoryWithNoAutoindex)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Return(FileSystemPolicy::FileDirectory));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileDirectory));
 
 	m_request.uri.path = "/test/";
 
@@ -241,8 +233,7 @@ TEST_F(TargetResourceHandlerTest, DirectoryWithNoAutoindex)
 
 TEST_F(TargetResourceHandlerTest, ServerError)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(Throw(std::runtime_error("Stat error")));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Throw(std::runtime_error("Stat error")));
 
 	m_request.uri.path = "/test/";
 
@@ -266,8 +257,7 @@ TEST_F(TargetResourceHandlerTest, SimpleRedirection)
 
 TEST_F(TargetResourceHandlerTest, LocationWithAlias)
 {
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType)
-	.WillOnce(testing::Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(testing::Return(FileSystemOps::FileRegular));
 
 	m_request.uri.path = "/alias/test";
 

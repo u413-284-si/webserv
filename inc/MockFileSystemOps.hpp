@@ -1,15 +1,15 @@
 #pragma once
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 
 /**
- * @brief Mock class for FileSystemPolicy.
+ * @brief Mock class for FileSystemOps.
  *
  */
-class MockFileSystemPolicy : public FileSystemPolicy {
+class MockFileSystemOps : public FileSystemOps {
 public:
 	MOCK_METHOD(bool, isDirectory, (const std::string&), (const, override));
 	MOCK_METHOD(bool, isExistingFile, (const std::string&), (const, override));

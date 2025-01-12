@@ -14,17 +14,26 @@
 #include <unistd.h>
 
 /**
- * @brief Policy class for socket functions.
+ * @brief Wrapper class for process-related functions.
  *
- * This class provides wrappers for functions regarding sockets. It provides functions to create a socket, bind a socket
- * to an address and port, listen on a socket and accept a connection on a socket.
+ * This class provides wrappers for functions interacting with sockets. The following functions are wrapped:
+ * - getaddrinfo()
+ * - socket()
+ * - setsockopt()
+ * - bind()
+ * - listen()
+ * - ntohs()
+ * - getsockname()
+ * - accept()
+ * - recv()
+ * - send()
  * It can also be mocked for testing purposes.
  */
-class SocketPolicy {
+class SocketOps {
 
 public:
-	SocketPolicy();
-	virtual ~SocketPolicy();
+	SocketOps();
+	virtual ~SocketOps();
 
 	virtual struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	virtual int createListeningSocket(const struct addrinfo* addrinfo, int backlog) const;
@@ -35,6 +44,6 @@ public:
 	virtual ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
 private:
-	SocketPolicy(const SocketPolicy&);
-	SocketPolicy& operator=(const SocketPolicy&);
+	SocketOps(const SocketOps&);
+	SocketOps& operator=(const SocketOps&);
 };

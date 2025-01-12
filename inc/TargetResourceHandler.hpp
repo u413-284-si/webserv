@@ -5,7 +5,7 @@
 
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "StatusCode.hpp"
@@ -13,15 +13,15 @@
 /**
  * @brief Class to handle the target resource of a HTTP Request.
  *
- * The FileSystemPolicy passed in the constructor needs to outlive this class.
- * A mock of FileSystemPolicy can be used for testing.
+ * The FileSystemOps passed in the constructor needs to outlive this class.
+ * A mock of FileSystemOps can be used for testing.
  */
 class TargetResourceHandler {
 
 public:
 	static const int s_maxRecursion = 10; /**< Max recursion depth for locating a resource */
 
-	explicit TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy);
+	explicit TargetResourceHandler(const FileSystemOps& fileSystemOps);
 	void execute(Connection& connection);
 
 private:
@@ -32,7 +32,7 @@ private:
 	bool locateIndexFile(LocatingInfo& locInfo, int currentDepth);
 	static void updateConnection(Connection& connection, const LocatingInfo& locInfo);
 
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 };
 
 /**
