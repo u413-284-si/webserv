@@ -603,7 +603,6 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 		const std::string letter = maxBodySize.substr(lastNumberIndex + 1);
 		if (letter.length() != 1)
 			throw std::runtime_error("Invalid client_max_body_size unit");
-		// const char unit = letter.at(0);
 
 		size_t unit = 1;
 		switch (letter.at(0)) {
