@@ -857,7 +857,7 @@ void ConfigFileParser::readCGIPath(const std::string& path)
  *
  * @param indices The value of the directive index
  */
-void ConfigFileParser::readIndices(const std::string& indices)
+void ConfigFileParser::readIndex(const std::string& indices)
 {
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].indices.clear();
 
@@ -926,7 +926,7 @@ void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, 
 	else if (directive == "cgi_path")
 		readCGIPath(value);
 	else if (directive == "index")
-		readIndices(value);
+		readIndex(value);
 	else if (directive == "return")
 		readReturns(value);
 }
