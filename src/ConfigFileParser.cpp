@@ -531,30 +531,32 @@ void ConfigFileParser::readListen(const std::string& value)
 		if (!webutils::isPortValid(port))
 			throw std::runtime_error("Invalid port");
 		m_configFile.servers[m_serverIndex].port = port;
-	} else {
-		if (dot == std::string::npos) {
-			std::string hostOrPort = value.substr(0, endIndex);
-			if (hostOrPort.find_first_of(s_whitespace) != std::string::npos)
-				throw std::runtime_error("Invalid amount of parameters for listen");
-			if (hostOrPort.empty())
-				throw std::runtime_error("'listen' value has no value");
-			if (hostOrPort == "localhost")
-				m_configFile.servers[m_serverIndex].host = "127.0.0.1";
-			else {
-				if (!webutils::isPortValid(hostOrPort))
-					throw std::runtime_error("Invalid port");
-				m_configFile.servers[m_serverIndex].port = hostOrPort;
-			}
-		} else {
-			std::string ipAddress = value.substr(0, endIndex);
-			if (ipAddress.find_first_of(s_whitespace) != std::string::npos)
-				throw std::runtime_error("Invalid amount of parameters for listen");
-			if (!webutils::isIpAddressValid(ipAddress))
-				throw std::runtime_error("Invalid ip address");
-
-			m_configFile.servers[m_serverIndex].host = ipAddress;
-		}
+		return;
 	}
+
+	if (dot == std::string::npos) {
+		std::string hostOrPort = value.substr(0, endIndex);
+		if (hostOrPort.find_first_of(s_whitespace) != std::string::npos)
+			throw std::runtime_error("Invalid amount of parameters for listen");
+		if (hostOrPort.empty())
+			throw std::runtime_error("'listen' value has no value");
+		if (hostOrPort == "localhost")
+			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+		else {
+			if (!webutils::isPortValid(hostOrPort))
+				throw std::runtime_error("Invalid port");
+			m_configFile.servers[m_serverIndex].port = hostOrPort;
+		}
+		return;
+	}
+
+	std::string ipAddress = value.substr(0, endIndex);
+	if (ipAddress.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("Invalid amount of parameters for listen");
+	if (!webutils::isIpAddressValid(ipAddress))
+		throw std::runtime_error("Invalid ip address");
+
+	m_configFile.servers[m_serverIndex].host = ipAddress;
 }
 
 /**
