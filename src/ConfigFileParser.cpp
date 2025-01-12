@@ -585,7 +585,6 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 	if (maxBodySize.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("Invalid amount of parameters for client_max_body_size");
 
-	const size_t bytesPerKiloByte = 1024;
 	const size_t lastNumberIndex = maxBodySize.find_last_of(s_number);
 	if (lastNumberIndex == std::string::npos)
 		throw std::runtime_error("Invalid client_max_body_size value");
@@ -608,15 +607,15 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 		switch (letter.at(0)) {
 		case 'k':
 		case 'K':
-			unit *= bytesPerKiloByte;
+			unit *= constants::g_oneKilobyte;
 			break;
 		case 'm':
 		case 'M':
-			unit *= bytesPerKiloByte * bytesPerKiloByte;
+			unit *= constants::g_oneKilobyte * constants::g_oneKilobyte;
 			break;
 		case 'g':
 		case 'G':
-			unit *= bytesPerKiloByte * bytesPerKiloByte * bytesPerKiloByte;
+			unit *= constants::g_oneKilobyte * constants::g_oneKilobyte * constants::g_oneKilobyte;
 			break;
 		default:
 			throw std::runtime_error("Invalid client_max_body_size unit");
