@@ -95,3 +95,17 @@ TEST_F(FileWriteHandlerTest, NoPermission)
 	EXPECT_EQ(responseBody, "");
 	EXPECT_EQ(m_httpStatus, StatusForbidden);
 }
+
+TEST_F(FileWriteHandlerTest, FileNotFound)
+{
+	// Arrange
+	EXPECT_CALL(m_fileSystemPolicy, writeToFile)
+	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
+
+	// Act
+	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
+
+	// Assert
+	EXPECT_EQ(responseBody, "");
+	EXPECT_EQ(m_httpStatus, StatusNotFound);
+}
