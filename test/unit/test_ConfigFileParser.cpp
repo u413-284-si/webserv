@@ -61,21 +61,22 @@ protected:
  * 41. Error page contains no value
  * 42. CGI extension contains no dot at beginning
  * 43. CGI extension contains multiple extensions
- * 44. CGI extension contains multiple dots
- * 45. CGI extension contains no value
- * 46. CGI path contains no slash at the beginning
- * 47. CGI path contains multiple paths
- * 48. CGI path contains no value
- * 49. CGI index contains no value
- * 50. Return contains invalid code
- * 51. Return contains invalid url
- * 52. Return contains invalid amount of parameters
- * 53. Return contains invalid amount of parameters with double quotes
- * 54. Return contains unclosed double quote
- * 55. Return contains no value
- * 56. Invalid directives outside of server block
- * 57. Several server names
- * 58. Server name contains no value
+ * 44. CGI extension contains multiple dots at the beginning
+ * 45. CGI extension contains multiple dots in between
+ * 46. CGI extension contains no value
+ * 47. CGI path contains no slash at the beginning
+ * 48. CGI path contains multiple paths
+ * 49. CGI path contains no value
+ * 50. CGI index contains no value
+ * 51. Return contains invalid code
+ * 52. Return contains invalid url
+ * 53. Return contains invalid amount of parameters
+ * 54. Return contains invalid amount of parameters with double quotes
+ * 55. Return contains unclosed double quote
+ * 56. Return contains no value
+ * 57. Invalid directives outside of server block
+ * 58. Several server names
+ * 59. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -736,14 +737,28 @@ TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleExtensions)
 		std::runtime_error);
 }
 
-TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleDots)
+TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleDotsBeginning)
 {
 	EXPECT_THROW(
 		{
 			try {
-				m_configFileParser.parseConfigFile("config_files/cgi_extension_multiple_dots.conf");
+				m_configFileParser.parseConfigFile("config_files/cgi_extension_multiple_dots_beginning.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("More than one dot at the beginning of the CGI extension", e.what());
+				EXPECT_STREQ("More than one dot in CGI extension", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, CGIExtensionContainsMultipleDotsInbetween)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/cgi_extension_multiple_dots_inbetween.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("More than one dot in CGI extension", e.what());
 				throw;
 			}
 		},
