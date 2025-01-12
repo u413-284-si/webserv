@@ -3,7 +3,7 @@
 from utils.utils import make_request
 import os
 
-def test_POST_simple():
+def test_POST_create_file():
     print("Request for /uploads/testfile.txt")
     # Body to send
     payload = "Beam me up, Scotty!"
@@ -14,6 +14,27 @@ def test_POST_simple():
     assert response.headers["location"] == "/uploads/testfile.txt"
     # Check if file exists
     assert os.path.isfile(dst_file_path)
+    # Delete created file
+    os.remove(dst_file_path)
+
+def test_POST_append():
+    print("Request for /uploads/existing_file.txt")
+    # Body to send
+    existing_content = "Hello, World!\n"
+    dst_file_path = "/workspaces/webserv/html/uploads/existing_file.txt"
+    with open(dst_file_path, "w") as file:
+        file.write(existing_content)
+
+    url = "http://localhost:8080/uploads/existing_file.txt"
+    payload = "It is me!"
+
+    response = make_request(url, method="POST", data=payload)
+
+    assert response.status_code == 200
+    # Check if file was appended correctly
+    with open(dst_file_path, "r") as file:
+        content = file.read()
+        assert content.find(existing_content + payload) == 0
     # Delete created file
     os.remove(dst_file_path)
 

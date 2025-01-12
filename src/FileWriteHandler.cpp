@@ -19,13 +19,14 @@ FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
  *
  * @param path The file path where the content should be written.
  * @param content The content to be written to the file.
+ * @param httpStatus Reference to the HTTP status code to be set based on the operation result.
  * @return A JSON-formatted string containing the operation result, including the file path, file size,
  *         last modified time, and status (either "updated" or "created"). If an error occurs, an empty
  *         string is returned.
  *
  * @exception std::runtime_error If an error occurs during the file operation.
  */
-std::string FileWriteHandler::execute(const std::string& path, const std::string& content)
+std::string FileWriteHandler::execute(const std::string& path, const std::string& content, statusCode& httpStatus)
 {
 	try {
 		const bool isExistingFile = m_fileSystemPolicy.isExistingFile(path);
@@ -42,6 +43,7 @@ std::string FileWriteHandler::execute(const std::string& path, const std::string
 					   << "\"status\": \"updated\"\n"
 					   << "}\n";
 		} else {
+			httpStatus = StatusCreated;
 			m_response << "{\n"
 					   << "\"message\": \"File created successfully\",\n"
 					   << "\"file\": \"" << path << "\",\n"
@@ -50,10 +52,17 @@ std::string FileWriteHandler::execute(const std::string& path, const std::string
 					   << "\"status\": \"created\"\n"
 					   << "}\n";
 		}
-		return m_response.str();
+	} catch (FileSystemPolicy::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		httpStatus = StatusForbidden;
+	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		LOG_ERROR << "Missing directory in path " << path;
+		httpStatus = StatusNotFound;
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		LOG_ERROR << "Failed to write data to the file: " << path;
-		return "";
+		httpStatus = StatusInternalServerError;
 	}
+	return m_response.str();
 }

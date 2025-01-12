@@ -208,3 +208,39 @@ def test_epoll_partial_and_complete_requests():
 
     client1.close()
     client2.close()
+
+def test_4xx_no_permission_to_append():
+    print("Chmod 000 existing_file and try to append")
+    # Body to send
+    existing_content = "Hello, World!\n"
+    dst_file_path = "/workspaces/webserv/html/uploads/existing_file.txt"
+
+    with open(dst_file_path, "w") as file:
+        file.write(existing_content)
+    original_permissions = stat.S_IMODE(os.stat(dst_file_path).st_mode)
+    # Change permissions to 000
+    os.chmod(dst_file_path, 0o000)
+
+    url = "http://localhost:8080/uploads/existing_file.txt"
+    payload = "It is me!"
+    response = make_request(url, data=payload)
+
+    # Restore the original permissions
+    os.chmod(dst_file_path, original_permissions)
+
+    assert response.status_code == 403
+    # Check if file was not appended
+    with open(dst_file_path, "r") as file:
+        content = file.read()
+        assert content.find(payload) == -1
+    # Delete created file
+    os.remove(dst_file_path)
+
+def test_missing_dir_in_path():
+    print("Request to /workspaces/webserv/html/uploads/not_exist/upload.txt")
+    url = "http://localhost:8080/uploads/not_exist/upload.txt"
+    payload = "Hello World!"
+
+    response = make_request(url, data=payload)
+
+    assert response.status_code == 404

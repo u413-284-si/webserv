@@ -87,15 +87,11 @@ void ResponseBodyHandler::execute()
 
 	if (m_request.method == MethodPost) {
 		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
-		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body);
-		if (m_responseBody.find("created") != std::string::npos) {
-			m_request.httpStatus = StatusCreated;
+		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
+		if (m_request.httpStatus == StatusCreated)
 			m_request.headers["location"] = m_request.uri.path;
-		}
-		if (m_responseBody.empty()) {
-			m_request.httpStatus = StatusInternalServerError;
+		if (m_responseBody.empty())
 			handleErrorBody();
-		}
 		m_request.targetResource = "posted.json";
 		return;
 	}
