@@ -1,5 +1,12 @@
 var NAVTREEINDEX5 =
 {
+"test__connection_send_response_8cpp.html#a824593e26c42b4efd63e5d15e5bc8cb2":[3,0,3,1,8,4],
+"test__connection_send_response_8cpp.html#ac0244b587995b8cde69686452c3c41c8":[3,0,3,1,8,3],
+"test__connection_send_response_8cpp.html#ae51efb039114ce1ecc536678298e3ac3":[3,0,3,1,8,2],
+"test__connection_send_response_8cpp_source.html":[3,0,3,1,8],
+"test__connection_send_to_c_g_i_8cpp.html":[3,0,3,1,9],
+"test__connection_send_to_c_g_i_8cpp.html#a35214933bd65d5cd26ad10f15604a4b3":[3,0,3,1,9,2],
+"test__connection_send_to_c_g_i_8cpp.html#a71e710d9b5f2f4a568086e70def06ccc":[3,0,3,1,9,1],
 "test__connection_send_to_c_g_i_8cpp.html#ab009e8595170fb19af2600ddd2f4362a":[3,0,3,1,9,3],
 "test__connection_send_to_c_g_i_8cpp_source.html":[3,0,3,1,9],
 "test__create_virtual_server_8cpp.html":[3,0,3,1,10],
@@ -16,6 +23,8 @@ var NAVTREEINDEX5 =
 "test__error_8py.html#a0202b3f18cfa1f51995b20308843e255":[3,0,3,0,1,3,3],
 "test__error_8py.html#a446b79a620a7e9752ed54a83eefa2808":[3,0,3,0,1,3,1],
 "test__error_8py.html#a6d5021674b44d7cb5d2c4f99067ff936":[3,0,3,0,1,3,0],
+"test__error_8py.html#aaae746c552cc9986e4992c8be76b715b":[3,0,3,0,1,3,4],
+"test__error_8py.html#abfbaca430d6c4067fcc0273e44cfac43":[3,0,3,0,1,3,5],
 "test__error_8py.html#ae042b9079347949270f7b00c6fb7f895":[3,0,3,0,1,3,2],
 "test__error_8py_source.html":[3,0,3,0,1,3],
 "test__handle_complete_request_header_8cpp.html":[3,0,3,1,13],

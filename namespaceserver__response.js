@@ -10,7 +10,9 @@ var namespaceserver__response =
       [ "test_file_not_found", "namespaceserver__response_1_1test__error.html#a6d5021674b44d7cb5d2c4f99067ff936", null ],
       [ "test_permission_denied_for_file", "namespaceserver__response_1_1test__error.html#a446b79a620a7e9752ed54a83eefa2808", null ],
       [ "test_permission_denied_in_path", "namespaceserver__response_1_1test__error.html#ae042b9079347949270f7b00c6fb7f895", null ],
-      [ "test_directory_no_autoindex", "namespaceserver__response_1_1test__error.html#a0202b3f18cfa1f51995b20308843e255", null ]
+      [ "test_directory_no_autoindex", "namespaceserver__response_1_1test__error.html#a0202b3f18cfa1f51995b20308843e255", null ],
+      [ "test_no_permission_to_append", "namespaceserver__response_1_1test__error.html#aaae746c552cc9986e4992c8be76b715b", null ],
+      [ "test_missing_dir_in_path", "namespaceserver__response_1_1test__error.html#abfbaca430d6c4067fcc0273e44cfac43", null ]
     ] ],
     [ "test_GET", "namespaceserver__response_1_1test___g_e_t.html", [
       [ "test_GET_simple", "namespaceserver__response_1_1test___g_e_t.html#a8266fddc7bf1debe38627a7c50abc1cf", null ],
@@ -35,6 +37,7 @@ var namespaceserver__response =
     ] ],
     [ "test_POST", "namespaceserver__response_1_1test___p_o_s_t.html", [
       [ "test_POST_simple", "namespaceserver__response_1_1test___p_o_s_t.html#ac0e6639994994b9733113dea26adffb7", null ],
+      [ "test_POST_append", "namespaceserver__response_1_1test___p_o_s_t.html#a0f256c17d554c1b3641a9e6d2625c8a9", null ],
       [ "generate_chunks", "namespaceserver__response_1_1test___p_o_s_t.html#a3f87e188fb39546111887533e959eb77", null ],
       [ "test_POST_chunked_encoding", "namespaceserver__response_1_1test___p_o_s_t.html#ac95599d7baa686a3cab23fe2ed804be4", null ],
       [ "test_POST_bigger_file", "namespaceserver__response_1_1test___p_o_s_t.html#a47fba5ba821365cd53bf0ad7b2bdda41", null ],

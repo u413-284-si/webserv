@@ -137,6 +137,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:aefa0f968e9e8cd4d513476fb6debed38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c902f666973f4f0aa821cac07987d2d" id="r_a7c902f666973f4f0aa821cac07987d2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">struct</a> stat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_file_write_handler_test.html#a7c902f666973f4f0aa821cac07987d2d">m_fakeStat</a> = {}</td></tr>
 <tr class="separator:a7c902f666973f4f0aa821cac07987d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4696c40f2164f6a324d56f42d551e3c5" id="r_a4696c40f2164f6a324d56f42d551e3c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_file_write_handler_test.html#a4696c40f2164f6a324d56f42d551e3c5">m_httpStatus</a> = <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></td></tr>
+<tr class="separator:a4696c40f2164f6a324d56f42d551e3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89aebdcb0c066551b13eca0341c9e407" id="r_a89aebdcb0c066551b13eca0341c9e407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt; <a class="el" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_file_write_handler_test.html#a89aebdcb0c066551b13eca0341c9e407">m_fileSystemPolicy</a></td></tr>
 <tr class="separator:a89aebdcb0c066551b13eca0341c9e407"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07ee7d540f1dc980480bc497b74b04bb" id="r_a07ee7d540f1dc980480bc497b74b04bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_file_write_handler.html">FileWriteHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_file_write_handler_test.html#a07ee7d540f1dc980480bc497b74b04bb">m_fileWriteHandler</a> = <a class="el" href="class_file_write_handler.html">FileWriteHandler</a>(<a class="el" href="class_file_write_handler_test.html#a89aebdcb0c066551b13eca0341c9e407">m_fileSystemPolicy</a>)</td></tr>
@@ -180,7 +182,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   24</span>    }</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="aclass_file_write_handler_test_html_a7c902f666973f4f0aa821cac07987d2d"><div class="ttname"><a href="class_file_write_handler_test.html#a7c902f666973f4f0aa821cac07987d2d">FileWriteHandlerTest::m_fakeStat</a></div><div class="ttdeci">struct stat m_fakeStat</div><div class="ttdef"><b>Definition</b> <a href="test___file_write_handler_8cpp_source.html#l00029">test_FileWriteHandler.cpp:29</a></div></div>
-<div class="ttc" id="aclass_file_write_handler_test_html_a89aebdcb0c066551b13eca0341c9e407"><div class="ttname"><a href="class_file_write_handler_test.html#a89aebdcb0c066551b13eca0341c9e407">FileWriteHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">NiceMock&lt; MockFileSystemPolicy &gt; m_fileSystemPolicy</div><div class="ttdef"><b>Definition</b> <a href="test___file_write_handler_8cpp_source.html#l00031">test_FileWriteHandler.cpp:31</a></div></div>
+<div class="ttc" id="aclass_file_write_handler_test_html_a89aebdcb0c066551b13eca0341c9e407"><div class="ttname"><a href="class_file_write_handler_test.html#a89aebdcb0c066551b13eca0341c9e407">FileWriteHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">NiceMock&lt; MockFileSystemPolicy &gt; m_fileSystemPolicy</div><div class="ttdef"><b>Definition</b> <a href="test___file_write_handler_8cpp_source.html#l00032">test_FileWriteHandler.cpp:32</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -286,6 +288,30 @@ Protected Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a4696c40f2164f6a324d56f42d551e3c5" name="a4696c40f2164f6a324d56f42d551e3c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4696c40f2164f6a324d56f42d551e3c5">&#9670;&#160;</a></span>m_httpStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> FileWriteHandlerTest::m_httpStatus = <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00030">30</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a89aebdcb0c066551b13eca0341c9e407" name="a89aebdcb0c066551b13eca0341c9e407"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89aebdcb0c066551b13eca0341c9e407">&#9670;&#160;</a></span>m_fileSystemPolicy</h2>
 
@@ -306,7 +332,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00031">31</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00032">32</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -330,7 +356,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00032">32</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="test___file_write_handler_8cpp_source.html#l00033">33</a> of file <a class="el" href="test___file_write_handler_8cpp_source.html">test_FileWriteHandler.cpp</a>.</p>
 
 </div>
 </div>
