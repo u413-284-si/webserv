@@ -55,6 +55,10 @@ std::string FileWriteHandler::execute(const std::string& path, const std::string
 	} catch (FileSystemPolicy::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		httpStatus = StatusForbidden;
+	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		LOG_ERROR << "Missing directory in path " << path;
+		httpStatus = StatusNotFound;
 	} catch (std::runtime_error& e) {
 		LOG_ERROR << e.what();
 		LOG_ERROR << "Failed to write data to the file: " << path;

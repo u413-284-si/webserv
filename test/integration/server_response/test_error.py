@@ -64,3 +64,11 @@ def test_no_permission_to_append():
         assert content.find(payload) == -1
     # Delete created file
     os.remove(dst_file_path)
+
+def test_missing_dir_in_path():
+    print("Request to /workspaces/webserv/html/uploads/not_exist/upload.txt")
+    payload = "Hello World!"
+
+    response = requests.post("http://localhost:8080/uploads/not_exist/upload.txt", data=payload)
+
+    assert response.status_code == 404
