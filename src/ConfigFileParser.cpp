@@ -341,7 +341,7 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 		throw std::runtime_error("Defining root and alias in the same location block is not allowed");
 	if (location.root == "html")
 		location.root = server.root;
-	else if (location.maxBodySize == 1)
+	else if (location.maxBodySize == constants::g_oneMegabyte)
 		location.maxBodySize = server.maxBodySize;
 	else if (location.errorPage.empty())
 		location.errorPage = server.errorPage;
