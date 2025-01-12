@@ -986,27 +986,31 @@ TEST_F(InvalidConfigFileTests, ServerNameContainsNoValue)
  * 19. Autoindex contains off
  * 20. Autoindex contains valid mix of lowercase and uppercase
  * 21. Allow methods contains GET
- * 22. Allow methods contains POST
- * 23. Allow methods contains DELETE
- * 24. Allow methods contains GET, POST and DELETE
- * 25. Error page contains multiple error codes and error page paths
- * 26. CGI extension contains one extension
- * 27. CGI path contains one path
- * 28. Index contains multiple indices
- * 29. Return contains code and text with double quotes
- * 30. Return contains code and text without double quotes
- * 31. Return contains code and url
- * 32. Return contains only code
- * 33. Return contains only http url
- * 34. Return contains only https url
- * 35. Bracket under server directive
- * 36. Bracket under location directive
- * 37. Whitespaces between server directive and opening bracket
- * 38. Directive and opening bracket on the same line
- * 39. Directive and closing bracket on the same line
- * 40. Directive and closing bracket on the same line under server directive
- * 41. Location path
- * 42. Inheritance of the server directives root, max_body_size and error_page to location
+ * 22. Allow methods contains get
+ * 23. Allow methods contains POST
+ * 24. Allow methods contains post
+ * 25. Allow methods contains DELETE
+ * 26. Allow methods contains delete
+ * 27. Allow methods contains GET, POST and DELETE
+ * 28. Allow methods contains GET, POST and DELETE with mixed cases
+ * 29. Error page contains multiple error codes and error page paths
+ * 30. CGI extension contains one extension
+ * 31. CGI path contains one path
+ * 32. Index contains multiple indices
+ * 33. Return contains code and text with double quotes
+ * 34. Return contains code and text without double quotes
+ * 35. Return contains code and url
+ * 36. Return contains only code
+ * 37. Return contains only http url
+ * 38. Return contains only https url
+ * 39. Bracket under server directive
+ * 40. Bracket under location directive
+ * 41. Whitespaces between server directive and opening bracket
+ * 42. Directive and opening bracket on the same line
+ * 43. Directive and closing bracket on the same line
+ * 44. Directive and closing bracket on the same line under server directive
+ * 45. Location path
+ * 46. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -1189,28 +1193,57 @@ TEST_F(ValidConfigFileTests, AutoindexContainsValidLowerCaseUpperCaseMix)
 	EXPECT_EQ(false, configFile.servers[0].locations[0].hasAutoindex);
 }
 
-TEST_F(ValidConfigFileTests, AllowMethodsContainsGet)
+TEST_F(ValidConfigFileTests, AllowMethodsContainsGetLowercase)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get.conf"));
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get_lowercase.conf"));
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
 	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[1]);
 	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[2]);
 }
 
-TEST_F(ValidConfigFileTests, AllowMethodsContainsPost)
+TEST_F(ValidConfigFileTests, AllowMethodsContainsGetUppercase)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_post.conf"));
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get_uppercase.conf"));
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsPostLowercase)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_post_lowercase.conf"));
 	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[0]);
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
 	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[2]);
 }
 
-TEST_F(ValidConfigFileTests, AllowMethodsContainsDelete)
+TEST_F(ValidConfigFileTests, AllowMethodsContainsPostUppercase)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_delete.conf"));
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_post_uppercase.conf"));
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsDeleteLowercase)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_delete_lowercase.conf"));
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsDeleteUppercase)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_delete_uppercase.conf"));
 	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[0]);
 	EXPECT_EQ(false, configFile.servers[0].locations[0].allowMethods[1]);
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
@@ -1220,6 +1253,16 @@ TEST_F(ValidConfigFileTests, AllowMethodsContainsGetPostDelete)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get_post_delete.conf"));
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
+}
+
+TEST_F(ValidConfigFileTests, AllowMethodsContainsGetPostDeleteMixedCases)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(
+		configFile = m_configFileParser.parseConfigFile("config_files/allow_methods_get_post_delete_mixed_cases.conf"));
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[0]);
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[1]);
 	EXPECT_EQ(true, configFile.servers[0].locations[0].allowMethods[2]);
