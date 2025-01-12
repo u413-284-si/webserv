@@ -792,22 +792,24 @@ void ConfigFileParser::readReturns(const std::string& returns)
 
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;
-	} else {
-		size_t endIndex = returns.length();
-		size_t startIndex = returnCodeStartIndex;
 
-		std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);
-		if (returnCodeOrUrl.substr(0, sizeof("http://") - 1) == "http://"
-			|| returnCodeOrUrl.substr(0, sizeof("https://") - 1) == "https://") {
-			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusFound;
-			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;
-		} else {
-			statusCode returnCode = convertStringToStatusCode(returnCodeOrUrl);
-			if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
-				throw std::runtime_error("Invalid return code");
-			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
-			m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = "";
-		}
+		return;
+	}
+
+	size_t endIndex = returns.length();
+	size_t startIndex = returnCodeStartIndex;
+
+	std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);
+	if (returnCodeOrUrl.substr(0, sizeof("http://") - 1) == "http://"
+		|| returnCodeOrUrl.substr(0, sizeof("https://") - 1) == "https://") {
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusFound;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;
+	} else {
+		statusCode returnCode = convertStringToStatusCode(returnCodeOrUrl);
+		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
+			throw std::runtime_error("Invalid return code");
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = "";
 	}
 }
 
