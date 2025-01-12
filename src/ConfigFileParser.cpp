@@ -684,12 +684,13 @@ void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
 		size_t methodEndIndex = allowMethods.find_first_of(s_whitespace, index);
 
 		std::string method = allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex);
+		webutils::lowercase(method);
 
-		if (method == "GET")
+		if (method == "get")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = true;
-		else if (method == "POST")
+		else if (method == "post")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[1] = true;
-		else if (method == "DELETE")
+		else if (method == "delete")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = true;
 		else
 			throw std::runtime_error("Invalid allow_methods value");
