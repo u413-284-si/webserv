@@ -22,9 +22,9 @@ ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
 std::string ResponseBuilder::getResponse() const
 {
 	if (m_responseBody.empty())
-		return m_responseHeader.str();
+		return m_responseHeaderStream.str();
 
-	return m_responseHeader.str() + m_responseBody;
+	return m_responseHeaderStream.str() + m_responseBody;
 }
 
 /**
@@ -40,20 +40,15 @@ void ResponseBuilder::buildResponse(Connection& connection)
 {
 	resetBuilder();
 
-	const HTTPRequest& request = connection.m_request;
+	HTTPRequest& request = connection.m_request;
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
 	responseBodyHandler.execute();
+	appendResponseHeader(request);
 
-	appendStatusLine(request);
-	if (request.hasCGI && request.httpStatus == StatusOK)
-		appendHeadersCGI(request);
-	else
-		appendHeaders(request);
-
-	LOG_DEBUG << "Response header: \n" << m_responseHeader.str();
+	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
 
 	// Response Body often contains binary data, so it is not logged.
 	// LOG_DEBUG << "Response body: \n" << m_responseBody;
@@ -63,90 +58,89 @@ void ResponseBuilder::buildResponse(Connection& connection)
  * @brief Reset the builder.
  *
  * The stringstream m_responseHeader is reset to an empty string and cleared to removed any potential error flags.
- * The string m_responseBody is cleared.
+ * The string m_responseBody is cleared as well as the map m_responseHeaders.
  */
 void ResponseBuilder::resetBuilder()
 {
-	m_responseHeader.str(std::string());
-	m_responseHeader.clear();
+	m_responseHeaderStream.str(std::string());
+	m_responseHeaderStream.clear();
 	m_responseBody.clear();
+	m_responseHeaders.clear();
 }
 
 /**
- * @brief Append status line to the response.
+ * @brief Appends the response status line and headers to the response header stream.
  *
- * The status line is appended in the following format:
- * HTTP/1.1 <status code> <reason phrase> CRLF
- * @param request HTTP request.
+ * This function constructs and appends the necessary HTTP status line and response headers to the response header
+ * stream based on the provided HTTP request and the current state of the response.
+ *
+ * @param request The HTTP request object containing the request details.
  */
-void ResponseBuilder::appendStatusLine(const HTTPRequest& request)
+void ResponseBuilder::appendResponseHeader(const HTTPRequest& request)
 {
-	if (request.hasCGI && (m_responseBody.find("HTTP/1.1 ") != std::string::npos))
-		return;
-	m_responseHeader << "HTTP/1.1 " << request.httpStatus << ' ' << webutils::statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
-}
+	if (!checkForExistingHeader("status"))
+		m_responseHeaderStream << "HTTP/1.1 " << request.httpStatus << ' '
+							   << statusCodeToReasonPhrase(request.httpStatus) << "\r\n";
 
-/**
- * @brief Append headers to the response.
- *
- * The following headers are appended:
- * - Content-Type: MIME type of the target resource (only if response has body)
- * - Content-Length: Length of the response body (only if response has body)
- * - Server: TriHard.
- * - Date: Current date in GMT.
- * - Location: Target resource if status is StatusMovedPermanently.
- * Delimiter.
- * @param request HTTP request.
- */
-void ResponseBuilder::appendHeaders(const HTTPRequest& request)
-{
 	if (!m_responseBody.empty()) {
-	// Content-Type
-		m_responseHeader << "Content-Type: " << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
-	// Content-Length
-		m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
+		// Content-Type
+		if (!checkForExistingHeader("content-type"))
+			m_responseHeaderStream << "Content-Type: "
+								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
+		// Content-Length
+		if (!checkForExistingHeader("content-length"))
+			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
+
 	// Server
-	m_responseHeader << "Server: TriHard\r\n";
+	if (!checkForExistingHeader("server"))
+		m_responseHeaderStream << "Server: TriHard\r\n";
+
 	// Date
-	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+	if (!checkForExistingHeader("date"))
+		m_responseHeaderStream << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
+
 	// Location
-	std::map<std::string, std::string>::const_iterator iter = request.headers.find("location");
-	if (iter != request.headers.end()) {
-		m_responseHeader << "Location: " << iter->second << "\r\n";
-	}
+	checkForExistingHeader("location");
+
+	// Various headers from response
+	for (std::map<std::string, std::string>::const_iterator iter = m_responseHeaders.begin();
+		 iter != m_responseHeaders.end(); ++iter)
+		m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
+
 	// Connection
 	if (request.shallCloseConnection)
-		m_responseHeader << "Connection: close\r\n";
+		m_responseHeaderStream << "Connection: close\r\n";
 	else
-		m_responseHeader << "Connection: keep-alive\r\n";
+		m_responseHeaderStream << "Connection: keep-alive\r\n";
+
 	// Delimiter
-	m_responseHeader << "\r\n";
+	m_responseHeaderStream << "\r\n";
 }
 
 /**
- * @brief Append headers to the response for CGI.
+ * @brief Checks if the specified CGI header exists in the response headers.
  *
- * The following headers are appended:
- * Content-Length: Length of the response body.
- * Server: TriHard.
- * Date: Current date in GMT.
- * Location: Target resource if status is StatusMovedPermanently.
- * @param request HTTP request.
+ * This function searches for the specified header name in the response headers.
+ * If the header is found, it appends the header and its value to the response
+ * header stream, removes the header from the response headers map, and returns true.
+ * If the header is not found, it returns false.
+ *
+ * @param headerName The name of the header to search for.
+ * @return true if the header is found and processed, false otherwise.
  */
-void ResponseBuilder::appendHeadersCGI(const HTTPRequest& request)
+bool ResponseBuilder::checkForExistingHeader(const std::string& headerName)
 {
-	// Content-Length
-	m_responseHeader << "Content-Length: " << m_responseBody.length() << "\r\n";
-	// Server
-	m_responseHeader << "Server: TriHard\r\n";
-	// Date
-	m_responseHeader << "Date: " << webutils::getGMTString(time(0), "%a, %d %b %Y %H:%M:%S GMT") << "\r\n";
-	// Connection
-	if (request.shallCloseConnection)
-		m_responseHeader << "Connection: close\r\n";
-	else
-		m_responseHeader << "Connection: keep-alive\r\n";
+	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find(headerName);
+	if (iter != m_responseHeaders.end()) {
+		if (iter->first == "status")
+			m_responseHeaderStream << "HTTP/1.1 " << iter->second << "\r\n";
+		else
+			m_responseHeaderStream << webutils::capitalizeWords(iter->first) << ": " << iter->second << "\r\n";
+		m_responseHeaders.erase(iter);
+		return true;
+	}
+	return false;
 }
 
 /**

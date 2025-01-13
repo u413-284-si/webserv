@@ -24,7 +24,6 @@ protected:
 		serverConfig.port = serverSock.port;
 		configFile.servers.push_back(serverConfig);
 		connection.m_status = Connection::ReceiveFromCGI;
-		connection.m_pipeFromCGIReadEnd = pipefd[0];
 
 		ON_CALL(epollWrapper, addEvent).WillByDefault(Return(true));
 
@@ -42,17 +41,6 @@ protected:
 	Server server;
 	ConfigServer serverConfig;
 	Connection connection = Connection(serverSock, clientSocket, dummyFd, configFile.servers);
-	int pipefd[2];
-
-    void SetUp() override {
-        // Create a pipe
-        pipe(pipefd);
-    }
-
-    void TearDown() override {
-        close(pipefd[0]);
-        close(pipefd[1]);
-    }
 };
 
 TEST_F(ConnectionReceiveFromCGITest, ReadError)
@@ -61,7 +49,7 @@ TEST_F(ConnectionReceiveFromCGITest, ReadError)
 	EXPECT_CALL(processOps, readProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
-	connectionReceiveFromCGI(server, pipefd[0], connection);
+	connectionReceiveFromCGI(server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -81,7 +69,7 @@ TEST_F(ConnectionReceiveFromCGITest, PartialRead)
 			Return(responseSize)));
 
 	// Act
-	connectionReceiveFromCGI(server, pipefd[0], connection);
+	connectionReceiveFromCGI(server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.body, response);
