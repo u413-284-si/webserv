@@ -94,7 +94,7 @@ void ResponseBodyHandler::execute()
 		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
 		if (m_request.httpStatus == StatusCreated)
-			m_request.headers["location"] = m_request.uri.path;
+			m_responseHeaders["location"] = m_request.uri.path;
 		if (m_responseBody.empty())
 			handleErrorBody();
 		m_request.targetResource = "posted.json";
