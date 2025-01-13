@@ -17,7 +17,7 @@ class FileWriteHandler {
 
 public:
 	explicit FileWriteHandler(const FileSystemPolicy& fileSystemPolicy);
-	std::string execute(const std::string& path, const std::string& content);
+	std::string execute(const std::string& path, const std::string& content, statusCode& httpStatus);
 
 private:
 	const FileSystemPolicy& m_fileSystemPolicy;

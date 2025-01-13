@@ -5,7 +5,6 @@
 #include "CGIHandler.hpp"
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
-#include "constants.hpp"
 #include "EpollWrapper.hpp"
 #include "FileSystemPolicy.hpp"
 #include "Log.hpp"
@@ -16,6 +15,7 @@
 #include "SocketPolicy.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
+#include "constants.hpp"
 #include "error.hpp"
 #include "signalHandler.hpp"
 
@@ -71,14 +71,13 @@ public:
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();
-	std::vector<char>& getClientHeaderBuffer();
-	std::vector<char>& getClientBodyBuffer();
-	std::vector<char>& getCGIBodyBuffer();
+	std::vector<char>& getBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	void removeConnection(int delFd);
 	void removeCGIFileDescriptor(int& delfd);
 	void setClientTimeout(time_t clientTimeout);
 
@@ -88,7 +87,7 @@ public:
 	bool addEvent(int newfd, uint32_t eventMask) const;
 	bool modifyEvent(int modfd, uint32_t eventMask) const;
 	void removeEvent(int delfd) const;
-    int getEpollFd() const;
+	int getEpollFd() const;
 
 	// Dispatch to SocketPolicy
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
@@ -99,9 +98,9 @@ public:
 	ssize_t readFromSocket(int sockfd, char* buffer, size_t size, int flags) const;
 	ssize_t writeToSocket(int sockfd, const char* buffer, size_t size, int flags) const;
 
-    // Dispatch to ProcessOps
-    ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
-    ssize_t writeProcess(int fileDescriptor, const char* buffer, size_t size) const;
+	// Dispatch to ProcessOps
+	ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
+	ssize_t writeProcess(int fileDescriptor, const char* buffer, size_t size) const;
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
@@ -119,15 +118,13 @@ private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
 	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
-    const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
+	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	std::map<int, Connection*> m_cgiConnections; /**< Connections that are currently handling CGI */
-	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
-	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
-	std::vector<char> m_cgiBodyBuffer; /**< Buffer for reading CGI response body */
+	std::vector<char> m_buffer; /**< Buffer for reading various data, such as headers or bodies */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
@@ -163,7 +160,6 @@ void connectionHandleTimeout(Server& server, int activeFd, Connection& connectio
 
 void checkForTimeout(Server& server);
 
-void cleanupClosedConnections(Server& server);
 void cleanupIdleConnections(Server& server);
 
 void shutdownServer(Server& server);

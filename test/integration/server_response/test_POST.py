@@ -18,11 +18,30 @@ def test_POST_simple():
     # Delete created file
     os.remove(dst_file_path)
 
+def test_POST_append():
+    print("Request for /uploads/existing_file.txt")
+    # Body to send
+    existing_content = "Hello, World!\n"
+    payload = "It is me!"
+    dst_file_path = "/workspaces/webserv/html/uploads/existing_file.txt"
+    with open(dst_file_path, "w") as file:
+        file.write(existing_content)
+
+    response = requests.post("http://localhost:8080/uploads/existing_file.txt", data=payload)
+
+    assert response.status_code == 200
+    # Check if file was appended correctly
+    with open(dst_file_path, "r") as file:
+        content = file.read()
+        assert content.find(existing_content + payload) == 0
+    # Delete created file
+    os.remove(dst_file_path)
+
 # For encoding chunked
 # sa https://requests.readthedocs.io/en/latest/user/advanced/#chunk-encoded-requests
 def generate_chunks():
     yield "First chunk of data".encode("utf-8")
-    yield "Second chunk of data".encode("utf-8")
+    yield "Second chunk of\n data".encode("utf-8")
     yield "Third chunk of data".encode("utf-8")
 
 def test_POST_chunked_encoding():

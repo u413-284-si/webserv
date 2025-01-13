@@ -15,22 +15,29 @@ protected:
 	HandleCompleteRequestHeaderTest()
 		: m_server(m_configFile, m_epollWrapper, m_socketPolicy, processOps)
 	{
+		ON_CALL(m_epollWrapper, addEvent).WillByDefault(Return(true));
 		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
+
+		m_server.registerConnection(m_serverSock, m_dummyFd, Socket());
+		m_connection = m_server.getConnections().at(m_dummyFd);
 
 		m_connection.m_timeSinceLastEvent = 0;
 		m_connection.m_status = Connection::ReceiveHeader;
 	}
 	~HandleCompleteRequestHeaderTest() override { }
 
-	const int m_dummyFd = 10;
 	ConfigFile m_configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> m_epollWrapper;
 	MockSocketPolicy m_socketPolicy;
 	MockProcessOps processOps;
 	Server m_server;
-	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 
-	Connection m_connection = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
+	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
+    const int m_dummyFd = 10;
+
+	Connection temp = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
+	Connection& m_connection = temp;
+
 };
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequest)
@@ -80,6 +87,5 @@ TEST_F(HandleCompleteRequestHeaderTest, ConfigFileRandomlyDestroyed)
 
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusOK);
-	EXPECT_EQ(m_connection.m_status, Connection::Closed);
+	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
