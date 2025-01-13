@@ -112,8 +112,8 @@ $(document).ready(function(){initNavTree('namespaceupload.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a82b81fb245853758fc67d8a7c360a298" id="r_a82b81fb245853758fc67d8a7c360a298"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#a82b81fb245853758fc67d8a7c360a298">base_save_dir</a> = os.getcwd() + '/<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">uploads</a>/'</td></tr>
-<tr class="separator:a82b81fb245853758fc67d8a7c360a298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81483952264a86e6431c405ada379927" id="r_a81483952264a86e6431c405ada379927"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#a81483952264a86e6431c405ada379927">base_save_dir</a> = os.path.abspath(os.path.join(os.getcwd(), '../<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">html</a>/<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">uploads</a>/'))</td></tr>
+<tr class="separator:a81483952264a86e6431c405ada379927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69ad7995ef342488e21c8c94ecfb3dd3" id="r_a69ad7995ef342488e21c8c94ecfb3dd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">list</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#a69ad7995ef342488e21c8c94ecfb3dd3">allowed_directories</a> = ['<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">tmp</a>', '<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">images</a>', '<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">documents</a>']</td></tr>
 <tr class="separator:a69ad7995ef342488e21c8c94ecfb3dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63451f6376b59a2f2cedef7434e0f6eb" id="r_a63451f6376b59a2f2cedef7434e0f6eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#a63451f6376b59a2f2cedef7434e0f6eb">query_string</a> = os.environ.get('<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">QUERY_STRING</a>', '')</td></tr>
@@ -124,22 +124,24 @@ Variables</h2></td></tr>
 <tr class="separator:a32cc26e7a940127a548dad0f72348d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a508b0fd4d51a7f75362b622faf22144b" id="r_a508b0fd4d51a7f75362b622faf22144b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a> = params.get('directory', [''])[0]</td></tr>
 <tr class="separator:a508b0fd4d51a7f75362b622faf22144b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae50528bcf5630c464a66ba8aaa06931e" id="r_ae50528bcf5630c464a66ba8aaa06931e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#ae50528bcf5630c464a66ba8aaa06931e">directory_path</a> = os.path.join(<a class="el" href="namespaceupload.html#a82b81fb245853758fc67d8a7c360a298">base_save_dir</a>, <a class="el" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a>)</td></tr>
-<tr class="separator:ae50528bcf5630c464a66ba8aaa06931e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7601e1e0ab843814722e4612e78213b" id="r_aa7601e1e0ab843814722e4612e78213b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#aa7601e1e0ab843814722e4612e78213b">file_path</a> = os.path.join(<a class="el" href="namespaceupload.html#ae50528bcf5630c464a66ba8aaa06931e">directory_path</a>, <a class="el" href="namespaceupload.html#a32cc26e7a940127a548dad0f72348d23">filename</a>)</td></tr>
+<tr class="memitem:ab023286c7d09c4e02c98a5bc064281a2" id="r_ab023286c7d09c4e02c98a5bc064281a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#ab023286c7d09c4e02c98a5bc064281a2">directory_path</a> = os.path.join(<a class="el" href="namespaceupload.html#a81483952264a86e6431c405ada379927">base_save_dir</a>, <a class="el" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a>)</td></tr>
+<tr class="separator:ab023286c7d09c4e02c98a5bc064281a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7601e1e0ab843814722e4612e78213b" id="r_aa7601e1e0ab843814722e4612e78213b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#aa7601e1e0ab843814722e4612e78213b">file_path</a> = os.path.join(<a class="el" href="namespaceupload.html#ab023286c7d09c4e02c98a5bc064281a2">directory_path</a>, <a class="el" href="namespaceupload.html#a32cc26e7a940127a548dad0f72348d23">filename</a>)</td></tr>
 <tr class="separator:aa7601e1e0ab843814722e4612e78213b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac295a8d88b7d6cfcefb7008b801b6515" id="r_ac295a8d88b7d6cfcefb7008b801b6515"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#ac295a8d88b7d6cfcefb7008b801b6515">end</a></td></tr>
+<tr class="separator:ac295a8d88b7d6cfcefb7008b801b6515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4476f85dd28f7274019dbabfaa21ccfd" id="r_a4476f85dd28f7274019dbabfaa21ccfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceupload.html#a4476f85dd28f7274019dbabfaa21ccfd">content</a> = sys.stdin.read()</td></tr>
 <tr class="separator:a4476f85dd28f7274019dbabfaa21ccfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a82b81fb245853758fc67d8a7c360a298" name="a82b81fb245853758fc67d8a7c360a298"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82b81fb245853758fc67d8a7c360a298">&#9670;&#160;</a></span>base_save_dir</h2>
+<a id="a81483952264a86e6431c405ada379927" name="a81483952264a86e6431c405ada379927"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81483952264a86e6431c405ada379927">&#9670;&#160;</a></span>base_save_dir</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> upload.base_save_dir = os.getcwd() + '/<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">uploads</a>/'</td>
+          <td class="memname">upload.base_save_dir = os.path.abspath(os.path.join(os.getcwd(), '../<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">html</a>/<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">uploads</a>/'))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -228,14 +230,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ae50528bcf5630c464a66ba8aaa06931e" name="ae50528bcf5630c464a66ba8aaa06931e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae50528bcf5630c464a66ba8aaa06931e">&#9670;&#160;</a></span>directory_path</h2>
+<a id="ab023286c7d09c4e02c98a5bc064281a2" name="ab023286c7d09c4e02c98a5bc064281a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab023286c7d09c4e02c98a5bc064281a2">&#9670;&#160;</a></span>directory_path</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> upload.directory_path = os.path.join(<a class="el" href="namespaceupload.html#a82b81fb245853758fc67d8a7c360a298">base_save_dir</a>, <a class="el" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a>)</td>
+          <td class="memname">upload.directory_path = os.path.join(<a class="el" href="namespaceupload.html#a81483952264a86e6431c405ada379927">base_save_dir</a>, <a class="el" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -251,12 +253,28 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">upload.file_path = os.path.join(<a class="el" href="namespaceupload.html#ae50528bcf5630c464a66ba8aaa06931e">directory_path</a>, <a class="el" href="namespaceupload.html#a32cc26e7a940127a548dad0f72348d23">filename</a>)</td>
+          <td class="memname">upload.file_path = os.path.join(<a class="el" href="namespaceupload.html#ab023286c7d09c4e02c98a5bc064281a2">directory_path</a>, <a class="el" href="namespaceupload.html#a32cc26e7a940127a548dad0f72348d23">filename</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="upload_8py_source.html#l00036">36</a> of file <a class="el" href="upload_8py_source.html">upload.py</a>.</p>
+
+</div>
+</div>
+<a id="ac295a8d88b7d6cfcefb7008b801b6515" name="ac295a8d88b7d6cfcefb7008b801b6515"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac295a8d88b7d6cfcefb7008b801b6515">&#9670;&#160;</a></span>end</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">upload.end</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="upload_8py_source.html#l00043">43</a> of file <a class="el" href="upload_8py_source.html">upload.py</a>.</p>
 
 </div>
 </div>

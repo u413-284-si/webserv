@@ -7,5 +7,6 @@ var searchData=
   ['socket_2ehpp_4',['Socket.hpp',['../_socket_8hpp.html',1,'']]],
   ['socketpolicy_2ecpp_5',['SocketPolicy.cpp',['../_socket_policy_8cpp.html',1,'']]],
   ['socketpolicy_2ehpp_6',['SocketPolicy.hpp',['../_socket_policy_8hpp.html',1,'']]],
-  ['statuscode_2ehpp_7',['StatusCode.hpp',['../_status_code_8hpp.html',1,'']]]
+  ['statuscode_2ecpp_7',['StatusCode.cpp',['../_status_code_8cpp.html',1,'']]],
+  ['statuscode_2ehpp_8',['StatusCode.hpp',['../_status_code_8hpp.html',1,'']]]
 ];

@@ -35,5 +35,7 @@ var error_8hpp =
     [ "ERR_CHUNKSIZE_INCONSISTENT", "error_8hpp.html#af23277c79bef4faab2998d693819ebfd", null ],
     [ "ERR_CONVERSION_STRING_TO_SIZE_T", "error_8hpp.html#aac96487ebb5bcb2269002646865153ab", null ],
     [ "ERR_CONTENT_LENGTH", "error_8hpp.html#a683508ef2f2400bcd0f5f5e02dfd85c5", null ],
-    [ "ERR_UNEXPECTED_BODY", "error_8hpp.html#afef097336b6960957a448f3b0c632802", null ]
+    [ "ERR_UNEXPECTED_BODY", "error_8hpp.html#afef097336b6960957a448f3b0c632802", null ],
+    [ "ERR_MISSING_CGI_HEADER", "error_8hpp.html#a132aad672a97dc4b7a4019058691189d", null ],
+    [ "ERR_MISSING_CGI_FIELD", "error_8hpp.html#a752581368c25db0b2e8fe90bb61e4268", null ]
 ];

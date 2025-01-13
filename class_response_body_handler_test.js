@@ -8,6 +8,7 @@ var class_response_body_handler_test =
     [ "m_connection", "class_response_body_handler_test.html#af7af7211d16f946510b3997039a42563", null ],
     [ "m_request", "class_response_body_handler_test.html#a850febcb4a52085bc2347603fdbafb33", null ],
     [ "m_responseBody", "class_response_body_handler_test.html#a9c3eb3caa89b8ba8de56a6e8153f8026", null ],
+    [ "m_responseHeaders", "class_response_body_handler_test.html#a24864c1fcadfc799d3b6110b72ced1de", null ],
     [ "m_fileSystemPolicy", "class_response_body_handler_test.html#a58d729923411f2890818d10ae8de0e9c", null ],
     [ "m_responseBodyHandler", "class_response_body_handler_test.html#ac6822393eecb77f89cac1208e862c405", null ]
 ];

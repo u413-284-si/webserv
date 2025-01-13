@@ -4,7 +4,12 @@ var namespaceserver__response =
       [ "start_cpp_server", "namespaceserver__response_1_1conftest.html#a2540e995e7b12021bb7416977cab2f14", null ]
     ] ],
     [ "test_CGI", "namespaceserver__response_1_1test___c_g_i.html", [
-      [ "test_no_CGI_defined", "namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49", null ]
+      [ "test_no_CGI_defined", "namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49", null ],
+      [ "test_CGI_helloWorld", "namespaceserver__response_1_1test___c_g_i.html#af757353c2eb08068bf5916e7cd60ea6e", null ],
+      [ "test_CGI_badBoi", "namespaceserver__response_1_1test___c_g_i.html#af698a9c3bcb40354c6d4bacfa15eb39a", null ],
+      [ "test_CGI_time", "namespaceserver__response_1_1test___c_g_i.html#ad9c13e2ca08cd15a5b5e181c5cc5867e", null ],
+      [ "test_CGI_upload_file", "namespaceserver__response_1_1test___c_g_i.html#a27aafa83aa5f0d2dd21ff1013b2cdfb6", null ],
+      [ "test_CGI_toUpper", "namespaceserver__response_1_1test___c_g_i.html#af00d49c7f93c10dd77efcdae4eba8f93", null ]
     ] ],
     [ "test_error", "namespaceserver__response_1_1test__error.html", [
       [ "test_file_not_found", "namespaceserver__response_1_1test__error.html#a6d5021674b44d7cb5d2c4f99067ff936", null ],

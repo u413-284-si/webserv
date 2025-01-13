@@ -116,11 +116,19 @@ $(document).ready(function(){initNavTree('time_8py_source.html',''); initResizab
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> datetime</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">#print(&quot;HTTP/1.1 200 OK&quot;)</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>print(<span class="stringliteral">&quot;Content-Type: text/html\r\n\r\n&quot;</span>)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>print(<span class="stringliteral">&quot;&lt;html&gt;&quot;</span>)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>print(<span class="stringliteral">&quot;&lt;head&gt;&quot;</span>)</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>print(datetime.datetime.strftime(datetime.datetime.now(), <span class="stringliteral">&quot;&lt;h1&gt;  %H:%M:%S &lt;/h1&gt;&quot;</span>))</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacetime.html#aa5b145bd3fac555c5ea6e7700f52a659">    5</a></span>print(<span class="stringliteral">&quot;Status: 200 Hobdy Dopdy\r\n&quot;</span>, end=<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>print(<span class="stringliteral">&quot;Content-Type: text/html\r\n&quot;</span>, end=<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>print(<span class="stringliteral">&quot;Connection: close\r\n&quot;</span>, end=<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>print(<span class="stringliteral">&quot;Cache-Control: no-cache\r\n&quot;</span>, end=<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>print(<span class="stringliteral">&quot;Pragma: no-cache\r\n\r\n&quot;</span>, end=<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>print(<span class="stringliteral">&quot;&lt;html&gt;&quot;</span>)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>print(<span class="stringliteral">&quot;&lt;head&gt;&quot;</span>)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>print(<span class="stringliteral">&quot;&lt;title&gt;Current time&lt;/title&gt;&quot;</span>)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>print(<span class="stringliteral">&quot;&lt;/head&gt;&quot;</span>)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>print(<span class="stringliteral">&quot;&lt;body&gt;&quot;</span>)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>print(<span class="stringliteral">&quot;&lt;h1&gt;The current time is: &quot;</span> + datetime.datetime.strftime(datetime.datetime.now(), <span class="stringliteral">&quot;%H:%M:%S&quot;</span>) + <span class="stringliteral">&quot;&lt;/h1&gt;&quot;</span>)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>print(<span class="stringliteral">&quot;&lt;/body&gt;&quot;</span>)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>print(<span class="stringliteral">&quot;&lt;/html&gt;&quot;</span>)</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

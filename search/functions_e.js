@@ -18,7 +18,7 @@ var searchData=
   ['requestparser_15',['RequestParser',['../class_request_parser.html#a8fb6cbc48d21effd4c63cff921f5c697',1,'RequestParser']]],
   ['resetrequeststream_16',['resetrequeststream',['../class_server.html#a99dea29de3836364c5191afe48f11ded',1,'Server::resetRequestStream()'],['../class_request_parser.html#ad8e0fc22eb113d78140e257f002df666',1,'RequestParser::resetRequestStream()']]],
   ['resolvelisteningaddresses_17',['resolvelisteningaddresses',['../class_socket_policy.html#a5dc6880ff55223d8ecee64a414d1f652',1,'SocketPolicy::resolveListeningAddresses()'],['../class_server.html#abf1dc68ec7f88650ad80e93f56e14e5c',1,'Server::resolveListeningAddresses()']]],
-  ['responsebodyhandler_18',['ResponseBodyHandler',['../class_response_body_handler.html#aa3ba77e6186dcc09020ff198cb27ca35',1,'ResponseBodyHandler']]],
+  ['responsebodyhandler_18',['ResponseBodyHandler',['../class_response_body_handler.html#a129fc72315ce73d1bfcfaf9d69e518aa',1,'ResponseBodyHandler']]],
   ['responsebodyhandlertest_19',['ResponseBodyHandlerTest',['../class_response_body_handler_test.html#abd4bf046a7f5bc4beb8cfb9773f7e811',1,'ResponseBodyHandlerTest']]],
   ['responsebuilder_20',['ResponseBuilder',['../class_response_builder.html#aae3003ef1787dbb93a60c53fba1a5aa6',1,'ResponseBuilder']]],
   ['retrieveboundsocketinfo_21',['retrieveboundsocketinfo',['../class_server.html#a65c2f3dc363bdb70a98895686826e5e8',1,'Server::retrieveBoundSocketInfo()'],['../class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33',1,'SocketPolicy::retrieveBoundSocketInfo()']]],

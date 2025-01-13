@@ -1,32 +1,39 @@
 <map id="connectionReceiveBody" name="connectionReceiveBody">
-<area shape="rect" id="Node000001" title="Handles the reception of the request body from a client connection." alt="" coords="5,141,184,167"/>
-<area shape="rect" id="Node000002" href="$class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e" title="Getter for internal buffer." alt="" coords="775,5,907,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,139,277,89,374,61,474,39,550,28,626,21,761,15,761,21,627,27,550,34,475,45,376,67,279,94,131,144"/>
-<area shape="rect" id="Node000003" href="$_server_8cpp.html#af0fb17fe53a5e9e72824e5df3fba1322" title="Handles the body of the HTTP request." alt="" coords="280,128,379,153"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="184,146,266,142,266,147,185,152"/>
-<area shape="rect" id="Node000010" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="241,191,418,216"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="156,164,255,185,254,190,155,169"/>
-<area shape="rect" id="Node000012" href="$class_server.html#ae04a9076862f2163c562e20fa2207681" title="Removes a Connection from the Server." alt="" coords="232,252,427,277"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="119,164,233,225,280,245,278,249,231,230,116,169"/>
-<area shape="rect" id="Node000004" href="$_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a" title="Checks if the HTTP request body has been completely received." alt="" coords="518,104,647,129"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="379,133,504,121,505,127,379,139"/>
-<area shape="rect" id="Node000005" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="505,153,660,179"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="379,143,492,154,491,160,379,148"/>
-<area shape="rect" id="Node000007" href="$class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a" title="Wrapper function to RequestParser::parseBody." alt="" coords="512,55,653,80"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="364,125,474,89,506,80,507,86,475,94,366,130"/>
-<area shape="rect" id="Node000006" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="741,153,940,179"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="660,163,728,163,728,169,660,169"/>
-<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="649,52,760,31,761,36,650,57"/>
-<area shape="rect" id="Node000008" href="$class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05" title="Parses the body of an HTTP request." alt="" coords="745,55,937,80"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="653,65,731,65,731,70,653,70"/>
-<area shape="rect" id="Node000009" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="991,47,1200,87"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="937,65,977,65,977,70,937,70"/>
-<area shape="rect" id="Node000011" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="475,203,691,228"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="418,205,461,207,461,212,418,210"/>
-<area shape="rect" id="Node000013" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="496,301,669,327"/>
-<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="396,275,504,296,503,301,395,280"/>
-<area shape="rect" id="Node000014" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="503,252,662,277"/>
-<area shape="poly" id="edge14_Node000012_Node000014" title=" " alt="" coords="427,262,489,262,489,267,427,267"/>
-<area shape="rect" id="Node000015" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="739,252,943,277"/>
-<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="662,262,725,262,725,267,662,267"/>
+<area shape="rect" id="Node000001" title="Handles the reception of the request body from a client connection." alt="" coords="5,209,184,235"/>
+<area shape="rect" id="Node000002" href="$class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e" title="Getter for internal buffer." alt="" coords="793,11,925,36"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,207,168,167,254,113,360,60,417,38,474,21,555,7,636,3,713,5,780,10,779,15,713,10,636,8,555,13,475,26,418,43,362,65,257,118,171,171,114,211"/>
+<area shape="rect" id="Node000003" href="$_server_8cpp.html#af0fb17fe53a5e9e72824e5df3fba1322" title="Handles the body of the HTTP request." alt="" coords="280,160,379,185"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,207,266,183,267,188,156,212"/>
+<area shape="rect" id="Node000015" href="$class_server.html#ae94e3d4b5743580a6fbe3228d58af423" title="Wrapper function to SocketPolicy::readFromSocket." alt="" coords="241,307,418,332"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="127,232,286,299,284,304,125,237"/>
+<area shape="rect" id="Node000017" href="$class_server.html#ae04a9076862f2163c562e20fa2207681" title="Removes a Connection from the Server." alt="" coords="232,233,427,259"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="185,228,219,232,218,237,184,234"/>
+<area shape="rect" id="Node000004" href="$_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a" title="Checks if the HTTP request body has been completely received." alt="" coords="527,36,657,61"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="343,158,398,114,434,90,474,70,513,57,515,62,476,75,437,95,401,119,347,162"/>
+<area shape="rect" id="Node000005" href="$class_server.html#afab1a4ec9e524b0dae8f60080642e7fe" title="Wrapper function to EpollWrapper::modifyEvent." alt="" coords="515,135,669,160"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="379,165,501,153,501,159,379,171"/>
+<area shape="rect" id="Node000007" href="$class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a" title="Wrapper function to RequestParser::parseBody." alt="" coords="521,85,663,111"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="362,157,474,119,508,111,509,116,475,125,364,162"/>
+<area shape="rect" id="Node000010" href="$class_server.html#abcfb45414689863da69c2e72ac8fc946" title="Register a CGI file descriptor." alt="" coords="475,184,709,209"/>
+<area shape="poly" id="edge10_Node000003_Node000010" title=" " alt="" coords="379,174,461,182,461,187,379,180"/>
+<area shape="rect" id="Node000013" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="513,233,671,259"/>
+<area shape="poly" id="edge13_Node000003_Node000013" title=" " alt="" coords="366,183,475,218,514,228,513,233,474,223,364,188"/>
+<area shape="rect" id="Node000006" href="$class_epoll_wrapper.html#ac97945725185999837a6d0d53f91df1a" title="Modify an event in the epoll instance." alt="" coords="760,135,959,160"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="670,145,746,145,746,150,670,150"/>
+<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="657,83,709,70,809,38,811,43,710,75,658,88"/>
+<area shape="rect" id="Node000008" href="$class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05" title="Parses the body of an HTTP request." alt="" coords="763,85,955,111"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="663,95,750,95,750,101,663,101"/>
+<area shape="rect" id="Node000009" href="$class_request_parser.html#ad8e0fc22eb113d78140e257f002df666" title="Clears the contents of the RequestParser object." alt="" coords="1009,78,1219,118"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="956,95,996,95,996,101,956,101"/>
+<area shape="rect" id="Node000011" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="770,184,949,209"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="709,194,756,194,756,199,709,199"/>
+<area shape="rect" id="Node000012" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="792,233,927,259"/>
+<area shape="poly" id="edge12_Node000010_Node000012" title=" " alt="" coords="662,207,779,229,778,234,661,212"/>
+<area shape="rect" id="Node000014" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="757,283,961,308"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="662,256,777,277,776,283,661,261"/>
+<area shape="rect" id="Node000016" href="$class_socket_policy.html#a6f6c04c36c6be0d95b1d3e4a872ea7ca" title="Read from a socket." alt="" coords="484,332,700,357"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="419,325,471,330,470,336,418,330"/>
+<area shape="poly" id="edge19_Node000017_Node000013" title=" " alt="" coords="427,243,499,243,499,249,427,249"/>
+<area shape="rect" id="Node000018" href="$class_server.html#a1f8929bed093f869374cb81da4d97505" title="Const Getter for connections." alt="" coords="505,283,679,308"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="398,256,510,277,509,283,397,261"/>
 </map>
