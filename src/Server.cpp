@@ -1246,7 +1246,7 @@ bool isCompleteBody(Connection& connection)
  */
 void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd == connection.m_clientFd)
+	if (activeFd != connection.m_pipeToCGIWriteEnd)
 		return;
 
 	LOG_DEBUG << "Send to CGI for: " << connection.m_clientSocket;
@@ -1302,7 +1302,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
  */
 void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd == connection.m_clientFd)
+	if (activeFd != connection.m_pipeFromCGIReadEnd)
 		return;
 
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
