@@ -100,15 +100,16 @@ protected:
 	{
 		m_location.path = "/path/to/resource";
 		m_location.root = "/root";
+		m_location.alias = "/alias";
 		m_location.indices = { "index.html", "index.php" };
 		m_location.cgiExt = ".php";
 		m_location.cgiPath = "/cgi-bin";
 		m_location.hasAutoindex = true;
 		m_location.maxBodySize = 123;
-		m_location.errorPage = { {StatusNotFound, "error404.html"}, {StatusForbidden, "error403.html"} };
-		m_location.allowedMethods[0] = true;
-		m_location.allowedMethods[1] = false;
-		m_location.allowedMethods[2] = false;
+		m_location.errorPage = { { StatusNotFound, "error404.html" }, { StatusForbidden, "error403.html" } };
+		m_location.allowMethods[0] = true;
+		m_location.allowMethods[1] = false;
+		m_location.allowMethods[2] = false;
 		m_location.returns = std::make_pair(StatusOK, "OK.html");
 
 		m_uri.path = "/path/to/resource";
@@ -151,6 +152,7 @@ TEST_F(OstreamInsertersTest, Location)
 
 	const std::string expected = "Path: /path/to/resource\n"
 								 "Root: /root\n"
+								 "Alias: /alias\n"
 								 "Indices: \n"
 								 "  index.html\n"
 								 "  index.php\n"

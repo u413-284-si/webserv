@@ -1,6 +1,7 @@
 #include "ConfigFileParser.hpp"
 
-const char* const ConfigFileParser::whitespace = " \t\n\v\f\r";
+const char* const ConfigFileParser::s_whitespace = " \t\n\v\f\r";
+const char* const ConfigFileParser::s_number = "0123456789";
 
 /**
  * @brief PUBLIC Construct a new ConfigFileParser:: ConfigFileParser object.
@@ -11,13 +12,14 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
 	, m_locationIndex(0)
+	, m_isDefaultLocationDefined(false)
 {
 	const char* validServerDirectiveNames[]
 		= { "server_name", "listen", "host", "client_max_body_size", "error_page", "location", "root" };
 	const int validServerDirectiveNamesSize = sizeof(validServerDirectiveNames) / sizeof(validServerDirectiveNames[0]);
 
-	const char* validLocationDirectiveNames[] = { "root", "index", "cgi_ext", "cgi_path", "client_max_body_size",
-		"autoindex", "limit_except", "location", "return" };
+	const char* validLocationDirectiveNames[] = { "root", "alias", "index", "cgi_ext", "cgi_path",
+		"client_max_body_size", "autoindex", "error_page", "allow_methods", "location", "return" };
 	const int validLocationDirectiveNamesSize
 		= sizeof(validLocationDirectiveNames) / sizeof(validLocationDirectiveNames[0]);
 
@@ -36,7 +38,9 @@ ConfigFileParser::ConfigFileParser(void)
  * 1. Can be opened
  * 2. Is not empty
  * 3. Does not contain open brackets
- * 4. Does not contain invalid directives
+ * 4. Is not missing the http block
+ * 5. Does not contain invalid directives
+ * 6. Is not missing server block(s)
  *
  * @param configFilePath Path to the config file
  * @return const ConfigFile& Created ConfigFile object
@@ -59,7 +63,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		throw std::runtime_error("Open bracket(s) in config file");
 
 	if (!isValidBlockBeginn(HttpBlock))
-		return m_configFile;
+		throw std::runtime_error("Missing http block");
 
 	skipBlockBegin(HttpBlock);
 
@@ -72,11 +76,17 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 		m_configFileIndex++;
 	}
 
+	if (m_serverBlocksConfig.empty())
+		throw std::runtime_error("Missing server block(s)");
+
 	for (std::vector<ServerBlockConfig>::const_iterator serverIt = m_serverBlocksConfig.begin();
 		 serverIt != m_serverBlocksConfig.end(); serverIt++) {
 		processServerContent(*serverIt);
 		m_serverIndex++;
 	}
+
+	if (isLocationDuplicate())
+		throw std::runtime_error("Duplicate location");
 
 	return m_configFile;
 }
@@ -165,7 +175,7 @@ bool ConfigFileParser::isBracketOpen(void)
  */
 bool ConfigFileParser::isSemicolonMissing(const std::string& content) const
 {
-	size_t nonWhitepaceIndex = content.find_last_not_of(whitespace);
+	size_t nonWhitepaceIndex = content.find_last_not_of(s_whitespace);
 	return content[nonWhitepaceIndex] != ';';
 }
 
@@ -190,6 +200,27 @@ bool ConfigFileParser::isDirectiveValid(const std::string& directive, Block bloc
 			return false;
 	}
 	return true;
+}
+
+/**
+ * @brief Checks if there are duplicate locations
+ *
+ * @return true If there are duplicate locations
+ * @return false If there are no duplicate locations
+ */
+bool ConfigFileParser::isLocationDuplicate(void) const
+{
+	for (std::vector<ConfigServer>::const_iterator serverIt = m_configFile.servers.begin();
+		 serverIt != m_configFile.servers.end(); serverIt++) {
+		std::set<std::string> paths;
+		for (std::vector<Location>::const_iterator locationIt = serverIt->locations.begin();
+			 locationIt != serverIt->locations.end(); locationIt++) {
+			if (paths.find(locationIt->path) != paths.end())
+				return true;
+			paths.insert(locationIt->path);
+		}
+	}
+	return false;
 }
 
 /*********************/
@@ -256,6 +287,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 {
 	ConfigServer server;
 	m_configFile.servers.push_back(server);
+	m_locationIndex = 0;
 
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error("Unexpected '}'");
@@ -263,6 +295,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
 
+	m_isDefaultLocationDefined = false;
 	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
 		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
 		processLocationContent(*it);
@@ -277,8 +310,10 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
  *
  * If the path of the location block is "/", the m_locationIndex will be set to 0 in readLocationBlockPath
  * This is necessary because the following functions need to store the parsed values in the default location.
- * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used if
- * the location index is 0
+ * To continue with the correct value of m_locationIndex the original value is stored in tmpIndex and will be used
+ * if the location index is 0
+ *
+ * If root and alias are defined in the same location block, an exception will be thrown
  *
  * If no values are specified for the root, max_body_size, and error_page directives in a location block,
  * they inherit their corresponding values from the server block.
@@ -301,9 +336,12 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 
 	ConfigServer& server = m_configFile.servers[m_serverIndex];
 	Location& location = server.locations[m_locationIndex];
+
+	if (location.root != "html" && !location.alias.empty())
+		throw std::runtime_error("Defining root and alias in the same location block is not allowed");
 	if (location.root == "html")
 		location.root = server.root;
-	else if (location.maxBodySize == 1)
+	else if (location.maxBodySize == constants::g_oneMegabyte)
 		location.maxBodySize = server.maxBodySize;
 	else if (location.errorPage.empty())
 		location.errorPage = server.errorPage;
@@ -313,8 +351,8 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 }
 
 /**
- * @brief Reads the current line of the content, delimited by a provided char and removes leading and trailing spaces
- * If the end of the content is reached, the function returns false, otherwise it returns true
+ * @brief Reads the current line of the content, delimited by a provided char and removes leading and trailing
+ * spaces. If the end of the content is reached, the function returns false, otherwise it returns true
  *
  * @param content The string from which the line should be read
  * @param delimiter The char which delimits the line
@@ -352,13 +390,16 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
  *
  * If the path is "/", the m_locationIndex will be set to 0 because the default location has an index of 0
  * Therefore the following functions will store the values correctly in the default location
+ * A boolean is set to indicate that the default location has been defined.
+ * If there is also another location block with
  *
- * Otherwise a new location will be created, added to the locations vector and the m_locationIndex will be incremented
+ * Otherwise a new location will be created, added to the locations vector and the m_locationIndex will be
+ * incremented
  *
  */
 void ConfigFileParser::readLocationBlockPath(void)
 {
-	const size_t startIndex = sizeof("location") - 1; //subtract zero terminator
+	const size_t startIndex = sizeof("location") - 1; // subtract zero terminator
 	std::string pathWithLeadingWhitespaces = m_currentLine.substr(startIndex);
 	std::string pathWithBracketAtEnd = webutils::trimLeadingWhitespaces(pathWithLeadingWhitespaces);
 
@@ -367,9 +408,10 @@ void ConfigFileParser::readLocationBlockPath(void)
 		endIndex++;
 
 	std::string path = pathWithBracketAtEnd.substr(0, endIndex);
-	if (path == "/")
+	if (path == "/" && !m_isDefaultLocationDefined) {
 		m_locationIndex = 0;
-	else {
+		m_isDefaultLocationDefined = true;
+	} else {
 		Location location;
 		m_configFile.servers[m_serverIndex].locations.push_back(location);
 		m_locationIndex++;
@@ -384,24 +426,22 @@ void ConfigFileParser::readLocationBlockPath(void)
  *
  * It makes sure that the path is valid in the following ways:
  * 1. There is only one root path
+ * 2. There is a slash at the beginning of the path
  *
  * If at the end of the path is a slash, it removes it.
  *
  * This function can be used for the server block and location block
  *
  * @param block The block which surounds the directive
+ * @param rootPath The value of the directive root
  */
-void ConfigFileParser::readRootPath(Block block, const std::string& value)
+void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
-	size_t semicolonIndex = value.find(';');
-
-	std::string rootPath = value.substr(0, semicolonIndex);
-
-	if (rootPath.empty())
-		throw std::runtime_error("'root' directive has no value");
-
-	if (rootPath.find_first_of(whitespace) != std::string::npos)
+	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error("More than one root path");
+
+	if (rootPath.at(0) != '/')
+		throw std::runtime_error("Root path does not start with a slash");
 
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath.erase(rootPath.end() - 1);
@@ -410,6 +450,47 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
 		m_configFile.servers[m_serverIndex].root = rootPath;
 	else if (block == LocationBlock)
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].root = rootPath;
+}
+
+/**
+ * @brief Reads the alias path
+ *
+ * The function checks if the alias path is valid and reads it if that is the case.
+ *
+ * It makes sure that the path is valid in the following ways:
+ * 1. There is only one alias path
+ * 2. There is a slash at the beginning of the path
+ *
+ * @param aliasPath The value of the directive alias
+ */
+void ConfigFileParser::readAliasPath(const std::string& aliasPath)
+{
+	if (aliasPath.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("More than one alias path");
+
+	if (aliasPath.at(0) != '/')
+		throw std::runtime_error("Alias path does not start with a slash");
+
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].alias = aliasPath;
+}
+
+/**
+ * @brief Reads the server name
+ *
+ * The function checks if there is only one server name and reads it if that is the case
+ * If an empty string is provided, the server name will be set to an empty string
+ *
+ * @param serverName The value of the directive server_name
+ */
+
+void ConfigFileParser::readServerName(const std::string& serverName)
+{
+	if (serverName.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("More than one server name");
+	if (serverName == "\"\"")
+		m_configFile.servers[m_serverIndex].serverName = "";
+	else
+		m_configFile.servers[m_serverIndex].serverName = serverName;
 }
 
 /**
@@ -426,12 +507,12 @@ void ConfigFileParser::readRootPath(Block block, const std::string& value)
  * When the value does NOT equal "localhost" the value gets checked and stored as host.
  * Otherwise it checks and reads the port.
  *
- * @param value The value of the directive
+ * @param value The value of the directive listen
  */
-void ConfigFileParser::readSocket(const std::string& value)
+void ConfigFileParser::readListen(const std::string& value)
 {
 	const size_t colonIndex = value.find(':');
-	const size_t semicolonIndex = value.find(';');
+	const size_t endIndex = value.length();
 	const size_t dot = value.find('.');
 
 	if (colonIndex != std::string::npos) {
@@ -444,45 +525,412 @@ void ConfigFileParser::readSocket(const std::string& value)
 		else
 			m_configFile.servers[m_serverIndex].host = ipAddress;
 
-		std::string port = value.substr(colonIndex + 1, semicolonIndex - colonIndex - 1);
+		std::string port = value.substr(colonIndex + 1, endIndex - colonIndex - 1);
+		if (port.find_first_of(s_whitespace) != std::string::npos)
+			throw std::runtime_error("Invalid amount of parameters for listen");
 		if (!webutils::isPortValid(port))
 			throw std::runtime_error("Invalid port");
 		m_configFile.servers[m_serverIndex].port = port;
-	} else {
-		if (dot == std::string::npos) {
-			std::string hostOrPort = value.substr(0, semicolonIndex);
-			if (hostOrPort == "localhost")
-				m_configFile.servers[m_serverIndex].host = "127.0.0.1";
-			else {
-				if (!webutils::isPortValid(hostOrPort))
-					throw std::runtime_error("Invalid port");
-				m_configFile.servers[m_serverIndex].port = hostOrPort;
-			}
-		} else {
-			std::string ipAddress = value.substr(0, semicolonIndex);
-			if (!webutils::isIpAddressValid(ipAddress))
-				throw std::runtime_error("Invalid ip address");
+		return;
+	}
 
-			m_configFile.servers[m_serverIndex].host = ipAddress;
+	if (dot == std::string::npos) {
+		std::string hostOrPort = value.substr(0, endIndex);
+		if (hostOrPort.find_first_of(s_whitespace) != std::string::npos)
+			throw std::runtime_error("Invalid amount of parameters for listen");
+		if (hostOrPort.empty())
+			throw std::runtime_error("'listen' value has no value");
+		if (hostOrPort == "localhost")
+			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
+		else {
+			if (!webutils::isPortValid(hostOrPort))
+				throw std::runtime_error("Invalid port");
+			m_configFile.servers[m_serverIndex].port = hostOrPort;
 		}
+		return;
+	}
+
+	std::string ipAddress = value.substr(0, endIndex);
+	if (ipAddress.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("Invalid amount of parameters for listen");
+	if (!webutils::isIpAddressValid(ipAddress))
+		throw std::runtime_error("Invalid ip address");
+
+	m_configFile.servers[m_serverIndex].host = ipAddress;
+}
+
+/**
+ * @brief Reads the max body size including the unit
+ *
+ * The function checks if the value of the directive is valid and reads it if that is the case.
+ *
+ * In general there can be two cases:
+ * 1. The value is solely a number
+ * 2. The value is a number followed by a unit
+ *
+ * At first it will be checked if there is a number as value
+ * If that is the case the function will check if the number is valid and does not contain any other characters
+ * Additionly it will be checked if the number itself causes an overflow
+ *
+ * When the checks for number are passed, the function will check if there is a unit
+ * If that is the case the function will check if the unit is valid and
+ * only consists of one character which is a valid unit
+ * Valid units are: k (for kilobyte), m (for megabyte) and g (for gigabyte)
+ *
+ * Furthermore the function checks if the multiplication of the number with the unit causes an overflow
+ *
+ * @param block The block which surounds the directive
+ * @param maxBodySize The value of the directive client_max_body_size
+ */
+void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& maxBodySize)
+{
+	if (maxBodySize.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("Invalid amount of parameters for client_max_body_size");
+
+	const size_t lastNumberIndex = maxBodySize.find_last_of(s_number);
+	if (lastNumberIndex == std::string::npos)
+		throw std::runtime_error("Invalid client_max_body_size value");
+
+	const std::string number = maxBodySize.substr(0, lastNumberIndex + 1);
+	if (number.find_first_not_of(s_number) != std::string::npos)
+		throw std::runtime_error("Invalid client_max_body_size value");
+
+	errno = 0;
+	size_t size = std::strtoul(number.c_str(), NULL, constants::g_decimalBase);
+	if (errno == ERANGE)
+		throw std::runtime_error("Invalid client_max_body_size number: Overflow");
+
+	if (lastNumberIndex != maxBodySize.size() - 1) {
+		const std::string letter = maxBodySize.substr(lastNumberIndex + 1);
+		if (letter.length() != 1)
+			throw std::runtime_error("Invalid client_max_body_size unit");
+
+		size_t unit = 1;
+		switch (letter.at(0)) {
+		case 'k':
+		case 'K':
+			unit *= constants::g_oneKilobyte;
+			break;
+		case 'm':
+		case 'M':
+			unit *= constants::g_oneKilobyte * constants::g_oneKilobyte;
+			break;
+		case 'g':
+		case 'G':
+			unit *= constants::g_oneKilobyte * constants::g_oneKilobyte * constants::g_oneKilobyte;
+			break;
+		default:
+			throw std::runtime_error("Invalid client_max_body_size unit");
+		}
+
+		if (size > std::numeric_limits<size_t>::max() / unit)
+			throw std::runtime_error("Invalid client_max_body_size unit: Overflow");
+
+		size *= unit;
+	}
+
+	if (block == ServerBlock)
+		m_configFile.servers[m_serverIndex].maxBodySize = size;
+	else if (block == LocationBlock)
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].maxBodySize = size;
+}
+
+/**
+ * @brief Reads the autoindex
+ *
+ * The function checks if the value of the directive is "on" or "off".
+ * If that is the case the function will set the autoindex to true or false.
+ * Otherwise it will throw an exception.
+ *
+ * @param autoindex The value of the directive autoindex
+ */
+void ConfigFileParser::readAutoIndex(const std::string& autoindex)
+{
+	if (autoindex.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("Invalid amount of parameters for autoindex");
+
+	std::string lowercaseAutoindex = autoindex;
+	webutils::lowercase(lowercaseAutoindex);
+
+	if (lowercaseAutoindex == "on")
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = true;
+	else if (lowercaseAutoindex == "off")
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = false;
+	else
+		throw std::runtime_error("Invalid autoindex value");
+}
+
+/**
+ * @brief Reads the allow_methods
+ *
+ * The function checks if the value of the directive is either "GET", "POST" or "DELETE".
+ * If that is the case the function will set the corresponding allow method to true.
+ * Otherwise it will throw an exception.
+ *
+ * Before setting the allow method to true the function will set all other allow methods to false
+ *
+ * @param allowMethods The value of the directive allow_methods
+ */
+void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
+{
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = false;
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[1] = false;
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = false;
+
+	size_t index = 0;
+	while (index < allowMethods.length()) {
+
+		size_t methodStartIndex = index;
+		size_t methodEndIndex = allowMethods.find_first_of(s_whitespace, index);
+
+		std::string method = allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex);
+		webutils::lowercase(method);
+
+		if (method == "get")
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = true;
+		else if (method == "post")
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[1] = true;
+		else if (method == "delete")
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = true;
+		else
+			throw std::runtime_error("Invalid allow_methods value");
+
+		index = allowMethods.find_first_not_of(s_whitespace, methodEndIndex);
 	}
 }
 
 /**
- * @brief Reads and checks the value of the directive in the current line of the config file
+ * @brief Reads the error codes and corresponding error pages
  *
- * @details This function is called when the directive is valid.
- *          It calls the appropriate function to read the value of the directive.
+ * The function checks if the error code is valid and the error page path is not empty.
+ *
+ * @param block The block which surounds the directive
+ * @param errorPage The value of the directive error_page
+ */
+void ConfigFileParser::readErrorPage(const Block& block, const std::string& errorPage)
+{
+	if (errorPage.find_first_of(s_whitespace) == std::string::npos)
+		throw std::runtime_error("Invalid amount of parameters for error_page");
+
+	size_t index = 0;
+	while (index < errorPage.length()) {
+
+		index = errorPage.find_first_not_of(s_whitespace, index);
+		size_t errorCodeStartIndex = index;
+		size_t errorCodeEndIndex = errorPage.find_first_of(s_whitespace, index);
+		std::string errorCodeStr = errorPage.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);
+
+		statusCode errorCode = convertStringToStatusCode(errorCodeStr);
+		if (errorCode < StatusMovedPermanently || errorCode > StatusNonSupportedVersion)
+			throw std::runtime_error("Invalid error code");
+
+		index = errorPage.find_first_not_of(s_whitespace, errorCodeEndIndex);
+		if (index == std::string::npos)
+			throw std::runtime_error("error_page directive path has no value");
+
+		size_t errorPagePathStartIndex = index;
+		size_t errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);
+		std::string errorPagePath
+			= errorPage.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
+		if (errorPagePath.at(0) != '/')
+			throw std::runtime_error("Error page path does not start with a slash");
+
+		index = errorPagePathEndIndex;
+
+		if (block == ServerBlock)
+			m_configFile.servers[m_serverIndex].errorPage.insert(
+				std::pair<statusCode, std::string>(errorCode, errorPagePath));
+		else if (block == LocationBlock)
+			m_configFile.servers[m_serverIndex].locations[m_locationIndex].errorPage.insert(
+				std::pair<statusCode, std::string>(errorCode, errorPagePath));
+	}
+}
+
+/**
+ * @brief Reads the return codes and corresponding return urls
+ *
+ * The function handles four cases:
+ *
+ * 1. Return code and return url
+ * 2. Return code and return text
+ * 2. Only return url
+ * 3. Only return code
+ *
+ * When a return code is present, its validity is checked.
+ *
+ * If only a return URL is provided, it is verified to ensure it starts with either 'http://' or 'https://'.
+ *
+ * When a text in double quotes is provided, there is a check to ensure they are closed.
+ * If that is the case, the double quotes get removed and the text is saved.
+ *
+ * @param returns The value of the directive returns
+ */
+
+void ConfigFileParser::readReturns(const std::string& returns)
+{
+	size_t index = returns.find_first_not_of(s_whitespace);
+	size_t returnCodeStartIndex = index;
+	size_t returnCodeEndIndex = returns.find_first_of(s_whitespace, index);
+
+	if (returnCodeEndIndex != std::string::npos) {
+		std::string returnCodeStr = returns.substr(returnCodeStartIndex, returnCodeEndIndex - returnCodeStartIndex);
+
+		statusCode returnCode = convertStringToStatusCode(returnCodeStr);
+		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
+			throw std::runtime_error("Invalid return code");
+
+		size_t returnUrlOrTextStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);
+		size_t returnUrlOrTextEndIndex = returns.length();
+		std::string returnUrlOrText
+			= returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);
+
+		if (returnUrlOrText.at(0) != '"' && returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)
+			throw std::runtime_error("Invalid amount of parameters for return");
+		if (returnUrlOrText.find('"') != std::string::npos) {
+			removeDoubleQuotes(returnUrlOrText);
+			if (returns.at(returns.length() - 1) != '"')
+				throw std::runtime_error("Invalid amount of parameters for return");
+		}
+
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;
+
+		return;
+	}
+
+	size_t endIndex = returns.length();
+	size_t startIndex = returnCodeStartIndex;
+
+	std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);
+	if (returnCodeOrUrl.substr(0, sizeof("http://") - 1) == "http://"
+		|| returnCodeOrUrl.substr(0, sizeof("https://") - 1) == "https://") {
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusFound;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;
+	} else {
+		statusCode returnCode = convertStringToStatusCode(returnCodeOrUrl);
+		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
+			throw std::runtime_error("Invalid return code");
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = "";
+	}
+}
+
+/**
+ * @brief Reads the CGI extension
+ *
+ * The function checks if there is only one CGI extension and if it starts with a dot and does not contain any other
+ * dots, otherwise it will throw an exception
+ *
+ * @param extension The value of the directive cgi_extension
+ */
+void ConfigFileParser::readCGIExtension(const std::string& extension)
+{
+	if (extension.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("More than one CGI extension");
+	if (extension.at(0) != '.')
+		throw std::runtime_error("Invalid CGI extension");
+
+	std::string extensionWithoutDotAtBeginning = extension.substr(1);
+	if (extensionWithoutDotAtBeginning.find_first_of('.') != std::string::npos)
+		throw std::runtime_error("More than one dot in CGI extension");
+
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiExt = extension;
+}
+
+/**
+ * @brief Reads the CGI path
+ *
+ * @param path The value of the directive cgi_path
+ */
+void ConfigFileParser::readCGIPath(const std::string& path)
+{
+	if (path.find_first_of(s_whitespace) != std::string::npos)
+		throw std::runtime_error("More than one CGI path");
+	if (path.at(0) != '/')
+		throw std::runtime_error("CGI path does not start with a slash");
+
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiPath = path;
+}
+
+/**
+ * @brief Reads the indices
+ *
+ * Before reading the indices, the function clears the vector of indices
+ *
+ * @param indices The value of the directive index
+ */
+void ConfigFileParser::readIndex(const std::string& indices)
+{
+	m_configFile.servers[m_serverIndex].locations[m_locationIndex].indices.clear();
+
+	size_t index = 0;
+	while (index < indices.length()) {
+
+		index = indices.find_first_not_of(s_whitespace, index);
+		size_t indicesStartIndex = index;
+		size_t indicesEndIndex = indices.find_first_of(s_whitespace, index);
+		std::string indexStr = indices.substr(indicesStartIndex, indicesEndIndex - indicesStartIndex);
+
+		m_configFile.servers[m_serverIndex].locations[m_locationIndex].indices.push_back(indexStr);
+
+		index = indicesEndIndex;
+	}
+}
+
+/**
+ * @brief Reads and checks the value of the server directive in the current line of the config file
+ *
+ * @details This function is called when the server directive is valid.
+ *          It calls the appropriate function to read the value of the server directive.
  *          It throws an exception if the value is invalid.
 
- * @param directive Is the the directive which value is being read and checked
+ * @param directive Is the the server directive which value is being read and checked
  */
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
-	if (directive == "listen") {
-		readSocket(value);
-	} else if (directive == "root")
+	if (directive == "listen")
+		readListen(value);
+	else if (directive == "root")
 		readRootPath(ServerBlock, value);
+	else if (directive == "server_name")
+		readServerName(value);
+	else if (directive == "client_max_body_size")
+		readMaxBodySize(ServerBlock, value);
+	else if (directive == "error_page")
+		readErrorPage(ServerBlock, value);
+}
+
+/**
+ * @brief Reads and checks the value of the location directive in the current line of the config file
+ *
+ * @details This function is called when the location directive is valid.
+ *          It calls the appropriate function to read the value of the location directive.
+ *          It throws an exception if the value is invalid.
+
+ * @param directive Is the the location directive which value is being read and checked
+ */
+void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, const std::string& value)
+{
+	if (directive == "root")
+		readRootPath(LocationBlock, value);
+	else if (directive == "alias")
+		readAliasPath(value);
+	else if (directive == "client_max_body_size")
+		readMaxBodySize(LocationBlock, value);
+	else if (directive == "autoindex")
+		readAutoIndex(value);
+	else if (directive == "allow_methods")
+		readAllowMethods(value);
+	else if (directive == "error_page")
+		readErrorPage(LocationBlock, value);
+	else if (directive == "cgi_ext")
+		readCGIExtension(value);
+	else if (directive == "cgi_path")
+		readCGIPath(value);
+	else if (directive == "index")
+		readIndex(value);
+	else if (directive == "return")
+		readReturns(value);
 }
 
 /**
@@ -500,7 +948,7 @@ void ConfigFileParser::readServerConfigLine(void)
 
 	const std::string value = getValue();
 
-	if ((value.empty() || value.find_last_not_of(whitespace) == std::string::npos))
+	if ((value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos))
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
 	readServerDirectiveValue(directive, value);
@@ -521,10 +969,10 @@ void ConfigFileParser::readLocationConfigLine(void)
 
 	const std::string value = getValue();
 
-	if (value.empty() || value.find_last_not_of(whitespace) == std::string::npos)
+	if (value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos)
 		throw std::runtime_error("'" + directive + "'" + " directive has no value");
 
-	// TODO: readLocationDirectiveValue(directive, value);
+	readLocationDirectiveValue(directive, value);
 }
 
 /********************/
@@ -540,7 +988,7 @@ std::string ConfigFileParser::getDirective() const
 {
 	std::string directive;
 
-	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(whitespace);
+	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);
 	if (firstWhiteSpaceIndex == std::string::npos)
 		directive = m_currentLine;
 	else
@@ -562,11 +1010,11 @@ std::string ConfigFileParser::getValue(void) const
 	const size_t semicolonIndex = m_currentLine.find(';');
 	std::string value;
 
-	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(whitespace);
+	const size_t firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);
 	if (firstWhiteSpaceIndex == std::string::npos)
 		value = m_currentLine.substr(0, semicolonIndex);
 	else
-		value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex + 1);
+		value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
 	value = webutils::trimLeadingWhitespaces(value);
 	webutils::trimTrailingWhiteSpaces(value);
@@ -592,6 +1040,48 @@ std::string ConfigFileParser::convertBlockToString(Block block) const
 	default:
 		return "";
 	}
+}
+
+statusCode ConfigFileParser::convertStringToStatusCode(const std::string& statusCode) const
+{
+	unsigned long code = std::strtoul(statusCode.c_str(), NULL, constants::g_decimalBase);
+	return static_cast<enum statusCode>(code);
+}
+
+/**
+ * @brief Removes double quotes from a string
+ *
+ * The double quotes are removed from the beginning and the end of the string
+ * If there is an odd number of double quotes, an error is thrown
+ *
+ * @param str The string to remove double quotes from
+ */
+void ConfigFileParser::removeDoubleQuotes(std::string& str)
+{
+	size_t leadingDoubleQuotes = 0;
+	size_t trailingDoubleQuotes = 0;
+	size_t index = 0;
+	while (index < str.length()) {
+		if (str[index] == '"')
+			leadingDoubleQuotes++;
+		else
+			break;
+		index++;
+	}
+	while (str[index] != '"' && index < str.length())
+		index++;
+	while (index < str.length()) {
+		if (str[index] == '"')
+			trailingDoubleQuotes++;
+		else
+			break;
+		index++;
+	}
+	if (leadingDoubleQuotes != trailingDoubleQuotes)
+		throw std::runtime_error("Open double quotes");
+
+	str.erase(0, leadingDoubleQuotes);
+	str.erase(str.length() - trailingDoubleQuotes, trailingDoubleQuotes);
 }
 
 /**

@@ -146,6 +146,8 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 		return "Created";
 	case StatusMovedPermanently:
 		return "Moved Permanently";
+	case StatusFound:
+		return "Moved Temporarily";
 	case StatusPermanentRedirect:
 		return "Permanent Redirect";
 	case StatusBadRequest:

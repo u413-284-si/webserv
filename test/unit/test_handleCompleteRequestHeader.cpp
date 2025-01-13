@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 #include "MockEpollWrapper.hpp"
-#include "MockSocketPolicy.hpp"
 #include "MockProcessOps.hpp"
+#include "MockSocketPolicy.hpp"
 #include "Server.hpp"
 #include "StatusCode.hpp"
 
@@ -29,7 +29,7 @@ protected:
 	ConfigFile m_configFile = createDummyConfig();
 	NiceMock<MockEpollWrapper> m_epollWrapper;
 	MockSocketPolicy m_socketPolicy;
-    MockProcessOps processOps;
+	MockProcessOps processOps;
 	Server m_server;
 
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
@@ -63,7 +63,7 @@ TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 {
 	m_connection.m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body");
-	m_configFile.servers[0].locations[0].allowedMethods[MethodPost] = true;
+	m_configFile.servers[0].locations[0].allowMethods[MethodPost] = true;
 
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
 
