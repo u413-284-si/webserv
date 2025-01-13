@@ -841,10 +841,10 @@ void handleConnection(Server& server, const int activeFd, Connection& connection
 		connectionReceiveBody(server, activeFd, connection);
 		break;
 	case (Connection::SendToCGI):
-		connectionSendToCGI(server, activeFd, connection);
+		connectionSendToCGI(server, connection);
 		break;
 	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(server, activeFd, connection);
+		connectionReceiveFromCGI(server, connection);
 		break;
 	case (Connection::BuildResponse):
 		connectionBuildResponse(server, activeFd, connection);
@@ -1241,14 +1241,10 @@ bool isCompleteBody(Connection& connection)
  * If only part of the body is written, it updates the request body to contain the remaining data.
  *
  * @param server Reference to the Server object.
- * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection object.
  */
-void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
+void connectionSendToCGI(Server& server, Connection& connection)
 {
-	if (activeFd != connection.m_pipeToCGIWriteEnd)
-		return;
-
 	LOG_DEBUG << "Send to CGI for: " << connection.m_clientSocket;
 
 	if (connection.m_request.body.empty()) {
@@ -1297,14 +1293,10 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
  * associated file descriptors.
  *
  * @param server Reference to the Server instance managing the connection.
- * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection instance representing the client connection.
  */
-void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection)
+void connectionReceiveFromCGI(Server& server, Connection& connection)
 {
-	if (activeFd != connection.m_pipeFromCGIReadEnd)
-		return;
-
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
 	std::vector<char>& buffer = server.getCGIBodyBuffer();
@@ -1372,9 +1364,6 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
  */
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd != connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection);
@@ -1402,9 +1391,6 @@ void connectionBuildResponse(Server& server, int activeFd, Connection& connectio
  */
 void connectionSendResponse(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd != connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << activeFd;
 
 	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());
