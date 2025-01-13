@@ -102,7 +102,7 @@ statusCode stringToStatusCode(std::string& str)
 	if (str == "505")
 		return StatusNonSupportedVersion;
 
-	return StatusBadRequest;
+	return NoStatus;
 }
 
 statusCode extractStatusCode(const std::string& statusLine)
@@ -112,5 +112,5 @@ statusCode extractStatusCode(const std::string& statusLine)
 		std::string statusCodeString = statusLine.substr(pos, statusLine.find_first_not_of("0123456789", pos) - pos);
 		return stringToStatusCode(statusCodeString);
 	}
-	return StatusBadRequest;
+	return NoStatus;
 }

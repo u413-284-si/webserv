@@ -183,9 +183,7 @@ void ResponseBodyHandler::validateCGIResponseHeaders()
 	std::map<std::string, std::string>::iterator iter = m_responseHeaders.find("status");
 	if (iter != m_responseHeaders.end()) {
 		m_request.httpStatus = extractStatusCode(iter->second);
-		if (m_request.httpStatus == StatusBadRequest) {
-			if (iter->second.find("400") != std::string::npos)
-				return;
+		if (m_request.httpStatus == NoStatus) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 			m_responseHeaders.clear();
