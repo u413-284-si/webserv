@@ -71,14 +71,13 @@ public:
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
 	std::map<int, Connection*>& getCGIConnections();
-	std::vector<char>& getClientHeaderBuffer();
-	std::vector<char>& getClientBodyBuffer();
-	std::vector<char>& getCGIBodyBuffer();
+	std::vector<char>& getBuffer();
 
 	// Setters
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	void removeConnection(int delFd);
 	void removeCGIFileDescriptor(int& delfd);
 	void setClientTimeout(time_t clientTimeout);
 
@@ -125,9 +124,7 @@ private:
 	std::map<int, Socket> m_virtualServers; /**< Listening sockets of virtual servers */
 	std::map<int, Connection> m_connections; /**< Current active Connections */
 	std::map<int, Connection*> m_cgiConnections; /**< Connections that are currently handling CGI */
-	std::vector<char> m_clientHeaderBuffer; /**< Buffer for reading request header */
-	std::vector<char> m_clientBodyBuffer; /**< Buffer for reading request body */
-	std::vector<char> m_cgiBodyBuffer; /**< Buffer for reading CGI response body */
+	std::vector<char> m_buffer; /**< Buffer for reading various data, such as headers or bodies */
 	RequestParser m_requestParser; /**< Handles parsing of request */
 	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
@@ -163,7 +160,6 @@ void connectionHandleTimeout(Server& server, int activeFd, Connection& connectio
 
 void checkForTimeout(Server& server);
 
-void cleanupClosedConnections(Server& server);
 void cleanupIdleConnections(Server& server);
 
 void shutdownServer(Server& server);

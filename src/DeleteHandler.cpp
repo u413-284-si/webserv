@@ -17,13 +17,13 @@ DeleteHandler::DeleteHandler(const FileSystemPolicy& fileSystemPolicy)
  * - Delete a regular file and return a success message.
  * - Delete a directory and return a success message.
  * - Set the HTTP status to 404 if the file does not exist.
- * - Set the HTTP status to 500 if the file type is not supported.
- * - Set the HTTP status to 403 if the operation is not permitted.
+ * - Set the HTTP status to 403 if the file type is not supported or if the operation is not permitted.
+ * - Set the HTTP status to 500 if an error while calling a function occurs.
  *
  * @param path The path of the file or directory to delete.
  * @param httpStatus Reference to the HTTP status code to be set based on the operation result.
  * @return A JSON string containing the result of the delete operation.
- * @todo use custom exception
+ * @todo reactivate deleteDirectory after eval.
  */
 std::string DeleteHandler::execute(const std::string& path, statusCode& httpStatus)
 {
