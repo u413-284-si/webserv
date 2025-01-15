@@ -29,7 +29,7 @@ def test_CGI_time():
    response = make_request(url)
    assert response.status_code == 200
 
-def test_CGI_upload_file():
+def test_CGI_upload_file(test_file_cleanup):
    print("Upload file with /cgi-bin/upload.py")
    # Query string parameters
    query_params = {
@@ -41,13 +41,12 @@ def test_CGI_upload_file():
    dst_file_path = "/workspaces/webserv/html/uploads/documents/myfile.txt"
    url = "http://127.0.0.1:8081/cgi-bin/upload.py"
 
+   test_file_cleanup.append(dst_file_path)
+
    response = make_request(url, method = "POST", params=query_params, data=payload)
    assert response.status_code == 200
    assert response.headers["location"] == "/workspaces/webserv/html/uploads/documents/myfile.txt"
-   # Check if file exists
    assert os.path.isfile(dst_file_path)
-   # Delete created file
-   os.remove(dst_file_path)
 
 def test_CGI_toUpper():
     print("Change to upper case with /cgi-bin/upperCase.sh")

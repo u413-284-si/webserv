@@ -1,7 +1,8 @@
 import pytest
 import subprocess
+import os
 from pytest import FixtureRequest
-from typing import Generator
+from typing import List, Generator
 from utils.utils import start_server, wait_for_startup, stop_server
 
 # Fixture to start the server for normal tests
@@ -40,3 +41,19 @@ def init_server_instance(request: FixtureRequest) -> Generator[subprocess.Popen,
     yield server_process
 
     stop_server(server_process)
+
+@pytest.fixture
+def test_file_cleanup() -> Generator[List[str], None, None]:
+    """Fixture to clean up test files after a test.
+
+    Yields:
+        List[str]: A list of file paths to be cleaned up after the test.
+    """
+    files_to_cleanup: List[str] = []
+
+    yield files_to_cleanup
+
+    # Cleanup logic
+    for file_path in files_to_cleanup:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
