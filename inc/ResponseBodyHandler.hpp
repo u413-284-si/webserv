@@ -8,6 +8,7 @@
 #include "Log.hpp"
 #include "Method.hpp"
 #include "TargetResourceHandler.hpp"
+#include "error.hpp"
 
 #include "cassert"
 
@@ -19,16 +20,20 @@
  */
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(Connection& connection, std::string& responseBody, const FileSystemOps& fileSystemOps);
+	explicit ResponseBodyHandler(Connection& connection, std::string& responseBody,
+		std::map<std::string, std::string>& responseHeaders, const FileSystemOps& fileSystemPolicy);
 	void execute();
 
 private:
 	void handleErrorBody();
 	void setDefaultErrorPage();
+	void parseCGIResponseHeaders();
+	void validateCGIResponseHeaders();
 
 	Connection& m_connection;
 	HTTPRequest& m_request;
 	std::string& m_responseBody;
+	std::map<std::string, std::string>& m_responseHeaders;
 	const FileSystemOps& m_fileSystemOps;
 };
 

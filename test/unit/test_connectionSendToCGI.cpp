@@ -28,7 +28,7 @@ TEST_F(ConnectionSendToCGITest, EmptyBody)
 	connection.m_request.body = "";
 
 	// Act
-	connectionSendToCGI(m_server, dummyPipeFd, connection);
+	connectionSendToCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -41,7 +41,7 @@ TEST_F(ConnectionSendToCGITest, WriteError)
 	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
-	connectionSendToCGI(m_server, dummyPipeFd, connection);
+	connectionSendToCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -56,7 +56,7 @@ TEST_F(ConnectionSendToCGITest, FullBodySent)
 	EXPECT_CALL(m_processOps, writeProcess).Times(1).WillOnce(Return(bodySize));
 
 	// Act
-	connectionSendToCGI(m_server, dummyPipeFd, connection);
+	connectionSendToCGI(m_server, connection);
 
 	// Assert
 	EXPECT_TRUE(connection.m_request.body.empty());

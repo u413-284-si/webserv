@@ -44,8 +44,9 @@ protected:
 	HTTPRequest& m_request = m_connection.m_request;
 
 	std::string m_responseBody;
+	std::map<std::string, std::string> m_responseHeaders;
 	MockFileSystemOps m_fileSystemOps;
-	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_fileSystemOps);
+	ResponseBodyHandler m_responseBodyHandler = ResponseBodyHandler(m_connection, m_responseBody, m_responseHeaders, m_fileSystemOps);
 };
 
 TEST_F(ResponseBodyHandlerTest, IndexCreated)

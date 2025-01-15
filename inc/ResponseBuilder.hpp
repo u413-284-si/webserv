@@ -5,8 +5,11 @@
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
 #include "ResponseBodyHandler.hpp"
+#include "StatusCode.hpp"
 
+#include <cstddef>
 #include <string>
+#include <vector>
 
 /**
  * @brief Class to build a HTTP response.
@@ -26,15 +29,15 @@ public:
 	std::string getResponse() const;
 
 private:
-	void appendStatusLine(const HTTPRequest& request);
-	void appendHeaders(const HTTPRequest& request);
-	void appendHeadersCGI(const HTTPRequest& request);
+	void appendResponseHeader(const HTTPRequest& request);
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void resetBuilder();
+	bool checkForExistingHeader(const std::string& headerName);
 
 	std::map<std::string, std::string> m_mimeTypes;
 	const FileSystemOps& m_fileSystemOps;
-	std::stringstream m_responseHeader;
+	std::stringstream m_responseHeaderStream;
 	std::string m_responseBody;
+	std::map<std::string, std::string> m_responseHeaders;
 };

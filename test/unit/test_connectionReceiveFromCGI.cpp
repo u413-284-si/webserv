@@ -34,7 +34,7 @@ TEST_F(ConnectionReceiveFromCGITest, ReadError)
 	EXPECT_CALL(m_processOps, readProcess).Times(1).WillOnce(Return(-1));
 
 	// Act
-	connectionReceiveFromCGI(m_server, dummyPipeFd, connection);
+	connectionReceiveFromCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.httpStatus, StatusInternalServerError);
@@ -52,7 +52,7 @@ TEST_F(ConnectionReceiveFromCGITest, PartialRead)
 		.WillOnce(DoAll(SetArrayArgument<1>(response, response + responseSize), Return(responseSize)));
 
 	// Act
-	connectionReceiveFromCGI(m_server, dummyPipeFd, connection);
+	connectionReceiveFromCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_request.body, response);
@@ -66,7 +66,7 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadWaitpidError)
 	EXPECT_CALL(m_processOps, waitForProcess).WillOnce(DoAll(SetArgPointee<1>(123), Return(-1)));
 
 	// Act
-	connectionReceiveFromCGI(m_server, dummyPipeFd, connection);
+	connectionReceiveFromCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
@@ -87,7 +87,7 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadChildExitSuccess)
 	EXPECT_CALL(m_processOps, waitForProcess).WillOnce(DoAll(SetArgPointee<1>(wstatus), Return(0)));
 
 	// Act
-	connectionReceiveFromCGI(m_server, dummyPipeFd, connection);
+	connectionReceiveFromCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
@@ -107,7 +107,7 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadChildExitFailure)
 	EXPECT_CALL(m_processOps, waitForProcess).WillOnce(DoAll(SetArgPointee<1>(wstatus), Return(0)));
 
 	// Act
-	connectionReceiveFromCGI(m_server, dummyPipeFd, connection);
+	connectionReceiveFromCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
@@ -129,7 +129,7 @@ TEST_F(ConnectionReceiveFromCGITest, FullReadChildReceivedSignal)
 	EXPECT_CALL(m_processOps, waitForProcess).WillOnce(DoAll(SetArgPointee<1>(wstatus), Return(0)));
 
 	// Act
-	connectionReceiveFromCGI(m_server, dummyPipeFd, connection);
+	connectionReceiveFromCGI(m_server, connection);
 
 	// Assert
 	EXPECT_EQ(connection.m_status, Connection::BuildResponse);
