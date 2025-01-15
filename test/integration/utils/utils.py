@@ -82,8 +82,9 @@ def wait_for_startup(server_process: subprocess.Popen) -> None:
 def make_request(
     url: str,
     method: str = "GET",
-    data: Optional[dict] = None,
+    params: Optional[dict] = None,
     headers: Optional[dict] = None,
+    data: Optional[dict] = None,
     timeout: int = 10,
     allow_redirects: bool = True
 ) -> requests.Response:
@@ -93,8 +94,9 @@ def make_request(
     Args:
         url (str): The URL to request.
         method (str): The HTTP method to use ('GET', 'POST', 'DELETE').
-        data (Optional[dict]): The payload for POST or DELETE requests, or a callable that generates chunks.
+        params (Optional[dict]): The query parameters to include in the URL.
         headers (Optional[dict]): The headers to include in the request.
+        data (Optional[dict]): The payload for POST or DELETE requests, or a callable that generates chunks.
         timeout (int): The timeout in seconds for the request.
         allow_redirects (bool): Whether to follow redirects automatically.
 
@@ -107,21 +109,21 @@ def make_request(
     try:
         # Handle GET request
         if method.upper() == "GET":
-            response = requests.get(url, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
+            response = requests.get(url, params=params, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
 
         # Handle POST request
         elif method.upper() == "POST":
             if callable(data):
-                response = requests.post(url, data=data(), headers=headers, timeout=timeout, allow_redirects=allow_redirects)
+                response = requests.post(url, params=params, data=data(), headers=headers, timeout=timeout, allow_redirects=allow_redirects)
             else:
-                response = requests.post(url, data=data, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
+                response = requests.post(url, params=params, data=data, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
 
         # Handle DELETE request
         elif method.upper() == "DELETE":
             if callable(data):
-                response = requests.delete(url, data=data(), headers=headers, timeout=timeout, allow_redirects=allow_redirects)
+                response = requests.delete(url, params=params, data=data(), headers=headers, timeout=timeout, allow_redirects=allow_redirects)
             else:
-                response = requests.delete(url, data=data, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
+                response = requests.delete(url, params=params, data=data, headers=headers, timeout=timeout, allow_redirects=allow_redirects)
 
         else:
             pytest.fail(f"Unsupported HTTP method: {method}")
