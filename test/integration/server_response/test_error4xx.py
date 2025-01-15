@@ -180,7 +180,7 @@ def test_4xx_chunk_size_too_big():
         response = parse_http_response(sock)
         assert response["status_code"] == 413
 
-def test_epoll_partial_and_complete_requests():
+def test_4xx_epoll_partial_and_complete_requests():
     # Create two sockets
     client1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -236,7 +236,7 @@ def test_4xx_no_permission_to_append():
     # Delete created file
     os.remove(dst_file_path)
 
-def test_missing_dir_in_path():
+def test_4xx_missing_dir_in_path():
     print("Request to /workspaces/webserv/html/uploads/not_exist/upload.txt")
     url = "http://localhost:8080/uploads/not_exist/upload.txt"
     payload = "Hello World!"
