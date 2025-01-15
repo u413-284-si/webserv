@@ -1,6 +1,7 @@
 import pytest
 import subprocess
 import os
+import stat
 from pytest import FixtureRequest
 from typing import List, Generator
 from utils.utils import start_server, wait_for_startup, stop_server
@@ -53,7 +54,43 @@ def test_file_cleanup() -> Generator[List[str], None, None]:
 
     yield files_to_cleanup
 
-    # Cleanup logic
+    # Restore permissions and clean up
     for file_path in files_to_cleanup:
-        if os.path.isfile(file_path):
+        try:
+            os.chmod(file_path, 0o666)  # Default to read/write for deletion
             os.remove(file_path)
+        except FileNotFoundError:
+            pass
+
+@pytest.fixture
+def temp_permission_change() -> Generator[None, None, None]:
+    """
+    Fixture to temporarily change permissions of a file or directory.
+
+    Yields:
+        None: Provides a context for the test to temporarily change file permissions.
+    """
+    original_permissions = {}
+
+    def set_permissions(file_path: str, new_permissions: int) -> None:
+        """
+        Change the permissions of the given file and store the original permissions.
+
+        Args:
+            file_path (str): Path to the file or directory.
+            new_permissions (int): New permissions to apply (e.g., 0o000).
+        """
+        if file_path not in original_permissions:
+            # Store the original permissions
+            original_permissions[file_path] = stat.S_IMODE(os.stat(file_path).st_mode)
+        # Set new permissions
+        os.chmod(file_path, new_permissions)
+
+    yield set_permissions
+
+    # Restore original permissions
+    for file_path, permissions in original_permissions.items():
+        try:
+            os.chmod(file_path, permissions)
+        except FileNotFoundError:
+            pass

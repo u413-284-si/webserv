@@ -1,7 +1,6 @@
 # This module is for requests which result in status code 4xx
 
 import os
-import stat
 from utils.utils import make_request
 from utils.utils import parse_http_response
 import socket
@@ -16,32 +15,24 @@ def test_4xx_file_not_found():
     response = make_request(url)
     assert response.status_code == 404
 
-def test_4xx_permission_denied_for_file():
+def test_4xx_permission_denied_for_file(temp_permission_change):
     print("Chmod 000 index.html and request it")
     file_path = "/workspaces/webserv/html/index.html"
-    # Get and store the current permissions
-    original_permissions = stat.S_IMODE(os.stat(file_path).st_mode)
-    # Change permissions to 000
-    os.chmod(file_path, 0o000)
-    # Try to access
+
+    temp_permission_change(file_path, 0o000)
+
     url = "http://localhost:8080/index.html"
     response = make_request(url)
-    # Restore the original permissions
-    os.chmod(file_path, original_permissions)
     assert response.status_code == 403
 
-def test_4xx_permission_denied_in_path():
+def test_4xx_permission_denied_in_path(temp_permission_change):
     print("Chmod 000 directory and request file in it")
     directory_path = "/workspaces/webserv/html/directory"
-    # Get and store the current permissions
-    original_permissions = stat.S_IMODE(os.stat(directory_path).st_mode)
-    # Change permissions to 000
-    os.chmod(directory_path, 0o000)
-    # Try to access
+
+    temp_permission_change(directory_path, 0o000)
+
     url = "http://localhost:8080/directory/random.txt"
     response = make_request(url)
-    # Restore the original permissions
-    os.chmod(directory_path, original_permissions)
     assert response.status_code == 403
 
 def test_4xx_directory_no_autoindex():
@@ -209,39 +200,34 @@ def test_4xx_epoll_partial_and_complete_requests():
     client1.close()
     client2.close()
 
-def test_4xx_no_permission_to_append():
+def test_4xx_no_permission_to_append(temp_permission_change, test_file_cleanup):
     print("Chmod 000 existing_file and try to append")
     # Body to send
     existing_content = "Hello, World!\n"
     dst_file_path = "/workspaces/webserv/html/uploads/existing_file.txt"
-
     with open(dst_file_path, "w") as file:
         file.write(existing_content)
-    original_permissions = stat.S_IMODE(os.stat(dst_file_path).st_mode)
-    # Change permissions to 000
-    os.chmod(dst_file_path, 0o000)
+
+    # Make file readonly
+    temp_permission_change(dst_file_path, 0o444)
+    test_file_cleanup.append(dst_file_path)
 
     url = "http://localhost:8080/uploads/existing_file.txt"
     payload = "It is me!"
-    response = make_request(url, data=payload)
-
-    # Restore the original permissions
-    os.chmod(dst_file_path, original_permissions)
+    response = make_request(url, method="POST", data=payload)
 
     assert response.status_code == 403
     # Check if file was not appended
     with open(dst_file_path, "r") as file:
         content = file.read()
         assert content.find(payload) == -1
-    # Delete created file
-    os.remove(dst_file_path)
 
 def test_4xx_missing_dir_in_path():
     print("Request to /workspaces/webserv/html/uploads/not_exist/upload.txt")
     url = "http://localhost:8080/uploads/not_exist/upload.txt"
     payload = "Hello World!"
 
-    response = make_request(url, data=payload)
+    response = make_request(url, method="POST", data=payload)
 
     assert response.status_code == 404
 
