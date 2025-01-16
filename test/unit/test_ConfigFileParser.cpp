@@ -71,15 +71,17 @@ protected:
  * 50. CGI path contains multiple paths
  * 51. CGI path contains no value
  * 52. CGI index contains no value
- * 53. Return contains invalid code
- * 54. Return contains invalid url
- * 55. Return contains invalid amount of parameters
- * 56. Return contains invalid amount of parameters with double quotes
- * 57. Return contains unclosed double quote
- * 58. Return contains no value
- * 59. Invalid directives outside of server block
- * 60. Several server names
- * 61. Server name contains no value
+ * 53. Return contains invalid code in between valid codes
+ * 54. Return contains invalid code lower as the lowest code
+ * 55. Return contains invalid code higher as the highest code
+ * 56. Return contains invalid url
+ * 57. Return contains invalid amount of parameters
+ * 58. Return contains invalid amount of parameters with double quotes
+ * 59. Return contains unclosed double quote
+ * 60. Return contains no value
+ * 61. Invalid directives outside of server block
+ * 62. Several server names
+ * 63. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -853,12 +855,40 @@ TEST_F(InvalidConfigFileTests, CGIPathContainsEmptyValue)
 		std::runtime_error);
 }
 
-TEST_F(InvalidConfigFileTests, ReturnContainsInvalidCode)
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidCodeInBetweenValidRange)
 {
 	EXPECT_THROW(
 		{
 			try {
-				m_configFileParser.parseConfigFile("config_files/return_invalid_code.conf");
+				m_configFileParser.parseConfigFile("config_files/return_invalid_code_in_between_valid_range.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid return code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidCodeLowerThanValidRange)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_invalid_code_lower_range.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid return code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidCodeHigherThanValidRange)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_invalid_code_higher_range.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid return code", e.what());
 				throw;
