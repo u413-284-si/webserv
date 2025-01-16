@@ -720,7 +720,7 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 		size_t errorCodeEndIndex = errorPage.find_first_of(s_whitespace, index);
 		std::string errorCodeStr = errorPage.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);
 
-		statusCode errorCode = convertStringToStatusCode(errorCodeStr);
+		statusCode errorCode = stringToStatusCode(errorCodeStr);
 		if (errorCode < StatusMovedPermanently || errorCode > StatusNonSupportedVersion)
 			throw std::runtime_error("Invalid error code");
 
@@ -775,7 +775,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
 	if (returnCodeEndIndex != std::string::npos) {
 		std::string returnCodeStr = returns.substr(returnCodeStartIndex, returnCodeEndIndex - returnCodeStartIndex);
 
-		statusCode returnCode = convertStringToStatusCode(returnCodeStr);
+		statusCode returnCode = stringToStatusCode(returnCodeStr);
 		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
 			throw std::runtime_error("Invalid return code");
 
@@ -807,7 +807,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = StatusFound;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;
 	} else {
-		statusCode returnCode = convertStringToStatusCode(returnCodeOrUrl);
+		statusCode returnCode = stringToStatusCode(returnCodeOrUrl);
 		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
 			throw std::runtime_error("Invalid return code");
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
@@ -1040,12 +1040,6 @@ std::string ConfigFileParser::convertBlockToString(Block block) const
 	default:
 		return "";
 	}
-}
-
-statusCode ConfigFileParser::convertStringToStatusCode(const std::string& statusCode) const
-{
-	unsigned long code = std::strtoul(statusCode.c_str(), NULL, constants::g_decimalBase);
-	return static_cast<enum statusCode>(code);
 }
 
 /**
