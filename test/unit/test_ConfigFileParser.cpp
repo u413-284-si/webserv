@@ -55,28 +55,31 @@ protected:
  * 35. Allow methods directive contains invalid value
  * 36. Allow methods contains no value
  * 37. Error page contains invalid amount of parameters
- * 38. Error page contains invalid error code
- * 39. Error page path contains no slash at the beginning
- * 40. Error page path contains no value
- * 41. Error page contains no value
- * 42. CGI extension contains no dot at beginning
- * 43. CGI extension contains multiple extensions
- * 44. CGI extension contains multiple dots at the beginning
- * 45. CGI extension contains multiple dots in between
- * 46. CGI extension contains no value
- * 47. CGI path contains no slash at the beginning
- * 48. CGI path contains multiple paths
- * 49. CGI path contains no value
- * 50. CGI index contains no value
- * 51. Return contains invalid code
- * 52. Return contains invalid url
- * 53. Return contains invalid amount of parameters
- * 54. Return contains invalid amount of parameters with double quotes
- * 55. Return contains unclosed double quote
- * 56. Return contains no value
- * 57. Invalid directives outside of server block
- * 58. Several server names
- * 59. Server name contains no value
+ * 38. Error page contains invalid error code in between valid error codes (eg. 303 is in between 301 and 308. 303 is
+ still invalid because it is not implemented)
+ * 39. Error page contains invalid error code lower as the lowest error code
+ * 40. Error page contains invalid error code higher as the highest error code
+ * 41. Error page path contains no slash at the beginning
+ * 42. Error page path contains no value
+ * 43. Error page contains no value
+ * 44. CGI extension contains no dot at beginning
+ * 45. CGI extension contains multiple extensions
+ * 46. CGI extension contains multiple dots at the beginning
+ * 47. CGI extension contains multiple dots in between
+ * 48. CGI extension contains no value
+ * 49. CGI path contains no slash at the beginning
+ * 50. CGI path contains multiple paths
+ * 51. CGI path contains no value
+ * 52. CGI index contains no value
+ * 53. Return contains invalid code
+ * 54. Return contains invalid url
+ * 55. Return contains invalid amount of parameters
+ * 56. Return contains invalid amount of parameters with double quotes
+ * 57. Return contains unclosed double quote
+ * 58. Return contains no value
+ * 59. Invalid directives outside of server block
+ * 60. Several server names
+ * 61. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -653,12 +656,41 @@ TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidAmountOfParameters)
 		std::runtime_error);
 }
 
-TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidErrorCode)
+TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidErrorCodeInBetweenValidRange)
 {
 	EXPECT_THROW(
 		{
 			try {
-				m_configFileParser.parseConfigFile("config_files/error_page_invalid_error_code.conf");
+				m_configFileParser.parseConfigFile(
+					"config_files/error_page_invalid_error_code_in_between_valid_range.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid error code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidErrorCodeLowerThanValidRange)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_invalid_error_code_lower_range.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid error code", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ErrorPageContainsInvalidErrorCodeHigherThanValidRange)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/error_page_invalid_error_code_higher_range.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid error code", e.what());
 				throw;
