@@ -81,6 +81,8 @@ statusCode stringToStatusCode(std::string& str)
 		return StatusCreated;
 	if (str == "301")
 		return StatusMovedPermanently;
+	if (str == "302")
+		return StatusFound;
 	if (str == "308")
 		return StatusPermanentRedirect;
 	if (str == "400")
