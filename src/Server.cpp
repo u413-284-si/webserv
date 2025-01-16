@@ -840,10 +840,10 @@ void handleConnection(Server& server, const int activeFd, Connection& connection
 		connectionReceiveBody(server, activeFd, connection);
 		break;
 	case (Connection::SendToCGI):
-		connectionSendToCGI(server, activeFd, connection);
+		connectionSendToCGI(server, connection);
 		break;
 	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(server, activeFd, connection);
+		connectionReceiveFromCGI(server, connection);
 		break;
 	case (Connection::BuildResponse):
 		connectionBuildResponse(server, activeFd, connection);
@@ -986,9 +986,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	server.findTargetResource(connection);
 
-	if (webutils::isRedirectionStatus(connection.m_request.httpStatus))
-		connection.m_request.headers["location"] = connection.m_request.targetResource;
-
 	if (connection.m_request.hasReturn) {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
@@ -1019,12 +1016,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost
-				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
-			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
-			connection.m_request.hasCGI = false;
-			connection.m_request.httpStatus = StatusInternalServerError;
-		}
 	}
 
 	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
@@ -1032,9 +1023,15 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 		if (!connection.m_buffer.empty())
 			handleBody(server, clientFd, connection);
-	} else if (connection.m_request.hasCGI)
+	} else if (connection.m_request.hasCGI) {
 		connection.m_status = Connection::ReceiveFromCGI;
-	else {
+		if (!server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		} else
+			server.removeEvent(clientFd);
+	} else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 	}
@@ -1152,11 +1149,20 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
 		}
-		if (connection.m_request.hasCGI)
+		if (connection.m_request.hasCGI) {
 			connection.m_status = Connection::SendToCGI;
-		else
+			if (connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)) {
+				connection.m_request.httpStatus = StatusInternalServerError;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(activeFd, EPOLLOUT);
+				return;
+			}
+			server.removeEvent(activeFd);
+		} else {
 			connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(activeFd, EPOLLOUT);
+			server.modifyEvent(activeFd, EPOLLOUT);
+		}
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
@@ -1226,22 +1232,17 @@ bool isCompleteBody(Connection& connection)
  * If only part of the body is written, it updates the request body to contain the remaining data.
  *
  * @param server Reference to the Server object.
- * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection object.
  */
-void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
+void connectionSendToCGI(Server& server, Connection& connection)
 {
-	if (activeFd == connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "Send to CGI for: " << connection.m_clientSocket;
 
 	if (connection.m_request.body.empty()) {
 		LOG_ERROR << "empty body: can't send to CGI";
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
@@ -1254,8 +1255,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		LOG_ERROR << "write(): can't send to CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
@@ -1264,6 +1264,11 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
+		if (!server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.addEvent(connection.m_clientFd, EPOLLOUT);
+		}
 		return;
 	}
 	connection.m_request.body.erase(0, bytesSent);
@@ -1279,14 +1284,10 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
  * associated file descriptors.
  *
  * @param server Reference to the Server instance managing the connection.
- * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection instance representing the client connection.
  */
-void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection)
+void connectionReceiveFromCGI(Server& server, Connection& connection)
 {
-	if (activeFd == connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
 	std::vector<char>& buffer = server.getBuffer();
@@ -1301,7 +1302,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		LOG_ERROR << "read(): can't read from CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
@@ -1310,7 +1311,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
@@ -1353,9 +1354,6 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
  */
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd != connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection);
@@ -1383,9 +1381,6 @@ void connectionBuildResponse(Server& server, int activeFd, Connection& connectio
  */
 void connectionSendResponse(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd != connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << activeFd;
 
 	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());

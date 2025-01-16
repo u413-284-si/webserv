@@ -22,3 +22,8 @@ enum statusCode {
 };
 
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);
+
+std::string statusCodeToReasonPhrase(statusCode status);
+statusCode stringToStatusCode(std::string& str);
+statusCode extractStatusCode(const std::string& statusLine);
+bool isRedirectionStatus(statusCode statusCode);
