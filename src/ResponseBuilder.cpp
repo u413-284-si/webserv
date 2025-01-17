@@ -46,6 +46,9 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
 	responseBodyHandler.execute();
+
+	setHeaderForStatusCode(request, connection.location->allowedMethods);
+
 	appendResponseHeader(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
@@ -179,4 +182,46 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 		return iter->second;
 	}
 	return m_mimeTypes.at("default");
+}
+
+/**
+ * @brief Sets specific headers depending on status code of HTTP request.
+ *
+ * For redirection status (3xx) adds location header.
+ * For Method Not Allowed (405) adds allow header.
+ * @param request The HTTP request object containing the request details.
+ * @param allowedMethods Array of allowed methods.
+ */
+void ResponseBuilder::setHeaderForStatusCode(const HTTPRequest& request, const bool (&allowedMethods)[MethodCount])
+{
+	if (isRedirectionStatus(request.httpStatus))
+		m_responseHeaders["location"] = request.targetResource;
+
+	if (request.httpStatus == StatusMethodNotAllowed)
+		m_responseHeaders["allow"] = constructAllowHeader(allowedMethods);
+}
+
+/**
+ * @brief Construct Allow header.
+ *
+ * Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join
+ * them. If at the end at least one method was appended, the last ", " is removed.
+ * If no methods were appended, an empty string is returned.
+ * @param allowedMethods Array of allowed methods.
+ * @return std::string Constructed Allow header.
+ */
+std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount])
+{
+	std::string allowHeader;
+
+	if (allowedMethods[MethodGet])
+		allowHeader.append("GET, ");
+	if (allowedMethods[MethodPost])
+		allowHeader.append("POST, ");
+	if (allowedMethods[MethodDelete])
+		allowHeader.append("DELETE, ");
+
+	if (!allowHeader.empty())
+		allowHeader.erase(allowHeader.size() - 2, 2);
+	return allowHeader;
 }

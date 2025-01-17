@@ -33,6 +33,7 @@ private:
 	std::string getMIMEType(const std::string& extension);
 	void initMIMETypes();
 	void resetBuilder();
+	void setHeaderForStatusCode(const HTTPRequest& request, const bool (&allowedMethods)[MethodCount]);
 	bool checkForExistingHeader(const std::string& headerName);
 
 	std::map<std::string, std::string> m_mimeTypes;
@@ -41,3 +42,5 @@ private:
 	std::string m_responseBody;
 	std::map<std::string, std::string> m_responseHeaders;
 };
+
+std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount]);
