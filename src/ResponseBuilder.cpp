@@ -187,10 +187,10 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
 /**
  * @brief Sets specific headers depending on status code of HTTP request.
  *
- * For redirection status (3xx) adds location header.
  * For Method Not Allowed (405) adds allow header.
  * @param request The HTTP request object containing the request details.
  * @param allowedMethods Array of allowed methods.
+ * @todo set headers for other status codes.
  */
 void ResponseBuilder::setHeaderForStatusCode(const HTTPRequest& request, const bool (&allowedMethods)[MethodCount])
 {
