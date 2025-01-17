@@ -194,9 +194,6 @@ std::string ResponseBuilder::getMIMEType(const std::string& extension)
  */
 void ResponseBuilder::setHeaderForStatusCode(const HTTPRequest& request, const bool (&allowedMethods)[MethodCount])
 {
-	if (isRedirectionStatus(request.httpStatus))
-		m_responseHeaders["location"] = request.targetResource;
-
 	if (request.httpStatus == StatusMethodNotAllowed)
 		m_responseHeaders["allow"] = constructAllowHeader(allowedMethods);
 }

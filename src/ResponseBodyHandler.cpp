@@ -35,6 +35,9 @@ ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& re
  */
 void ResponseBodyHandler::execute()
 {
+	if (isRedirectionStatus(m_request.httpStatus))
+		m_responseHeaders["location"] = m_request.targetResource;
+
 	if (m_request.hasReturn) {
 		const bool isEmpty = m_request.targetResource.empty();
 		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
