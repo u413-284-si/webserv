@@ -68,6 +68,7 @@ SRC_DIR := src
 TEST_DIR := test
 UNIT_TEST_DIR := $(TEST_DIR)/unit
 INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
+SIEGE_DIR := $(TEST_DIR)/siege
 
 # Base directory for object files
 BASE_OBJ_DIR = obj
@@ -254,6 +255,24 @@ $(TEST): $(TEST_OBJS)
 test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)pytest ./$(INTEGRATION_TEST_DIR)
+
+SIEGE_CONFIG=$(SIEGE_DIR)/siege.conf
+SIEGE_FILE=$(SIEGE_DIR)/urls.txt
+SIEGE_CONCURRENT=25
+SIEGE_TIME=1m
+
+# Run load test with siege
+.PHONY: test3
+test3: $(NAME)
+	@printf "$(YELLOW)$(BOLD)Run load test with siege$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)./webserv $(CONFIG_DIR)/standard_config.conf >/dev/null 2>&1 & echo $$! > webserv.pid
+	$(SILENT)sleep 1
+	$(SILENT)siege \
+		--rc=$(SIEGE_CONFIG) \
+		--file=$(SIEGE_FILE) \
+		--concurrent=$(SIEGE_CONCURRENT) \
+		--time=$(SIEGE_TIME)
+	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
 
 # This target uses the file standard_config.conf as argument to run the program.
 .PHONY: run
