@@ -509,7 +509,7 @@ TEST_F(InvalidConfigFileTests, MaxBodySizeContainsInvalidUnitLenght)
 	EXPECT_THROW(
 		{
 			try {
-				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_unit_lenght.conf");
+				m_configFileParser.parseConfigFile("config_files/max_body_size_invalid_unit_length.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Invalid client_max_body_size unit", e.what());
 				throw;
@@ -1251,7 +1251,7 @@ TEST_F(ValidConfigFileTests, AutoindexContainsOff)
 TEST_F(ValidConfigFileTests, AutoindexContainsValidLowerCaseUpperCaseMix)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_lowercase_upercase.conf"));
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/autoindex_lowercase_uppercase.conf"));
 	EXPECT_EQ(false, configFile.servers[0].locations[0].hasAutoindex);
 }
 
