@@ -1054,23 +1054,21 @@ void ConfigFileParser::removeEnclosingDoubleQuotes(std::string& str)
 {
 	size_t leadingDoubleQuotes = 0;
 	size_t trailingDoubleQuotes = 0;
-	size_t index = 0;
-	while (index < str.length()) {
-		if (str[index] == '"')
+
+	size_t leadingIndex = 0;
+	while (leadingIndex < str.length()) {
+		if (str[leadingDoubleQuotes] == '"')
 			leadingDoubleQuotes++;
-		else
-			break;
-		index++;
+		leadingIndex++;
 	}
-	while (str[index] != '"' && index < str.length())
-		index++;
-	while (index < str.length()) {
-		if (str[index] == '"')
+
+	size_t trailingIndex = str.length() - 1;
+	while (trailingIndex > leadingDoubleQuotes) {
+		if (str[trailingIndex] == '"')
 			trailingDoubleQuotes++;
-		else
-			break;
-		index++;
+		trailingIndex--;
 	}
+
 	if (leadingDoubleQuotes != trailingDoubleQuotes)
 		throw std::runtime_error("Open double quotes");
 
