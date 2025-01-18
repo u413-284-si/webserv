@@ -5,6 +5,7 @@
 #include "ConfigFile.hpp"
 #include "Server.hpp"
 #include "StatusCode.hpp"
+#include "error.hpp"
 #include "limits"
 #include "utilities.hpp"
 #include <algorithm>

@@ -51,33 +51,32 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	std::stringstream bufferStream;
 
 	if (!fileStream.is_open())
-		throw std::runtime_error("Failed to open config file");
+		throw std::runtime_error(ERR_CONFIG_FILE_OPEN_FAILED);
 	if (fileStream.peek() == std::ifstream::traits_type::eof())
-		throw std::runtime_error("Config file is empty");
+		throw std::runtime_error(ERR_CONFIG_FILE_EMPTY);
 
 	bufferStream << fileStream.rdbuf();
 	m_configFileContent = bufferStream.str();
 	fileStream.close();
 
 	if (isBracketOpen())
-		throw std::runtime_error("Open bracket(s) in config file");
+		throw std::runtime_error(ERR_OPEN_BRACKET_IN_CONFIG_FILE);
 
 	if (!isValidBlockBeginn(HttpBlock))
-		throw std::runtime_error("Missing http block");
+		throw std::runtime_error(ERR_MISSING_HTTP_BLOCK);
 
 	skipBlockBegin(HttpBlock);
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
 		if (isValidBlockBeginn(ServerBlock))
 			readServerBlock();
-		else if (std::isspace(m_configFileContent[m_configFileIndex]) == 0) {
-			throw std::runtime_error("Invalid directive");
-		}
+		else if (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
+			throw std::runtime_error(ERR_INVALID_DIRECTIVE);
 		m_configFileIndex++;
 	}
 
 	if (m_serverBlocksConfig.empty())
-		throw std::runtime_error("Missing server block(s)");
+		throw std::runtime_error(ERR_MISSING_SERVER_BLOCK);
 
 	for (std::vector<ServerBlockConfig>::const_iterator serverIt = m_serverBlocksConfig.begin();
 		 serverIt != m_serverBlocksConfig.end(); serverIt++) {
@@ -86,7 +85,7 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	}
 
 	if (isLocationDuplicate())
-		throw std::runtime_error("Duplicate location");
+		throw std::runtime_error(ERR_DUPLICATE_LOCATION);
 
 	return m_configFile;
 }
@@ -290,7 +289,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	m_locationIndex = 0;
 
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
-		throw std::runtime_error("Unexpected '}'");
+		throw std::runtime_error(ERR_SEMICOLON_MISSING);
 
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
@@ -329,7 +328,7 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 	readLocationBlockPath();
 
 	if (isSemicolonMissing(locationBlockContent))
-		throw std::runtime_error("Unexpected '}'");
+		throw std::runtime_error(ERR_SEMICOLON_MISSING);
 
 	while (readAndTrimLine(locationBlockContent, ';'))
 		readLocationConfigLine();
@@ -338,7 +337,7 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 	Location& location = server.locations[m_locationIndex];
 
 	if (location.root != "html" && !location.alias.empty())
-		throw std::runtime_error("Defining root and alias in the same location block is not allowed");
+		throw std::runtime_error(ERR_ROOT_AND_ALIAS_DEFINED);
 	if (location.root == "html")
 		location.root = server.root;
 	else if (location.maxBodySize == constants::g_oneMegabyte)
@@ -438,10 +437,10 @@ void ConfigFileParser::readLocationBlockPath(void)
 void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
 	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("More than one root path");
+		throw std::runtime_error(ERR_MULTIPLE_ROOT_PATHS);
 
 	if (rootPath.at(0) != '/')
-		throw std::runtime_error("Root path does not start with a slash");
+		throw std::runtime_error(ERR_ROOT_PATH_MISSING_SLASH);
 
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath.erase(rootPath.end() - 1);
@@ -466,10 +465,10 @@ void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 void ConfigFileParser::readAliasPath(const std::string& aliasPath)
 {
 	if (aliasPath.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("More than one alias path");
+		throw std::runtime_error(ERR_MULTIPLE_ALIAS_PATHS);
 
 	if (aliasPath.at(0) != '/')
-		throw std::runtime_error("Alias path does not start with a slash");
+		throw std::runtime_error(ERR_ALIAS_PATH_MISSING_SLASH);
 
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].alias = aliasPath;
 }
@@ -486,7 +485,7 @@ void ConfigFileParser::readAliasPath(const std::string& aliasPath)
 void ConfigFileParser::readServerName(const std::string& serverName)
 {
 	if (serverName.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("More than one server name");
+		throw std::runtime_error(ERR_MULTIPLE_SERVER_NAMES);
 	if (serverName == "\"\"")
 		m_configFile.servers[m_serverIndex].serverName = "";
 	else
@@ -518,7 +517,7 @@ void ConfigFileParser::readListen(const std::string& value)
 	if (colonIndex != std::string::npos) {
 		std::string ipAddress = value.substr(0, colonIndex);
 		if (!webutils::isIpAddressValid(ipAddress))
-			throw std::runtime_error("Invalid ip address");
+			throw std::runtime_error(ERR_INVALID_IP_ADDRESS);
 
 		if (ipAddress == "localhost")
 			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
@@ -527,9 +526,9 @@ void ConfigFileParser::readListen(const std::string& value)
 
 		std::string port = value.substr(colonIndex + 1, endIndex - colonIndex - 1);
 		if (port.find_first_of(s_whitespace) != std::string::npos)
-			throw std::runtime_error("Invalid amount of parameters for listen");
+			throw std::runtime_error(ERR_INVALID_LISTEN_PARAMETERS);
 		if (!webutils::isPortValid(port))
-			throw std::runtime_error("Invalid port");
+			throw std::runtime_error(ERR_INVALID_PORT);
 		m_configFile.servers[m_serverIndex].port = port;
 		return;
 	}
@@ -537,14 +536,14 @@ void ConfigFileParser::readListen(const std::string& value)
 	if (dot == std::string::npos) {
 		std::string hostOrPort = value.substr(0, endIndex);
 		if (hostOrPort.find_first_of(s_whitespace) != std::string::npos)
-			throw std::runtime_error("Invalid amount of parameters for listen");
+			throw std::runtime_error(ERR_INVALID_LISTEN_PARAMETERS);
 		if (hostOrPort.empty())
-			throw std::runtime_error("'listen' value has no value");
+			throw std::runtime_error(ERR_EMPTY_LISTEN_VALUE);
 		if (hostOrPort == "localhost")
 			m_configFile.servers[m_serverIndex].host = "127.0.0.1";
 		else {
 			if (!webutils::isPortValid(hostOrPort))
-				throw std::runtime_error("Invalid port");
+				throw std::runtime_error(ERR_INVALID_PORT);
 			m_configFile.servers[m_serverIndex].port = hostOrPort;
 		}
 		return;
@@ -552,9 +551,9 @@ void ConfigFileParser::readListen(const std::string& value)
 
 	std::string ipAddress = value.substr(0, endIndex);
 	if (ipAddress.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("Invalid amount of parameters for listen");
+		throw std::runtime_error(ERR_INVALID_LISTEN_PARAMETERS);
 	if (!webutils::isIpAddressValid(ipAddress))
-		throw std::runtime_error("Invalid ip address");
+		throw std::runtime_error(ERR_INVALID_IP_ADDRESS);
 
 	m_configFile.servers[m_serverIndex].host = ipAddress;
 }
@@ -585,25 +584,25 @@ void ConfigFileParser::readListen(const std::string& value)
 void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& maxBodySize)
 {
 	if (maxBodySize.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("Invalid amount of parameters for client_max_body_size");
+		throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_PARAMETERS);
 
 	const size_t lastNumberIndex = maxBodySize.find_last_of(s_number);
 	if (lastNumberIndex == std::string::npos)
-		throw std::runtime_error("Invalid client_max_body_size value");
+		throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_VALUE);
 
 	const std::string number = maxBodySize.substr(0, lastNumberIndex + 1);
 	if (number.find_first_not_of(s_number) != std::string::npos)
-		throw std::runtime_error("Invalid client_max_body_size value");
+		throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_VALUE);
 
 	errno = 0;
 	size_t size = std::strtoul(number.c_str(), NULL, constants::g_decimalBase);
 	if (errno == ERANGE)
-		throw std::runtime_error("Invalid client_max_body_size number: Overflow");
+		throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_NUMBER_OVERFLOW);
 
 	if (lastNumberIndex != maxBodySize.size() - 1) {
 		const std::string letter = maxBodySize.substr(lastNumberIndex + 1);
 		if (letter.length() != 1)
-			throw std::runtime_error("Invalid client_max_body_size unit");
+			throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_UNIT);
 
 		size_t unit = 1;
 		switch (letter.at(0)) {
@@ -620,11 +619,11 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 			unit = constants::g_oneGigabyte;
 			break;
 		default:
-			throw std::runtime_error("Invalid client_max_body_size unit");
+			throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_UNIT);
 		}
 
 		if (size > std::numeric_limits<size_t>::max() / unit)
-			throw std::runtime_error("Invalid client_max_body_size unit: Overflow");
+			throw std::runtime_error(ERR_INVALID_MAX_BODY_SIZE_UNIT_OVERFLOW);
 
 		size *= unit;
 	}
@@ -647,7 +646,7 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 {
 	if (autoindex.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("Invalid amount of parameters for autoindex");
+		throw std::runtime_error(ERR_INVALID_AUTOINDEX_PARAMETERS);
 
 	std::string lowercaseAutoindex = autoindex;
 	webutils::lowercase(lowercaseAutoindex);
@@ -657,7 +656,7 @@ void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 	else if (lowercaseAutoindex == "off")
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = false;
 	else
-		throw std::runtime_error("Invalid autoindex value");
+		throw std::runtime_error(ERR_INVALID_AUTOINDEX_VALUE);
 }
 
 /**
@@ -693,7 +692,7 @@ void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
 		else if (method == "delete")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[2] = true;
 		else
-			throw std::runtime_error("Invalid allow_methods value");
+			throw std::runtime_error(ERR_INVALID_ALLOW_METHODS);
 
 		index = allowMethods.find_first_not_of(s_whitespace, methodEndIndex);
 	}
@@ -710,7 +709,7 @@ void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
 void ConfigFileParser::readErrorPage(const Block& block, const std::string& errorPage)
 {
 	if (errorPage.find_first_of(s_whitespace) == std::string::npos)
-		throw std::runtime_error("Invalid amount of parameters for error_page");
+		throw std::runtime_error(ERR_INVALID_ERROR_PAGE_PARAMS);
 
 	size_t index = 0;
 	while (index < errorPage.length()) {
@@ -722,18 +721,18 @@ void ConfigFileParser::readErrorPage(const Block& block, const std::string& erro
 
 		statusCode errorCode = stringToStatusCode(errorCodeStr);
 		if (errorCode < StatusMovedPermanently || errorCode > StatusNonSupportedVersion)
-			throw std::runtime_error("Invalid error code");
+			throw std::runtime_error(ERR_INVALID_ERROR_CODE);
 
 		index = errorPage.find_first_not_of(s_whitespace, errorCodeEndIndex);
 		if (index == std::string::npos)
-			throw std::runtime_error("error_page directive path has no value");
+			throw std::runtime_error(ERR_ERROR_PAGE_NO_PATH);
 
 		size_t errorPagePathStartIndex = index;
 		size_t errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);
 		std::string errorPagePath
 			= errorPage.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);
 		if (errorPagePath.at(0) != '/')
-			throw std::runtime_error("Error page path does not start with a slash");
+			throw std::runtime_error(ERR_ERROR_PAGE_PATH_NO_SLASH);
 
 		index = errorPagePathEndIndex;
 
@@ -777,7 +776,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
 
 		statusCode returnCode = stringToStatusCode(returnCodeStr);
 		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
-			throw std::runtime_error("Invalid return code");
+			throw std::runtime_error(ERR_INVALID_RETURN_CODE);
 
 		size_t returnUrlOrTextStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);
 		size_t returnUrlOrTextEndIndex = returns.length();
@@ -785,11 +784,11 @@ void ConfigFileParser::readReturns(const std::string& returns)
 			= returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);
 
 		if (returnUrlOrText.at(0) != '"' && returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)
-			throw std::runtime_error("Invalid amount of parameters for return");
+			throw std::runtime_error(ERR_INVALID_RETURN_PARAMS);
 		if (returnUrlOrText.find('"') != std::string::npos) {
 			removeEnclosingDoubleQuotes(returnUrlOrText);
 			if (returns.at(returns.length() - 1) != '"')
-				throw std::runtime_error("Invalid amount of parameters for return");
+				throw std::runtime_error(ERR_INVALID_RETURN_PARAMS);
 		}
 
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
@@ -809,7 +808,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
 	} else {
 		statusCode returnCode = stringToStatusCode(returnCodeOrUrl);
 		if (returnCode < StatusOK || returnCode > StatusNonSupportedVersion)
-			throw std::runtime_error("Invalid return code");
+			throw std::runtime_error(ERR_INVALID_RETURN_CODE);
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.second = "";
 	}
@@ -826,13 +825,13 @@ void ConfigFileParser::readReturns(const std::string& returns)
 void ConfigFileParser::readCGIExtension(const std::string& extension)
 {
 	if (extension.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("More than one CGI extension");
+		throw std::runtime_error(ERR_MULTIPLE_CGI_EXTENSIONS);
 	if (extension.at(0) != '.')
-		throw std::runtime_error("Invalid CGI extension");
+		throw std::runtime_error(ERR_INVALID_CGI_EXTENSION);
 
 	std::string extensionWithoutDotAtBeginning = extension.substr(1);
 	if (extensionWithoutDotAtBeginning.find_first_of('.') != std::string::npos)
-		throw std::runtime_error("More than one dot in CGI extension");
+		throw std::runtime_error(ERR_MULTIPLE_DOTS_IN_CGI_EXTENSION);
 
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiExt = extension;
 }
@@ -845,9 +844,9 @@ void ConfigFileParser::readCGIExtension(const std::string& extension)
 void ConfigFileParser::readCGIPath(const std::string& path)
 {
 	if (path.find_first_of(s_whitespace) != std::string::npos)
-		throw std::runtime_error("More than one CGI path");
+		throw std::runtime_error(ERR_MULTIPLE_CGI_PATHS);
 	if (path.at(0) != '/')
-		throw std::runtime_error("CGI path does not start with a slash");
+		throw std::runtime_error(ERR_CGI_PATH_NO_SLASH);
 
 	m_configFile.servers[m_serverIndex].locations[m_locationIndex].cgiPath = path;
 }
@@ -944,12 +943,12 @@ void ConfigFileParser::readServerConfigLine(void)
 {
 	const std::string directive = getDirective();
 	if (!isDirectiveValid(directive, ServerBlock))
-		throw std::runtime_error("Invalid server directive");
+		throw std::runtime_error(ERR_INVALID_SERVER_DIRECTIVE);
 
 	const std::string value = getValue();
 
 	if ((value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos))
-		throw std::runtime_error("'" + directive + "'" + " directive has no value");
+		throw std::runtime_error(ERR_DIRECTIVE_NO_VALUE(directive));
 
 	readServerDirectiveValue(directive, value);
 }
@@ -965,12 +964,12 @@ void ConfigFileParser::readLocationConfigLine(void)
 {
 	const std::string directive = getDirective();
 	if (!isDirectiveValid(directive, LocationBlock))
-		throw std::runtime_error("Invalid location directive");
+		throw std::runtime_error(ERR_INVALID_LOCATION_DIRECTIVE);
 
 	const std::string value = getValue();
 
 	if (value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos)
-		throw std::runtime_error("'" + directive + "'" + " directive has no value");
+		throw std::runtime_error(ERR_DIRECTIVE_NO_VALUE(directive));
 
 	readLocationDirectiveValue(directive, value);
 }
@@ -1070,7 +1069,7 @@ void ConfigFileParser::removeEnclosingDoubleQuotes(std::string& str)
 	}
 
 	if (leadingDoubleQuotes != trailingDoubleQuotes)
-		throw std::runtime_error("Open double quotes");
+		throw std::runtime_error(ERR_OPEN_DOUBLE_QUOTES);
 
 	str.erase(0, leadingDoubleQuotes);
 	str.erase(str.length() - trailingDoubleQuotes, trailingDoubleQuotes);
