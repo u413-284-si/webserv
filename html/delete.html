@@ -1,107 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Management</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; }
-        table, th, td { border: 1px solid black; }
-        th, td { padding: 10px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        button { background-color: #ff4d4d; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-top: 20px; }
-        button:disabled { background-color: gray; }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>File Management</title>
+	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Delete a file</h1>
-    <p>This page lists the content of the /uploads directory</p>
-    <p>Select a file from the list below and click the "Delete Selected File" button to delete it.</p>
-    <p><strong>Note:</strong> This action cannot be undone.</p>
+	<h1>Delete a file</h1>
 
-    <div id="fileTable">
-        <!-- The table with files will be inserted here -->
-        <p>Loading files...</p>
-    </div>
+	<main>
+		<p>This page lists the content of the /uploads directory</p>
+		<p>Select a file from the list below and click the "Delete Selected File" button to delete it.</p>
+		<p><strong>Note:</strong> This action cannot be undone.</p>
 
-    <script>
-        // Fetch the file list (HTML content) from the server
-        fetch('/uploads/') // Assuming the server returns the HTML table as a response
-            .then(response => response.text())
-            .then(html => {
-                // Remove the <h1> tag and its content
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
+		<div id="fileTable">
+			<!-- The table with files will be inserted here -->
+			<p>Loading files...</p>
+		</div>
+	</main>
 
-                // Remove the <h1> tag
-                const h1Tag = tempDiv.querySelector('h1');
-                if (h1Tag) {
-                    h1Tag.remove(); // Remove the <h1> tag from the content
-                }
+	<!-- Back to Home Footer Link -->
+	<footer>
+		<div class="back-link">
+			<a href="index.html">Back to Home</a>
+		</div>
+	</footer>
 
-                // Insert the remaining HTML content (which should be just the table) into the fileTable div
-                document.getElementById('fileTable').innerHTML = tempDiv.innerHTML;
+	<script>
+		// Fetch the file list (HTML content) from the server
+		fetch('/uploads/') // Assuming the server returns the HTML table as a response
+			.then(response => response.text())
+			.then(html => {
+				// Remove the <h1> tag and its content
+				const tempDiv = document.createElement('div');
+				tempDiv.innerHTML = html;
 
-                // Add the "Select File" column header at the start
-                const table = document.querySelector('table');
-                const headerRow = table.querySelector('tr'); // Get the header row (first row)
-                const selectFileHeader = document.createElement('th');
-                selectFileHeader.textContent = 'Select File'; // Text for the new header
-                headerRow.insertBefore(selectFileHeader, headerRow.firstChild); // Insert it at the start of the header
+				// Remove the <h1> tag
+				const h1Tag = tempDiv.querySelector('h1');
+				if (h1Tag) {
+					h1Tag.remove(); // Remove the <h1> tag from the content
+				}
 
-                // Add radio buttons next to each file listing row at the start
-                const rows = table.querySelectorAll('tr'); // Select all rows
-                rows.forEach((row, index) => {
-                    if (index > 0) { // Skip the header row
-                        const radioCell = document.createElement('td');
-                        const radioButton = document.createElement('input');
-                        radioButton.type = 'radio';
-                        radioButton.name = 'fileSelection'; // Grouping radio buttons
-                        radioButton.value = row.querySelector('td a').href; // Set file path as value
-                        radioCell.appendChild(radioButton);
-                        row.insertBefore(radioCell, row.firstChild); // Insert radio button at the start of each row
-                    }
-                });
+				// Insert the remaining HTML content (which should be just the table) into the fileTable div
+				document.getElementById('fileTable').innerHTML = tempDiv.innerHTML;
 
-                // Attach event listener to delete button if it exists
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete Selected File';
-                deleteButton.onclick = function() {
-                    const selectedRadio = document.querySelector('input[name="fileSelection"]:checked');
-                    if (selectedRadio) {
-                        const fileName = selectedRadio.value.split('/').pop(); // Get file name from the path
-                        if (confirm(`Are you sure you want to delete "${fileName}"?`)) {
-                            deleteFile(fileName);
-                        }
-                    } else {
-                        alert('Please select a file to delete.');
-                    }
-                };
-                document.body.appendChild(deleteButton);
-            })
-            .catch(error => {
-                console.error('Error fetching file list:', error);
-                document.getElementById('fileTable').innerHTML = 'Failed to load file list.';
-            });
+				// Add the "Select File" column header at the start
+				const table = document.querySelector('table');
+				const headerRow = table.querySelector('tr'); // Get the header row (first row)
+				const selectFileHeader = document.createElement('th');
+				selectFileHeader.textContent = 'Select File'; // Text for the new header
+				headerRow.insertBefore(selectFileHeader, headerRow.firstChild); // Insert it at the start of the header
 
-        // Function to delete the selected file
-        function deleteFile(fileName) {
-            fetch(`/uploads/${encodeURIComponent(fileName)}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert(`File "${fileName}" deleted successfully.`);
-                    location.reload(); // Reload the page to update the file list
-                } else {
-                    alert(`Failed to delete file "${fileName}".`);
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting file:', error);
-                alert('An error occurred while deleting the file.');
-            });
-        }
-    </script>
+				// Add radio buttons next to each file listing row at the start
+				const rows = table.querySelectorAll('tr'); // Select all rows
+				rows.forEach((row, index) => {
+					if (index > 0) { // Skip the header row
+						const radioCell = document.createElement('td');
+						const radioButton = document.createElement('input');
+						radioButton.type = 'radio';
+						radioButton.name = 'fileSelection'; // Grouping radio buttons
+						radioButton.value = row.querySelector('td a').href; // Set file path as value
+						radioCell.appendChild(radioButton);
+						row.insertBefore(radioCell, row.firstChild); // Insert radio button at the start of each row
+					}
+				});
+
+				// Create delete button with delete event
+				const deleteButton = document.createElement('button');
+				deleteButton.textContent = 'Delete Selected File';
+				deleteButton.classList.add('delete-btn'); // Add class for special styling
+				deleteButton.onclick = function() {
+					const selectedRadio = document.querySelector('input[name="fileSelection"]:checked');
+					if (selectedRadio) {
+						const fileName = selectedRadio.value.split('/').pop(); // Get file name from the path
+						if (confirm(`Are you sure you want to delete "${fileName}"?`)) {
+							deleteFile(fileName);
+						}
+					} else {
+						alert('Please select a file to delete.');
+					}
+				};
+				document.querySelector('main').appendChild(deleteButton);
+			})
+			.catch(error => {
+				console.error('Error fetching file list:', error);
+				document.getElementById('fileTable').innerHTML = 'Failed to load file list.';
+			});
+
+		// Function to delete the selected file
+		function deleteFile(fileName) {
+			fetch(`/uploads/${encodeURIComponent(fileName)}`, {
+				method: 'DELETE'
+			})
+			.then(response => {
+				if (response.ok) {
+					alert(`File "${fileName}" deleted successfully.`);
+					location.reload(); // Reload the page to update the file list
+				} else {
+					alert(`Failed to delete file "${fileName}".`);
+				}
+			})
+			.catch(error => {
+				console.error('Error deleting file:', error);
+				alert('An error occurred while deleting the file.');
+			});
+		}
+	</script>
+
 </body>
 </html>
