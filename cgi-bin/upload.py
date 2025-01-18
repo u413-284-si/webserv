@@ -38,10 +38,12 @@ file_path = os.path.join(directory_path, filename)
 # Ensure the directory exists
 if not os.path.exists(directory_path):
     os.makedirs(directory_path)
-    
+
 # Set the content type for the response
-print("Content-Type: text/html;charset=utf-8\r\n", end="")
-print("Location: " + file_path + "\r\n\r\n", end="")
+print("Content-Type: text/plain;charset=utf-8\r\n", end="")
+print("Location: " + file_path + "\r\n", end="")
+print("Access-Control-Allow-Origin: *\r\n", end="")
+print("\r\n", end="")
 
 try:
     # Read from stdin
@@ -52,13 +54,8 @@ try:
         f.write(content.encode('utf-8'))
 
     # Print success message
-    print("<html><body>")
-    print("<h1>File successfully uploaded to {}</h1>".format(file_path))
-    print("</body></html>")
+    print(f"File successfully uploaded to {file_path}")
 
 except Exception as e:
     # Print error message if something goes wrong
-    print("<html><body>")
-    print("<h1>Error: {}</h1>".format(str(e)))
-    print("</body></html>")
-
+    print(f"Error: {str(e)}")
