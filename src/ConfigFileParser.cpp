@@ -609,15 +609,15 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 		switch (letter.at(0)) {
 		case 'k':
 		case 'K':
-			unit *= constants::g_oneKilobyte;
+			unit = constants::g_oneKilobyte;
 			break;
 		case 'm':
 		case 'M':
-			unit *= constants::g_oneKilobyte * constants::g_oneKilobyte;
+			unit = constants::g_oneMegabyte;
 			break;
 		case 'g':
 		case 'G':
-			unit *= constants::g_oneKilobyte * constants::g_oneKilobyte * constants::g_oneKilobyte;
+			unit = constants::g_oneGigabyte;
 			break;
 		default:
 			throw std::runtime_error("Invalid client_max_body_size unit");
