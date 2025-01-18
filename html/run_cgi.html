@@ -24,11 +24,23 @@
 		</section>
 
 		<section class="form-section">
-			<h2>Script Environment Variables</h2>
-			<p>This script returns the environment variables</p>
+			<h2>Script upperCase.sh</h2>
+			<p>This script returns the provided data in upper case.</p>
+			<br>
+			<form action="/cgi-bin/upperCase.sh" method="get">
+				<!-- Input field for user to enter text -->
+				<label for="inputText">Called with GET method:</label>
+				<input type="text" id="inputText" name="text" size="50"><br><br>
+				<!-- Submit button -->
+				<button type="submit">Run CGI Script</button>
+			</form>
 			<br>
 			<!-- Form for running CGI script -->
-			<form action="/cgi-bin/environment-variables.cgi" method="GET">
+			<form action="/cgi-bin/upperCase.sh" method="POST">
+				<!-- Input field for user to enter text -->
+				<label for="inputText">Called with POST method:</label>
+				<textarea id="inputText" name="text" rows="4" cols="50"></textarea><br>
+				<!-- Submit button -->
 				<button type="submit">Run CGI Script</button>
 			</form>
 		</section>
