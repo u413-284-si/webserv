@@ -884,7 +884,7 @@ void ConfigFileParser::readIndex(const std::string& indices)
  *          It calls the appropriate function to read the value of the server directive.
  *          It throws an exception if the value is invalid.
 
- * @param directive Is the the server directive which value is being read and checked
+ * @param directive Server directive which value is being read and checked
  */
 void ConfigFileParser::readServerDirectiveValue(const std::string& directive, const std::string& value)
 {
@@ -907,7 +907,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  *          It calls the appropriate function to read the value of the location directive.
  *          It throws an exception if the value is invalid.
 
- * @param directive Is the the location directive which value is being read and checked
+ * @param directive Location directive which value is being read and checked
  */
 void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, const std::string& value)
 {
