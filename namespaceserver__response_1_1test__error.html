@@ -124,6 +124,8 @@ Functions</h2></td></tr>
 <tr class="separator:aaae746c552cc9986e4992c8be76b715b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfbaca430d6c4067fcc0273e44cfac43" id="r_abfbaca430d6c4067fcc0273e44cfac43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error.html#abfbaca430d6c4067fcc0273e44cfac43">test_missing_dir_in_path</a> ()</td></tr>
 <tr class="separator:abfbaca430d6c4067fcc0273e44cfac43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1851a62f9cbcba242c544b62936f9127" id="r_a1851a62f9cbcba242c544b62936f9127"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error.html#a1851a62f9cbcba242c544b62936f9127">test_method_not_allowed</a> ()</td></tr>
+<tr class="separator:a1851a62f9cbcba242c544b62936f9127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a6d5021674b44d7cb5d2c4f99067ff936" name="a6d5021674b44d7cb5d2c4f99067ff936"></a>
@@ -306,6 +308,34 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   72</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/uploads/not_exist/upload.txt&quot;</span>, data=payload)</div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 404</div>
+<div class="line"><span class="lineno">   75</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a1851a62f9cbcba242c544b62936f9127" name="a1851a62f9cbcba242c544b62936f9127"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1851a62f9cbcba242c544b62936f9127">&#9670;&#160;</a></span>test_method_not_allowed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_error.test_method_not_allowed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__error_8py_source.html#l00076">76</a> of file <a class="el" href="test__error_8py_source.html">test_error.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span><span class="keyword">def </span>test_method_not_allowed():</div>
+<div class="line"><span class="lineno">   77</span>    print(<span class="stringliteral">&quot;Request to /&quot;</span>)</div>
+<div class="line"><span class="lineno">   78</span>    payload = <span class="stringliteral">&quot;Hello World!&quot;</span></div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/&quot;</span>, data=payload)</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 405</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;allow&quot;</span>] == <span class="stringliteral">&quot;GET&quot;</span></div>
 </div><!-- fragment -->
 </div>
 </div>

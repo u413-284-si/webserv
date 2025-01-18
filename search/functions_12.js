@@ -26,9 +26,10 @@ var searchData=
   ['_7eregisterconnectiontest_23',['~RegisterConnectionTest',['../class_register_connection_test.html#a6f34baf843b7b99385e1b894a58596cf',1,'RegisterConnectionTest']]],
   ['_7eregistervirtualservertest_24',['~RegisterVirtualServerTest',['../class_register_virtual_server_test.html#a2d45cf38153fc02f241ea2e7ee4694dd',1,'RegisterVirtualServerTest']]],
   ['_7eresponsebodyhandlertest_25',['~ResponseBodyHandlerTest',['../class_response_body_handler_test.html#af4304e63847ddee60140c7d58a7e5f03',1,'ResponseBodyHandlerTest']]],
-  ['_7eselectserverconfigtest_26',['~selectServerConfigTest',['../classselect_server_config_test.html#a2a2d81da2d27efa5e45f8382b26727ab',1,'selectServerConfigTest']]],
-  ['_7eserver_27',['~Server',['../class_server.html#a4b3aa2579cb1c8cd1d069582c14d0fa6',1,'Server']]],
-  ['_7eshutdownservertest_28',['~ShutdownServerTest',['../class_shutdown_server_test.html#ab1536bd76fb5ad98a610f8368c57aca1',1,'ShutdownServerTest']]],
-  ['_7esocketpolicy_29',['~SocketPolicy',['../class_socket_policy.html#a4bd020bec4585bf4119a4ac23baa7143',1,'SocketPolicy']]],
-  ['_7etargetresourcehandlertest_30',['~TargetResourceHandlerTest',['../class_target_resource_handler_test.html#a7d0b324d1a508723187ad6bf666a8688',1,'TargetResourceHandlerTest']]]
+  ['_7eresponsebuildertest_26',['~ResponseBuilderTest',['../class_response_builder_test.html#a876a7d79af3f93930f5cb517e7df6884',1,'ResponseBuilderTest']]],
+  ['_7eselectserverconfigtest_27',['~selectServerConfigTest',['../classselect_server_config_test.html#a2a2d81da2d27efa5e45f8382b26727ab',1,'selectServerConfigTest']]],
+  ['_7eserver_28',['~Server',['../class_server.html#a4b3aa2579cb1c8cd1d069582c14d0fa6',1,'Server']]],
+  ['_7eshutdownservertest_29',['~ShutdownServerTest',['../class_shutdown_server_test.html#ab1536bd76fb5ad98a610f8368c57aca1',1,'ShutdownServerTest']]],
+  ['_7esocketpolicy_30',['~SocketPolicy',['../class_socket_policy.html#a4bd020bec4585bf4119a4ac23baa7143',1,'SocketPolicy']]],
+  ['_7etargetresourcehandlertest_31',['~TargetResourceHandlerTest',['../class_target_resource_handler_test.html#a7d0b324d1a508723187ad6bf666a8688',1,'TargetResourceHandlerTest']]]
 ];

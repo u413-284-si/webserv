@@ -5,5 +5,5 @@ var searchData=
   ['block_2',['Block',['../_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a',1,'ConfigFileParser.hpp']]],
   ['body_3',['body',['../struct_h_t_t_p_request.html#aca4c75c911f0de6d36648d3c519d396b',1,'HTTPRequest']]],
   ['buffer_4',['buffer',['../class_parse_body_test.html#a76388ec62e843dc4b4676b200d7d2b5d',1,'ParseBodyTest']]],
-  ['buildresponse_5',['buildresponse',['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952',1,'Connection::BuildResponse'],['../class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e',1,'ResponseBuilder::buildResponse()'],['../class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82',1,'Server::buildResponse()']]]
+  ['buildresponse_5',['buildresponse',['../class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e',1,'ResponseBuilder::buildResponse()'],['../class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82',1,'Server::buildResponse()'],['../struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952',1,'Connection::BuildResponse']]]
 ];

@@ -25,6 +25,7 @@ var dir_6a07fdbc4b50e86806a88566ca8f66e4 =
     [ "test_registerConnection.cpp", "test__register_connection_8cpp.html", "test__register_connection_8cpp" ],
     [ "test_registerVirtualServer.cpp", "test__register_virtual_server_8cpp.html", "test__register_virtual_server_8cpp" ],
     [ "test_ResponseBodyHandler.cpp", "test___response_body_handler_8cpp.html", "test___response_body_handler_8cpp" ],
+    [ "test_ResponseBuilder.cpp", "test___response_builder_8cpp.html", "test___response_builder_8cpp" ],
     [ "test_selectServerConfig.cpp", "test__select_server_config_8cpp.html", "test__select_server_config_8cpp" ],
     [ "test_shutdownServer.cpp", "test__shutdown_server_8cpp.html", "test__shutdown_server_8cpp" ],
     [ "test_SocketPolicy_retrieveSocketInfo.cpp", "test___socket_policy__retrieve_socket_info_8cpp.html", "test___socket_policy__retrieve_socket_info_8cpp" ],

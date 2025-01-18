@@ -17,7 +17,8 @@ var namespaceserver__response =
       [ "test_permission_denied_in_path", "namespaceserver__response_1_1test__error.html#ae042b9079347949270f7b00c6fb7f895", null ],
       [ "test_directory_no_autoindex", "namespaceserver__response_1_1test__error.html#a0202b3f18cfa1f51995b20308843e255", null ],
       [ "test_no_permission_to_append", "namespaceserver__response_1_1test__error.html#aaae746c552cc9986e4992c8be76b715b", null ],
-      [ "test_missing_dir_in_path", "namespaceserver__response_1_1test__error.html#abfbaca430d6c4067fcc0273e44cfac43", null ]
+      [ "test_missing_dir_in_path", "namespaceserver__response_1_1test__error.html#abfbaca430d6c4067fcc0273e44cfac43", null ],
+      [ "test_method_not_allowed", "namespaceserver__response_1_1test__error.html#a1851a62f9cbcba242c544b62936f9127", null ]
     ] ],
     [ "test_GET", "namespaceserver__response_1_1test___g_e_t.html", [
       [ "test_GET_simple", "namespaceserver__response_1_1test___g_e_t.html#a8266fddc7bf1debe38627a7c50abc1cf", null ],

@@ -5,5 +5,6 @@ var test__error_8py =
     [ "test_permission_denied_in_path", "test__error_8py.html#ae042b9079347949270f7b00c6fb7f895", null ],
     [ "test_directory_no_autoindex", "test__error_8py.html#a0202b3f18cfa1f51995b20308843e255", null ],
     [ "test_no_permission_to_append", "test__error_8py.html#aaae746c552cc9986e4992c8be76b715b", null ],
-    [ "test_missing_dir_in_path", "test__error_8py.html#abfbaca430d6c4067fcc0273e44cfac43", null ]
+    [ "test_missing_dir_in_path", "test__error_8py.html#abfbaca430d6c4067fcc0273e44cfac43", null ],
+    [ "test_method_not_allowed", "test__error_8py.html#a1851a62f9cbcba242c544b62936f9127", null ]
 ];

@@ -21,7 +21,8 @@ var searchData=
   ['responsebodyhandler_18',['ResponseBodyHandler',['../class_response_body_handler.html#a129fc72315ce73d1bfcfaf9d69e518aa',1,'ResponseBodyHandler']]],
   ['responsebodyhandlertest_19',['ResponseBodyHandlerTest',['../class_response_body_handler_test.html#abd4bf046a7f5bc4beb8cfb9773f7e811',1,'ResponseBodyHandlerTest']]],
   ['responsebuilder_20',['ResponseBuilder',['../class_response_builder.html#aae3003ef1787dbb93a60c53fba1a5aa6',1,'ResponseBuilder']]],
-  ['retrieveboundsocketinfo_21',['retrieveboundsocketinfo',['../class_server.html#a65c2f3dc363bdb70a98895686826e5e8',1,'Server::retrieveBoundSocketInfo()'],['../class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33',1,'SocketPolicy::retrieveBoundSocketInfo()']]],
-  ['retrievesocketinfo_22',['retrievesocketinfo',['../class_server.html#ae4900f55d072ebbe26a92c14b17de396',1,'Server::retrieveSocketInfo()'],['../class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98',1,'SocketPolicy::retrieveSocketInfo()']]],
-  ['runserver_23',['runserver',['../_server_8hpp.html#ab66b27c2186daacb15a6b13dd43be31b',1,'runServer(Server &amp;server):&#160;Server.cpp'],['../_server_8cpp.html#ab66b27c2186daacb15a6b13dd43be31b',1,'runServer(Server &amp;server):&#160;Server.cpp']]]
+  ['responsebuildertest_21',['ResponseBuilderTest',['../class_response_builder_test.html#a706efa617789d3f27c87a5ac6dc8b380',1,'ResponseBuilderTest']]],
+  ['retrieveboundsocketinfo_22',['retrieveboundsocketinfo',['../class_server.html#a65c2f3dc363bdb70a98895686826e5e8',1,'Server::retrieveBoundSocketInfo()'],['../class_socket_policy.html#a0e8aacc8e631653c24d321c38f6c0f33',1,'SocketPolicy::retrieveBoundSocketInfo()']]],
+  ['retrievesocketinfo_23',['retrievesocketinfo',['../class_server.html#ae4900f55d072ebbe26a92c14b17de396',1,'Server::retrieveSocketInfo()'],['../class_socket_policy.html#a97b8a28bbe5d9e9ee637a3258a359b98',1,'SocketPolicy::retrieveSocketInfo()']]],
+  ['runserver_24',['runserver',['../_server_8hpp.html#ab66b27c2186daacb15a6b13dd43be31b',1,'runServer(Server &amp;server):&#160;Server.cpp'],['../_server_8cpp.html#ab66b27c2186daacb15a6b13dd43be31b',1,'runServer(Server &amp;server):&#160;Server.cpp']]]
 ];

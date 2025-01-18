@@ -64,6 +64,7 @@ var hierarchy =
       [ "RegisterConnectionTest", "class_register_connection_test.html", null ],
       [ "RegisterVirtualServerTest", "class_register_virtual_server_test.html", null ],
       [ "ResponseBodyHandlerTest", "class_response_body_handler_test.html", null ],
+      [ "ResponseBuilderTest", "class_response_builder_test.html", null ],
       [ "ShutdownServerTest", "class_shutdown_server_test.html", null ],
       [ "TargetResourceHandlerTest", "class_target_resource_handler_test.html", null ],
       [ "ValidConfigFileTests", "class_valid_config_file_tests.html", null ],

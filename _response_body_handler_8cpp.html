@@ -123,6 +123,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa2bfbae846ab921747467c5c8f63892f" id="r_aa2bfbae846ab921747467c5c8f63892f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::string</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_response_body_handler_8cpp.html#aa2bfbae846ab921747467c5c8f63892f">getDefaultErrorPage</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
 <tr class="memdesc:aa2bfbae846ab921747467c5c8f63892f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Default Error Page for a given status code.  <br /></td></tr>
 <tr class="separator:aa2bfbae846ab921747467c5c8f63892f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d2c9d1f852835e735077a0d42d0d2ff" id="r_a9d2c9d1f852835e735077a0d42d0d2ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::string</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_response_body_handler_8cpp.html#a9d2c9d1f852835e735077a0d42d0d2ff">constructAllowHeader</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>(&amp;allowedMethods)[<a class="el" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>])</td></tr>
+<tr class="memdesc:a9d2c9d1f852835e735077a0d42d0d2ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct Allow header.  <br /></td></tr>
+<tr class="separator:a9d2c9d1f852835e735077a0d42d0d2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aa2bfbae846ab921747467c5c8f63892f" name="aa2bfbae846ab921747467c5c8f63892f"></a>
@@ -150,123 +153,123 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string Default error page. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_response_body_handler_8cpp_source.html#l00298">298</a> of file <a class="el" href="_response_body_handler_8cpp_source.html">ResponseBodyHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  299</span>{</div>
-<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode &lt; NoStatus || statusCode &gt;</a> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
-<div class="line"><span class="lineno">  301</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
-<div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error301Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  304</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;301 Moved permanently&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  305</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  306</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;301 Moved permanently&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error308Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  309</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;308 Permanent redirect&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  310</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  311</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;308 Permanent redirect&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  312</span> </div>
-<div class="line"><span class="lineno">  313</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error400Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  314</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;400 Bad request&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  315</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  316</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;400 Bad request&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error403Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  319</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  320</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  321</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error404Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  324</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  325</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  326</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;404 Not Found&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  327</span> </div>
-<div class="line"><span class="lineno">  328</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error405Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  329</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;405 Method not allowed&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  330</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  331</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;405 Method not allowed&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  332</span> </div>
-<div class="line"><span class="lineno">  333</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error408Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  334</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;408 Request timeout&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  335</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  336</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;408 Request timeout&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error413Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  339</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;413 Request entity too large&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  340</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  341</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;413 Request entity too large&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error431Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  344</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;431 Request header fields too large&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  345</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  346</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;431 Request header fields too large&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error500page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  349</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;500 Internal server error&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  350</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  351</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;500 Internal server error&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error501page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  354</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;501 Method not implemented&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  355</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  356</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;501 Method not implemented&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  357</span> </div>
-<div class="line"><span class="lineno">  358</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error505page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  359</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;505 Non supported version&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  360</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  361</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;505 Non supported version&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  362</span> </div>
-<div class="line"><span class="lineno">  363</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorTail</a> = <span class="stringliteral">&quot;&lt;hr&gt;&lt;center&gt;TriHard&lt;/center&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  364</span>                                   <span class="stringliteral">&quot;&lt;/body&gt;\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  365</span>                                   <span class="stringliteral">&quot;&lt;/html&gt;\r\n&quot;</span>;</div>
+<p class="definition">Definition at line <a class="el" href="_response_body_handler_8cpp_source.html#l00302">302</a> of file <a class="el" href="_response_body_handler_8cpp_source.html">ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  303</span>{</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode &lt; NoStatus || statusCode &gt;</a> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
+<div class="line"><span class="lineno">  305</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
+<div class="line"><span class="lineno">  306</span> </div>
+<div class="line"><span class="lineno">  307</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error301Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  308</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;301 Moved permanently&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  309</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  310</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;301 Moved permanently&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  311</span> </div>
+<div class="line"><span class="lineno">  312</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error308Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  313</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;308 Permanent redirect&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  314</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  315</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;308 Permanent redirect&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error400Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  318</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;400 Bad request&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  319</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  320</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;400 Bad request&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  321</span> </div>
+<div class="line"><span class="lineno">  322</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error403Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  323</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;403 Forbidden&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  324</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  325</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error404Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  328</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  329</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  330</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;404 Not Found&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  331</span> </div>
+<div class="line"><span class="lineno">  332</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error405Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  333</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;405 Method not allowed&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  334</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  335</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;405 Method not allowed&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error408Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  338</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;408 Request timeout&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  339</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  340</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;408 Request timeout&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  341</span> </div>
+<div class="line"><span class="lineno">  342</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error413Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  343</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;413 Request entity too large&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  344</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  345</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;413 Request entity too large&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  346</span> </div>
+<div class="line"><span class="lineno">  347</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error431Page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  348</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;431 Request header fields too large&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  349</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  350</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;431 Request header fields too large&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error500page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  353</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;500 Internal server error&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  354</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  355</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;500 Internal server error&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  356</span> </div>
+<div class="line"><span class="lineno">  357</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error501page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  358</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;501 Method not implemented&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  359</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  360</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;501 Method not implemented&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  361</span> </div>
+<div class="line"><span class="lineno">  362</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error505page</a> = <span class="stringliteral">&quot;&lt;html&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  363</span>                                      <span class="stringliteral">&quot;&lt;head&gt;&lt;title&gt;505 Non supported version&lt;/title&gt;&lt;/head&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  364</span>                                      <span class="stringliteral">&quot;&lt;body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  365</span>                                      <span class="stringliteral">&quot;&lt;center&gt;&lt;h1&gt;505 Non supported version&lt;/h1&gt;&lt;/center&gt;\r\n&quot;</span>;</div>
 <div class="line"><span class="lineno">  366</span> </div>
-<div class="line"><span class="lineno">  367</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a>;</div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">switch</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>) {</div>
-<div class="line"><span class="lineno">  370</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>:</div>
-<div class="line"><span class="lineno">  371</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>:</div>
-<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>:</div>
-<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">return</span> (<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>:</div>
-<div class="line"><span class="lineno">  375</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error301Page</a>;</div>
-<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  377</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>:</div>
-<div class="line"><span class="lineno">  378</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error308Page</a>;</div>
-<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>:</div>
-<div class="line"><span class="lineno">  381</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error400Page</a>;</div>
-<div class="line"><span class="lineno">  382</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  383</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>:</div>
-<div class="line"><span class="lineno">  384</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error403Page</a>;</div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>:</div>
-<div class="line"><span class="lineno">  387</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error404Page</a>;</div>
-<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  389</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>:</div>
-<div class="line"><span class="lineno">  390</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error413Page</a>;</div>
-<div class="line"><span class="lineno">  391</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  392</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>:</div>
-<div class="line"><span class="lineno">  393</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error405Page</a>;</div>
-<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  395</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>:</div>
-<div class="line"><span class="lineno">  396</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error408Page</a>;</div>
-<div class="line"><span class="lineno">  397</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  398</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>:</div>
-<div class="line"><span class="lineno">  399</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error431Page</a>;</div>
-<div class="line"><span class="lineno">  400</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  401</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>:</div>
-<div class="line"><span class="lineno">  402</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error500page</a>;</div>
-<div class="line"><span class="lineno">  403</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  404</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>:</div>
-<div class="line"><span class="lineno">  405</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error501page</a>;</div>
-<div class="line"><span class="lineno">  406</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  407</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>:</div>
-<div class="line"><span class="lineno">  408</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error505page</a>;</div>
-<div class="line"><span class="lineno">  409</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  410</span>    }</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> += <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorTail</a>;</div>
-<div class="line"><span class="lineno">  413</span>    <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a>);</div>
-<div class="line"><span class="lineno">  414</span>}</div>
+<div class="line"><span class="lineno">  367</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorTail</a> = <span class="stringliteral">&quot;&lt;hr&gt;&lt;center&gt;TriHard&lt;/center&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  368</span>                                   <span class="stringliteral">&quot;&lt;/body&gt;\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  369</span>                                   <span class="stringliteral">&quot;&lt;/html&gt;\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a>;</div>
+<div class="line"><span class="lineno">  372</span> </div>
+<div class="line"><span class="lineno">  373</span>    <span class="keywordflow">switch</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>) {</div>
+<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>:</div>
+<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>:</div>
+<div class="line"><span class="lineno">  376</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>:</div>
+<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">return</span> (<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>:</div>
+<div class="line"><span class="lineno">  379</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error301Page</a>;</div>
+<div class="line"><span class="lineno">  380</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  381</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>:</div>
+<div class="line"><span class="lineno">  382</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error308Page</a>;</div>
+<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  384</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>:</div>
+<div class="line"><span class="lineno">  385</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error400Page</a>;</div>
+<div class="line"><span class="lineno">  386</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>:</div>
+<div class="line"><span class="lineno">  388</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error403Page</a>;</div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>:</div>
+<div class="line"><span class="lineno">  391</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error404Page</a>;</div>
+<div class="line"><span class="lineno">  392</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  393</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>:</div>
+<div class="line"><span class="lineno">  394</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error413Page</a>;</div>
+<div class="line"><span class="lineno">  395</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>:</div>
+<div class="line"><span class="lineno">  397</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error405Page</a>;</div>
+<div class="line"><span class="lineno">  398</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  399</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>:</div>
+<div class="line"><span class="lineno">  400</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error408Page</a>;</div>
+<div class="line"><span class="lineno">  401</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  402</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>:</div>
+<div class="line"><span class="lineno">  403</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error431Page</a>;</div>
+<div class="line"><span class="lineno">  404</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>:</div>
+<div class="line"><span class="lineno">  406</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error500page</a>;</div>
+<div class="line"><span class="lineno">  407</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  408</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>:</div>
+<div class="line"><span class="lineno">  409</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error501page</a>;</div>
+<div class="line"><span class="lineno">  410</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  411</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>:</div>
+<div class="line"><span class="lineno">  412</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">error505page</a>;</div>
+<div class="line"><span class="lineno">  413</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  414</span>    }</div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a> += <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errorTail</a>;</div>
+<div class="line"><span class="lineno">  417</span>    <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ret</a>);</div>
+<div class="line"><span class="lineno">  418</span>}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a></div><div class="ttdeci">@ StatusMovedPermanently</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00009">StatusCode.hpp:9</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a></div><div class="ttdeci">@ StatusPermanentRedirect</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00010">StatusCode.hpp:10</a></div></div>
@@ -287,6 +290,57 @@ Functions</h2></td></tr>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="_response_body_handler_8cpp_aa2bfbae846ab921747467c5c8f63892f_icgraph.svg" width="282" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9d2c9d1f852835e735077a0d42d0d2ff" name="a9d2c9d1f852835e735077a0d42d0d2ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d2c9d1f852835e735077a0d42d0d2ff">&#9670;&#160;</a></span>constructAllowHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::string</a> constructAllowHeader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>(&amp;)&#160;</td>
+          <td class="paramname"><em>allowedMethods</em>[MethodCount]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Construct Allow header. </p>
+<p>Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join them. If at the end at least one method was appended, the last ", " is removed. If no methods were appended, an empty string is returned. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">allowedMethods</td><td>Array of allowed methods. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string Constructed Allow header. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_response_body_handler_8cpp_source.html#l00429">429</a> of file <a class="el" href="_response_body_handler_8cpp_source.html">ResponseBodyHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  430</span>{</div>
+<div class="line"><span class="lineno">  431</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>;</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">if</span> (allowedMethods[<a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>])</div>
+<div class="line"><span class="lineno">  434</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>.append(<span class="stringliteral">&quot;GET, &quot;</span>);</div>
+<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">if</span> (allowedMethods[<a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>])</div>
+<div class="line"><span class="lineno">  436</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>.append(<span class="stringliteral">&quot;POST, &quot;</span>);</div>
+<div class="line"><span class="lineno">  437</span>    <span class="keywordflow">if</span> (allowedMethods[<a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>])</div>
+<div class="line"><span class="lineno">  438</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>.append(<span class="stringliteral">&quot;DELETE, &quot;</span>);</div>
+<div class="line"><span class="lineno">  439</span> </div>
+<div class="line"><span class="lineno">  440</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>.empty())</div>
+<div class="line"><span class="lineno">  441</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>.erase(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>.size() - 2, 2);</div>
+<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">allowHeader</a>;</div>
+<div class="line"><span class="lineno">  443</span>}</div>
+<div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a></div><div class="ttdeci">@ MethodPost</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00005">Method.hpp:5</a></div></div>
+<div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a></div><div class="ttdeci">@ MethodDelete</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00005">Method.hpp:5</a></div></div>
+<div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a></div><div class="ttdeci">@ MethodGet</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00005">Method.hpp:5</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_response_body_handler_8cpp_a9d2c9d1f852835e735077a0d42d0d2ff_icgraph.svg" width="394" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
