@@ -1,5 +1,4 @@
 #include "constants.hpp"
-#include <cstddef>
 
 namespace constants {
 
