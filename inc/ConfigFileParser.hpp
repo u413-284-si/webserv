@@ -86,7 +86,7 @@ private:
 	std::string getDirective(void) const;
 	std::string getValue(void) const;
 	std::string convertBlockToString(Block block) const;
-	void removeDoubleQuotes(std::string& str);
+	void removeEnclosingDoubleQuotes(std::string& str);
 	void skipBlockBegin(Block block);
 	void skipLocationBlockPath(size_t& index);
 };

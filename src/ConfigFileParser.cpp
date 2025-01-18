@@ -787,7 +787,7 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		if (returnUrlOrText.at(0) != '"' && returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)
 			throw std::runtime_error("Invalid amount of parameters for return");
 		if (returnUrlOrText.find('"') != std::string::npos) {
-			removeDoubleQuotes(returnUrlOrText);
+			removeEnclosingDoubleQuotes(returnUrlOrText);
 			if (returns.at(returns.length() - 1) != '"')
 				throw std::runtime_error("Invalid amount of parameters for return");
 		}
@@ -1050,7 +1050,7 @@ std::string ConfigFileParser::convertBlockToString(Block block) const
  *
  * @param str The string to remove double quotes from
  */
-void ConfigFileParser::removeDoubleQuotes(std::string& str)
+void ConfigFileParser::removeEnclosingDoubleQuotes(std::string& str)
 {
 	size_t leadingDoubleQuotes = 0;
 	size_t trailingDoubleQuotes = 0;
