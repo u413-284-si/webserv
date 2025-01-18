@@ -20,7 +20,7 @@ AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
  * @param path Path to directory.
  * @return std::string HTML response.
  */
-std::string AutoindexHandler::execute(const std::string& path)
+std::string AutoindexHandler::execute(const std::string& path, const std::string& uriPath)
 {
 	try {
 		m_response
@@ -47,7 +47,7 @@ std::string AutoindexHandler::execute(const std::string& path)
 			// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
-			m_response << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
+			m_response << "<tr><td><a href=\"" << uriPath << *iter << "\">" << *iter << "</a></td>"
 						  << "<td>" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "</td>"
 						  << "<td>" << m_fileSystemPolicy.getFileSize(fileStat) << "</td></tr>\n";
 		}
