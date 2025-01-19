@@ -1011,7 +1011,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_request.httpStatus = StatusOK;
 
 	// Allow access to directories w/o autoindex when POST is used
-	if (connection.m_request.method == MethodPost && connection.m_request.httpStatus == StatusForbidden)
+	if (connection.m_request.method == MethodPost && connection.m_request.isDirectory)
 		connection.m_request.httpStatus = StatusOK;
 
 	// Allow directories to be deleted
