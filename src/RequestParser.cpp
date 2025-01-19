@@ -628,8 +628,9 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		std::vector<unsigned long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
+            errno = 0;
 			request.contentLength = std::strtoul(strValues[i].c_str(), &endptr, constants::g_decimalBase);
-			if ((request.contentLength == 0) || *endptr != '\0') {
+			if (errno == ERANGE || request.contentLength == 0 || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
