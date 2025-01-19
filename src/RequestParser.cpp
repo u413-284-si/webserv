@@ -532,7 +532,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
  */
 size_t RequestParser::checkForString(const std::string& string, size_t startPos, HTTPRequest& request)
 {
-	size_t pos = request.body.find(string, startPos);
+	const size_t pos = request.body.find(string, startPos);
 	if (pos == std::string::npos) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;
