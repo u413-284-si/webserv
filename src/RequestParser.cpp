@@ -555,11 +555,8 @@ size_t RequestParser::checkForString(
 	else
 		pos = request.body.find(string, startPos);
 
-	if (pos == std::string::npos) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
+	if (pos == std::string::npos)
 		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
-	}
 	return pos;
 }
 

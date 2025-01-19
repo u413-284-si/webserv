@@ -1183,8 +1183,18 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		if (!connection.m_request.isChunked)
 			connection.m_request.body = connection.m_buffer;
 
-		if (connection.m_request.hasMultipartFormdata)
-			server.decodeMultipartFormdata(connection.m_request);
+		if (connection.m_request.hasMultipartFormdata) {
+            try {
+                server.decodeMultipartFormdata(connection.m_request);
+            } catch (std::runtime_error& e) {
+                LOG_ERROR << e.what();
+                connection.m_request.httpStatus = StatusBadRequest;
+		        connection.m_request.shallCloseConnection = true;
+                connection.m_status = Connection::BuildResponse;
+                server.modifyEvent(activeFd, EPOLLOUT);
+                return;
+            }
+        }
 
 		if (connection.m_request.hasCGI) {
 			connection.m_status = Connection::SendToCGI;

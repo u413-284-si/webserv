@@ -85,7 +85,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoStartBoundary)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -107,7 +106,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoContentDisposition)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -131,7 +129,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -155,7 +152,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoContentType)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -179,7 +175,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoCRLFCRLF)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -203,7 +198,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -232,7 +226,6 @@ TEST_F(MultipartFormdataTest, DecodeBodyMultipleUploads)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MULTIPLE_UPLOADS, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
