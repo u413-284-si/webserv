@@ -7,6 +7,8 @@ protected:
 	MultipartFormdataTest()
 		: request()
 	{
+       	request.boundary = "WebKitFormBoundary7MA4YWxkTrZu0gW";
+        request.targetResource = "/workspaces/webserv/html/uploads/";
 	}
 	~MultipartFormdataTest() override { }
 
@@ -17,6 +19,7 @@ protected:
 TEST_F(MultipartFormdataTest, ParseHeader)
 {
 	// Arrange
+    request.boundary = "";
 	const std::string headerString = "POST /upload HTTP/1.1\r\nHost: example.com\r\nContent-Type: multipart/form-data; "
 									 "boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Length: 195";
 	// Act
@@ -24,15 +27,17 @@ TEST_F(MultipartFormdataTest, ParseHeader)
 
 	// Assert
 	EXPECT_TRUE(request.hasMultipartFormdata);
-	EXPECT_EQ(p.getBoundary(), "----WebKitFormBoundary7MA4YWxkTrZu0gW");
+	EXPECT_EQ(request.boundary, "----WebKitFormBoundary7MA4YWxkTrZu0gW");
 }
 
 TEST_F(MultipartFormdataTest, ParseHeaderNoBoundary)
 {
 	// Arrange
+    request.boundary = "";
 	const std::string headerString
 		= "POST /upload HTTP/1.1\r\nHost: example.com\r\nContent-Type: multipart/form-data\r\n"
 		  "Content-Length: 195";
+
 	// Act & Assert
 	EXPECT_THROW(
 		{
@@ -50,8 +55,6 @@ TEST_F(MultipartFormdataTest, ParseHeaderNoBoundary)
 TEST_F(MultipartFormdataTest, DecodeBody)
 {
 	// Arrange
-	request.targetResource = "/workspaces/webserv/html/uploads/";
-	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
 	request.body
 		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
 		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
@@ -69,15 +72,12 @@ TEST_F(MultipartFormdataTest, DecodeBody)
 TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
 {
 	// Arrange
-	request.hasMultipartFormdata = true;
-	request.targetResource = "/workspaces/webserv/html/uploads/";
-	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
-	request.body
-		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
-		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+    request.body
+		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\";"
 		  "\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
-		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 
 	// Act & Assert
 	EXPECT_THROW(
@@ -96,15 +96,12 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
 TEST_F(MultipartFormdataTest, DecodeBodyNoContentType)
 {
 	// Arrange
-	request.hasMultipartFormdata = true;
-	request.targetResource = "/workspaces/webserv/html/uploads/";
-	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
 	request.body
-		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
-		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
 		  "filename=\"darkknight.txt\"\r\n\r\nSome men just want to watch the world "
-		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 
 	// Act & Assert
 	EXPECT_THROW(
@@ -123,15 +120,12 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoContentType)
 TEST_F(MultipartFormdataTest, DecodeBodyNoCRLFCRLF)
 {
 	// Arrange
-	request.hasMultipartFormdata = true;
-	request.targetResource = "/workspaces/webserv/html/uploads/";
-	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
 	request.body
-		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
-		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
 		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\nSome men just want to watch the world "
-		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 
 	// Act & Assert
 	EXPECT_THROW(
@@ -150,12 +144,9 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoCRLFCRLF)
 TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
 {
 	// Arrange
-	request.hasMultipartFormdata = true;
-	request.targetResource = "/workspaces/webserv/html/uploads/";
-	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
 	request.body
-		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
-		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
 		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
 		  "burn.\r\nWebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";

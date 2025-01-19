@@ -24,6 +24,11 @@
 
 /* ====== CLASS DECLARATION ====== */
 
+/**
+ * @class RequestParser
+ * @brief Parses HTTP requests and handles various request-related validations and transformations. Stateless class in
+ * order to handle multiple clients concurrently.
+ */
 class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
@@ -34,16 +39,12 @@ public:
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
 	static void parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request);
-	void decodeMultipartFormdata(HTTPRequest& request);
+	static void decodeMultipartFormdata(HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
-	const std::string& getBoundary() const;
-	void setBoundary(const std::string& boundary);
-
 private:
 	std::istringstream m_requestStream;
-	std::string m_boundary;
 
 	// RequestLine Parsing
 	void parseRequestLine(HTTPRequest& request);
@@ -56,7 +57,7 @@ private:
 
 	// Header Parsing
 	void parseHeaders(HTTPRequest& request);
-	void extractBoundary(HTTPRequest& request);
+	static void extractBoundary(HTTPRequest& request);
 
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);

@@ -11,24 +11,8 @@ RequestParser::RequestParser() { }
 /* ====== GETTERS/SETTERS ====== */
 
 /**
- * @brief Retrieves the boundary string used in multipart/form-data requests.
- *
- * This function returns the boundary string that is used to separate parts
- * in a multipart/form-data request.
- *
- * @return A constant reference to the boundary string.
+ * Stateless class, no getters or setters.
  */
-const std::string& RequestParser::getBoundary() const { return m_boundary; }
-
-/**
- * @brief Sets the boundary string used in multipart/form-data requests.
- *
- * This function sets the boundary string that is used to separate parts
- * in a multipart/form-data request.
- *
- * @param boundary The boundary string to be set.
- */
-void RequestParser::setBoundary(const std::string& boundary) { m_boundary = boundary; }
 
 /* ====== MEMBER FUNCTIONS ====== */
 
@@ -78,9 +62,9 @@ void RequestParser::extractBoundary(HTTPRequest& request)
 		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
 	}
 
-	m_boundary = temp.substr(posBoundary + denominator.size());
+	request.boundary = temp.substr(posBoundary + denominator.size());
 
-	LOG_DEBUG << "Extracted boundary string: " << m_boundary;
+	LOG_DEBUG << "Extracted boundary string: " << request.boundary;
 }
 
 /**
@@ -524,7 +508,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request);
 	contentStartPos += 4;
 
-	const std::string endBoundary = "--" + m_boundary + "--";
+	const std::string endBoundary = "--" + request.boundary + "--";
 	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
 	contentEndPos -= 2; // Remove the CRLF at the end
 
