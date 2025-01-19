@@ -494,31 +494,39 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
  */
 void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 {
+	size_t boundaryStartPos = checkForString("--" + request.boundary, 0, request, "");
+	boundaryStartPos += request.boundary.size() + 2;
+
+	std::string loweredBody = request.body;
+	webutils::lowercase(loweredBody);
+
+	const size_t dispositionPos = checkForString("content-disposition:", boundaryStartPos, request, loweredBody);
+
 	const std::string filename = "filename=\"";
-	size_t filenameStartPos = checkForString(filename, 0, request);
+	size_t filenameStartPos = checkForString(filename, dispositionPos, request, "");
 	filenameStartPos += filename.size();
-	size_t filenameEndPos = checkForString("\"", filenameStartPos, request);
+
+	const size_t filenameEndPos = checkForString("\"", filenameStartPos, request, "");
 	request.targetResource += request.body.substr(filenameStartPos, filenameEndPos - filenameStartPos);
 	LOG_DEBUG << "New target resource: " << request.targetResource;
 
-	size_t contentTypePos = checkForString("Content-Type:", filenameEndPos, request);
+	const size_t contentTypePos = checkForString("content-type:", filenameEndPos, request, loweredBody);
 
-	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request);
+	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request, "");
 	contentStartPos += 4;
 
 	const std::string endBoundary = "--" + request.boundary + "--";
-	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
+	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request, "");
 	contentEndPos -= 2; // Remove the CRLF at the end
 
-    if (request.body.find(filename, contentEndPos) != std::string::npos) {
-        request.httpStatus = StatusBadRequest;
-        request.shallCloseConnection = true;
-        throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
-    }
+	if (request.body.find(filename, contentEndPos) != std::string::npos) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
+	}
 
 	request.body.erase(0, contentStartPos);
-    request.body.erase(contentEndPos - contentStartPos);
-
+	request.body.erase(contentEndPos - contentStartPos);
 }
 
 /* ====== CHECKS ====== */
@@ -533,12 +541,20 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
  * @param string The string to search for in the request body.
  * @param startPos The position in the request body to start the search from.
  * @param request The HTTP request containing the body to search.
+ * @param loweredBody The lowercase version of the request body for case-insensitive search.
  * @return The position of the found string in the request body.
  * @throws std::runtime_error if the string is not found in the request body.
  */
-size_t RequestParser::checkForString(const std::string& string, size_t startPos, HTTPRequest& request)
+size_t RequestParser::checkForString(
+	const std::string& string, size_t startPos, HTTPRequest& request, const std::string& loweredBody)
 {
-	const size_t pos = request.body.find(string, startPos);
+	size_t pos = std::string::npos;
+
+	if (!loweredBody.empty())
+		pos = loweredBody.find(string, startPos);
+	else
+		pos = request.body.find(string, startPos);
+
 	if (pos == std::string::npos) {
 		request.httpStatus = StatusBadRequest;
 		request.shallCloseConnection = true;

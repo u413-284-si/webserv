@@ -69,6 +69,51 @@ TEST_F(MultipartFormdataTest, DecodeBody)
 	EXPECT_EQ(request.body, "Some men just want to watch the world burn.");
 }
 
+TEST_F(MultipartFormdataTest, DecodeBodyNoStartBoundary)
+{
+	// Arrange
+	request.body
+		= "Content-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.decodeMultipartFormdata(request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(MultipartFormdataTest, DecodeBodyNoContentDisposition)
+{
+	// Arrange
+    request.body
+		= "-WebKitFormBoundary7MA4YWxkTrZu0gW\r\n"
+		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.decodeMultipartFormdata(request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
 TEST_F(MultipartFormdataTest, DecodeBodyNoFilename)
 {
 	// Arrange
