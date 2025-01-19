@@ -66,17 +66,17 @@
 		</section>
 
 		<section class="form-section">
-			<h2>Script upload.py</h2>
-			<p>This script can upload a simple textfile</p>
+			<h2>Script create_textfile.py</h2>
+			<p>This script can create a simple textfile</p>
 			<br>
 			<form id="uploadForm" method="POST" action="http://127.0.0.1:8081/cgi-bin/create_textfile.py">
 				<label for="filename">Filename:</label>
 				<input type="text" id="filename" name="filename" value="example.txt" required><br><br>
 
-				<label for="content">Content:</label><br>
+				<label for="content">Content:</label>
 				<textarea id="content" name="content" rows="4" cols="50" placeholder="Enter text to be uploaded..." required></textarea><br><br>
 
-				<label for="directory">Select Sub-Directory in uploads:</label><br>
+				<label for="directory">Select sub-directory in uploads:</label>
 				<select id="directory" name="directory">
 					<option value="">Default</option>
 					<option value="tmp">Temporary</option>
