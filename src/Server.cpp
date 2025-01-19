@@ -1176,41 +1176,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		}
 	}
 
-	if (connection.m_request.isCompleteBody) {
-		LOG_DEBUG << "Received complete request body";
-		// Printing body can be confusing for big files.
-		// LOG_DEBUG << connection.m_buffer;
-		if (!connection.m_request.isChunked)
-			connection.m_request.body = connection.m_buffer;
-
-		if (connection.m_request.hasMultipartFormdata) {
-            try {
-                server.decodeMultipartFormdata(connection.m_request);
-            } catch (std::runtime_error& e) {
-                LOG_ERROR << e.what();
-                connection.m_request.httpStatus = StatusBadRequest;
-		        connection.m_request.shallCloseConnection = true;
-                connection.m_status = Connection::BuildResponse;
-                server.modifyEvent(activeFd, EPOLLOUT);
-                return;
-            }
-        }
-
-		if (connection.m_request.hasCGI) {
-			connection.m_status = Connection::SendToCGI;
-			if (connection.m_request.method == MethodPost
-				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)) {
-				connection.m_request.httpStatus = StatusInternalServerError;
-				connection.m_status = Connection::BuildResponse;
-				server.modifyEvent(activeFd, EPOLLOUT);
-				return;
-			}
-			server.removeEvent(activeFd);
-		} else {
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(activeFd, EPOLLOUT);
-		}
-	} else {
+	if (!connection.m_request.isCompleteBody) {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
 		// LOG_DEBUG << connection.m_buffer;
@@ -1233,6 +1199,41 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
+		return;
+	}
+
+	LOG_DEBUG << "Received complete request body";
+	// Printing body can be confusing for big files.
+	// LOG_DEBUG << connection.m_buffer;
+	if (!connection.m_request.isChunked)
+		connection.m_request.body = connection.m_buffer;
+
+	if (connection.m_request.hasMultipartFormdata) {
+		try {
+			server.decodeMultipartFormdata(connection.m_request);
+		} catch (std::runtime_error& e) {
+			LOG_ERROR << e.what();
+			connection.m_request.httpStatus = StatusBadRequest;
+			connection.m_request.shallCloseConnection = true;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+			return;
+		}
+	}
+
+	if (connection.m_request.hasCGI) {
+		connection.m_status = Connection::SendToCGI;
+		if (connection.m_request.method == MethodPost
+			&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+			return;
+		}
+		server.removeEvent(activeFd);
+	} else {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(activeFd, EPOLLOUT);
 	}
 }
 
