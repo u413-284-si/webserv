@@ -24,7 +24,7 @@ TEST_F(MultipartFormdataTest, ParseHeader)
 
 	// Assert
 	EXPECT_TRUE(request.hasMultipartFormdata);
-	EXPECT_EQ(p.getBoundary(), "WebKitFormBoundary7MA4YWxkTrZu0gW");
+	EXPECT_EQ(p.getBoundary(), "----WebKitFormBoundary7MA4YWxkTrZu0gW");
 }
 
 TEST_F(MultipartFormdataTest, ParseHeaderNoBoundary)
@@ -53,11 +53,11 @@ TEST_F(MultipartFormdataTest, DecodeBody)
 	request.targetResource = "/workspaces/webserv/html/uploads/";
 	p.setBoundary("WebKitFormBoundary7MA4YWxkTrZu0gW");
 	request.body
-		= "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
-		  "\"\r\n\r\nBatman\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
 		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
-		  "burn.\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 	// Act
 	p.decodeMultipartFormdata(request);
 

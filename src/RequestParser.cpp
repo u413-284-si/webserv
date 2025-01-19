@@ -67,7 +67,7 @@ void RequestParser::parseHeader(const std::string& headerString, HTTPRequest& re
  */
 void RequestParser::extractBoundary(HTTPRequest& request)
 {
-	const std::string denominator = "boundary=----";
+	const std::string denominator = "boundary=";
 
 	std::string temp = request.headers.at("content-type");
 	size_t posBoundary = temp.find(denominator);
@@ -524,7 +524,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request);
 	contentStartPos += 4;
 
-	const std::string endBoundary = "------" + m_boundary;
+	const std::string endBoundary = "--" + m_boundary + "--";
 	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
 	contentEndPos -= 2; // Remove the CRLF at the end
 
