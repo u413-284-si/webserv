@@ -510,6 +510,12 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
 	contentEndPos -= 2; // Remove the CRLF at the end
 
+    if (request.body.find(filename, contentEndPos) != std::string::npos) {
+        request.httpStatus = StatusBadRequest;
+        request.shallCloseConnection = true;
+        throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
+    }
+
 	request.body.erase(0, contentStartPos);
     request.body.erase(contentEndPos - contentStartPos);
 

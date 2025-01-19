@@ -149,7 +149,7 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
 		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
 		  "name=\"file\"; "
 		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
-		  "burn.\r\nWebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+		  "burn.\r\nbliblablubWebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
 
 	// Act & Assert
 	EXPECT_THROW(
@@ -158,6 +158,35 @@ TEST_F(MultipartFormdataTest, DecodeBodyNoEndBoundary)
 				p.decodeMultipartFormdata(request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(MultipartFormdataTest, DecodeBodyMultipleUploads)
+{
+	// Arrange
+	request.body
+		= "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"darkknight.txt\"\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world "
+		  "burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n"
+          "--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username"
+		  "\"\r\n\r\nJoker\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; "
+		  "name=\"file\"; "
+		  "filename=\"?.txt\"\r\nContent-Type: text/plain\r\n\r\nWant me to show you a magic trick? "
+		  "\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n";
+
+	// Act & Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.decodeMultipartFormdata(request);
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_MULTIPLE_UPLOADS, e.what());
 				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
