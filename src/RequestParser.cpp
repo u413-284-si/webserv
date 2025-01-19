@@ -54,7 +54,7 @@ void RequestParser::extractBoundary(HTTPRequest& request)
 	const std::string denominator = "boundary=";
 
 	std::string temp = request.headers.at("content-type");
-	size_t posBoundary = temp.find(denominator);
+	const size_t posBoundary = temp.find(denominator);
 
 	if (posBoundary == std::string::npos) {
 		request.httpStatus = StatusBadRequest;
