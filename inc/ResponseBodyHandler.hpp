@@ -4,10 +4,11 @@
 #include "Connection.hpp"
 #include "DeleteHandler.hpp"
 #include "FileSystemPolicy.hpp"
+#include "FileWriteHandler.hpp"
 #include "Log.hpp"
 #include "Method.hpp"
-#include "FileWriteHandler.hpp"
 #include "TargetResourceHandler.hpp"
+#include "error.hpp"
 
 #include "cassert"
 
@@ -19,18 +20,22 @@
  */
 class ResponseBodyHandler {
 public:
-	explicit ResponseBodyHandler(
-		Connection& connection, std::string& responseBody, const FileSystemPolicy& fileSystemPolicy);
+	explicit ResponseBodyHandler(Connection& connection, std::string& responseBody,
+		std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy);
 	void execute();
 
 private:
 	void handleErrorBody();
 	void setDefaultErrorPage();
+	void parseCGIResponseHeaders();
+	void validateCGIResponseHeaders();
 
 	Connection& m_connection;
 	HTTPRequest& m_request;
 	std::string& m_responseBody;
+	std::map<std::string, std::string>& m_responseHeaders;
 	const FileSystemPolicy& m_fileSystemPolicy;
 };
 
 std::string getDefaultErrorPage(statusCode status);
+std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount]);

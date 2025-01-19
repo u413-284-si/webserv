@@ -226,6 +226,20 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 }
 
 /**
+ * @brief Removes a Connection from the Server.
+ *
+ * @param delFd File descriptor to be removed.
+ */
+void Server::removeConnection(int delFd)
+{
+	const Socket clientSocket = getConnections().at(delFd).m_clientSocket;
+	removeEvent(delFd);
+	getConnections().erase(delFd);
+	close(delFd);
+	LOG_DEBUG << "Removed Connection: " << clientSocket << " on fd: " << delFd;
+}
+
+/**
  * @brief Removes a CGI file descriptor from the server.
  *
  * This function removes a CGI file descriptor from the server by performing the following steps:
@@ -647,7 +661,7 @@ bool createVirtualServer(Server& server, const std::string& host, int backlog, c
  * It waits for events with the EpollWrapper.
  * If a vector of events is returned it processes all of them via handleEvent().
  * When events are processed or the server.waitForEvents() timeout happens checks for connection timeouts with
- * checkForTimeout(). Then cleans up closed connections with cleanupClosedConnections().
+ * checkForTimeout().
  * The loop continues until a signal is received and saved in g_SignalStatus. It then logs the signal.
  * If the signal is SIGQUIT it performs a graceful shutdown with shutdownServer().
  *
@@ -666,7 +680,6 @@ void runServer(Server& server)
 			handleEvent(server, *iter);
 		}
 		checkForTimeout(server);
-		cleanupClosedConnections(server);
 	}
 	LOG_INFO << "Received signal " << signalNumToName(g_signalStatus);
 	if (g_signalStatus == SIGQUIT)
@@ -833,10 +846,10 @@ void handleConnection(Server& server, const int activeFd, Connection& connection
 		connectionReceiveBody(server, activeFd, connection);
 		break;
 	case (Connection::SendToCGI):
-		connectionSendToCGI(server, activeFd, connection);
+		connectionSendToCGI(server, connection);
 		break;
 	case (Connection::ReceiveFromCGI):
-		connectionReceiveFromCGI(server, activeFd, connection);
+		connectionReceiveFromCGI(server, connection);
 		break;
 	case (Connection::BuildResponse):
 		connectionBuildResponse(server, activeFd, connection);
@@ -891,14 +904,12 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -981,17 +992,13 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (iter != connection.m_request.headers.end()) {
 		if (!hasValidServerConfig(connection, server.getServerConfigs(), iter->second)) {
 			LOG_ERROR << "Failed to set active server for " << connection.m_clientSocket;
-			close(clientFd);
-			connection.m_status = Connection::Closed;
+			server.removeConnection(clientFd);
 			return;
 		}
 	}
 	LOG_DEBUG << "Active server: " << connection.m_serverSocket;
 
 	server.findTargetResource(connection);
-
-	if (webutils::isRedirectionStatus(connection.m_request.httpStatus))
-		connection.m_request.headers["location"] = connection.m_request.targetResource;
 
 	if (connection.m_request.hasReturn) {
 		connection.m_status = Connection::BuildResponse;
@@ -1028,12 +1035,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			return;
 		}
 		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
-		if ((connection.m_request.method == MethodPost
-				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection))
-			|| !server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
-			connection.m_request.hasCGI = false;
-			connection.m_request.httpStatus = StatusInternalServerError;
-		}
 	}
 
 	LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
@@ -1043,9 +1044,15 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 		if (!connection.m_buffer.empty())
 			handleBody(server, clientFd, connection);
-	} else if (connection.m_request.hasCGI)
+	} else if (connection.m_request.hasCGI) {
 		connection.m_status = Connection::ReceiveFromCGI;
-	else {
+		if (!server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		} else
+			server.removeEvent(clientFd);
+	} else {
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 	}
@@ -1130,14 +1137,12 @@ void connectionReceiveBody(Server& server, int activeFd, Connection& connection)
 
 	if (bytesRead == -1) {
 		LOG_ERROR << "Internal server error while reading from socket: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 	if (bytesRead == 0) {
 		LOG_INFO << "Connection closed by client: " << connection.m_clientSocket;
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -1183,9 +1188,18 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 
 		if (connection.m_request.hasCGI)
 			connection.m_status = Connection::SendToCGI;
-		else
+			if (connection.m_request.method == MethodPost
+				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)) {
+				connection.m_request.httpStatus = StatusInternalServerError;
+				connection.m_status = Connection::BuildResponse;
+				server.modifyEvent(activeFd, EPOLLOUT);
+				return;
+			}
+			server.removeEvent(activeFd);
+		} else {
 			connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(activeFd, EPOLLOUT);
+			server.modifyEvent(activeFd, EPOLLOUT);
+		}
 	} else {
 		LOG_DEBUG << "Received partial request body";
 		// Printing body can be confusing for big files.
@@ -1232,22 +1246,17 @@ void handleBody(Server& server, int activeFd, Connection& connection)
  * If only part of the body is written, it updates the request body to contain the remaining data.
  *
  * @param server Reference to the Server object.
- * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection object.
  */
-void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
+void connectionSendToCGI(Server& server, Connection& connection)
 {
-	if (activeFd == connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "Send to CGI for: " << connection.m_clientSocket;
 
 	if (connection.m_request.body.empty()) {
 		LOG_ERROR << "empty body: can't send to CGI";
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
@@ -1260,8 +1269,7 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		LOG_ERROR << "write(): can't send to CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
-		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		return;
 	}
@@ -1270,6 +1278,11 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
 		connection.m_status = Connection::ReceiveFromCGI;
 		connection.m_request.body.clear();
 		server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
+		if (!server.registerCGIFileDescriptor(connection.m_pipeFromCGIReadEnd, EPOLLIN, connection)) {
+			connection.m_request.httpStatus = StatusInternalServerError;
+			connection.m_status = Connection::BuildResponse;
+			server.addEvent(connection.m_clientFd, EPOLLOUT);
+		}
 		return;
 	}
 	connection.m_request.body.erase(0, bytesSent);
@@ -1285,14 +1298,10 @@ void connectionSendToCGI(Server& server, int activeFd, Connection& connection)
  * associated file descriptors.
  *
  * @param server Reference to the Server instance managing the connection.
- * @param activeFd The file descriptor being handled.
  * @param connection Reference to the Connection instance representing the client connection.
  */
-void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection)
+void connectionReceiveFromCGI(Server& server, Connection& connection)
 {
-	if (activeFd == connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "Receive from CGI for: " << connection.m_clientSocket;
 
 	std::vector<char>& buffer = server.getBuffer();
@@ -1307,7 +1316,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 		LOG_ERROR << "read(): can't read from CGI: " << std::strerror(errno);
 		connection.m_request.httpStatus = StatusInternalServerError;
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
@@ -1316,7 +1325,7 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
 	if (bytesRead == 0) {
 		LOG_DEBUG << "CGI: Full body received";
 		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(connection.m_clientFd, EPOLLOUT);
+		server.addEvent(connection.m_clientFd, EPOLLOUT);
 		server.removeCGIFileDescriptor(connection.m_pipeFromCGIReadEnd);
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
@@ -1359,9 +1368,6 @@ void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connecti
  */
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd != connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "BuildResponse for: " << connection.m_clientSocket;
 
 	server.buildResponse(connection);
@@ -1389,17 +1395,13 @@ void connectionBuildResponse(Server& server, int activeFd, Connection& connectio
  */
 void connectionSendResponse(Server& server, int activeFd, Connection& connection)
 {
-	if (activeFd != connection.m_clientFd)
-		return;
-
 	LOG_DEBUG << "SendResponse for: " << connection.m_clientSocket << " on socket:" << activeFd;
 
 	const ssize_t bytesToSend = static_cast<ssize_t>(connection.m_buffer.size());
 	const ssize_t sentBytes = server.writeToSocket(activeFd, connection.m_buffer.c_str(), bytesToSend, 0);
 	if (sentBytes == -1) {
 		LOG_ERROR << "Internal server error";
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 		return;
 	}
 
@@ -1412,8 +1414,7 @@ void connectionSendResponse(Server& server, int activeFd, Connection& connection
 
 	if (connection.m_request.shallCloseConnection) {
 		LOG_DEBUG << "Closing connection";
-		close(activeFd);
-		connection.m_status = Connection::Closed;
+		server.removeConnection(activeFd);
 	} else {
 		LOG_DEBUG << "Connection alive";
 		server.modifyEvent(activeFd, EPOLLIN);
@@ -1456,8 +1457,6 @@ void checkForTimeout(Server& server)
 {
 	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
 		 iter != server.getConnections().end(); ++iter) {
-		if (iter->second.m_status == Connection::Closed)
-			continue;
 		const time_t timeSinceLastEvent = std::time(0) - iter->second.m_timeSinceLastEvent;
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
@@ -1469,27 +1468,6 @@ void checkForTimeout(Server& server)
 }
 
 /* ====== CLEANUP ====== */
-
-/**
- * @brief Iterates through all connections and removes closed ones.
- *
- * The for loop through the connections map has no increment statement because the
- * iterator is incremented in the loop body. If .erase() is called on an iterator,
- * it is invalidated.
- *
- * @param server The server object to cleanup closed connections for.
- */
-void cleanupClosedConnections(Server& server)
-{
-	for (std::map<int, Connection>::iterator iter = server.getConnections().begin();
-		 iter != server.getConnections().end();
-		/* no iter*/) {
-		if (iter->second.m_status == Connection::Closed)
-			server.getConnections().erase(iter++);
-		else
-			++iter;
-	}
-}
 
 /**
  * @brief Iterates through all connections, closes and removes idle ones.
@@ -1538,7 +1516,6 @@ void shutdownServer(Server& server)
 
 	LOG_DEBUG << "Cleanup idle connections";
 	cleanupIdleConnections(server);
-	cleanupClosedConnections(server);
 
 	LOG_DEBUG << "Waiting for connections to finish";
 	while (g_signalStatus == SIGQUIT && !server.getConnections().empty()) {
@@ -1550,7 +1527,6 @@ void shutdownServer(Server& server)
 		}
 		checkForTimeout(server);
 		cleanupIdleConnections(server);
-		cleanupClosedConnections(server);
 	}
 	if (g_signalStatus != SIGQUIT)
 		LOG_INFO << "Graceful shutdown interrupted with signal " << g_signalStatus;

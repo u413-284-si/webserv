@@ -39,3 +39,45 @@ def test_directory_no_autoindex():
     print("Request for directory without autoindex")
     response = requests.get("http://localhost:8080/css/")
     assert response.status_code == 403
+
+def test_no_permission_to_append():
+    print("Chmod 000 existing_file and try to append")
+    # Body to send
+    existing_content = "Hello, World!\n"
+    payload = "It is me!"
+    dst_file_path = "/workspaces/webserv/html/uploads/existing_file.txt"
+    with open(dst_file_path, "w") as file:
+        file.write(existing_content)
+    original_permissions = stat.S_IMODE(os.stat(dst_file_path).st_mode)
+    # Change permissions to 000
+    os.chmod(dst_file_path, 0o000)
+
+    response = requests.post("http://localhost:8080/uploads/existing_file.txt", data=payload)
+
+    # Restore the original permissions
+    os.chmod(dst_file_path, original_permissions)
+
+    assert response.status_code == 403
+    # Check if file was not appended
+    with open(dst_file_path, "r") as file:
+        content = file.read()
+        assert content.find(payload) == -1
+    # Delete created file
+    os.remove(dst_file_path)
+
+def test_missing_dir_in_path():
+    print("Request to /workspaces/webserv/html/uploads/not_exist/upload.txt")
+    payload = "Hello World!"
+
+    response = requests.post("http://localhost:8080/uploads/not_exist/upload.txt", data=payload)
+
+    assert response.status_code == 404
+
+def test_method_not_allowed():
+    print("Request to /")
+    payload = "Hello World!"
+
+    response = requests.post("http://localhost:8080/", data=payload)
+
+    assert response.status_code == 405
+    assert response.headers["allow"] == "GET"

@@ -125,65 +125,6 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 	return string;
 }
 
-/**
- * @brief Returns reason phrase for a given status code.
- *
- * In case of NoStatus returns the string "NO STATUS CODE".
- * @param statusCode Status code.
- * @return std::string Reason phrase.
- */
-std::string statusCodeToReasonPhrase(statusCode statusCode)
-{
-	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
-		statusCode = StatusInternalServerError;
-
-	switch (statusCode) {
-	case NoStatus:
-		return "NO STATUS CODE";
-	case StatusOK:
-		return "OK";
-	case StatusCreated:
-		return "Created";
-	case StatusMovedPermanently:
-		return "Moved Permanently";
-	case StatusPermanentRedirect:
-		return "Permanent Redirect";
-	case StatusBadRequest:
-		return "Bad Request";
-	case StatusForbidden:
-		return "Forbidden";
-	case StatusNotFound:
-		return "Not Found";
-	case StatusRequestEntityTooLarge:
-		return "Request Entity Too Large";
-	case StatusMethodNotAllowed:
-		return "Method Not Allowed";
-	case StatusRequestTimeout:
-		return "Request Timeout";
-	case StatusRequestHeaderFieldsTooLarge:
-		return "Request Header Fields Too Large";
-	case StatusInternalServerError:
-		return "Internal Server Error";
-	case StatusMethodNotImplemented:
-		return "Not Implemented";
-	case StatusNonSupportedVersion:
-		return "HTTP Version Not Supported";
-	}
-}
-
-/**
- * @brief Check if a given status code is a redirection.
- *
- * A redirection is a 3xx status code.
- * @param statusCode Status code to check.
- * @return true If the status code is a redirection.
- * @return false If the status code is not a redirection.
- */
-bool isRedirectionStatus(statusCode statusCode)
-{
-	return (statusCode >= StatusMovedPermanently && statusCode <= StatusPermanentRedirect);
-}
-
 std::string methodToString(Method method)
 {
 	assert(method >= MethodGet && method <= MethodCount);
@@ -275,6 +216,34 @@ bool isPortValid(const std::string& port)
  * @param str The string to be converted to lowercase.
  */
 void lowercase(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::tolower); }
+
+/**
+ * @brief Capitalizes the first letter of each word in a string.
+ *
+ * This function takes a string as input and capitalizes the first letter of each word.
+ * Words are considered to be sequences of characters separated by spaces or hyphens.
+ * All other characters in the words are converted to lowercase.
+ *
+ * @param input The input string to be transformed.
+ * @return A new string with the first letter of each word capitalized.
+ */
+std::string capitalizeWords(const std::string& input)
+{
+	std::string result = input;
+	bool capitalizeNext = true;
+
+	for (size_t i = 0; i < result.size(); ++i) {
+		if (result.at(i) == ' ' || result.at(i) == '-') {
+			capitalizeNext = true;
+		} else if (capitalizeNext) {
+			result.at(i) = static_cast<signed char>(std::toupper(result.at(i)));
+			capitalizeNext = false;
+		} else {
+			result.at(i) = static_cast<signed char>(std::tolower(result.at(i)));
+		}
+	}
+	return result;
+}
 
 /**
  * @brief Finds a substring at the beginning of input string and replaces it with another string.
