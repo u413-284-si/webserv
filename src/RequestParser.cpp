@@ -433,7 +433,7 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 
 		// Step 1: Parse chunk size
 		if (request.chunkSize == -1) { // Not currently parsing a chunk
-			size_t newlinePos = bodyBuffer.find("\r\n", request.currParsingPos);
+			const size_t newlinePos = bodyBuffer.find("\r\n", request.currParsingPos);
 			if (newlinePos == std::string::npos) // Incomplete chunk size indication, wait for more data
 				return;
 
@@ -462,8 +462,8 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 		}
 
 		// Step 2: Parse chunk data
-		size_t remainingData = bodyBuffer.size() - request.currParsingPos;
-		size_t requiredData = request.chunkSize + 2; // Chunk data + \r\n
+		const size_t remainingData = bodyBuffer.size() - request.currParsingPos;
+		const size_t requiredData = request.chunkSize + 2; // Chunk data + \r\n
 
 		if (remainingData < requiredData) // Incomplete chunk data, wait for more data
 			return;
