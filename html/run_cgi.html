@@ -59,57 +59,23 @@
 			<h2>Script upload.py</h2>
 			<p>This script can upload a simple textfile</p>
 			<br>
-			<form id="uploadForm" method="POST" action="http://127.0.0.1:8081/cgi-bin/upload.py">
+			<form id="uploadForm" method="POST" action="http://127.0.0.1:8081/cgi-bin/create_textfile.py">
 				<label for="filename">Filename:</label>
-				<input type="text" id="filename" name="filename" value="uploaded_file.txt" required><br><br>
-
-				<label for="directory">Directory (optional):</label>
-				<input type="text" id="directory" name="directory" value=""><br><br>
+				<input type="text" id="filename" name="filename" value="example.txt" required><br><br>
 
 				<label for="content">Content:</label><br>
 				<textarea id="content" name="content" rows="4" cols="50" placeholder="Enter text to be uploaded..." required></textarea><br><br>
 
-				<button type="submit">Upload</button>
+				<label for="directory">Select Sub-Directory in uploads:</label><br>
+				<select id="directory" name="directory">
+					<option value="">Default</option>
+					<option value="tmp">Temporary</option>
+					<option value="documents">Documents</option>
+					<option value="notes">Notes</option>
+				</select><br><br>
+
+				<button type="submit">Create file</button>
 			</form>
-
-			<script>
-				// When the form is submitted, we will intercept it and send it as a POST request via fetch
-				document.getElementById('uploadForm').addEventListener('submit', function(event) {
-					event.preventDefault();  // Prevent default form submission
-
-					const filename = document.getElementById('filename').value;
-					const directory = document.getElementById('directory').value;
-					const content = document.getElementById('content').value;
-
-					// Construct the query string for filename and optional directory
-					const queryString = `filename=${encodeURIComponent(filename)}&directory=${encodeURIComponent(directory)}`;
-
-					// Send the POST request with fetch API
-					fetch(`http://127.0.0.1:8081/cgi-bin/upload.py?${queryString}`, {
-						method: 'POST',
-						body: content,  // The content of the file (text data)
-						headers: {
-							'Content-Type': 'text/plain'  // Sending raw text content
-						}
-					})
-					.then(response => {
-						console.log('Response Status:', response.status); // Log the status code
-						if (response.ok) {  // Only handle successful responses
-							return response.text();
-						} else {
-							throw new Error('Upload failed');  // Throw an error if status is not OK
-						}
-					})
-					.then(data => {
-						alert('File uploaded successfully!');
-						console.log('Server Response:', data);  // You can log the response or show it to the user
-					})
-					.catch(error => {
-						alert('Error uploading file');
-						console.error('Error:', error);
-					});
-				});
-			</script>
 		</section>
 	</main>
 
