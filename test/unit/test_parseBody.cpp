@@ -29,6 +29,7 @@ TEST_F(ParseBodyTest, ChunkedBody)
 
 	// Assert
 	EXPECT_EQ(request.body, "hello world!");
+	EXPECT_EQ(request.headers["content-length"], "12");
 }
 
 TEST_F(ParseBodyTest, ChunkedBodyWithNewline)
@@ -41,6 +42,7 @@ TEST_F(ParseBodyTest, ChunkedBodyWithNewline)
 
 	// Assert
 	EXPECT_EQ(request.body, "hello w\n\norld!");
+	EXPECT_EQ(request.headers["content-length"], "14");
 }
 
 TEST_F(ParseBodyTest, ChunkedBodyWithCRLF)
@@ -53,6 +55,7 @@ TEST_F(ParseBodyTest, ChunkedBodyWithCRLF)
 
 	// Assert
 	EXPECT_EQ(request.body, "hello w\r\norld!");
+	EXPECT_EQ(request.headers["content-length"], "14");
 }
 
 TEST_F(ParseBodyTest, ChunkedBodyWith0CRLFCRLF)
@@ -65,6 +68,7 @@ TEST_F(ParseBodyTest, ChunkedBodyWith0CRLFCRLF)
 
 	// Assert
 	EXPECT_EQ(request.body, "hello0\r\n\r\nworld!");
+	EXPECT_EQ(request.headers["content-length"], "16");
 }
 
 // INVALID BODY TEST SUITE

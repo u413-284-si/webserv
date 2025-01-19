@@ -427,7 +427,6 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
 {
 	LOG_DEBUG << "Parsing chunked body...";
-	size_t length = 0;
 
 	while (request.currParsingPos < bodyBuffer.size()) {
 
@@ -455,7 +454,7 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 					throw std::runtime_error(ERR_MISS_CRLF);
 				}
 				request.isCompleteBody = true;
-				request.headers["content-length"] = webutils::toString(length);
+				request.headers["content-length"] = webutils::toString(request.body.size());
 				LOG_DEBUG << "Successfully parsed chunked body";
 				return;
 			}
@@ -477,7 +476,6 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 
 		request.body.append(bodyBuffer, request.currParsingPos, request.chunkSize);
 		request.currParsingPos += requiredData; // Move past the current chunk
-		length += request.chunkSize;
 
 		// Reset for next chunk
 		request.chunkSize = -1;
