@@ -510,7 +510,9 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request);
 	contentEndPos -= 2; // Remove the CRLF at the end
 
-	request.body = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
+	request.body.erase(0, contentStartPos);
+    request.body.erase(contentEndPos - contentStartPos);
+
 }
 
 /* ====== CHECKS ====== */
