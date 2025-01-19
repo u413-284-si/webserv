@@ -60,7 +60,20 @@
 						const radioButton = document.createElement('input');
 						radioButton.type = 'radio';
 						radioButton.name = 'fileSelection'; // Grouping radio buttons
-						radioButton.value = row.querySelector('td a').href; // Set file path as value
+
+						// Get the file path
+						const filePath = row.querySelector('td a').href;
+
+						// Check if the file path ends with a slash
+						const isDirectory = filePath.endsWith('/');
+
+						if (isDirectory) {
+							row.classList.add('directory'); // Optional: Add a visual indicator
+							radioButton.disabled = true; // Disable the radio button for directories
+						} else {
+							radioButton.value = filePath; // Only set value for files
+						}
+
 						radioCell.appendChild(radioButton);
 						row.insertBefore(radioCell, row.firstChild); // Insert radio button at the start of each row
 					}
