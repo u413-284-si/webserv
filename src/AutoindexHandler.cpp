@@ -15,9 +15,10 @@ AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
  *
  * Generates an HTML response with the contents of a directory.
  * The response contains a table with the file names, last modified time and file size.
- * The file names are links to the files.
+ * The file names are relative links to the files constructed with the uriPath parameter.
  * If a function throws, returns empty string.
  * @param path Path to directory.
+ * @param uriPath URI path which lead to the directory.
  * @return std::string HTML response.
  */
 std::string AutoindexHandler::execute(const std::string& path, const std::string& uriPath)
