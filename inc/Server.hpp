@@ -152,8 +152,8 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCGIRequested(Connection& connection);
 void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
 void handleBody(Server& server, int activeFd, Connection& connection);
-void connectionSendToCGI(Server& server, int activeFd, Connection& connection);
-void connectionReceiveFromCGI(Server& server, int activeFd, Connection& connection);
+void connectionSendToCGI(Server& server, Connection& connection);
+void connectionReceiveFromCGI(Server& server, Connection& connection);
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection);
 void connectionSendResponse(Server& server, int activeFd, Connection& connection);
 void connectionHandleTimeout(Server& server, int activeFd, Connection& connection);

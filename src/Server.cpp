@@ -1186,7 +1186,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		if (connection.m_request.hasMultipartFormdata)
 			server.decodeMultipartFormdata(connection.m_request);
 
-		if (connection.m_request.hasCGI)
+		if (connection.m_request.hasCGI) {
 			connection.m_status = Connection::SendToCGI;
 			if (connection.m_request.method == MethodPost
 				&& !server.registerCGIFileDescriptor(connection.m_pipeToCGIWriteEnd, EPOLLOUT, connection)) {
