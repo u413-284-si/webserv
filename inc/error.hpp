@@ -37,7 +37,6 @@
 #define ERR_ERROR_PAGE_PATH_NO_SLASH "Error page path does not start with a slash"
 #define ERR_INVALID_RETURN_CODE "Invalid return code"
 #define ERR_INVALID_RETURN_PARAMS "Invalid amount of parameters for return"
-#define ERR_UNCLOSED_DOUBLE_QUOTES "Invalid amount of parameters for return (unclosed double quotes)"
 #define ERR_INVALID_CGI_EXTENSION "Invalid CGI extension"
 #define ERR_MULTIPLE_CGI_EXTENSIONS "More than one CGI extension"
 #define ERR_MULTIPLE_DOTS_IN_CGI_EXTENSION "More than one dot in CGI extension"
@@ -46,7 +45,7 @@
 #define ERR_INVALID_SERVER_DIRECTIVE "Invalid server directive"
 #define ERR_INVALID_LOCATION_DIRECTIVE "Invalid location directive"
 #define ERR_DIRECTIVE_NO_VALUE(directive) ("'" + (directive) + "' directive has no value")
-#define ERR_OPEN_DOUBLE_QUOTES "Open double quotes"
+#define ERR_TOO_MANY_DOUBLE_QUOTES "Text can only be enclosed within ONE pair of double quotes"
 
 // HTTP REQUEST LINE ERRORS
 #define ERR_MISS_SINGLE_SPACE "Invalid HTTP request: missing single space"

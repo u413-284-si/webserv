@@ -1045,7 +1045,6 @@ std::string ConfigFileParser::convertBlockToString(Block block) const
  * @brief Removes double quotes from a string
  *
  * The double quotes are removed from the beginning and the end of the string
- * If there is an odd number of double quotes, an error is thrown
  *
  * @param str The string to remove double quotes from
  */
@@ -1054,25 +1053,20 @@ void ConfigFileParser::removeEnclosingDoubleQuotes(std::string& str)
 	size_t leadingDoubleQuotes = 0;
 	size_t trailingDoubleQuotes = 0;
 
-	size_t leadingIndex = 0;
-	while (leadingIndex < str.length()) {
-		if (str[leadingDoubleQuotes] == '"')
-			leadingDoubleQuotes++;
-		leadingIndex++;
+	while (leadingDoubleQuotes < str.length() && str[leadingDoubleQuotes] == '"') {
+		leadingDoubleQuotes++;
 	}
 
-	size_t trailingIndex = str.length() - 1;
-	while (trailingIndex > leadingDoubleQuotes) {
-		if (str[trailingIndex] == '"')
-			trailingDoubleQuotes++;
+	size_t trailingIndex = str.length();
+	while (trailingIndex > leadingDoubleQuotes && str[trailingIndex - 1] == '"') {
+		trailingDoubleQuotes++;
 		trailingIndex--;
 	}
 
-	if (leadingDoubleQuotes != trailingDoubleQuotes)
-		throw std::runtime_error(ERR_OPEN_DOUBLE_QUOTES);
+	if (leadingDoubleQuotes > 1 || trailingDoubleQuotes > 1)
+		throw std::runtime_error(ERR_TOO_MANY_DOUBLE_QUOTES);
 
-	str.erase(0, leadingDoubleQuotes);
-	str.erase(str.length() - trailingDoubleQuotes, trailingDoubleQuotes);
+	str = str.substr(leadingDoubleQuotes, trailingIndex - leadingDoubleQuotes);
 }
 
 /**
