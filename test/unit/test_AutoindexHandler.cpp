@@ -15,7 +15,7 @@ TEST(AutoindexHandler, OpenDirectoyThrow)
 	EXPECT_CALL(fileSystemPolicy, openDirectory)
 	.WillOnce(testing::Throw(std::runtime_error("openDirectory failed")));
 
-	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/");
+	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/", "/test");
 	EXPECT_EQ(autoindex, "");
 }
 
@@ -31,6 +31,6 @@ TEST(AutoindexHandler, ReadDirectoryThrow)
 	EXPECT_CALL(fileSystemPolicy, closeDirectory)
 	.WillOnce(testing::Return(0));
 
-	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/");
+	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/", "/test");
 	EXPECT_EQ(autoindex, "");
 }
