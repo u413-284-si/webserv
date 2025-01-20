@@ -77,11 +77,13 @@ protected:
  * 56. Return contains invalid url
  * 57. Return contains invalid amount of parameters
  * 58. Return contains invalid amount of parameters with double quotes
- * 59. Return contains unclosed double quote
- * 60. Return contains no value
- * 61. Invalid directives outside of server block
- * 62. Several server names
- * 63. Server name contains no value
+ * 59. Return contains invalid amount of parameters with unclosed double quote
+ * 60. Return contains code, text and unclosed double quotes
+ * 61. Return contains code, text and too many double quotes
+ * 62. Return contains no value
+ * 63. Invalid directives outside of server block
+ * 64. Several server names
+ * 65. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -939,14 +941,42 @@ TEST_F(InvalidConfigFileTests, ReturnContainsInvalidAmountOfParametersWithDouble
 		std::runtime_error);
 }
 
-TEST_F(InvalidConfigFileTests, ReturnContainsUnclosedQuote)
+TEST_F(InvalidConfigFileTests, ReturnContainsInvalidAmoutOfParametersUnclosedQuote)
 {
 	EXPECT_THROW(
 		{
 			try {
-				m_configFileParser.parseConfigFile("config_files/return_unclosed_quote.conf");
+				m_configFileParser.parseConfigFile("config_files/return_invalid_amount_parameters_unclosed_quote.conf");
 			} catch (const std::exception& e) {
-				EXPECT_STREQ("Open double quotes", e.what());
+				EXPECT_STREQ("Invalid amount of parameters for return", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsCodeTextAndUnclosedQuote)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_code_and_text_unclosed_quotes.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Invalid amount of parameters for return", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ReturnContainsCodeAndTextMultipleQuotes)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/return_code_and_text_multiple_quotes.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Text can only be enclosed within ONE pair of double quotes", e.what());
 				throw;
 			}
 		},
