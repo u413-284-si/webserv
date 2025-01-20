@@ -73,4 +73,5 @@ private:
 	void skipBlockBegin(Block block);
 	void skipLocationBlockPath(size_t& index);
 	bool isEmptyLocationBlock(const std::string& locationBlockContent) const;
+	bool isEmptyServerBlock(const std::string& serverBlockContent) const;
 };

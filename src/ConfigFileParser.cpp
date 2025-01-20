@@ -258,7 +258,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	m_configFile.servers.push_back(server);
 
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent)
-		&& serverBlockConfig.serverBlockContent.find_first_not_of(s_whitespace) != std::string::npos)
+		&& !isEmptyServerBlock(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
@@ -646,5 +646,20 @@ bool ConfigFileParser::isEmptyLocationBlock(const std::string& locationBlockCont
 	const size_t openingCurlyBracketIndex = locationBlockContent.find('{');
 	const size_t firstNonWhitespaceAfterCurly
 		= locationBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);
+	return (firstNonWhitespaceAfterCurly == std::string::npos);
+}
+
+/**
+ * @brief Checks if the server block is empty
+ *
+ * @param serverBlockContent The content of the server block
+ * @return true When the server block is empty
+ * @return false When the server block is not empty
+ */
+bool ConfigFileParser::isEmptyServerBlock(const std::string& serverBlockContent) const
+{
+	const size_t openingCurlyBracketIndex = serverBlockContent.find('{');
+	const size_t firstNonWhitespaceAfterCurly
+		= serverBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);
 	return (firstNonWhitespaceAfterCurly == std::string::npos);
 }
