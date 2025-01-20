@@ -38,4 +38,4 @@ private:
 };
 
 std::string getDefaultErrorPage(statusCode status);
-std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount]);
+std::string constructAllowHeader(const bool (&allowMethods)[MethodCount]);

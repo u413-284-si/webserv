@@ -39,7 +39,7 @@ void ResponseBodyHandler::execute()
 		m_responseHeaders["location"] = m_request.targetResource;
 
 	if (m_request.httpStatus == StatusMethodNotAllowed)
-		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
+		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowMethods);
 
 	if (m_request.hasReturn) {
 		const bool isEmpty = m_request.targetResource.empty();
@@ -431,18 +431,18 @@ std::string getDefaultErrorPage(statusCode statusCode)
  * Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join
  * them. If at the end at least one method was appended, the last ", " is removed.
  * If no methods were appended, an empty string is returned.
- * @param allowedMethods Array of allowed methods.
+ * @param allowMethods Array of allowed methods.
  * @return std::string Constructed Allow header.
  */
-std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount])
+std::string constructAllowHeader(const bool (&allowMethods)[MethodCount])
 {
 	std::string allowHeader;
 
-	if (allowedMethods[MethodGet])
+	if (allowMethods[MethodGet])
 		allowHeader.append("GET, ");
-	if (allowedMethods[MethodPost])
+	if (allowMethods[MethodPost])
 		allowHeader.append("POST, ");
-	if (allowedMethods[MethodDelete])
+	if (allowMethods[MethodDelete])
 		allowHeader.append("DELETE, ");
 
 	if (!allowHeader.empty())
