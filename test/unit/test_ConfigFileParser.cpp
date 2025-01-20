@@ -232,20 +232,22 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
  * 1. A standard valid file
  * 2. File does not contain the http block
  * 3. File does not contain any server block
- * 4. Several directives on one line
- * 5. Listen directive contains only ip
- * 6. Listen directive contains only port
- * 7. Listen contains ip and port
- * 8. Listen contains only localhost
- * 9. Listen contains localhost and port
- * 10. Bracket under server directive
- * 11. Bracket under location directive
- * 12. Whitespaces between server directive and opening bracket
- * 13. Directive and opening bracket on the same line
- * 14. Directive and closing bracket on the same line
- * 15. Directive and closing bracket on the same line under server directive
- * 16. Location path
- * 17. Inheritance of the server directives root, max_body_size and error_page to location
+ * 4. File contains empty server block
+ * 5. File contains empty location block
+ * 6. Several directives on one line
+ * 7. Listen directive contains only ip
+ * 8. Listen directive contains only port
+ * 9. Listen contains ip and port
+ * 10. Listen contains only localhost
+ * 11. Listen contains localhost and port
+ * 12. Bracket under server directive
+ * 13. Bracket under location directive
+ * 14. Whitespaces between server directive and opening bracket
+ * 15. Directive and opening bracket on the same line
+ * 16. Directive and closing bracket on the same line
+ * 17. Directive and closing bracket on the same line under server directive
+ * 18. Location path
+ * 19. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -287,6 +289,18 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 	initVirtualServers(server, 10, server.getServerConfigs());
 	std::map<int, Socket> virtualServers = server.getVirtualServers();
 	EXPECT_EQ(0, virtualServers.size());
+}
+
+TEST_F(ValidConfigFileTests, FileContainsEmptyServerBlock)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/empty_server.conf"));
+}
+
+TEST_F(ValidConfigFileTests, FileContainsEmptyLocationBlock)
+{
+	ConfigFile configFile;
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/empty_location.conf"));
 }
 
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
