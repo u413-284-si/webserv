@@ -786,9 +786,9 @@ void ConfigFileParser::readReturns(const std::string& returns)
 		if (returnUrlOrText.at(0) != '"' && returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)
 			throw std::runtime_error(ERR_INVALID_RETURN_PARAMS);
 		if (returnUrlOrText.find('"') != std::string::npos) {
-			removeEnclosingDoubleQuotes(returnUrlOrText);
-			if (returns.at(returns.length() - 1) != '"')
+			if (returnUrlOrText.at(returnUrlOrText.length() - 1) != '"')
 				throw std::runtime_error(ERR_INVALID_RETURN_PARAMS);
+			removeEnclosingDoubleQuotes(returnUrlOrText);
 		}
 
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;
