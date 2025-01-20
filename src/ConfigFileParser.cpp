@@ -294,9 +294,7 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 	readAndTrimLine(locationBlockContent, '{');
 	readLocationBlockPath();
 
-	std::string contentWithoutLocationPathLine = removeLocationPathLineFromContent(locationBlockContent);
-	if (isSemicolonMissing(locationBlockContent)
-		&& contentWithoutLocationPathLine.find_first_not_of(s_whitespace) != std::string::npos)
+	if (isSemicolonMissing(locationBlockContent) && !isEmptyLocationBlock(locationBlockContent))
 		throw std::runtime_error("Unexpected '}'");
 
 	while (readAndTrimLine(locationBlockContent, ';'))
@@ -637,19 +635,16 @@ void ConfigFileParser::skipLocationBlockPath(size_t& index)
 }
 
 /**
- * @brief Removes the location path line from the location block content
- *
- * Removes the line which contains the directive 'location' and the corresponding path from the location block content
+ * @brief Checks if the location block is empty
  *
  * @param locationBlockContent The content of the location block
- * @return std::string The content without the location path line
+ * @return true When the location block is empty
+ * @return false When the location block is not empty
  */
-std::string ConfigFileParser::removeLocationPathLineFromContent(const std::string& locationBlockContent) const
+bool ConfigFileParser::isEmptyLocationBlock(const std::string& locationBlockContent) const
 {
 	const size_t openingCurlyBracketIndex = locationBlockContent.find('{');
-	std::string content = locationBlockContent;
-
-	content.erase(0, openingCurlyBracketIndex + 1);
-
-	return content;
+	const size_t firstNonWhitespaceAfterCurly
+		= locationBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);
+	return (firstNonWhitespaceAfterCurly == std::string::npos);
 }

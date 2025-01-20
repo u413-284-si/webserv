@@ -72,5 +72,5 @@ private:
 	std::string convertBlockToString(Block block) const;
 	void skipBlockBegin(Block block);
 	void skipLocationBlockPath(size_t& index);
-	std::string removeLocationPathLineFromContent(const std::string& locationBlockContent) const;
+	bool isEmptyLocationBlock(const std::string& locationBlockContent) const;
 };
