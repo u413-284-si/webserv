@@ -104,7 +104,7 @@ public:
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
-	static void parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request);
+	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
 	void decodeMultipartFormdata(HTTPRequest& request);
 	void resetRequestStream();
 

@@ -38,7 +38,7 @@ public:
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
-	static void parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request);
+	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
 	static void decodeMultipartFormdata(HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();

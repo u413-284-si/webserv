@@ -424,7 +424,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
  * @param request The HTTP request object to be filled with the parsed body data.
  * @throws std::runtime_error if the chunk size is too large or if the chunk data is malformed.
  */
-void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
+void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request)
 {
 	LOG_DEBUG << "Parsing chunked body...";
 
@@ -455,6 +455,7 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 				}
 				request.isCompleteBody = true;
 				request.headers["content-length"] = webutils::toString(request.body.size());
+                bodyBuffer.clear();
 				LOG_DEBUG << "Successfully parsed chunked body";
 				return;
 			}
@@ -475,7 +476,8 @@ void RequestParser::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest&
 		}
 
 		request.body.append(bodyBuffer, request.currParsingPos, request.chunkSize);
-		request.currParsingPos += requiredData; // Move past the current chunk
+        bodyBuffer.erase(0, request.currParsingPos + requiredData);
+		request.currParsingPos = 0; 
 
 		// Reset for next chunk
 		request.chunkSize = -1;

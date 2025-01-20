@@ -462,7 +462,7 @@ void Server::parseHeader(const std::string& requestString, HTTPRequest& request)
  *
  * @param request The HTTPRequest object to store the parsed body.
  */
-void Server::parseChunkedBody(const std::string& bodyBuffer, HTTPRequest& request)
+void Server::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request)
 {
 	RequestParser::parseChunkedBody(bodyBuffer, request);
 }
