@@ -232,22 +232,21 @@ TEST_F(InvalidConfigFileTests, InvalidDirectivesOutsideOfServerBlock)
  * 1. A standard valid file
  * 2. File does not contain the http block
  * 3. File does not contain any server block
- * 4. File contains empty server block
- * 5. File contains empty location block
- * 6. Several directives on one line
- * 7. Listen directive contains only ip
- * 8. Listen directive contains only port
- * 9. Listen contains ip and port
- * 10. Listen contains only localhost
- * 11. Listen contains localhost and port
- * 12. Bracket under server directive
- * 13. Bracket under location directive
- * 14. Whitespaces between server directive and opening bracket
- * 15. Directive and opening bracket on the same line
- * 16. Directive and closing bracket on the same line
- * 17. Directive and closing bracket on the same line under server directive
- * 18. Location path
- * 19. Inheritance of the server directives root, max_body_size and error_page to location
+ * 4. File contains empty server block and empty location block
+ * 5. Several directives on one line
+ * 6. Listen directive contains only ip
+ * 7. Listen directive contains only port
+ * 8. Listen contains ip and port
+ * 9. Listen contains only localhost
+ * 10. Listen contains localhost and port
+ * 11. Bracket under server directive
+ * 12. Bracket under location directive
+ * 13. Whitespaces between server directive and opening bracket
+ * 14. Directive and opening bracket on the same line
+ * 15. Directive and closing bracket on the same line
+ * 16. Directive and closing bracket on the same line under server directive
+ * 17. Location path
+ * 18. Inheritance of the server directives root, max_body_size and error_page to location
  */
 
 TEST_F(ValidConfigFileTests, ValidFile)
@@ -291,16 +290,25 @@ TEST_F(InvalidConfigFileTests, FileMissesServerBlock)
 	EXPECT_EQ(0, virtualServers.size());
 }
 
-TEST_F(ValidConfigFileTests, FileContainsEmptyServerBlock)
+TEST_F(ValidConfigFileTests, FileContainsEmptyServerBlockAndLocationBlock)
 {
 	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/empty_server.conf"));
-}
+	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/empty_server_and_location.conf"));
 
-TEST_F(ValidConfigFileTests, FileContainsEmptyLocationBlock)
-{
-	ConfigFile configFile;
-	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("config_files/empty_location.conf"));
+	// Server block
+	EXPECT_EQ("html", configFile.servers[0].root);
+	EXPECT_EQ("0.0.0.0", configFile.servers[0].host);
+	EXPECT_EQ("8080", configFile.servers[0].port);
+	EXPECT_EQ(constants::g_oneMegabyte, configFile.servers[0].maxBodySize);
+
+	// Location block
+	EXPECT_EQ("/", configFile.servers[0].locations[0].path);
+	EXPECT_EQ("html", configFile.servers[0].locations[0].root);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].hasAutoindex);
+	EXPECT_EQ(constants::g_oneMegabyte, configFile.servers[0].locations[0].maxBodySize);
+	EXPECT_EQ(true, configFile.servers[0].locations[0].allowedMethods[MethodGet]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowedMethods[MethodPost]);
+	EXPECT_EQ(false, configFile.servers[0].locations[0].allowedMethods[MethodDelete]);
 }
 
 TEST_F(ValidConfigFileTests, FileContainsSeveralDirectivesOnOneLine)
