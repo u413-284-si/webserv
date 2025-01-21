@@ -467,8 +467,7 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
 		if (remainingData < requiredData) // Incomplete chunk data, wait for more data
 			return;
 
-		if (bodyBuffer.at(request.chunkSize) != '\r'
-			|| bodyBuffer.at(request.chunkSize + 1) != '\n') {
+		if (bodyBuffer.at(request.chunkSize) != '\r' || bodyBuffer.at(request.chunkSize + 1) != '\n') {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
@@ -494,39 +493,59 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
  */
 void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 {
-	size_t boundaryStartPos = checkForString("--" + request.boundary, 0, request, "");
-	boundaryStartPos += request.boundary.size() + 2;
-
-	std::string loweredBody = request.body;
-	webutils::lowercase(loweredBody);
-
-	const size_t dispositionPos = checkForString("content-disposition:", boundaryStartPos, request, loweredBody);
-
-	const std::string filename = "filename=\"";
-	size_t filenameStartPos = checkForString(filename, dispositionPos, request, "");
-	filenameStartPos += filename.size();
-
-	const size_t filenameEndPos = checkForString("\"", filenameStartPos, request, "");
-	request.targetResource += request.body.substr(filenameStartPos, filenameEndPos - filenameStartPos);
-	LOG_DEBUG << "New target resource: " << request.targetResource;
-
-	const size_t contentTypePos = checkForString("content-type:", filenameEndPos, request, loweredBody);
-
-	size_t contentStartPos = checkForString("\r\n\r\n", contentTypePos, request, "");
-	contentStartPos += 4;
-
+	size_t currentBoundaryEndPos = checkForString("--" + request.boundary, 0, request, "");
+	bool isFirstFileUpload = true;
+	std::string extractedBody;
 	const std::string endBoundary = "--" + request.boundary + "--";
-	size_t contentEndPos = checkForString(endBoundary, contentStartPos, request, "");
-	contentEndPos -= 2; // Remove the CRLF at the end
 
-	if (request.body.find(filename, contentEndPos) != std::string::npos) {
-		request.httpStatus = StatusBadRequest;
-		request.shallCloseConnection = true;
-		throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
-	}
+	do {
+		currentBoundaryEndPos += request.boundary.size() + 2;
+		size_t nextBoundaryPos = checkForString("--" + request.boundary, currentBoundaryEndPos, request, "");
 
-	request.body.erase(0, contentStartPos);
-	request.body.erase(contentEndPos - contentStartPos);
+		// Find form header section and lower case it
+		size_t contentStartPos = checkForString("\r\n\r\n", currentBoundaryEndPos, request, "");
+		std::string loweredFormHeader
+			= request.body.substr(currentBoundaryEndPos, contentStartPos - currentBoundaryEndPos);
+		webutils::lowercase(loweredFormHeader);
+
+		// Check required headers
+		const size_t dispositionPos = checkForString("content-disposition:", 0, request, loweredFormHeader);
+		const std::string filename = "filename=\"";
+		size_t filenameStartPos = loweredFormHeader.find(filename, dispositionPos);
+		if (filenameStartPos != std::string::npos) {
+			filenameStartPos += filename.size();
+			checkForString("content-type", filenameStartPos, request, loweredFormHeader);
+
+			// Process file upload data
+			if (isFirstFileUpload) {
+				const size_t filenameEndPos = checkForString("\"", filenameStartPos, request, loweredFormHeader);
+				request.targetResource
+					+= request.body.substr(currentBoundaryEndPos + filenameStartPos, filenameEndPos - filenameStartPos);
+				LOG_DEBUG << "New target resource: " << request.targetResource;
+
+				contentStartPos += 4; // Skip the CRLFCRLF
+				const size_t contentEndPos = nextBoundaryPos - 2; // Remove the CRLF at the end
+				extractedBody = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
+
+				isFirstFileUpload = false;
+			} else {
+                request.httpStatus = StatusBadRequest;
+                request.shallCloseConnection = true;
+                throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
+            }
+		}
+		if (request.body.substr(nextBoundaryPos, endBoundary.size()) == endBoundary)
+			break;
+		currentBoundaryEndPos = nextBoundaryPos;
+	} while (currentBoundaryEndPos != std::string::npos);
+
+    if (extractedBody.empty()) {
+        request.httpStatus = StatusBadRequest;
+        request.shallCloseConnection = true;
+        throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
+    }
+
+	request.body = extractedBody;
 }
 
 /* ====== CHECKS ====== */
