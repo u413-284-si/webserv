@@ -428,16 +428,16 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
 {
 	LOG_DEBUG << "Parsing chunked body...";
 
-	while (request.currParsingPos < bodyBuffer.size()) {
+	while (!bodyBuffer.empty()) {
 
 		// Step 1: Parse chunk size
 		if (request.chunkSize == -1) { // Not currently parsing a chunk
-			const size_t newlinePos = bodyBuffer.find("\r\n", request.currParsingPos);
+			const size_t newlinePos = bodyBuffer.find("\r\n");
 			if (newlinePos == std::string::npos) // Incomplete chunk size indication, wait for more data
 				return;
 
-			std::string strChunkSize = bodyBuffer.substr(request.currParsingPos, newlinePos - request.currParsingPos);
-			request.currParsingPos = newlinePos + 2; // Move past \r\n
+			std::string strChunkSize = bodyBuffer.substr(0, newlinePos);
+			bodyBuffer.erase(0, newlinePos + 2); // Remove the parsed chunk size and \r\n
 
 			request.chunkSize = convertHex(strChunkSize);
 			if (request.chunkSize > s_maxChunkSize) {
@@ -447,37 +447,35 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
 			}
 
 			if (request.chunkSize == 0) { // Zero chunk size indicates the end of the body
-				if (bodyBuffer.size() - request.currParsingPos != 2 || bodyBuffer.at(request.currParsingPos) != '\r'
-					|| bodyBuffer.at(request.currParsingPos + 1) != '\n') { // Check for final CRLF
+				if (bodyBuffer.size() != 2 || bodyBuffer.at(0) != '\r'
+					|| bodyBuffer.at(1) != '\n') { // Check for final CRLF
 					request.httpStatus = StatusBadRequest;
 					request.shallCloseConnection = true;
 					throw std::runtime_error(ERR_MISS_CRLF);
 				}
 				request.isCompleteBody = true;
 				request.headers["content-length"] = webutils::toString(request.body.size());
-                bodyBuffer.clear();
 				LOG_DEBUG << "Successfully parsed chunked body";
 				return;
 			}
 		}
 
 		// Step 2: Parse chunk data
-		const size_t remainingData = bodyBuffer.size() - request.currParsingPos;
+		const size_t remainingData = bodyBuffer.size();
 		const size_t requiredData = request.chunkSize + 2; // Chunk data + \r\n
 
 		if (remainingData < requiredData) // Incomplete chunk data, wait for more data
 			return;
 
-		if (bodyBuffer.at(request.currParsingPos + request.chunkSize) != '\r'
-			|| bodyBuffer.at(request.currParsingPos + request.chunkSize + 1) != '\n') {
+		if (bodyBuffer.at(request.chunkSize) != '\r'
+			|| bodyBuffer.at(request.chunkSize + 1) != '\n') {
 			request.httpStatus = StatusBadRequest;
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_MISS_CRLF);
 		}
 
-		request.body.append(bodyBuffer, request.currParsingPos, request.chunkSize);
-        bodyBuffer.erase(0, request.currParsingPos + requiredData);
-		request.currParsingPos = 0; 
+		request.body.append(bodyBuffer, 0, request.chunkSize);
+		bodyBuffer.erase(0, requiredData);
 
 		// Reset for next chunk
 		request.chunkSize = -1;
@@ -627,7 +625,7 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 		std::vector<unsigned long> numValues;
 		for (size_t i = 0; i < strValues.size(); i++) {
 			char* endptr = NULL;
-            errno = 0;
+			errno = 0;
 			request.contentLength = std::strtoul(strValues[i].c_str(), &endptr, constants::g_decimalBase);
 			if (errno == ERANGE || request.contentLength == 0 || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;

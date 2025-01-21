@@ -25,7 +25,6 @@ struct HTTPRequest {
 	std::map<std::string, std::string> headers;
 	std::string body;
 	std::string boundary;
-	size_t currParsingPos;
 	long chunkSize;
 	unsigned long contentLength;
 	statusCode httpStatus;
