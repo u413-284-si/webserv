@@ -80,5 +80,5 @@ private:
 	static std::string removeDotSegments(const std::string& path, HTTPRequest& request);
 	static bool isMultipartFormdata(HTTPRequest& request);
 	static size_t checkForString(
-		const std::string& string, size_t startPos, HTTPRequest& request, const std::string& loweredBody);
+		const std::string& string, size_t startPos, const std::string& requestBody, const std::string& loweredFormHeader);
 };
