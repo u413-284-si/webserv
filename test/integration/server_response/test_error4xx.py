@@ -245,3 +245,13 @@ def test_4xx_file_too_big():
     assert response.status_code == 413
     # Check that file does not exist
     assert os.path.isfile(dst_file_path) == False
+
+def test_method_not_allowed():
+    print("Request to /")
+    url = "http://localhost:8080/"
+    payload = "Hello World!"
+
+    response = make_request(url, method="POST", data=payload)
+
+    assert response.status_code == 405
+    assert response.headers["allow"] == "GET"

@@ -38,6 +38,9 @@ void ResponseBodyHandler::execute()
 	if (isRedirectionStatus(m_request.httpStatus))
 		m_responseHeaders["location"] = m_request.targetResource;
 
+	if (m_request.httpStatus == StatusMethodNotAllowed)
+		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
+
 	if (m_request.hasReturn) {
 		const bool isEmpty = m_request.targetResource.empty();
 		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
@@ -126,8 +129,8 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
-    std::string loweredHeaders = headers;
-    webutils::lowercase(loweredHeaders);
+	std::string loweredHeaders = headers;
+	webutils::lowercase(loweredHeaders);
 
 	if (posHeadersEnd == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
@@ -136,7 +139,8 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		return;
 	}
 
-	if (loweredHeaders.find("content-type: ") == std::string::npos && loweredHeaders.find("location: ") == std::string::npos
+	if (loweredHeaders.find("content-type: ") == std::string::npos
+		&& loweredHeaders.find("location: ") == std::string::npos
 		&& loweredHeaders.find("status: ") == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
 		handleErrorBody();
@@ -411,4 +415,29 @@ std::string getDefaultErrorPage(statusCode statusCode)
 
 	ret += errorTail;
 	return (ret);
+}
+
+/**
+ * @brief Construct Allow header.
+ *
+ * Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join
+ * them. If at the end at least one method was appended, the last ", " is removed.
+ * If no methods were appended, an empty string is returned.
+ * @param allowedMethods Array of allowed methods.
+ * @return std::string Constructed Allow header.
+ */
+std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount])
+{
+	std::string allowHeader;
+
+	if (allowedMethods[MethodGet])
+		allowHeader.append("GET, ");
+	if (allowedMethods[MethodPost])
+		allowHeader.append("POST, ");
+	if (allowedMethods[MethodDelete])
+		allowHeader.append("DELETE, ");
+
+	if (!allowHeader.empty())
+		allowHeader.erase(allowHeader.size() - 2, 2);
+	return allowHeader;
 }
