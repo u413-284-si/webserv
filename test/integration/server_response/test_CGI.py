@@ -25,21 +25,22 @@ def test_CGI_time():
    assert response.status_code == 200
 
 def test_CGI_upload_file():
-   print("Upload file with /cgi-bin/upload.py")
-   # Query string parameters
-   query_params = {
-       "filename": "myfile.txt",
-       "directory": "documents"
+   print("Upload file with /cgi-bin/create_textfile.py")
+
+   form_data = {
+      "filename": "myfile.txt",
+      "content": "This is the content of the dudu.",
+      "directory": "documents"
    }
-   # Define body
-   payload = "This is the content of the dudu."
    dst_file_path = "/workspaces/webserv/html/uploads/documents/myfile.txt"
 
-   response = requests.post("http://127.0.0.1:8081/cgi-bin/upload.py", params=query_params, data=payload)
+   response = requests.post("http://127.0.0.1:8081/cgi-bin/create_textfile.py", data=form_data)
    assert response.status_code == 200
    assert response.headers["location"] == "/workspaces/webserv/html/uploads/documents/myfile.txt"
    # Check if file exists
-   assert os.path.isfile(dst_file_path)
+   with open(dst_file_path, "r") as file:
+    content = file.read()
+    assert content == form_data["content"]
    # Delete created file
    os.remove(dst_file_path)
 
