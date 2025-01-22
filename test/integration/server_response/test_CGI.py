@@ -44,10 +44,19 @@ def test_CGI_create_textfile():
    # Delete created file
    os.remove(dst_file_path)
 
-def test_CGI_toUpper():
-    print("Change to upper case with /cgi-bin/upperCase.sh")
-    # Define body
-    payload = (
+def test_CGI_upperCase_GET():
+    print("Change to upper case with /cgi-bin/upperCase.sh and GET")
+
+    params = {
+       "text": "please capitalize"
+    }
+    response = requests.get("http://127.0.0.1:8080/cgi-bin/upperCase.sh", params=params)
+    assert response.status_code == 200
+    assert params["text"].upper() in response.text
+
+def test_CGI_upperCase_POST():
+    print("Change to upper case with /cgi-bin/upperCase.sh and POST")
+    long_string = (
         "The old clock tower stood at the center of the village, its hands frozen at midnight for as long "
         "as anyone could remember. Stories swirled among the villagers about why it had stopped-some claimed "
           "it was cursed, while others whispered of forgotten rituals. At the base of the tower, ivy crept up the "
@@ -57,6 +66,9 @@ def test_CGI_toUpper():
           "When the door creaked open, the villagers held their breath. No one knew what lay beyond that threshold, "
           "but they would soon find out."
     )
-    response = requests.post("http://127.0.0.1:8080/cgi-bin/upperCase.sh", data=payload)
+    form_data = {
+       "text": long_string
+    }
+    response = requests.post("http://127.0.0.1:8080/cgi-bin/upperCase.sh", data=form_data)
     assert response.status_code == 200
-    assert payload.upper() in response.text
+    assert form_data["text"].upper() in response.text
