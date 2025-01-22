@@ -26,6 +26,7 @@ protected:
 		request.headers["content-length"] = "20";
 		request.headers["content-type"] = "text/plain";
 		request.method = MethodPost;
+        request.targetResource = "/var/www/html/cgi-bin/test.py";
 
 		location.cgiExt = ".py";
 		location.cgiPath = "/usr/bin/python3";
@@ -76,7 +77,7 @@ TEST_F(CGIHandlerTest, Ctor)
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "CONTENT_TYPE=text/plain"), "CONTENT_TYPE=text/plain");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "GATEWAY_INTERFACE=CGI/1.1"), "GATEWAY_INTERFACE=CGI/1.1");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "PATH_INFO=/some/more/path"), "PATH_INFO=/some/more/path");
-	EXPECT_EQ(*std::find(env.begin(), env.end(), "PATH_TRANSLATED=/var/www/html/some/more/path"), "PATH_TRANSLATED=/var/www/html/some/more/path");
+	EXPECT_EQ(*std::find(env.begin(), env.end(), "PATH_TRANSLATED=/var/www/html/cgi-bin/some/more/path"), "PATH_TRANSLATED=/var/www/html/cgi-bin/some/more/path");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "QUERY_STRING=name=John&age=25"), "QUERY_STRING=name=John&age=25");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "REDIRECT_STATUS=200"), "REDIRECT_STATUS=200");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "REMOTE_ADDR=1.23.4.56"), "REMOTE_ADDR=1.23.4.56");
@@ -88,7 +89,7 @@ TEST_F(CGIHandlerTest, Ctor)
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "SERVER_ADDR=127.0.0.1"), "SERVER_ADDR=127.0.0.1");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "SERVER_NAME=127.0.0.1"), "SERVER_NAME=127.0.0.1");
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "SERVER_PORT=8080"), "SERVER_PORT=8080");
-	EXPECT_EQ(*std::find(env.begin(), env.end(), "SYSTEM_ROOT=/var/www/html"), "SYSTEM_ROOT=/var/www/html");
+	EXPECT_EQ(*std::find(env.begin(), env.end(), "SYSTEM_ROOT=/var/www/html/cgi-bin"), "SYSTEM_ROOT=/var/www/html/cgi-bin");
 
 	EXPECT_EQ(*std::find(argv.begin(), argv.end(), "/usr/bin/python3"), "/usr/bin/python3");
 	EXPECT_EQ(*std::find(argv.begin(), argv.end(), "/var/www/html/cgi-bin/test.py"), "/var/www/html/cgi-bin/test.py");
@@ -106,7 +107,7 @@ TEST_F(CGIHandlerTest, NoPathInfo)
 
 	// Assert
 	EXPECT_EQ(*std::find(env.begin(), env.end(), "PATH_INFO="), "PATH_INFO=");
-	EXPECT_EQ(*std::find(env.begin(), env.end(), "PATH_TRANSLATED=/var/www/html"), "PATH_TRANSLATED=/var/www/html");
+	EXPECT_EQ(*std::find(env.begin(), env.end(), "PATH_TRANSLATED=/var/www/html/cgi-bin"), "PATH_TRANSLATED=/var/www/html/cgi-bin");
 }
 
 TEST_F(CGIHandlerTest, PipeFail)
