@@ -150,7 +150,58 @@ TEST_F(ParseHeadersTest, ValidHostnameAsIPWithPort)
 	EXPECT_EQ(request.headers["host"], "177.3.1.1:65535");
 }
 
+TEST_F(ParseHeadersTest, CloseConnection)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader(
+		"GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: close\r\n\r\n",
+		request);
+
+	// Assert
+	EXPECT_EQ(request.headers["host"], "127.0.0.1");
+	EXPECT_EQ(request.shallCloseConnection, true);
+}
+
+TEST_F(ParseHeadersTest, KeepConnection)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader(
+		"GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: keep-alive\r\n\r\n",
+		request);
+
+	// Assert
+	EXPECT_EQ(request.headers["host"], "127.0.0.1");
+	EXPECT_EQ(request.shallCloseConnection, false);
+}
+
 // NON-VALID HEADERS TEST SUITE
+
+TEST_F(ParseHeadersTest, InvalidConnectionHeader)
+{
+	// Arrange
+
+	// Act
+
+	// Assert
+	EXPECT_THROW(
+		{
+			try {
+				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+							  "127.0.0.1\r\nConnection: doge\r\n\r\n",
+					request);
+
+			} catch (const std::runtime_error& e) {
+				EXPECT_STREQ(ERR_INVALID_CONNECTION_VALUE, e.what());
+				EXPECT_EQ(request.shallCloseConnection, true);
+				throw;
+			}
+		},
+		std::runtime_error);
+}
 
 TEST_F(ParseHeadersTest, WhitespaceBetweenHeaderFieldNameAndColon)
 {
