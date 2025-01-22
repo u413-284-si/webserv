@@ -172,6 +172,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_helpers.cpp \
 			test_initVirtualServers.cpp \
 			test_isDuplicateServer.cpp \
+			test_MultipartFormdata.cpp \
 			test_OstreamInserters.cpp \
 			test_parseBody.cpp \
 			test_parseHeader_Headers.cpp \

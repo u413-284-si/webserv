@@ -104,7 +104,8 @@ public:
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
+	void decodeMultipartFormdata(HTTPRequest& request);
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
@@ -151,7 +152,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCGIRequested(Connection& connection);
 void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
 void handleBody(Server& server, int activeFd, Connection& connection);
-bool isCompleteBody(Connection& connection);
 void connectionSendToCGI(Server& server, Connection& connection);
 void connectionReceiveFromCGI(Server& server, Connection& connection);
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection);
