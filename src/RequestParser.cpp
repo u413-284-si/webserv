@@ -789,11 +789,6 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
 		}
-		if (iter->second.find(',') != std::string::npos) {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_MULTIPLE_CONNECTION_VALUES);
-		}
 
 		if (iter->second == "close") {
 			request.shallCloseConnection = true;

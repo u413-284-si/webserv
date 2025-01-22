@@ -226,29 +226,6 @@ TEST_F(ParseHeadersTest, EmptyConnectionValue)
 		std::runtime_error);
 }
 
-TEST_F(ParseHeadersTest, MultipleConnectionValues)
-{
-	// Arrange
-
-	// Act
-
-	// Assert
-	EXPECT_THROW(
-		{
-			try {
-				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
-							  "127.0.0.1\r\nConnection: close, keep-alive, close\r\n\r\n",
-					request);
-
-			} catch (const std::runtime_error& e) {
-				EXPECT_STREQ(ERR_MULTIPLE_CONNECTION_VALUES, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
-				throw;
-			}
-		},
-		std::runtime_error);
-}
-
 TEST_F(ParseHeadersTest, WhitespaceBetweenHeaderFieldNameAndColon)
 {
 	// Arrange
