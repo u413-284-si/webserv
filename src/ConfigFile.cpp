@@ -32,20 +32,20 @@ ConfigServer::ConfigServer(void)
  * - Sets root to "html".
  * - Sets hasAutoindex to false.
  * - Sets maxBodySize to 1 MB.
- * - Init allowedMethods to true (GET), false (POST), false (DELETE)
+ * - Init allowMethods to true (GET), false (POST), false (DELETE)
  */
 Location::Location(void)
 	: root("html")
 	, hasAutoindex(false)
 	, maxBodySize(constants::g_oneMegabyte)
-	, allowedMethods()
+	, allowMethods()
 {
 	indices = std::vector<std::string>();
 	errorPage = std::map<statusCode, std::string>();
 	returns = std::make_pair(NoStatus, std::string());
-	allowedMethods[MethodGet] = true;
-	allowedMethods[MethodPost] = false;
-	allowedMethods[MethodDelete] = false;
+	allowMethods[MethodGet] = true;
+	allowMethods[MethodPost] = false;
+	allowMethods[MethodDelete] = false;
 }
 
 /**
@@ -80,21 +80,21 @@ ConfigFile createDummyConfig()
 	location5.root = "/workspaces/webserv";
 	location5.cgiPath = "/usr/bin/bash";
 	location5.cgiExt = ".sh";
-	location5.allowedMethods[MethodPost] = true;
+	location5.allowMethods[MethodPost] = true;
 
 	Location location6;
 	location6.path = "/cgi-bin";
 	location6.root = "/workspaces/webserv";
 	location6.cgiPath = "/usr/bin/python3";
 	location6.cgiExt = ".py";
-	location6.allowedMethods[MethodGet] = true;
-	location6.allowedMethods[MethodPost] = true;
+	location6.allowMethods[MethodGet] = true;
+	location6.allowMethods[MethodPost] = true;
 
 	Location location7;
 	location7.path = "/uploads/";
 	location7.root = "/workspaces/webserv/html";
-	location7.allowedMethods[MethodPost] = true;
-	location7.allowedMethods[MethodDelete] = true;
+	location7.allowMethods[MethodPost] = true;
+	location7.allowMethods[MethodDelete] = true;
 
 	Location location8;
 	location8.path = "/redirect";
