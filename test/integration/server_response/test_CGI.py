@@ -24,7 +24,7 @@ def test_CGI_time():
    response = requests.get("http://127.0.0.1:8081/cgi-bin/time.py")
    assert response.status_code == 200
 
-def test_CGI_upload_file():
+def test_CGI_create_textfile():
    print("Upload file with /cgi-bin/create_textfile.py")
 
    form_data = {
