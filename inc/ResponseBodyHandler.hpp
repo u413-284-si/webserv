@@ -25,8 +25,12 @@ public:
 	void execute();
 
 private:
+	void addHeadersBasedOnStatus();
 	void handleErrorBody();
 	void handleReturnDirective();
+	void handleGetRequest();
+	void handlePostRequest();
+	void handleDeleteRequest();
 	void setDefaultErrorPage();
 	void parseCGIResponseHeaders();
 	void validateCGIResponseHeaders();

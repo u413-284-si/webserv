@@ -18,41 +18,22 @@ ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& re
 {
 }
 
-void ResponseBodyHandler::handleReturnDirective()
-{
-	const bool isEmpty = m_request.targetResource.empty();
-
-	if (isEmpty && !isErrorStatus(m_request.httpStatus))
-		return;
-
-	if (!isEmpty && !isRedirectionStatus(m_request.httpStatus))
-		m_responseBody = m_request.targetResource;
-
-	handleErrorBody();
-}
-
 /**
- * @brief Create the response body.
+ * @brief Create the response body based on the HTTP Request status and method.
  *
- * Depending on the HTTP Request status, the body will be created:
- * - If the request had a location with Return directive additional checks are made.
- *  - If there is no Return message and status code is not an error code no body is sent.
- *  - If there is a Return message and it is not a redirection status, the target resource will be set as
- * the body.
- * - If the status is an error status an error page will be created.
- * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
- * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
- * body.
- * - In case of a POST request, the request body will be written to the target resource.
- * - In case of a DELETE request, the target resource will be deleted.
+ * addHeadersBasedOnStatus() is called to add special headers based on the status code.
+ * Then special cases are handled:
+ * - If the request has a Return directive, handleReturnDirective() is called.
+ * - If the status is an error status, handleErrorBody() is called.
+ * - If the request has CGI, parseCGIResponseHeaders() is called.
+ * Otherwise the method is checked and the appropriate function is called:
+ * - GET: handleGetRequest()
+ * - POST: handlePostRequest()
+ * - DELETE: handleDeleteRequest()
  */
 void ResponseBodyHandler::execute()
 {
-	if (isRedirectionStatus(m_request.httpStatus))
-		m_responseHeaders["location"] = m_request.targetResource;
-
-	if (m_request.httpStatus == StatusMethodNotAllowed)
-		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
+	addHeadersBasedOnStatus();
 
 	if (m_request.hasReturn) {
 		handleReturnDirective();
@@ -70,6 +51,55 @@ void ResponseBodyHandler::execute()
 		return;
 	}
 
+	switch (m_request.method) {
+	case MethodGet:
+		handleGetRequest();
+		break;
+	case MethodPost:
+		handlePostRequest();
+		break;
+	case MethodDelete:
+		handleDeleteRequest();
+		break;
+	case MethodCount:
+		LOG_ERROR << "Invalid method";
+		m_request.httpStatus = StatusInternalServerError;
+		handleErrorBody();
+		break;
+	}
+}
+
+/**
+ * @brief Creates the response body based on the Return directive.
+ *
+ * If the request encountered a location with a Return directive the body will be created based on the directive.
+ * - If the target resource is empty and the status is not an error status, no body is sent.
+ * - If the target resource is not empty and the status is not a redirection status, the target resource will be set as
+ * the body.
+ * - If the target resource is empty and the status is a redirection status, an error page will be created.
+ */
+void ResponseBodyHandler::handleReturnDirective()
+{
+	const bool isEmpty = m_request.targetResource.empty();
+
+	if (isEmpty && !isErrorStatus(m_request.httpStatus))
+		return;
+
+	if (!isEmpty && !isRedirectionStatus(m_request.httpStatus))
+		m_responseBody = m_request.targetResource;
+	else
+		handleErrorBody();
+}
+
+/**
+ * @brief Creates the response body for a GET request.
+ *
+ * If the request has the autoindex flag set, an autoindex will be created. It also adds "autoindex.html" to the
+ * target resource.
+ * Otherwise the file contents of the target resource will be read and set as the body.
+ */
+void ResponseBodyHandler::handleGetRequest()
+{
 	if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource);
@@ -82,42 +112,53 @@ void ResponseBodyHandler::execute()
 		return;
 	}
 
-	if (m_request.method == MethodGet) {
-		try {
-			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		} catch (FileSystemPolicy::FileNotFoundException& e) {
-			LOG_ERROR << e.what();
-			m_request.httpStatus = StatusNotFound;
-		} catch (FileSystemPolicy::NoPermissionException& e) {
-			LOG_ERROR << e.what();
-			m_request.httpStatus = StatusForbidden;
-		} catch (const std::runtime_error& e) {
-			LOG_ERROR << e.what();
-			m_request.httpStatus = StatusInternalServerError;
-		}
-		if (m_request.httpStatus != StatusOK)
-			handleErrorBody();
-		return;
+	try {
+		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
+	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusNotFound;
+	} catch (FileSystemPolicy::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusForbidden;
+	} catch (const std::runtime_error& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusInternalServerError;
 	}
+	if (m_request.httpStatus != StatusOK)
+		handleErrorBody();
+}
 
-	if (m_request.method == MethodPost) {
-		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
-		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
-		if (m_request.httpStatus == StatusCreated)
-			m_responseHeaders["location"] = m_request.uri.path;
-		if (m_responseBody.empty())
-			handleErrorBody();
-		m_request.targetResource = "posted.json";
-		return;
-	}
+/**
+ * @brief Creates a file and the response body for a POST request.
+ *
+ * The request body will be written to the target resource. If the file was created / appended successfully, the
+ * response body will be set to a JSON-formatted string containing the operation result. The target resource will be set
+ * to "posted.json".
+ */
+void ResponseBodyHandler::handlePostRequest()
+{
+	FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
+	m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
+	if (m_request.httpStatus == StatusCreated)
+		m_responseHeaders["location"] = m_request.uri.path;
+	if (m_responseBody.empty())
+		handleErrorBody();
+	m_request.targetResource = "posted.json";
+}
 
-	if (m_request.method == MethodDelete) {
-		DeleteHandler deleteHandler(m_fileSystemPolicy);
-		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
-		if (m_responseBody.empty())
-			handleErrorBody();
-		m_request.targetResource = "deleted.json";
-	}
+/**
+ * @brief Deletes a file and creates the response body for a DELETE request.
+ *
+ * The target resource will be deleted. If the file was deleted successfully, the response body be set to a
+ * JSON-formatted string containing the operation result. The target resource will be set to "deleted.json".
+ */
+void ResponseBodyHandler::handleDeleteRequest()
+{
+	DeleteHandler deleteHandler(m_fileSystemPolicy);
+	m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
+	if (m_responseBody.empty())
+		handleErrorBody();
+	m_request.targetResource = "deleted.json";
 }
 
 /**
@@ -447,4 +488,19 @@ std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount])
 	if (!allowHeader.empty())
 		allowHeader.erase(allowHeader.size() - 2, 2);
 	return allowHeader;
+}
+
+/**
+ * @brief Adds special headers based on the status code.
+ *
+ * Location header if the status code is a redirection 3xx status.
+ * Allow header if the status code is Method Not Allowed (405).
+ */
+void ResponseBodyHandler::addHeadersBasedOnStatus()
+{
+	if (isRedirectionStatus(m_request.httpStatus))
+		m_responseHeaders["location"] = m_request.targetResource;
+
+	if (m_request.httpStatus == StatusMethodNotAllowed)
+		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
 }
