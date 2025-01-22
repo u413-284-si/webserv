@@ -18,6 +18,19 @@ ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& re
 {
 }
 
+void ResponseBodyHandler::handleReturnDirective()
+{
+	const bool isEmpty = m_request.targetResource.empty();
+
+	if (isEmpty && !isErrorStatus(m_request.httpStatus))
+		return;
+
+	if (!isEmpty && !isRedirectionStatus(m_request.httpStatus))
+		m_responseBody = m_request.targetResource;
+
+	handleErrorBody();
+}
+
 /**
  * @brief Create the response body.
  *
@@ -42,13 +55,8 @@ void ResponseBodyHandler::execute()
 		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
 
 	if (m_request.hasReturn) {
-		const bool isEmpty = m_request.targetResource.empty();
-		if (isEmpty && !isErrorStatus(m_request.httpStatus))
-			return;
-		if (!isEmpty && !isRedirectionStatus(m_request.httpStatus)) {
-			m_responseBody = m_request.targetResource;
-			return;
-		}
+		handleReturnDirective();
+		return;
 	}
 
 	if (isErrorStatus(m_request.httpStatus)) {
@@ -70,7 +78,6 @@ void ResponseBodyHandler::execute()
 			handleErrorBody();
 			return;
 		}
-		m_request.httpStatus = StatusOK;
 		m_request.targetResource += "autoindex.html";
 		return;
 	}
