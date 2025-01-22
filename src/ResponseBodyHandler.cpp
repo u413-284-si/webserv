@@ -43,7 +43,7 @@ void ResponseBodyHandler::execute()
 
 	if (m_request.hasReturn) {
 		const bool isEmpty = m_request.targetResource.empty();
-		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
+		if (isEmpty && !isErrorStatus(m_request.httpStatus))
 			return;
 		if (!isEmpty && !isRedirectionStatus(m_request.httpStatus)) {
 			m_responseBody = m_request.targetResource;
@@ -51,7 +51,7 @@ void ResponseBodyHandler::execute()
 		}
 	}
 
-	if (m_request.httpStatus >= StatusMovedPermanently) {
+	if (isErrorStatus(m_request.httpStatus)) {
 		handleErrorBody();
 		return;
 	}

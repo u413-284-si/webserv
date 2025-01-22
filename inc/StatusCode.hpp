@@ -25,4 +25,5 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);
 std::string statusCodeToReasonPhrase(statusCode status);
 statusCode stringToStatusCode(std::string& str);
 statusCode extractStatusCode(const std::string& statusLine);
+bool isErrorStatus(statusCode statusCode);
 bool isRedirectionStatus(statusCode statusCode);
