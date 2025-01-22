@@ -33,9 +33,8 @@
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
 #define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
-#define ERR_EMPTY_CONNECTION_VALUE "Invalid HTTP request: Empty connection value"
-#define ERR_MULTIPLE_CONNECTION_VALUES "Invalid HTTP request: Multiple connection values"
-#define ERR_INVALID_CONNECTION_VALUE "Invalid HTTP request: Invalid connection value"
+#define ERR_EMPTY_CONNECTION_VALUE "Invalid HTTP request: Empty connection header value"
+#define ERR_INVALID_CONNECTION_VALUE "Invalid HTTP request: Invalid connection header value"
 
 // HTTP REQUEST BODY ERRORS
 #define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"
