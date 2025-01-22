@@ -58,6 +58,7 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
 	.Times(1);
 
+	m_request.method = MethodGet;
 	m_request.targetResource = "/proc/self/";
 	m_request.hasAutoindex = true;
 	m_responseBodyHandler.execute();
@@ -65,26 +66,35 @@ TEST_F(ResponseBodyHandlerTest, IndexCreated)
 	EXPECT_EQ(m_request.targetResource, "/proc/self/autoindex.html");
 }
 
-TEST_F(ResponseBodyHandlerTest, DirectoryThrow)
+TEST_F(ResponseBodyHandlerTest, OpenDirectoryThrow)
 {
 	EXPECT_CALL(m_fileSystemPolicy, openDirectory)
-	.Times(2)
-	.WillOnce(Throw(std::runtime_error("openDirectory failed")))
+	.WillOnce(Throw(std::runtime_error("openDirectory failed")));
+
+	m_request.method = MethodGet;
+	m_request.targetResource = "/proc/self/";
+	m_request.hasAutoindex = true;
+
+	m_responseBodyHandler.execute();
+
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+}
+
+TEST_F(ResponseBodyHandlerTest, ReadDirectoryThrow)
+{
+	EXPECT_CALL(m_fileSystemPolicy, openDirectory)
 	.WillOnce(Return(nullptr));
 	EXPECT_CALL(m_fileSystemPolicy, readDirectory)
 	.WillOnce(Throw(std::runtime_error("readDirectory failed")));
 	EXPECT_CALL(m_fileSystemPolicy, closeDirectory)
 	.Times(1);
 
+	m_request.method = MethodGet;
 	m_request.targetResource = "/proc/self/";
 	m_request.hasAutoindex = true;
 
 	m_responseBodyHandler.execute();
-	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 
-	m_request.httpStatus = StatusOK;
-
-	m_responseBodyHandler.execute();
 	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
 }
 
