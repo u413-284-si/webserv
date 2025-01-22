@@ -76,6 +76,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodGet) {
+		LOG_DEBUG << "Handling GET request";
 		try {
 			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
 		} catch (FileSystemPolicy::FileNotFoundException& e) {
@@ -94,6 +95,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodPost) {
+		LOG_DEBUG << "Handling POST request";
 		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
 		if (m_request.httpStatus == StatusCreated)
@@ -105,6 +107,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodDelete) {
+		LOG_DEBUG << "Handling DELETE request";
 		DeleteHandler deleteHandler(m_fileSystemPolicy);
 		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 		if (m_responseBody.empty())
