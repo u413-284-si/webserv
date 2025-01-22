@@ -485,6 +485,7 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
  * @brief Decodes the multipart/form-data content of an HTTP request.
  *
  * This function processes the multipart/form-data content of the provided HTTP request.
+ * Form fields other than file uploads are being ignored. Only one file upload is permitted.
  * It extracts the filename and appends it to the target resource.
  * The extracted content from the request body is then stored back into the request body.
  *
@@ -493,32 +494,31 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
  */
 void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 {
-	size_t currentBoundaryEndPos = checkForString("--" + request.boundary, 0, request.body, "");
+	size_t currentBoundaryEndPos = checkForString("--" + request.boundary, 0, request.body);
 	bool isFirstFileUpload = true;
 	std::string extractedBody;
-	const std::string endBoundary = "--" + request.boundary + "--";
+	const std::string filename = "filename=\"";
 
-	do {
+	while (true) {
 		currentBoundaryEndPos += request.boundary.size() + 2;
-		size_t nextBoundaryPos = checkForString("--" + request.boundary, currentBoundaryEndPos, request.body, "");
+		size_t nextBoundaryPos = checkForString("--" + request.boundary, currentBoundaryEndPos, request.body);
 
 		// Find form header section and lower case it
-		size_t contentStartPos = checkForString("\r\n\r\n", currentBoundaryEndPos, request.body, "");
+		size_t contentStartPos = checkForString("\r\n\r\n", currentBoundaryEndPos, request.body);
 		std::string loweredFormHeader
 			= request.body.substr(currentBoundaryEndPos, contentStartPos - currentBoundaryEndPos);
 		webutils::lowercase(loweredFormHeader);
 
 		// Check required headers
-		const size_t dispositionPos = checkForString("content-disposition:", 0, request.body, loweredFormHeader);
-		const std::string filename = "filename=\"";
+		const size_t dispositionPos = checkForString("content-disposition:", 0, loweredFormHeader);
 		size_t filenameStartPos = loweredFormHeader.find(filename, dispositionPos);
 		if (filenameStartPos != std::string::npos) {
 			filenameStartPos += filename.size();
-			checkForString("content-type", filenameStartPos, request.body, loweredFormHeader);
+			checkForString("content-type", filenameStartPos, loweredFormHeader);
 
 			// Process file upload data
 			if (isFirstFileUpload) {
-				const size_t filenameEndPos = checkForString("\"", filenameStartPos, request.body, loweredFormHeader);
+				const size_t filenameEndPos = checkForString("\"", filenameStartPos, loweredFormHeader);
 				request.targetResource
 					+= request.body.substr(currentBoundaryEndPos + filenameStartPos, filenameEndPos - filenameStartPos);
 				LOG_DEBUG << "New target resource: " << request.targetResource;
@@ -528,22 +528,20 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 				extractedBody = request.body.substr(contentStartPos, contentEndPos - contentStartPos);
 
 				isFirstFileUpload = false;
-			} else {
-                request.httpStatus = StatusBadRequest;
-                request.shallCloseConnection = true;
-                throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
-            }
+			} else
+				throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
 		}
-		if (request.body.substr(nextBoundaryPos, endBoundary.size()) == endBoundary)
-			break;
-		currentBoundaryEndPos = nextBoundaryPos;
-	} while (currentBoundaryEndPos != std::string::npos);
 
-    if (extractedBody.empty()) {
-        request.httpStatus = StatusBadRequest;
-        request.shallCloseConnection = true;
-        throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
-    }
+        // Check for two dashes after boundary indicating the end boundary
+		if (request.body.at(nextBoundaryPos + request.boundary.size() + 2) == '-'
+			&& request.body.at(nextBoundaryPos + request.boundary.size() + 3) == '-')
+			break;
+
+		currentBoundaryEndPos = nextBoundaryPos;
+	}
+
+	if (extractedBody.empty())
+		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
 
 	request.body = extractedBody;
 }
@@ -557,22 +555,15 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
  * starting from the given position. If the string is not found, it sets the HTTP status to Bad Request,
  * indicates that the connection should be closed, and throws a runtime error.
  *
- * @param string The string to search for in the request body.
+ * @param string The string to search for in the containing body.
  * @param startPos The position in the request body to start the search from.
- * @param requestBody The HTTP request body to search.
- * @param loweredFormHeader The lowercase version of the request body for case-insensitive search.
+ * @param body The body to search in.
  * @return The position of the found string in the request body.
  * @throws std::runtime_error if the string is not found in the request body.
  */
-size_t RequestParser::checkForString(
-	const std::string& string, size_t startPos, const std::string& requestBody, const std::string& loweredFormHeader)
+size_t RequestParser::checkForString(const std::string& string, size_t startPos, const std::string& body)
 {
-	size_t pos = std::string::npos;
-
-	if (!loweredFormHeader.empty())
-		pos = loweredFormHeader.find(string, startPos);
-	else
-		pos = requestBody.find(string, startPos);
+	size_t pos = body.find(string, startPos);
 
 	if (pos == std::string::npos)
 		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
