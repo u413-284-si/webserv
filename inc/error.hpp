@@ -79,6 +79,8 @@
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
 #define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
 #define ERR_BAD_MULTIPART_FORMDATA "Invalid HTTP request: Multipart/form-data invalid"
+#define ERR_EMPTY_CONNECTION_VALUE "Invalid HTTP request: Empty connection header value"
+#define ERR_INVALID_CONNECTION_VALUE "Invalid HTTP request: Invalid connection header value"
 
 // HTTP REQUEST BODY ERRORS
 #define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"

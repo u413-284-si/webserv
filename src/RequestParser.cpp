@@ -408,6 +408,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 	validateHostHeader(request);
 	validateTransferEncoding(request);
 	validateMethodWithBody(request);
+	validateConnectionHeader(request);
 }
 
 /* ====== BODY PARSING ====== */
@@ -681,7 +682,8 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 		}
 		if (request.headers.find("content-length") != request.headers.end())
 			request.shallCloseConnection = true;
-
+        
+        webutils::lowercase(request.headers.at("transfer-encoding"));
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
@@ -801,6 +803,47 @@ void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName,
 			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
 		}
 	}
+}
+
+/**
+ * @brief Validates the Connection header in an HTTP request.
+ *
+ * This function checks the validity of the Connection header in the provided HTTP request.
+ * It ensures that the header is not empty, does not contain multiple values, and has a valid value.
+ * Valid values for the Connection header are "close" and "keep-alive" where "close" indicates that
+ * the connection should be closed after the response, and "keep-alive" indicates that the connection
+ * should be kept open for further requests. By default the connection is kept alive with shallCloseConnection set to false.
+ * If the header is invalid, it sets the HTTP status to BadRequest and indicates that the connection should be closed.
+ *
+ * @param request The HTTPRequest object containing the request data.
+ * @throws std::runtime_error if the Connection header is empty, contains multiple values, or has an invalid value.
+ */
+void RequestParser::validateConnectionHeader(HTTPRequest& request)
+{
+	LOG_DEBUG << "Validating Connection header...";
+
+	std::map<std::string, std::string>::iterator iter = request.headers.find("connection");
+	if (iter != request.headers.end()) {
+		if (iter->second.empty()) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
+		}
+
+        webutils::lowercase(iter->second);
+		if (iter->second == "close") {
+			request.shallCloseConnection = true;
+		} else if (iter->second == "keep-alive") {
+		} else {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_CONNECTION_VALUE);
+		}
+
+		LOG_DEBUG << "Valid Connection header: " << iter->second;
+	}
+
+	LOG_DEBUG << "No Connection header found.";
 }
 
 /* ====== HELPER FUNCTIONS ====== */

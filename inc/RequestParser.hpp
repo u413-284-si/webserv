@@ -66,6 +66,7 @@ private:
 	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
 	static void validateMethodWithBody(HTTPRequest& request);
+    static void validateConnectionHeader(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
