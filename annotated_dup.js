@@ -39,6 +39,7 @@ var annotated_dup =
     [ "MockFileSystemPolicy", "class_mock_file_system_policy.html", "class_mock_file_system_policy" ],
     [ "MockProcessOps", "class_mock_process_ops.html", "class_mock_process_ops" ],
     [ "MockSocketPolicy", "class_mock_socket_policy.html", "class_mock_socket_policy" ],
+    [ "MultipartFormdataTest", "class_multipart_formdata_test.html", "class_multipart_formdata_test" ],
     [ "OstreamInsertersTest", "class_ostream_inserters_test.html", "class_ostream_inserters_test" ],
     [ "ParseBodyTest", "class_parse_body_test.html", "class_parse_body_test" ],
     [ "ParseHeadersTest", "class_parse_headers_test.html", "class_parse_headers_test" ],

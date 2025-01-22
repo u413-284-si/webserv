@@ -13,7 +13,6 @@ var _server_8cpp =
     [ "isCGIRequested", "_server_8cpp.html#a92411155dbfc5d7f43c3f1ac0fe54548", null ],
     [ "connectionReceiveBody", "_server_8cpp.html#a3e07b970ffa58c9315b38673aff94f84", null ],
     [ "handleBody", "_server_8cpp.html#af0fb17fe53a5e9e72824e5df3fba1322", null ],
-    [ "isCompleteBody", "_server_8cpp.html#a14a0c5a1227276017a19d9b52141c13a", null ],
     [ "connectionSendToCGI", "_server_8cpp.html#a03e6a55f5c946d4fb308f7c1758e1b51", null ],
     [ "connectionReceiveFromCGI", "_server_8cpp.html#a1a02f28f05641d9b3dd7f8207e57bd68", null ],
     [ "connectionBuildResponse", "_server_8cpp.html#a9b6964fe44b1605c00c0f211a7f42896", null ],

@@ -46,6 +46,8 @@ var namespaceserver__response =
       [ "test_POST_append", "namespaceserver__response_1_1test___p_o_s_t.html#a0f256c17d554c1b3641a9e6d2625c8a9", null ],
       [ "generate_chunks", "namespaceserver__response_1_1test___p_o_s_t.html#a3f87e188fb39546111887533e959eb77", null ],
       [ "test_POST_chunked_encoding", "namespaceserver__response_1_1test___p_o_s_t.html#ac95599d7baa686a3cab23fe2ed804be4", null ],
+      [ "generate_chunks_with_zero_chunk", "namespaceserver__response_1_1test___p_o_s_t.html#a6e14d366cb3aadb392e976837c851d70", null ],
+      [ "test_POST_chunked_encoding_with_zero_chunk", "namespaceserver__response_1_1test___p_o_s_t.html#af63ad064e35f854577c85bed3ad13249", null ],
       [ "test_POST_bigger_file", "namespaceserver__response_1_1test___p_o_s_t.html#a47fba5ba821365cd53bf0ad7b2bdda41", null ],
       [ "test_POST_file_too_big", "namespaceserver__response_1_1test___p_o_s_t.html#a4e597b9b4533bb5b29c661437708aeb6", null ]
     ] ]

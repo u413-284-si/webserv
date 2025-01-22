@@ -117,16 +117,20 @@ $(document).ready(function(){initNavTree('_h_t_t_p_request_8cpp_source.html','')
 <div class="foldopen" id="foldopen00003" data-start="{" data-end="}">
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="struct_h_t_t_p_request.html#a7c53a92689eb5cee6b069a3db3c327ae">    3</a></span><a class="code hl_function" href="struct_h_t_t_p_request.html#a7c53a92689eb5cee6b069a3db3c327ae">HTTPRequest::HTTPRequest</a>()</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>    : method(<a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>)</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    , httpStatus(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>)</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    , shallCloseConnection(false)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    , hasBody(false)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    , isChunked(false)</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    , isDirectory(false)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    , hasAutoindex(false)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    , hasCGI(false)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    , hasReturn(false)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>}</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    , chunkSize(-1)</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    , contentLength(0)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    , httpStatus(<a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>)</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    , shallCloseConnection(false)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    , hasBody(false)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    , isCompleteBody(false)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    , isChunked(false)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    , isDirectory(false)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    , hasAutoindex(false)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    , hasCGI(false)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    , hasReturn(false)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    , hasMultipartFormdata(false)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 </div>
 <div class="ttc" id="a_h_t_t_p_request_8hpp_html"><div class="ttname"><a href="_h_t_t_p_request_8hpp.html">HTTPRequest.hpp</a></div></div>
 <div class="ttc" id="a_method_8hpp_html_a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce"><div class="ttname"><a href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a></div><div class="ttdeci">@ MethodCount</div><div class="ttdef"><b>Definition</b> <a href="_method_8hpp_source.html#l00005">Method.hpp:5</a></div></div>

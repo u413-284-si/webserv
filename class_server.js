@@ -32,7 +32,7 @@ var class_server =
     [ "readProcess", "class_server.html#a8aa46a2d98652ee4c70ac7528f614422", null ],
     [ "writeProcess", "class_server.html#a8fec2a00e7d106bf35f19d2d7f61fd0b", null ],
     [ "parseHeader", "class_server.html#a34bc61299318fe1918293b1d656ee5f9", null ],
-    [ "parseBody", "class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a", null ],
+    [ "decodeMultipartFormdata", "class_server.html#a9740c1ff86f39451ac5c8d20e81260c6", null ],
     [ "resetRequestStream", "class_server.html#a99dea29de3836364c5191afe48f11ded", null ],
     [ "buildResponse", "class_server.html#aaa1a16c8d18a7d0a4191adfeb65fdf82", null ],
     [ "getResponse", "class_server.html#a718bf76e7c3f830abb2f7b0972cdaa63", null ],

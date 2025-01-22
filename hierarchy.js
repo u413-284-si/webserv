@@ -56,6 +56,7 @@ var hierarchy =
       [ "HandleCompleteRequestHeaderTest", "class_handle_complete_request_header_test.html", null ],
       [ "InitVirtualServersTest", "class_init_virtual_servers_test.html", null ],
       [ "InvalidConfigFileTests", "class_invalid_config_file_tests.html", null ],
+      [ "MultipartFormdataTest", "class_multipart_formdata_test.html", null ],
       [ "OstreamInsertersTest", "class_ostream_inserters_test.html", null ],
       [ "ParseBodyTest", "class_parse_body_test.html", null ],
       [ "ParseHeadersTest", "class_parse_headers_test.html", null ],

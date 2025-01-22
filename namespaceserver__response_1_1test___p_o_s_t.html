@@ -120,6 +120,10 @@ Functions</h2></td></tr>
 <tr class="separator:a3f87e188fb39546111887533e959eb77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac95599d7baa686a3cab23fe2ed804be4" id="r_ac95599d7baa686a3cab23fe2ed804be4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___p_o_s_t.html#ac95599d7baa686a3cab23fe2ed804be4">test_POST_chunked_encoding</a> ()</td></tr>
 <tr class="separator:ac95599d7baa686a3cab23fe2ed804be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e14d366cb3aadb392e976837c851d70" id="r_a6e14d366cb3aadb392e976837c851d70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___p_o_s_t.html#a6e14d366cb3aadb392e976837c851d70">generate_chunks_with_zero_chunk</a> ()</td></tr>
+<tr class="separator:a6e14d366cb3aadb392e976837c851d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af63ad064e35f854577c85bed3ad13249" id="r_af63ad064e35f854577c85bed3ad13249"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___p_o_s_t.html#af63ad064e35f854577c85bed3ad13249">test_POST_chunked_encoding_with_zero_chunk</a> ()</td></tr>
+<tr class="separator:af63ad064e35f854577c85bed3ad13249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47fba5ba821365cd53bf0ad7b2bdda41" id="r_a47fba5ba821365cd53bf0ad7b2bdda41"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___p_o_s_t.html#a47fba5ba821365cd53bf0ad7b2bdda41">test_POST_bigger_file</a> ()</td></tr>
 <tr class="separator:a47fba5ba821365cd53bf0ad7b2bdda41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e597b9b4533bb5b29c661437708aeb6" id="r_a4e597b9b4533bb5b29c661437708aeb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___p_o_s_t.html#a4e597b9b4533bb5b29c661437708aeb6">test_POST_file_too_big</a> ()</td></tr>
@@ -221,7 +225,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   43</span>    <span class="keywordflow">yield</span> <span class="stringliteral">&quot;First chunk of data&quot;</span>.encode(<span class="stringliteral">&quot;utf-8&quot;</span>)</div>
 <div class="line"><span class="lineno">   44</span>    <span class="keywordflow">yield</span> <span class="stringliteral">&quot;Second chunk of\n data&quot;</span>.encode(<span class="stringliteral">&quot;utf-8&quot;</span>)</div>
 <div class="line"><span class="lineno">   45</span>    <span class="keywordflow">yield</span> <span class="stringliteral">&quot;Third chunk of data&quot;</span>.encode(<span class="stringliteral">&quot;utf-8&quot;</span>)</div>
-<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   46</span>    </div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -268,6 +272,74 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a6e14d366cb3aadb392e976837c851d70" name="a6e14d366cb3aadb392e976837c851d70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e14d366cb3aadb392e976837c851d70">&#9670;&#160;</a></span>generate_chunks_with_zero_chunk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_POST.generate_chunks_with_zero_chunk </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___p_o_s_t_8py_source.html#l00061">61</a> of file <a class="el" href="test___p_o_s_t_8py_source.html">test_POST.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>generate_chunks_with_zero_chunk():</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">yield</span> (<span class="stringliteral">&quot;A&quot;</span>*8000).encode(<span class="stringliteral">&quot;utf-8&quot;</span>) <span class="comment"># ensure clientHeader buffer size is reached</span></div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">yield</span> <span class="stringliteral">&quot;Hello 0\r\n\r\nWorld&quot;</span>.encode(<span class="stringliteral">&quot;utf-8&quot;</span>) <span class="comment"># contains &quot;zero chunk&quot;</span></div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">yield</span> (<span class="stringliteral">&quot;A&quot;</span>*8000).encode(<span class="stringliteral">&quot;utf-8&quot;</span>) <span class="comment"># ensure clientBody buffer size is reached</span></div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">yield</span> (<span class="stringliteral">&quot;A&quot;</span>*8000).encode(<span class="stringliteral">&quot;utf-8&quot;</span>)</div>
+<div class="line"><span class="lineno">   66</span> </div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test___p_o_s_t_a6e14d366cb3aadb392e976837c851d70_icgraph.svg" width="440" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af63ad064e35f854577c85bed3ad13249" name="af63ad064e35f854577c85bed3ad13249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af63ad064e35f854577c85bed3ad13249">&#9670;&#160;</a></span>test_POST_chunked_encoding_with_zero_chunk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_POST.test_POST_chunked_encoding_with_zero_chunk </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test___p_o_s_t_8py_source.html#l00067">67</a> of file <a class="el" href="test___p_o_s_t_8py_source.html">test_POST.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span><span class="keyword">def </span>test_POST_chunked_encoding_with_zero_chunk():</div>
+<div class="line"><span class="lineno">   68</span>    print(<span class="stringliteral">&quot;Chunked Request with zero chunk for /uploads/testfile_chunked.txt&quot;</span>)</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/testfile_chunked.txt&quot;</span></div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/uploads/testfile_chunked.txt&quot;</span>, data=generate_chunks_with_zero_chunk())</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 201</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;location&quot;</span>] == <span class="stringliteral">&quot;/uploads/testfile_chunked.txt&quot;</span></div>
+<div class="line"><span class="lineno">   76</span>    <span class="comment"># Check if file exists</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.isfile</a>(dst_file_path)</div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment"># Delete created file</span></div>
+<div class="line"><span class="lineno">   79</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.remove</a>(dst_file_path)</div>
+<div class="line"><span class="lineno">   80</span>    </div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceserver__response_1_1test___p_o_s_t_af63ad064e35f854577c85bed3ad13249_cgraph.svg" width="440" height="66"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a47fba5ba821365cd53bf0ad7b2bdda41" name="a47fba5ba821365cd53bf0ad7b2bdda41"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a47fba5ba821365cd53bf0ad7b2bdda41">&#9670;&#160;</a></span>test_POST_bigger_file()</h2>
 
@@ -283,26 +355,26 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___p_o_s_t_8py_source.html#l00061">61</a> of file <a class="el" href="test___p_o_s_t_8py_source.html">test_POST.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>test_POST_bigger_file():</div>
-<div class="line"><span class="lineno">   62</span>    print(<span class="stringliteral">&quot;Request for /uploads/butterfly.jpg&quot;</span>)</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>    src_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/images/butterfly.jpg&quot;</span></div>
-<div class="line"><span class="lineno">   65</span>    <span class="keyword">with</span> open(src_file_path, <span class="stringliteral">&#39;rb&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   66</span>        binary_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">f.read</a>()</div>
-<div class="line"><span class="lineno">   67</span>    dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/butterfly.jpg&quot;</span></div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/uploads/butterfly.jpg&quot;</span>, data=binary_data)</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 201</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;location&quot;</span>] == <span class="stringliteral">&quot;/uploads/butterfly.jpg&quot;</span></div>
-<div class="line"><span class="lineno">   73</span>    <span class="comment"># Check if file exists</span></div>
-<div class="line"><span class="lineno">   74</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.isfile</a>(dst_file_path)</div>
-<div class="line"><span class="lineno">   75</span>    <span class="comment"># Check if same size - doesn&#39;t work?</span></div>
-<div class="line"><span class="lineno">   76</span>    <span class="comment"># assert os.path.getsize(src_file_path) == os.path.getsize(dst_file_path)</span></div>
-<div class="line"><span class="lineno">   77</span>    <span class="comment"># Delete created file</span></div>
-<div class="line"><span class="lineno">   78</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.remove</a>(dst_file_path)</div>
-<div class="line"><span class="lineno">   79</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___p_o_s_t_8py_source.html#l00081">81</a> of file <a class="el" href="test___p_o_s_t_8py_source.html">test_POST.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span><span class="keyword">def </span>test_POST_bigger_file():</div>
+<div class="line"><span class="lineno">   82</span>    print(<span class="stringliteral">&quot;Request for /uploads/butterfly.jpg&quot;</span>)</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    src_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/images/butterfly.jpg&quot;</span></div>
+<div class="line"><span class="lineno">   85</span>    <span class="keyword">with</span> open(src_file_path, <span class="stringliteral">&#39;rb&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   86</span>        binary_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">f.read</a>()</div>
+<div class="line"><span class="lineno">   87</span>    dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/butterfly.jpg&quot;</span></div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/uploads/butterfly.jpg&quot;</span>, data=binary_data)</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 201</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;location&quot;</span>] == <span class="stringliteral">&quot;/uploads/butterfly.jpg&quot;</span></div>
+<div class="line"><span class="lineno">   93</span>    <span class="comment"># Check if file exists</span></div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.isfile</a>(dst_file_path)</div>
+<div class="line"><span class="lineno">   95</span>    <span class="comment"># Check if same size - doesn&#39;t work?</span></div>
+<div class="line"><span class="lineno">   96</span>    <span class="comment"># assert os.path.getsize(src_file_path) == os.path.getsize(dst_file_path)</span></div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment"># Delete created file</span></div>
+<div class="line"><span class="lineno">   98</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.remove</a>(dst_file_path)</div>
+<div class="line"><span class="lineno">   99</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -321,20 +393,20 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___p_o_s_t_8py_source.html#l00080">80</a> of file <a class="el" href="test___p_o_s_t_8py_source.html">test_POST.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span><span class="keyword">def </span>test_POST_file_too_big():</div>
-<div class="line"><span class="lineno">   81</span>    print(<span class="stringliteral">&quot;Request for /uploads/cat.jpg&quot;</span>)</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    src_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/images/cat.jpg&quot;</span></div>
-<div class="line"><span class="lineno">   84</span>    <span class="keyword">with</span> open(src_file_path, <span class="stringliteral">&#39;rb&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   85</span>        binary_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">f.read</a>()</div>
-<div class="line"><span class="lineno">   86</span>    dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/cat.jpg&quot;</span></div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/uploads/cat.jpg&quot;</span>, data=binary_data)</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 413</div>
-<div class="line"><span class="lineno">   91</span>    <span class="comment"># Check that file does not exist</span></div>
-<div class="line"><span class="lineno">   92</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.isfile</a>(dst_file_path) == <span class="keyword">False</span></div>
+<p class="definition">Definition at line <a class="el" href="test___p_o_s_t_8py_source.html#l00100">100</a> of file <a class="el" href="test___p_o_s_t_8py_source.html">test_POST.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span><span class="keyword">def </span>test_POST_file_too_big():</div>
+<div class="line"><span class="lineno">  101</span>    print(<span class="stringliteral">&quot;Request for /uploads/cat.jpg&quot;</span>)</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    src_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/images/cat.jpg&quot;</span></div>
+<div class="line"><span class="lineno">  104</span>    <span class="keyword">with</span> open(src_file_path, <span class="stringliteral">&#39;rb&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  105</span>        binary_data = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">f.read</a>()</div>
+<div class="line"><span class="lineno">  106</span>    dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/cat.jpg&quot;</span></div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>    response = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requests.post</a>(<span class="stringliteral">&quot;http://localhost:8080/uploads/cat.jpg&quot;</span>, data=binary_data)</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 413</div>
+<div class="line"><span class="lineno">  111</span>    <span class="comment"># Check that file does not exist</span></div>
+<div class="line"><span class="lineno">  112</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.path.isfile</a>(dst_file_path) == <span class="keyword">False</span></div>
 </div><!-- fragment -->
 </div>
 </div>

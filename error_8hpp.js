@@ -28,6 +28,7 @@ var error_8hpp =
     [ "ERR_INVALID_CONTENT_LENGTH", "error_8hpp.html#a46888d82946e4b4a7279985906b33c1d", null ],
     [ "ERR_NON_FINAL_CHUNKED_ENCODING", "error_8hpp.html#a921d1cf264a755c9ef65a0493569011a", null ],
     [ "ERR_NON_EXISTENT_TRANSFER_ENCODING", "error_8hpp.html#a9d32af3cad8071ff47072efebf7d8b36", null ],
+    [ "ERR_BAD_MULTIPART_FORMDATA", "error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7", null ],
     [ "ERR_NON_EXISTENT_CHUNKSIZE", "error_8hpp.html#a79d0e6e5e82b33abfceed71cf4debe27", null ],
     [ "ERR_TOO_LARGE_CHUNKSIZE", "error_8hpp.html#a946a0f969f3164d7654f4565c507d6f6", null ],
     [ "ERR_INVALID_HEX_CHAR", "error_8hpp.html#a9517efbcce7f663c13d78c61f55c6ba5", null ],
@@ -37,5 +38,6 @@ var error_8hpp =
     [ "ERR_CONTENT_LENGTH", "error_8hpp.html#a683508ef2f2400bcd0f5f5e02dfd85c5", null ],
     [ "ERR_UNEXPECTED_BODY", "error_8hpp.html#afef097336b6960957a448f3b0c632802", null ],
     [ "ERR_MISSING_CGI_HEADER", "error_8hpp.html#a132aad672a97dc4b7a4019058691189d", null ],
-    [ "ERR_MISSING_CGI_FIELD", "error_8hpp.html#a752581368c25db0b2e8fe90bb61e4268", null ]
+    [ "ERR_MISSING_CGI_FIELD", "error_8hpp.html#a752581368c25db0b2e8fe90bb61e4268", null ],
+    [ "ERR_MULTIPLE_UPLOADS", "error_8hpp.html#a3db87370d70a5ed6bb88a81dd448624b", null ]
 ];

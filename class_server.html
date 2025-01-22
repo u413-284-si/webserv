@@ -106,6 +106,7 @@ $(document).ready(function(){initNavTree('class_server.html',''); initResizable(
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_server-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Server Class Reference</div></div>
@@ -215,9 +216,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a34bc61299318fe1918293b1d656ee5f9" id="r_a34bc61299318fe1918293b1d656ee5f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a34bc61299318fe1918293b1d656ee5f9">parseHeader</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requestString</a>, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
 <tr class="memdesc:a34bc61299318fe1918293b1d656ee5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865" title="Parses the header of an HTTP request.">RequestParser::parseHeader</a>.  <br /></td></tr>
 <tr class="separator:a34bc61299318fe1918293b1d656ee5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace46f4e07ab67db60e3790a32b2e8e0a" id="r_ace46f4e07ab67db60e3790a32b2e8e0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#ace46f4e07ab67db60e3790a32b2e8e0a">parseBody</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bodyString</a>, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
-<tr class="memdesc:ace46f4e07ab67db60e3790a32b2e8e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05" title="Parses the body of an HTTP request.">RequestParser::parseBody</a>.  <br /></td></tr>
-<tr class="separator:ace46f4e07ab67db60e3790a32b2e8e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9740c1ff86f39451ac5c8d20e81260c6" id="r_a9740c1ff86f39451ac5c8d20e81260c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a9740c1ff86f39451ac5c8d20e81260c6">decodeMultipartFormdata</a> (<a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
+<tr class="memdesc:a9740c1ff86f39451ac5c8d20e81260c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_request_parser.html#ade021aa8f89e1168fdb56d408d0fb384" title="Decodes the multipart/form-data content of an HTTP request.">RequestParser::decodeMultipartFormdata</a>.  <br /></td></tr>
+<tr class="separator:a9740c1ff86f39451ac5c8d20e81260c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99dea29de3836364c5191afe48f11ded" id="r_a99dea29de3836364c5191afe48f11ded"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a99dea29de3836364c5191afe48f11ded">resetRequestStream</a> ()</td></tr>
 <tr class="memdesc:a99dea29de3836364c5191afe48f11ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to RequestParser::clearParser.  <br /></td></tr>
 <tr class="separator:a99dea29de3836364c5191afe48f11ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,6 +231,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a002dd2fd1e6f0f4290568b4d94f39594" id="r_a002dd2fd1e6f0f4290568b4d94f39594"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a002dd2fd1e6f0f4290568b4d94f39594">findTargetResource</a> (<a class="el" href="struct_connection.html">Connection</a> &amp;connection)</td></tr>
 <tr class="memdesc:a002dd2fd1e6f0f4290568b4d94f39594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to <a class="el" href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282" title="Determine target resource based on the request path and handle different file types and statuses acco...">TargetResourceHandler::execute</a>.  <br /></td></tr>
 <tr class="separator:a002dd2fd1e6f0f4290568b4d94f39594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a76129120a82883a977e375b8a85ace09" id="r_a76129120a82883a977e375b8a85ace09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">static</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_server.html#a76129120a82883a977e375b8a85ace09">parseChunkedBody</a> (std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bodyBuffer</a>, <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
+<tr class="memdesc:a76129120a82883a977e375b8a85ace09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to RequestParser::parseBody.  <br /></td></tr>
+<tr class="separator:a76129120a82883a977e375b8a85ace09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -1765,7 +1772,7 @@ Here is the caller graph for this function:</div>
 <div class="fragment"><div class="line"><span class="lineno">  456</span>{</div>
 <div class="line"><span class="lineno">  457</span>    m_requestParser.<a class="code hl_function" href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">parseHeader</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">requestString</a>, request);</div>
 <div class="line"><span class="lineno">  458</span>}</div>
-<div class="ttc" id="aclass_request_parser_html_a933b43673d0b7b99d6cc310f5c03a865"><div class="ttname"><a href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">RequestParser::parseHeader</a></div><div class="ttdeci">void parseHeader(const std::string &amp;headerString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the header of an HTTP request.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00027">RequestParser.cpp:27</a></div></div>
+<div class="ttc" id="aclass_request_parser_html_a933b43673d0b7b99d6cc310f5c03a865"><div class="ttname"><a href="class_request_parser.html#a933b43673d0b7b99d6cc310f5c03a865">RequestParser::parseHeader</a></div><div class="ttdeci">void parseHeader(const std::string &amp;headerString, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the header of an HTTP request.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00031">RequestParser.cpp:31</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1779,17 +1786,20 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ace46f4e07ab67db60e3790a32b2e8e0a" name="ace46f4e07ab67db60e3790a32b2e8e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace46f4e07ab67db60e3790a32b2e8e0a">&#9670;&#160;</a></span>parseBody()</h2>
+<a id="a76129120a82883a977e375b8a85ace09" name="a76129120a82883a977e375b8a85ace09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76129120a82883a977e375b8a85ace09">&#9670;&#160;</a></span>parseChunkedBody()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a> Server::parseBody </td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a> Server::parseChunkedBody </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;&#160;</td>
-          <td class="paramname"><em>bodyString</em>, </td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>bodyBuffer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1803,32 +1813,75 @@ Here is the caller graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Wrapper function to <a class="el" href="class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05" title="Parses the body of an HTTP request.">RequestParser::parseBody</a>. </p>
+<p>Wrapper function to RequestParser::parseBody. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bodyString</td><td>The body string to parse. </td></tr>
     <tr><td class="paramname">request</td><td>The <a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> object to store the parsed body. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00466">466</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  467</span>{</div>
-<div class="line"><span class="lineno">  468</span>    m_requestParser.<a class="code hl_function" href="class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05">parseBody</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bodyString</a>, request, <a class="code hl_function" href="class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e">getBuffer</a>());</div>
-<div class="line"><span class="lineno">  469</span>}</div>
-<div class="ttc" id="aclass_request_parser_html_a7013ef37aa64a74bb183ee3ff9941b05"><div class="ttname"><a href="class_request_parser.html#a7013ef37aa64a74bb183ee3ff9941b05">RequestParser::parseBody</a></div><div class="ttdeci">void parseBody(const std::string &amp;bodyString, HTTPRequest &amp;request, std::vector&lt; char &gt; &amp;buffer)</div><div class="ttdoc">Parses the body of an HTTP request.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00049">RequestParser.cpp:49</a></div></div>
-<div class="ttc" id="aclass_server_html_aeef8f46cd90db32c308c95cd2e5b5c6e"><div class="ttname"><a href="class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e">Server::getBuffer</a></div><div class="ttdeci">std::vector&lt; char &gt; &amp; getBuffer()</div><div class="ttdoc">Getter for internal buffer.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l00123">Server.cpp:123</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00465">465</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  466</span>{</div>
+<div class="line"><span class="lineno">  467</span>    <a class="code hl_function" href="class_request_parser.html#ad637cd5291af3d823c77768cda96dcd5">RequestParser::parseChunkedBody</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bodyBuffer</a>, request);</div>
+<div class="line"><span class="lineno">  468</span>}</div>
+<div class="ttc" id="aclass_request_parser_html_ad637cd5291af3d823c77768cda96dcd5"><div class="ttname"><a href="class_request_parser.html#ad637cd5291af3d823c77768cda96dcd5">RequestParser::parseChunkedBody</a></div><div class="ttdeci">static void parseChunkedBody(std::string &amp;bodyBuffer, HTTPRequest &amp;request)</div><div class="ttdoc">Parses the chunked body of an HTTP request.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00427">RequestParser.cpp:427</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_server_ace46f4e07ab67db60e3790a32b2e8e0a_cgraph.svg" width="650" height="94"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_a76129120a82883a977e375b8a85ace09_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_ace46f4e07ab67db60e3790a32b2e8e0a_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_a76129120a82883a977e375b8a85ace09_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a9740c1ff86f39451ac5c8d20e81260c6" name="a9740c1ff86f39451ac5c8d20e81260c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9740c1ff86f39451ac5c8d20e81260c6">&#9670;&#160;</a></span>decodeMultipartFormdata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">void</a> Server::decodeMultipartFormdata </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wrapper function to <a class="el" href="class_request_parser.html#ade021aa8f89e1168fdb56d408d0fb384" title="Decodes the multipart/form-data content of an HTTP request.">RequestParser::decodeMultipartFormdata</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">request</td><td>The HTTP request containing the multipart/form-data content to decode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00475">475</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  475</span>{ m_requestParser.<a class="code hl_function" href="class_request_parser.html#ade021aa8f89e1168fdb56d408d0fb384">decodeMultipartFormdata</a>(request); }</div>
+<div class="ttc" id="aclass_request_parser_html_ade021aa8f89e1168fdb56d408d0fb384"><div class="ttname"><a href="class_request_parser.html#ade021aa8f89e1168fdb56d408d0fb384">RequestParser::decodeMultipartFormdata</a></div><div class="ttdeci">static void decodeMultipartFormdata(HTTPRequest &amp;request)</div><div class="ttdoc">Decodes the multipart/form-data content of an HTTP request.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00495">RequestParser.cpp:495</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_a9740c1ff86f39451ac5c8d20e81260c6_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_server_a9740c1ff86f39451ac5c8d20e81260c6_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1850,9 +1903,9 @@ Here is the caller graph for this function:</div>
 
 <p>Wrapper function to RequestParser::clearParser. </p>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00474">474</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  474</span>{ m_requestParser.<a class="code hl_function" href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">resetRequestStream</a>(); }</div>
-<div class="ttc" id="aclass_request_parser_html_ad8e0fc22eb113d78140e257f002df666"><div class="ttname"><a href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">RequestParser::resetRequestStream</a></div><div class="ttdeci">void resetRequestStream()</div><div class="ttdoc">Clears the contents of the RequestParser object.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00089">RequestParser.cpp:89</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00480">480</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  480</span>{ m_requestParser.<a class="code hl_function" href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">resetRequestStream</a>(); }</div>
+<div class="ttc" id="aclass_request_parser_html_ad8e0fc22eb113d78140e257f002df666"><div class="ttname"><a href="class_request_parser.html#ad8e0fc22eb113d78140e257f002df666">RequestParser::resetRequestStream</a></div><div class="ttdeci">void resetRequestStream()</div><div class="ttdoc">Clears the contents of the RequestParser object.</div><div class="ttdef"><b>Definition</b> <a href="_request_parser_8cpp_source.html#l00100">RequestParser.cpp:100</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1885,8 +1938,8 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00483">483</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  483</span>{ m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">buildResponse</a>(connection); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00489">489</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  489</span>{ m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">buildResponse</a>(connection); }</div>
 <div class="ttc" id="aclass_response_builder_html_ae037ac16172f1329b44a58f50de0e84e"><div class="ttname"><a href="class_response_builder.html#ae037ac16172f1329b44a58f50de0e84e">ResponseBuilder::buildResponse</a></div><div class="ttdeci">void buildResponse(Connection &amp;connection)</div><div class="ttdoc">Build the response for a given request.</div><div class="ttdef"><b>Definition</b> <a href="_response_builder_8cpp_source.html#l00039">ResponseBuilder.cpp:39</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1919,8 +1972,8 @@ Here is the caller graph for this function:</div>
 <p>Wrapper function to <a class="el" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88" title="Get the built response.">ResponseBuilder::getResponse</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::string The response string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00490">490</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  490</span>{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00496">496</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  496</span>{ <span class="keywordflow">return</span> m_responseBuilder.<a class="code hl_function" href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">getResponse</a>(); }</div>
 <div class="ttc" id="aclass_response_builder_html_adf7d2f0fbb7f5b6866eb884fb2c17e88"><div class="ttname"><a href="class_response_builder.html#adf7d2f0fbb7f5b6866eb884fb2c17e88">ResponseBuilder::getResponse</a></div><div class="ttdeci">std::string getResponse() const</div><div class="ttdoc">Get the built response.</div><div class="ttdef"><b>Definition</b> <a href="_response_builder_8cpp_source.html#l00022">ResponseBuilder.cpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1959,8 +2012,8 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00499">499</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  499</span>{ m_targetResourceHandler.<a class="code hl_function" href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282">execute</a>(connection); }</div>
+<p class="definition">Definition at line <a class="el" href="_server_8cpp_source.html#l00505">505</a> of file <a class="el" href="_server_8cpp_source.html">Server.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  505</span>{ m_targetResourceHandler.<a class="code hl_function" href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282">execute</a>(connection); }</div>
 <div class="ttc" id="aclass_target_resource_handler_html_ac3694cb9b73e3f93b874740194539282"><div class="ttname"><a href="class_target_resource_handler.html#ac3694cb9b73e3f93b874740194539282">TargetResourceHandler::execute</a></div><div class="ttdeci">void execute(Connection &amp;connection)</div><div class="ttdoc">Determine target resource based on the request path and handle different file types and statuses acco...</div><div class="ttdef"><b>Definition</b> <a href="_target_resource_handler_8cpp_source.html#l00022">TargetResourceHandler.cpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
