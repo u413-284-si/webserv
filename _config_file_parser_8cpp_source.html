@@ -893,6 +893,22 @@ $(document).ready(function(){initNavTree('_config_file_parser_8cpp_source.html',
 <div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[index]) != 0)</div>
 <div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>        index++;</div>
 <div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>}</div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span> </div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span><span class="keywordtype">bool</span> ConfigFileParser::isEmptyLocationBlock(<span class="keyword">const</span> std::string&amp; locationBlockContent)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> openingCurlyBracketIndex = locationBlockContent.find(<span class="charliteral">&#39;{&#39;</span>);</div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstNonWhitespaceAfterCurly</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>        = locationBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);</div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>    <span class="keywordflow">return</span> (firstNonWhitespaceAfterCurly == std::string::npos);</div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>}</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span> </div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span><span class="keywordtype">bool</span> ConfigFileParser::isEmptyServerBlock(<span class="keyword">const</span> std::string&amp; serverBlockContent)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> openingCurlyBracketIndex = serverBlockContent.find(<span class="charliteral">&#39;{&#39;</span>);</div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstNonWhitespaceAfterCurly</div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>        = serverBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    <span class="keywordflow">return</span> (firstNonWhitespaceAfterCurly == std::string::npos);</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>}</div>
 <div class="ttc" id="a_config_file_parser_8hpp_html"><div class="ttname"><a href="_config_file_parser_8hpp.html">ConfigFileParser.hpp</a></div></div>
 <div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4a"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a></div><div class="ttdeci">Block</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
 <div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a></div><div class="ttdeci">@ LocationBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
