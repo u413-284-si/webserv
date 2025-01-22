@@ -71,6 +71,8 @@ var error_8hpp =
     [ "ERR_NON_FINAL_CHUNKED_ENCODING", "error_8hpp.html#a921d1cf264a755c9ef65a0493569011a", null ],
     [ "ERR_NON_EXISTENT_TRANSFER_ENCODING", "error_8hpp.html#a9d32af3cad8071ff47072efebf7d8b36", null ],
     [ "ERR_BAD_MULTIPART_FORMDATA", "error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7", null ],
+    [ "ERR_EMPTY_CONNECTION_VALUE", "error_8hpp.html#a6536693a496e8732f848f48df7fe866d", null ],
+    [ "ERR_INVALID_CONNECTION_VALUE", "error_8hpp.html#ace44ce027ed2a6d77b4bc80e7a3a6680", null ],
     [ "ERR_NON_EXISTENT_CHUNKSIZE", "error_8hpp.html#a79d0e6e5e82b33abfceed71cf4debe27", null ],
     [ "ERR_TOO_LARGE_CHUNKSIZE", "error_8hpp.html#a946a0f969f3164d7654f4565c507d6f6", null ],
     [ "ERR_INVALID_HEX_CHAR", "error_8hpp.html#a9517efbcce7f663c13d78c61f55c6ba5", null ],
