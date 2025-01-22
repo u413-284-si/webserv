@@ -75,6 +75,20 @@ TEST_F(ParseHeadersTest, RepeatedEqualContentLength)
 	EXPECT_EQ(request.headers["content-length"], "23");
 }
 
+TEST_F(ParseHeadersTest, ContentLengthZero)
+{
+	// Arrange
+
+	// Act
+	p.parseHeader("POST /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: "
+				  "www.example.com\r\nContent-Length: 0\r\n\r\n",
+		request);
+
+	// Assert
+	EXPECT_EQ(request.headers["host"], "www.example.com");
+	EXPECT_EQ(request.headers["content-length"], "0");
+}
+
 TEST_F(ParseHeadersTest, TransferEncodingChunked)
 {
 	// Arrange

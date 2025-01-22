@@ -33,6 +33,7 @@
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
 #define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
+#define ERR_BAD_MULTIPART_FORMDATA "Invalid HTTP request: Multipart/form-data invalid"
 #define ERR_EMPTY_CONNECTION_VALUE "Invalid HTTP request: Empty connection header value"
 #define ERR_INVALID_CONNECTION_VALUE "Invalid HTTP request: Invalid connection header value"
 
@@ -49,3 +50,4 @@
 // HTTP CGI RESPONSE HEADER ERRORS
 #define ERR_MISSING_CGI_HEADER "Invalid CGI response: No header section found in CGI output"
 #define ERR_MISSING_CGI_FIELD "Invalid CGI response: No CGI field (Content-type | Status | Location) found"
+#define ERR_MULTIPLE_UPLOADS "Invalid HTTP request: Multiple file uploads not supported"
