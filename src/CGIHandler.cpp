@@ -48,11 +48,11 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	, m_cgiExt(connection.location->cgiExt)
 	, m_pipeIn()
 	, m_pipeOut()
-    , m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
-    , m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
+	, m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
+	, m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
 	, m_cgiPid(connection.m_cgiPid)
-    , m_request(connection.m_request)
-    , m_location(connection.location)
+	, m_request(connection.m_request)
+	, m_location(connection.location)
 
 {
 
@@ -65,27 +65,29 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	m_env.push_back("GATEWAY_INTERFACE=CGI/1.1");
 	const std::string pathInfo = extractPathInfo(connection.m_request.uri.path);
 	m_env.push_back("PATH_INFO=" + pathInfo);
-	m_env.push_back("PATH_TRANSLATED=" + connection.location->root + pathInfo);
+    const std::string preScriptPath = extractPreScriptPath(connection.m_request.targetResource);
+	m_env.push_back("PATH_TRANSLATED=" + preScriptPath + pathInfo);
 	m_env.push_back("QUERY_STRING=" + connection.m_request.uri.query);
 	m_env.push_back("REDIRECT_STATUS=200");
 	m_env.push_back("REMOTE_ADDR=" + connection.m_clientSocket.host);
 	m_env.push_back("REMOTE_PORT=" + connection.m_clientSocket.port);
 	m_env.push_back("REQUEST_METHOD=" + webutils::methodToString(connection.m_request.method));
 	m_env.push_back("REQUEST_URI=" + connection.m_request.uri.path + '?' + connection.m_request.uri.query);
-	const std::string scriptPath = extractScriptPath(connection.m_request.uri.path);
-	m_env.push_back("SCRIPT_NAME=" + scriptPath);
-	m_env.push_back("SCRIPT_FILENAME=" + connection.location->root + scriptPath);
+	const std::string relScriptPath = extractScriptPath(connection.m_request.uri.path);
+	m_env.push_back("SCRIPT_NAME=" + relScriptPath);
+	const std::string absScriptPath = extractScriptPath(connection.m_request.targetResource);
+	m_env.push_back("SCRIPT_FILENAME=" + absScriptPath);
 	m_env.push_back("SERVER_ADDR=" + connection.m_serverSocket.host);
 	m_env.push_back("SERVER_NAME=" + connection.m_serverSocket.host);
 	m_env.push_back("SERVER_PORT=" + connection.m_serverSocket.port);
 	m_env.push_back("SERVER_PROTOCOL=HTTP/1.1");
 	m_env.push_back("SERVER_SOFTWARE=Trihard/1.0.0");
-	m_env.push_back("SYSTEM_ROOT=" + connection.location->root);
+	m_env.push_back("SYSTEM_ROOT=" + preScriptPath);
 
 	/* ========= Set up arguments for CGI script ========= */
 
 	m_argv.push_back(m_cgiPath);
-	m_argv.push_back(connection.location->root + scriptPath);
+	m_argv.push_back(absScriptPath);
 
 	/* ========= Create pipes for inter-process communication ========= */
 
@@ -97,7 +99,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	if (connection.m_request.method == MethodPost) {
 		if (m_processOps.pipeProcess(m_pipeIn) == -1)
 			connection.m_request.httpStatus = StatusInternalServerError;
-        m_pipeToCGIWriteEnd = m_pipeIn[1];
+		m_pipeToCGIWriteEnd = m_pipeIn[1];
 	}
 
 	if (m_processOps.pipeProcess(m_pipeOut) == -1) {
@@ -105,7 +107,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 		webutils::closeFd(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
 	}
-    m_pipeFromCGIReadEnd = m_pipeOut[0];
+	m_pipeFromCGIReadEnd = m_pipeOut[0];
 
 	/* ========= Create input parameters for execve ========= */
 	setEnvp();
@@ -289,6 +291,24 @@ std::string CGIHandler::extractScriptPath(const std::string& path)
 	if (extensionStart == std::string::npos)
 		return "";
 	return path.substr(0, extensionStart + m_cgiExt.size());
+}
+
+/**
+ * @brief Extracts the path before the CGI script extension.
+ *
+ * This function finds the position of the CGI script extension in the given path and returns
+ * the substring of the path before the extension. If the extension is not found, it returns an empty string.
+ *
+ * @param path The full path containing the CGI script extension.
+ * @return The substring of the path before the CGI script extension, or an empty string if the extension is not found.
+ */
+std::string CGIHandler::extractPreScriptPath(const std::string& path)
+{
+	size_t extensionStart = path.find(m_cgiExt);
+	if (extensionStart == std::string::npos)
+		return "";
+    size_t scriptStart = path.rfind('/', extensionStart);
+	return path.substr(0, scriptStart );
 }
 
 /**

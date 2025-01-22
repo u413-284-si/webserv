@@ -58,6 +58,7 @@ private:
 	// Helper functions
 	std::string extractPathInfo(const std::string& path);
 	std::string extractScriptPath(const std::string& path);
+	std::string extractPreScriptPath(const std::string& path);
 	void closePipes();
 	void closeAllFds(int epollFd, std::map<int, Connection> connections, std::map<int, Connection*> cgiConnections);
 };
