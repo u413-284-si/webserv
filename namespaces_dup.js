@@ -5,7 +5,9 @@ var namespaces_dup =
     ] ],
     [ "constants", "namespaceconstants.html", [
       [ "g_decimalBase", "namespaceconstants.html#afe756195738c244eeace3037c5486edc", null ],
-      [ "g_oneMegabyte", "namespaceconstants.html#a7615a958df9c9000cf15e3da3558e6ce", null ]
+      [ "g_oneKilobyte", "namespaceconstants.html#aa4baf303c7c744c334810ce3c6f5db67", null ],
+      [ "g_oneMegabyte", "namespaceconstants.html#a28e660e8f884ab2d1dbdd35500a04688", null ],
+      [ "g_oneGigabyte", "namespaceconstants.html#af474a8ea95a75173b9565b3e6f993a29", null ]
     ] ],
     [ "server_management", "namespaceserver__management.html", "namespaceserver__management" ],
     [ "server_response", "namespaceserver__response.html", "namespaceserver__response" ],

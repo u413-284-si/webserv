@@ -112,6 +112,9 @@ $(document).ready(function(){initNavTree('_config_file_parser_8hpp.html',''); in
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_server_8hpp_source.html">Server.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_status_code_8hpp_source.html">StatusCode.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="error_8hpp_source.html">error.hpp</a>&quot;</code><br />
+<code>#include &quot;limits&quot;</code><br />
 <code>#include &quot;<a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
@@ -167,11 +170,11 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38" name="ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"></a>LocationBlock&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00019">19</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   19</span>{ <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a> };</div>
-<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a></div><div class="ttdeci">@ LocationBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00019">ConfigFileParser.hpp:19</a></div></div>
-<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a></div><div class="ttdeci">@ HttpBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00019">ConfigFileParser.hpp:19</a></div></div>
-<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a></div><div class="ttdeci">@ ServerBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00019">ConfigFileParser.hpp:19</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00022">22</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>{ <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a> };</div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a></div><div class="ttdeci">@ LocationBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a></div><div class="ttdeci">@ HttpBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a></div><div class="ttdeci">@ ServerBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

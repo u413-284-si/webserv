@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00028">28</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8hpp_source.html#l00031">31</a> of file <a class="el" href="_config_file_parser_8hpp_source.html">ConfigFileParser.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2d119a482318309adc5c06efb97b10b6" name="a2d119a482318309adc5c06efb97b10b6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d119a482318309adc5c06efb97b10b6">&#9670;&#160;</a></span>ConfigFileParser()</h2>
@@ -144,29 +144,30 @@ Public Member Functions</h2></td></tr>
 
 <p>PUBLIC Construct a new <a class="el" href="class_config_file_parser.html">ConfigFileParser</a>:: <a class="el" href="class_config_file_parser.html">ConfigFileParser</a> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="_config_file_parser_8cpp_source.html#l00008">8</a> of file <a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span>    : m_configFile()</div>
-<div class="line"><span class="lineno">   10</span>    , m_configFileIndex(0)</div>
-<div class="line"><span class="lineno">   11</span>    , m_contentIndex(0)</div>
-<div class="line"><span class="lineno">   12</span>    , m_serverIndex(0)</div>
-<div class="line"><span class="lineno">   13</span>    , m_locationIndex(0)</div>
-<div class="line"><span class="lineno">   14</span>{</div>
-<div class="line"><span class="lineno">   15</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>[]</div>
-<div class="line"><span class="lineno">   16</span>        = { <span class="stringliteral">&quot;server_name&quot;</span>, <span class="stringliteral">&quot;listen&quot;</span>, <span class="stringliteral">&quot;host&quot;</span>, <span class="stringliteral">&quot;client_max_body_size&quot;</span>, <span class="stringliteral">&quot;error_page&quot;</span>, <span class="stringliteral">&quot;location&quot;</span>, <span class="stringliteral">&quot;root&quot;</span> };</div>
-<div class="line"><span class="lineno">   17</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNamesSize</a> = <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>) / <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>[0]);</div>
-<div class="line"><span class="lineno">   18</span> </div>
-<div class="line"><span class="lineno">   19</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>[] = { <span class="stringliteral">&quot;root&quot;</span>, <span class="stringliteral">&quot;index&quot;</span>, <span class="stringliteral">&quot;cgi_ext&quot;</span>, <span class="stringliteral">&quot;cgi_path&quot;</span>, <span class="stringliteral">&quot;client_max_body_size&quot;</span>,</div>
-<div class="line"><span class="lineno">   20</span>        <span class="stringliteral">&quot;autoindex&quot;</span>, <span class="stringliteral">&quot;limit_except&quot;</span>, <span class="stringliteral">&quot;location&quot;</span>, <span class="stringliteral">&quot;return&quot;</span> };</div>
-<div class="line"><span class="lineno">   21</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNamesSize</a></div>
-<div class="line"><span class="lineno">   22</span>        = <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>) / <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>[0]);</div>
-<div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>    m_validServerDirectives = std::vector&lt;std::string&gt;(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>,</div>
-<div class="line"><span class="lineno">   25</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a></div>
-<div class="line"><span class="lineno">   26</span>            + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNamesSize</a>); <span class="comment">// NOLINT: no good alternative for pointer arithmetic</span></div>
-<div class="line"><span class="lineno">   27</span>    m_validLocationDirectives = std::vector&lt;std::string&gt;(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>,</div>
-<div class="line"><span class="lineno">   28</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a></div>
-<div class="line"><span class="lineno">   29</span>            + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNamesSize</a>); <span class="comment">// NOLINT: no good alternative for pointer arithmetic</span></div>
-<div class="line"><span class="lineno">   30</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8cpp_source.html#l00009">9</a> of file <a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   10</span>    : m_configFile()</div>
+<div class="line"><span class="lineno">   11</span>    , m_configFileIndex(0)</div>
+<div class="line"><span class="lineno">   12</span>    , m_contentIndex(0)</div>
+<div class="line"><span class="lineno">   13</span>    , m_serverIndex(0)</div>
+<div class="line"><span class="lineno">   14</span>    , m_locationIndex(0)</div>
+<div class="line"><span class="lineno">   15</span>    , m_isDefaultLocationDefined(<span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">   16</span>{</div>
+<div class="line"><span class="lineno">   17</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>[]</div>
+<div class="line"><span class="lineno">   18</span>        = { <span class="stringliteral">&quot;server_name&quot;</span>, <span class="stringliteral">&quot;listen&quot;</span>, <span class="stringliteral">&quot;host&quot;</span>, <span class="stringliteral">&quot;client_max_body_size&quot;</span>, <span class="stringliteral">&quot;error_page&quot;</span>, <span class="stringliteral">&quot;location&quot;</span>, <span class="stringliteral">&quot;root&quot;</span> };</div>
+<div class="line"><span class="lineno">   19</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNamesSize</a> = <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>) / <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>[0]);</div>
+<div class="line"><span class="lineno">   20</span> </div>
+<div class="line"><span class="lineno">   21</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>[] = { <span class="stringliteral">&quot;root&quot;</span>, <span class="stringliteral">&quot;alias&quot;</span>, <span class="stringliteral">&quot;index&quot;</span>, <span class="stringliteral">&quot;cgi_ext&quot;</span>, <span class="stringliteral">&quot;cgi_path&quot;</span>,</div>
+<div class="line"><span class="lineno">   22</span>        <span class="stringliteral">&quot;client_max_body_size&quot;</span>, <span class="stringliteral">&quot;autoindex&quot;</span>, <span class="stringliteral">&quot;error_page&quot;</span>, <span class="stringliteral">&quot;allow_methods&quot;</span>, <span class="stringliteral">&quot;location&quot;</span>, <span class="stringliteral">&quot;return&quot;</span> };</div>
+<div class="line"><span class="lineno">   23</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNamesSize</a></div>
+<div class="line"><span class="lineno">   24</span>        = <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>) / <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>[0]);</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>    m_validServerDirectives = std::vector&lt;std::string&gt;(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a>,</div>
+<div class="line"><span class="lineno">   27</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNames</a></div>
+<div class="line"><span class="lineno">   28</span>            + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validServerDirectiveNamesSize</a>); <span class="comment">// NOLINT: no good alternative for pointer arithmetic</span></div>
+<div class="line"><span class="lineno">   29</span>    m_validLocationDirectives = std::vector&lt;std::string&gt;(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a>,</div>
+<div class="line"><span class="lineno">   30</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNames</a></div>
+<div class="line"><span class="lineno">   31</span>            + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">validLocationDirectiveNamesSize</a>); <span class="comment">// NOLINT: no good alternative for pointer arithmetic</span></div>
+<div class="line"><span class="lineno">   32</span>}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -193,7 +194,9 @@ Public Member Functions</h2></td></tr>
 <li>Can be opened</li>
 <li>Is not empty</li>
 <li>Does not contain open brackets</li>
+<li>Is not missing the http block</li>
 <li>Does not contain invalid directives</li>
+<li>Is not missing server <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">block(s)</a></li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -203,47 +206,59 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>const <a class="el" href="struct_config_file.html">ConfigFile</a>&amp; Created <a class="el" href="struct_config_file.html">ConfigFile</a> object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_config_file_parser_8cpp_source.html#l00044">44</a> of file <a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>    std::ifstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">configFilePath</a>.c_str());</div>
-<div class="line"><span class="lineno">   47</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bufferStream</a>;</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.is_open())</div>
-<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to open config file&quot;</span>);</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.peek() == std::ifstream::traits_type::eof())</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Config file is empty&quot;</span>);</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bufferStream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.rdbuf();</div>
-<div class="line"><span class="lineno">   55</span>    m_configFileContent = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bufferStream</a>.str();</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.close();</div>
+<p class="definition">Definition at line <a class="el" href="_config_file_parser_8cpp_source.html#l00048">48</a> of file <a class="el" href="_config_file_parser_8cpp_source.html">ConfigFileParser.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>    std::ifstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">configFilePath</a>.c_str());</div>
+<div class="line"><span class="lineno">   51</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bufferStream</a>;</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.is_open())</div>
+<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#abd0525472584b6ff096787f26f9abd88">ERR_CONFIG_FILE_OPEN_FAILED</a>);</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.peek() == std::ifstream::traits_type::eof())</div>
+<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ad82397dc3dfd3e541282007518c7ba41">ERR_CONFIG_FILE_EMPTY</a>);</div>
 <div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (isBracketOpen())</div>
-<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Open bracket(s) in config file&quot;</span>);</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">if</span> (!isValidBlockBeginn(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>))</div>
-<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">return</span> m_configFile;</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>    skipBlockBegin(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>);</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">while</span> (m_configFileContent[m_configFileIndex] != <span class="charliteral">&#39;}&#39;</span>) {</div>
-<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">if</span> (isValidBlockBeginn(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>))</div>
-<div class="line"><span class="lineno">   68</span>            readServerBlock();</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::isspace(m_configFileContent[m_configFileIndex]) == 0) {</div>
-<div class="line"><span class="lineno">   70</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid directive&quot;</span>);</div>
-<div class="line"><span class="lineno">   71</span>        }</div>
-<div class="line"><span class="lineno">   72</span>        m_configFileIndex++;</div>
-<div class="line"><span class="lineno">   73</span>    }</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> (std::vector&lt;ServerBlockConfig&gt;::const_iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a> = m_serverBlocksConfig.begin();</div>
-<div class="line"><span class="lineno">   76</span>         <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a> != m_serverBlocksConfig.end(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a>++) {</div>
-<div class="line"><span class="lineno">   77</span>        processServerContent(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a>);</div>
-<div class="line"><span class="lineno">   78</span>        m_serverIndex++;</div>
-<div class="line"><span class="lineno">   79</span>    }</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bufferStream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.rdbuf();</div>
+<div class="line"><span class="lineno">   59</span>    m_configFileContent = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bufferStream</a>.str();</div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStream</a>.close();</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (isBracketOpen())</div>
+<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a29d4a46ce3e34c5cfdfb76e1659c2ac9">ERR_OPEN_BRACKET_IN_CONFIG_FILE</a>);</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (!isValidBlockBeginn(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>))</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a24545da7613edad171a8276bc683c9a3">ERR_MISSING_HTTP_BLOCK</a>);</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    skipBlockBegin(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>);</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">while</span> (m_configFileContent[m_configFileIndex] != <span class="charliteral">&#39;}&#39;</span>) {</div>
+<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">if</span> (isValidBlockBeginn(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>))</div>
+<div class="line"><span class="lineno">   72</span>            readServerBlock();</div>
+<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (std::isspace(m_configFileContent[m_configFileIndex]) == 0)</div>
+<div class="line"><span class="lineno">   74</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ad40e6e68c0f296cf2c23afe42540667e">ERR_INVALID_DIRECTIVE</a>);</div>
+<div class="line"><span class="lineno">   75</span>        m_configFileIndex++;</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> (m_serverBlocksConfig.empty())</div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a0fe654dd5b2737010b36368ea0930e4f">ERR_MISSING_SERVER_BLOCK</a>);</div>
 <div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> m_configFile;</div>
-<div class="line"><span class="lineno">   82</span>}</div>
-<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a></div><div class="ttdeci">@ HttpBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00019">ConfigFileParser.hpp:19</a></div></div>
-<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a></div><div class="ttdeci">@ ServerBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00019">ConfigFileParser.hpp:19</a></div></div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">for</span> (std::vector&lt;ServerBlockConfig&gt;::const_iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a> = m_serverBlocksConfig.begin();</div>
+<div class="line"><span class="lineno">   82</span>         <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a> != m_serverBlocksConfig.end(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a>++) {</div>
+<div class="line"><span class="lineno">   83</span>        processServerContent(*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverIt</a>);</div>
+<div class="line"><span class="lineno">   84</span>        m_serverIndex++;</div>
+<div class="line"><span class="lineno">   85</span>    }</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">if</span> (isLocationDuplicate())</div>
+<div class="line"><span class="lineno">   88</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a24c9252d01896ac18e27a2525ccfe6ee">ERR_DUPLICATE_LOCATION</a>);</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span> m_configFile;</div>
+<div class="line"><span class="lineno">   91</span>}</div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a></div><div class="ttdeci">@ HttpBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
+<div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a></div><div class="ttdeci">@ ServerBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_a0fe654dd5b2737010b36368ea0930e4f"><div class="ttname"><a href="error_8hpp.html#a0fe654dd5b2737010b36368ea0930e4f">ERR_MISSING_SERVER_BLOCK</a></div><div class="ttdeci">#define ERR_MISSING_SERVER_BLOCK</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00012">error.hpp:12</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_a24545da7613edad171a8276bc683c9a3"><div class="ttname"><a href="error_8hpp.html#a24545da7613edad171a8276bc683c9a3">ERR_MISSING_HTTP_BLOCK</a></div><div class="ttdeci">#define ERR_MISSING_HTTP_BLOCK</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00010">error.hpp:10</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_a24c9252d01896ac18e27a2525ccfe6ee"><div class="ttname"><a href="error_8hpp.html#a24c9252d01896ac18e27a2525ccfe6ee">ERR_DUPLICATE_LOCATION</a></div><div class="ttdeci">#define ERR_DUPLICATE_LOCATION</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00013">error.hpp:13</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_a29d4a46ce3e34c5cfdfb76e1659c2ac9"><div class="ttname"><a href="error_8hpp.html#a29d4a46ce3e34c5cfdfb76e1659c2ac9">ERR_OPEN_BRACKET_IN_CONFIG_FILE</a></div><div class="ttdeci">#define ERR_OPEN_BRACKET_IN_CONFIG_FILE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00009">error.hpp:9</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_abd0525472584b6ff096787f26f9abd88"><div class="ttname"><a href="error_8hpp.html#abd0525472584b6ff096787f26f9abd88">ERR_CONFIG_FILE_OPEN_FAILED</a></div><div class="ttdeci">#define ERR_CONFIG_FILE_OPEN_FAILED</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00007">error.hpp:7</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_ad40e6e68c0f296cf2c23afe42540667e"><div class="ttname"><a href="error_8hpp.html#ad40e6e68c0f296cf2c23afe42540667e">ERR_INVALID_DIRECTIVE</a></div><div class="ttdeci">#define ERR_INVALID_DIRECTIVE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00011">error.hpp:11</a></div></div>
+<div class="ttc" id="aerror_8hpp_html_ad82397dc3dfd3e541282007518c7ba41"><div class="ttname"><a href="error_8hpp.html#ad82397dc3dfd3e541282007518c7ba41">ERR_CONFIG_FILE_EMPTY</a></div><div class="ttdeci">#define ERR_CONFIG_FILE_EMPTY</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00008">error.hpp:8</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

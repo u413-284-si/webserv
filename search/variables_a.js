@@ -35,6 +35,6 @@ var searchData=
   ['m_5ftargetresourcehandler_32',['m_targetResourceHandler',['../class_target_resource_handler_test.html#ab9ac5172d8d77bf735fdcbef1ad3ee5f',1,'TargetResourceHandlerTest']]],
   ['m_5ftimesincelastevent_33',['m_timeSinceLastEvent',['../struct_connection.html#a8038f77baa0072e5aa044efa5ab47625',1,'Connection']]],
   ['m_5furi_34',['m_uri',['../class_ostream_inserters_test.html#a1780a494a7ace6e471149b7ea42728e7',1,'OstreamInsertersTest']]],
-  ['maxbodysize_35',['maxbodysize',['../struct_location.html#a68f01d8ebb15037e62a92ff2e55b50f1',1,'Location::maxBodySize'],['../struct_config_server.html#a33a2f861d16ae734e7a81bed8e398afe',1,'ConfigServer::maxBodySize']]],
+  ['maxbodysize_35',['maxbodysize',['../struct_location.html#ab618e8258babec096630b3c362aad8a7',1,'Location::maxBodySize'],['../struct_config_server.html#a4353aac2b0a4b157c3289b29010c6fd4',1,'ConfigServer::maxBodySize']]],
   ['method_36',['method',['../struct_h_t_t_p_request.html#a67c428c2e03ff5e9e3fc4403ba9377a9',1,'HTTPRequest']]]
 ];

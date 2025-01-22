@@ -204,26 +204,26 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; The output stream. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00094">94</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
-<div class="line"><span class="lineno">   96</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">assert</a>(method &gt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a> &amp;&amp; method &lt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>);</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">switch</span> (method) {</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>:</div>
-<div class="line"><span class="lineno">  100</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;GET&quot;</span>;</div>
-<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>:</div>
-<div class="line"><span class="lineno">  103</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;POST&quot;</span>;</div>
-<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>:</div>
-<div class="line"><span class="lineno">  106</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
-<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>:</div>
-<div class="line"><span class="lineno">  109</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;enum MethodCount&quot;</span>;</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  111</span>    }</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a>;</div>
-<div class="line"><span class="lineno">  113</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_log_ostream_inserters_8cpp_source.html#l00095">95</a> of file <a class="el" href="_log_ostream_inserters_8cpp_source.html">LogOstreamInserters.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
+<div class="line"><span class="lineno">   97</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">assert</a>(method &gt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a> &amp;&amp; method &lt;= <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>);</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">switch</span> (method) {</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0faa35da925de1137b7afb6517a1ad11dec">MethodGet</a>:</div>
+<div class="line"><span class="lineno">  101</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;GET&quot;</span>;</div>
+<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa81232731cae6bc0dd9cf041d9c91a926">MethodPost</a>:</div>
+<div class="line"><span class="lineno">  104</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;POST&quot;</span>;</div>
+<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa9f91e4c9bfae64f51f6f70684fee2703">MethodDelete</a>:</div>
+<div class="line"><span class="lineno">  107</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;DELETE&quot;</span>;</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_method_8hpp.html#a2a3c0067e44c5ef3210a256d06c16b0fa82abfb36a36842a4297eeabeda18dfce">MethodCount</a>:</div>
+<div class="line"><span class="lineno">  110</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a> &lt;&lt; <span class="stringliteral">&quot;enum MethodCount&quot;</span>;</div>
+<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  112</span>    }</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ostream</a>;</div>
+<div class="line"><span class="lineno">  114</span>}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>

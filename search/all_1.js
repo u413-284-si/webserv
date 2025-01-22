@@ -8,7 +8,7 @@ var searchData=
   ['addlogoutputter_5',['addLogOutputter',['../classweblog_1_1_logger.html#a3681dadbda75522f60e499b56a0e03a7',1,'weblog::Logger']]],
   ['alias_6',['alias',['../struct_location.html#a471deee3faea5c77ace81fb29b33a38c',1,'Location']]],
   ['allowed_5fdirectories_7',['allowed_directories',['../namespaceupload.html#a69ad7995ef342488e21c8c94ecfb3dd3',1,'upload']]],
-  ['allowedmethods_8',['allowedMethods',['../struct_location.html#ad6b11601af0b9f6776ccd8c75ae99ed7',1,'Location']]],
+  ['allowmethods_8',['allowMethods',['../struct_location.html#a945c79c8e3c5a9023134800f56303ca6',1,'Location']]],
   ['alogoutputter_9',['alogoutputter',['../classweblog_1_1_a_log_outputter.html#a07d02d9f0393bc590e37f8a4147f7597',1,'weblog::ALogOutputter::ALogOutputter()'],['../classweblog_1_1_a_log_outputter.html',1,'weblog::ALogOutputter']]],
   ['alogoutputter_2ecpp_10',['ALogOutputter.cpp',['../_a_log_outputter_8cpp.html',1,'']]],
   ['alogoutputter_2ehpp_11',['ALogOutputter.hpp',['../_a_log_outputter_8hpp.html',1,'']]],
