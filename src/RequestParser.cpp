@@ -643,7 +643,8 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 		}
 		if (request.headers.find("content-length") != request.headers.end())
 			request.shallCloseConnection = true;
-
+        
+        webutils::lowercase(request.headers.at("transfer-encoding"));
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
@@ -782,7 +783,7 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 {
 	LOG_DEBUG << "Validating Connection header...";
 
-	std::map<std::string, std::string>::const_iterator iter = request.headers.find("connection");
+	std::map<std::string, std::string>::iterator iter = request.headers.find("connection");
 	if (iter != request.headers.end()) {
 		if (iter->second.empty()) {
 			request.httpStatus = StatusBadRequest;
@@ -790,6 +791,7 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 			throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
 		}
 
+        webutils::lowercase(iter->second);
 		if (iter->second == "close") {
 			request.shallCloseConnection = true;
 		} else if (iter->second == "keep-alive") {
