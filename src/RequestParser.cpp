@@ -637,7 +637,7 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 			char* endptr = NULL;
 			errno = 0;
 			request.contentLength = std::strtoul(strValues[i].c_str(), &endptr, constants::g_decimalBase);
-			if (errno == ERANGE || request.contentLength == 0 || *endptr != '\0') {
+			if (errno == ERANGE || *endptr != '\0') {
 				request.httpStatus = StatusBadRequest;
 				request.shallCloseConnection = true;
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
