@@ -68,30 +68,6 @@ void RequestParser::extractBoundary(HTTPRequest& request)
 }
 
 /**
- * @brief Clears the contents of the given HTTPRequest object.
- *
- * This function resets all the fields of the provided HTTPRequest object
- * to their default states. It sets the HTTP method to `MethodCount`,
- * clears the URI fragment, path, and query, sets the version to an
- * empty string, clears the headers and body, sets the error code to 0,
- * and indicates that the connection should not be closed.
- *
- * @param request The HTTPRequest object to be cleared.
- */
-void RequestParser::clearRequest(HTTPRequest& request)
-{
-	request.method = MethodCount;
-	request.uri.fragment = "";
-	request.uri.path = "";
-	request.uri.query = "";
-	request.version = "";
-	request.headers.clear();
-	request.body = "";
-	request.httpStatus = StatusOK;
-	request.shallCloseConnection = false;
-}
-
-/**
  * @brief Clears the contents of the RequestParser object.
  *
  * This function resets the internal request stream of the RequestParser object
@@ -533,7 +509,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 				throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
 		}
 
-        // Check for two dashes after boundary indicating the end boundary
+		// Check for two dashes after boundary indicating the end boundary
 		if (request.body.at(nextBoundaryPos + request.boundary.size() + 2) == '-'
 			&& request.body.at(nextBoundaryPos + request.boundary.size() + 3) == '-')
 			break;
@@ -683,7 +659,7 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 		if (request.headers.find("content-length") != request.headers.end())
 			request.shallCloseConnection = true;
 
-        webutils::lowercase(request.headers.at("transfer-encoding"));
+		webutils::lowercase(request.headers.at("transfer-encoding"));
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
@@ -812,8 +788,9 @@ void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName,
  * It ensures that the header is not empty, does not contain multiple values, and has a valid value.
  * Valid values for the Connection header are "close" and "keep-alive" where "close" indicates that
  * the connection should be closed after the response, and "keep-alive" indicates that the connection
- * should be kept open for further requests. By default the connection is kept alive with shallCloseConnection set to false.
- * If the header is invalid, it sets the HTTP status to BadRequest and indicates that the connection should be closed.
+ * should be kept open for further requests. By default the connection is kept alive with shallCloseConnection set to
+ * false. If the header is invalid, it sets the HTTP status to BadRequest and indicates that the connection should be
+ * closed.
  *
  * @param request The HTTPRequest object containing the request data.
  * @throws std::runtime_error if the Connection header is empty, contains multiple values, or has an invalid value.
@@ -830,7 +807,7 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 			throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
 		}
 
-        webutils::lowercase(iter->second);
+		webutils::lowercase(iter->second);
 		if (iter->second == "close") {
 			request.shallCloseConnection = true;
 		} else if (iter->second == "keep-alive") {

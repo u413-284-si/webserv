@@ -40,7 +40,6 @@ public:
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
 	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
 	static void decodeMultipartFormdata(HTTPRequest& request);
-	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
 private:
@@ -66,7 +65,7 @@ private:
 	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
 	static void validateMethodWithBody(HTTPRequest& request);
-    static void validateConnectionHeader(HTTPRequest& request);
+	static void validateConnectionHeader(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
