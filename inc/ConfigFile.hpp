@@ -9,8 +9,8 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 /* ====== DEFINITIONS ====== */
 
@@ -21,15 +21,15 @@ public:
 
 	std::string path;
 	std::string root;
+	std::string alias;
 	std::vector<std::string> indices;
 	std::string cgiExt;
 	std::string cgiPath;
 	bool hasAutoindex;
-	unsigned long maxBodySize;
+	size_t maxBodySize;
 	std::map<statusCode, std::string> errorPage;
-	bool allowedMethods[MethodCount];
+	bool allowMethods[MethodCount];
 	std::pair<statusCode, std::string> returns;
-	std::string alias;
 };
 
 struct ConfigServer {
@@ -39,10 +39,9 @@ public:
 
 	std::string serverName;
 	std::string root;
-	// std::map<std::string, std::string> listen;
 	std::string host;
 	std::string port;
-	unsigned long maxBodySize;
+	size_t maxBodySize;
 	std::map<statusCode, std::string> errorPage;
 	std::vector<Location> locations;
 };

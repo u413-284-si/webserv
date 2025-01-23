@@ -24,7 +24,7 @@ protected:
 		location2.path = "/cgi-bin";
 		location2.cgiPath = "/usr/bin/bash";
 		location2.cgiExt = ".sh";
-		location2.allowedMethods[MethodPost] = true;
+		location2.allowMethods[MethodPost] = true;
 		m_configFile.servers[0].locations.emplace_back(location2);
 
 		m_connection.m_status = Connection::ReceiveHeader;
@@ -69,7 +69,7 @@ TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 
 	m_connection.m_buffer.assign("POST /new.txt "
 								 "HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body");
-	m_configFile.servers[0].locations[0].allowedMethods[MethodPost] = true;
+	m_configFile.servers[0].locations[0].allowMethods[MethodPost] = true;
 
 	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
 

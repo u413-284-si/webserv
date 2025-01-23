@@ -46,6 +46,7 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemOps);
 	responseBodyHandler.execute();
+
 	appendResponseHeader(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();

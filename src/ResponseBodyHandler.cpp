@@ -38,6 +38,9 @@ void ResponseBodyHandler::execute()
 	if (isRedirectionStatus(m_request.httpStatus))
 		m_responseHeaders["location"] = m_request.targetResource;
 
+	if (m_request.httpStatus == StatusMethodNotAllowed)
+		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowMethods);
+
 	if (m_request.hasReturn) {
 		const bool isEmpty = m_request.targetResource.empty();
 		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
@@ -73,6 +76,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodGet) {
+		LOG_DEBUG << "Handling GET request";
 		try {
 			m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
 		} catch (FileSystemOps::FileNotFoundException& e) {
@@ -91,6 +95,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodPost) {
+		LOG_DEBUG << "Handling POST request";
 		FileWriteHandler fileWriteHandler(m_fileSystemOps);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
 		if (m_request.httpStatus == StatusCreated)
@@ -102,6 +107,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodDelete) {
+		LOG_DEBUG << "Handling DELETE request";
 		DeleteHandler deleteHandler(m_fileSystemOps);
 		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 		if (m_responseBody.empty())
@@ -126,8 +132,8 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
-    std::string loweredHeaders = headers;
-    webutils::lowercase(loweredHeaders);
+	std::string loweredHeaders = headers;
+	webutils::lowercase(loweredHeaders);
 
 	if (posHeadersEnd == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
@@ -136,7 +142,8 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		return;
 	}
 
-	if (loweredHeaders.find("content-type: ") == std::string::npos && loweredHeaders.find("location: ") == std::string::npos
+	if (loweredHeaders.find("content-type: ") == std::string::npos
+		&& loweredHeaders.find("location: ") == std::string::npos
 		&& loweredHeaders.find("status: ") == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
 		handleErrorBody();
@@ -305,6 +312,11 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<body>\r\n"
 									  "<center><h1>301 Moved permanently</h1></center>\r\n";
 
+	static const char* error302Page = "<html>\r\n"
+									  "<head><title>302 Found</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>302 Found</h1></center>\r\n";
+
 	static const char* error308Page = "<html>\r\n"
 									  "<head><title>308 Permanent redirect</title></head>\r\n"
 									  "<body>\r\n"
@@ -374,6 +386,9 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	case StatusMovedPermanently:
 		ret = error301Page;
 		break;
+	case StatusFound:
+		ret = error302Page;
+		break;
 	case StatusPermanentRedirect:
 		ret = error308Page;
 		break;
@@ -411,4 +426,29 @@ std::string getDefaultErrorPage(statusCode statusCode)
 
 	ret += errorTail;
 	return (ret);
+}
+
+/**
+ * @brief Construct Allow header.
+ *
+ * Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join
+ * them. If at the end at least one method was appended, the last ", " is removed.
+ * If no methods were appended, an empty string is returned.
+ * @param allowMethods Array of allowed methods.
+ * @return std::string Constructed Allow header.
+ */
+std::string constructAllowHeader(const bool (&allowMethods)[MethodCount])
+{
+	std::string allowHeader;
+
+	if (allowMethods[MethodGet])
+		allowHeader.append("GET, ");
+	if (allowMethods[MethodPost])
+		allowHeader.append("POST, ");
+	if (allowMethods[MethodDelete])
+		allowHeader.append("DELETE, ");
+
+	if (!allowHeader.empty())
+		allowHeader.erase(allowHeader.size() - 2, 2);
+	return allowHeader;
 }

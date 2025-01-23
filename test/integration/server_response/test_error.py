@@ -72,3 +72,12 @@ def test_missing_dir_in_path():
     response = requests.post("http://localhost:8080/uploads/not_exist/upload.txt", data=payload)
 
     assert response.status_code == 404
+
+def test_method_not_allowed():
+    print("Request to /")
+    payload = "Hello World!"
+
+    response = requests.post("http://localhost:8080/", data=payload)
+
+    assert response.status_code == 405
+    assert response.headers["allow"] == "GET"
