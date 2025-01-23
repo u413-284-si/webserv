@@ -24,6 +24,11 @@
 
 /* ====== CLASS DECLARATION ====== */
 
+/**
+ * @class RequestParser
+ * @brief Parses HTTP requests and handles various request-related validations and transformations. Stateless class in
+ * order to handle multiple clients concurrently.
+ */
 class RequestParser {
 public:
 	static const int s_maxLabelLength = 63; /**< Maximum length for labels (the parts between dots in a domain name)  */
@@ -33,7 +38,8 @@ public:
 	RequestParser();
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request, std::vector<char>& buffer);
+	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
+	static void decodeMultipartFormdata(HTTPRequest& request);
 	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
@@ -51,10 +57,7 @@ private:
 
 	// Header Parsing
 	void parseHeaders(HTTPRequest& request);
-
-	// Body Parsing
-	void parseChunkedBody(HTTPRequest& request, std::vector<char>& buffer);
-	void parseNonChunkedBody(HTTPRequest& request);
+	static void extractBoundary(HTTPRequest& request);
 
 	// Checks
 	static void validateHeaderName(const std::string& headerName, HTTPRequest& request);
@@ -63,17 +66,19 @@ private:
 	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
 	static void validateMethodWithBody(HTTPRequest& request);
+    static void validateConnectionHeader(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
 	static void checkForCRLF(const std::string& str, HTTPRequest& request);
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
-	static size_t convertHex(const std::string& chunkSize);
+	static long convertHex(const std::string& chunkSize);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);
 	static std::string removeDotSegments(const std::string& path, HTTPRequest& request);
+	static bool isMultipartFormdata(HTTPRequest& request);
+	static size_t checkForString(const std::string& string, size_t startPos, const std::string& body);
 };
-

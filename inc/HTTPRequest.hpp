@@ -24,15 +24,20 @@ struct HTTPRequest {
 	std::string version;
 	std::map<std::string, std::string> headers;
 	std::string body;
+	std::string boundary;
+	long chunkSize;
+	unsigned long contentLength;
 	statusCode httpStatus;
 	bool shallCloseConnection;
 	bool hasBody;
+	bool isCompleteBody;
 	bool isChunked;
 	std::string targetResource;
 	bool isDirectory;
 	bool hasAutoindex;
 	bool hasCGI;
 	bool hasReturn;
+	bool hasMultipartFormdata;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const HTTPRequest& httpRequest);
