@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new FileWriteHandler object
  *
- * @param fileSystemPolicy File system policy object. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
-FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+FileWriteHandler::FileWriteHandler(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -29,17 +29,17 @@ FileWriteHandler::FileWriteHandler(const FileSystemPolicy& fileSystemPolicy)
 std::string FileWriteHandler::execute(const std::string& path, const std::string& content, statusCode& httpStatus)
 {
 	try {
-		const bool isExistingFile = m_fileSystemPolicy.isExistingFile(path);
-		m_fileSystemPolicy.writeToFile(path, content);
+		const bool isExistingFile = m_fileSystemOps.isExistingFile(path);
+		m_fileSystemOps.writeToFile(path, content);
 		LOG_DEBUG << "Data successfully written/appended to the file: " << path;
-		struct stat fileStat = m_fileSystemPolicy.getFileStat(path);
+		struct stat fileStat = m_fileSystemOps.getFileStat(path);
 
 		if (isExistingFile) {
 			m_response << "{\n"
 					   << "\"message\": \"Data appended successfully\",\n"
 					   << "\"file\": \"" << path << "\",\n"
-					   << "\"file_size\": " << m_fileSystemPolicy.getFileSize(fileStat) << ",\n"
-					   << "\"last_modified\": \"" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "\",\n"
+					   << "\"file_size\": " << m_fileSystemOps.getFileSize(fileStat) << ",\n"
+					   << "\"last_modified\": \"" << m_fileSystemOps.getLastModifiedTime(fileStat) << "\",\n"
 					   << "\"status\": \"updated\"\n"
 					   << "}\n";
 		} else {
@@ -47,15 +47,15 @@ std::string FileWriteHandler::execute(const std::string& path, const std::string
 			m_response << "{\n"
 					   << "\"message\": \"File created successfully\",\n"
 					   << "\"file\": \"" << path << "\",\n"
-					   << "\"file_size\": " << m_fileSystemPolicy.getFileSize(fileStat) << ",\n"
-					   << "\"last_modified\": \"" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "\",\n"
+					   << "\"file_size\": " << m_fileSystemOps.getFileSize(fileStat) << ",\n"
+					   << "\"last_modified\": \"" << m_fileSystemOps.getLastModifiedTime(fileStat) << "\",\n"
 					   << "\"status\": \"created\"\n"
 					   << "}\n";
 		}
-	} catch (FileSystemPolicy::NoPermissionException& e) {
+	} catch (FileSystemOps::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		httpStatus = StatusForbidden;
-	} catch (FileSystemPolicy::FileNotFoundException& e) {
+	} catch (FileSystemOps::FileNotFoundException& e) {
 		LOG_ERROR << e.what();
 		LOG_ERROR << "Missing directory in path " << path;
 		httpStatus = StatusNotFound;

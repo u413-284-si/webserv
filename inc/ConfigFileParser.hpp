@@ -4,6 +4,9 @@
 
 #include "ConfigFile.hpp"
 #include "Server.hpp"
+#include "StatusCode.hpp"
+#include "error.hpp"
+#include "limits"
 #include "utilities.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -42,7 +45,9 @@ private:
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;
 	std::vector<std::string> m_validLocationDirectives;
-	static const char* const whitespace;
+	bool m_isDefaultLocationDefined;
+	static const char* const s_whitespace;
+	static const char* const s_number;
 
 	// Checker functions
 	bool isBracketOpen(void);
@@ -50,6 +55,7 @@ private:
 	bool isKeyword(const std::string& keyword, size_t startIndex) const;
 	bool isValidBlockBeginn(Block block);
 	bool isDirectiveValid(const std::string& directive, Block block) const;
+	bool isLocationDuplicate(void) const;
 	static bool isIpAddressValid(const std::string& ipAddress);
 	static bool isPortValid(const std::string& port);
 
@@ -62,14 +68,28 @@ private:
 	void readServerConfigLine(void);
 	void readLocationConfigLine(void);
 	void readServerDirectiveValue(const std::string& directive, const std::string& value);
-	void readSocket(const std::string& value);
-	void readRootPath(Block block, const std::string& value);
+	void readLocationDirectiveValue(const std::string& directive, const std::string& value);
+	void readServerName(const std::string& serverName);
+	void readListen(const std::string& value);
+	void readRootPath(const Block& block, std::string rootPath);
+	void readAliasPath(const std::string& aliasPath);
+	void readMaxBodySize(const Block& block, const std::string& maxBodySize);
+	void readAutoIndex(const std::string& autoindex);
+	void readAllowMethods(const std::string& allowMethods);
+	void readErrorPage(const Block& block, const std::string& errorPage);
+	void readReturns(const std::string& returns);
+	void readCGIExtension(const std::string& extension);
+	void readCGIPath(const std::string& path);
+	void readIndex(const std::string& indices);
 	void readLocationBlockPath(void);
 
 	// Helper functions
 	std::string getDirective(void) const;
 	std::string getValue(void) const;
 	std::string convertBlockToString(Block block) const;
+	void removeEnclosingDoubleQuotes(std::string& str);
 	void skipBlockBegin(Block block);
 	void skipLocationBlockPath(size_t& index);
+	bool isEmptyLocationBlock(const std::string& locationBlockContent) const;
+	bool isEmptyServerBlock(const std::string& serverBlockContent) const;
 };

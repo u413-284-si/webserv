@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new DeleteHandler object
  *
- * @param fileSystemPolicy File system policy object. Can be mocked if needed.
+ * @param fileSystemOps File system policy object. Can be mocked if needed.
  */
-DeleteHandler::DeleteHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+DeleteHandler::DeleteHandler(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -28,19 +28,19 @@ DeleteHandler::DeleteHandler(const FileSystemPolicy& fileSystemPolicy)
 std::string DeleteHandler::execute(const std::string& path, statusCode& httpStatus)
 {
 	try {
-		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(path);
+		FileSystemOps::fileType fileType = m_fileSystemOps.checkFileType(path);
 
 		switch (fileType) {
 
-		case FileSystemPolicy::FileRegular:
-			m_fileSystemPolicy.deleteFile(path);
+		case FileSystemOps::FileRegular:
+			m_fileSystemOps.deleteFile(path);
 			m_response << "{\n"
 					   << "\"message\": \"File deleted successfully\",\n"
 					   << "\"file\": \"" << path << "\"\n"
 					   << "}\n";
 			break;
 
-		case FileSystemPolicy::FileDirectory:
+		case FileSystemOps::FileDirectory:
 			httpStatus = StatusForbidden;
 			// FIXME: reactivate after eval
 			// deleteDirectory(path);
@@ -50,15 +50,15 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			// 		   << "}\n";
 			// break;
 
-		case FileSystemPolicy::FileNotFound:
+		case FileSystemOps::FileNotFound:
 			httpStatus = StatusNotFound;
 			break;
 
-		case FileSystemPolicy::FileOther:
+		case FileSystemOps::FileOther:
 			httpStatus = StatusForbidden;
 			break;
 		}
-	} catch (FileSystemPolicy::NoPermissionException& e) {
+	} catch (FileSystemOps::NoPermissionException& e) {
 			LOG_ERROR << e.what();
 			httpStatus = StatusForbidden;
 	} catch (const std::runtime_error& e) {
@@ -83,7 +83,7 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 // // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
 // void DeleteHandler::deleteDirectory(const std::string& path) const
 // {
-// 	Directory dir(m_fileSystemPolicy, path);
+// 	Directory dir(m_fileSystemOps, path);
 
 // 	std::vector<std::string> entries = dir.getEntries();
 // 	for (std::vector<std::string>::const_iterator iter = entries.begin(); iter != entries.end(); ++iter) {
@@ -93,12 +93,12 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 
 // 		std::string fullPath = std::string(path) + "/" + *iter;
 
-// 		struct stat info = m_fileSystemPolicy.getFileStat(fullPath);
+// 		struct stat info = m_fileSystemOps.getFileStat(fullPath);
 // 		// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 // 		if (S_ISDIR(info.st_mode))
 // 			deleteDirectory(fullPath);
 // 		else
-// 			m_fileSystemPolicy.deleteFile(fullPath);
+// 			m_fileSystemOps.deleteFile(fullPath);
 // 	}
 
 // 	// Remove the empty directory itself

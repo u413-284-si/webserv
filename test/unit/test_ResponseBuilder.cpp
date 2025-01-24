@@ -1,20 +1,17 @@
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 #include "ResponseBuilder.hpp"
 
 ConfigFile createTestConfigfile();
 
-using ::testing::Return;
 using ::testing::HasSubstr;
+using ::testing::Return;
 
 class ResponseBuilderTest : public ::testing::Test {
-	protected:
-	ResponseBuilderTest()
-	{
-
-	}
+protected:
+	ResponseBuilderTest() { }
 	~ResponseBuilderTest() override { }
 
 	const int m_dummyFd = 10;
@@ -26,14 +23,13 @@ class ResponseBuilderTest : public ::testing::Test {
 
 	std::string m_responseBody;
 	std::map<std::string, std::string> m_responseHeaders;
-	MockFileSystemPolicy m_fileSystemPolicy;
-	ResponseBuilder m_responseBuilder = ResponseBuilder(m_fileSystemPolicy);
+	MockFileSystemOps m_fileSystemOps;
+	ResponseBuilder m_responseBuilder = ResponseBuilder(m_fileSystemOps);
 };
 
 TEST_F(ResponseBuilderTest, SimpleResponse)
 {
-	EXPECT_CALL(m_fileSystemPolicy, getFileContents)
-		.WillOnce(Return("content"));
+	EXPECT_CALL(m_fileSystemOps, getFileContents).WillOnce(Return("content"));
 
 	m_request.method = MethodGet;
 	m_request.targetResource = "/index.html";
@@ -74,9 +70,9 @@ TEST_F(ResponseBuilderTest, MethodNotAllowed)
 	m_request.httpStatus = StatusMethodNotAllowed;
 	m_request.shallCloseConnection = true;
 
-	m_configFile.servers[0].locations[0].allowedMethods[MethodGet] = false;
-	m_configFile.servers[0].locations[0].allowedMethods[MethodPost] = true;
-	m_configFile.servers[0].locations[0].allowedMethods[MethodDelete] = true;
+	m_configFile.servers[0].locations[0].allowMethods[MethodGet] = false;
+	m_configFile.servers[0].locations[0].allowMethods[MethodPost] = true;
+	m_configFile.servers[0].locations[0].allowMethods[MethodDelete] = true;
 
 	m_responseBuilder.buildResponse(m_connection);
 

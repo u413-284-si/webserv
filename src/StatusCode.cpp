@@ -21,6 +21,8 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 		return "Created";
 	case StatusMovedPermanently:
 		return "Moved Permanently";
+	case StatusFound:
+		return "Found";
 	case StatusPermanentRedirect:
 		return "Permanent Redirect";
 	case StatusBadRequest:
@@ -89,6 +91,8 @@ statusCode stringToStatusCode(std::string& str)
 		return StatusCreated;
 	if (str == "301")
 		return StatusMovedPermanently;
+	if (str == "302")
+		return StatusFound;
 	if (str == "308")
 		return StatusPermanentRedirect;
 	if (str == "400")
