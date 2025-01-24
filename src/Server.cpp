@@ -6,29 +6,31 @@
  * @brief Constructor for the Server class.
 
  * The Server constructor initializes a Server object with the provided configuration file, EpollWrapper, and
- * SocketPoolicy, along with other member variables.
+ * SocketOps, along with other member variables.
  * The passed EpollWrapper is saved as a non-const ref as it needs to be modifiable.
- * The passed SocketPolicy is saved as a const ref.
+ * The passed SocketOps is saved as a const ref.
  *
  * @param configFile The `configFile` parameter is an object of type `ConfigFile` that is passed to the
  * `Server` constructor. It is used to configure the server with settings such especially the number and
  * configuration of virtual servers.
  * @param epollWrapper A ready to use epoll instance. Can be mocked for testing.
- * @param socketPolicy Policy class for functions related to mocking. Can be mocked for testing.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked for testing.
+ * @param socketOps Wrapper for socket-related functions. Can be mocked for testing.
  * @param processOps Wrapper for process-related functions. Can be mocked for testing.
 
  * @todo Several variables are init to static ones, could be passed as parameters or set in config file.
  */
-Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy,
-	const ProcessOps& processOps)
+Server::Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemOps& fileSystemOps,
+	const SocketOps& socketOps, const ProcessOps& processOps)
 	: m_configFile(configFile)
 	, m_epollWrapper(epollWrapper)
-	, m_socketPolicy(socketPolicy)
+	, m_fileSystemOps(fileSystemOps)
+	, m_socketOps(socketOps)
 	, m_processOps(processOps)
 	, m_backlog(s_backlog)
 	, m_clientTimeout(s_clientTimeout)
-	, m_responseBuilder(m_fileSystemPolicy)
-	, m_targetResourceHandler(m_fileSystemPolicy)
+	, m_responseBuilder(m_fileSystemOps)
+	, m_targetResourceHandler(m_fileSystemOps)
 {
 }
 
@@ -114,6 +116,13 @@ const std::vector<ConfigServer>& Server::getServerConfigs() const { return m_con
  * @return time_t Client timeout in seconds.
  */
 time_t Server::getClientTimeout() const { return m_clientTimeout; }
+
+/**
+ * @brief Const Getter for ProcessOps.
+ *
+ * @return const ProcessOps& Registered ProcessOps object.
+ */
+const ProcessOps& Server::getProcessOps() const { return m_processOps; }
 
 /**
  * @brief Getter for internal buffer.
@@ -226,6 +235,19 @@ bool Server::registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connectio
 }
 
 /**
+ * @brief Removes a virtual server.
+ *
+ * @param delfd file descriptor of the server to be removed.
+ */
+void Server::removeVirtualServer(int delfd)
+{
+	removeEvent(delfd);
+	getVirtualServers().erase(delfd);
+	close(delfd);
+	LOG_DEBUG << "Removed virtual server with FD: " << delfd;
+}
+
+/**
  * @brief Removes a Connection from the Server.
  *
  * @param delFd File descriptor to be removed.
@@ -314,10 +336,10 @@ void Server::removeEvent(int delfd) const { m_epollWrapper.removeEvent(delfd); }
  */
 int Server::getEpollFd() const { return m_epollWrapper.getEpollFd(); }
 
-/* ====== DISPATCH TO SOCKETPOLICY ====== */
+/* ====== DISPATCH TO SOCKETOPS ====== */
 
 /**
- * @brief Wrapper function to SocketPolicy::resolveListeningAddresses.
+ * @brief Wrapper function to SocketOps::resolveListeningAddresses.
  *
  * @param host The host address.
  * @param port The port number.
@@ -325,11 +347,11 @@ int Server::getEpollFd() const { return m_epollWrapper.getEpollFd(); }
  */
 struct addrinfo* Server::resolveListeningAddresses(const std::string& host, const std::string& port) const
 {
-	return m_socketPolicy.resolveListeningAddresses(host, port);
+	return m_socketOps.resolveListeningAddresses(host, port);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::createListeningSocket.
+ * @brief Wrapper function to SocketOps::createListeningSocket.
  *
  * @param addrinfo The address information.
  * @param backlog The maximum length to which the queue of pending connections may grow.
@@ -339,11 +361,11 @@ int Server::createListeningSocket(const struct addrinfo* addrinfo, int backlog) 
 {
 	assert(addrinfo != NULL);
 
-	return m_socketPolicy.createListeningSocket(addrinfo, backlog);
+	return m_socketOps.createListeningSocket(addrinfo, backlog);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::retrieveSocketInfo.
+ * @brief Wrapper function to SocketOps::retrieveSocketInfo.
  *
  * @param sockaddr The socket address.
  * @return Socket The socket information.
@@ -352,19 +374,19 @@ Socket Server::retrieveSocketInfo(struct sockaddr* sockaddr) const
 {
 	assert(sockaddr != NULL);
 
-	return m_socketPolicy.retrieveSocketInfo(sockaddr);
+	return m_socketOps.retrieveSocketInfo(sockaddr);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::retrieveBoundSocketInfo.
+ * @brief Wrapper function to SocketOps::retrieveBoundSocketInfo.
  *
  * @param sockfd The socket fd which is bound to a socket.
  * @return Socket The socket information of the bound socket.
  */
-Socket Server::retrieveBoundSocketInfo(int sockfd) const { return m_socketPolicy.retrieveBoundSocketInfo(sockfd); }
+Socket Server::retrieveBoundSocketInfo(int sockfd) const { return m_socketOps.retrieveBoundSocketInfo(sockfd); }
 
 /**
- * @brief Wrapper function to SocketPolicy::acceptSingleConnection().
+ * @brief Wrapper function to SocketOps::acceptSingleConnection().
  *
  * @param sockfd The file descriptor of the socket.
  * @param addr The socket address.
@@ -376,11 +398,11 @@ int Server::acceptSingleConnection(int sockfd, struct sockaddr* addr, socklen_t*
 	assert(addr != NULL);
 	assert(addrlen != NULL);
 
-	return m_socketPolicy.acceptSingleConnection(sockfd, addr, addrlen);
+	return m_socketOps.acceptSingleConnection(sockfd, addr, addrlen);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::readFromSocket.
+ * @brief Wrapper function to SocketOps::readFromSocket.
  *
  * @param sockfd The file descriptor of the socket.
  * @param buffer The buffer to read into.
@@ -392,11 +414,11 @@ ssize_t Server::readFromSocket(int sockfd, char* buffer, size_t size, int flags)
 {
 	assert(buffer != NULL);
 
-	return m_socketPolicy.readFromSocket(sockfd, buffer, size, flags);
+	return m_socketOps.readFromSocket(sockfd, buffer, size, flags);
 }
 
 /**
- * @brief Wrapper function to SocketPolicy::writeToSocket.
+ * @brief Wrapper function to SocketOps::writeToSocket.
  *
  * @param sockfd The file descriptor of the socket.
  * @param buffer The buffer to write from.
@@ -408,7 +430,7 @@ ssize_t Server::writeToSocket(int sockfd, const char* buffer, size_t size, int f
 {
 	assert(buffer != NULL);
 
-	return m_socketPolicy.writeToSocket(sockfd, buffer, size, flags);
+	return m_socketOps.writeToSocket(sockfd, buffer, size, flags);
 }
 
 /* ====== DISPATCH TO PROCESSOPS ====== */
@@ -444,6 +466,19 @@ ssize_t Server::writeProcess(int fileDescriptor, const char* buffer, size_t size
 	return m_processOps.writeProcess(fileDescriptor, buffer, size);
 }
 
+/**
+ * @brief Wrapper function to ProcessOps::waitForProcess.
+ *
+ * @param pid Pid of the child process to wait for.
+ * @param wstatus Stores status information which can be inspected with macros.
+ * @param options Options to influence behavior.
+ * @return pid_t Process ID of child whose state has changed, or -1 on failure.
+ */
+pid_t Server::waitForProcess(pid_t pid, int* wstatus, int options) const
+{
+	return m_processOps.waitForProcess(pid, wstatus, options);
+}
+
 /* ====== DISPATCH TO REQUESTPARSER ====== */
 
 /**
@@ -473,11 +508,6 @@ void Server::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request)
  * @param request The HTTP request containing the multipart/form-data content to decode.
  */
 void Server::decodeMultipartFormdata(HTTPRequest& request) { m_requestParser.decodeMultipartFormdata(request); }
-
-/**
- * @brief Wrapper function to RequestParser::clearParser.
- */
-void Server::resetRequestStream() { m_requestParser.resetRequestStream(); }
 
 /* ====== DISPATCH TO RESPONSEBUILDER ====== */
 
@@ -717,7 +747,7 @@ void handleEvent(Server& server, struct epoll_event event)
 	if (iter != server.getVirtualServers().end()) {
 		if ((eventMask & EPOLLERR) != 0) {
 			LOG_ERROR << "Error condition happened on the associated file descriptor of " << iter->second;
-			close(event.data.fd);
+			server.removeVirtualServer(event.data.fd);
 			return;
 		}
 		acceptConnections(server, iter->first, iter->second, eventMask);
@@ -1027,8 +1057,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
-		ProcessOps processOps;
-		CGIHandler cgiHandler(connection, processOps);
+		CGIHandler cgiHandler(connection, server.getProcessOps());
 		if (connection.m_request.httpStatus == StatusInternalServerError) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
@@ -1039,7 +1068,13 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
 
-	if (connection.m_request.httpStatus == StatusOK && connection.m_request.hasBody) {
+	if (connection.m_request.httpStatus != StatusOK) {
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
+
+	if (connection.m_request.hasBody) {
 		connection.m_status = Connection::ReceiveBody;
 		connection.m_buffer.erase(0, connection.m_buffer.find("\r\n\r\n") + 4);
 		if (!connection.m_buffer.empty())
@@ -1173,6 +1208,9 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			server.parseChunkedBody(connection.m_buffer, connection.m_request);
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+			return;
 		}
 	}
 
@@ -1236,7 +1274,6 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		server.modifyEvent(activeFd, EPOLLOUT);
 	}
 }
-
 /**
  * @brief Sends the request body to the CGI process.
  *
@@ -1341,8 +1378,7 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 		if (connection.m_pipeToCGIWriteEnd != -1)
 			server.removeCGIFileDescriptor(connection.m_pipeToCGIWriteEnd);
 		int status = 0;
-		if (waitpid(connection.m_cgiPid, &status, 0) == -1) {
-			LOG_ERROR << "waitpid(): " << std::strerror(errno);
+		if (server.waitForProcess(connection.m_cgiPid, &status, 0) == -1) {
 			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}

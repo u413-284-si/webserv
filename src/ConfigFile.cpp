@@ -114,6 +114,26 @@ ConfigFile createDummyConfig()
 	location11.root = "/workspaces/webserv/html";
 	location11.alias = "/workspaces/webserv/html/images/";
 
+	Location location12;
+	location12.path = "/health";
+	location12.returns = std::make_pair(StatusOK, "");
+
+	Location location13;
+	location13.path = "/missingIndex/";
+	location13.alias = "/workspaces/webserv/html/css/";
+	location13.indices.push_back("index.html");
+	location13.indices.push_back("index.php");
+	location13.indices.push_back("index.htm");
+
+	Location location14;
+	location14.path = "/recursion/";
+	location14.root = "/workspaces/webserv/html";
+	location14.indices.push_back("recursion/");
+
+	Location location15;
+	location15.path = "/tty";
+	location15.root = "/dev";
+
 	ConfigServer serverConfig8080;
 	serverConfig8080.locations.clear();
 	serverConfig8080.locations.push_back(location1);
@@ -126,6 +146,10 @@ ConfigFile createDummyConfig()
 	serverConfig8080.locations.push_back(location9);
 	serverConfig8080.locations.push_back(location10);
 	serverConfig8080.locations.push_back(location11);
+	serverConfig8080.locations.push_back(location12);
+	serverConfig8080.locations.push_back(location13);
+	serverConfig8080.locations.push_back(location14);
+	serverConfig8080.locations.push_back(location15);
 	serverConfig8080.host = "127.0.0.1";
 	serverConfig8080.port = "8080";
 	serverConfig8080.serverName = "default";

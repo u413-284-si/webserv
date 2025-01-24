@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FileSystemPolicy.hpp"
-#include <vector>
+#include "FileSystemOps.hpp"
 #include <algorithm>
+#include <vector>
 
 /**
  * @brief Wrapper class for DIR pointer.
@@ -13,7 +13,7 @@
  */
 class Directory {
 public:
-	Directory(const FileSystemPolicy& fileSystemPolicy, const std::string& path);
+	Directory(const FileSystemOps& fileSystemOps, const std::string& path);
 	~Directory();
 
 	std::vector<std::string> getEntries();
@@ -22,6 +22,6 @@ private:
 	Directory(const Directory& ref);
 	Directory& operator=(const Directory& ref);
 
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 	DIR* m_directory;
 };

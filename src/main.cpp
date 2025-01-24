@@ -23,9 +23,11 @@
  */
 #define STRINGIZE(s) #s
 
+// clang-format off
 #ifndef DEFAULT_CONFIG_PATH
 #define DEFAULT_CONFIG_PATH ./config_files/standard_config.conf
 #endif
+// clang-format on
 
 int main(const int argc, const char* argv[])
 {
@@ -47,13 +49,14 @@ int main(const int argc, const char* argv[])
 
 	try {
 		EpollWrapper epollWrapper(10, -1);
-		SocketPolicy socketPolicy;
+		FileSystemOps fileSystemOps;
+		SocketOps socketOps;
 		ProcessOps processOps;
 
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(configFilePath);
 
-		Server server(configFile, epollWrapper, socketPolicy, processOps);
+		Server server(configFile, epollWrapper, fileSystemOps, socketOps, processOps);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		runServer(server);
 	} catch (std::exception& e) {

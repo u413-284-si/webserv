@@ -68,30 +68,6 @@ void RequestParser::extractBoundary(HTTPRequest& request)
 }
 
 /**
- * @brief Clears the contents of the given HTTPRequest object.
- *
- * This function resets all the fields of the provided HTTPRequest object
- * to their default states. It sets the HTTP method to `MethodCount`,
- * clears the URI fragment, path, and query, sets the version to an
- * empty string, clears the headers and body, sets the error code to 0,
- * and indicates that the connection should not be closed.
- *
- * @param request The HTTPRequest object to be cleared.
- */
-void RequestParser::clearRequest(HTTPRequest& request)
-{
-	request.method = MethodCount;
-	request.uri.fragment = "";
-	request.uri.path = "";
-	request.uri.query = "";
-	request.version = "";
-	request.headers.clear();
-	request.body = "";
-	request.httpStatus = StatusOK;
-	request.shallCloseConnection = false;
-}
-
-/**
  * @brief Clears the contents of the RequestParser object.
  *
  * This function resets the internal request stream of the RequestParser object
@@ -408,6 +384,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 	validateHostHeader(request);
 	validateTransferEncoding(request);
 	validateMethodWithBody(request);
+	validateConnectionHeader(request);
 }
 
 /* ====== BODY PARSING ====== */
@@ -439,7 +416,7 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
 			std::string strChunkSize = bodyBuffer.substr(0, newlinePos);
 			bodyBuffer.erase(0, newlinePos + 2); // Remove the parsed chunk size and \r\n
 
-			request.chunkSize = convertHex(strChunkSize);
+			request.chunkSize = convertHex(strChunkSize, request);
 			if (request.chunkSize > s_maxChunkSize) {
 				request.httpStatus = StatusRequestEntityTooLarge;
 				request.shallCloseConnection = true;
@@ -532,7 +509,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 				throw std::runtime_error(ERR_MULTIPLE_UPLOADS);
 		}
 
-        // Check for two dashes after boundary indicating the end boundary
+		// Check for two dashes after boundary indicating the end boundary
 		if (request.body.at(nextBoundaryPos + request.boundary.size() + 2) == '-'
 			&& request.body.at(nextBoundaryPos + request.boundary.size() + 3) == '-')
 			break;
@@ -682,6 +659,7 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 		if (request.headers.find("content-length") != request.headers.end())
 			request.shallCloseConnection = true;
 
+		webutils::lowercase(request.headers.at("transfer-encoding"));
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
@@ -801,6 +779,48 @@ void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName,
 			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
 		}
 	}
+}
+
+/**
+ * @brief Validates the Connection header in an HTTP request.
+ *
+ * This function checks the validity of the Connection header in the provided HTTP request.
+ * It ensures that the header is not empty, does not contain multiple values, and has a valid value.
+ * Valid values for the Connection header are "close" and "keep-alive" where "close" indicates that
+ * the connection should be closed after the response, and "keep-alive" indicates that the connection
+ * should be kept open for further requests. By default the connection is kept alive with shallCloseConnection set to
+ * false. If the header is invalid, it sets the HTTP status to BadRequest and indicates that the connection should be
+ * closed.
+ *
+ * @param request The HTTPRequest object containing the request data.
+ * @throws std::runtime_error if the Connection header is empty, contains multiple values, or has an invalid value.
+ */
+void RequestParser::validateConnectionHeader(HTTPRequest& request)
+{
+	LOG_DEBUG << "Validating Connection header...";
+
+	std::map<std::string, std::string>::iterator iter = request.headers.find("connection");
+	if (iter != request.headers.end()) {
+		if (iter->second.empty()) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
+		}
+
+		webutils::lowercase(iter->second);
+		if (iter->second == "close") {
+			request.shallCloseConnection = true;
+		} else if (iter->second == "keep-alive") {
+		} else {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
+			throw std::runtime_error(ERR_INVALID_CONNECTION_VALUE);
+		}
+
+		LOG_DEBUG << "Valid Connection header: " << iter->second;
+	}
+
+	LOG_DEBUG << "No Connection header found.";
 }
 
 /* ====== HELPER FUNCTIONS ====== */
@@ -981,22 +1001,31 @@ bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-long RequestParser::convertHex(const std::string& chunkSize)
+long RequestParser::convertHex(const std::string& chunkSize, HTTPRequest& request)
 {
-	if (chunkSize.empty())
+	if (chunkSize.empty()) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
+	}
 
 	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
-		if (std::isxdigit(*it) == 0)
+		if (std::isxdigit(*it) == 0) {
+			request.httpStatus = StatusBadRequest;
+			request.shallCloseConnection = true;
 			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
+		}
 	}
 
 	std::istringstream iss(chunkSize);
 	long value = 0;
 
 	iss >> std::hex >> value;
-	if (iss.fail())
+	if (iss.fail()) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
 		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
+	}
 
 	LOG_DEBUG << "Converted hex value: " << value;
 	return value;

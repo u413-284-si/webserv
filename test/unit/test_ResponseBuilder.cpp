@@ -1,7 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 #include "ResponseBuilder.hpp"
 
 ConfigFile createTestConfigfile();
@@ -23,13 +23,13 @@ protected:
 
 	std::string m_responseBody;
 	std::map<std::string, std::string> m_responseHeaders;
-	MockFileSystemPolicy m_fileSystemPolicy;
-	ResponseBuilder m_responseBuilder = ResponseBuilder(m_fileSystemPolicy);
+	MockFileSystemOps m_fileSystemOps;
+	ResponseBuilder m_responseBuilder = ResponseBuilder(m_fileSystemOps);
 };
 
 TEST_F(ResponseBuilderTest, SimpleResponse)
 {
-	EXPECT_CALL(m_fileSystemPolicy, getFileContents).WillOnce(Return("content"));
+	EXPECT_CALL(m_fileSystemOps, getFileContents).WillOnce(Return("content"));
 
 	m_request.method = MethodGet;
 	m_request.targetResource = "/index.html";
