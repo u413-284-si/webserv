@@ -1,33 +1,33 @@
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 
 /**
- * @brief Construct a new File System Policy:: File System Policy object
+ * @brief Construct a new FileSystemOps::FileSystemOps object
  *
  */
-FileSystemPolicy::FileSystemPolicy() { }
+FileSystemOps::FileSystemOps() { }
 
 /**
- * @brief Virtual destructor for FileSystemPolicy object
+ * @brief Virtual destructor for FileSystemOps object
  *
  */
-FileSystemPolicy::~FileSystemPolicy() { }
+FileSystemOps::~FileSystemOps() {  }
 
 /**
- * @brief Construct a new File System Policy:: File Not Found Exception:: File Not Found Exception object
+ * @brief Construct a new FileSystemOps::FileNotFoundException::FileNotFoundException object
  *
  * @param msg Error message.
  */
-FileSystemPolicy::FileNotFoundException::FileNotFoundException(const std::string& msg)
+FileSystemOps::FileNotFoundException::FileNotFoundException(const std::string& msg)
 	: std::runtime_error(msg)
 {
 }
 
 /**
- * @brief Construct a new File System Policy:: No Permission Exception:: No Permission Exception object
+ * @brief Construct a new FileSystemOps::NoPermissionException::NoPermissionException object
  *
  * @param msg Error message.
  */
-FileSystemPolicy::NoPermissionException::NoPermissionException(const std::string& msg)
+FileSystemOps::NoPermissionException::NoPermissionException(const std::string& msg)
 	: std::runtime_error(msg)
 {
 }
@@ -43,9 +43,9 @@ FileSystemPolicy::NoPermissionException::NoPermissionException(const std::string
  * @throws FileSystemPolicy::NoPermissionException if the file cannot be accessed.
  * @throws std::runtime_error in other cases with strerror() of errno.
  * @param path Path to check.
- * @return FileSystemPolicy::fileType File type.
+ * @return FileSystemOps::fileType File type.
  */
-FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& path) const
+FileSystemOps::fileType FileSystemOps::checkFileType(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;
@@ -72,7 +72,7 @@ FileSystemPolicy::fileType FileSystemPolicy::checkFileType(const std::string& pa
  * @return true Path is a directory.
  * @return false Path is not a directory.
  */
-bool FileSystemPolicy::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
+bool FileSystemOps::isDirectory(const std::string& path) const { return checkFileType(path) == FileDirectory; }
 
 /**
  * @brief Wrapper to check if a path is an existing file.
@@ -81,7 +81,7 @@ bool FileSystemPolicy::isDirectory(const std::string& path) const { return check
  * @return true Path is an existing file.
  * @return false Path is not an existing file.
  */
-bool FileSystemPolicy::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotFound; }
+bool FileSystemOps::isExistingFile(const std::string& path) const { return checkFileType(path) != FileNotFound; }
 
 /**
  * @brief Gets the contents of a file.
@@ -94,7 +94,7 @@ bool FileSystemPolicy::isExistingFile(const std::string& path) const { return ch
  * @param filename File to read.
  * @return std::string File contents.
  */
-std::string FileSystemPolicy::getFileContents(const char* filename) const
+std::string FileSystemOps::getFileContents(const char* filename) const
 {
 	errno = 0;
 	std::ifstream fileStream(filename, std::ios::in | std::ios::binary);
@@ -121,7 +121,7 @@ std::string FileSystemPolicy::getFileContents(const char* filename) const
  * @param path Path to open.
  * @return DIR* Directory stream.
  */
-DIR* FileSystemPolicy::openDirectory(const std::string& path) const
+DIR* FileSystemOps::openDirectory(const std::string& path) const
 {
 	errno = 0;
 	DIR* dir = opendir(path.c_str());
@@ -137,7 +137,7 @@ DIR* FileSystemPolicy::openDirectory(const std::string& path) const
  * @param dir Directory stream.
  * @return struct dirent* Directory entry.
  */
-struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
+struct dirent* FileSystemOps::readDirectory(DIR* dir) const
 {
 	errno = 0;
 	struct dirent* entry = readdir(dir);
@@ -152,7 +152,7 @@ struct dirent* FileSystemPolicy::readDirectory(DIR* dir) const
  * @param dir Directory stream.
  * @return int errno Error code.
  */
-int FileSystemPolicy::closeDirectory(DIR* dir) const
+int FileSystemOps::closeDirectory(DIR* dir) const
 {
 	errno = 0;
 	if (closedir(dir) == -1)
@@ -167,7 +167,7 @@ int FileSystemPolicy::closeDirectory(DIR* dir) const
  * @param path Path to check.
  * @return struct stat File status.
  */
-struct stat FileSystemPolicy::getFileStat(const std::string& path) const
+struct stat FileSystemOps::getFileStat(const std::string& path) const
 {
 	struct stat fileStat = {};
 	errno = 0;
@@ -189,7 +189,7 @@ struct stat FileSystemPolicy::getFileStat(const std::string& path) const
  * @param path The path where the file should be created.
  * @param content The content to be written to the file.
  */
-void FileSystemPolicy::writeToFile(const std::string& path, const std::string& content) const
+void FileSystemOps::writeToFile(const std::string& path, const std::string& content) const
 {
 	errno = 0;
 	std::ofstream file(path.c_str(), std::ios::binary | std::ios::app);
@@ -210,7 +210,7 @@ void FileSystemPolicy::writeToFile(const std::string& path, const std::string& c
  * @param fileStat File stat object.
  * @return std::string Last modified time.
  */
-std::string FileSystemPolicy::getLastModifiedTime(const struct stat& fileStat) const
+std::string FileSystemOps::getLastModifiedTime(const struct stat& fileStat) const
 {
 	return webutils::getLocaltimeString(fileStat.st_mtime, "%Y-%m-%d %H:%M:%S");
 }
@@ -221,7 +221,7 @@ std::string FileSystemPolicy::getLastModifiedTime(const struct stat& fileStat) c
  * @param fileStat File stat object.
  * @return long File size.
  */
-long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
+long FileSystemOps::getFileSize(const struct stat& fileStat) const
 {
 	// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 	if (S_ISDIR(fileStat.st_mode))
@@ -240,7 +240,7 @@ long FileSystemPolicy::getFileSize(const struct stat& fileStat) const
  * @param path The path to the file to be deleted.
  * @throws std::runtime_error if the file cannot be deleted.
  */
-void FileSystemPolicy::deleteFile(const std::string& path) const
+void FileSystemOps::deleteFile(const std::string& path) const
 {
 	errno = 0;
 	if (std::remove(path.c_str()) != 0) {

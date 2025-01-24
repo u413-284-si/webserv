@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new TargetResourceHandler object
  *
- * @param fileSystemPolicy File system policy to be used. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
-TargetResourceHandler::TargetResourceHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+TargetResourceHandler::TargetResourceHandler(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -80,29 +80,29 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 	LOG_DEBUG << "Target resource: " << locInfo.targetResource;
 
 	try {
-		FileSystemPolicy::fileType fileType = m_fileSystemPolicy.checkFileType(locInfo.targetResource);
+		FileSystemOps::fileType fileType = m_fileSystemOps.checkFileType(locInfo.targetResource);
 
 		switch (fileType) {
 
-		case FileSystemPolicy::FileRegular:
+		case FileSystemOps::FileRegular:
 			LOG_DEBUG << "File type: regular";
 			break;
 
-		case FileSystemPolicy::FileDirectory:
+		case FileSystemOps::FileDirectory:
 			LOG_DEBUG << "File type: directory";
 			handleFileDirectory(locInfo, currentDepth);
 			break;
 
-		case FileSystemPolicy::FileOther:
+		case FileSystemOps::FileOther:
 			LOG_DEBUG << "File type: other";
 			locInfo.statusCode = StatusForbidden;
 			break;
 
-		case FileSystemPolicy::FileNotFound:
+		case FileSystemOps::FileNotFound:
 			LOG_DEBUG << "File not found";
 			locInfo.statusCode = StatusNotFound;
 		}
-	} catch (FileSystemPolicy::NoPermissionException& e) {
+	} catch (FileSystemOps::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		locInfo.statusCode = StatusForbidden;
 	} catch (const std::runtime_error& e) {

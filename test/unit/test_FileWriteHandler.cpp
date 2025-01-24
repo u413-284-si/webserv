@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 
 #include "FileWriteHandler.hpp"
 
@@ -19,8 +19,8 @@ protected:
 		m_fakeStat.st_size = 1024;
 		m_fakeStat.st_mtime = 777;
 
-		ON_CALL(m_fileSystemPolicy, writeToFile).WillByDefault(Return());
-		ON_CALL(m_fileSystemPolicy, getFileStat).WillByDefault(Return(m_fakeStat));
+		ON_CALL(m_fileSystemOps, writeToFile).WillByDefault(Return());
+		ON_CALL(m_fileSystemOps, getFileStat).WillByDefault(Return(m_fakeStat));
 	}
 	~FileWriteHandlerTest() override { }
 
@@ -29,14 +29,14 @@ protected:
 	struct stat m_fakeStat = {};
 	statusCode m_httpStatus = StatusOK;
 
-	NiceMock<MockFileSystemPolicy> m_fileSystemPolicy;
-	FileWriteHandler m_fileWriteHandler = FileWriteHandler(m_fileSystemPolicy);
+	NiceMock<MockFileSystemOps> m_fileSystemOps;
+	FileWriteHandler m_fileWriteHandler = FileWriteHandler(m_fileSystemOps);
 };
 
 TEST_F(FileWriteHandlerTest, NonExistingFile)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(false));
+	EXPECT_CALL(m_fileSystemOps, isExistingFile).WillOnce(Return(false));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
@@ -53,7 +53,7 @@ TEST_F(FileWriteHandlerTest, NonExistingFile)
 TEST_F(FileWriteHandlerTest, ExistingFile)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, isExistingFile).WillOnce(Return(true));
+	EXPECT_CALL(m_fileSystemOps, isExistingFile).WillOnce(Return(true));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
@@ -72,7 +72,7 @@ TEST_F(FileWriteHandlerTest, GetFileStatThrow)
 	// Arrange
 	std::string errorMessage = "stat(): getFileStat failed";
 
-	EXPECT_CALL(m_fileSystemPolicy, getFileStat).WillOnce(testing::Throw(std::runtime_error(errorMessage)));
+	EXPECT_CALL(m_fileSystemOps, getFileStat).WillOnce(testing::Throw(std::runtime_error(errorMessage)));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
@@ -85,8 +85,8 @@ TEST_F(FileWriteHandlerTest, GetFileStatThrow)
 TEST_F(FileWriteHandlerTest, NoPermission)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, isExistingFile)
-	.WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException("No permission")));
+	EXPECT_CALL(m_fileSystemOps, isExistingFile)
+	.WillOnce(testing::Throw(FileSystemOps::NoPermissionException("No permission")));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);
@@ -99,8 +99,8 @@ TEST_F(FileWriteHandlerTest, NoPermission)
 TEST_F(FileWriteHandlerTest, FileNotFound)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, writeToFile)
-	.WillOnce(testing::Throw(FileSystemPolicy::FileNotFoundException("File not found")));
+	EXPECT_CALL(m_fileSystemOps, writeToFile)
+	.WillOnce(testing::Throw(FileSystemOps::FileNotFoundException("File not found")));
 
 	// Act
 	std::string responseBody = m_fileWriteHandler.execute(m_path, m_content, m_httpStatus);

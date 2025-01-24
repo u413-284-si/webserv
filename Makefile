@@ -131,7 +131,7 @@ SRC:=	main.cpp \
 		DeleteHandler.cpp \
 		Directory.cpp \
 		EpollWrapper.cpp \
-		FileSystemPolicy.cpp \
+		FileSystemOps.cpp \
 		FileWriteHandler.cpp \
 		HTTPRequest.cpp \
 		LogData.cpp \
@@ -146,7 +146,7 @@ SRC:=	main.cpp \
 		ResponseBuilder.cpp \
 		Server.cpp \
 		signalHandler.cpp \
-		SocketPolicy.cpp \
+		SocketOps.cpp \
 		StatusCode.cpp \
 		TargetResourceHandler.cpp \
 		utilities.cpp
@@ -160,6 +160,8 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_CGIHandler.cpp \
 			test_checkForTimeout.cpp \
 			test_ConfigFileParser.cpp \
+			test_connectionBuildResponse.cpp \
+			test_connectionHandleTimeout.cpp \
 			test_connectionReceiveBody.cpp \
 			test_connectionReceiveFromCGI.cpp \
 			test_connectionReceiveHeader.cpp \
@@ -168,7 +170,9 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_createVirtualServer.cpp \
 			test_DeleteHandler.cpp \
 			test_FileWriteHandler.cpp \
+			test_handleBody.cpp \
 			test_handleCompleteRequestHeader.cpp \
+			test_handleEvent.cpp \
 			test_helpers.cpp \
 			test_initVirtualServers.cpp \
 			test_isDuplicateServer.cpp \
@@ -183,7 +187,7 @@ TEST_SRC :=	test_acceptConnections.cpp \
 			test_ResponseBodyHandler.cpp \
 			test_ResponseBuilder.cpp \
 			test_selectServerConfig.cpp \
-			test_SocketPolicy_retrieveSocketInfo.cpp \
+			test_SocketOps_retrieveSocketInfo.cpp \
 			test_shutdownServer.cpp \
 			test_TargetResourceHandler.cpp \
 			test_utils.cpp
