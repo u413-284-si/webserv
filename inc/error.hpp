@@ -10,6 +10,7 @@
 #define ERR_MISSING_HTTP_BLOCK "Missing http block"
 #define ERR_INVALID_DIRECTIVE "Invalid directive"
 #define ERR_MISSING_SERVER_BLOCK "Missing server block(s)"
+#define ERR_LOCATION_INVALID_BEGIN "Invalid location block begin"
 #define ERR_DUPLICATE_LOCATION "Duplicate location"
 #define ERR_SEMICOLON_MISSING "Unexpected '}'"
 #define ERR_ROOT_AND_ALIAS_DEFINED "Defining root and alias in the same location block is not allowed"
