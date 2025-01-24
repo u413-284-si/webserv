@@ -1,14 +1,14 @@
 #pragma once
 
-#include "FileSystemPolicy.hpp"
 #include "Directory.hpp"
-#include "utilities.hpp"
+#include "FileSystemOps.hpp"
 #include "Log.hpp"
+#include "utilities.hpp"
 
-#include <string>
-#include <vector>
 #include <sstream>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 /**
  * @brief Class to handle the autoindex feature.
@@ -17,10 +17,10 @@
 class AutoindexHandler {
 
 public:
-	explicit AutoindexHandler(const FileSystemPolicy& fileSystemPolicy);
+	explicit AutoindexHandler(const FileSystemOps& fileSystemOps);
 	std::string execute(const std::string& path);
 
 private:
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 	std::stringstream m_response;
 };

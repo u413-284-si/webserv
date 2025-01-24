@@ -6,13 +6,13 @@
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
 #include "EpollWrapper.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "Log.hpp"
 #include "ProcessOps.hpp"
 #include "RequestParser.hpp"
 #include "ResponseBuilder.hpp"
 #include "Socket.hpp"
-#include "SocketPolicy.hpp"
+#include "SocketOps.hpp"
 #include "StatusCode.hpp"
 #include "TargetResourceHandler.hpp"
 #include "constants.hpp"
@@ -57,8 +57,8 @@ public:
 	static const std::size_t s_clientBodyBufferSize = 16000; /**< Default buffer size for request body in Bytes */
 	static const std::size_t s_cgiBodyBufferSize = 32000; /**< Default output buffer size for CGI body in Bytes */
 
-	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const SocketPolicy& socketPolicy,
-		const ProcessOps& processOps);
+	explicit Server(const ConfigFile& configFile, EpollWrapper& epollWrapper, const FileSystemOps& fileSystemOps,
+		const SocketOps& socketOps, const ProcessOps& processOps);
 	~Server();
 
 	// Getters
@@ -67,6 +67,7 @@ public:
 	const std::map<int, Connection>& getConnections() const;
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
+	const ProcessOps& getProcessOps() const;
 
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
@@ -77,6 +78,7 @@ public:
 	bool registerVirtualServer(int serverFd, const Socket& serverSock);
 	bool registerConnection(const Socket& serverSock, int clientFd, const Socket& clientSock);
 	bool registerCGIFileDescriptor(int pipeFd, uint32_t eventMask, Connection& connection);
+	void removeVirtualServer(int delfd);
 	void removeConnection(int delFd);
 	void removeCGIFileDescriptor(int& delfd);
 	void setClientTimeout(time_t clientTimeout);
@@ -89,7 +91,7 @@ public:
 	void removeEvent(int delfd) const;
 	int getEpollFd() const;
 
-	// Dispatch to SocketPolicy
+	// Dispatch to SocketOps
 	struct addrinfo* resolveListeningAddresses(const std::string& host, const std::string& port) const;
 	int createListeningSocket(const struct addrinfo* addrinfo, int backlog) const;
 	Socket retrieveSocketInfo(struct sockaddr* sockaddr) const;
@@ -101,10 +103,12 @@ public:
 	// Dispatch to ProcessOps
 	ssize_t readProcess(int fileDescriptor, char* buffer, size_t size) const;
 	ssize_t writeProcess(int fileDescriptor, const char* buffer, size_t size) const;
+	pid_t waitForProcess(pid_t pid, int* wstatus, int options) const;
 
 	// Dispatch to RequestParser
 	void parseHeader(const std::string& requestString, HTTPRequest& request);
-	void parseBody(const std::string& bodyString, HTTPRequest& request);
+	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
+	void decodeMultipartFormdata(HTTPRequest& request);
 	void resetRequestStream();
 
 	// Dispatch to ResponseBuilder
@@ -117,7 +121,8 @@ public:
 private:
 	const ConfigFile& m_configFile; /**< Global config file */
 	EpollWrapper& m_epollWrapper; /**< Wrapper for epoll instance */
-	const SocketPolicy& m_socketPolicy; /**< Policy class for socket related functions */
+	const FileSystemOps& m_fileSystemOps; /**< Handles functions for file system manipulation */
+	const SocketOps& m_socketOps; /**< Wrapper for socket-related functions */
 	const ProcessOps& m_processOps; /**< Wrapper for process-related functions */
 	int m_backlog; /**< Backlog for listening sockets */
 	time_t m_clientTimeout; /**< Timeout for a Connection in seconds */
@@ -126,7 +131,6 @@ private:
 	std::map<int, Connection*> m_cgiConnections; /**< Connections that are currently handling CGI */
 	std::vector<char> m_buffer; /**< Buffer for reading various data, such as headers or bodies */
 	RequestParser m_requestParser; /**< Handles parsing of request */
-	FileSystemPolicy m_fileSystemPolicy; /**< Handles functions for file system manipulation */
 	ResponseBuilder m_responseBuilder; /**< Handles building of response */
 	TargetResourceHandler m_targetResourceHandler; /**< Handles target resource of request */
 
@@ -151,7 +155,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 bool isCGIRequested(Connection& connection);
 void connectionReceiveBody(Server& server, int activeFd, Connection& connection);
 void handleBody(Server& server, int activeFd, Connection& connection);
-bool isCompleteBody(Connection& connection);
 void connectionSendToCGI(Server& server, Connection& connection);
 void connectionReceiveFromCGI(Server& server, Connection& connection);
 void connectionBuildResponse(Server& server, int activeFd, Connection& connection);

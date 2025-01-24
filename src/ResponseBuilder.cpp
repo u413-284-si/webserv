@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new ResponseBuilder object
  *
- * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
-ResponseBuilder::ResponseBuilder(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+ResponseBuilder::ResponseBuilder(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 	initMIMETypes();
 }
@@ -44,8 +44,9 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
-	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemPolicy);
+	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemOps);
 	responseBodyHandler.execute();
+
 	appendResponseHeader(request);
 
 	LOG_DEBUG << "Response header: \n" << m_responseHeaderStream.str();
@@ -87,10 +88,10 @@ void ResponseBuilder::appendResponseHeader(const HTTPRequest& request)
 		if (!checkForExistingHeader("content-type"))
 			m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
-		// Content-Length
-		if (!checkForExistingHeader("content-length"))
-			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
+	// Content-Length
+	if (!checkForExistingHeader("content-length"))
+		m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 
 	// Server
 	if (!checkForExistingHeader("server"))

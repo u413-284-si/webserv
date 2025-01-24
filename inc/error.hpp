@@ -2,6 +2,51 @@
 
 /* ====== DEFINITIONS ====== */
 
+// PARSING ERRORS
+
+#define ERR_CONFIG_FILE_OPEN_FAILED "Failed to open config file"
+#define ERR_CONFIG_FILE_EMPTY "Config file is empty"
+#define ERR_OPEN_BRACKET_IN_CONFIG_FILE "Open bracket(s) in config file"
+#define ERR_MISSING_HTTP_BLOCK "Missing http block"
+#define ERR_INVALID_DIRECTIVE "Invalid directive"
+#define ERR_MISSING_SERVER_BLOCK "Missing server block(s)"
+#define ERR_DUPLICATE_LOCATION "Duplicate location"
+#define ERR_SEMICOLON_MISSING "Unexpected '}'"
+#define ERR_ROOT_AND_ALIAS_DEFINED "Defining root and alias in the same location block is not allowed"
+#define ERR_MULTIPLE_ROOT_PATHS "More than one root path"
+#define ERR_ROOT_PATH_MISSING_SLASH "Root path does not start with a slash"
+#define ERR_MULTIPLE_ALIAS_PATHS "More than one alias path"
+#define ERR_ALIAS_PATH_MISSING_SLASH "Alias path does not start with a slash"
+#define ERR_MULTIPLE_SERVER_NAMES "More than one server name"
+#define ERR_INVALID_IP_ADDRESS "Invalid ip address"
+#define ERR_INVALID_PORT "Invalid port"
+#define ERR_INVALID_LISTEN_PARAMETERS "Invalid amount of parameters for listen"
+#define ERR_EMPTY_LISTEN_VALUE "'listen' value has no value"
+#define ERR_INVALID_MAX_BODY_SIZE_PARAMETERS "Invalid amount of parameters for client_max_body_size"
+#define ERR_INVALID_MAX_BODY_SIZE_VALUE "Invalid client_max_body_size value"
+#define ERR_INVALID_MAX_BODY_SIZE_NUMBER "Invalid client_max_body_size number: Overflow"
+#define ERR_INVALID_MAX_BODY_SIZE_UNIT "Invalid client_max_body_size unit"
+#define ERR_INVALID_MAX_BODY_SIZE_NUMBER_OVERFLOW "Invalid client_max_body_size number: Overflow"
+#define ERR_INVALID_MAX_BODY_SIZE_UNIT_OVERFLOW "Invalid client_max_body_size unit: Overflow"
+#define ERR_INVALID_AUTOINDEX_PARAMETERS "Invalid amount of parameters for autoindex"
+#define ERR_INVALID_AUTOINDEX_VALUE "Invalid autoindex value"
+#define ERR_INVALID_ALLOW_METHODS "Invalid allow_methods value"
+#define ERR_INVALID_ERROR_PAGE_PARAMS "Invalid amount of parameters for error_page"
+#define ERR_INVALID_ERROR_CODE "Invalid error code"
+#define ERR_ERROR_PAGE_NO_PATH "error_page directive path has no value"
+#define ERR_ERROR_PAGE_PATH_NO_SLASH "Error page path does not start with a slash"
+#define ERR_INVALID_RETURN_CODE "Invalid return code"
+#define ERR_INVALID_RETURN_PARAMS "Invalid amount of parameters for return"
+#define ERR_INVALID_CGI_EXTENSION "Invalid CGI extension"
+#define ERR_MULTIPLE_CGI_EXTENSIONS "More than one CGI extension"
+#define ERR_MULTIPLE_DOTS_IN_CGI_EXTENSION "More than one dot in CGI extension"
+#define ERR_MULTIPLE_CGI_PATHS "More than one CGI path"
+#define ERR_CGI_PATH_NO_SLASH "CGI path does not start with a slash"
+#define ERR_INVALID_SERVER_DIRECTIVE "Invalid server directive"
+#define ERR_INVALID_LOCATION_DIRECTIVE "Invalid location directive"
+#define ERR_DIRECTIVE_NO_VALUE(directive) ("'" + (directive) + "' directive has no value")
+#define ERR_TOO_MANY_DOUBLE_QUOTES "Text can only be enclosed within ONE pair of double quotes"
+
 // HTTP REQUEST LINE ERRORS
 #define ERR_MISS_SINGLE_SPACE "Invalid HTTP request: missing single space"
 #define ERR_MISS_CRLF "Invalid HTTP request: missing CRLF"
@@ -33,6 +78,9 @@
 #define ERR_INVALID_CONTENT_LENGTH "Invalid HTTP request: Invalid content-length provided"
 #define ERR_NON_FINAL_CHUNKED_ENCODING "Invalid HTTP request: Chunked encoding not the final encoding"
 #define ERR_NON_EXISTENT_TRANSFER_ENCODING "Invalid HTTP request: Transfer encoding not detected"
+#define ERR_BAD_MULTIPART_FORMDATA "Invalid HTTP request: Multipart/form-data invalid"
+#define ERR_EMPTY_CONNECTION_VALUE "Invalid HTTP request: Empty connection header value"
+#define ERR_INVALID_CONNECTION_VALUE "Invalid HTTP request: Invalid connection header value"
 
 // HTTP REQUEST BODY ERRORS
 #define ERR_NON_EXISTENT_CHUNKSIZE "Invalid HTTP request: Chunk size not detected"
@@ -47,3 +95,4 @@
 // HTTP CGI RESPONSE HEADER ERRORS
 #define ERR_MISSING_CGI_HEADER "Invalid CGI response: No header section found in CGI output"
 #define ERR_MISSING_CGI_FIELD "Invalid CGI response: No CGI field (Content-type | Status | Location) found"
+#define ERR_MULTIPLE_UPLOADS "Invalid HTTP request: Multiple file uploads not supported"

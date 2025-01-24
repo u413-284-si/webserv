@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Directory.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "Log.hpp"
 #include "utilities.hpp"
 
@@ -16,11 +16,11 @@
 class DeleteHandler {
 
 public:
-	explicit DeleteHandler(const FileSystemPolicy& fileSystemPolicy);
+	explicit DeleteHandler(const FileSystemOps& fileSystemOps);
 	std::string execute(const std::string& path, statusCode& httpStatus);
 
 private:
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 	std::stringstream m_response;
 
 	// FIXME: activate after eval

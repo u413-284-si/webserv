@@ -4,10 +4,12 @@
 /**
  * @brief Stringize the result of expansion of a macro argument
  *
- * If the macro DEFAULT_CONFIG_PATH is defined with -D at compile time the literal value would be inserted. Since it has
- * to be a string one would have to put the value in escaped double quotes. This macro in combination with STRINGIZE(s)
- * stringize the defined value. First the macro gets expanded, and then the expanded value gets stringized. One can
- * simply redefine the path with "-D DEFAULT_CONFIG_PATH=./new/path"
+ * If the macro DEFAULT_CONFIG_PATH is defined with -D at compile time the
+ * literal value would be inserted. Since it has to be a string one would have
+ * to put the value in escaped double quotes. This macro in combination with
+ * STRINGIZE(s) stringize the defined value. First the macro gets expanded, and
+ * then the expanded value gets stringized. One can simply redefine the path
+ * with "-D DEFAULT_CONFIG_PATH=./new/path"
  * @sa https://gcc.gnu.org/onlinedocs/cpp/Stringizing.html
  */
 #define XSTRINGIZE(s) STRINGIZE(s)
@@ -15,14 +17,17 @@
 /**
  * @brief Converts macro argument into a string constant.
  *
- * Uses the '#' preprocessing operator. When a macro parameter is used with a leading '#', the preprocessor replaces it
- * with the literal text of the actual argument
+ * Uses the '#' preprocessing operator. When a macro parameter is used with a
+ * leading '#', the preprocessor replaces it with the literal text of the actual
+ * argument
  */
 #define STRINGIZE(s) #s
 
+// clang-format off
 #ifndef DEFAULT_CONFIG_PATH
 #define DEFAULT_CONFIG_PATH ./config_files/standard_config.conf
 #endif
+// clang-format on
 
 int main(const int argc, const char* argv[])
 {
@@ -44,15 +49,14 @@ int main(const int argc, const char* argv[])
 
 	try {
 		EpollWrapper epollWrapper(10, -1);
-		SocketPolicy socketPolicy;
+		FileSystemOps fileSystemOps;
+		SocketOps socketOps;
 		ProcessOps processOps;
 
 		ConfigFileParser parser;
 		ConfigFile configFile = parser.parseConfigFile(configFilePath);
 
-		configFile = createDummyConfig();
-
-		Server server(configFile, epollWrapper, socketPolicy, processOps);
+		Server server(configFile, epollWrapper, fileSystemOps, socketOps, processOps);
 		initVirtualServers(server, 10, server.getServerConfigs());
 		runServer(server);
 	} catch (std::exception& e) {
