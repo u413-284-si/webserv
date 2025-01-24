@@ -10,7 +10,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "DeleteHandler.cpp", "_delete_handler_8cpp.html", null ],
     [ "Directory.cpp", "_directory_8cpp.html", null ],
     [ "EpollWrapper.cpp", "_epoll_wrapper_8cpp.html", null ],
-    [ "FileSystemPolicy.cpp", "_file_system_policy_8cpp.html", null ],
+    [ "FileSystemOps.cpp", "_file_system_ops_8cpp.html", null ],
     [ "FileWriteHandler.cpp", "_file_write_handler_8cpp.html", null ],
     [ "HTTPRequest.cpp", "_h_t_t_p_request_8cpp.html", null ],
     [ "LogData.cpp", "_log_data_8cpp.html", null ],
@@ -26,7 +26,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ResponseBuilder.cpp", "_response_builder_8cpp.html", null ],
     [ "Server.cpp", "_server_8cpp.html", "_server_8cpp" ],
     [ "signalHandler.cpp", "signal_handler_8cpp.html", "signal_handler_8cpp" ],
-    [ "SocketPolicy.cpp", "_socket_policy_8cpp.html", null ],
+    [ "SocketOps.cpp", "_socket_ops_8cpp.html", null ],
     [ "StatusCode.cpp", "_status_code_8cpp.html", "_status_code_8cpp" ],
     [ "TargetResourceHandler.cpp", "_target_resource_handler_8cpp.html", "_target_resource_handler_8cpp" ],
     [ "utilities.cpp", "utilities_8cpp.html", "utilities_8cpp" ]

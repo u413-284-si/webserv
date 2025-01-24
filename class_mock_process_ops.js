@@ -6,5 +6,6 @@ var class_mock_process_ops =
     [ "MOCK_METHOD", "class_mock_process_ops.html#a12593fa269dcb351002594a099f96c6b", null ],
     [ "MOCK_METHOD", "class_mock_process_ops.html#a1bbb48751ac1c9f66cf6d118a50d5207", null ],
     [ "MOCK_METHOD", "class_mock_process_ops.html#ac2a483b596bce4de4df1a3cbeb27993c", null ],
-    [ "MOCK_METHOD", "class_mock_process_ops.html#ab7ee05960c5dd0b731423696a0c13494", null ]
+    [ "MOCK_METHOD", "class_mock_process_ops.html#ab7ee05960c5dd0b731423696a0c13494", null ],
+    [ "MOCK_METHOD", "class_mock_process_ops.html#af7ca5bdb465bd46cb2d0ea4a8d784dbc", null ]
 ];

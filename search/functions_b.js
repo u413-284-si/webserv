@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nopermissionexception_0',['NoPermissionException',['../struct_file_system_policy_1_1_no_permission_exception.html#ae3a6ec95a8ce0d9e1e7d87ffb548e195',1,'FileSystemPolicy::NoPermissionException']]]
+  ['nopermissionexception_0',['NoPermissionException',['../struct_file_system_ops_1_1_no_permission_exception.html#a6455c04ea956fa57914d21a85e853803',1,'FileSystemOps::NoPermissionException']]]
 ];

@@ -9,6 +9,6 @@ var class_response_builder_test =
     [ "m_request", "class_response_builder_test.html#a61a469b64bdeae8ced6db2c8b18abdec", null ],
     [ "m_responseBody", "class_response_builder_test.html#a37b7e080ce31c1909277ab713e1e2061", null ],
     [ "m_responseHeaders", "class_response_builder_test.html#a6b7a7150553a2e160b1bba3c87daeeaa", null ],
-    [ "m_fileSystemPolicy", "class_response_builder_test.html#a2266d0c5ed83715b253f824d1594737d", null ],
+    [ "m_fileSystemOps", "class_response_builder_test.html#a4ca4e51e5b6cdadb2e002946be0045cb", null ],
     [ "m_responseBuilder", "class_response_builder_test.html#ad5ba2670655d73f01e374d8aa1dbc309", null ]
 ];

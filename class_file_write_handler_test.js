@@ -6,6 +6,6 @@ var class_file_write_handler_test =
     [ "m_content", "class_file_write_handler_test.html#aefa0f968e9e8cd4d513476fb6debed38", null ],
     [ "m_fakeStat", "class_file_write_handler_test.html#a7c902f666973f4f0aa821cac07987d2d", null ],
     [ "m_httpStatus", "class_file_write_handler_test.html#a4696c40f2164f6a324d56f42d551e3c5", null ],
-    [ "m_fileSystemPolicy", "class_file_write_handler_test.html#a89aebdcb0c066551b13eca0341c9e407", null ],
+    [ "m_fileSystemOps", "class_file_write_handler_test.html#aeeedb7b9f9bef0c09b3d5aa586101935", null ],
     [ "m_fileWriteHandler", "class_file_write_handler_test.html#a07ee7d540f1dc980480bc497b74b04bb", null ]
 ];

@@ -1,23 +1,23 @@
 <map id="ResponseBodyHandlerTest" name="ResponseBodyHandlerTest">
-<area shape="rect" id="Node000001" title=" " alt="" coords="792,196,987,221"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="441,5,542,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="556,10,605,9,660,14,716,27,769,49,811,82,845,123,870,164,885,194,880,197,865,166,841,126,808,86,767,54,715,32,659,20,605,15,556,15"/>
-<area shape="rect" id="Node000003" href="$struct_socket.html" title="Represent a socket connection." alt="" coords="154,95,219,120"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="232,94,277,86,330,83,383,86,579,102,663,118,769,147,823,170,868,193,865,198,821,175,767,153,662,123,578,107,382,91,330,88,278,91,233,99"/>
-<area shape="rect" id="Node000005" href="$struct_connection.html" title="Represents a connection between a server and a client." alt="" coords="444,144,539,169"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="233,112,444,147,444,152,232,117"/>
-<area shape="rect" id="Node000004" href="$struct_config_file.html" title=" " alt="" coords="448,257,535,283"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="548,264,651,256,767,239,848,219,849,224,769,245,651,261,549,270"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="553,161,768,187,809,193,808,199,768,193,552,166"/>
-<area shape="rect" id="Node000006" href="$struct_h_t_t_p_request.html" title=" " alt="" coords="132,164,241,189"/>
-<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="255,181,407,193,613,201,792,205,792,210,613,206,407,198,255,186"/>
-<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="255,170,444,157,444,162,255,175"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="777,196,972,221"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="426,5,527,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="541,10,590,9,645,14,702,27,755,49,797,82,830,123,855,164,870,194,865,197,850,166,826,126,793,86,752,54,700,32,645,20,590,15,541,15"/>
+<area shape="rect" id="Node000003" href="$struct_socket.html" title="Represent a socket connection." alt="" coords="147,95,212,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,93,262,86,315,83,368,86,564,102,648,118,754,147,809,170,853,193,851,198,806,175,752,153,647,123,563,107,368,91,315,88,263,91,226,98"/>
+<area shape="rect" id="Node000005" href="$struct_connection.html" title="Represents a connection between a server and a client." alt="" coords="429,144,524,169"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="226,112,430,146,429,152,225,117"/>
+<area shape="rect" id="Node000004" href="$struct_config_file.html" title=" " alt="" coords="433,257,520,283"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="534,264,636,256,753,239,833,219,834,224,754,245,637,261,534,270"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="538,161,754,187,794,193,794,199,753,193,538,166"/>
+<area shape="rect" id="Node000006" href="$struct_h_t_t_p_request.html" title=" " alt="" coords="125,164,234,189"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="248,181,392,193,598,201,777,205,777,210,598,207,392,198,247,186"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="247,169,429,157,429,162,248,175"/>
 <area shape="rect" id="Node000007" href="$struct_u_r_i.html" title=" " alt="" coords="5,164,51,189"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="64,174,132,174,132,179,64,179"/>
-<area shape="rect" id="Node000008" href="$class_mock_file_system_policy.html" title="Mock class for FileSystemPolicy." alt="" coords="407,307,575,332"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="589,314,677,304,723,294,767,281,797,268,826,251,871,219,874,224,829,256,800,272,769,286,724,299,678,309,589,319"/>
-<area shape="rect" id="Node000009" href="$class_file_system_policy.html" title="Class for C functions on the file system." alt="" coords="120,307,253,332"/>
-<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="267,317,407,317,407,322,267,322"/>
-<area shape="rect" id="Node000010" href="$class_response_body_handler.html" title="Class to handle the body of a HTTP response." alt="" coords="407,356,576,381"/>
-<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="590,371,679,362,724,351,767,334,804,309,836,277,878,220,883,223,840,281,808,313,769,339,726,356,680,368,590,376"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="65,174,124,174,124,179,65,179"/>
+<area shape="rect" id="Node000008" href="$class_mock_file_system_ops.html" title="Mock class for FileSystemOps." alt="" coords="399,307,554,332"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="568,315,658,304,706,295,752,281,783,268,811,251,856,219,859,224,814,256,785,272,754,286,708,300,659,310,568,320"/>
+<area shape="rect" id="Node000009" href="$class_file_system_ops.html" title="Wrapper class for filesystem&#45;related functions." alt="" coords="120,307,239,332"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="252,317,399,317,399,322,252,322"/>
+<area shape="rect" id="Node000010" href="$class_response_body_handler.html" title="Class to handle the body of a HTTP response." alt="" coords="392,356,561,381"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="575,371,664,362,709,351,752,334,789,309,821,277,864,220,868,223,825,281,793,313,755,339,711,356,665,368,576,376"/>
 </map>

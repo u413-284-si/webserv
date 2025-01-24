@@ -1,44 +1,11 @@
 <map id="Server::registerConnection" name="Server::registerConnection">
-<area shape="rect" id="Node000001" title="Register a connection." alt="" coords="905,349,1100,375"/>
-<area shape="rect" id="Node000002" href="$_server_8cpp.html#adb579f3d67061d752e882e6fb3ef6f18" title="Accept new connections." alt="" coords="639,228,785,253"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="974,342,922,304,890,285,856,268,821,257,784,250,785,245,822,252,858,264,892,280,925,299,978,338"/>
-<area shape="rect" id="Node000018" href="$class_connection_receive_body_test.html#a50fcead952127a807cac04929fad5797" title=" " alt="" coords="605,278,819,318"/>
-<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="930,349,803,321,804,315,931,344"/>
-<area shape="rect" id="Node000019" href="$class_connection_receive_header_test.html#ab7e65196f280d530732c91783a747254" title=" " alt="" coords="598,342,826,382"/>
-<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="891,365,827,365,827,359,891,359"/>
-<area shape="rect" id="Node000020" href="$class_connection_send_response_test.html#ae53693cda52ddb4d21218c0bc1d25553" title=" " alt="" coords="600,406,824,446"/>
-<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="931,380,804,409,803,403,930,375"/>
-<area shape="rect" id="Node000021" href="$class_handle_complete_request_header_test.html#a938d495e55cc93b87bffc5770c2bd32b" title=" " alt="" coords="567,470,857,510"/>
-<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="977,385,925,424,858,460,824,472,823,467,856,456,922,419,974,381"/>
-<area shape="rect" id="Node000003" href="$_server_8cpp.html#af9f4479a6262c17deef89938118d27f4" title="Accepts new connections or handles existing ones." alt="" coords="416,31,519,56"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="687,220,615,150,567,109,517,71,496,58,498,54,520,66,571,105,618,146,691,216"/>
-<area shape="rect" id="Node000010" href="$test__accept_connections_8cpp.html#aa1d4e0a7c561db5b8a8715755b59b728" title=" " alt="" coords="433,80,502,105"/>
-<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="679,222,606,174,517,120,494,108,497,103,520,116,609,170,682,218"/>
-<area shape="rect" id="Node000011" href="$test__accept_connections_8cpp.html#ae76ec85fb2cbe0d8ac24c2f1b47344c0" title=" " alt="" coords="433,129,502,155"/>
-<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="666,225,499,157,501,152,668,220"/>
-<area shape="rect" id="Node000012" href="$test__accept_connections_8cpp.html#a78ef81e117d5c1a90c27410155ac152b" title=" " alt="" coords="433,179,502,204"/>
-<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="634,228,502,201,503,196,635,223"/>
-<area shape="rect" id="Node000013" href="$test__accept_connections_8cpp.html#a9115bbeb96554e4f7f3909f9388bf963" title=" " alt="" coords="433,228,502,253"/>
-<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="625,243,502,243,502,238,625,238"/>
-<area shape="rect" id="Node000014" href="$test__accept_connections_8cpp.html#aa2bdfce89a8f2540cc790305d84758cc" title=" " alt="" coords="433,277,502,303"/>
-<area shape="poly" id="edge14_Node000002_Node000014" title=" " alt="" coords="626,257,567,269,503,284,501,279,566,263,625,252"/>
-<area shape="rect" id="Node000015" href="$test__accept_connections_8cpp.html#acdd50ab57241500f8d264a71e640923d" title=" " alt="" coords="433,327,502,352"/>
-<area shape="poly" id="edge15_Node000002_Node000015" title=" " alt="" coords="627,249,596,257,568,268,553,279,544,291,535,304,520,317,501,329,498,324,517,313,531,300,540,288,549,275,565,264,595,252,625,244"/>
-<area shape="rect" id="Node000016" href="$test__accept_connections_8cpp.html#a44991816aa7987d964b5c8ff3d5adf3c" title=" " alt="" coords="433,376,502,401"/>
-<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="626,245,596,253,568,268,557,279,550,290,544,314,538,340,521,367,504,378,501,374,517,363,533,338,538,313,545,288,553,276,565,264,594,248,625,240"/>
-<area shape="rect" id="Node000017" href="$test__accept_connections_8cpp.html#a05643f7a40ac0149a8bd8603e4a3b45b" title=" " alt="" coords="433,425,502,451"/>
-<area shape="poly" id="edge17_Node000002_Node000017" title=" " alt="" coords="626,243,595,252,568,268,554,285,546,302,543,338,541,376,534,396,521,416,504,429,501,424,517,412,529,393,535,375,538,337,541,300,549,282,565,264,593,247,625,238"/>
-<area shape="rect" id="Node000004" href="$_server_8cpp.html#ab66b27c2186daacb15a6b13dd43be31b" title="Runs the main event loop with a server object." alt="" coords="108,5,193,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="402,41,193,24,194,19,403,36"/>
-<area shape="rect" id="Node000006" href="$_server_8cpp.html#a115ecd76e344c1007bedc48b9bbdc0fa" title="Performs a graceful shutdown of the server." alt="" coords="241,56,368,81"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="403,56,369,61,368,56,402,51"/>
-<area shape="rect" id="Node000005" href="$main_8cpp.html#ad53223b8779f25caeddb70a3b9172967" title=" " alt="" coords="5,5,60,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="251,54,189,33,191,28,253,49"/>
-<area shape="rect" id="Node000007" href="$test__shutdown_server_8cpp.html#a6462dc91a572c9969b759806ed15590b" title=" " alt="" coords="116,55,185,80"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="227,71,186,70,186,65,228,65"/>
-<area shape="rect" id="Node000008" href="$test__shutdown_server_8cpp.html#a69fea7b0fb329821fdd955271edc65ee" title=" " alt="" coords="116,104,185,129"/>
-<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="251,88,186,109,185,103,249,83"/>
-<area shape="rect" id="Node000009" href="$test__shutdown_server_8cpp.html#a224e0b58937c3db439ffeef179620439" title=" " alt="" coords="116,153,185,179"/>
-<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="275,91,195,144,176,156,173,151,192,140,272,87"/>
+<area shape="rect" id="Node000001" title="Register a connection." alt="" coords="344,109,539,134"/>
+<area shape="rect" id="Node000002" href="$class_connection_receive_body_test.html#a50fcead952127a807cac04929fad5797" title=" " alt="" coords="43,5,258,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,105,352,82,295,60,253,48,255,43,297,55,354,77,404,100"/>
+<area shape="rect" id="Node000003" href="$class_connection_receive_header_test.html#ab7e65196f280d530732c91783a747254" title=" " alt="" coords="37,69,265,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="330,112,265,105,265,99,330,106"/>
+<area shape="rect" id="Node000004" href="$class_connection_send_response_test.html#ae53693cda52ddb4d21218c0bc1d25553" title=" " alt="" coords="39,133,263,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="330,136,263,144,263,138,330,131"/>
+<area shape="rect" id="Node000005" href="$class_handle_complete_request_header_test.html#a938d495e55cc93b87bffc5770c2bd32b" title=" " alt="" coords="5,197,296,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="404,143,354,166,297,188,255,200,253,195,295,183,352,161,402,138"/>
 </map>

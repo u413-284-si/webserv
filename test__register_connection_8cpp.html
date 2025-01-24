@@ -110,13 +110,7 @@ $(document).ready(function(){initNavTree('test__register_connection_8cpp.html','
   <div class="headertitle"><div class="title">test_registerConnection.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;gmock/gmock.h&gt;</code><br />
-<code>#include &lt;gtest/gtest.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_mock_epoll_wrapper_8hpp_source.html">MockEpollWrapper.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_mock_socket_policy_8hpp_source.html">MockSocketPolicy.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_mock_process_ops_8hpp_source.html">MockProcessOps.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_server_8hpp_source.html">Server.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="test__helpers_8hpp_source.html">test_helpers.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_registerConnection.cpp:</div>
 <div class="dyncontent">
@@ -138,10 +132,12 @@ Functions</h2></td></tr>
 <tr class="separator:a33bb4e09ae8779f0a196f2beacae2bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a435b1b40d4211b446af2412f4612ea38" id="r_a435b1b40d4211b446af2412f4612ea38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__register_connection_8cpp.html#a435b1b40d4211b446af2412f4612ea38">TEST_F</a> (<a class="el" href="class_register_connection_test.html">RegisterConnectionTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">CantOverwriteExistingConnection</a>)</td></tr>
 <tr class="separator:a435b1b40d4211b446af2412f4612ea38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55951816bf367079f5da0654c5009ace" id="r_a55951816bf367079f5da0654c5009ace"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="test__register_connection_8cpp.html#a55951816bf367079f5da0654c5009ace">TEST_F</a> (<a class="el" href="class_register_connection_test.html">RegisterConnectionTest</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NoMatchingActiveServer</a>)</td></tr>
+<tr class="separator:a55951816bf367079f5da0654c5009ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af7cc68a5a18e31e6fc7dcb4a76058149" name="af7cc68a5a18e31e6fc7dcb4a76058149"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7cc68a5a18e31e6fc7dcb4a76058149">&#9670;&#160;</a></span>TEST_F() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af7cc68a5a18e31e6fc7dcb4a76058149">&#9670;&#160;</a></span>TEST_F() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,21 +162,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00042">42</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 1);</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);</div>
-<div class="line"><span class="lineno">   47</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);</div>
-<div class="line"><span class="lineno">   48</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);</div>
-<div class="line"><span class="lineno">   49</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);</div>
-<div class="line"><span class="lineno">   50</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00015">15</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>{</div>
+<div class="line"><span class="lineno">   17</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_TRUE</a>(m_server.registerConnection(serverSock, dummyFd, clientSocket));</div>
+<div class="line"><span class="lineno">   18</span> </div>
+<div class="line"><span class="lineno">   19</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().size(), 1);</div>
+<div class="line"><span class="lineno">   20</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_serverSocket.host, serverSock.host);</div>
+<div class="line"><span class="lineno">   21</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_serverSocket.port, serverSock.port);</div>
+<div class="line"><span class="lineno">   22</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_clientSocket.host, clientSocket.host);</div>
+<div class="line"><span class="lineno">   23</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_clientSocket.port, clientSocket.port);</div>
+<div class="line"><span class="lineno">   24</span>}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a33bb4e09ae8779f0a196f2beacae2bbd" name="a33bb4e09ae8779f0a196f2beacae2bbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33bb4e09ae8779f0a196f2beacae2bbd">&#9670;&#160;</a></span>TEST_F() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a33bb4e09ae8779f0a196f2beacae2bbd">&#9670;&#160;</a></span>TEST_F() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,20 +202,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00052">52</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(epollWrapper, addEvent)</div>
-<div class="line"><span class="lineno">   55</span>    .Times(1)</div>
-<div class="line"><span class="lineno">   56</span>    .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">false</span>));</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   59</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 0);</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00026">26</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
+<div class="line"><span class="lineno">   28</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_epollWrapper, addEvent).Times(1).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">false</span>));</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_FALSE</a>(m_server.registerConnection(serverSock, dummyFd, clientSocket));</div>
+<div class="line"><span class="lineno">   31</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().size(), 0);</div>
+<div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a435b1b40d4211b446af2412f4612ea38" name="a435b1b40d4211b446af2412f4612ea38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a435b1b40d4211b446af2412f4612ea38">&#9670;&#160;</a></span>TEST_F() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a435b1b40d4211b446af2412f4612ea38">&#9670;&#160;</a></span>TEST_F() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,20 +238,54 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00062">62</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_struct" href="struct_socket.html">Socket</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">oldClientSocket</a> = {</div>
-<div class="line"><span class="lineno">   65</span>        <span class="stringliteral">&quot;1.1.1.1&quot;</span>,</div>
-<div class="line"><span class="lineno">   66</span>        <span class="stringliteral">&quot;11111&quot;</span> };</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.registerConnection(serverSock, dummyFd, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">oldClientSocket</a>), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 1);</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <span class="comment">// reuse the same dummyFd should fail as a connection with this fd already exists</span></div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.registerConnection(serverSock, dummyFd, clientSocket), <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   73</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().size(), 1);</div>
-<div class="line"><span class="lineno">   74</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00034">34</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>    <a class="code hl_struct" href="struct_socket.html">Socket</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">oldClientSocket</a> = { <span class="stringliteral">&quot;1.1.1.1&quot;</span>, <span class="stringliteral">&quot;11111&quot;</span> };</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_TRUE</a>(m_server.registerConnection(serverSock, dummyFd, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">oldClientSocket</a>));</div>
+<div class="line"><span class="lineno">   39</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().size(), 1);</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>    <span class="comment">// reuse the same dummyFd should fail as a connection with this fd already exists</span></div>
+<div class="line"><span class="lineno">   42</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_FALSE</a>(m_server.registerConnection(serverSock, dummyFd, clientSocket));</div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().size(), 1);</div>
+<div class="line"><span class="lineno">   44</span>}</div>
 <div class="ttc" id="astruct_socket_html"><div class="ttname"><a href="struct_socket.html">Socket</a></div><div class="ttdoc">Represent a socket connection.</div><div class="ttdef"><b>Definition</b> <a href="_socket_8hpp_source.html#l00008">Socket.hpp:8</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a55951816bf367079f5da0654c5009ace" name="a55951816bf367079f5da0654c5009ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55951816bf367079f5da0654c5009ace">&#9670;&#160;</a></span>TEST_F() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST_F </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_register_connection_test.html">RegisterConnectionTest</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NoMatchingActiveServer</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__register_connection_8cpp_source.html#l00046">46</a> of file <a class="el" href="test__register_connection_8cpp_source.html">test_registerConnection.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
+<div class="line"><span class="lineno">   48</span>    m_configFile.servers.clear();</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_FALSE</a>(m_server.registerConnection(serverSock, dummyFd, clientSocket));</div>
+<div class="line"><span class="lineno">   51</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().size(), 0);</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

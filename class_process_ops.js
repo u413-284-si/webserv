@@ -8,5 +8,6 @@ var class_process_ops =
     [ "forkProcess", "class_process_ops.html#a189432b145784c422f4ac6ec515a9984", null ],
     [ "execProcess", "class_process_ops.html#abc683607d42b4daab6b710a214c968eb", null ],
     [ "readProcess", "class_process_ops.html#ac7393024f6806564358982953cc0df77", null ],
-    [ "writeProcess", "class_process_ops.html#a2f7d6815890c3dbc375b70ae4f5348b9", null ]
+    [ "writeProcess", "class_process_ops.html#a2f7d6815890c3dbc375b70ae4f5348b9", null ],
+    [ "waitForProcess", "class_process_ops.html#a0a83a2b48c8a836e6311ef9a64ebd802", null ]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filetype_0',['fileType',['../class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765',1,'FileSystemPolicy']]]
+  ['filetype_0',['fileType',['../class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9',1,'FileSystemOps']]]
 ];

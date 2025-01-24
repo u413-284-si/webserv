@@ -135,9 +135,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a3ae31e86fc70bc761050f6811e687c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa237f64649368f5fb4fc85b49731300" id="r_aaa237f64649368f5fb4fc85b49731300"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler_test.html#aaa237f64649368f5fb4fc85b49731300">m_statusCode</a> = <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a></td></tr>
 <tr class="separator:aaa237f64649368f5fb4fc85b49731300"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27bd1bf9034ac38ef9e8832d94e1682b" id="r_a27bd1bf9034ac38ef9e8832d94e1682b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt; <a class="el" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler_test.html#a27bd1bf9034ac38ef9e8832d94e1682b">m_fileSystemPolicy</a></td></tr>
-<tr class="separator:a27bd1bf9034ac38ef9e8832d94e1682b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32fdf5924d7e60f4fa60d12a4a007456" id="r_a32fdf5924d7e60f4fa60d12a4a007456"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_delete_handler.html">DeleteHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler_test.html#a32fdf5924d7e60f4fa60d12a4a007456">m_deleteHandler</a> = <a class="el" href="class_delete_handler.html">DeleteHandler</a>(<a class="el" href="class_delete_handler_test.html#a27bd1bf9034ac38ef9e8832d94e1682b">m_fileSystemPolicy</a>)</td></tr>
+<tr class="memitem:aaa2062d1840c87f829ddc99ab67f6665" id="r_aaa2062d1840c87f829ddc99ab67f6665"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt; <a class="el" href="class_mock_file_system_ops.html">MockFileSystemOps</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler_test.html#aaa2062d1840c87f829ddc99ab67f6665">m_fileSystemPolicy</a></td></tr>
+<tr class="separator:aaa2062d1840c87f829ddc99ab67f6665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32fdf5924d7e60f4fa60d12a4a007456" id="r_a32fdf5924d7e60f4fa60d12a4a007456"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_delete_handler.html">DeleteHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler_test.html#a32fdf5924d7e60f4fa60d12a4a007456">m_deleteHandler</a> = <a class="el" href="class_delete_handler.html">DeleteHandler</a>(<a class="el" href="class_delete_handler_test.html#aaa2062d1840c87f829ddc99ab67f6665">m_fileSystemPolicy</a>)</td></tr>
 <tr class="separator:a32fdf5924d7e60f4fa60d12a4a007456"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -169,10 +169,10 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="test___delete_handler_8cpp_source.html#l00017">17</a> of file <a class="el" href="test___delete_handler_8cpp_source.html">test_DeleteHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   18</span>    {</div>
-<div class="line"><span class="lineno">   19</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ON_CALL</a>(<a class="code hl_variable" href="class_delete_handler_test.html#a27bd1bf9034ac38ef9e8832d94e1682b">m_fileSystemPolicy</a>, deleteFile).WillByDefault(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>());</div>
+<div class="line"><span class="lineno">   19</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">ON_CALL</a>(<a class="code hl_variable" href="class_delete_handler_test.html#aaa2062d1840c87f829ddc99ab67f6665">m_fileSystemPolicy</a>, deleteFile).WillByDefault(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>());</div>
 <div class="line"><span class="lineno">   20</span>    }</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
-<div class="ttc" id="aclass_delete_handler_test_html_a27bd1bf9034ac38ef9e8832d94e1682b"><div class="ttname"><a href="class_delete_handler_test.html#a27bd1bf9034ac38ef9e8832d94e1682b">DeleteHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">NiceMock&lt; MockFileSystemPolicy &gt; m_fileSystemPolicy</div><div class="ttdef"><b>Definition</b> <a href="test___delete_handler_8cpp_source.html#l00026">test_DeleteHandler.cpp:26</a></div></div>
+<div class="ttc" id="aclass_delete_handler_test_html_aaa2062d1840c87f829ddc99ab67f6665"><div class="ttname"><a href="class_delete_handler_test.html#aaa2062d1840c87f829ddc99ab67f6665">DeleteHandlerTest::m_fileSystemPolicy</a></div><div class="ttdeci">NiceMock&lt; MockFileSystemOps &gt; m_fileSystemPolicy</div><div class="ttdef"><b>Definition</b> <a href="test___delete_handler_8cpp_source.html#l00026">test_DeleteHandler.cpp:26</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -253,8 +253,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a27bd1bf9034ac38ef9e8832d94e1682b" name="a27bd1bf9034ac38ef9e8832d94e1682b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27bd1bf9034ac38ef9e8832d94e1682b">&#9670;&#160;</a></span>m_fileSystemPolicy</h2>
+<a id="aaa2062d1840c87f829ddc99ab67f6665" name="aaa2062d1840c87f829ddc99ab67f6665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2062d1840c87f829ddc99ab67f6665">&#9670;&#160;</a></span>m_fileSystemPolicy</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +263,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt;<a class="el" href="class_mock_file_system_policy.html">MockFileSystemPolicy</a>&gt; DeleteHandlerTest::m_fileSystemPolicy</td>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">NiceMock</a>&lt;<a class="el" href="class_mock_file_system_ops.html">MockFileSystemOps</a>&gt; DeleteHandlerTest::m_fileSystemPolicy</td>
         </tr>
       </table>
   </td>
@@ -287,7 +287,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_delete_handler.html">DeleteHandler</a> DeleteHandlerTest::m_deleteHandler = <a class="el" href="class_delete_handler.html">DeleteHandler</a>(<a class="el" href="class_delete_handler_test.html#a27bd1bf9034ac38ef9e8832d94e1682b">m_fileSystemPolicy</a>)</td>
+          <td class="memname"><a class="el" href="class_delete_handler.html">DeleteHandler</a> DeleteHandlerTest::m_deleteHandler = <a class="el" href="class_delete_handler.html">DeleteHandler</a>(<a class="el" href="class_delete_handler_test.html#aaa2062d1840c87f829ddc99ab67f6665">m_fileSystemPolicy</a>)</td>
         </tr>
       </table>
   </td>

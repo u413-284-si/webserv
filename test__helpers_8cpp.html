@@ -109,11 +109,11 @@ $(document).ready(function(){initNavTree('test__helpers_8cpp.html',''); initResi
   <div class="headertitle"><div class="title">test_helpers.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="test__helpers_8hpp_source.html">test_helpers.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_helpers.cpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__helpers_8cpp__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__helpers_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="test__helpers_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -141,19 +141,19 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="test__helpers_8cpp_source.html#l00003">3</a> of file <a class="el" href="test__helpers_8cpp_source.html">test_helpers.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    4</span>{</div>
-<div class="line"><span class="lineno">    5</span>    <a class="code hl_struct" href="struct_config_server.html">ConfigServer</a> server;</div>
-<div class="line"><span class="lineno">    6</span>    server.<a class="code hl_variable" href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">host</a> = <span class="stringliteral">&quot;127.0.0.1&quot;</span>;</div>
-<div class="line"><span class="lineno">    7</span>    server.<a class="code hl_variable" href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">port</a> = <span class="stringliteral">&quot;8080&quot;</span>;</div>
+<div class="line"><span class="lineno">    5</span>    <a class="code hl_struct" href="struct_config_server.html">ConfigServer</a> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>;</div>
+<div class="line"><span class="lineno">    6</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>.<a class="code hl_variable" href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">host</a> = <span class="stringliteral">&quot;127.0.0.1&quot;</span>;</div>
+<div class="line"><span class="lineno">    7</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>.port = <span class="stringliteral">&quot;8080&quot;</span>;</div>
 <div class="line"><span class="lineno">    8</span> </div>
 <div class="line"><span class="lineno">    9</span>    <a class="code hl_struct" href="struct_config_file.html">ConfigFile</a> configFile;</div>
-<div class="line"><span class="lineno">   10</span>    configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.emplace_back(server);</div>
+<div class="line"><span class="lineno">   10</span>    configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>.emplace_back(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>);</div>
 <div class="line"><span class="lineno">   11</span> </div>
 <div class="line"><span class="lineno">   12</span>    <span class="keywordflow">return</span> (configFile);</div>
 <div class="line"><span class="lineno">   13</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="astruct_config_file_html"><div class="ttname"><a href="struct_config_file.html">ConfigFile</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00049">ConfigFile.hpp:49</a></div></div>
 <div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00050">ConfigFile.hpp:50</a></div></div>
 <div class="ttc" id="astruct_config_server_html"><div class="ttname"><a href="struct_config_server.html">ConfigServer</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00035">ConfigFile.hpp:35</a></div></div>
-<div class="ttc" id="astruct_config_server_html_ab05a55795c20b46356d35adb3355c0ee"><div class="ttname"><a href="struct_config_server.html#ab05a55795c20b46356d35adb3355c0ee">ConfigServer::port</a></div><div class="ttdeci">std::string port</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00043">ConfigFile.hpp:43</a></div></div>
 <div class="ttc" id="astruct_config_server_html_af3382ae5512707639126d2eee3269b86"><div class="ttname"><a href="struct_config_server.html#af3382ae5512707639126d2eee3269b86">ConfigServer::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00042">ConfigFile.hpp:42</a></div></div>
 </div><!-- fragment -->
 </div>

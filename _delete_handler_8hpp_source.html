@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('_delete_handler_8hpp_source.html','');
 <a href="_delete_handler_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="_directory_8hpp.html">Directory.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="_file_system_policy_8hpp.html">FileSystemPolicy.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="_file_system_ops_8hpp.html">FileSystemOps.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="_log_8hpp.html">Log.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="utilities_8hpp.html">utilities.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
@@ -127,11 +127,11 @@ $(document).ready(function(){initNavTree('_delete_handler_8hpp_source.html','');
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_delete_handler.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="class_delete_handler.html">DeleteHandler</a> {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="class_delete_handler.html">DeleteHandler</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_file_system_policy.html">FileSystemPolicy</a>&amp; fileSystemPolicy);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="class_delete_handler.html">DeleteHandler</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_file_system_ops.html">FileSystemOps</a>&amp; fileSystemOps);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    std::string <a class="code hl_function" href="class_delete_handler.html#af57c89c025cd0def3d16bad186a7f3e8">execute</a>(<span class="keyword">const</span> std::string&amp; path, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&amp; httpStatus);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">const</span> <a class="code hl_class" href="class_file_system_policy.html">FileSystemPolicy</a>&amp; m_fileSystemPolicy;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">const</span> <a class="code hl_class" href="class_file_system_ops.html">FileSystemOps</a>&amp; m_fileSystemOps;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    std::stringstream m_response;</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// FIXME: activate after eval</span></div>
@@ -139,12 +139,12 @@ $(document).ready(function(){initNavTree('_delete_handler_8hpp_source.html','');
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>};</div>
 </div>
 <div class="ttc" id="a_directory_8hpp_html"><div class="ttname"><a href="_directory_8hpp.html">Directory.hpp</a></div></div>
-<div class="ttc" id="a_file_system_policy_8hpp_html"><div class="ttname"><a href="_file_system_policy_8hpp.html">FileSystemPolicy.hpp</a></div></div>
+<div class="ttc" id="a_file_system_ops_8hpp_html"><div class="ttname"><a href="_file_system_ops_8hpp.html">FileSystemOps.hpp</a></div></div>
 <div class="ttc" id="a_log_8hpp_html"><div class="ttname"><a href="_log_8hpp.html">Log.hpp</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="aclass_delete_handler_html"><div class="ttname"><a href="class_delete_handler.html">DeleteHandler</a></div><div class="ttdoc">Class to delete files and directories.</div><div class="ttdef"><b>Definition</b> <a href="_delete_handler_8hpp_source.html#l00016">DeleteHandler.hpp:16</a></div></div>
 <div class="ttc" id="aclass_delete_handler_html_af57c89c025cd0def3d16bad186a7f3e8"><div class="ttname"><a href="class_delete_handler.html#af57c89c025cd0def3d16bad186a7f3e8">DeleteHandler::execute</a></div><div class="ttdeci">std::string execute(const std::string &amp;path, statusCode &amp;httpStatus)</div><div class="ttdoc">Executes the delete operation on the specified path.</div><div class="ttdef"><b>Definition</b> <a href="_delete_handler_8cpp_source.html#l00028">DeleteHandler.cpp:28</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html"><div class="ttname"><a href="class_file_system_policy.html">FileSystemPolicy</a></div><div class="ttdoc">Class for C functions on the file system.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00023">FileSystemPolicy.hpp:23</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html"><div class="ttname"><a href="class_file_system_ops.html">FileSystemOps</a></div><div class="ttdoc">Wrapper class for filesystem-related functions.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00028">FileSystemOps.hpp:28</a></div></div>
 <div class="ttc" id="autilities_8hpp_html"><div class="ttname"><a href="utilities_8hpp.html">utilities.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

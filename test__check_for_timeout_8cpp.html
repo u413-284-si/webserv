@@ -110,12 +110,7 @@ $(document).ready(function(){initNavTree('test__check_for_timeout_8cpp.html','')
   <div class="headertitle"><div class="title">test_checkForTimeout.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;gmock/gmock.h&gt;</code><br />
-<code>#include &lt;gtest/gtest.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="_mock_epoll_wrapper_8hpp_source.html">MockEpollWrapper.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_mock_socket_policy_8hpp_source.html">MockSocketPolicy.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_mock_process_ops_8hpp_source.html">MockProcessOps.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_server_8hpp_source.html">Server.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="test__helpers_8hpp_source.html">test_helpers.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_checkForTimeout.cpp:</div>
 <div class="dyncontent">
@@ -165,23 +160,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__check_for_timeout_8cpp_source.html#l00041">41</a> of file <a class="el" href="test__check_for_timeout_8cpp_source.html">test_checkForTimeout.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>    server.setClientTimeout(-1);</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>    server.registerConnection(serverSock, dummyFd, dummySocket);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(server);</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
-<div class="line"><span class="lineno">   50</span>}</div>
-<div class="ttc" id="a_server_8hpp_html_a28fd29ec48bd9459c678980cfccca4cf"><div class="ttname"><a href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a></div><div class="ttdeci">void checkForTimeout(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and checks if any have timed out.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l01467">Server.cpp:1467</a></div></div>
+<p class="definition">Definition at line <a class="el" href="test__check_for_timeout_8cpp_source.html#l00022">22</a> of file <a class="el" href="test__check_for_timeout_8cpp_source.html">test_checkForTimeout.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
+<div class="line"><span class="lineno">   24</span>    m_server.setClientTimeout(-1);</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>    m_server.registerConnection(serverSock, dummyFd, dummySocket);</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(m_server);</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   31</span>}</div>
+<div class="ttc" id="a_server_8hpp_html_a28fd29ec48bd9459c678980cfccca4cf"><div class="ttname"><a href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a></div><div class="ttdeci">void checkForTimeout(Server &amp;server)</div><div class="ttdoc">Iterates through all connections and checks if any have timed out.</div><div class="ttdef"><b>Definition</b> <a href="_server_8cpp_source.html#l01503">Server.cpp:1503</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a></div><div class="ttdeci">@ Timeout</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00029">Connection.hpp:29</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__check_for_timeout_8cpp_aa104b7ee8b0b5c5b33b6409f6450eeb6_cgraph.svg" width="100%" height="401"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="test__check_for_timeout_8cpp_aa104b7ee8b0b5c5b33b6409f6450eeb6_cgraph.svg" width="263" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -212,21 +207,21 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__check_for_timeout_8cpp_source.html#l00052">52</a> of file <a class="el" href="test__check_for_timeout_8cpp_source.html">test_checkForTimeout.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>    server.setClientTimeout(100);</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    server.registerConnection(serverSock, dummyFd, dummySocket);</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(server);</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__check_for_timeout_8cpp_source.html#l00033">33</a> of file <a class="el" href="test__check_for_timeout_8cpp_source.html">test_checkForTimeout.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>    m_server.setClientTimeout(100);</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>    m_server.registerConnection(serverSock, dummyFd, dummySocket);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(m_server);</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a>);</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 <div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00022">Connection.hpp:22</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__check_for_timeout_8cpp_a357859374e2b4455a440f278ec9bd6c6_cgraph.svg" width="100%" height="401"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="test__check_for_timeout_8cpp_a357859374e2b4455a440f278ec9bd6c6_cgraph.svg" width="263" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -257,24 +252,24 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__check_for_timeout_8cpp_source.html#l00063">63</a> of file <a class="el" href="test__check_for_timeout_8cpp_source.html">test_checkForTimeout.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
-<div class="line"><span class="lineno">   65</span>    server.setClientTimeout(-1);</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    server.registerConnection(serverSock, dummyFd, dummySocket);</div>
-<div class="line"><span class="lineno">   68</span>    server.registerConnection(serverSock, dummyFd2, dummySocket);</div>
-<div class="line"><span class="lineno">   69</span>    server.registerConnection(serverSock, dummyFd3, dummySocket);</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(server);</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd2).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(server.getConnections().at(dummyFd3).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
-<div class="line"><span class="lineno">   76</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__check_for_timeout_8cpp_source.html#l00044">44</a> of file <a class="el" href="test__check_for_timeout_8cpp_source.html">test_checkForTimeout.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
+<div class="line"><span class="lineno">   46</span>    m_server.setClientTimeout(-1);</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>    m_server.registerConnection(serverSock, dummyFd, dummySocket);</div>
+<div class="line"><span class="lineno">   49</span>    m_server.registerConnection(serverSock, dummyFd2, dummySocket);</div>
+<div class="line"><span class="lineno">   50</span>    m_server.registerConnection(serverSock, dummyFd3, dummySocket);</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_function" href="_server_8hpp.html#a28fd29ec48bd9459c678980cfccca4cf">checkForTimeout</a>(m_server);</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   55</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd2).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getConnections().at(dummyFd3).m_status, <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a>);</div>
+<div class="line"><span class="lineno">   57</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__check_for_timeout_8cpp_a75c3c481939f99b90a0a41f3f2d0684b_cgraph.svg" width="100%" height="401"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="test__check_for_timeout_8cpp_a75c3c481939f99b90a0a41f3f2d0684b_cgraph.svg" width="263" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

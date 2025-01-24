@@ -7,6 +7,6 @@ var class_target_resource_handler_test =
     [ "m_configFile", "class_target_resource_handler_test.html#a3020521612521d9f58e30612c3202506", null ],
     [ "m_connection", "class_target_resource_handler_test.html#ae61a059cbea3c55f29a2d3897c804561", null ],
     [ "m_request", "class_target_resource_handler_test.html#a96544ce11d3a6c06853a3a15625b883f", null ],
-    [ "m_fileSystemPolicy", "class_target_resource_handler_test.html#a589e432825b378ed5c55b8dd66133b32", null ],
+    [ "m_fileSystemOps", "class_target_resource_handler_test.html#a6181bb18971b941b6588b9d76acb20ed", null ],
     [ "m_targetResourceHandler", "class_target_resource_handler_test.html#ab9ac5172d8d77bf735fdcbef1ad3ee5f", null ]
 ];

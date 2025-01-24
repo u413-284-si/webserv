@@ -2,11 +2,6 @@ var class_accept_connections_test =
 [
     [ "AcceptConnectionsTest", "class_accept_connections_test.html#a6449bd6955e18c2b4ea751f9ae535acc", null ],
     [ "~AcceptConnectionsTest", "class_accept_connections_test.html#ac37d87ca1350fc5f22d5e8f684a8e8e6", null ],
-    [ "configFile", "class_accept_connections_test.html#abf99d9179e810f6f3a2e285cfa75c63e", null ],
-    [ "epollWrapper", "class_accept_connections_test.html#ae8ebe36f45dbe83c385ebfa397074405", null ],
-    [ "socketPolicy", "class_accept_connections_test.html#ad67f24efe72eb73fddfc1a9468189547", null ],
-    [ "processOps", "class_accept_connections_test.html#a0e84e198e519bb66f8fda91350eb40ee", null ],
-    [ "server", "class_accept_connections_test.html#a506459ada721e5f514ddceafba4190b6", null ],
     [ "dummyServerFd", "class_accept_connections_test.html#a8c1e8faa91229327ecb0e0dd0dc6a153", null ],
     [ "serverSock", "class_accept_connections_test.html#a6f93edda966f6c4531e0bc08ba61f0ca", null ],
     [ "wildcardSock", "class_accept_connections_test.html#aab96aad568ad1be61502710ea22d4120", null ],

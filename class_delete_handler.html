@@ -118,9 +118,9 @@ $(document).ready(function(){initNavTree('class_delete_handler.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a94704734b720366a43b3a91f87aae194" id="r_a94704734b720366a43b3a91f87aae194"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler.html#a94704734b720366a43b3a91f87aae194">DeleteHandler</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>)</td></tr>
-<tr class="memdesc:a94704734b720366a43b3a91f87aae194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_delete_handler.html" title="Class to delete files and directories.">DeleteHandler</a> object.  <br /></td></tr>
-<tr class="separator:a94704734b720366a43b3a91f87aae194"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65ebf142a92c3baaa296c388696e3a66" id="r_a65ebf142a92c3baaa296c388696e3a66"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler.html#a65ebf142a92c3baaa296c388696e3a66">DeleteHandler</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>)</td></tr>
+<tr class="memdesc:a65ebf142a92c3baaa296c388696e3a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_delete_handler.html" title="Class to delete files and directories.">DeleteHandler</a> object.  <br /></td></tr>
+<tr class="separator:a65ebf142a92c3baaa296c388696e3a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af57c89c025cd0def3d16bad186a7f3e8" id="r_af57c89c025cd0def3d16bad186a7f3e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler.html#af57c89c025cd0def3d16bad186a7f3e8">execute</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;path, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &amp;httpStatus)</td></tr>
 <tr class="memdesc:af57c89c025cd0def3d16bad186a7f3e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the delete operation on the specified path.  <br /></td></tr>
 <tr class="separator:af57c89c025cd0def3d16bad186a7f3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,8 +130,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_delete_handler_8hpp_source.html#l00016">16</a> of file <a class="el" href="_delete_handler_8hpp_source.html">DeleteHandler.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a94704734b720366a43b3a91f87aae194" name="a94704734b720366a43b3a91f87aae194"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94704734b720366a43b3a91f87aae194">&#9670;&#160;</a></span>DeleteHandler()</h2>
+<a id="a65ebf142a92c3baaa296c388696e3a66" name="a65ebf142a92c3baaa296c388696e3a66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65ebf142a92c3baaa296c388696e3a66">&#9670;&#160;</a></span>DeleteHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,8 +142,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">DeleteHandler::DeleteHandler </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_policy.html">FileSystemPolicy</a> &amp;&#160;</td>
-          <td class="paramname"><em>fileSystemPolicy</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;&#160;</td>
+          <td class="paramname"><em>fileSystemOps</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -157,13 +157,13 @@ Public Member Functions</h2></td></tr>
 <p>Construct a new <a class="el" href="class_delete_handler.html" title="Class to delete files and directories.">DeleteHandler</a> object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fileSystemPolicy</td><td>File system policy object. Can be mocked if needed. </td></tr>
+    <tr><td class="paramname">fileSystemOps</td><td>File system policy object. Can be mocked if needed. </td></tr>
   </table>
   </dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_delete_handler_8cpp_source.html#l00008">8</a> of file <a class="el" href="_delete_handler_8cpp_source.html">DeleteHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span>    : m_fileSystemPolicy(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemPolicy</a>)</div>
+<div class="fragment"><div class="line"><span class="lineno">    9</span>    : m_fileSystemOps(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>)</div>
 <div class="line"><span class="lineno">   10</span>{</div>
 <div class="line"><span class="lineno">   11</span>}</div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
@@ -218,19 +218,19 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_delete_handler_8cpp_source.html#l00028">28</a> of file <a class="el" href="_delete_handler_8cpp_source.html">DeleteHandler.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   31</span>        <a class="code hl_enumeration" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765">FileSystemPolicy::fileType</a> fileType = m_fileSystemPolicy.<a class="code hl_function" href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71">checkFileType</a>(path);</div>
+<div class="line"><span class="lineno">   31</span>        <a class="code hl_enumeration" href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9">FileSystemOps::fileType</a> fileType = m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a9b274e332fa6b297241bdffe3ab9c618">checkFileType</a>(path);</div>
 <div class="line"><span class="lineno">   32</span> </div>
 <div class="line"><span class="lineno">   33</span>        <span class="keywordflow">switch</span> (fileType) {</div>
 <div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a>:</div>
-<div class="line"><span class="lineno">   36</span>            m_fileSystemPolicy.<a class="code hl_function" href="class_file_system_policy.html#a677c9e8ed681935c47a72a5bd8684208">deleteFile</a>(path);</div>
+<div class="line"><span class="lineno">   35</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9abf09a299634cf3760b44b087912923a0">FileSystemOps::FileRegular</a>:</div>
+<div class="line"><span class="lineno">   36</span>            m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a79a4fa2d16a3c2dcac74eca0a9f3e8b6">deleteFile</a>(path);</div>
 <div class="line"><span class="lineno">   37</span>            m_response &lt;&lt; <span class="stringliteral">&quot;{\n&quot;</span></div>
 <div class="line"><span class="lineno">   38</span>                       &lt;&lt; <span class="stringliteral">&quot;\&quot;message\&quot;: \&quot;File deleted successfully\&quot;,\n&quot;</span></div>
 <div class="line"><span class="lineno">   39</span>                       &lt;&lt; <span class="stringliteral">&quot;\&quot;file\&quot;: \&quot;&quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;\&quot;\n&quot;</span></div>
 <div class="line"><span class="lineno">   40</span>                       &lt;&lt; <span class="stringliteral">&quot;}\n&quot;</span>;</div>
 <div class="line"><span class="lineno">   41</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed">FileSystemPolicy::FileDirectory</a>:</div>
+<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9a61f9697412da9487eecd2185c049bdc5">FileSystemOps::FileDirectory</a>:</div>
 <div class="line"><span class="lineno">   44</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
 <div class="line"><span class="lineno">   45</span>            <span class="comment">// FIXME: reactivate after eval</span></div>
 <div class="line"><span class="lineno">   46</span>            <span class="comment">// deleteDirectory(path);</span></div>
@@ -240,15 +240,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   50</span>            <span class="comment">//         &lt;&lt; &quot;}\n&quot;;</span></div>
 <div class="line"><span class="lineno">   51</span>            <span class="comment">// break;</span></div>
 <div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a3baa8bde70bea32adc872ec5adf20296">FileSystemPolicy::FileNotFound</a>:</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9ac2da3ffcd8c1b4719a7e6b2e5727e8e2">FileSystemOps::FileNotFound</a>:</div>
 <div class="line"><span class="lineno">   54</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
 <div class="line"><span class="lineno">   55</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a>:</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9a7d7007fac3a8e58b8d0ea97cda46520d">FileSystemOps::FileOther</a>:</div>
 <div class="line"><span class="lineno">   58</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
 <div class="line"><span class="lineno">   59</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   60</span>        }</div>
-<div class="line"><span class="lineno">   61</span>    } <span class="keywordflow">catch</span> (<a class="code hl_struct" href="struct_file_system_policy_1_1_no_permission_exception.html">FileSystemPolicy::NoPermissionException</a>&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">   61</span>    } <span class="keywordflow">catch</span> (<a class="code hl_struct" href="struct_file_system_ops_1_1_no_permission_exception.html">FileSystemOps::NoPermissionException</a>&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
 <div class="line"><span class="lineno">   62</span>            <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what();</div>
 <div class="line"><span class="lineno">   63</span>            httpStatus = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
 <div class="line"><span class="lineno">   64</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
@@ -261,18 +261,18 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00013">StatusCode.hpp:13</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00019">StatusCode.hpp:19</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_a677c9e8ed681935c47a72a5bd8684208"><div class="ttname"><a href="class_file_system_policy.html#a677c9e8ed681935c47a72a5bd8684208">FileSystemPolicy::deleteFile</a></div><div class="ttdeci">virtual void deleteFile(const std::string &amp;path) const</div><div class="ttdoc">Deletes a file at the specified path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8cpp_source.html#l00243">FileSystemPolicy.cpp:243</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_a6fa9dbd0b2ea4656d86bbe4dc966bf71"><div class="ttname"><a href="class_file_system_policy.html#a6fa9dbd0b2ea4656d86bbe4dc966bf71">FileSystemPolicy::checkFileType</a></div><div class="ttdeci">virtual fileType checkFileType(const std::string &amp;path) const</div><div class="ttdoc">Check the file type of a given path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8cpp_source.html#l00048">FileSystemPolicy.cpp:48</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765">FileSystemPolicy::fileType</a></div><div class="ttdeci">fileType</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a0fe6dec4a353f4f58405623e466b2bed">FileSystemPolicy::FileDirectory</a></div><div class="ttdeci">@ FileDirectory</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a1816f4c43049bf30c9b9ca7be5f61903">FileSystemPolicy::FileRegular</a></div><div class="ttdeci">@ FileRegular</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a3baa8bde70bea32adc872ec5adf20296"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a3baa8bde70bea32adc872ec5adf20296">FileSystemPolicy::FileNotFound</a></div><div class="ttdeci">@ FileNotFound</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
-<div class="ttc" id="aclass_file_system_policy_html_ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797"><div class="ttname"><a href="class_file_system_policy.html#ac1afacb18cc767fb28a8feeb403a5765a550eac005a52930e389644580c112797">FileSystemPolicy::FileOther</a></div><div class="ttdeci">@ FileOther</div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00029">FileSystemPolicy.hpp:29</a></div></div>
-<div class="ttc" id="astruct_file_system_policy_1_1_no_permission_exception_html"><div class="ttname"><a href="struct_file_system_policy_1_1_no_permission_exception.html">FileSystemPolicy::NoPermissionException</a></div><div class="ttdef"><b>Definition</b> <a href="_file_system_policy_8hpp_source.html#l00035">FileSystemPolicy.hpp:35</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_a79a4fa2d16a3c2dcac74eca0a9f3e8b6"><div class="ttname"><a href="class_file_system_ops.html#a79a4fa2d16a3c2dcac74eca0a9f3e8b6">FileSystemOps::deleteFile</a></div><div class="ttdeci">virtual void deleteFile(const std::string &amp;path) const</div><div class="ttdoc">Deletes a file at the specified path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00243">FileSystemOps.cpp:243</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_a9b274e332fa6b297241bdffe3ab9c618"><div class="ttname"><a href="class_file_system_ops.html#a9b274e332fa6b297241bdffe3ab9c618">FileSystemOps::checkFileType</a></div><div class="ttdeci">virtual fileType checkFileType(const std::string &amp;path) const</div><div class="ttdoc">Check the file type of a given path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00048">FileSystemOps.cpp:48</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_ab6a07b8c3e2ef07b30141f1ea9bae0a9"><div class="ttname"><a href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9">FileSystemOps::fileType</a></div><div class="ttdeci">fileType</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00034">FileSystemOps.hpp:34</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_ab6a07b8c3e2ef07b30141f1ea9bae0a9a61f9697412da9487eecd2185c049bdc5"><div class="ttname"><a href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9a61f9697412da9487eecd2185c049bdc5">FileSystemOps::FileDirectory</a></div><div class="ttdeci">@ FileDirectory</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00034">FileSystemOps.hpp:34</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_ab6a07b8c3e2ef07b30141f1ea9bae0a9a7d7007fac3a8e58b8d0ea97cda46520d"><div class="ttname"><a href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9a7d7007fac3a8e58b8d0ea97cda46520d">FileSystemOps::FileOther</a></div><div class="ttdeci">@ FileOther</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00034">FileSystemOps.hpp:34</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_ab6a07b8c3e2ef07b30141f1ea9bae0a9abf09a299634cf3760b44b087912923a0"><div class="ttname"><a href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9abf09a299634cf3760b44b087912923a0">FileSystemOps::FileRegular</a></div><div class="ttdeci">@ FileRegular</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00034">FileSystemOps.hpp:34</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_ab6a07b8c3e2ef07b30141f1ea9bae0a9ac2da3ffcd8c1b4719a7e6b2e5727e8e2"><div class="ttname"><a href="class_file_system_ops.html#ab6a07b8c3e2ef07b30141f1ea9bae0a9ac2da3ffcd8c1b4719a7e6b2e5727e8e2">FileSystemOps::FileNotFound</a></div><div class="ttdeci">@ FileNotFound</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00034">FileSystemOps.hpp:34</a></div></div>
+<div class="ttc" id="astruct_file_system_ops_1_1_no_permission_exception_html"><div class="ttname"><a href="struct_file_system_ops_1_1_no_permission_exception.html">FileSystemOps::NoPermissionException</a></div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8hpp_source.html#l00040">FileSystemOps.hpp:40</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_delete_handler_af57c89c025cd0def3d16bad186a7f3e8_cgraph.svg" width="464" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_delete_handler_af57c89c025cd0def3d16bad186a7f3e8_cgraph.svg" width="452" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

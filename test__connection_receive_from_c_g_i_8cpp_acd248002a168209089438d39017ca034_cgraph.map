@@ -1,29 +1,9 @@
 <map id="TEST_F" name="TEST_F">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,75,129"/>
-<area shape="rect" id="Node000002" href="$_server_8cpp.html#a1a02f28f05641d9b3dd7f8207e57bd68" title="Handles receiving data from a CGI script and processes it accordingly." alt="" coords="123,104,324,129"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,114,109,114,109,119,75,119"/>
-<area shape="rect" id="Node000003" href="$class_server.html#ae02283a176e4c6ffc9ff0efaf00074cf" title="Wrapper function to EpollWrapper::addEvent." alt="" coords="423,5,556,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="244,102,300,71,371,39,408,29,409,34,373,45,303,75,247,106"/>
-<area shape="rect" id="Node000005" href="$class_server.html#aeef8f46cd90db32c308c95cd2e5b5c6e" title="Getter for internal buffer." alt="" coords="423,55,555,80"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="292,101,409,79,410,85,293,107"/>
-<area shape="rect" id="Node000006" href="$class_server.html#a8aa46a2d98652ee4c70ac7528f614422" title="Wrapper function to ProcessOps::readProcess." alt="" coords="414,104,565,129"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="324,114,400,114,400,119,324,119"/>
-<area shape="rect" id="Node000008" href="$class_server.html#ab4a0ae2ec5d126062a7c5d4a2f78160a" title="Removes a CGI file descriptor from the server." alt="" coords="372,153,607,179"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="293,127,407,148,406,153,292,132"/>
-<area shape="rect" id="Node000013" href="$signal_handler_8cpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="417,227,562,252"/>
-<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="251,127,373,188,445,219,443,224,371,192,248,132"/>
-<area shape="rect" id="Node000004" href="$class_epoll_wrapper.html#ace2a6009a6c647babfc667c27df05354" title="Add an event to the epoll instance." alt="" coords="663,5,842,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="556,15,650,15,650,21,556,21"/>
-<area shape="rect" id="Node000007" href="$class_process_ops.html#ac7393024f6806564358982953cc0df77" title="Reads data from a file descriptor into a buffer." alt="" coords="661,55,845,80"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="557,101,670,80,671,85,558,107"/>
-<area shape="rect" id="Node000009" href="$namespacewebutils.html#ad74875f464c74bd45589002fc385605e" title=" " alt="" coords="685,104,820,129"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="557,151,671,129,672,134,558,156"/>
-<area shape="rect" id="Node000010" href="$class_server.html#aad2be3b48155c6eb508bca4b1af3db97" title="Getter for cgiConnections." alt="" coords="655,153,851,179"/>
-<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="607,163,641,163,641,169,607,169"/>
-<area shape="rect" id="Node000011" href="$class_server.html#a3ea71b66d27b584d8c33eb5cb64813f1" title="Wrapper function to EpollWrapper::removeEvent." alt="" coords="673,203,832,228"/>
-<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="558,176,671,197,670,203,557,181"/>
-<area shape="rect" id="Node000012" href="$class_epoll_wrapper.html#a30d7cd3090f8d8d0f10c2d9edb136d59" title="Remove an event from the epoll instance." alt="" coords="899,203,1103,228"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="832,213,885,213,885,218,832,218"/>
-<area shape="rect" id="Node000014" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="685,252,821,277"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="562,244,671,254,671,260,562,249"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,75,31"/>
+<area shape="rect" id="Node000002" href="$_server_8cpp.html#a1a02f28f05641d9b3dd7f8207e57bd68" title="Handles receiving data from a CGI script and processes it accordingly." alt="" coords="123,5,324,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,15,109,15,109,21,75,21"/>
+<area shape="rect" id="Node000003" href="$signal_handler_8cpp.html#adc4193659d5893030190dca46c276ac7" title="Converts a signal number to its name." alt="" coords="372,5,517,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="324,15,358,15,358,21,324,21"/>
+<area shape="rect" id="Node000004" href="$namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb" title="Convert a type to a string." alt="" coords="565,5,701,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="517,15,551,15,551,21,517,21"/>
 </map>
