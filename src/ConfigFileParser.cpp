@@ -240,7 +240,6 @@ void ConfigFileParser::readServerBlock(void)
 	size_t startIndex = m_configFileIndex;
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
-		// if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex) && isValidBlockBeginn(LocationBlock)) {
 		if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex)) {
 			if (!isValidBlockBeginn(LocationBlock))
 				throw std::runtime_error(ERR_LOCATION_INVALID_BEGIN);
