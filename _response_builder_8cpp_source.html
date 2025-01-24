@@ -172,10 +172,10 @@ $(document).ready(function(){initNavTree('_response_builder_8cpp_source.html',''
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">if</span> (!checkForExistingHeader(<span class="stringliteral">&quot;content-type&quot;</span>))</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            m_responseHeaderStream &lt;&lt; <span class="stringliteral">&quot;Content-Type: &quot;</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                   &lt;&lt; getMIMEType(<a class="code hl_function" href="namespacewebutils.html#a900811a6a7865748dae9dbab442127cf">webutils::getFileExtension</a>(request.<a class="code hl_variable" href="struct_h_t_t_p_request.html#ac522679ff584409d63f47fbe40f2b5f3">targetResource</a>)) &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="comment">// Content-Length</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordflow">if</span> (!checkForExistingHeader(<span class="stringliteral">&quot;content-length&quot;</span>))</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            m_responseHeaderStream &lt;&lt; <span class="stringliteral">&quot;Content-Length: &quot;</span> &lt;&lt; m_responseBody.length() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// Content-Length</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">if</span> (!checkForExistingHeader(<span class="stringliteral">&quot;content-length&quot;</span>))</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        m_responseHeaderStream &lt;&lt; <span class="stringliteral">&quot;Content-Length: &quot;</span> &lt;&lt; m_responseBody.length() &lt;&lt; <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// Server</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">if</span> (!checkForExistingHeader(<span class="stringliteral">&quot;server&quot;</span>))</div>

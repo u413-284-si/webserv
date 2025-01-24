@@ -26,6 +26,7 @@ var namespaces_dup =
       [ "end", "namespaceupload.html#ac295a8d88b7d6cfcefb7008b801b6515", null ],
       [ "content", "namespaceupload.html#a4476f85dd28f7274019dbabfaa21ccfd", null ]
     ] ],
+    [ "utils", "namespaceutils.html", "namespaceutils" ],
     [ "weblog", "namespaceweblog.html", "namespaceweblog" ],
     [ "webutils", "namespacewebutils.html", [
       [ "trimLeadingWhitespaces", "namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9", null ],

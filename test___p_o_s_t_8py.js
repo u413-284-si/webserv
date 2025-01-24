@@ -1,11 +1,10 @@
 var test___p_o_s_t_8py =
 [
-    [ "test_POST_simple", "test___p_o_s_t_8py.html#ac0e6639994994b9733113dea26adffb7", null ],
-    [ "test_POST_append", "test___p_o_s_t_8py.html#a0f256c17d554c1b3641a9e6d2625c8a9", null ],
+    [ "test_POST_create_file", "test___p_o_s_t_8py.html#aac6e4fca1692e8f5e5e9dfafaabef320", null ],
+    [ "test_POST_append", "test___p_o_s_t_8py.html#a5cab4ddc4446342963330c3d4030e49e", null ],
     [ "generate_chunks", "test___p_o_s_t_8py.html#a3f87e188fb39546111887533e959eb77", null ],
-    [ "test_POST_chunked_encoding", "test___p_o_s_t_8py.html#ac95599d7baa686a3cab23fe2ed804be4", null ],
+    [ "test_POST_chunked_encoding", "test___p_o_s_t_8py.html#adf3c3891650b29d1893c0d01f288afb4", null ],
     [ "generate_chunks_with_zero_chunk", "test___p_o_s_t_8py.html#a6e14d366cb3aadb392e976837c851d70", null ],
-    [ "test_POST_chunked_encoding_with_zero_chunk", "test___p_o_s_t_8py.html#af63ad064e35f854577c85bed3ad13249", null ],
-    [ "test_POST_bigger_file", "test___p_o_s_t_8py.html#a47fba5ba821365cd53bf0ad7b2bdda41", null ],
-    [ "test_POST_file_too_big", "test___p_o_s_t_8py.html#a4e597b9b4533bb5b29c661437708aeb6", null ]
+    [ "test_POST_chunked_encoding_with_zero_chunk", "test___p_o_s_t_8py.html#ac6e446152b4eaf4627bb0d22ba0536eb", null ],
+    [ "test_POST_bigger_file", "test___p_o_s_t_8py.html#a00158e8a0712fac3bdf8561c56b75e0e", null ]
 ];

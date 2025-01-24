@@ -112,18 +112,20 @@ $(document).ready(function(){initNavTree('namespaceserver__management_1_1test__s
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a287cbb6861ec90e9b4cb42e9a23704ce" id="r_a287cbb6861ec90e9b4cb42e9a23704ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__management_1_1test__signal.html#a287cbb6861ec90e9b4cb42e9a23704ce">test_server_shutdown_behavior</a> (request)</td></tr>
-<tr class="separator:a287cbb6861ec90e9b4cb42e9a23704ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5db63c99982132823f3236fd2fdea89" id="r_aa5db63c99982132823f3236fd2fdea89"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__management_1_1test__signal.html#aa5db63c99982132823f3236fd2fdea89">test_signal_graceful_shutdown</a> (request)</td></tr>
+<tr class="separator:aa5db63c99982132823f3236fd2fdea89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af50a4f72549ee69eacc91637aca22e8c" id="r_af50a4f72549ee69eacc91637aca22e8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__management_1_1test__signal.html#af50a4f72549ee69eacc91637aca22e8c">test_signal_forced_shutdown</a> (request)</td></tr>
+<tr class="separator:af50a4f72549ee69eacc91637aca22e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a287cbb6861ec90e9b4cb42e9a23704ce" name="a287cbb6861ec90e9b4cb42e9a23704ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a287cbb6861ec90e9b4cb42e9a23704ce">&#9670;&#160;</a></span>test_server_shutdown_behavior()</h2>
+<a id="aa5db63c99982132823f3236fd2fdea89" name="aa5db63c99982132823f3236fd2fdea89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5db63c99982132823f3236fd2fdea89">&#9670;&#160;</a></span>test_signal_graceful_shutdown()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">server_management.test_signal.test_server_shutdown_behavior </td>
+          <td class="memname">server_management.test_signal.test_signal_graceful_shutdown </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -132,47 +134,79 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__signal_8py_source.html#l00009">9</a> of file <a class="el" href="test__signal_8py_source.html">test_signal.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span><span class="keyword">def </span>test_server_shutdown_behavior(request):</div>
-<div class="line"><span class="lineno">   10</span> </div>
-<div class="line"><span class="lineno">   11</span>    <span class="comment"># Check if the user passed the --with-coverage option</span></div>
-<div class="line"><span class="lineno">   12</span>    with_coverage = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--with-coverage&quot;</span>)</div>
-<div class="line"><span class="lineno">   13</span> </div>
-<div class="line"><span class="lineno">   14</span>    <span class="comment"># Path to the C++ server executable</span></div>
-<div class="line"><span class="lineno">   15</span>    kcov_output_dir = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>)</div>
-<div class="line"><span class="lineno">   16</span>    kcov_excl_path = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>)</div>
-<div class="line"><span class="lineno">   17</span>    cpp_server_executable = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--server-executable&quot;</span>)</div>
-<div class="line"><span class="lineno">   18</span>    config_file = config_file = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--config-file&quot;</span>)</div>
-<div class="line"><span class="lineno">   19</span> </div>
-<div class="line"><span class="lineno">   20</span>    <span class="keywordflow">if</span> with_coverage:</div>
-<div class="line"><span class="lineno">   21</span>        <span class="comment"># Create the kcov output directory if it doesn&#39;t exist</span></div>
-<div class="line"><span class="lineno">   22</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.makedirs</a>(kcov_output_dir, exist_ok=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   23</span>        server_process = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.Popen</a>(</div>
-<div class="line"><span class="lineno">   24</span>            [<span class="stringliteral">&quot;kcov&quot;</span>, kcov_excl_path, kcov_output_dir, cpp_server_executable, config_file]</div>
-<div class="line"><span class="lineno">   25</span>        )</div>
-<div class="line"><span class="lineno">   26</span>        print(<span class="stringliteral">&quot;Running server with coverage (kcov)...&quot;</span>)</div>
-<div class="line"><span class="lineno">   27</span>        delay_time = 10</div>
-<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   29</span>        server_process = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.Popen</a>(</div>
-<div class="line"><span class="lineno">   30</span>            [cpp_server_executable, config_file]</div>
-<div class="line"><span class="lineno">   31</span>        )</div>
-<div class="line"><span class="lineno">   32</span>        print(<span class="stringliteral">&quot;Running server...&quot;</span>)</div>
-<div class="line"><span class="lineno">   33</span>        delay_time = 3</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">time.sleep</a>(delay_time)</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> with_coverage:</div>
-<div class="line"><span class="lineno">   38</span>        pid = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.check_output</a>([<span class="stringliteral">&quot;pgrep&quot;</span>, <span class="stringliteral">&quot;webserv&quot;</span>]).decode().strip())</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   40</span>        pid = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.pid</a></div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    print(<span class="stringliteral">&quot;Testing server shutdown behavior...&quot;</span>)</div>
-<div class="line"><span class="lineno">   43</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.kill</a>(pid, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">signal.SIGQUIT</a>)</div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">time.sleep</a>(3)</div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.terminate</a>()</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.wait</a>()</div>
-<div class="line"><span class="lineno">   47</span>    print(<span class="stringliteral">&quot;Server stopped.&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="test__signal_8py_source.html#l00008">8</a> of file <a class="el" href="test__signal_8py_source.html">test_signal.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span><span class="keyword">def </span>test_signal_graceful_shutdown(request):</div>
+<div class="line"><span class="lineno">    9</span> </div>
+<div class="line"><span class="lineno">   10</span>    server_executable = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--server-executable&quot;</span>)</div>
+<div class="line"><span class="lineno">   11</span>    config_file = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--config-file&quot;</span>)</div>
+<div class="line"><span class="lineno">   12</span> </div>
+<div class="line"><span class="lineno">   13</span>    <span class="comment"># Check if the user passed the --with-coverage option</span></div>
+<div class="line"><span class="lineno">   14</span>    with_coverage = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--with-coverage&quot;</span>)</div>
+<div class="line"><span class="lineno">   15</span> </div>
+<div class="line"><span class="lineno">   16</span>    kcov_output_dir = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>)</div>
+<div class="line"><span class="lineno">   17</span>    kcov_excl_path = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>)</div>
+<div class="line"><span class="lineno">   18</span> </div>
+<div class="line"><span class="lineno">   19</span>    server_process = start_server(server_executable, config_file, with_coverage, kcov_output_dir, kcov_excl_path)</div>
+<div class="line"><span class="lineno">   20</span> </div>
+<div class="line"><span class="lineno">   21</span>    wait_for_startup(server_process)</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">if</span> with_coverage:</div>
+<div class="line"><span class="lineno">   24</span>        pid = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.check_output</a>([<span class="stringliteral">&quot;pgrep&quot;</span>, <span class="stringliteral">&quot;webserv&quot;</span>]).decode().strip())</div>
+<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   26</span>        pid = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.pid</a></div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>    print(<span class="stringliteral">&quot;Sending SIGQUIT for graceful shutdown&quot;</span>)</div>
+<div class="line"><span class="lineno">   29</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.kill</a>(pid, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">signal.SIGQUIT</a>)</div>
+<div class="line"><span class="lineno">   30</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.wait</a>()</div>
+<div class="line"><span class="lineno">   31</span>    exit_status = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.returncode</a></div>
+<div class="line"><span class="lineno">   32</span>    <span class="keyword">assert</span> exit_status == 0</div>
+<div class="line"><span class="lineno">   33</span> </div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af50a4f72549ee69eacc91637aca22e8c" name="af50a4f72549ee69eacc91637aca22e8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af50a4f72549ee69eacc91637aca22e8c">&#9670;&#160;</a></span>test_signal_forced_shutdown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_management.test_signal.test_signal_forced_shutdown </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__signal_8py_source.html#l00034">34</a> of file <a class="el" href="test__signal_8py_source.html">test_signal.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span><span class="keyword">def </span>test_signal_forced_shutdown(request):</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>    server_executable = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--server-executable&quot;</span>)</div>
+<div class="line"><span class="lineno">   37</span>    config_file = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--config-file&quot;</span>)</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>    <span class="comment"># Check if the user passed the --with-coverage option</span></div>
+<div class="line"><span class="lineno">   40</span>    with_coverage = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--with-coverage&quot;</span>)</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>    kcov_output_dir = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>)</div>
+<div class="line"><span class="lineno">   43</span>    kcov_excl_path = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">request.config.getoption</a>(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>)</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    server_process = start_server(server_executable, config_file, with_coverage, kcov_output_dir, kcov_excl_path)</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>    wait_for_startup(server_process)</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> with_coverage:</div>
+<div class="line"><span class="lineno">   50</span>        pid = int(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">subprocess.check_output</a>([<span class="stringliteral">&quot;pgrep&quot;</span>, <span class="stringliteral">&quot;webserv&quot;</span>]).decode().strip())</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   52</span>        pid = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.pid</a></div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>    print(<span class="stringliteral">&quot;Sending SIGINT...&quot;</span>)</div>
+<div class="line"><span class="lineno">   55</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">os.kill</a>(pid, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">signal.SIGINT</a>)</div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.wait</a>()</div>
+<div class="line"><span class="lineno">   57</span>    exit_status = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server_process.returncode</a></div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">assert</span> exit_status == 0</div>
 </div><!-- fragment -->
 </div>
 </div>
