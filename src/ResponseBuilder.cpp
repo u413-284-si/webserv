@@ -88,10 +88,10 @@ void ResponseBuilder::appendResponseHeader(const HTTPRequest& request)
 		if (!checkForExistingHeader("content-type"))
 			m_responseHeaderStream << "Content-Type: "
 								   << getMIMEType(webutils::getFileExtension(request.targetResource)) << "\r\n";
-		// Content-Length
-		if (!checkForExistingHeader("content-length"))
-			m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 	}
+	// Content-Length
+	if (!checkForExistingHeader("content-length"))
+		m_responseHeaderStream << "Content-Length: " << m_responseBody.length() << "\r\n";
 
 	// Server
 	if (!checkForExistingHeader("server"))

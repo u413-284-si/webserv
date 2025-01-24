@@ -1,4 +1,3 @@
-import pytest
 
 def pytest_addoption(parser):
     print("Registering custom pytest options")
