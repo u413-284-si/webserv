@@ -13,6 +13,8 @@ var test___config_file_parser_8cpp =
     [ "TEST_F", "test___config_file_parser_8cpp.html#aaf7b1ee42154b613fe8dfb747415685f", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a1b683668ce06a21b7eb4ee367eee7177", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a1cbbf395e2de11dfba24d6fbb4bd2c57", null ],
+    [ "TEST_F", "test___config_file_parser_8cpp.html#ac234cefea138f846a5f7e4126c0dc5c9", null ],
+    [ "TEST_F", "test___config_file_parser_8cpp.html#aebb78d5743bbfe6ae70006c626b30812", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a51c011b7d0b3935ce4d92b9586a993d3", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#a719a15c4346d3eed644cfa3dc28e8601", null ],
     [ "TEST_F", "test___config_file_parser_8cpp.html#aa2113375631a87f456bdefd2e52063f0", null ],
