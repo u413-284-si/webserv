@@ -70,7 +70,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps, con
 	if (pathInfo.empty())
 		m_env.push_back("PATH_TRANSLATED=");
 	else {
-		const std::string pathTranslated = mapPathInfoToTargetResource(pathInfo);
+		const std::string pathTranslated = mapPathInfoToFileSystem(pathInfo);
 		m_env.push_back("PATH_TRANSLATED=" + pathTranslated);
 	}
 	m_env.push_back("QUERY_STRING=" + connection.m_request.uri.query);
@@ -317,7 +317,14 @@ std::string CGIHandler::extractPreScriptPath(const std::string& path)
 	return preScriptPath;
 }
 
-std::string CGIHandler::mapPathInfoToTargetResource(const std::string& pathInfo) {
+/**
+ * @brief Maps the path info to the server file system based on the location configuration.
+ *
+ * @param pathInfo The path info value passed to the script.
+ * @return std::string The file system path corresponding to the path info.
+ */
+std::string CGIHandler::mapPathInfoToFileSystem(const std::string& pathInfo)
+{
 
 	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
 

@@ -10,9 +10,9 @@
 #include "ProcessOps.hpp"
 #include "Socket.hpp"
 #include "StatusCode.hpp"
+#include "TargetResourceHandler.hpp"
 #include "signalHandler.hpp"
 #include "utilities.hpp"
-#include "TargetResourceHandler.hpp"
 
 #include <cstddef>
 #include <cstdlib>
@@ -64,7 +64,7 @@ private:
 	std::string extractPathInfo(const std::string& path);
 	std::string extractScriptPath(const std::string& path);
 	std::string extractPreScriptPath(const std::string& path);
-	std::string mapPathInfoToTargetResource(const std::string& path);
+	std::string mapPathInfoToFileSystem(const std::string& path);
 	void closePipes();
 	void closeAllFds(int epollFd, std::map<int, Connection> connections, std::map<int, Connection*> cgiConnections);
 };
