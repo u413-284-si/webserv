@@ -11,7 +11,8 @@
  * @param server Server socket associated with connection
  * @param client Client socket associated with connection
  */
-Connection::Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs)
+Connection::Connection(
+	const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs)
 	: m_serverSocket(server)
 	, m_clientSocket(client)
 	, m_clientFd(clientFd)
@@ -41,24 +42,45 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
  */
 Connection::~Connection()
 {
-    if (m_cgiPid != -1)
-        kill(m_cgiPid, SIGKILL);
-    
-    if (m_pipeToCGIWriteEnd != -1)
+	if (m_cgiPid != -1)
+		kill(m_cgiPid, SIGKILL);
+
+	if (m_pipeToCGIWriteEnd != -1)
 		webutils::closeFd(m_pipeToCGIWriteEnd);
 
 	if (m_pipeFromCGIReadEnd != -1)
 		webutils::closeFd(m_pipeFromCGIReadEnd);
 
-    close(m_clientFd);
+	close(m_clientFd);
+}
+
+/**
+ * @brief Construct a new Connection:: Connection object
+ *
+ * @param connection The Connection object to copy.
+ */
+Connection::Connection(const Connection& connection)
+	: m_serverSocket(connection.m_serverSocket)
+	, m_clientSocket(connection.m_clientSocket)
+	, m_clientFd(connection.m_clientFd)
+	, m_timeSinceLastEvent(connection.m_timeSinceLastEvent)
+	, m_status(connection.m_status)
+	, m_buffer(connection.m_buffer)
+	, m_request(connection.m_request)
+	, serverConfig(connection.serverConfig)
+	, location(connection.location)
+	, m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
+	, m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
+	, m_cgiPid(connection.m_cgiPid)
+{
 }
 
 /**
  * @brief Clears the state of a given Connection object and resets its attributes.
  *
- * This function resets the status, request, buffer, and other attributes of the 
- * provided Connection object. It also closes any open file descriptors associated 
- * with CGI communication and resets the CGI process ID. Finally, it updates the 
+ * This function resets the status, request, buffer, and other attributes of the
+ * provided Connection object. It also closes any open file descriptors associated
+ * with CGI communication and resets the CGI process ID. Finally, it updates the
  * time since the last event and checks if the connection has a valid server configuration.
  *
  * @param connection The Connection object to be cleared and reset.

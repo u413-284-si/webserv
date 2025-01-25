@@ -20,6 +20,7 @@ public:
 	Connection(
 		const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs);
 	~Connection();
+	Connection(const Connection& connection);
 
 	enum ConnectionStatus {
 		Idle, /**< Connection is connected, but no action is taken yet */
@@ -47,7 +48,6 @@ public:
 	pid_t m_cgiPid; /**< Process ID of the CGI process */
 
 private:
-	Connection(const Connection& connection);
 	Connection& operator=(const Connection& connection);
 };
 
