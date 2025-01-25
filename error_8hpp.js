@@ -6,6 +6,7 @@ var error_8hpp =
     [ "ERR_MISSING_HTTP_BLOCK", "error_8hpp.html#a24545da7613edad171a8276bc683c9a3", null ],
     [ "ERR_INVALID_DIRECTIVE", "error_8hpp.html#ad40e6e68c0f296cf2c23afe42540667e", null ],
     [ "ERR_MISSING_SERVER_BLOCK", "error_8hpp.html#a0fe654dd5b2737010b36368ea0930e4f", null ],
+    [ "ERR_LOCATION_INVALID_BEGIN", "error_8hpp.html#ae90178c8a462204625d5d28e18764ef2", null ],
     [ "ERR_DUPLICATE_LOCATION", "error_8hpp.html#a24c9252d01896ac18e27a2525ccfe6ee", null ],
     [ "ERR_SEMICOLON_MISSING", "error_8hpp.html#ad41064767ead4df834a6340316e0badb", null ],
     [ "ERR_ROOT_AND_ALIAS_DEFINED", "error_8hpp.html#a1cbe6189d466be3b7a6f8a56eab0e583", null ],
