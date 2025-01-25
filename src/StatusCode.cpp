@@ -49,6 +49,16 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 }
 
 /**
+ * @brief Check if a given status code is an error status code.
+ *
+ * An error status code is a 3xx, 4xx or 5xx status code.
+ * @param statusCode Status code to check.
+ * @return true If the status code is an error status code.
+ * @return false If the status code is not an error status code.
+ */
+bool isErrorStatus(statusCode statusCode) { return (statusCode >= StatusMovedPermanently); }
+
+/**
  * @brief Check if a given status code is a redirection.
  *
  * A redirection is a 3xx status code.
