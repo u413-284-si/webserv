@@ -222,6 +222,7 @@ LOG_FILE = $(LOG_DIR)/$(shell date "+%Y-%m-%d-%H-%M-%S")
 LOG_VALGRIND = $(LOG_FILE)_valgrind.log
 LOG_PERF = $(LOG_FILE)_perf.data
 LOG_SIEGE = $(LOG_DIR)/siege.log
+LOG_WEBSERV = $(LOG_FILE)_webserv.log
 
 # ******************************
 # *     Special Vars           *
@@ -283,7 +284,7 @@ SIEGE_TIME=1m
 .PHONY: test3
 test3: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run load test with siege$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)./webserv $(CONFIG_DIR)/standard_config.conf >/dev/null 2>&1 & echo $$! > webserv.pid
+	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)siege \
 		--rc=$(SIEGE_CONFIG) \
