@@ -229,8 +229,7 @@ LOG_WEBSERV = /dev/null
 # *     Special Vars           *
 # ******************************
 
-CONFIGFILE = $(CONFIG_DIR)/valid_config.conf
-CONFIGFILE_INTEGRATION = $(CONFIG_DIR)/integration_test_config.conf
+CONFIGFILE = $(CONFIG_DIR)/example.conf
 KCOV_EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 
 # ******************************
@@ -273,7 +272,7 @@ test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)pytest \
 	--server-executable=./$(NAME) \
-	--config-file=./$(CONFIGFILE_INTEGRATION) \
+	--config-file=./$(CONFIGFILE) \
 	./$(INTEGRATION_TEST_DIR)
 
 SIEGE_CONFIG=$(SIEGE_DIR)/siege.conf
@@ -309,12 +308,6 @@ test4: $(NAME) | $(LOG_DIR)
 		--benchmark \
 		$(SIEGE_URL)
 	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
-
-# This target uses CONFIGFILE as argument to run the program.
-.PHONY: run
-run: $(NAME)
-	@printf "$(YELLOW)$(BOLD)Run with standard_config.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
-	./$(NAME) $(CONFIGFILE)
 
 # This target uses perf for profiling.
 .PHONY: profile
@@ -368,7 +361,7 @@ coverage2: $(NAME) | $(KCOV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)pytest \
 	--server-executable=./$(NAME) \
-	--config-file=./$(CONFIGFILE_INTEGRATION) \
+	--config-file=./$(CONFIGFILE) \
 	--with-coverage \
 	--kcov-output-dir=$(KCOV_DIR) \
 	--kcov-excl-path=$(KCOV_EXCL_PATH) \
