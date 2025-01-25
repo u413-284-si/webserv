@@ -1383,6 +1383,7 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
+		connection.m_cgiPid = -1;
 		// Check if the child exited normally with exit() or returning from main()
 		if (WIFEXITED(status)) { // NOLINT: misinterpretation by HIC++ standard
 			int exitCode = WEXITSTATUS(status); // NOLINT: misinterpretation by HIC++ standard
@@ -1399,7 +1400,6 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 			return;
 		}
 	}
-	connection.m_cgiPid = -1;
 	connection.m_request.body.append(buffer.begin(), buffer.begin() + bytesRead);
 }
 
