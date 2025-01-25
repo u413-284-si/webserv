@@ -10,8 +10,9 @@ var namespaceserver__response =
       [ "test_CGI_helloWorld", "namespaceserver__response_1_1test___c_g_i.html#af757353c2eb08068bf5916e7cd60ea6e", null ],
       [ "test_CGI_badBoi", "namespaceserver__response_1_1test___c_g_i.html#af698a9c3bcb40354c6d4bacfa15eb39a", null ],
       [ "test_CGI_time", "namespaceserver__response_1_1test___c_g_i.html#ad9c13e2ca08cd15a5b5e181c5cc5867e", null ],
-      [ "test_CGI_upload_file", "namespaceserver__response_1_1test___c_g_i.html#af8b84fa87f2c432dde02af0a848ca4b9", null ],
-      [ "test_CGI_toUpper", "namespaceserver__response_1_1test___c_g_i.html#af00d49c7f93c10dd77efcdae4eba8f93", null ]
+      [ "test_CGI_create_textfile", "namespaceserver__response_1_1test___c_g_i.html#a41c79f5cd31c34b2134463bec93fe03b", null ],
+      [ "test_CGI_upperCase_GET", "namespaceserver__response_1_1test___c_g_i.html#a04d1430b6a29101c2c0e50074c131c61", null ],
+      [ "test_CGI_upperCase_POST", "namespaceserver__response_1_1test___c_g_i.html#a5f82b03e7cfc4531f7ff0813f3466089", null ]
     ] ],
     [ "test_error3xx", "namespaceserver__response_1_1test__error3xx.html", [
       [ "test_3xx_directory_redirect", "namespaceserver__response_1_1test__error3xx.html#a9a749762eab7700fe62af92429608663", null ],

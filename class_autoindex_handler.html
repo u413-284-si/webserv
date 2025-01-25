@@ -121,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a401a00f1e6e8267143f80668b9551794" id="r_a401a00f1e6e8267143f80668b9551794"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_autoindex_handler.html#a401a00f1e6e8267143f80668b9551794">AutoindexHandler</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>)</td></tr>
 <tr class="memdesc:a401a00f1e6e8267143f80668b9551794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_autoindex_handler.html" title="Class to handle the autoindex feature.">AutoindexHandler</a> object.  <br /></td></tr>
 <tr class="separator:a401a00f1e6e8267143f80668b9551794"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad00ccbce16e8913e108e9bf1114c3f" id="r_a4ad00ccbce16e8913e108e9bf1114c3f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_autoindex_handler.html#a4ad00ccbce16e8913e108e9bf1114c3f">execute</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;path)</td></tr>
-<tr class="memdesc:a4ad00ccbce16e8913e108e9bf1114c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute the autoindex handler.  <br /></td></tr>
-<tr class="separator:a4ad00ccbce16e8913e108e9bf1114c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a055483a5748dacf18981d64002d558c2" id="r_a055483a5748dacf18981d64002d558c2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_autoindex_handler.html#a055483a5748dacf18981d64002d558c2">execute</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;path, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">uriPath</a>)</td></tr>
+<tr class="memdesc:a055483a5748dacf18981d64002d558c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute the autoindex handler.  <br /></td></tr>
+<tr class="separator:a055483a5748dacf18981d64002d558c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to handle the autoindex feature. </p>
@@ -171,8 +171,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4ad00ccbce16e8913e108e9bf1114c3f" name="a4ad00ccbce16e8913e108e9bf1114c3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ad00ccbce16e8913e108e9bf1114c3f">&#9670;&#160;</a></span>execute()</h2>
+<a id="a055483a5748dacf18981d64002d558c2" name="a055483a5748dacf18981d64002d558c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a055483a5748dacf18981d64002d558c2">&#9670;&#160;</a></span>execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,69 +181,80 @@ Public Member Functions</h2></td></tr>
           <td class="memname">std::string AutoindexHandler::execute </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;&#160;</td>
+          <td class="paramname"><em>uriPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Execute the autoindex handler. </p>
-<p>Generates an HTML response with the contents of a directory. The response contains a table with the file names, last modified time and file size. The file names are links to the files. If a function throws, returns empty string. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Generates an HTML response with the contents of a directory. The response contains a table with the file names, last modified time and file size. The file names are relative links to the files constructed with the uriPath parameter. If a function throws, returns empty string. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td>Path to directory. </td></tr>
+    <tr><td class="paramname">uriPath</td><td><a class="el" href="struct_u_r_i.html">URI</a> path which lead to the directory. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string HTML response. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_autoindex_handler_8cpp_source.html#l00023">23</a> of file <a class="el" href="_autoindex_handler_8cpp_source.html">AutoindexHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   26</span>        m_response</div>
-<div class="line"><span class="lineno">   27</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;!DOCTYPE html&gt;\n&lt;html lang=\&quot;en\&quot;&gt;\n&lt;head&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   28</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;meta charset=\&quot;UTF-8\&quot;&gt;\n&lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1.0\&quot;&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   29</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;title&gt;Autoindex&lt;/title&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   30</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;style&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   31</span>            &lt;&lt; <span class="stringliteral">&quot;table { width: 100%; border-collapse: collapse; }\n&quot;</span></div>
-<div class="line"><span class="lineno">   32</span>            &lt;&lt; <span class="stringliteral">&quot;table, th, td { border: 1px solid black; }\n&quot;</span></div>
-<div class="line"><span class="lineno">   33</span>            &lt;&lt; <span class="stringliteral">&quot;th, td { padding: 10px; text-align: left; }\n&quot;</span></div>
-<div class="line"><span class="lineno">   34</span>            &lt;&lt; <span class="stringliteral">&quot;th { background-color: #f2f2f2; }\n&quot;</span></div>
-<div class="line"><span class="lineno">   35</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;/style&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   36</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;h1&gt;Index of &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;&lt;/h1&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   37</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;table&gt;\n&quot;</span></div>
-<div class="line"><span class="lineno">   38</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;tr&gt;&lt;th&gt;File Name&lt;/th&gt;&lt;th&gt;Last Modified&lt;/th&gt;&lt;th&gt;Size (Bytes)&lt;/th&gt;&lt;/tr&gt;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>        <a class="code hl_class" href="class_directory.html">Directory</a> <a class="code hl_variable" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a>(m_fileSystemOps, path);</div>
-<div class="line"><span class="lineno">   41</span>        std::vector&lt;std::string&gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a> = <a class="code hl_variable" href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">directory</a>.getEntries();</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">for</span> (std::vector&lt;std::string&gt;::iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>.begin(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> != <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>.end(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a>) {</div>
-<div class="line"><span class="lineno">   44</span>            <span class="keywordflow">if</span> (*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> == <span class="stringliteral">&quot;.&quot;</span> || *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> == <span class="stringliteral">&quot;..&quot;</span>)</div>
-<div class="line"><span class="lineno">   45</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   46</span>            <span class="keyword">struct </span>stat <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a> = m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a8f2e395d98b54b1bbf49bb306088281b">getFileStat</a>(path + *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a>);</div>
-<div class="line"><span class="lineno">   47</span>            <span class="comment">// NOLINTNEXTLINE: misinterpretation by HIC++ standard</span></div>
-<div class="line"><span class="lineno">   48</span>            <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">S_ISDIR</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a>.st_mode))</div>
-<div class="line"><span class="lineno">   49</span>                *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><span class="lineno">   50</span>            m_response &lt;&lt; <span class="stringliteral">&quot;&lt;tr&gt;&lt;td&gt;&lt;a href=\&quot;&quot;</span> &lt;&lt; *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> &lt;&lt; <span class="stringliteral">&quot;\&quot;&gt;&quot;</span> &lt;&lt; *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> &lt;&lt; <span class="stringliteral">&quot;&lt;/a&gt;&lt;/td&gt;&quot;</span></div>
-<div class="line"><span class="lineno">   51</span>                       &lt;&lt; <span class="stringliteral">&quot;&lt;td&gt;&quot;</span> &lt;&lt; m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a4b703a8f4cfb55b1dc6e73482b53b6be">getLastModifiedTime</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a>) &lt;&lt; <span class="stringliteral">&quot;&lt;/td&gt;&quot;</span></div>
-<div class="line"><span class="lineno">   52</span>                       &lt;&lt; <span class="stringliteral">&quot;&lt;td&gt;&quot;</span> &lt;&lt; m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a12bceeffe08a11a8a4f2bee84858b6a4">getFileSize</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a>) &lt;&lt; <span class="stringliteral">&quot;&lt;/td&gt;&lt;/tr&gt;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   53</span>        }</div>
-<div class="line"><span class="lineno">   54</span>        m_response &lt;&lt; <span class="stringliteral">&quot;&lt;/table&gt;\n&lt;/body&gt;\n&lt;/html&gt;&quot;</span>;</div>
-<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> m_response.str();</div>
-<div class="line"><span class="lineno">   56</span>    } <span class="keywordflow">catch</span> (std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">   57</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what();</div>
-<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">   59</span>    }</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_autoindex_handler_8cpp_source.html#l00024">24</a> of file <a class="el" href="_autoindex_handler_8cpp_source.html">AutoindexHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   27</span>        m_response</div>
+<div class="line"><span class="lineno">   28</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;!DOCTYPE html&gt;\n&lt;html lang=\&quot;en\&quot;&gt;\n&lt;head&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   29</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;meta charset=\&quot;UTF-8\&quot;&gt;\n&lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1.0\&quot;&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   30</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;title&gt;Autoindex&lt;/title&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   31</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;style&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   32</span>            &lt;&lt; <span class="stringliteral">&quot;table { width: 100%; border-collapse: collapse; }\n&quot;</span></div>
+<div class="line"><span class="lineno">   33</span>            &lt;&lt; <span class="stringliteral">&quot;table, th, td { border: 1px solid black; }\n&quot;</span></div>
+<div class="line"><span class="lineno">   34</span>            &lt;&lt; <span class="stringliteral">&quot;th, td { padding: 10px; text-align: left; }\n&quot;</span></div>
+<div class="line"><span class="lineno">   35</span>            &lt;&lt; <span class="stringliteral">&quot;th { background-color: #f2f2f2; }\n&quot;</span></div>
+<div class="line"><span class="lineno">   36</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;/style&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   37</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;h1&gt;Index of &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;&lt;/h1&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;table&gt;\n&quot;</span></div>
+<div class="line"><span class="lineno">   39</span>            &lt;&lt; <span class="stringliteral">&quot;&lt;tr&gt;&lt;th&gt;File Name&lt;/th&gt;&lt;th&gt;Last Modified&lt;/th&gt;&lt;th&gt;Size (Bytes)&lt;/th&gt;&lt;/tr&gt;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>        <a class="code hl_class" href="class_directory.html">Directory</a> <a class="code hl_variable" href="namespacecreate__textfile.html#a682f32fa1fe6122520c76ca63a089ae0">directory</a>(m_fileSystemOps, path);</div>
+<div class="line"><span class="lineno">   42</span>        std::vector&lt;std::string&gt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a> = <a class="code hl_variable" href="namespacecreate__textfile.html#a682f32fa1fe6122520c76ca63a089ae0">directory</a>.getEntries();</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">for</span> (std::vector&lt;std::string&gt;::iterator <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>.begin(); <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> != <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>.end(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a>) {</div>
+<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">if</span> (*<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> == <span class="stringliteral">&quot;.&quot;</span> || *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> == <span class="stringliteral">&quot;..&quot;</span>)</div>
+<div class="line"><span class="lineno">   46</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   47</span>            <span class="keyword">struct </span>stat <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a> = m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a8f2e395d98b54b1bbf49bb306088281b">getFileStat</a>(path + *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a>);</div>
+<div class="line"><span class="lineno">   48</span>            <span class="comment">// NOLINTNEXTLINE: misinterpretation by HIC++ standard</span></div>
+<div class="line"><span class="lineno">   49</span>            <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">S_ISDIR</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a>.st_mode))</div>
+<div class="line"><span class="lineno">   50</span>                *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><span class="lineno">   51</span>            m_response &lt;&lt; <span class="stringliteral">&quot;&lt;tr&gt;&lt;td&gt;&lt;a href=\&quot;&quot;</span> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">uriPath</a> &lt;&lt; *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> &lt;&lt; <span class="stringliteral">&quot;\&quot;&gt;&quot;</span> &lt;&lt; *<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">iter</a> &lt;&lt; <span class="stringliteral">&quot;&lt;/a&gt;&lt;/td&gt;&quot;</span></div>
+<div class="line"><span class="lineno">   52</span>                       &lt;&lt; <span class="stringliteral">&quot;&lt;td&gt;&quot;</span> &lt;&lt; m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a4b703a8f4cfb55b1dc6e73482b53b6be">getLastModifiedTime</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a>) &lt;&lt; <span class="stringliteral">&quot;&lt;/td&gt;&quot;</span></div>
+<div class="line"><span class="lineno">   53</span>                       &lt;&lt; <span class="stringliteral">&quot;&lt;td&gt;&quot;</span> &lt;&lt; m_fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a12bceeffe08a11a8a4f2bee84858b6a4">getFileSize</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileStat</a>) &lt;&lt; <span class="stringliteral">&quot;&lt;/td&gt;&lt;/tr&gt;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   54</span>        }</div>
+<div class="line"><span class="lineno">   55</span>        m_response &lt;&lt; <span class="stringliteral">&quot;&lt;/table&gt;\n&lt;/body&gt;\n&lt;/html&gt;&quot;</span>;</div>
+<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">return</span> m_response.str();</div>
+<div class="line"><span class="lineno">   57</span>    } <span class="keywordflow">catch</span> (std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">   58</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what();</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">   60</span>    }</div>
+<div class="line"><span class="lineno">   61</span>}</div>
 <div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00018">Log.hpp:18</a></div></div>
 <div class="ttc" id="aclass_directory_html"><div class="ttname"><a href="class_directory.html">Directory</a></div><div class="ttdoc">Wrapper class for DIR pointer.</div><div class="ttdef"><b>Definition</b> <a href="_directory_8hpp_source.html#l00014">Directory.hpp:14</a></div></div>
 <div class="ttc" id="aclass_file_system_ops_html_a12bceeffe08a11a8a4f2bee84858b6a4"><div class="ttname"><a href="class_file_system_ops.html#a12bceeffe08a11a8a4f2bee84858b6a4">FileSystemOps::getFileSize</a></div><div class="ttdeci">virtual long getFileSize(const struct stat &amp;fileStat) const</div><div class="ttdoc">Get the file size of a file.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00224">FileSystemOps.cpp:224</a></div></div>
 <div class="ttc" id="aclass_file_system_ops_html_a4b703a8f4cfb55b1dc6e73482b53b6be"><div class="ttname"><a href="class_file_system_ops.html#a4b703a8f4cfb55b1dc6e73482b53b6be">FileSystemOps::getLastModifiedTime</a></div><div class="ttdeci">virtual std::string getLastModifiedTime(const struct stat &amp;fileStat) const</div><div class="ttdoc">Get the last modified time of a file.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00213">FileSystemOps.cpp:213</a></div></div>
 <div class="ttc" id="aclass_file_system_ops_html_a8f2e395d98b54b1bbf49bb306088281b"><div class="ttname"><a href="class_file_system_ops.html#a8f2e395d98b54b1bbf49bb306088281b">FileSystemOps::getFileStat</a></div><div class="ttdeci">virtual struct stat getFileStat(const std::string &amp;path) const</div><div class="ttdoc">Gets the file status of a path.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00170">FileSystemOps.cpp:170</a></div></div>
-<div class="ttc" id="anamespaceupload_html_a508b0fd4d51a7f75362b622faf22144b"><div class="ttname"><a href="namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b">upload.directory</a></div><div class="ttdeci">directory</div><div class="ttdef"><b>Definition</b> <a href="upload_8py_source.html#l00027">upload.py:27</a></div></div>
+<div class="ttc" id="anamespacecreate__textfile_html_a682f32fa1fe6122520c76ca63a089ae0"><div class="ttname"><a href="namespacecreate__textfile.html#a682f32fa1fe6122520c76ca63a089ae0">create_textfile.directory</a></div><div class="ttdeci">directory</div><div class="ttdef"><b>Definition</b> <a href="create__textfile_8py_source.html#l00036">create_textfile.py:36</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_autoindex_handler_a4ad00ccbce16e8913e108e9bf1114c3f_cgraph.svg" width="100%" height="401"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_autoindex_handler_a055483a5748dacf18981d64002d558c2_cgraph.svg" width="100%" height="401"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

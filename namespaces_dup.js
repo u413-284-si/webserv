@@ -9,22 +9,25 @@ var namespaces_dup =
       [ "g_oneMegabyte", "namespaceconstants.html#a28e660e8f884ab2d1dbdd35500a04688", null ],
       [ "g_oneGigabyte", "namespaceconstants.html#af474a8ea95a75173b9565b3e6f993a29", null ]
     ] ],
+    [ "create_textfile", "namespacecreate__textfile.html", [
+      [ "base_save_dir", "namespacecreate__textfile.html#abf987ad25241b6853f2c29573492a00b", null ],
+      [ "exist_ok", "namespacecreate__textfile.html#a606aa0e01bc999342f0b712f62d47069", null ],
+      [ "allowed_sub_directories", "namespacecreate__textfile.html#ad7b4eac4c49dc0b701ce1b6c601f8dff", null ],
+      [ "end", "namespacecreate__textfile.html#a425b4373e3b7a43d7d5b9f4b79e37fa2", null ],
+      [ "content_length", "namespacecreate__textfile.html#af9ad914ff7ba550fc5b544c62b9b32a5", null ],
+      [ "form_data", "namespacecreate__textfile.html#a4ee9ab3f87f92ace295908acdc1d0cb1", null ],
+      [ "form", "namespacecreate__textfile.html#a7014e95e1e9395bbcfcee277cee5888a", null ],
+      [ "filename", "namespacecreate__textfile.html#aa2e688208d639fe83cb549e4c9f9993b", null ],
+      [ "content", "namespacecreate__textfile.html#a9546156b2c1a6c548562fbaa23b6176e", null ],
+      [ "directory", "namespacecreate__textfile.html#a682f32fa1fe6122520c76ca63a089ae0", null ],
+      [ "directory_path", "namespacecreate__textfile.html#a0f33091a047d7cb4c789ebf79a0d3997", null ],
+      [ "file_path", "namespacecreate__textfile.html#a98149725962f09c36e40bb52cd3c862b", null ],
+      [ "encoding", "namespacecreate__textfile.html#add5ce0b4a803f38d48787e21764c8c1f", null ]
+    ] ],
     [ "server_management", "namespaceserver__management.html", "namespaceserver__management" ],
     [ "server_response", "namespaceserver__response.html", "namespaceserver__response" ],
     [ "time", "namespacetime.html", [
       [ "end", "namespacetime.html#aa5b145bd3fac555c5ea6e7700f52a659", null ]
-    ] ],
-    [ "upload", "namespaceupload.html", [
-      [ "base_save_dir", "namespaceupload.html#a81483952264a86e6431c405ada379927", null ],
-      [ "allowed_directories", "namespaceupload.html#a69ad7995ef342488e21c8c94ecfb3dd3", null ],
-      [ "query_string", "namespaceupload.html#a63451f6376b59a2f2cedef7434e0f6eb", null ],
-      [ "params", "namespaceupload.html#a8afdc6cee872de43fc993bd87805b0e0", null ],
-      [ "filename", "namespaceupload.html#a32cc26e7a940127a548dad0f72348d23", null ],
-      [ "directory", "namespaceupload.html#a508b0fd4d51a7f75362b622faf22144b", null ],
-      [ "directory_path", "namespaceupload.html#ab023286c7d09c4e02c98a5bc064281a2", null ],
-      [ "file_path", "namespaceupload.html#aa7601e1e0ab843814722e4612e78213b", null ],
-      [ "end", "namespaceupload.html#ac295a8d88b7d6cfcefb7008b801b6515", null ],
-      [ "content", "namespaceupload.html#a4476f85dd28f7274019dbabfaa21ccfd", null ]
     ] ],
     [ "utils", "namespaceutils.html", "namespaceutils" ],
     [ "weblog", "namespaceweblog.html", "namespaceweblog" ],
