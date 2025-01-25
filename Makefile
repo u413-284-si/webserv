@@ -225,8 +225,7 @@ LOG_PERF = $(LOG_FILE)_perf.data
 # *     Special Vars           *
 # ******************************
 
-CONFIGFILE = $(CONFIG_DIR)/trihard.conf
-CONFIGFILE_INTEGRATION = $(CONFIG_DIR)/example.conf
+CONFIGFILE = $(CONFIG_DIR)/example.conf
 KCOV_EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 
 # ******************************
@@ -269,7 +268,7 @@ test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)pytest \
 	--server-executable=./$(NAME) \
-	--config-file=./$(CONFIGFILE_INTEGRATION) \
+	--config-file=./$(CONFIGFILE) \
 	./$(INTEGRATION_TEST_DIR)
 
 # This target uses perf for profiling.
@@ -324,7 +323,7 @@ coverage2: $(NAME) | $(KCOV_DIR)
 	@printf "$(YELLOW)$(BOLD)Creating coverage report from integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)pytest \
 	--server-executable=./$(NAME) \
-	--config-file=./$(CONFIGFILE_INTEGRATION) \
+	--config-file=./$(CONFIGFILE) \
 	--with-coverage \
 	--kcov-output-dir=$(KCOV_DIR) \
 	--kcov-excl-path=$(KCOV_EXCL_PATH) \
