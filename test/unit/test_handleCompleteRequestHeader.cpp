@@ -13,7 +13,7 @@ protected:
 		ON_CALL(m_epollWrapper, modifyEvent).WillByDefault(Return(true));
 
 		m_server.registerConnection(m_serverSock, m_dummyFd, Socket());
-		m_connection = m_server.getConnections().at(m_dummyFd);
+		m_connection = &m_server.getConnections().at(m_dummyFd);
 
 		Location location;
 		location.path = "/redirect";
@@ -27,15 +27,14 @@ protected:
 		location2.allowMethods[MethodPost] = true;
 		m_configFile.servers[0].locations.emplace_back(location2);
 
-		m_connection.m_status = Connection::ReceiveHeader;
+		m_connection->m_status = Connection::ReceiveHeader;
 	}
 	~HandleCompleteRequestHeaderTest() override { }
 
 	const int m_dummyFd = 10;
 	Socket m_serverSock = { .host = "127.0.0.1", .port = "8080" };
 
-	Connection temp = Connection(m_serverSock, Socket(), m_dummyFd, m_configFile.servers);
-	Connection& m_connection = temp;
+	Connection* m_connection = nullptr;
 
 };
 
@@ -43,55 +42,55 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequest)
 {
 	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
-	m_connection.m_buffer.assign("GET / HTTP/1.1\r\nHost:example.com\r\n\r\n");
+	m_connection->m_buffer.assign("GET / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusOK);
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_request.httpStatus, StatusOK);
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, NotAllowedMethod)
 {
 	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
-	m_connection.m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\n\r\n");
+	m_connection->m_buffer.assign("POST / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusMethodNotAllowed);
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_request.httpStatus, StatusMethodNotAllowed);
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, POSTRequest)
 {
 	EXPECT_CALL(m_fileSystemOps, checkFileType).WillOnce(Return(FileSystemOps::FileNotFound));
 
-	m_connection.m_buffer.assign("POST /new.txt "
+	m_connection->m_buffer.assign("POST /new.txt "
 								 "HTTP/1.1\r\nHost:example.com\r\nContent-Length:12\r\n\r\nThis is body");
 	m_configFile.servers[0].locations[0].allowMethods[MethodPost] = true;
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
-	EXPECT_EQ(m_connection.m_buffer, "This is body");
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_buffer, "This is body");
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, ParseFail)
 {
-	m_connection.m_buffer.assign("Wrong");
+	m_connection->m_buffer.assign("Wrong");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, ConfigFileRandomlyDestroyed)
 {
-	m_connection.m_buffer.assign("GET / HTTP/1.1\r\nHost:example.com\r\n\r\n");
+	m_connection->m_buffer.assign("GET / HTTP/1.1\r\nHost:example.com\r\n\r\n");
 	m_configFile.servers.clear();
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
 	EXPECT_EQ(m_server.getConnections().size(), 0);
 }
@@ -100,12 +99,12 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequestHitsLocationWithReturn)
 {
 	EXPECT_CALL(m_epollWrapper, modifyEvent);
 
-	m_connection.m_buffer.assign("GET /redirect HTTP/1.1\r\nHost:example.com\r\n\r\n");
+	m_connection->m_buffer.assign("GET /redirect HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusMovedPermanently);
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_request.httpStatus, StatusMovedPermanently);
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequestWithCGIhasError)
@@ -114,12 +113,12 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequestWithCGIhasError)
 	EXPECT_CALL(m_processOps, pipeProcess).WillOnce(Return(-1));
 	EXPECT_CALL(m_epollWrapper, modifyEvent);
 
-	m_connection.m_buffer.assign("GET /cgi-bin/helloWorld.sh HTTP/1.1\r\nHost:example.com\r\n\r\n");
+	m_connection->m_buffer.assign("GET /cgi-bin/helloWorld.sh HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, GETRequestWithCGI)
@@ -133,12 +132,12 @@ TEST_F(HandleCompleteRequestHeaderTest, GETRequestWithCGI)
 	EXPECT_CALL(m_processOps, forkProcess).WillOnce(DoAll(SetArgReferee<0>(dummyPid), Return(0)));
 	EXPECT_CALL(m_epollWrapper, addEvent);
 
-	m_connection.m_buffer.assign("GET /cgi-bin/helloWorld.sh HTTP/1.1\r\nHost:example.com\r\n\r\n");
+	m_connection->m_buffer.assign("GET /cgi-bin/helloWorld.sh HTTP/1.1\r\nHost:example.com\r\n\r\n");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusOK);
-	EXPECT_EQ(m_connection.m_status, Connection::ReceiveFromCGI);
+	EXPECT_EQ(m_connection->m_request.httpStatus, StatusOK);
+	EXPECT_EQ(m_connection->m_status, Connection::ReceiveFromCGI);
 }
 
 TEST_F(HandleCompleteRequestHeaderTest, POSTRequestWithCGIhasError)
@@ -154,11 +153,11 @@ TEST_F(HandleCompleteRequestHeaderTest, POSTRequestWithCGIhasError)
 	EXPECT_CALL(m_processOps, forkProcess).WillOnce(DoAll(SetArgReferee<0>(dummyPid), Return(0)));
 	EXPECT_CALL(m_epollWrapper, addEvent).WillOnce(Return(false));
 
-	m_connection.m_buffer.assign(
+	m_connection->m_buffer.assign(
 		"POST /cgi-bin/upperCase.sh HTTP/1.1\r\nHost:example.com\r\n\r\nContent-Length:12\r\n\r\nThis is body");
 
-	handleCompleteRequestHeader(m_server, m_dummyFd, m_connection);
+	handleCompleteRequestHeader(m_server, m_dummyFd, *m_connection);
 
-	EXPECT_EQ(m_connection.m_request.httpStatus, StatusInternalServerError);
-	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
+	EXPECT_EQ(m_connection->m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_connection->m_status, Connection::BuildResponse);
 }
