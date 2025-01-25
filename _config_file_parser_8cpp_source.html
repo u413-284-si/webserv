@@ -563,356 +563,354 @@ $(document).ready(function(){initNavTree('_config_file_parser_8cpp_source.html',
 <div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <span class="keywordflow">if</span> (autoindex.find_first_of(s_whitespace) != std::string::npos)</div>
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#af6de552fafe52fc60f2d407538d8029b">ERR_INVALID_AUTOINDEX_PARAMETERS</a>);</div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>    std::string lowercaseAutoindex = autoindex;</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>    <a class="code hl_function" href="namespacewebutils.html#a81d8421d47b55041d0e1336855f72229">webutils::lowercase</a>(lowercaseAutoindex);</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span> </div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>    <span class="keywordflow">if</span> (lowercaseAutoindex == <span class="stringliteral">&quot;on&quot;</span>)</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].hasAutoindex = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (lowercaseAutoindex == <span class="stringliteral">&quot;off&quot;</span>)</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].hasAutoindex = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a5fd7f456d8a69b6db8fdc6bcb8f62515">ERR_INVALID_AUTOINDEX_VALUE</a>);</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>}</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span> </div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span><span class="keywordtype">void</span> ConfigFileParser::readAllowMethods(<span class="keyword">const</span> std::string&amp; allowMethods)</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>{</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[0] = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[1] = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[2] = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span> </div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    <span class="keywordtype">size_t</span> index = 0;</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>    <span class="keywordflow">while</span> (index &lt; allowMethods.length()) {</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span> </div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>        <span class="keywordtype">size_t</span> methodStartIndex = index;</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>        <span class="keywordtype">size_t</span> methodEndIndex = allowMethods.find_first_of(s_whitespace, index);</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span> </div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>        std::string method = allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex);</div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>        <a class="code hl_function" href="namespacewebutils.html#a81d8421d47b55041d0e1336855f72229">webutils::lowercase</a>(method);</div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span> </div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>        <span class="keywordflow">if</span> (method == <span class="stringliteral">&quot;get&quot;</span>)</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[0] = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (method == <span class="stringliteral">&quot;post&quot;</span>)</div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[1] = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (method == <span class="stringliteral">&quot;delete&quot;</span>)</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[2] = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ab48ef9102476554405f89179b718ca9e">ERR_INVALID_ALLOW_METHODS</a>);</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span> </div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>        index = allowMethods.find_first_not_of(s_whitespace, methodEndIndex);</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>    }</div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>}</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span> </div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span><span class="keywordtype">void</span> ConfigFileParser::readErrorPage(<span class="keyword">const</span> <a class="code hl_enumeration" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a>&amp; block, <span class="keyword">const</span> std::string&amp; errorPage)</div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>{</div>
-<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>    <span class="keywordflow">if</span> (errorPage.find_first_of(s_whitespace) == std::string::npos)</div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a50fac7aba7e44678822f6edfaedf121b">ERR_INVALID_ERROR_PAGE_PARAMS</a>);</div>
-<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span> </div>
-<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>    <span class="keywordtype">size_t</span> index = 0;</div>
-<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>    <span class="keywordflow">while</span> (index &lt; errorPage.length()) {</div>
-<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span> </div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>        index = errorPage.find_first_not_of(s_whitespace, index);</div>
-<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        <span class="keywordtype">size_t</span> errorCodeStartIndex = index;</div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>        <span class="keywordtype">size_t</span> errorCodeEndIndex = errorPage.find_first_of(s_whitespace, index);</div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>        std::string errorCodeStr = errorPage.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);</div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span> </div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> errorCode = <a class="code hl_function" href="_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(errorCodeStr);</div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>        <span class="keywordflow">if</span> (errorCode &lt; StatusMovedPermanently || errorCode &gt; <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a9a63b756c7b26b6d90fbe1c054ff9f6e">ERR_INVALID_ERROR_CODE</a>);</div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span> </div>
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>        index = errorPage.find_first_not_of(s_whitespace, errorCodeEndIndex);</div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>        <span class="keywordflow">if</span> (index == std::string::npos)</div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#aa322bda9de64ef3127011a00fba4888e">ERR_ERROR_PAGE_NO_PATH</a>);</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span> </div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        <span class="keywordtype">size_t</span> errorPagePathStartIndex = index;</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>        <span class="keywordtype">size_t</span> errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);</div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>        std::string errorPagePath</div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>            = errorPage.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);</div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>        <span class="keywordflow">if</span> (errorPagePath.at(0) != <span class="charliteral">&#39;/&#39;</span>)</div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ab0405919f8f9b0b0b8fceb168b6f410f">ERR_ERROR_PAGE_PATH_NO_SLASH</a>);</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>    <span class="keyword">const</span> std::string lowercaseAutoindex = <a class="code hl_function" href="namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e">webutils::lowercase</a>(autoindex);</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>    <span class="keywordflow">if</span> (lowercaseAutoindex == <span class="stringliteral">&quot;on&quot;</span>)</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].hasAutoindex = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (lowercaseAutoindex == <span class="stringliteral">&quot;off&quot;</span>)</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].hasAutoindex = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a5fd7f456d8a69b6db8fdc6bcb8f62515">ERR_INVALID_AUTOINDEX_VALUE</a>);</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>}</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span> </div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span><span class="keywordtype">void</span> ConfigFileParser::readAllowMethods(<span class="keyword">const</span> std::string&amp; allowMethods)</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>{</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[0] = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[1] = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[2] = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span> </div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>    <span class="keywordtype">size_t</span> index = 0;</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    <span class="keywordflow">while</span> (index &lt; allowMethods.length()) {</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span> </div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        <span class="keywordtype">size_t</span> methodStartIndex = index;</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>        <span class="keywordtype">size_t</span> methodEndIndex = allowMethods.find_first_of(s_whitespace, index);</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span> </div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>        <span class="keyword">const</span> std::string method = <a class="code hl_function" href="namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e">webutils::lowercase</a>(allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex));</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>        <span class="keywordflow">if</span> (method == <span class="stringliteral">&quot;get&quot;</span>)</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[0] = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (method == <span class="stringliteral">&quot;post&quot;</span>)</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[1] = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (method == <span class="stringliteral">&quot;delete&quot;</span>)</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].allowMethods[2] = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ab48ef9102476554405f89179b718ca9e">ERR_INVALID_ALLOW_METHODS</a>);</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span> </div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        index = allowMethods.find_first_not_of(s_whitespace, methodEndIndex);</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>    }</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>}</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span> </div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span><span class="keywordtype">void</span> ConfigFileParser::readErrorPage(<span class="keyword">const</span> <a class="code hl_enumeration" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a>&amp; block, <span class="keyword">const</span> std::string&amp; errorPage)</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>{</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>    <span class="keywordflow">if</span> (errorPage.find_first_of(s_whitespace) == std::string::npos)</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a50fac7aba7e44678822f6edfaedf121b">ERR_INVALID_ERROR_PAGE_PARAMS</a>);</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span> </div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>    <span class="keywordtype">size_t</span> index = 0;</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>    <span class="keywordflow">while</span> (index &lt; errorPage.length()) {</div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span> </div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>        index = errorPage.find_first_not_of(s_whitespace, index);</div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>        <span class="keywordtype">size_t</span> errorCodeStartIndex = index;</div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>        <span class="keywordtype">size_t</span> errorCodeEndIndex = errorPage.find_first_of(s_whitespace, index);</div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        std::string errorCodeStr = errorPage.substr(errorCodeStartIndex, errorCodeEndIndex - errorCodeStartIndex);</div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span> </div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> errorCode = <a class="code hl_function" href="_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(errorCodeStr);</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>        <span class="keywordflow">if</span> (errorCode &lt; StatusMovedPermanently || errorCode &gt; <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a9a63b756c7b26b6d90fbe1c054ff9f6e">ERR_INVALID_ERROR_CODE</a>);</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span> </div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>        index = errorPage.find_first_not_of(s_whitespace, errorCodeEndIndex);</div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>        <span class="keywordflow">if</span> (index == std::string::npos)</div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#aa322bda9de64ef3127011a00fba4888e">ERR_ERROR_PAGE_NO_PATH</a>);</div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span> </div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>        <span class="keywordtype">size_t</span> errorPagePathStartIndex = index;</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>        <span class="keywordtype">size_t</span> errorPagePathEndIndex = errorPage.find_first_of(s_whitespace, index);</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        std::string errorPagePath</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>            = errorPage.substr(errorPagePathStartIndex, errorPagePathEndIndex - errorPagePathStartIndex);</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>        <span class="keywordflow">if</span> (errorPagePath.at(0) != <span class="charliteral">&#39;/&#39;</span>)</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ab0405919f8f9b0b0b8fceb168b6f410f">ERR_ERROR_PAGE_PATH_NO_SLASH</a>);</div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span> </div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>        index = errorPagePathEndIndex;</div>
 <div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span> </div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>        index = errorPagePathEndIndex;</div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span> </div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>        <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>)</div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].errorPage.insert(</div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>                std::pair&lt;statusCode, std::string&gt;(errorCode, errorPagePath));</div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>)</div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].errorPage.insert(</div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>                std::pair&lt;statusCode, std::string&gt;(errorCode, errorPagePath));</div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>    }</div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>}</div>
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span> </div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span><span class="keywordtype">void</span> ConfigFileParser::readReturns(<span class="keyword">const</span> std::string&amp; returns)</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>{</div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>    <span class="keywordtype">size_t</span> index = returns.find_first_not_of(s_whitespace);</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>    <span class="keywordtype">size_t</span> returnCodeStartIndex = index;</div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>    <span class="keywordtype">size_t</span> returnCodeEndIndex = returns.find_first_of(s_whitespace, index);</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span> </div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>    <span class="keywordflow">if</span> (returnCodeEndIndex != std::string::npos) {</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>        std::string returnCodeStr = returns.substr(returnCodeStartIndex, returnCodeEndIndex - returnCodeStartIndex);</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span> </div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> returnCode = <a class="code hl_function" href="_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(returnCodeStr);</div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>        <span class="keywordflow">if</span> (returnCode &lt; StatusOK || returnCode &gt; <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#aa6345b108705f2ded2fd02b9e3d3f3f9">ERR_INVALID_RETURN_CODE</a>);</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span> </div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>        <span class="keywordtype">size_t</span> returnUrlOrTextStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);</div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>        <span class="keywordtype">size_t</span> returnUrlOrTextEndIndex = returns.length();</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>        std::string returnUrlOrText</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>            = returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);</div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span> </div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>        <span class="keywordflow">if</span> (returnUrlOrText.at(0) != <span class="charliteral">&#39;&quot;&#39;</span> &amp;&amp; returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)</div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#acb530ea91d188cf051022923b67db6fa">ERR_INVALID_RETURN_PARAMS</a>);</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>        <span class="keywordflow">if</span> (returnUrlOrText.find(<span class="charliteral">&#39;&quot;&#39;</span>) != std::string::npos) {</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>            <span class="keywordflow">if</span> (returnUrlOrText.at(returnUrlOrText.length() - 1) != <span class="charliteral">&#39;&quot;&#39;</span>)</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>                <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#acb530ea91d188cf051022923b67db6fa">ERR_INVALID_RETURN_PARAMS</a>);</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>            removeEnclosingDoubleQuotes(returnUrlOrText);</div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>        }</div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span> </div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;</div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;</div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span> </div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    }</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span> </div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>    <span class="keywordtype">size_t</span> endIndex = returns.length();</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    <span class="keywordtype">size_t</span> startIndex = returnCodeStartIndex;</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span> </div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>    std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    <span class="keywordflow">if</span> (returnCodeOrUrl.substr(0, <span class="keyword">sizeof</span>(<span class="stringliteral">&quot;http://&quot;</span>) - 1) == <span class="stringliteral">&quot;http://&quot;</span></div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>        || returnCodeOrUrl.substr(0, <span class="keyword">sizeof</span>(<span class="stringliteral">&quot;https://&quot;</span>) - 1) == <span class="stringliteral">&quot;https://&quot;</span>) {</div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.first = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac6f06ea3d80f5b36aa11d21455271c3d">StatusFound</a>;</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> returnCode = <a class="code hl_function" href="_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(returnCodeOrUrl);</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>        <span class="keywordflow">if</span> (returnCode &lt; StatusOK || returnCode &gt; <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#aa6345b108705f2ded2fd02b9e3d3f3f9">ERR_INVALID_RETURN_CODE</a>);</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;</div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.second = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>    }</div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>}</div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span> </div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span><span class="keywordtype">void</span> ConfigFileParser::readCGIExtension(<span class="keyword">const</span> std::string&amp; extension)</div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>{</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    <span class="keywordflow">if</span> (extension.find_first_of(s_whitespace) != std::string::npos)</div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ab498e425b7dec27bcebc1907af8ca07d">ERR_MULTIPLE_CGI_EXTENSIONS</a>);</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    <span class="keywordflow">if</span> (extension.at(0) != <span class="charliteral">&#39;.&#39;</span>)</div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#afa898d3419a95211a6d34f2993986f12">ERR_INVALID_CGI_EXTENSION</a>);</div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span> </div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>    std::string extensionWithoutDotAtBeginning = extension.substr(1);</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    <span class="keywordflow">if</span> (extensionWithoutDotAtBeginning.find_first_of(<span class="charliteral">&#39;.&#39;</span>) != std::string::npos)</div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a4589102a06d652208c1f9202216c5693">ERR_MULTIPLE_DOTS_IN_CGI_EXTENSION</a>);</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span> </div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].cgiExt = extension;</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>}</div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span> </div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span><span class="keywordtype">void</span> ConfigFileParser::readCGIPath(<span class="keyword">const</span> std::string&amp; path)</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>{</div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    <span class="keywordflow">if</span> (path.find_first_of(s_whitespace) != std::string::npos)</div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#af5156b50b50d3048c64243a448f1201c">ERR_MULTIPLE_CGI_PATHS</a>);</div>
-<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    <span class="keywordflow">if</span> (path.at(0) != <span class="charliteral">&#39;/&#39;</span>)</div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#afe6409ef75211fe672b05d509e5ba68a">ERR_CGI_PATH_NO_SLASH</a>);</div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span> </div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].cgiPath = path;</div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>}</div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span> </div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span><span class="keywordtype">void</span> ConfigFileParser::readIndex(<span class="keyword">const</span> std::string&amp; indices)</div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>{</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].indices.clear();</div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    <span class="keywordtype">size_t</span> index = 0;</div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>    <span class="keywordflow">while</span> (index &lt; indices.length()) {</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span> </div>
-<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>        index = indices.find_first_not_of(s_whitespace, index);</div>
-<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>        <span class="keywordtype">size_t</span> indicesStartIndex = index;</div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>        <span class="keywordtype">size_t</span> indicesEndIndex = indices.find_first_of(s_whitespace, index);</div>
-<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>        std::string indexStr = indices.substr(indicesStartIndex, indicesEndIndex - indicesStartIndex);</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>        <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>)</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].errorPage.insert(</div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>                std::pair&lt;statusCode, std::string&gt;(errorCode, errorPagePath));</div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>)</div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>            m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].errorPage.insert(</div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>                std::pair&lt;statusCode, std::string&gt;(errorCode, errorPagePath));</div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>    }</div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>}</div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span> </div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="keywordtype">void</span> ConfigFileParser::readReturns(<span class="keyword">const</span> std::string&amp; returns)</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>{</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>    <span class="keywordtype">size_t</span> index = returns.find_first_not_of(s_whitespace);</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>    <span class="keywordtype">size_t</span> returnCodeStartIndex = index;</div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>    <span class="keywordtype">size_t</span> returnCodeEndIndex = returns.find_first_of(s_whitespace, index);</div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span> </div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>    <span class="keywordflow">if</span> (returnCodeEndIndex != std::string::npos) {</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>        std::string returnCodeStr = returns.substr(returnCodeStartIndex, returnCodeEndIndex - returnCodeStartIndex);</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span> </div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> returnCode = <a class="code hl_function" href="_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(returnCodeStr);</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>        <span class="keywordflow">if</span> (returnCode &lt; StatusOK || returnCode &gt; <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#aa6345b108705f2ded2fd02b9e3d3f3f9">ERR_INVALID_RETURN_CODE</a>);</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span> </div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>        <span class="keywordtype">size_t</span> returnUrlOrTextStartIndex = returns.find_first_not_of(s_whitespace, returnCodeEndIndex);</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>        <span class="keywordtype">size_t</span> returnUrlOrTextEndIndex = returns.length();</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>        std::string returnUrlOrText</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>            = returns.substr(returnUrlOrTextStartIndex, returnUrlOrTextEndIndex - returnUrlOrTextStartIndex);</div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span> </div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>        <span class="keywordflow">if</span> (returnUrlOrText.at(0) != <span class="charliteral">&#39;&quot;&#39;</span> &amp;&amp; returnUrlOrText.find_first_of(s_whitespace) != std::string::npos)</div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#acb530ea91d188cf051022923b67db6fa">ERR_INVALID_RETURN_PARAMS</a>);</div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>        <span class="keywordflow">if</span> (returnUrlOrText.find(<span class="charliteral">&#39;&quot;&#39;</span>) != std::string::npos) {</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>            <span class="keywordflow">if</span> (returnUrlOrText.at(returnUrlOrText.length() - 1) != <span class="charliteral">&#39;&quot;&#39;</span>)</div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#acb530ea91d188cf051022923b67db6fa">ERR_INVALID_RETURN_PARAMS</a>);</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>            removeEnclosingDoubleQuotes(returnUrlOrText);</div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>        }</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span> </div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.second = returnUrlOrText;</div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span> </div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    }</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span> </div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    <span class="keywordtype">size_t</span> endIndex = returns.length();</div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    <span class="keywordtype">size_t</span> startIndex = returnCodeStartIndex;</div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span> </div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    std::string returnCodeOrUrl = returns.substr(startIndex, endIndex - startIndex);</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    <span class="keywordflow">if</span> (returnCodeOrUrl.substr(0, <span class="keyword">sizeof</span>(<span class="stringliteral">&quot;http://&quot;</span>) - 1) == <span class="stringliteral">&quot;http://&quot;</span></div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        || returnCodeOrUrl.substr(0, <span class="keyword">sizeof</span>(<span class="stringliteral">&quot;https://&quot;</span>) - 1) == <span class="stringliteral">&quot;https://&quot;</span>) {</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.first = <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac6f06ea3d80f5b36aa11d21455271c3d">StatusFound</a>;</div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.second = returnCodeOrUrl;</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> returnCode = <a class="code hl_function" href="_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(returnCodeOrUrl);</div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>        <span class="keywordflow">if</span> (returnCode &lt; StatusOK || returnCode &gt; <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>)</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>            <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#aa6345b108705f2ded2fd02b9e3d3f3f9">ERR_INVALID_RETURN_CODE</a>);</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.first = returnCode;</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].returns.second = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>    }</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>}</div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span> </div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span><span class="keywordtype">void</span> ConfigFileParser::readCGIExtension(<span class="keyword">const</span> std::string&amp; extension)</div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>{</div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>    <span class="keywordflow">if</span> (extension.find_first_of(s_whitespace) != std::string::npos)</div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ab498e425b7dec27bcebc1907af8ca07d">ERR_MULTIPLE_CGI_EXTENSIONS</a>);</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    <span class="keywordflow">if</span> (extension.at(0) != <span class="charliteral">&#39;.&#39;</span>)</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#afa898d3419a95211a6d34f2993986f12">ERR_INVALID_CGI_EXTENSION</a>);</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span> </div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>    std::string extensionWithoutDotAtBeginning = extension.substr(1);</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    <span class="keywordflow">if</span> (extensionWithoutDotAtBeginning.find_first_of(<span class="charliteral">&#39;.&#39;</span>) != std::string::npos)</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a4589102a06d652208c1f9202216c5693">ERR_MULTIPLE_DOTS_IN_CGI_EXTENSION</a>);</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span> </div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].cgiExt = extension;</div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>}</div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span> </div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span><span class="keywordtype">void</span> ConfigFileParser::readCGIPath(<span class="keyword">const</span> std::string&amp; path)</div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>{</div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    <span class="keywordflow">if</span> (path.find_first_of(s_whitespace) != std::string::npos)</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#af5156b50b50d3048c64243a448f1201c">ERR_MULTIPLE_CGI_PATHS</a>);</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    <span class="keywordflow">if</span> (path.at(0) != <span class="charliteral">&#39;/&#39;</span>)</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#afe6409ef75211fe672b05d509e5ba68a">ERR_CGI_PATH_NO_SLASH</a>);</div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span> </div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].cgiPath = path;</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>}</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span> </div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span><span class="keywordtype">void</span> ConfigFileParser::readIndex(<span class="keyword">const</span> std::string&amp; indices)</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>{</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].indices.clear();</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span> </div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    <span class="keywordtype">size_t</span> index = 0;</div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>    <span class="keywordflow">while</span> (index &lt; indices.length()) {</div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span> </div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>        index = indices.find_first_not_of(s_whitespace, index);</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>        <span class="keywordtype">size_t</span> indicesStartIndex = index;</div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>        <span class="keywordtype">size_t</span> indicesEndIndex = indices.find_first_of(s_whitespace, index);</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>        std::string indexStr = indices.substr(indicesStartIndex, indicesEndIndex - indicesStartIndex);</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span> </div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].indices.push_back(indexStr);</div>
 <div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span> </div>
-<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>        m_configFile.<a class="code hl_variable" href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">servers</a>[m_serverIndex].locations[m_locationIndex].indices.push_back(indexStr);</div>
-<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span> </div>
-<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>        index = indicesEndIndex;</div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>    }</div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>}</div>
-<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span> </div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span><span class="keywordtype">void</span> ConfigFileParser::readServerDirectiveValue(<span class="keyword">const</span> std::string&amp; directive, <span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>{</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;listen&quot;</span>)</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>        readListen(value);</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;root&quot;</span>)</div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>        readRootPath(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, value);</div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;server_name&quot;</span>)</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>        readServerName(value);</div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;client_max_body_size&quot;</span>)</div>
-<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>        readMaxBodySize(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, value);</div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;error_page&quot;</span>)</div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>        readErrorPage(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, value);</div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>}</div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span> </div>
-<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span><span class="keywordtype">void</span> ConfigFileParser::readLocationDirectiveValue(<span class="keyword">const</span> std::string&amp; directive, <span class="keyword">const</span> std::string&amp; value)</div>
-<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>{</div>
-<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>    <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;root&quot;</span>)</div>
-<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span>        readRootPath(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>, value);</div>
-<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;alias&quot;</span>)</div>
-<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>        readAliasPath(value);</div>
-<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;client_max_body_size&quot;</span>)</div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>        readMaxBodySize(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>, value);</div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;autoindex&quot;</span>)</div>
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>        readAutoIndex(value);</div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;allow_methods&quot;</span>)</div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>        readAllowMethods(value);</div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;error_page&quot;</span>)</div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>        readErrorPage(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>, value);</div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;cgi_ext&quot;</span>)</div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>        readCGIExtension(value);</div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;cgi_path&quot;</span>)</div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>        readCGIPath(value);</div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;index&quot;</span>)</div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>        readIndex(value);</div>
-<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;return&quot;</span>)</div>
-<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>        readReturns(value);</div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>}</div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span> </div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span><span class="keywordtype">void</span> ConfigFileParser::readServerConfigLine(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>{</div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    <span class="keyword">const</span> std::string directive = getDirective();</div>
-<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>    <span class="keywordflow">if</span> (!isDirectiveValid(directive, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>))</div>
-<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a6dea1d9a92d62c4e5a4a43c1b0cbccfa">ERR_INVALID_SERVER_DIRECTIVE</a>);</div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span> </div>
-<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>    <span class="keyword">const</span> std::string value = getValue();</div>
-<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    <span class="keywordflow">if</span> ((value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos))</div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ac5eb8a7d7a6ac1b2570ffd5bb0968fba">ERR_DIRECTIVE_NO_VALUE</a>(directive));</div>
-<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span> </div>
-<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    readServerDirectiveValue(directive, value);</div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>}</div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span> </div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span><span class="keywordtype">void</span> ConfigFileParser::readLocationConfigLine(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>{</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>    <span class="keyword">const</span> std::string directive = getDirective();</div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>    <span class="keywordflow">if</span> (!isDirectiveValid(directive, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>))</div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a58108d1dace83b6c851ac48923259697">ERR_INVALID_LOCATION_DIRECTIVE</a>);</div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>        index = indicesEndIndex;</div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>    }</div>
+<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>}</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span> </div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span><span class="keywordtype">void</span> ConfigFileParser::readServerDirectiveValue(<span class="keyword">const</span> std::string&amp; directive, <span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>{</div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;listen&quot;</span>)</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>        readListen(value);</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;root&quot;</span>)</div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>        readRootPath(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, value);</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;server_name&quot;</span>)</div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>        readServerName(value);</div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;client_max_body_size&quot;</span>)</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>        readMaxBodySize(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, value);</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;error_page&quot;</span>)</div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>        readErrorPage(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>, value);</div>
+<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>}</div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span> </div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span><span class="keywordtype">void</span> ConfigFileParser::readLocationDirectiveValue(<span class="keyword">const</span> std::string&amp; directive, <span class="keyword">const</span> std::string&amp; value)</div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>{</div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;root&quot;</span>)</div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>        readRootPath(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>, value);</div>
+<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;alias&quot;</span>)</div>
+<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span>        readAliasPath(value);</div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;client_max_body_size&quot;</span>)</div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>        readMaxBodySize(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>, value);</div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;autoindex&quot;</span>)</div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>        readAutoIndex(value);</div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;allow_methods&quot;</span>)</div>
+<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>        readAllowMethods(value);</div>
+<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;error_page&quot;</span>)</div>
+<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>        readErrorPage(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>, value);</div>
+<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;cgi_ext&quot;</span>)</div>
+<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>        readCGIExtension(value);</div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;cgi_path&quot;</span>)</div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>        readCGIPath(value);</div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;index&quot;</span>)</div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>        readIndex(value);</div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (directive == <span class="stringliteral">&quot;return&quot;</span>)</div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>        readReturns(value);</div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>}</div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span> </div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span><span class="keywordtype">void</span> ConfigFileParser::readServerConfigLine(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>{</div>
+<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>    <span class="keyword">const</span> std::string directive = getDirective();</div>
+<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>    <span class="keywordflow">if</span> (!isDirectiveValid(directive, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>))</div>
+<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a6dea1d9a92d62c4e5a4a43c1b0cbccfa">ERR_INVALID_SERVER_DIRECTIVE</a>);</div>
+<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span> </div>
+<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>    <span class="keyword">const</span> std::string value = getValue();</div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>    <span class="keywordflow">if</span> ((value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos))</div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ac5eb8a7d7a6ac1b2570ffd5bb0968fba">ERR_DIRECTIVE_NO_VALUE</a>(directive));</div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span> </div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>    readServerDirectiveValue(directive, value);</div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>}</div>
+<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span> </div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span><span class="keywordtype">void</span> ConfigFileParser::readLocationConfigLine(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>{</div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    <span class="keyword">const</span> std::string directive = getDirective();</div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    <span class="keywordflow">if</span> (!isDirectiveValid(directive, <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>))</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a58108d1dace83b6c851ac48923259697">ERR_INVALID_LOCATION_DIRECTIVE</a>);</div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span> </div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>    <span class="keyword">const</span> std::string value = getValue();</div>
 <div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span> </div>
-<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>    <span class="keyword">const</span> std::string value = getValue();</div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> </div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>    <span class="keywordflow">if</span> (value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos)</div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ac5eb8a7d7a6ac1b2570ffd5bb0968fba">ERR_DIRECTIVE_NO_VALUE</a>(directive));</div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> </div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>    readLocationDirectiveValue(directive, value);</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>}</div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span> </div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>    <span class="keywordflow">if</span> (value.empty() || value.find_last_not_of(s_whitespace) == std::string::npos)</div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#ac5eb8a7d7a6ac1b2570ffd5bb0968fba">ERR_DIRECTIVE_NO_VALUE</a>(directive));</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span> </div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>    readLocationDirectiveValue(directive, value);</div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>}</div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span> </div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span><span class="comment">/********************/</span></div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span><span class="comment">/* HELPER FUNCTIONS */</span></div>
 <div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span><span class="comment">/********************/</span></div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span><span class="comment">/* HELPER FUNCTIONS */</span></div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span><span class="comment">/********************/</span></div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span> </div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>std::string ConfigFileParser::getDirective()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>    std::string directive;</div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span> </div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);</div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>    <span class="keywordflow">if</span> (firstWhiteSpaceIndex == std::string::npos)</div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>        directive = m_currentLine;</div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>        directive = m_currentLine.substr(0, firstWhiteSpaceIndex);</div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span> </div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>    directive = <a class="code hl_function" href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a>(directive);</div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>    <a class="code hl_function" href="namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c">webutils::trimTrailingWhiteSpaces</a>(directive);</div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span> </div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>    <span class="keywordflow">return</span> directive;</div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>}</div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span> </div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>std::string ConfigFileParser::getValue(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> semicolonIndex = m_currentLine.find(<span class="charliteral">&#39;;&#39;</span>);</div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>    std::string value;</div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span> </div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);</div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>    <span class="keywordflow">if</span> (firstWhiteSpaceIndex == std::string::npos)</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>        value = m_currentLine.substr(0, semicolonIndex);</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>        value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);</div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span> </div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>    value = <a class="code hl_function" href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a>(value);</div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>    <a class="code hl_function" href="namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c">webutils::trimTrailingWhiteSpaces</a>(value);</div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span> </div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>}</div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span> </div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>std::string ConfigFileParser::convertBlockToString(<a class="code hl_enumeration" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a> block)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>    <span class="keywordflow">switch</span> (block) {</div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>:</div>
-<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;http&quot;</span>;</div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>:</div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;server&quot;</span>;</div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>:</div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;location&quot;</span>;</div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>    }</div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>}</div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span> </div>
-<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span><span class="keywordtype">void</span> ConfigFileParser::removeEnclosingDoubleQuotes(std::string&amp; str)</div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>{</div>
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>    <span class="keywordtype">size_t</span> leadingDoubleQuotes = 0;</div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>    <span class="keywordtype">size_t</span> trailingDoubleQuotes = 0;</div>
-<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span> </div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>    <span class="keywordflow">while</span> (leadingDoubleQuotes &lt; str.length() &amp;&amp; str[leadingDoubleQuotes] == <span class="charliteral">&#39;&quot;&#39;</span>) {</div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>        leadingDoubleQuotes++;</div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>    }</div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span> </div>
-<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>    <span class="keywordtype">size_t</span> trailingIndex = str.length();</div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>    <span class="keywordflow">while</span> (trailingIndex &gt; leadingDoubleQuotes &amp;&amp; str[trailingIndex - 1] == <span class="charliteral">&#39;&quot;&#39;</span>) {</div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>        trailingDoubleQuotes++;</div>
-<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span>        trailingIndex--;</div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>    }</div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span> </div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span>    <span class="keywordflow">if</span> (leadingDoubleQuotes &gt; 1 || trailingDoubleQuotes &gt; 1)</div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a83e6661b7f167308975abe4a28b9abc5">ERR_TOO_MANY_DOUBLE_QUOTES</a>);</div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span> </div>
-<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>    str = str.substr(leadingDoubleQuotes, trailingIndex - leadingDoubleQuotes);</div>
-<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>}</div>
-<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span> </div>
-<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span><span class="keywordtype">void</span> ConfigFileParser::skipBlockBegin(<a class="code hl_enumeration" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a> block)</div>
-<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>{</div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[m_configFileIndex]) != 0)</div>
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>        m_configFileIndex++;</div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span> </div>
-<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>    <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>)</div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>        m_configFileIndex += convertBlockToString(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>).length();</div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>)</div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>        m_configFileIndex += convertBlockToString(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>).length();</div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>)</div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>        m_configFileIndex += convertBlockToString(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>).length();</div>
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span> </div>
-<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[m_configFileIndex]) != 0)</div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>        m_configFileIndex++;</div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span> </div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>    <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>)</div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>        skipLocationBlockPath(m_configFileIndex);</div>
-<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span> </div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>    m_configFileIndex++;</div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>}</div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span> </div>
-<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span><span class="keywordtype">void</span> ConfigFileParser::skipLocationBlockPath(<span class="keywordtype">size_t</span>&amp; index)</div>
-<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>{</div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[index]) == 0)</div>
+<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span> </div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>std::string ConfigFileParser::getDirective()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>    std::string directive;</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span> </div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);</div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>    <span class="keywordflow">if</span> (firstWhiteSpaceIndex == std::string::npos)</div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>        directive = m_currentLine;</div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>        directive = m_currentLine.substr(0, firstWhiteSpaceIndex);</div>
+<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span> </div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>    directive = <a class="code hl_function" href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a>(directive);</div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>    <a class="code hl_function" href="namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c">webutils::trimTrailingWhiteSpaces</a>(directive);</div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span> </div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>    <span class="keywordflow">return</span> directive;</div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>}</div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span> </div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>std::string ConfigFileParser::getValue(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> semicolonIndex = m_currentLine.find(<span class="charliteral">&#39;;&#39;</span>);</div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>    std::string value;</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span> </div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstWhiteSpaceIndex = m_currentLine.find_first_of(s_whitespace);</div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>    <span class="keywordflow">if</span> (firstWhiteSpaceIndex == std::string::npos)</div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>        value = m_currentLine.substr(0, semicolonIndex);</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>        value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);</div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span> </div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>    value = <a class="code hl_function" href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a>(value);</div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>    <a class="code hl_function" href="namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c">webutils::trimTrailingWhiteSpaces</a>(value);</div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span> </div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>    <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span>}</div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span> </div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>std::string ConfigFileParser::convertBlockToString(<a class="code hl_enumeration" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a> block)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>    <span class="keywordflow">switch</span> (block) {</div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>:</div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;http&quot;</span>;</div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>:</div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;server&quot;</span>;</div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>:</div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;location&quot;</span>;</div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>    }</div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>}</div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span> </div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span><span class="keywordtype">void</span> ConfigFileParser::removeEnclosingDoubleQuotes(std::string&amp; str)</div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>{</div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span>    <span class="keywordtype">size_t</span> leadingDoubleQuotes = 0;</div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>    <span class="keywordtype">size_t</span> trailingDoubleQuotes = 0;</div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span> </div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>    <span class="keywordflow">while</span> (leadingDoubleQuotes &lt; str.length() &amp;&amp; str[leadingDoubleQuotes] == <span class="charliteral">&#39;&quot;&#39;</span>) {</div>
+<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>        leadingDoubleQuotes++;</div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>    }</div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span> </div>
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>    <span class="keywordtype">size_t</span> trailingIndex = str.length();</div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>    <span class="keywordflow">while</span> (trailingIndex &gt; leadingDoubleQuotes &amp;&amp; str[trailingIndex - 1] == <span class="charliteral">&#39;&quot;&#39;</span>) {</div>
+<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>        trailingDoubleQuotes++;</div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>        trailingIndex--;</div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>    }</div>
+<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span> </div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>    <span class="keywordflow">if</span> (leadingDoubleQuotes &gt; 1 || trailingDoubleQuotes &gt; 1)</div>
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>        <span class="keywordflow">throw</span> std::runtime_error(<a class="code hl_define" href="error_8hpp.html#a83e6661b7f167308975abe4a28b9abc5">ERR_TOO_MANY_DOUBLE_QUOTES</a>);</div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span> </div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>    str = str.substr(leadingDoubleQuotes, trailingIndex - leadingDoubleQuotes);</div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>}</div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span> </div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span><span class="keywordtype">void</span> ConfigFileParser::skipBlockBegin(<a class="code hl_enumeration" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a> block)</div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>{</div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[m_configFileIndex]) != 0)</div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>        m_configFileIndex++;</div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span> </div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>    <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>)</div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>        m_configFileIndex += convertBlockToString(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aabf96b32d39294130a40a8b042a8797b2">HttpBlock</a>).length();</div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>)</div>
+<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>        m_configFileIndex += convertBlockToString(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aaf1c6778da7620dd930c3002b2c281760">ServerBlock</a>).length();</div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>)</div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>        m_configFileIndex += convertBlockToString(<a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>).length();</div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span> </div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[m_configFileIndex]) != 0)</div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>        m_configFileIndex++;</div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span> </div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>    <span class="keywordflow">if</span> (block == <a class="code hl_enumvalue" href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a>)</div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>        skipLocationBlockPath(m_configFileIndex);</div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span> </div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>    m_configFileIndex++;</div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>}</div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span> </div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span><span class="keywordtype">void</span> ConfigFileParser::skipLocationBlockPath(<span class="keywordtype">size_t</span>&amp; index)</div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span>{</div>
+<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[index]) == 0)</div>
+<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>        index++;</div>
+<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[index]) != 0)</div>
 <div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>        index++;</div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>    <span class="keywordflow">while</span> (std::isspace(m_configFileContent[index]) != 0)</div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>        index++;</div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>}</div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span> </div>
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span><span class="keywordtype">bool</span> ConfigFileParser::isEmptyLocationBlock(<span class="keyword">const</span> std::string&amp; locationBlockContent)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> openingCurlyBracketIndex = locationBlockContent.find(<span class="charliteral">&#39;{&#39;</span>);</div>
-<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstNonWhitespaceAfterCurly</div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>        = locationBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);</div>
-<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>    <span class="keywordflow">return</span> (firstNonWhitespaceAfterCurly == std::string::npos);</div>
-<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>}</div>
-<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span> </div>
-<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span><span class="keywordtype">bool</span> ConfigFileParser::isEmptyServerBlock(<span class="keyword">const</span> std::string&amp; serverBlockContent)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> openingCurlyBracketIndex = serverBlockContent.find(<span class="charliteral">&#39;{&#39;</span>);</div>
-<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstNonWhitespaceAfterCurly</div>
-<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>        = serverBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);</div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>    <span class="keywordflow">return</span> (firstNonWhitespaceAfterCurly == std::string::npos);</div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>}</div>
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>}</div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span> </div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span><span class="keywordtype">bool</span> ConfigFileParser::isEmptyLocationBlock(<span class="keyword">const</span> std::string&amp; locationBlockContent)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> openingCurlyBracketIndex = locationBlockContent.find(<span class="charliteral">&#39;{&#39;</span>);</div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstNonWhitespaceAfterCurly</div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>        = locationBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>    <span class="keywordflow">return</span> (firstNonWhitespaceAfterCurly == std::string::npos);</div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>}</div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span> </div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span><span class="keywordtype">bool</span> ConfigFileParser::isEmptyServerBlock(<span class="keyword">const</span> std::string&amp; serverBlockContent)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> openingCurlyBracketIndex = serverBlockContent.find(<span class="charliteral">&#39;{&#39;</span>);</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> firstNonWhitespaceAfterCurly</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>        = serverBlockContent.find_first_not_of(s_whitespace, openingCurlyBracketIndex + 1);</div>
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>    <span class="keywordflow">return</span> (firstNonWhitespaceAfterCurly == std::string::npos);</div>
+<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>}</div>
 <div class="ttc" id="a_config_file_parser_8hpp_html"><div class="ttname"><a href="_config_file_parser_8hpp.html">ConfigFileParser.hpp</a></div></div>
 <div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4a"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4a">Block</a></div><div class="ttdeci">Block</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
 <div class="ttc" id="a_config_file_parser_8hpp_html_ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38"><div class="ttname"><a href="_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38">LocationBlock</a></div><div class="ttdeci">@ LocationBlock</div><div class="ttdef"><b>Definition</b> <a href="_config_file_parser_8hpp_source.html#l00022">ConfigFileParser.hpp:22</a></div></div>
@@ -976,7 +974,7 @@ $(document).ready(function(){initNavTree('_config_file_parser_8cpp_source.html',
 <div class="ttc" id="anamespacewebutils_html_a2abb972ac583db43b6bad84e0e37c22d"><div class="ttname"><a href="namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d">webutils::isPortValid</a></div><div class="ttdeci">bool isPortValid(const std::string &amp;port)</div><div class="ttdoc">Checks if the port number of the listen directive is valid.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00198">utilities.cpp:198</a></div></div>
 <div class="ttc" id="anamespacewebutils_html_a63365cb0853efe9bea46d8a83fe463e9"><div class="ttname"><a href="namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9">webutils::trimLeadingWhitespaces</a></div><div class="ttdeci">std::string trimLeadingWhitespaces(const std::string &amp;str)</div><div class="ttdoc">Removes leading whitespaces from a given string.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00015">utilities.cpp:15</a></div></div>
 <div class="ttc" id="anamespacewebutils_html_a6748cf6b6dd81b72c9e46ed8b800ffed"><div class="ttname"><a href="namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed">webutils::isIpAddressValid</a></div><div class="ttdeci">bool isIpAddressValid(const std::string &amp;ipAddress)</div><div class="ttdoc">Validates whether a given string is a valid IPv4 address.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00163">utilities.cpp:163</a></div></div>
-<div class="ttc" id="anamespacewebutils_html_a81d8421d47b55041d0e1336855f72229"><div class="ttname"><a href="namespacewebutils.html#a81d8421d47b55041d0e1336855f72229">webutils::lowercase</a></div><div class="ttdeci">void lowercase(std::string &amp;str)</div><div class="ttdoc">Converts all characters in a string to lowercase.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00218">utilities.cpp:218</a></div></div>
+<div class="ttc" id="anamespacewebutils_html_afee369c732ca6e732ff83a1caa16089e"><div class="ttname"><a href="namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e">webutils::lowercase</a></div><div class="ttdeci">std::string lowercase(std::string str)</div><div class="ttdoc">Converts all characters in a string to lowercase.</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00219">utilities.cpp:219</a></div></div>
 <div class="ttc" id="astruct_config_file_html"><div class="ttname"><a href="struct_config_file.html">ConfigFile</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00049">ConfigFile.hpp:49</a></div></div>
 <div class="ttc" id="astruct_config_file_html_a100482324c74f5a4635cba3187b9fec7"><div class="ttname"><a href="struct_config_file.html#a100482324c74f5a4635cba3187b9fec7">ConfigFile::servers</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt; servers</div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00050">ConfigFile.hpp:50</a></div></div>
 <div class="ttc" id="astruct_config_server_html"><div class="ttname"><a href="struct_config_server.html">ConfigServer</a></div><div class="ttdef"><b>Definition</b> <a href="_config_file_8hpp_source.html#l00035">ConfigFile.hpp:35</a></div></div>
