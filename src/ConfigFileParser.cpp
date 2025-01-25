@@ -12,8 +12,8 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
 	, m_locationIndex(0)
-	, m_serverRootCount(0)
-	, m_locationRootCount(0)
+	, m_hasServerRoot(0)
+	, m_hasLocationRoot(0)
 	, m_isDefaultLocationDefined(false)
 {
 	const char* validServerDirectiveNames[]
@@ -298,14 +298,14 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error(ERR_SEMICOLON_MISSING);
 
-	m_serverRootCount = 0;
+	m_hasServerRoot = 0;
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
 
 	m_isDefaultLocationDefined = false;
 	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
 		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
-		m_locationRootCount = 0;
+		m_hasLocationRoot = 0;
 		processLocationContent(*it);
 	}
 }
@@ -446,9 +446,9 @@ void ConfigFileParser::readLocationBlockPath(void)
  */
 void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
-	if (m_serverRootCount > 1)
+	if (m_hasServerRoot > 1)
 		throw std::runtime_error(ERR_SERVER_MULTIPLE_ROOTS);
-	if (m_locationRootCount > 1)
+	if (m_hasLocationRoot > 1)
 		throw std::runtime_error(ERR_LOCATION_MULTIPLE_ROOTS);
 
 	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
@@ -905,7 +905,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 	if (directive == "listen")
 		readListen(value);
 	else if (directive == "root") {
-		m_serverRootCount++;
+		m_hasServerRoot++;
 		readRootPath(ServerBlock, value);
 	} else if (directive == "server_name")
 		readServerName(value);
@@ -927,7 +927,7 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, const std::string& value)
 {
 	if (directive == "root") {
-		m_locationRootCount++;
+		m_hasLocationRoot++;
 		readRootPath(LocationBlock, value);
 	} else if (directive == "alias")
 		readAliasPath(value);
