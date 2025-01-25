@@ -27,65 +27,67 @@ protected:
  * 7. File contains missing semicolon
  * 8. Server contains duplicate location
  * 9. Server contains duplicate location with default path
- * 10. Location contains no path
- * 11. Location contains multiple paths
- * 11. Listen directive contains invalid ip address
- * 12. Listen directive contains invalid port
- * 13. Listen contains invalid amount of parameters with a host and port
- * 14. Listen contains invalid amount of parameters with an ip address
- * 15. Listen contains invalid amount of parameters with a port
- * 16. Listen contains invalid amount of parameters with localhost as host
- * 17. Listen directive contains no value
- * 18. Root directive contains no root path
- * 19. Root directive contains multiple root paths
- * 20. Root directive contains no slash at the beginning
- * 21. Alias directive contains no alias path
- * 22. Alias directive contains multiple alias paths
- * 23. Alias directive contains no slash at the beginning
- * 24. Root and alias are defined in the same location
- * 25. Max body size directive contains no number
- * 26. Max body size directive contains invalid char within number
- * 27. Max body size directive contains invalid unit char
- * 28. Max body size directive contains invalid unit length
- * 29. Max body size contains invalid amount of parameters
- * 30. Max body size contains number which causes an overflow
- * 31. Max body size contains unit which causes an overflow
- * 32. Max body size directive contains no value
- * 33. Autoindex directive contains invalid value
- * 34. Autoindex contains invalid amount of parameters
- * 35. Autoindex contains no value
- * 36. Allow methods directive contains invalid value
- * 37. Allow methods contains no value
- * 38. Error page contains invalid amount of parameters
- * 39. Error page contains invalid error code in between valid error codes (eg. 303 is in between 301 and 308. 303 is
+ * 10. Server contains multiple root directives
+ * 11. Location contains multiple root directives
+ * 12. Location contains no path
+ * 13. Location contains multiple paths
+ * 14. Listen directive contains invalid ip address
+ * 15. Listen directive contains invalid port
+ * 16. Listen contains invalid amount of parameters with a host and port
+ * 17. Listen contains invalid amount of parameters with an ip address
+ * 18. Listen contains invalid amount of parameters with a port
+ * 19. Listen contains invalid amount of parameters with localhost as host
+ * 20. Listen directive contains no value
+ * 21. Root directive contains no root path
+ * 22. Root directive contains multiple root paths
+ * 23. Root directive contains no slash at the beginning
+ * 24. Alias directive contains no alias path
+ * 25. Alias directive contains multiple alias paths
+ * 26. Alias directive contains no slash at the beginning
+ * 27. Root and alias are defined in the same location
+ * 28. Max body size directive contains no number
+ * 29. Max body size directive contains invalid char within number
+ * 30. Max body size directive contains invalid unit char
+ * 31. Max body size directive contains invalid unit length
+ * 32. Max body size contains invalid amount of parameters
+ * 33. Max body size contains number which causes an overflow
+ * 34. Max body size contains unit which causes an overflow
+ * 35. Max body size directive contains no value
+ * 36. Autoindex directive contains invalid value
+ * 37. Autoindex contains invalid amount of parameters
+ * 38. Autoindex contains no value
+ * 39. Allow methods directive contains invalid value
+ * 40. Allow methods contains no value
+ * 41. Error page contains invalid amount of parameters
+ * 42. Error page contains invalid error code in between valid error codes (eg. 303 is in between 301 and 308. 303 is
  still invalid because it is not implemented)
- * 40. Error page contains invalid error code lower as the lowest error code
- * 41. Error page contains invalid error code higher as the highest error code
- * 42. Error page path contains no slash at the beginning
- * 43. Error page path contains no value
- * 44. Error page contains no value
- * 45. CGI extension contains no dot at beginning
- * 46. CGI extension contains multiple extensions
- * 47. CGI extension contains multiple dots at the beginning
- * 48. CGI extension contains multiple dots in between
- * 49. CGI extension contains no value
- * 50. CGI path contains no slash at the beginning
- * 51. CGI path contains multiple paths
- * 52. CGI path contains no value
- * 53. CGI index contains no value
- * 54. Return contains invalid code in between valid codes
- * 55. Return contains invalid code lower as the lowest code
- * 56. Return contains invalid code higher as the highest code
- * 57. Return contains invalid url
- * 58. Return contains invalid amount of parameters
- * 59. Return contains invalid amount of parameters with double quotes
- * 60. Return contains invalid amount of parameters with unclosed double quote
- * 61. Return contains code, text and unclosed double quotes
- * 62. Return contains code, text and too many double quotes
- * 63. Return contains no value
- * 64. Invalid directives outside of server block
- * 65. Several server names
- * 66. Server name contains no value
+ * 43. Error page contains invalid error code lower as the lowest error code
+ * 44. Error page contains invalid error code higher as the highest error code
+ * 45. Error page path contains no slash at the beginning
+ * 46. Error page path contains no value
+ * 47. Error page contains no value
+ * 48. CGI extension contains no dot at beginning
+ * 49. CGI extension contains multiple extensions
+ * 50. CGI extension contains multiple dots at the beginning
+ * 51. CGI extension contains multiple dots in between
+ * 52. CGI extension contains no value
+ * 53. CGI path contains no slash at the beginning
+ * 54. CGI path contains multiple paths
+ * 55. CGI path contains no value
+ * 56. CGI index contains no value
+ * 57. Return contains invalid code in between valid codes
+ * 58. Return contains invalid code lower as the lowest code
+ * 59. Return contains invalid code higher as the highest code
+ * 60. Return contains invalid url
+ * 61. Return contains invalid amount of parameters
+ * 62. Return contains invalid amount of parameters with double quotes
+ * 63. Return contains invalid amount of parameters with unclosed double quote
+ * 64. Return contains code, text and unclosed double quotes
+ * 65. Return contains code, text and too many double quotes
+ * 66. Return contains no value
+ * 67. Invalid directives outside of server block
+ * 68. Several server names
+ * 69. Server name contains no value
  */
 
 TEST_F(InvalidConfigFileTests, FileCouldNotBeOpened)
@@ -236,6 +238,34 @@ TEST_F(InvalidConfigFileTests, ServerContainsDuplicateLocationDefaultPath)
 				m_configFileParser.parseConfigFile("config_files/duplicate_location_default_path.conf");
 			} catch (const std::exception& e) {
 				EXPECT_STREQ("Duplicate location", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, ServerContainsMultipleRootDirectives)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/server_multiple_roots.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Server contains multiple root directives", e.what());
+				throw;
+			}
+		},
+		std::runtime_error);
+}
+
+TEST_F(InvalidConfigFileTests, LocationContainsMultipleRootDirectives)
+{
+	EXPECT_THROW(
+		{
+			try {
+				m_configFileParser.parseConfigFile("config_files/location_multiple_roots.conf");
+			} catch (const std::exception& e) {
+				EXPECT_STREQ("Location contains multiple root directives", e.what());
 				throw;
 			}
 		},

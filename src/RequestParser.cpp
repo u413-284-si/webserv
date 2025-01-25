@@ -363,14 +363,11 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
 		}
-		std::string headerName;
-		std::string headerValue;
 		const std::size_t delimiterPos = headerLine.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
-			headerName = headerLine.substr(0, delimiterPos);
+			const std::string headerName = webutils::lowercase(headerLine.substr(0, delimiterPos));
 			validateHeaderName(headerName, request);
-			webutils::lowercase(headerName);
-			headerValue = headerLine.substr(delimiterPos + 1);
+			std::string headerValue = headerLine.substr(delimiterPos + 1);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
@@ -482,9 +479,8 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 
 		// Find form header section and lower case it
 		size_t contentStartPos = checkForString("\r\n\r\n", currentBoundaryEndPos, request.body);
-		std::string loweredFormHeader
-			= request.body.substr(currentBoundaryEndPos, contentStartPos - currentBoundaryEndPos);
-		webutils::lowercase(loweredFormHeader);
+		const std::string loweredFormHeader
+			= webutils::lowercase(request.body.substr(currentBoundaryEndPos, contentStartPos - currentBoundaryEndPos));
 
 		// Check required headers
 		const size_t dispositionPos = checkForString("content-disposition:", 0, loweredFormHeader);
@@ -659,7 +655,7 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 		if (request.headers.find("content-length") != request.headers.end())
 			request.shallCloseConnection = true;
 
-		webutils::lowercase(request.headers.at("transfer-encoding"));
+		request.headers.at("transfer-encoding") = webutils::lowercase(request.headers.at("transfer-encoding"));
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
 			if (encodings[encodings.size() - 1] != "chunked") {
@@ -811,7 +807,7 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 		throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
 	}
 
-	webutils::lowercase(iter->second);
+	iter->second = webutils::lowercase(iter->second);
 	if (iter->second == "close") {
 		request.shallCloseConnection = true;
 	} else if (iter->second == "keep-alive") {
