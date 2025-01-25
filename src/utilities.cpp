@@ -214,8 +214,13 @@ bool isPortValid(const std::string& port)
  * std::transform algorithm and the ::tolower function.
  *
  * @param str The string to be converted to lowercase.
+ * @return std::string The string with all characters converted to lowercase.
  */
-void lowercase(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::tolower); }
+std::string lowercase(std::string str)
+{
+	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	return str;
+}
 
 /**
  * @brief Capitalizes the first letter of each word in a string.

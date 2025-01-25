@@ -183,8 +183,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
-	std::string loweredHeaders = headers;
-	webutils::lowercase(loweredHeaders);
+	std::string loweredHeaders = webutils::lowercase(headers);
 
 	if (posHeadersEnd == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
@@ -209,8 +208,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		std::string header = headers.substr(lineStart, lineEnd - lineStart);
 		const std::size_t delimiterPos = header.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
-			std::string headerName = header.substr(0, delimiterPos);
-			webutils::lowercase(headerName);
+			std::string headerName = webutils::lowercase(header.substr(0, delimiterPos));
 			std::string headerValue = header.substr(delimiterPos + 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
 			webutils::trimTrailingWhiteSpaces(headerValue);
