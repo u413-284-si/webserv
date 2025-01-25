@@ -653,7 +653,7 @@ void ConfigFileParser::readAutoIndex(const std::string& autoindex)
 	if (autoindex.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error(ERR_INVALID_AUTOINDEX_PARAMETERS);
 
-	std::string lowercaseAutoindex = webutils::lowercase(autoindex);
+	const std::string lowercaseAutoindex = webutils::lowercase(autoindex);
 
 	if (lowercaseAutoindex == "on")
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].hasAutoindex = true;
@@ -686,7 +686,7 @@ void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
 		size_t methodStartIndex = index;
 		size_t methodEndIndex = allowMethods.find_first_of(s_whitespace, index);
 
-		std::string method = webutils::lowercase(allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex));
+		const std::string method = webutils::lowercase(allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex));
 
 		if (method == "get")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = true;

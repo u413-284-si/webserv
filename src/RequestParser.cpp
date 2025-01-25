@@ -363,14 +363,11 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			request.shallCloseConnection = true;
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
 		}
-		std::string headerName;
-		std::string headerValue;
 		const std::size_t delimiterPos = headerLine.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
-			headerName = headerLine.substr(0, delimiterPos);
+			const std::string headerName = webutils::lowercase(headerLine.substr(0, delimiterPos));
 			validateHeaderName(headerName, request);
-			headerName = webutils::lowercase(headerName);
-			headerValue = headerLine.substr(delimiterPos + 1);
+			std::string headerValue = headerLine.substr(delimiterPos + 1);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
@@ -482,7 +479,7 @@ void RequestParser::decodeMultipartFormdata(HTTPRequest& request)
 
 		// Find form header section and lower case it
 		size_t contentStartPos = checkForString("\r\n\r\n", currentBoundaryEndPos, request.body);
-		std::string loweredFormHeader
+		const std::string loweredFormHeader
 			= webutils::lowercase(request.body.substr(currentBoundaryEndPos, contentStartPos - currentBoundaryEndPos));
 
 		// Check required headers
