@@ -25,7 +25,7 @@
 
 // clang-format off
 #ifndef DEFAULT_CONFIG_PATH
-#define DEFAULT_CONFIG_PATH ./config_files/standard_config.conf
+#define DEFAULT_CONFIG_PATH ./config_files/example.conf
 #endif
 // clang-format on
 
