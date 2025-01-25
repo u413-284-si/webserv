@@ -225,7 +225,7 @@ LOG_PERF = $(LOG_FILE)_perf.data
 # *     Special Vars           *
 # ******************************
 
-CONFIGFILE = $(CONFIG_DIR)/valid_config.conf
+CONFIGFILE = $(CONFIG_DIR)/trihard.conf
 CONFIGFILE_INTEGRATION = $(CONFIG_DIR)/example.conf
 KCOV_EXCL_PATH = --exclude-path=/usr/include,/usr/lib,/usr/local,./$(TEST_DIR)
 
@@ -275,7 +275,7 @@ test2: $(NAME)
 # This target uses CONFIGFILE as argument to run the program.
 .PHONY: run
 run: $(NAME)
-	@printf "$(YELLOW)$(BOLD)Run with example.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
+	@printf "$(YELLOW)$(BOLD)Run wit trihard.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
 	./$(NAME) $(CONFIGFILE)
 
 # This target uses perf for profiling.

@@ -25,7 +25,7 @@
 
 // clang-format off
 #ifndef DEFAULT_CONFIG_PATH
-#define DEFAULT_CONFIG_PATH ./config_files/example.conf
+#define DEFAULT_CONFIG_PATH ./config_files/trihard.conf
 #endif
 // clang-format on
 
