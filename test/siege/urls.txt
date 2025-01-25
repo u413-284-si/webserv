@@ -3,7 +3,14 @@ http://127.0.0.1:8080/content.html
 http://127.0.0.1:8080/styled.html
 http://127.0.0.1:8080/images/cat.jpg
 http://127.0.0.1:8080/images.html
+http://127.0.0.1:8080/run_cgi.html
 http://127.0.0.1:8080/directory/
 http://127.0.0.1:8080/broken_link
 http://127.0.0.1:8080/secret
-http://127.0.0.1:8080/cgi-bin/upperCase.sh POST helloboys
+http://127.0.0.1:8080/alias/cat.jpg
+http://127.0.0.1:8080/cgi-bin/helloWorld.sh
+http://127.0.0.1:8080/cgi-bin/upperCase.sh?text=hello+my+honey
+http://127.0.0.1:8080/cgi-bin/upperCase.sh POST text=hello+my+baby
+http://127.0.0.1:8080/cgi-bin/badBoi.sh
+http://127.0.0.1:8081/cgi-bin/time.py
+http://127.0.0.1:8081/cgi-bin/create_textfile.py POST filename=mybaby.txt&content=Hello my ragtime gal
