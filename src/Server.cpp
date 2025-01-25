@@ -257,7 +257,6 @@ void Server::removeConnection(int delFd)
 	const Socket clientSocket = getConnections().at(delFd).m_clientSocket;
 	removeEvent(delFd);
 	getConnections().erase(delFd);
-	close(delFd);
 	LOG_DEBUG << "Removed Connection: " << clientSocket << " on fd: " << delFd;
 }
 
@@ -1399,6 +1398,7 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 			return;
 		}
 	}
+    connection.m_cgiPid = -1;
 	connection.m_request.body.append(buffer.begin(), buffer.begin() + bytesRead);
 }
 
@@ -1512,8 +1512,21 @@ void checkForTimeout(Server& server)
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			if (iter->second.m_status != Connection::ReceiveFromCGI && iter->second.m_status != Connection::SendToCGI)
-				server.modifyEvent(iter->first, EPOLLOUT);
+			if (iter->second.m_status == Connection::ReceiveFromCGI || iter->second.m_status == Connection::SendToCGI) {
+                server.addEvent(iter->first, EPOLLOUT);
+
+                if (iter->second.m_pipeToCGIWriteEnd != -1) {
+                    webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
+                    iter->second.m_pipeToCGIWriteEnd = -1;
+                }
+
+                if (iter->second.m_pipeFromCGIReadEnd != -1) {
+                    webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
+                    iter->second.m_pipeFromCGIReadEnd = -1;
+                }
+            }
+            
+			server.modifyEvent(iter->first, EPOLLOUT);
 			iter->second.m_status = Connection::Timeout;
 		}
 	}
