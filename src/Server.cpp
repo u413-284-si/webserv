@@ -532,7 +532,10 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
+void Server::findTargetResource(Connection& connection)
+{
+	m_targetResourceHandler.execute(connection.m_request, connection.location, connection.serverConfig);
+}
 
 /* ====== INITIALIZATION ====== */
 
