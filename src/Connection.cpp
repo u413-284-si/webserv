@@ -26,6 +26,19 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
 		m_status = Closed;
 }
 
+/**
+ * @brief Destructor for the Connection class.
+ *
+ * This destructor ensures that any resources associated with the Connection
+ * object are properly released. Specifically, it performs the following actions:
+ * - If a CGI process is running (indicated by m_cgiPid not being -1), it sends
+ *   a SIGKILL signal to terminate the process.
+ * - If the write end of the pipe to the CGI process is open (indicated by
+ *   m_pipeToCGIWriteEnd not being -1), it closes the file descriptor.
+ * - If the read end of the pipe from the CGI process is open (indicated by
+ *   m_pipeFromCGIReadEnd not being -1), it closes the file descriptor.
+ * - Finally, it closes the client file descriptor (m_clientFd).
+ */
 Connection::~Connection()
 {
     if (m_cgiPid != -1)
