@@ -16,11 +16,11 @@
 
 NAME := webserv
 
-TEST := unittest
+UNIT := unittest
 
 NAME_SANI := $(NAME)_sani
 
-TEST_SANI := $(TEST)_sani
+UNIT_SANI := $(UNIT)_sani
 
 # ******************************
 # *     Variables              *
@@ -65,11 +65,6 @@ BLUE := \033[34m
 
 SRC_DIR := src
 
-TEST_DIR := test
-UNIT_TEST_DIR := $(TEST_DIR)/unit
-INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
-SIEGE_DIR := $(TEST_DIR)/siege
-
 # Base directory for object files
 BASE_OBJ_DIR = obj
 
@@ -79,7 +74,7 @@ BASE_OBJ_DIR = obj
 ifeq ($(SANI),1)
 	OBJ_DIR := $(BASE_OBJ_DIR)/sani
 	NAME := $(NAME_SANI)
-	TEST := $(TEST_SANI)
+	UNIT := $(UNIT_SANI)
 else
 	OBJ_DIR := $(BASE_OBJ_DIR)/default
 endif
@@ -90,11 +85,19 @@ INC_DIR := inc
 # Subdirectories for dependency files
 DEP_DIR := $(BASE_OBJ_DIR)/dep
 
+# Subdirectory for test related files
+TEST_DIR := test
+
+UNIT_TEST_DIR_SRC := $(TEST_DIR)/unit/src
+UNIT_TEST_DIR_INC := $(TEST_DIR)/unit/inc
+INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
+SIEGE_DIR := $(TEST_DIR)/siege
+
 # Subdirectory for log files
 LOG_DIR := log
 
 # Directory for coverage report
-KCOV_DIR := .vscode/coverage
+KCOV_DIR := kcov
 
 # Directory for configuration files
 CONFIG_DIR := config_files
@@ -114,8 +117,9 @@ COMPILE = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) -c
 POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 
 # Special variables for compiling test files
+CPPFLAGS_TEST = $(CPPFLAGS) -I $(UNIT_TEST_DIR_INC)
 CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) $(DEBUG_FLAGS) -g
-COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
+COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS_TEST) $(CXXFLAGS_TEST) -c
 
 # ******************************
 # *     Source files           *
@@ -253,18 +257,21 @@ $(NAME): $(PROG_OBJS)
 # *     Special targets        *
 # ******************************
 
-# Alias for creating unittests
-.PHONY: test
-test: $(TEST)
 # Reconfigure flags for linking with gtest
-$(TEST): LDLIBS := -pthread -lgtest -lgmock -lgtest_main
-$(TEST): OBJS := $(TEST_OBJS)
+$(UNIT): LDLIBS := -pthread -lgtest -lgmock -lgtest_main
+$(UNIT): OBJS := $(TEST_OBJS)
 # Link the test binary
-$(TEST): $(TEST_OBJS)
+$(UNIT): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link binary$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
+
+# Run unittests
+.PHONY: test
+test: $(UNIT)
+	@printf "$(YELLOW)$(BOLD)Run unittests$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)./$(UNIT)
 
 # Run integration tests
 .PHONY: test2
@@ -391,7 +398,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(SILENT)$(POSTCOMPILE)
 
 # Similar target for testfiles; uses different compile flags
-$(OBJ_DIR)/%.o: $(UNIT_TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(UNIT_TEST_DIR_SRC)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE_TEST) $< -o $@
