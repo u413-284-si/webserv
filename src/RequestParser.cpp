@@ -796,27 +796,28 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 	LOG_DEBUG << "Validating Connection header...";
 
 	std::map<std::string, std::string>::iterator iter = request.headers.find("connection");
-	if (iter != request.headers.end()) {
-		if (iter->second.empty()) {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
-		}
-
-		iter->second = webutils::lowercase(iter->second);
-		if (iter->second == "close") {
-			request.shallCloseConnection = true;
-		} else if (iter->second == "keep-alive") {
-		} else {
-			request.httpStatus = StatusBadRequest;
-			request.shallCloseConnection = true;
-			throw std::runtime_error(ERR_INVALID_CONNECTION_VALUE);
-		}
-
-		LOG_DEBUG << "Valid Connection header: " << iter->second;
+	if (iter == request.headers.end()) {
+		LOG_DEBUG << "No Connection header found.";
+		return;
 	}
 
-	LOG_DEBUG << "No Connection header found.";
+	if (iter->second.empty()) {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
+	}
+
+	iter->second = webutils::lowercase(iter->second);
+	if (iter->second == "close") {
+		request.shallCloseConnection = true;
+	} else if (iter->second == "keep-alive") {
+	} else {
+		request.httpStatus = StatusBadRequest;
+		request.shallCloseConnection = true;
+		throw std::runtime_error(ERR_INVALID_CONNECTION_VALUE);
+	}
+
+	LOG_DEBUG << "Valid Connection header: " << iter->second;
 }
 
 /* ====== HELPER FUNCTIONS ====== */

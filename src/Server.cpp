@@ -1051,9 +1051,10 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	// bool array and method are scoped with enum Method
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-	if (!connection.location->allowMethods[connection.m_request.method])
+	if (!connection.location->allowMethods[connection.m_request.method]) {
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
-	connection.m_request.shallCloseConnection = true;
+		connection.m_request.shallCloseConnection = true;
+	}
 
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;

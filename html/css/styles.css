@@ -1,20 +1,33 @@
-/* Reset some default browser styles */
+/* RESET STYLES */
 body, h1, h2, p, ul, li {
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-/* General body styles */
+/* GLOBAL STYLES */
 body {
 	font-family: 'Arial', sans-serif;
-	background-color: #f0f8ff;
+	background-color: #f4f4f4; /* Common background for both pages */
 	color: #333;
 	padding: 20px;
 	line-height: 1.6;
 }
 
-/* Header styles with gradient background */
+h1 {
+	color: #333;
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+h2 {
+	color: #444;
+	border-bottom: 2px solid #ccc;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+}
+
+/* HEADER STYLES */
 header {
 	text-align: center;
 	margin-bottom: 40px;
@@ -32,7 +45,7 @@ header p {
 	font-size: 1.2em;
 }
 
-/* Section styling */
+/* SECTIONS */
 section {
 	margin-bottom: 40px;
 }
@@ -48,7 +61,7 @@ section p, ul {
 	color: #444;
 }
 
-/* Button styling with animation */
+/* BUTTONS */
 button {
 	background-color: #00509e;
 	color: white;
@@ -65,7 +78,6 @@ button:hover {
 	background-color: #003f7f;
 }
 
-/* Special styling for the delete button */
 .delete-btn {
 	background-color: #ff4d4d;  /* Red background */
 	color: white;
@@ -76,7 +88,7 @@ button:hover {
 	transform: scale(1.1);
 }
 
-/* Card layout styling */
+/* CARD LAYOUT */
 .card-section {
 	margin-bottom: 60px;
 }
@@ -106,7 +118,40 @@ button:hover {
 	color: #666;
 }
 
-/* Footer styles */
+/* GALLERY */
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px;
+	padding: 0;
+}
+
+.gallery img {
+	width: 200px;
+	height: auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gallery img:hover {
+	transform: scale(1.05);
+	transition: transform 0.3s ease-in-out;
+}
+
+/* DIVIDER */
+.divider {
+	text-align: center;
+	margin: 40px 0;
+}
+
+.divider hr {
+	border: none;
+	height: 1px;
+	background-color: #ccc;
+	width: 50%;
+}
+
+/* FOOTER */
 footer {
 	text-align: center;
 	margin-top: 40px;
