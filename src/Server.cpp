@@ -1518,16 +1518,11 @@ void checkForTimeout(Server& server)
 
 				if (iter->second.m_pipeToCGIWriteEnd != -1) {
 					webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
-					iter->second.m_pipeToCGIWriteEnd = -1;
-				}
 
-				if (iter->second.m_pipeFromCGIReadEnd != -1) {
+				if (iter->second.m_pipeFromCGIReadEnd != -1)
 					webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
-					iter->second.m_pipeFromCGIReadEnd = -1;
-				}
-			}
-
-			server.modifyEvent(iter->first, EPOLLOUT);
+			} else
+				server.modifyEvent(iter->first, EPOLLOUT);
 			iter->second.m_status = Connection::Timeout;
 		}
 	}
