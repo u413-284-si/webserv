@@ -12,6 +12,8 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
 	, m_locationIndex(0)
+	, m_hasServerRoot(false)
+	, m_hasLocationRoot(false)
 	, m_isDefaultLocationDefined(false)
 {
 	const char* validServerDirectiveNames[]
@@ -296,12 +298,14 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error(ERR_SEMICOLON_MISSING);
 
+	m_hasServerRoot = false;
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
 
 	m_isDefaultLocationDefined = false;
 	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
 		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
+		m_hasLocationRoot = false;
 		processLocationContent(*it);
 	}
 }
@@ -434,13 +438,19 @@ void ConfigFileParser::readLocationBlockPath(void)
  *
  * If at the end of the path is a slash, it removes it.
  *
- * This function can be used for the server block and location block
+ * For the case that a root directive was already read within the same server or location, a corresponding error is
+ * thrown
  *
  * @param block The block which surounds the directive
  * @param rootPath The value of the directive root
  */
 void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
+	if (block == ServerBlock && m_hasServerRoot)
+		throw std::runtime_error(ERR_SERVER_MULTIPLE_ROOTS);
+	if (block == LocationBlock && m_hasLocationRoot)
+		throw std::runtime_error(ERR_LOCATION_MULTIPLE_ROOTS);
+
 	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
 		throw std::runtime_error(ERR_MULTIPLE_ROOT_PATHS);
 
@@ -450,10 +460,13 @@ void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath.erase(rootPath.end() - 1);
 
-	if (block == ServerBlock)
+	if (block == ServerBlock) {
+		m_hasServerRoot = true;
 		m_configFile.servers[m_serverIndex].root = rootPath;
-	else if (block == LocationBlock)
+	} else if (block == LocationBlock) {
+		m_hasLocationRoot = true;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].root = rootPath;
+	}
 }
 
 /**
