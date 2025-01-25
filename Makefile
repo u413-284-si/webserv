@@ -280,6 +280,7 @@ SIEGE_CONFIG=$(SIEGE_DIR)/siege.conf
 SIEGE_FILE=$(SIEGE_DIR)/urls.txt
 SIEGE_CONCURRENT=25
 SIEGE_TIME=1m
+SIEGE_URL=http://127.0.0.1:8080/empty.html
 
 # Run load test with siege
 .PHONY: test3
@@ -293,6 +294,20 @@ test3: $(NAME) | $(LOG_DIR)
 		--log=$(LOG_SIEGE) \
 		--concurrent=$(SIEGE_CONCURRENT) \
 		--time=$(SIEGE_TIME)
+	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
+
+.PHONY: test4
+test4: $(NAME) | $(LOG_DIR)
+	@printf "$(YELLOW)$(BOLD)Run benchmark test with siege on a single URL$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)sleep 1
+	$(SILENT)siege \
+		--rc=$(SIEGE_CONFIG) \
+		--log=$(LOG_SIEGE) \
+		--concurrent=$(SIEGE_CONCURRENT) \
+		--time=$(SIEGE_TIME) \
+		--benchmark \
+		$(SIEGE_URL)
 	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
 
 # This target uses CONFIGFILE as argument to run the program.
