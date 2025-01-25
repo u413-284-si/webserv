@@ -42,10 +42,12 @@
  * The constructor also calls setEnvp() to set the environment variables and setArgv() to set the
  * arguments for the execve system call.
  */
-CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
+CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps, const FileSystemOps& fileSystemOps)
 	: m_processOps(processOps)
+	, m_fileSystemOps(fileSystemOps)
 	, m_cgiPath(connection.location->cgiPath)
 	, m_cgiExt(connection.location->cgiExt)
+	, m_cgiScriptPath(extractPreScriptPath(connection.m_request.targetResource))
 	, m_pipeIn()
 	, m_pipeOut()
 	, m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
@@ -53,7 +55,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	, m_cgiPid(connection.m_cgiPid)
 	, m_request(connection.m_request)
 	, m_location(connection.location)
-
+	, m_serverConfig(connection.serverConfig)
 {
 
 	/* ========= Set up environment for CGI script ========= */
@@ -65,8 +67,12 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	m_env.push_back("GATEWAY_INTERFACE=CGI/1.1");
 	const std::string pathInfo = extractPathInfo(connection.m_request.uri.path);
 	m_env.push_back("PATH_INFO=" + pathInfo);
-    const std::string preScriptPath = extractPreScriptPath(connection.m_request.targetResource);
-	m_env.push_back("PATH_TRANSLATED=" + preScriptPath + pathInfo);
+	if (pathInfo.empty())
+		m_env.push_back("PATH_TRANSLATED=");
+	else {
+		const std::string pathTranslated = mapPathInfoToTargetResource(pathInfo);
+		m_env.push_back("PATH_TRANSLATED=" + pathTranslated);
+	}
 	m_env.push_back("QUERY_STRING=" + connection.m_request.uri.query);
 	m_env.push_back("REDIRECT_STATUS=200");
 	m_env.push_back("REMOTE_ADDR=" + connection.m_clientSocket.host);
@@ -82,7 +88,6 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	m_env.push_back("SERVER_PORT=" + connection.m_serverSocket.port);
 	m_env.push_back("SERVER_PROTOCOL=HTTP/1.1");
 	m_env.push_back("SERVER_SOFTWARE=Trihard/1.0.0");
-	m_env.push_back("SYSTEM_ROOT=" + preScriptPath);
 
 	/* ========= Set up arguments for CGI script ========= */
 
@@ -205,7 +210,7 @@ void CGIHandler::execute(
 		}
 		closeAllFds(epollFd, connections, cgiConnections);
 
-		std::string workingDir = m_location->root + m_location->path;
+		std::string workingDir = m_cgiScriptPath;
 		if (m_processOps.chdirProcess(workingDir.c_str()) == -1)
 			std::exit(EXIT_FAILURE);
 
@@ -297,18 +302,34 @@ std::string CGIHandler::extractScriptPath(const std::string& path)
  * @brief Extracts the path before the CGI script extension.
  *
  * This function finds the position of the CGI script extension in the given path and returns
- * the substring of the path before the extension. If the extension is not found, it returns an empty string.
+ * the substring of the path before the extension.
+ * The extension should be in the path since this function is called only when a CGI script is requested.
  *
  * @param path The full path containing the CGI script extension.
- * @return The substring of the path before the CGI script extension, or an empty string if the extension is not found.
+ * @return The substring of the path before the CGI script extension
  */
 std::string CGIHandler::extractPreScriptPath(const std::string& path)
 {
-	size_t extensionStart = path.find(m_cgiExt);
-	if (extensionStart == std::string::npos)
+	const size_t extensionStart = path.find(m_cgiExt);
+	const size_t scriptStart = path.rfind('/', extensionStart);
+	const std::string preScriptPath = path.substr(0, scriptStart);
+	LOG_DEBUG << "Pre-script path: " << preScriptPath;
+	return preScriptPath;
+}
+
+std::string CGIHandler::mapPathInfoToTargetResource(const std::string& pathInfo) {
+
+	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
+
+	HTTPRequest tempRequest;
+	tempRequest.uri.path = pathInfo;
+
+	targetResourceHandler.execute(tempRequest, m_location, m_serverConfig);
+
+	if (tempRequest.httpStatus != StatusOK)
 		return "";
-    size_t scriptStart = path.rfind('/', extensionStart);
-	return path.substr(0, scriptStart );
+
+	return (tempRequest.targetResource);
 }
 
 /**
