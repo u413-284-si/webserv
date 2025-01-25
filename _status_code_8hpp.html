@@ -163,6 +163,9 @@ Functions</h2></td></tr>
 <tr class="separator:a8ea6114ed12d068cafadbcd8aee99abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849ef63e47980cc5b2e5d7186a09a3a4" id="r_a849ef63e47980cc5b2e5d7186a09a3a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_status_code_8hpp.html#a849ef63e47980cc5b2e5d7186a09a3a4">extractStatusCode</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">std::string</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>)</td></tr>
 <tr class="separator:a849ef63e47980cc5b2e5d7186a09a3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ffe20c990ee392d88c516781bda2ba2" id="r_a9ffe20c990ee392d88c516781bda2ba2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_status_code_8hpp.html#a9ffe20c990ee392d88c516781bda2ba2">isErrorStatus</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
+<tr class="memdesc:a9ffe20c990ee392d88c516781bda2ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a given status code is an error status code.  <br /></td></tr>
+<tr class="separator:a9ffe20c990ee392d88c516781bda2ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7624eba338a6df04e8076bcc14e77e96" id="r_a7624eba338a6df04e8076bcc14e77e96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96">isRedirectionStatus</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
 <tr class="memdesc:a7624eba338a6df04e8076bcc14e77e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a given status code is a redirection.  <br /></td></tr>
 <tr class="separator:a7624eba338a6df04e8076bcc14e77e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -429,43 +432,43 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The corresponding statusCode enum value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00074">74</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;0&quot;</span>)</div>
-<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>;</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;200&quot;</span>)</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;201&quot;</span>)</div>
-<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>;</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;301&quot;</span>)</div>
-<div class="line"><span class="lineno">   83</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>;</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;302&quot;</span>)</div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac6f06ea3d80f5b36aa11d21455271c3d">StatusFound</a>;</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;308&quot;</span>)</div>
-<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>;</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;400&quot;</span>)</div>
-<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>;</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;403&quot;</span>)</div>
-<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;404&quot;</span>)</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;405&quot;</span>)</div>
-<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>;</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;408&quot;</span>)</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>;</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;413&quot;</span>)</div>
-<div class="line"><span class="lineno">   99</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>;</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;431&quot;</span>)</div>
-<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>;</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;500&quot;</span>)</div>
-<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;501&quot;</span>)</div>
-<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>;</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;505&quot;</span>)</div>
-<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>;</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>;</div>
-<div class="line"><span class="lineno">  110</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00084">84</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;0&quot;</span>)</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>;</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;200&quot;</span>)</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac2100e382b4b426b38bf06e5f738a080">StatusOK</a>;</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;201&quot;</span>)</div>
+<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa341ba1954f44efb66b44f018f4048bda">StatusCreated</a>;</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;301&quot;</span>)</div>
+<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>;</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;302&quot;</span>)</div>
+<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaac6f06ea3d80f5b36aa11d21455271c3d">StatusFound</a>;</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;308&quot;</span>)</div>
+<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>;</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;400&quot;</span>)</div>
+<div class="line"><span class="lineno">   99</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>;</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;403&quot;</span>)</div>
+<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a>;</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;404&quot;</span>)</div>
+<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a>;</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;405&quot;</span>)</div>
+<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>;</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;408&quot;</span>)</div>
+<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>;</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;413&quot;</span>)</div>
+<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>;</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;431&quot;</span>)</div>
+<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>;</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;500&quot;</span>)</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a>;</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;501&quot;</span>)</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259">StatusMethodNotImplemented</a>;</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a> == <span class="stringliteral">&quot;505&quot;</span>)</div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949">StatusNonSupportedVersion</a>;</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>;</div>
+<div class="line"><span class="lineno">  120</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -490,20 +493,57 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00112">112</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordtype">size_t</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>.find_first_of(<span class="stringliteral">&quot;0123456789&quot;</span>);</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a> != std::string::npos) {</div>
-<div class="line"><span class="lineno">  116</span>        std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCodeString</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>.substr(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>.find_first_not_of(<span class="stringliteral">&quot;0123456789&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a>) - <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a>);</div>
-<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="_status_code_8cpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCodeString</a>);</div>
-<div class="line"><span class="lineno">  118</span>    }</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>;</div>
-<div class="line"><span class="lineno">  120</span>}</div>
-<div class="ttc" id="a_status_code_8cpp_html_a8ea6114ed12d068cafadbcd8aee99abf"><div class="ttname"><a href="_status_code_8cpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a></div><div class="ttdeci">statusCode stringToStatusCode(std::string &amp;str)</div><div class="ttdoc">Converts a string to an HTTP status code.</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8cpp_source.html#l00074">StatusCode.cpp:74</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00122">122</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordtype">size_t</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>.find_first_of(<span class="stringliteral">&quot;0123456789&quot;</span>);</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a> != std::string::npos) {</div>
+<div class="line"><span class="lineno">  126</span>        std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCodeString</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>.substr(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusLine</a>.find_first_not_of(<span class="stringliteral">&quot;0123456789&quot;</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a>) - <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pos</a>);</div>
+<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="_status_code_8cpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCodeString</a>);</div>
+<div class="line"><span class="lineno">  128</span>    }</div>
+<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa69200675e75db1a6f3f1e0360fe1ce83">NoStatus</a>;</div>
+<div class="line"><span class="lineno">  130</span>}</div>
+<div class="ttc" id="a_status_code_8cpp_html_a8ea6114ed12d068cafadbcd8aee99abf"><div class="ttname"><a href="_status_code_8cpp.html#a8ea6114ed12d068cafadbcd8aee99abf">stringToStatusCode</a></div><div class="ttdeci">statusCode stringToStatusCode(std::string &amp;str)</div><div class="ttdoc">Converts a string to an HTTP status code.</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8cpp_source.html#l00084">StatusCode.cpp:84</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="_status_code_8hpp_a849ef63e47980cc5b2e5d7186a09a3a4_cgraph.svg" width="348" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9ffe20c990ee392d88c516781bda2ba2" name="a9ffe20c990ee392d88c516781bda2ba2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ffe20c990ee392d88c516781bda2ba2">&#9670;&#160;</a></span>isErrorStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a> isErrorStatus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&#160;</td>
+          <td class="paramname"><em>statusCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if a given status code is an error status code. </p>
+<p>An error status code is a 3xx, 4xx or 5xx status code. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statusCode</td><td>Status code to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true If the status code is an error status code. </dd>
+<dd>
+false If the status code is not an error status code. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00059">59</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &gt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a>); }</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_status_code_8hpp_a9ffe20c990ee392d88c516781bda2ba2_icgraph.svg" width="334" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -535,16 +575,11 @@ Here is the call graph for this function:</div>
 <dd>
 false If the status code is not a redirection. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00059">59</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &gt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a> &amp;&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &lt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
-<div class="line"><span class="lineno">   62</span>}</div>
-</div><!-- fragment --><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_status_code_8hpp_a7624eba338a6df04e8076bcc14e77e96_icgraph.svg" width="376" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
+<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00069">69</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &gt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a> &amp;&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &lt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
+<div class="line"><span class="lineno">   72</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

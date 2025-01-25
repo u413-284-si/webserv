@@ -16,8 +16,9 @@ var searchData=
   ['isdirectory_13',['isdirectory',['../class_file_system_ops.html#a261fe578ab4d92be19f4b56018f6c5be',1,'FileSystemOps::isDirectory()'],['../struct_target_resource_handler_1_1_locating_info.html#a7ca3af7da6dac38b352d71f8a8c8ad10',1,'TargetResourceHandler::LocatingInfo::isDirectory'],['../struct_h_t_t_p_request.html#a566c4a4c6d78740bb2459945200c912c',1,'HTTPRequest::isDirectory']]],
   ['isduplicateserver_14',['isduplicateserver',['../_server_8cpp.html#a4f6456b9a16154a6d320ae8b370285d6',1,'isDuplicateServer(const Server &amp;server, const std::string &amp;host, const std::string &amp;port):&#160;Server.cpp'],['../_server_8hpp.html#a4f6456b9a16154a6d320ae8b370285d6',1,'isDuplicateServer(const Server &amp;server, const std::string &amp;host, const std::string &amp;port):&#160;Server.cpp']]],
   ['isduplicateservertest_15',['isduplicateservertest',['../classis_duplicate_server_test.html#a0e2f41b2d82d9dde33f6101e43668666',1,'isDuplicateServerTest::isDuplicateServerTest()'],['../classis_duplicate_server_test.html',1,'isDuplicateServerTest']]],
-  ['isexistingfile_16',['isExistingFile',['../class_file_system_ops.html#ab39892a09d270a528e201deaf1a0e049',1,'FileSystemOps']]],
-  ['isipaddressvalid_17',['isIpAddressValid',['../namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed',1,'webutils']]],
-  ['isportvalid_18',['isPortValid',['../namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d',1,'webutils']]],
-  ['isredirectionstatus_19',['isredirectionstatus',['../_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96',1,'isRedirectionStatus(statusCode statusCode):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a7624eba338a6df04e8076bcc14e77e96',1,'isRedirectionStatus(statusCode statusCode):&#160;StatusCode.cpp']]]
+  ['iserrorstatus_16',['iserrorstatus',['../_status_code_8hpp.html#a9ffe20c990ee392d88c516781bda2ba2',1,'isErrorStatus(statusCode statusCode):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a9ffe20c990ee392d88c516781bda2ba2',1,'isErrorStatus(statusCode statusCode):&#160;StatusCode.cpp']]],
+  ['isexistingfile_17',['isExistingFile',['../class_file_system_ops.html#ab39892a09d270a528e201deaf1a0e049',1,'FileSystemOps']]],
+  ['isipaddressvalid_18',['isIpAddressValid',['../namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed',1,'webutils']]],
+  ['isportvalid_19',['isPortValid',['../namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d',1,'webutils']]],
+  ['isredirectionstatus_20',['isredirectionstatus',['../_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96',1,'isRedirectionStatus(statusCode statusCode):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a7624eba338a6df04e8076bcc14e77e96',1,'isRedirectionStatus(statusCode statusCode):&#160;StatusCode.cpp']]]
 ];

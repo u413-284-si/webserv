@@ -1,9 +1,5 @@
 <map id="ResponseBodyHandler::execute" name="ResponseBodyHandler::execute">
-<area shape="rect" id="Node000001" title="Create the response body." alt="" coords="5,47,175,87"/>
-<area shape="rect" id="Node000002" href="$_response_body_handler_8cpp.html#a5fe29700e78ad2a318bd50a7f61b6234" title="Construct Allow header." alt="" coords="255,5,420,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,48,259,31,260,36,175,53"/>
-<area shape="rect" id="Node000003" href="$class_file_system_ops.html#adce091245f28830e674e7657096d3f41" title="Gets the contents of a file." alt="" coords="223,55,452,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,65,209,65,209,70,175,70"/>
-<area shape="rect" id="Node000004" href="$_status_code_8cpp.html#a7624eba338a6df04e8076bcc14e77e96" title="Check if a given status code is a redirection." alt="" coords="263,104,411,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="175,82,260,99,259,104,174,87"/>
+<area shape="rect" id="Node000001" title="Create the response body based on the HTTP Request status and method." alt="" coords="5,5,175,45"/>
+<area shape="rect" id="Node000002" href="$_status_code_8cpp.html#a9ffe20c990ee392d88c516781bda2ba2" title="Check if a given status code is an error status code." alt="" coords="223,13,328,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,23,209,23,209,28,175,28"/>
 </map>

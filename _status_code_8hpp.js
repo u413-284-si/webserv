@@ -22,5 +22,6 @@ var _status_code_8hpp =
     [ "statusCodeToReasonPhrase", "_status_code_8hpp.html#a1bd32c420ee91ee65ec9e0c4dd8a12c9", null ],
     [ "stringToStatusCode", "_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf", null ],
     [ "extractStatusCode", "_status_code_8hpp.html#a849ef63e47980cc5b2e5d7186a09a3a4", null ],
+    [ "isErrorStatus", "_status_code_8hpp.html#a9ffe20c990ee392d88c516781bda2ba2", null ],
     [ "isRedirectionStatus", "_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96", null ]
 ];
