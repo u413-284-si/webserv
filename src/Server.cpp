@@ -1398,7 +1398,7 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 			return;
 		}
 	}
-    connection.m_cgiPid = -1;
+	connection.m_cgiPid = -1;
 	connection.m_request.body.append(buffer.begin(), buffer.begin() + bytesRead);
 }
 
@@ -1513,19 +1513,19 @@ void checkForTimeout(Server& server)
 		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
 			if (iter->second.m_status == Connection::ReceiveFromCGI || iter->second.m_status == Connection::SendToCGI) {
-                server.addEvent(iter->first, EPOLLOUT);
+				server.addEvent(iter->first, EPOLLOUT);
 
-                if (iter->second.m_pipeToCGIWriteEnd != -1) {
-                    webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
-                    iter->second.m_pipeToCGIWriteEnd = -1;
-                }
+				if (iter->second.m_pipeToCGIWriteEnd != -1) {
+					webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
+					iter->second.m_pipeToCGIWriteEnd = -1;
+				}
 
-                if (iter->second.m_pipeFromCGIReadEnd != -1) {
-                    webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
-                    iter->second.m_pipeFromCGIReadEnd = -1;
-                }
-            }
-            
+				if (iter->second.m_pipeFromCGIReadEnd != -1) {
+					webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
+					iter->second.m_pipeFromCGIReadEnd = -1;
+				}
+			}
+
 			server.modifyEvent(iter->first, EPOLLOUT);
 			iter->second.m_status = Connection::Timeout;
 		}
