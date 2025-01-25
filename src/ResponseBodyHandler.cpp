@@ -6,52 +6,41 @@
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
  * @param responseHeaders Saves the response headers.
- * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& responseBody,
-	std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy)
+	std::map<std::string, std::string>& responseHeaders, const FileSystemOps& fileSystemOps)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
 	, m_responseHeaders(responseHeaders)
-	, m_fileSystemPolicy(fileSystemPolicy)
+	, m_fileSystemOps(fileSystemOps)
 {
 }
 
 /**
- * @brief Create the response body.
+ * @brief Create the response body based on the HTTP Request status and method.
  *
- * Depending on the HTTP Request status, the body will be created:
- * - If the request had a location with Return directive additional checks are made.
- *  - If there is no Return message and status code is not an error code no body is sent.
- *  - If there is a Return message and it is not a redirection status, the target resource will be set as
- * the body.
- * - If the status is an error status an error page will be created.
- * - If the request hasAutoindex (which indicates target resource is directory) an autoindex will be created.
- * - In case of GET request (which indicates target resource is a file), the file contents will be read and set as the
- * body.
- * - In case of a POST request, the request body will be written to the target resource.
- * - In case of a DELETE request, the target resource will be deleted.
+ * addHeadersBasedOnStatus() is called to add special headers based on the status code.
+ * Then special cases are handled:
+ * - If the request has a Return directive, handleReturnDirective() is called.
+ * - If the status is an error status, handleErrorBody() is called.
+ * - If the request has CGI, parseCGIResponseHeaders() is called.
+ * Otherwise the method is checked and the appropriate function is called:
+ * - GET: handleGetRequest()
+ * - POST: handlePostRequest()
+ * - DELETE: handleDeleteRequest()
  */
 void ResponseBodyHandler::execute()
 {
-	if (isRedirectionStatus(m_request.httpStatus))
-		m_responseHeaders["location"] = m_request.targetResource;
-
-	if (m_request.httpStatus == StatusMethodNotAllowed)
-		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
+	addHeadersBasedOnStatus();
 
 	if (m_request.hasReturn) {
-		const bool isEmpty = m_request.targetResource.empty();
-		if (isEmpty && m_request.httpStatus < StatusMovedPermanently)
-			return;
-		if (!isEmpty && !isRedirectionStatus(m_request.httpStatus)) {
-			m_responseBody = m_request.targetResource;
-			return;
-		}
+		handleReturnDirective();
+		return;
 	}
 
-	if (m_request.httpStatus >= StatusMovedPermanently) {
+	if (isErrorStatus(m_request.httpStatus)) {
 		handleErrorBody();
 		return;
 	}
@@ -62,58 +51,120 @@ void ResponseBodyHandler::execute()
 		return;
 	}
 
+	switch (m_request.method) {
+	case MethodGet:
+		handleGetRequest();
+		break;
+	case MethodPost:
+		handlePostRequest();
+		break;
+	case MethodDelete:
+		handleDeleteRequest();
+		break;
+	case MethodCount:
+		LOG_ERROR << "Invalid method";
+		m_request.httpStatus = StatusInternalServerError;
+		handleErrorBody();
+		break;
+	}
+}
+
+/**
+ * @brief Creates the response body based on the Return directive.
+ *
+ * If the request encountered a location with a Return directive the body will be created based on the directive.
+ * - If the target resource is empty and the status is not an error status, no body is sent.
+ * - If the target resource is not empty and the status is not a redirection status, the target resource will be set as
+ * the body.
+ * - If the target resource is empty and the status is a redirection status, an error page will be created.
+ */
+void ResponseBodyHandler::handleReturnDirective()
+{
+	const bool isEmpty = m_request.targetResource.empty();
+
+	if (isEmpty && !isErrorStatus(m_request.httpStatus))
+		return;
+
+	if (!isEmpty && !isRedirectionStatus(m_request.httpStatus))
+		m_responseBody = m_request.targetResource;
+	else
+		handleErrorBody();
+}
+
+/**
+ * @brief Creates the response body for a GET request.
+ *
+ * If the request has the autoindex flag set, an autoindex will be created. It also adds "autoindex.html" to the
+ * target resource.
+ * Otherwise the file contents of the target resource will be read and set as the body.
+ */
+void ResponseBodyHandler::handleGetRequest()
+{
+	LOG_DEBUG << "Handling GET request";
+
 	if (m_request.hasAutoindex) {
-		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
-		m_responseBody = autoindexHandler.execute(m_request.targetResource);
+		AutoindexHandler autoindexHandler(m_fileSystemOps);
+		m_responseBody = autoindexHandler.execute(m_request.targetResource, m_request.uri.path);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();
 			return;
 		}
-		m_request.httpStatus = StatusOK;
 		m_request.targetResource += "autoindex.html";
 		return;
 	}
 
-	if (m_request.method == MethodGet) {
-		LOG_DEBUG << "Handling GET request";
-		try {
-			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		} catch (FileSystemPolicy::FileNotFoundException& e) {
-			LOG_ERROR << e.what();
-			m_request.httpStatus = StatusNotFound;
-		} catch (FileSystemPolicy::NoPermissionException& e) {
-			LOG_ERROR << e.what();
-			m_request.httpStatus = StatusForbidden;
-		} catch (const std::runtime_error& e) {
-			LOG_ERROR << e.what();
-			m_request.httpStatus = StatusInternalServerError;
-		}
-		if (m_request.httpStatus != StatusOK)
-			handleErrorBody();
-		return;
+	try {
+		m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
+	} catch (FileSystemOps::FileNotFoundException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusNotFound;
+	} catch (FileSystemOps::NoPermissionException& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusForbidden;
+	} catch (const std::runtime_error& e) {
+		LOG_ERROR << e.what();
+		m_request.httpStatus = StatusInternalServerError;
 	}
+	if (m_request.httpStatus != StatusOK)
+		handleErrorBody();
+}
 
-	if (m_request.method == MethodPost) {
-		LOG_DEBUG << "Handling POST request";
-		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
-		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
-		if (m_request.httpStatus == StatusCreated)
-			m_responseHeaders["location"] = m_request.uri.path;
-		if (m_responseBody.empty())
-			handleErrorBody();
-		m_request.targetResource = "posted.json";
-		return;
-	}
+/**
+ * @brief Creates a file and the response body for a POST request.
+ *
+ * The request body will be written to the target resource. If the file was created / appended successfully, the
+ * response body will be set to a JSON-formatted string containing the operation result. The target resource will be set
+ * to "posted.json".
+ */
+void ResponseBodyHandler::handlePostRequest()
+{
+	LOG_DEBUG << "Handling POST request";
 
-	if (m_request.method == MethodDelete) {
-		LOG_DEBUG << "Handling DELETE request";
-		DeleteHandler deleteHandler(m_fileSystemPolicy);
-		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
-		if (m_responseBody.empty())
-			handleErrorBody();
-		m_request.targetResource = "deleted.json";
-	}
+	FileWriteHandler fileWriteHandler(m_fileSystemOps);
+	m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
+	if (m_request.httpStatus == StatusCreated)
+		m_responseHeaders["location"] = m_request.uri.path;
+	if (m_responseBody.empty())
+		handleErrorBody();
+	m_request.targetResource = "posted.json";
+}
+
+/**
+ * @brief Deletes a file and creates the response body for a DELETE request.
+ *
+ * The target resource will be deleted. If the file was deleted successfully, the response body be set to a
+ * JSON-formatted string containing the operation result. The target resource will be set to "deleted.json".
+ */
+void ResponseBodyHandler::handleDeleteRequest()
+{
+	LOG_DEBUG << "Handling DELETE request";
+
+	DeleteHandler deleteHandler(m_fileSystemOps);
+	m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
+	if (m_responseBody.empty())
+		handleErrorBody();
+	m_request.targetResource = "deleted.json";
 }
 
 /**
@@ -132,8 +183,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 	const size_t posHeadersEnd = m_responseBody.find("\r\n\r\n");
 	// Include one CRLF at the end of last header line
 	std::string headers = m_responseBody.substr(0, posHeadersEnd + sizeCRLF);
-	std::string loweredHeaders = headers;
-	webutils::lowercase(loweredHeaders);
+	const std::string loweredHeaders = webutils::lowercase(headers);
 
 	if (posHeadersEnd == std::string::npos) {
 		m_request.httpStatus = StatusInternalServerError;
@@ -158,8 +208,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		std::string header = headers.substr(lineStart, lineEnd - lineStart);
 		const std::size_t delimiterPos = header.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
-			std::string headerName = header.substr(0, delimiterPos);
-			webutils::lowercase(headerName);
+			const std::string headerName = webutils::lowercase(header.substr(0, delimiterPos));
 			std::string headerValue = header.substr(delimiterPos + 1);
 			headerValue = webutils::trimLeadingWhitespaces(headerValue);
 			webutils::trimTrailingWhiteSpaces(headerValue);
@@ -249,7 +298,7 @@ void ResponseBodyHandler::handleErrorBody()
 	m_request.hasReturn = false;
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
-	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
+	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
 	targetResourceHandler.execute(m_connection);
 
 	if (m_request.hasReturn) {
@@ -267,11 +316,11 @@ void ResponseBodyHandler::handleErrorBody()
 	}
 
 	try {
-		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
+	} catch (FileSystemOps::FileNotFoundException& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusNotFound;
-	} catch (FileSystemPolicy::NoPermissionException& e) {
+	} catch (FileSystemOps::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusForbidden;
 	} catch (const std::runtime_error& e) {
@@ -311,6 +360,11 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<head><title>301 Moved permanently</title></head>\r\n"
 									  "<body>\r\n"
 									  "<center><h1>301 Moved permanently</h1></center>\r\n";
+
+	static const char* error302Page = "<html>\r\n"
+									  "<head><title>302 Found</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>302 Found</h1></center>\r\n";
 
 	static const char* error308Page = "<html>\r\n"
 									  "<head><title>308 Permanent redirect</title></head>\r\n"
@@ -381,6 +435,9 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	case StatusMovedPermanently:
 		ret = error301Page;
 		break;
+	case StatusFound:
+		ret = error302Page;
+		break;
 	case StatusPermanentRedirect:
 		ret = error308Page;
 		break;
@@ -426,21 +483,36 @@ std::string getDefaultErrorPage(statusCode statusCode)
  * Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join
  * them. If at the end at least one method was appended, the last ", " is removed.
  * If no methods were appended, an empty string is returned.
- * @param allowedMethods Array of allowed methods.
+ * @param allowMethods Array of allowed methods.
  * @return std::string Constructed Allow header.
  */
-std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount])
+std::string constructAllowHeader(const bool (&allowMethods)[MethodCount])
 {
 	std::string allowHeader;
 
-	if (allowedMethods[MethodGet])
+	if (allowMethods[MethodGet])
 		allowHeader.append("GET, ");
-	if (allowedMethods[MethodPost])
+	if (allowMethods[MethodPost])
 		allowHeader.append("POST, ");
-	if (allowedMethods[MethodDelete])
+	if (allowMethods[MethodDelete])
 		allowHeader.append("DELETE, ");
 
 	if (!allowHeader.empty())
 		allowHeader.erase(allowHeader.size() - 2, 2);
 	return allowHeader;
+}
+
+/**
+ * @brief Adds special headers based on the status code.
+ *
+ * Location header if the status code is a redirection 3xx status.
+ * Allow header if the status code is Method Not Allowed (405).
+ */
+void ResponseBodyHandler::addHeadersBasedOnStatus()
+{
+	if (isRedirectionStatus(m_request.httpStatus))
+		m_responseHeaders["location"] = m_request.targetResource;
+
+	if (m_request.httpStatus == StatusMethodNotAllowed)
+		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowMethods);
 }

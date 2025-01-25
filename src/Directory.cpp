@@ -3,12 +3,12 @@
 /**
  * @brief Construct a new Directory object
  *
- * @param fileSystemPolicy File system policy object. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  * @param path Path to directory.
  */
-Directory::Directory(const FileSystemPolicy& fileSystemPolicy, const std::string& path)
-	: m_fileSystemPolicy(fileSystemPolicy)
-	, m_directory(fileSystemPolicy.openDirectory(path))
+Directory::Directory(const FileSystemOps& fileSystemOps, const std::string& path)
+	: m_fileSystemOps(fileSystemOps)
+	, m_directory(fileSystemOps.openDirectory(path))
 {
 }
 
@@ -17,10 +17,7 @@ Directory::Directory(const FileSystemPolicy& fileSystemPolicy, const std::string
  *
  * Closes the directory.
  */
-Directory::~Directory()
-{
-	m_fileSystemPolicy.closeDirectory(m_directory);
-}
+Directory::~Directory() { m_fileSystemOps.closeDirectory(m_directory); }
 
 /**
  * @brief Get the entries in the directory.
@@ -31,10 +28,10 @@ Directory::~Directory()
 std::vector<std::string> Directory::getEntries()
 {
 	std::vector<std::string> files;
-	struct dirent* entry = m_fileSystemPolicy.readDirectory(m_directory);
+	struct dirent* entry = m_fileSystemOps.readDirectory(m_directory);
 	while (entry != NULL) {
 		files.push_back(entry->d_name);
-		entry = m_fileSystemPolicy.readDirectory(m_directory);
+		entry = m_fileSystemOps.readDirectory(m_directory);
 	}
 	std::sort(files.begin(), files.end());
 	return files;

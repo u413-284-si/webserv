@@ -7,6 +7,7 @@ enum statusCode {
 	StatusOK = 200,
 	StatusCreated = 201,
 	StatusMovedPermanently = 301,
+	StatusFound = 302,
 	StatusPermanentRedirect = 308,
 	StatusBadRequest = 400,
 	StatusForbidden = 403,
@@ -25,4 +26,5 @@ std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);
 std::string statusCodeToReasonPhrase(statusCode status);
 statusCode stringToStatusCode(std::string& str);
 statusCode extractStatusCode(const std::string& statusLine);
+bool isErrorStatus(statusCode statusCode);
 bool isRedirectionStatus(statusCode statusCode);

@@ -3,10 +3,10 @@
 /**
  * @brief Construct a new AutoindexHandler object
  *
- * @param fileSystemPolicy File system policy object. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
-AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
-	: m_fileSystemPolicy(fileSystemPolicy)
+AutoindexHandler::AutoindexHandler(const FileSystemOps& fileSystemOps)
+	: m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -15,12 +15,13 @@ AutoindexHandler::AutoindexHandler(const FileSystemPolicy& fileSystemPolicy)
  *
  * Generates an HTML response with the contents of a directory.
  * The response contains a table with the file names, last modified time and file size.
- * The file names are links to the files.
+ * The file names are relative links to the files constructed with the uriPath parameter.
  * If a function throws, returns empty string.
  * @param path Path to directory.
+ * @param uriPath URI path which lead to the directory.
  * @return std::string HTML response.
  */
-std::string AutoindexHandler::execute(const std::string& path)
+std::string AutoindexHandler::execute(const std::string& path, const std::string& uriPath)
 {
 	try {
 		m_response
@@ -37,19 +38,19 @@ std::string AutoindexHandler::execute(const std::string& path)
 			<< "<table>\n"
 			<< "<tr><th>File Name</th><th>Last Modified</th><th>Size (Bytes)</th></tr>\n";
 
-		Directory directory(m_fileSystemPolicy, path);
+		Directory directory(m_fileSystemOps, path);
 		std::vector<std::string> files = directory.getEntries();
 
 		for (std::vector<std::string>::iterator iter = files.begin(); iter != files.end(); ++iter) {
 			if (*iter == "." || *iter == "..")
 				continue;
-			struct stat fileStat = m_fileSystemPolicy.getFileStat(path + *iter);
+			struct stat fileStat = m_fileSystemOps.getFileStat(path + *iter);
 			// NOLINTNEXTLINE: misinterpretation by HIC++ standard
 			if (S_ISDIR(fileStat.st_mode))
 				*iter += "/";
-			m_response << "<tr><td><a href=\"" << *iter << "\">" << *iter << "</a></td>"
-						  << "<td>" << m_fileSystemPolicy.getLastModifiedTime(fileStat) << "</td>"
-						  << "<td>" << m_fileSystemPolicy.getFileSize(fileStat) << "</td></tr>\n";
+			m_response << "<tr><td><a href=\"" << uriPath << *iter << "\">" << *iter << "</a></td>"
+					   << "<td>" << m_fileSystemOps.getLastModifiedTime(fileStat) << "</td>"
+					   << "<td>" << m_fileSystemOps.getFileSize(fileStat) << "</td></tr>\n";
 		}
 		m_response << "</table>\n</body>\n</html>";
 		return m_response.str();

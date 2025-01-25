@@ -40,7 +40,6 @@ public:
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
 	static void parseChunkedBody(std::string& bodyBuffer, HTTPRequest& request);
 	static void decodeMultipartFormdata(HTTPRequest& request);
-	static void clearRequest(HTTPRequest& request);
 	void resetRequestStream();
 
 private:
@@ -66,13 +65,14 @@ private:
 	static void validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request);
 	static void validateTransferEncoding(HTTPRequest& request);
 	static void validateMethodWithBody(HTTPRequest& request);
+	static void validateConnectionHeader(HTTPRequest& request);
 
 	// Helper functions
 	static std::string checkForSpace(const std::string& str, HTTPRequest& request);
 	static void checkForCRLF(const std::string& str, HTTPRequest& request);
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
-	static long convertHex(const std::string& chunkSize);
+	static long convertHex(const std::string& chunkSize, HTTPRequest& request);
 	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);

@@ -10,7 +10,7 @@
  * communication, and prepares input parameters for the execve system call.
  *
  * @param connection Reference to a Connection object containing details about the current request and connection.
- * @param processOps A reference to the ProcessOps object for handling process operations.
+ * @param processOps Wrapper for process-related functions. Can be mocked for testing.
  *
  * Environment variables set:
  * - CONTENT_LENGTH: Length of the content, if provided in the request headers.
