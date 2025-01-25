@@ -5,6 +5,7 @@
 #include "Socket.hpp"
 #include "utilities.hpp"
 
+#include <csignal>
 #include <cstddef>
 #include <cstdio>
 #include <ctime>
@@ -16,10 +17,12 @@
  */
 struct Connection {
 public:
-	Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs);
+	Connection(
+		const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs);
+	~Connection();
 
 	enum ConnectionStatus {
-        Idle, /**< Connection is connected, but no action is taken yet */
+		Idle, /**< Connection is connected, but no action is taken yet */
 		ReceiveHeader, /**< Client wants to send request header */
 		ReceiveBody, /**< Client wants to send request body */
 		SendToCGI, /**< Received body is being sent to CGI */
@@ -42,6 +45,10 @@ public:
 	int m_pipeToCGIWriteEnd; /**< Write end of the pipe to the CGI process */
 	int m_pipeFromCGIReadEnd; /**< Read end of the pipe to the CGI process */
 	pid_t m_cgiPid; /**< Process ID of the CGI process */
+
+private:
+	Connection(const Connection& connection);
+	Connection& operator=(const Connection& connection);
 };
 
 bool clearConnection(Connection& connection, const std::vector<ConfigServer>& serverConfigs);

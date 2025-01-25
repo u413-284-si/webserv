@@ -26,6 +26,20 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
 		m_status = Closed;
 }
 
+Connection::~Connection()
+{
+    if (m_cgiPid != -1)
+        kill(m_cgiPid, SIGKILL);
+    
+    if (m_pipeToCGIWriteEnd != -1)
+		webutils::closeFd(m_pipeToCGIWriteEnd);
+
+	if (m_pipeFromCGIReadEnd != -1)
+		webutils::closeFd(m_pipeFromCGIReadEnd);
+
+    close(m_clientFd);
+}
+
 /**
  * @brief Clears the state of a given Connection object and resets its attributes.
  *
@@ -43,14 +57,6 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
-	if (connection.m_pipeToCGIWriteEnd != -1) {
-		webutils::closeFd(connection.m_pipeToCGIWriteEnd);
-		connection.m_pipeToCGIWriteEnd = -1;
-	}
-	if (connection.m_pipeFromCGIReadEnd != -1) {
-		webutils::closeFd(connection.m_pipeFromCGIReadEnd);
-		connection.m_pipeFromCGIReadEnd = -1;
-	}
 	connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
 	return (hasValidServerConfig(connection, serverConfigs));
