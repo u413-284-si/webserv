@@ -3,7 +3,7 @@
 #include "AutoindexHandler.hpp"
 #include "Connection.hpp"
 #include "DeleteHandler.hpp"
-#include "FileSystemPolicy.hpp"
+#include "FileSystemOps.hpp"
 #include "FileWriteHandler.hpp"
 #include "Log.hpp"
 #include "Method.hpp"
@@ -15,13 +15,13 @@
 /**
  * @brief Class to handle the body of a HTTP response.
  *
- * The FileSystemPolicy passed in the constructor needs to outlive this class.
- * A mock of FileSystemPolicy can be used for testing.
+ * The FileSystemOps passed in the constructor needs to outlive this class.
+ * A mock of FileSystemOps can be used for testing.
  */
 class ResponseBodyHandler {
 public:
 	explicit ResponseBodyHandler(Connection& connection, std::string& responseBody,
-		std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy);
+		std::map<std::string, std::string>& responseHeaders, const FileSystemOps& fileSystemPolicy);
 	void execute();
 
 private:
@@ -34,8 +34,8 @@ private:
 	HTTPRequest& m_request;
 	std::string& m_responseBody;
 	std::map<std::string, std::string>& m_responseHeaders;
-	const FileSystemPolicy& m_fileSystemPolicy;
+	const FileSystemOps& m_fileSystemOps;
 };
 
 std::string getDefaultErrorPage(statusCode status);
-std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount]);
+std::string constructAllowHeader(const bool (&allowMethods)[MethodCount]);

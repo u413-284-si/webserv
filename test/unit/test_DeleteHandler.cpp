@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 
 #include "DeleteHandler.hpp"
 
@@ -23,14 +23,14 @@ protected:
 	std::string m_path = "/workspaces/webserv/html/test/";
 	statusCode m_statusCode = StatusOK;
 
-	NiceMock<MockFileSystemPolicy> m_fileSystemPolicy;
+	NiceMock<MockFileSystemOps> m_fileSystemPolicy;
 	DeleteHandler m_deleteHandler = DeleteHandler(m_fileSystemPolicy);
 };
 
 TEST_F(DeleteHandlerTest, DeleteFile)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);
@@ -46,7 +46,7 @@ TEST_F(DeleteHandlerTest, DeleteFile)
 // {
 // 	// Arrange
 // 	std::filesystem::create_directory(m_path);
-// 	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileDirectory));
+// 	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemOps::FileDirectory));
 // 	EXPECT_CALL(m_fileSystemPolicy, openDirectory).WillOnce(Return(nullptr));
 // 	EXPECT_CALL(m_fileSystemPolicy, readDirectory).WillOnce(Return(nullptr));
 
@@ -62,7 +62,7 @@ TEST_F(DeleteHandlerTest, DeleteFile)
 TEST_F(DeleteHandlerTest, FileNotFound)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileNotFound));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemOps::FileNotFound));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);
@@ -75,7 +75,7 @@ TEST_F(DeleteHandlerTest, FileNotFound)
 TEST_F(DeleteHandlerTest, FileOther)
 {
 	// Arrange
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileOther));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemOps::FileOther));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);
@@ -89,8 +89,8 @@ TEST_F(DeleteHandlerTest, Forbidden)
 {
 	// Arrange
 	std::string errorMessage = "remove(): Permission denied";
-	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemPolicy::FileRegular));
-	EXPECT_CALL(m_fileSystemPolicy, deleteFile).WillOnce(testing::Throw(FileSystemPolicy::NoPermissionException(errorMessage)));
+	EXPECT_CALL(m_fileSystemPolicy, checkFileType).WillOnce(Return(FileSystemOps::FileRegular));
+	EXPECT_CALL(m_fileSystemPolicy, deleteFile).WillOnce(testing::Throw(FileSystemOps::NoPermissionException(errorMessage)));
 
 	// Act
 	std::string responseBody = m_deleteHandler.execute(m_path, m_statusCode);

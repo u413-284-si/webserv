@@ -3,17 +3,16 @@
 
 #include <stdexcept>
 
-#include "MockFileSystemPolicy.hpp"
+#include "MockFileSystemOps.hpp"
 
 #include "AutoindexHandler.hpp"
 
 TEST(AutoindexHandler, OpenDirectoyThrow)
 {
-	MockFileSystemPolicy fileSystemPolicy;
-	AutoindexHandler autoindexHandler(fileSystemPolicy);
+	MockFileSystemOps fileSystemOps;
+	AutoindexHandler autoindexHandler(fileSystemOps);
 
-	EXPECT_CALL(fileSystemPolicy, openDirectory)
-	.WillOnce(testing::Throw(std::runtime_error("openDirectory failed")));
+	EXPECT_CALL(fileSystemOps, openDirectory).WillOnce(testing::Throw(std::runtime_error("openDirectory failed")));
 
 	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/", "/test");
 	EXPECT_EQ(autoindex, "");
@@ -21,15 +20,12 @@ TEST(AutoindexHandler, OpenDirectoyThrow)
 
 TEST(AutoindexHandler, ReadDirectoryThrow)
 {
-	MockFileSystemPolicy fileSystemPolicy;
-	AutoindexHandler autoindexHandler(fileSystemPolicy);
+	MockFileSystemOps fileSystemOps;
+	AutoindexHandler autoindexHandler(fileSystemOps);
 
-	EXPECT_CALL(fileSystemPolicy, openDirectory)
-	.WillOnce(testing::Return((DIR*)1));
-	EXPECT_CALL(fileSystemPolicy, readDirectory)
-	.WillOnce(testing::Throw(std::runtime_error("readDirectory failed")));
-	EXPECT_CALL(fileSystemPolicy, closeDirectory)
-	.WillOnce(testing::Return(0));
+	EXPECT_CALL(fileSystemOps, openDirectory).WillOnce(testing::Return((DIR*)1));
+	EXPECT_CALL(fileSystemOps, readDirectory).WillOnce(testing::Throw(std::runtime_error("readDirectory failed")));
+	EXPECT_CALL(fileSystemOps, closeDirectory).WillOnce(testing::Return(0));
 
 	std::string autoindex = autoindexHandler.execute("/workspaces/webserv/test/", "/test");
 	EXPECT_EQ(autoindex, "");

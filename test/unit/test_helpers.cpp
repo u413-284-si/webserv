@@ -1,4 +1,4 @@
-#include "ConfigFile.hpp"
+#include "test_helpers.hpp"
 
 ConfigFile createTestConfigfile()
 {

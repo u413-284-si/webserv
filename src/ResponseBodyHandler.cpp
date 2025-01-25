@@ -6,15 +6,15 @@
  * @param connection The Connection for which the response body is handled.
  * @param responseBody Saves the response body.
  * @param responseHeaders Saves the response headers.
- * @param fileSystemPolicy File system policy. Can be mocked if needed.
+ * @param fileSystemOps Wrapper for filesystem-related functions. Can be mocked if needed.
  */
 ResponseBodyHandler::ResponseBodyHandler(Connection& connection, std::string& responseBody,
-	std::map<std::string, std::string>& responseHeaders, const FileSystemPolicy& fileSystemPolicy)
+	std::map<std::string, std::string>& responseHeaders, const FileSystemOps& fileSystemOps)
 	: m_connection(connection)
 	, m_request(connection.m_request)
 	, m_responseBody(responseBody)
 	, m_responseHeaders(responseHeaders)
-	, m_fileSystemPolicy(fileSystemPolicy)
+	, m_fileSystemOps(fileSystemOps)
 {
 }
 
@@ -39,7 +39,7 @@ void ResponseBodyHandler::execute()
 		m_responseHeaders["location"] = m_request.targetResource;
 
 	if (m_request.httpStatus == StatusMethodNotAllowed)
-		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowedMethods);
+		m_responseHeaders["allow"] = constructAllowHeader(m_connection.location->allowMethods);
 
 	if (m_request.hasReturn) {
 		const bool isEmpty = m_request.targetResource.empty();
@@ -63,7 +63,7 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.hasAutoindex) {
-		AutoindexHandler autoindexHandler(m_fileSystemPolicy);
+		AutoindexHandler autoindexHandler(m_fileSystemOps);
 		m_responseBody = autoindexHandler.execute(m_request.targetResource, m_request.uri.path);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
@@ -76,12 +76,13 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodGet) {
+		LOG_DEBUG << "Handling GET request";
 		try {
-			m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-		} catch (FileSystemPolicy::FileNotFoundException& e) {
+			m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
+		} catch (FileSystemOps::FileNotFoundException& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusNotFound;
-		} catch (FileSystemPolicy::NoPermissionException& e) {
+		} catch (FileSystemOps::NoPermissionException& e) {
 			LOG_ERROR << e.what();
 			m_request.httpStatus = StatusForbidden;
 		} catch (const std::runtime_error& e) {
@@ -94,7 +95,8 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodPost) {
-		FileWriteHandler fileWriteHandler(m_fileSystemPolicy);
+		LOG_DEBUG << "Handling POST request";
+		FileWriteHandler fileWriteHandler(m_fileSystemOps);
 		m_responseBody = fileWriteHandler.execute(m_request.targetResource, m_request.body, m_request.httpStatus);
 		if (m_request.httpStatus == StatusCreated)
 			m_responseHeaders["location"] = m_request.uri.path;
@@ -105,7 +107,8 @@ void ResponseBodyHandler::execute()
 	}
 
 	if (m_request.method == MethodDelete) {
-		DeleteHandler deleteHandler(m_fileSystemPolicy);
+		LOG_DEBUG << "Handling DELETE request";
+		DeleteHandler deleteHandler(m_fileSystemOps);
 		m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 		if (m_responseBody.empty())
 			handleErrorBody();
@@ -246,7 +249,7 @@ void ResponseBodyHandler::handleErrorBody()
 	m_request.hasReturn = false;
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
-	TargetResourceHandler targetResourceHandler(m_fileSystemPolicy);
+	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
 	targetResourceHandler.execute(m_connection);
 
 	if (m_request.hasReturn) {
@@ -264,11 +267,11 @@ void ResponseBodyHandler::handleErrorBody()
 	}
 
 	try {
-		m_responseBody = m_fileSystemPolicy.getFileContents(m_request.targetResource.c_str());
-	} catch (FileSystemPolicy::FileNotFoundException& e) {
+		m_responseBody = m_fileSystemOps.getFileContents(m_request.targetResource.c_str());
+	} catch (FileSystemOps::FileNotFoundException& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusNotFound;
-	} catch (FileSystemPolicy::NoPermissionException& e) {
+	} catch (FileSystemOps::NoPermissionException& e) {
 		LOG_ERROR << e.what();
 		m_request.httpStatus = StatusForbidden;
 	} catch (const std::runtime_error& e) {
@@ -308,6 +311,11 @@ std::string getDefaultErrorPage(statusCode statusCode)
 									  "<head><title>301 Moved permanently</title></head>\r\n"
 									  "<body>\r\n"
 									  "<center><h1>301 Moved permanently</h1></center>\r\n";
+
+	static const char* error302Page = "<html>\r\n"
+									  "<head><title>302 Found</title></head>\r\n"
+									  "<body>\r\n"
+									  "<center><h1>302 Found</h1></center>\r\n";
 
 	static const char* error308Page = "<html>\r\n"
 									  "<head><title>308 Permanent redirect</title></head>\r\n"
@@ -378,6 +386,9 @@ std::string getDefaultErrorPage(statusCode statusCode)
 	case StatusMovedPermanently:
 		ret = error301Page;
 		break;
+	case StatusFound:
+		ret = error302Page;
+		break;
 	case StatusPermanentRedirect:
 		ret = error308Page;
 		break;
@@ -423,18 +434,18 @@ std::string getDefaultErrorPage(statusCode statusCode)
  * Constructs the Allow header based on the allowed methods. Methods are appended with ", " at the end to easily join
  * them. If at the end at least one method was appended, the last ", " is removed.
  * If no methods were appended, an empty string is returned.
- * @param allowedMethods Array of allowed methods.
+ * @param allowMethods Array of allowed methods.
  * @return std::string Constructed Allow header.
  */
-std::string constructAllowHeader(const bool (&allowedMethods)[MethodCount])
+std::string constructAllowHeader(const bool (&allowMethods)[MethodCount])
 {
 	std::string allowHeader;
 
-	if (allowedMethods[MethodGet])
+	if (allowMethods[MethodGet])
 		allowHeader.append("GET, ");
-	if (allowedMethods[MethodPost])
+	if (allowMethods[MethodPost])
 		allowHeader.append("POST, ");
-	if (allowedMethods[MethodDelete])
+	if (allowMethods[MethodDelete])
 		allowHeader.append("DELETE, ");
 
 	if (!allowHeader.empty())

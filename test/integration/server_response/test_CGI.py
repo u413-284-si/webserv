@@ -1,30 +1,35 @@
 # This module is for succesful CGI requests
 
 import os
-import requests
+from utils.utils import make_request
 
 def test_no_CGI_defined():
     print("Try to access CGI without it defined")
-    response = requests.get("http://127.0.0.1:8080/cgi-bin/time.py")
+    url = "http://127.0.0.1:8080/cgi-bin/time.py"
+    response = make_request(url)
     assert response.status_code == 200
 
 def test_CGI_helloWorld():
    print("Request for /cgi-bin/helloWorld.sh")
-   response = requests.get("http://127.0.0.1:8080/cgi-bin/helloWorld.sh")
+   url = "http://127.0.0.1:8080/cgi-bin/helloWorld.sh"
+   response = make_request(url)
    assert response.status_code == 200
 
 def test_CGI_badBoi():
    print("Request for /cgi-bin/badBoi.sh")
-   response = requests.get("http://127.0.0.1:8080/cgi-bin/badBoi.sh")
+   url = "http://127.0.0.1:8080/cgi-bin/badBoi.sh"
+   response = make_request(url)
+   # badBoi returns custom 400 status
    assert response.status_code == 400
    assert response.headers["BB"] == "4Life"
 
 def test_CGI_time():
    print("Request for /cgi-bin/time.py")
-   response = requests.get("http://127.0.0.1:8081/cgi-bin/time.py")
+   url = "http://127.0.0.1:8081/cgi-bin/time.py"
+   response = make_request(url)
    assert response.status_code == 200
 
-def test_CGI_create_textfile():
+def test_CGI_create_textfile(test_file_cleanup):
    print("Upload file with /cgi-bin/create_textfile.py")
 
    form_data = {
@@ -33,26 +38,27 @@ def test_CGI_create_textfile():
       "directory": "documents"
    }
    dst_file_path = "/workspaces/webserv/html/uploads/documents/myfile.txt"
+   url = "http://127.0.0.1:8081/cgi-bin/create_textfile.py"
 
-   response = requests.post("http://127.0.0.1:8081/cgi-bin/create_textfile.py", data=form_data)
+   test_file_cleanup.append(dst_file_path)
+
+   response = make_request(url, method = "POST", data=form_data)
    assert response.status_code == 200
    assert response.headers["location"] == "/workspaces/webserv/html/uploads/documents/myfile.txt"
-   # Check if file exists
    with open(dst_file_path, "r") as file:
     content = file.read()
     assert content == form_data["content"]
-   # Delete created file
-   os.remove(dst_file_path)
 
 def test_CGI_upperCase_GET():
     print("Change to upper case with /cgi-bin/upperCase.sh and GET")
 
-    params = {
+    form_data = {
        "text": "please capitalize"
     }
-    response = requests.get("http://127.0.0.1:8080/cgi-bin/upperCase.sh", params=params)
+    url = "http://127.0.0.1:8080/cgi-bin/upperCase.sh"
+    response = make_request(url, params=form_data)
     assert response.status_code == 200
-    assert params["text"].upper() in response.text
+    assert form_data["text"].upper() in response.text
 
 def test_CGI_upperCase_POST():
     print("Change to upper case with /cgi-bin/upperCase.sh and POST")
@@ -69,6 +75,7 @@ def test_CGI_upperCase_POST():
     form_data = {
        "text": long_string
     }
-    response = requests.post("http://127.0.0.1:8080/cgi-bin/upperCase.sh", data=form_data)
+    url = "http://127.0.0.1:8080/cgi-bin/upperCase.sh"
+    response = make_request(url, method = "POST", data=form_data)
     assert response.status_code == 200
     assert form_data["text"].upper() in response.text
