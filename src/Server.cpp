@@ -1513,17 +1513,15 @@ void checkForTimeout(Server& server)
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
+			iter->second.m_status = Connection::Timeout;
 			if (iter->second.m_status == Connection::ReceiveFromCGI || iter->second.m_status == Connection::SendToCGI) {
 				server.addEvent(iter->first, EPOLLOUT);
-
-				if (iter->second.m_pipeToCGIWriteEnd != -1) {
+				if (iter->second.m_pipeToCGIWriteEnd != -1)
 					webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
-
 				if (iter->second.m_pipeFromCGIReadEnd != -1)
 					webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
 			} else
 				server.modifyEvent(iter->first, EPOLLOUT);
-			iter->second.m_status = Connection::Timeout;
 		}
 	}
 }
