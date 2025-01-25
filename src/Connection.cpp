@@ -50,8 +50,6 @@ Connection::~Connection()
 
 	if (m_pipeFromCGIReadEnd != -1)
 		webutils::closeFd(m_pipeFromCGIReadEnd);
-
-	close(m_clientFd);
 }
 
 /**

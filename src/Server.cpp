@@ -257,6 +257,7 @@ void Server::removeConnection(int delFd)
 	const Socket clientSocket = getConnections().at(delFd).m_clientSocket;
 	removeEvent(delFd);
 	getConnections().erase(delFd);
+	close(delFd);
 	LOG_DEBUG << "Removed Connection: " << clientSocket << " on fd: " << delFd;
 }
 
