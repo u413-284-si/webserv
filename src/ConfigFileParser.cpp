@@ -62,13 +62,13 @@ const ConfigFile& ConfigFileParser::parseConfigFile(const std::string& configFil
 	if (isBracketOpen())
 		throw std::runtime_error(ERR_OPEN_BRACKET_IN_CONFIG_FILE);
 
-	if (!isValidBlockBeginn(HttpBlock))
+	if (!isValidBlockBegin(HttpBlock))
 		throw std::runtime_error(ERR_MISSING_HTTP_BLOCK);
 
 	skipBlockBegin(HttpBlock);
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
-		if (isValidBlockBeginn(ServerBlock))
+		if (isValidBlockBegin(ServerBlock))
 			readServerBlock();
 		else if (std::isspace(m_configFileContent[m_configFileIndex]) == 0)
 			throw std::runtime_error(ERR_INVALID_DIRECTIVE);
@@ -114,7 +114,7 @@ bool ConfigFileParser::isKeyword(const std::string& keyword, size_t startIndex) 
  * @return true If the beginning of the block is valid
  * @return false If the beginning of the block is not valid
  */
-bool ConfigFileParser::isValidBlockBeginn(Block block)
+bool ConfigFileParser::isValidBlockBegin(Block block)
 {
 	size_t index = m_configFileIndex;
 
@@ -241,7 +241,7 @@ void ConfigFileParser::readServerBlock(void)
 
 	while (m_configFileContent[m_configFileIndex] != '}') {
 		if (isKeyword(convertBlockToString(LocationBlock), m_configFileIndex)) {
-			if (!isValidBlockBeginn(LocationBlock))
+			if (!isValidBlockBegin(LocationBlock))
 				throw std::runtime_error(ERR_LOCATION_INVALID_BEGIN);
 			serverBlockConfig.serverBlockContent
 				+= m_configFileContent.substr(startIndex, m_configFileIndex - startIndex);
