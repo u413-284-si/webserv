@@ -68,6 +68,7 @@ SRC_DIR := src
 TEST_DIR := test
 UNIT_TEST_DIR := $(TEST_DIR)/unit
 INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
+SIEGE_DIR := $(TEST_DIR)/siege
 
 # Base directory for object files
 BASE_OBJ_DIR = obj
@@ -220,6 +221,9 @@ DEPFILES +=	$(TEST_SRC:%.cpp=$(DEP_DIR)/%.d)
 LOG_FILE = $(LOG_DIR)/$(shell date "+%Y-%m-%d-%H-%M-%S")
 LOG_VALGRIND = $(LOG_FILE)_valgrind.log
 LOG_PERF = $(LOG_FILE)_perf.data
+LOG_SIEGE = $(LOG_DIR)/siege.log
+LOG_WEBSERV = /dev/null
+#LOG_WEBSERV = $(LOG_FILE)_webserv.log
 
 # ******************************
 # *     Special Vars           *
@@ -270,6 +274,40 @@ test2: $(NAME)
 	--server-executable=./$(NAME) \
 	--config-file=./$(CONFIGFILE) \
 	./$(INTEGRATION_TEST_DIR)
+
+SIEGE_CONFIG=$(SIEGE_DIR)/siege.conf
+SIEGE_FILE=$(SIEGE_DIR)/urls.txt
+SIEGE_CONCURRENT=25
+SIEGE_TIME=1m
+SIEGE_URL=http://127.0.0.1:8080/empty.html
+
+# Run load test with siege
+.PHONY: test3
+test3: $(NAME) | $(LOG_DIR)
+	@printf "$(YELLOW)$(BOLD)Run load test with siege$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)sleep 1
+	$(SILENT)siege \
+		--rc=$(SIEGE_CONFIG) \
+		--file=$(SIEGE_FILE) \
+		--log=$(LOG_SIEGE) \
+		--concurrent=$(SIEGE_CONCURRENT) \
+		--time=$(SIEGE_TIME)
+	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
+
+.PHONY: test4
+test4: $(NAME) | $(LOG_DIR)
+	@printf "$(YELLOW)$(BOLD)Run benchmark test with siege on a single URL$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)sleep 1
+	$(SILENT)siege \
+		--rc=$(SIEGE_CONFIG) \
+		--log=$(LOG_SIEGE) \
+		--concurrent=$(SIEGE_CONCURRENT) \
+		--time=$(SIEGE_TIME) \
+		--benchmark \
+		$(SIEGE_URL)
+	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
 
 # This target uses perf for profiling.
 .PHONY: profile

@@ -1,105 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Page with Images</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 20px;
-			background-color: #f4f4f4;
-		}
-		h1 {
-			color: #333;
-			text-align: center;
-			margin-bottom: 40px;
-		}
-		h2 {
-			color: #444;
-			border-bottom: 2px solid #ccc;
-			padding-bottom: 10px;
-			margin-bottom: 20px;
-		}
-		.gallery {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-			gap: 20px;
-			padding: 0;
-		}
-		.gallery img {
-			width: 200px;
-			height: auto;
-			border-radius: 8px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		}
-		.gallery img:hover {
-			transform: scale(1.05);
-			transition: transform 0.3s ease-in-out;
-		}
-		.divider {
-			text-align: center;
-			margin: 40px 0;
-		}
-		.divider hr {
-			border: none;
-			height: 1px;
-			background-color: #ccc;
-			width: 50%;
-		}
-		.back-link {
-			text-align: center;
-			margin-top: 40px;
-		}
-		.back-link a {
-			text-decoration: none;
-			color: #0066cc;
-			font-size: 18px;
-		}
-		.back-link a:hover {
-			text-decoration: underline;
-		}
-	</style>
+	<link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-	<h1>Image Gallery</h1>
+	<header>
+		<h1>Image Hosted on the Web Server</h1>
+		<p>This page contains images hosted on the web server.</p>
+	</header>
 
-	<!-- Section 1: Images Hosted on the Web Server -->
-	<h2>Images Hosted on the Web Server</h2>
+	<main>
+		<section>
+			<h2>File extension: jpg</h2>
+			<div class="gallery">
+				<img src="images/butterfly.jpg" alt="Butterfly">
+				<img src="images/northern_lights.jpg" alt="Northern Lights">
+			</div>
+		</section>
 
-	<p>File extension: jpg</p>
-	<div class="gallery">
-		<img src="images/butterfly.jpg" alt="Butterfly">
-		<img src="images/northern_lights.jpg" alt="Northern Lights">
-	</div>
+		<section>
+			<h2>File extension: png</h2>
+			<div class="gallery">
+				<img src="images/chicken.png" alt="Chicken">
+				<img src="images/tree.png" alt="Tree">
+			</div>
+		</section>
 
-	<p>File extension: png</p>
-	<div class="gallery">
-		<img src="images/chicken.png" alt="Chicken">
-		<img src="images/tree.png" alt="Tree">
-	</div>
+		<section>
+			<h2>File extension: webp</h2>
+			<div class="gallery">
+				<img src="images/digi_wolf.webp" alt="Wolf">
+				<img src="images/work.webp" alt="Work">
+			</div>
+		</section>
+	</main>
 
-	<p>File extension: webp</p>
-	<div class="gallery">
-		<img src="images/digi_wolf.webp" alt="Wolf">
-		<img src="images/work.webp" alt="Work">
-	</div>
-
-	<!-- Divider -->
-	<div class="divider">
-		<hr>
-	</div>
-
-	<!-- Section 2: Images Hosted Externally -->
-	<h2>Image Hosted Externally</h2>
-	<div class="gallery">
-		<img src="http://picsum.photos/200" alt="External Image 1">
-	</div>
-
-	<!-- Back to Home Link -->
-	<div class="back-link">
-		<a href="index.html">Back to Home</a>
-	</div>
+	<!-- Back to Home Footer Link -->
+	<footer>
+		<div class="back-link">
+			<a href="index.html">Back to Home</a>
+		</div>
+	</footer>
 </body>
+
 </html>
