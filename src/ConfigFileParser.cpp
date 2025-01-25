@@ -12,8 +12,8 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_contentIndex(0)
 	, m_serverIndex(0)
 	, m_locationIndex(0)
-	, m_hasServerRoot(0)
-	, m_hasLocationRoot(0)
+	, m_hasServerRoot(false)
+	, m_hasLocationRoot(false)
 	, m_isDefaultLocationDefined(false)
 {
 	const char* validServerDirectiveNames[]
@@ -298,14 +298,14 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	if (isSemicolonMissing(serverBlockConfig.serverBlockContent))
 		throw std::runtime_error(ERR_SEMICOLON_MISSING);
 
-	m_hasServerRoot = 0;
+	m_hasServerRoot = false;
 	while (readAndTrimLine(serverBlockConfig.serverBlockContent, ';'))
 		readServerConfigLine();
 
 	m_isDefaultLocationDefined = false;
 	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
 		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
-		m_hasLocationRoot = 0;
+		m_hasLocationRoot = false;
 		processLocationContent(*it);
 	}
 }
@@ -446,9 +446,9 @@ void ConfigFileParser::readLocationBlockPath(void)
  */
 void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 {
-	if (m_hasServerRoot > 1)
+	if (block == ServerBlock && m_hasServerRoot)
 		throw std::runtime_error(ERR_SERVER_MULTIPLE_ROOTS);
-	if (m_hasLocationRoot > 1)
+	if (block == LocationBlock && m_hasLocationRoot)
 		throw std::runtime_error(ERR_LOCATION_MULTIPLE_ROOTS);
 
 	if (rootPath.find_first_of(s_whitespace) != std::string::npos)
@@ -460,10 +460,13 @@ void ConfigFileParser::readRootPath(const Block& block, std::string rootPath)
 	if (rootPath[rootPath.length() - 1] == '/')
 		rootPath.erase(rootPath.end() - 1);
 
-	if (block == ServerBlock)
+	if (block == ServerBlock) {
+		m_hasServerRoot = true;
 		m_configFile.servers[m_serverIndex].root = rootPath;
-	else if (block == LocationBlock)
+	} else if (block == LocationBlock) {
+		m_hasLocationRoot = true;
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].root = rootPath;
+	}
 }
 
 /**
@@ -904,10 +907,9 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
 {
 	if (directive == "listen")
 		readListen(value);
-	else if (directive == "root") {
-		m_hasServerRoot++;
+	else if (directive == "root")
 		readRootPath(ServerBlock, value);
-	} else if (directive == "server_name")
+	else if (directive == "server_name")
 		readServerName(value);
 	else if (directive == "client_max_body_size")
 		readMaxBodySize(ServerBlock, value);
@@ -926,10 +928,9 @@ void ConfigFileParser::readServerDirectiveValue(const std::string& directive, co
  */
 void ConfigFileParser::readLocationDirectiveValue(const std::string& directive, const std::string& value)
 {
-	if (directive == "root") {
-		m_hasLocationRoot++;
+	if (directive == "root")
 		readRootPath(LocationBlock, value);
-	} else if (directive == "alias")
+	else if (directive == "alias")
 		readAliasPath(value);
 	else if (directive == "client_max_body_size")
 		readMaxBodySize(LocationBlock, value);

@@ -44,8 +44,8 @@ private:
 	size_t m_serverIndex;
 	std::vector<std::string> m_validServerDirectives;
 	size_t m_locationIndex;
-	size_t m_hasServerRoot;
-	size_t m_hasLocationRoot;
+	bool m_hasServerRoot;
+	bool m_hasLocationRoot;
 	std::vector<std::string> m_validLocationDirectives;
 	bool m_isDefaultLocationDefined;
 	static const char* const s_whitespace;
