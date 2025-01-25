@@ -1044,7 +1044,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	if (connection.m_request.method == MethodPost && connection.m_request.isDirectory)
 		connection.m_request.httpStatus = StatusOK;
 
-    // FIXME:
+	// FIXME:
 	// Allow directories to be deleted
 	// if (connection.m_request.method == MethodDelete && connection.m_request.isDirectory)
 	// 	connection.m_request.httpStatus = StatusOK;
@@ -1497,8 +1497,11 @@ void connectionHandleTimeout(Server& server, int activeFd, Connection& connectio
  *
  * If the connection status is Closed, it is skipped.
  * The time since last event is saved in a variable to print it to the log and check
- * if it is greater than the timeout set for the server. If it is, the connection is modified to EPOLLOUT,
- * and the state is set to Timeout. When the fd is ready to receive a message the timeout error will be send.
+ * if it is greater than the timeout set for the server. If it is, the state is set to Timeout.
+ * Additionally it is checked that the Connection is not currently
+ * handling a CGI request. Only if it is not, the connection fd is
+ * modified to EPOLLOUT. When the fd is ready to receive a message the timeout error
+ * will be send.
  */
 void checkForTimeout(Server& server)
 {
@@ -1508,7 +1511,8 @@ void checkForTimeout(Server& server)
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			server.modifyEvent(iter->first, EPOLLOUT);
+			if (iter->second.m_status != Connection::ReceiveFromCGI && iter->second.m_status != Connection::SendToCGI)
+				server.modifyEvent(iter->first, EPOLLOUT);
 			iter->second.m_status = Connection::Timeout;
 		}
 	}
