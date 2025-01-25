@@ -65,6 +65,17 @@ button:hover {
 	background-color: #003f7f;
 }
 
+/* Special styling for the delete button */
+.delete-btn {
+	background-color: #ff4d4d;  /* Red background */
+	color: white;
+}
+
+.delete-btn:hover {
+	background-color: #e04343; /* Darker red on hover */
+	transform: scale(1.1);
+}
+
 /* Card layout styling */
 .card-section {
 	margin-bottom: 60px;

@@ -64,7 +64,7 @@ void ResponseBodyHandler::execute()
 
 	if (m_request.hasAutoindex) {
 		AutoindexHandler autoindexHandler(m_fileSystemOps);
-		m_responseBody = autoindexHandler.execute(m_request.targetResource);
+		m_responseBody = autoindexHandler.execute(m_request.targetResource, m_request.uri.path);
 		if (m_responseBody.empty()) {
 			m_request.httpStatus = StatusInternalServerError;
 			handleErrorBody();

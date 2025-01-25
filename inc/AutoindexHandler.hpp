@@ -18,7 +18,7 @@ class AutoindexHandler {
 
 public:
 	explicit AutoindexHandler(const FileSystemOps& fileSystemOps);
-	std::string execute(const std::string& path);
+	std::string execute(const std::string& path, const std::string& uriPath);
 
 private:
 	const FileSystemOps& m_fileSystemOps;

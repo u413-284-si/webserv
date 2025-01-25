@@ -16,35 +16,77 @@
 
 	<main>
 		<section class="form-section">
-			<h2>Script Hello World</h2>
+			<h2>Script helloWorld.sh</h2>
 			<p>This script just returns Hello World</p>
 			<br>
 			<!-- Form for running CGI script -->
-			<form action="/cgi-bin/hello-world.cgi" method="GET">
+			<form action="/cgi-bin/helloWorld.sh" method="GET">
 				<button type="submit">Run CGI Script</button>
 			</form>
 		</section>
 
 		<section class="form-section">
-			<h2>Script Environment Variables</h2>
-			<p>This script returns the environment variables</p>
+			<h2>Script upperCase.sh</h2>
+			<p>This script returns the provided data in upper case.</p>
+			<br>
+			<form action="/cgi-bin/upperCase.sh" method="get">
+				<!-- Input field for user to enter text -->
+				<label for="inputText">Called with GET method:</label>
+				<input type="text" id="inputText" name="text" size="50"><br><br>
+				<!-- Submit button -->
+				<button type="submit">Run CGI Script</button>
+			</form>
 			<br>
 			<!-- Form for running CGI script -->
-			<form action="/cgi-bin/environment-variables.cgi" method="GET">
+			<form action="/cgi-bin/upperCase.sh" method="POST">
+				<!-- Input field for user to enter text -->
+				<label for="inputText">Called with POST method:</label>
+				<textarea id="inputText" name="text" rows="4" cols="50"></textarea><br>
+				<!-- Submit button -->
 				<button type="submit">Run CGI Script</button>
 			</form>
 		</section>
 
 		<section class="form-section">
-			<h2>Script Upload</h2>
-			<p>Select a file to upload to the server.</p>
-			<!-- Form for file upload -->
-			<form action="cgi-bin/upload.cgi" method="POST" enctype="multipart/form-data">
-				<div class="form-group">
-					<input type="file" id="file" name="file" required>
-				</div>
-
+			<h2>Script badBoi.sh</h2>
+			<p>This script always returns a 400 error</p>
+			<br>
+			<!-- Form for running CGI script -->
+			<form action="http://127.0.0.1:8080/cgi-bin/badBoi.sh" method="GET">
 				<button type="submit">Run CGI Script</button>
+			</form>
+		</section>
+
+		<section class="form-section">
+			<h2>Script time.py</h2>
+			<p>This script prints the current time</p>
+			<br>
+			<!-- Form for running CGI script -->
+			<form action="http://127.0.0.1:8081/cgi-bin/time.py" method="GET">
+				<button type="submit">Run CGI Script</button>
+			</form>
+		</section>
+
+		<section class="form-section">
+			<h2>Script create_textfile.py</h2>
+			<p>This script can create a simple textfile</p>
+			<br>
+			<form id="uploadForm" method="POST" action="http://127.0.0.1:8081/cgi-bin/create_textfile.py">
+				<label for="filename">Filename:</label>
+				<input type="text" id="filename" name="filename" value="example.txt" required><br><br>
+
+				<label for="content">Content:</label>
+				<textarea id="content" name="content" rows="4" cols="50" placeholder="Enter text to be uploaded..." required></textarea><br><br>
+
+				<label for="directory">Select sub-directory in uploads:</label>
+				<select id="directory" name="directory">
+					<option value="">Default</option>
+					<option value="tmp">Temporary</option>
+					<option value="documents">Documents</option>
+					<option value="notes">Notes</option>
+				</select><br><br>
+
+				<button type="submit">Create file</button>
 			</form>
 		</section>
 	</main>
