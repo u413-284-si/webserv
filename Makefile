@@ -272,12 +272,6 @@ test2: $(NAME)
 	--config-file=./$(CONFIGFILE_INTEGRATION) \
 	./$(INTEGRATION_TEST_DIR)
 
-# This target uses CONFIGFILE as argument to run the program.
-.PHONY: run
-run: $(NAME)
-	@printf "$(YELLOW)$(BOLD)Run wit trihard.conf as argument$(RESET) [$(BLUE)$@$(RESET)]\n"
-	./$(NAME) $(CONFIGFILE)
-
 # This target uses perf for profiling.
 .PHONY: profile
 profile: check_perf_installed $(NAME) | $(LOG_DIR)
