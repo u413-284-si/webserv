@@ -222,7 +222,8 @@ LOG_FILE = $(LOG_DIR)/$(shell date "+%Y-%m-%d-%H-%M-%S")
 LOG_VALGRIND = $(LOG_FILE)_valgrind.log
 LOG_PERF = $(LOG_FILE)_perf.data
 LOG_SIEGE = $(LOG_DIR)/siege.log
-LOG_WEBSERV = $(LOG_FILE)_webserv.log
+LOG_WEBSERV = /dev/null
+#LOG_WEBSERV = $(LOG_FILE)_webserv.log
 
 # ******************************
 # *     Special Vars           *
