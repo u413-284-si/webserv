@@ -438,7 +438,8 @@ void ConfigFileParser::readLocationBlockPath(void)
  *
  * If at the end of the path is a slash, it removes it.
  *
- * This function can be used for the server block and location block
+ * For the case that a root directive was already read within the same server or location, a corresponding error is
+ * thrown
  *
  * @param block The block which surounds the directive
  * @param rootPath The value of the directive root
