@@ -50,6 +50,8 @@
  */
 class Server {
 public:
+	static const int s_maxEvents = 10; /**< Maximum number of events to process via epoll */
+	static const int s_epollTimeout = 1000; /**< Timeout for epoll_wait in milliseconds */
 	static const int s_backlog = 10; /**< Default backlog for listening sockets */
 	static const time_t s_clientTimeout = 60; /**< Default timeout for a Connection in seconds */
 	static const std::size_t s_bufferSize = 1024; /**< Default buffer size for reading from sockets in Bytes */

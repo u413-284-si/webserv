@@ -37,18 +37,17 @@ int main(const int argc, const char* argv[])
 		return 1;
 	}
 
-	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-	const std::string configFilePath = (argc == 1) ? XSTRINGIZE(DEFAULT_CONFIG_PATH) : argv[1];
-	std::cout << "Config file path: " << configFilePath << '\n';
-
 	weblog::initConsole(weblog::LevelDebug);
 
-	if (!registerSignals()) {
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+	const std::string configFilePath = (argc == 1) ? XSTRINGIZE(DEFAULT_CONFIG_PATH) : argv[1];
+	LOG_INFO << "Config file path: " << configFilePath << '\n';
+
+	if (!registerSignals())
 		return 1;
-	}
 
 	try {
-		EpollWrapper epollWrapper(10, -1);
+		EpollWrapper epollWrapper(Server::s_maxEvents, Server::s_maxEvents);
 		FileSystemOps fileSystemOps;
 		SocketOps socketOps;
 		ProcessOps processOps;
@@ -57,7 +56,7 @@ int main(const int argc, const char* argv[])
 		ConfigFile configFile = parser.parseConfigFile(configFilePath);
 
 		Server server(configFile, epollWrapper, fileSystemOps, socketOps, processOps);
-		initVirtualServers(server, 10, server.getServerConfigs());
+		initVirtualServers(server, Server::s_backlog, server.getServerConfigs());
 		runServer(server);
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
