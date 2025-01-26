@@ -2,6 +2,7 @@ import requests
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from collections import Counter
+import time
 
 # Define a timeout value (in seconds)
 REQUEST_TIMEOUT = 5
@@ -33,10 +34,13 @@ def send_request(line, stats):
         # Log the response
         if 200 <= response.status_code < 300:
             stats['success'] += 1
-            print(f"[SUCCESS] {method} {url} - {response.status_code}")
+            print(f"[SUCCESS] {method} {url} - {response.status_code} {response.reason}")
+        elif response.status_code >= 300:
+            # Treat responses with status codes >= 300 as not failed
+            print(f"[INFO] {method} {url} - {response.status_code} {response.reason} (non-failure status code)")
         else:
             stats['failed'] += 1
-            print(f"[FAILED] {method} {url} - {response.status_code}")
+            print(f"[FAILED] {method} {url} - {response.status_code} {response.reason}")
     except requests.exceptions.Timeout:
         stats['failed'] += 1
         print(f"[TIMEOUT] {method} {url} - Request timed out")
@@ -52,9 +56,21 @@ def send_requests_concurrently(file_path, max_workers=10):
             lines = file.readlines()
             stats['total'] = len([line for line in lines if line.strip() and not line.startswith('#')])
 
-        # Process requests concurrently
+        # Separate GET/POST and DELETE requests
+        get_post_lines = [line for line in lines if line.strip() and not line.startswith('#') and line.split(' ')[0].upper() in ['GET', 'POST']]
+        delete_lines = [line for line in lines if line.strip() and not line.startswith('#') and line.split(' ')[0].upper() == 'DELETE']
+
+        # Process GET and POST requests concurrently
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            executor.map(lambda line: send_request(line, stats), lines)
+            executor.map(lambda line: send_request(line, stats), get_post_lines)
+
+        # Wait for 2 seconds before processing DELETE requests
+        print("\nWaiting for 1 second before processing DELETE requests...")
+        time.sleep(1)
+
+        # Process DELETE requests concurrently
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            executor.map(lambda line: send_request(line, stats), delete_lines)
 
         # Display summary
         print("\n=== Request Summary ===")
