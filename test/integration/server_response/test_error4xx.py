@@ -270,3 +270,4 @@ def test_method_not_allowed():
 
     assert response.status_code == 405
     assert response.headers["allow"] == "GET"
+    assert response.headers["connection"] == "close"
