@@ -1,5 +1,46 @@
 #include "StatusCode.hpp"
 
+std::string statusCodeToString(statusCode statusCode)
+{
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
+		return ("0");
+
+	switch (statusCode) {
+	case NoStatus:
+		return ("0");
+	case StatusOK:
+		return ("200");
+	case StatusCreated:
+		return ("201");
+	case StatusMovedPermanently:
+		return ("301");
+	case StatusFound:
+		return ("302");
+	case StatusPermanentRedirect:
+		return ("308");
+	case StatusBadRequest:
+		return ("400");
+	case StatusForbidden:
+		return ("403");
+	case StatusNotFound:
+		return ("404");
+	case StatusMethodNotAllowed:
+		return ("405");
+	case StatusRequestTimeout:
+		return ("408");
+	case StatusRequestEntityTooLarge:
+		return ("413");
+	case StatusRequestHeaderFieldsTooLarge:
+		return ("431");
+	case StatusInternalServerError:
+		return ("500");
+	case StatusMethodNotImplemented:
+		return ("501");
+	case StatusNonSupportedVersion:
+		return ("505");
+	}
+}
+
 /**
  * @brief Returns reason phrase for a given status code.
  *

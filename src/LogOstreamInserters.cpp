@@ -127,59 +127,7 @@ std::ostream& operator<<(std::ostream& ostream, Method method)
  */
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode)
 {
-	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
-		statusCode = StatusInternalServerError;
-
-	switch (statusCode) {
-	case NoStatus:
-		ostream << "0";
-		break;
-	case StatusOK:
-		ostream << "200";
-		break;
-	case StatusCreated:
-		ostream << "201";
-		break;
-	case StatusMovedPermanently:
-		ostream << "301";
-		break;
-	case StatusFound:
-		ostream << "302";
-		break;
-	case StatusPermanentRedirect:
-		ostream << "308";
-		break;
-	case StatusBadRequest:
-		ostream << "400";
-		break;
-	case StatusForbidden:
-		ostream << "403";
-		break;
-	case StatusNotFound:
-		ostream << "404";
-		break;
-	case StatusMethodNotAllowed:
-		ostream << "405";
-		break;
-	case StatusRequestTimeout:
-		ostream << "408";
-		break;
-	case StatusRequestEntityTooLarge:
-		ostream << "413";
-		break;
-	case StatusRequestHeaderFieldsTooLarge:
-		ostream << "431";
-		break;
-	case StatusInternalServerError:
-		ostream << "500";
-		break;
-	case StatusMethodNotImplemented:
-		ostream << "501";
-		break;
-	case StatusNonSupportedVersion:
-		ostream << "505";
-		break;
-	}
+	ostream << statusCodeToString(statusCode);
 	return ostream;
 }
 
