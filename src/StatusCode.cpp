@@ -76,6 +76,8 @@ bool isRedirectionStatus(statusCode statusCode)
  *
  * Connection: close is sent with status:
  * - 400 Bad Request
+ * - 405 Method Not Allowed
+ * - 408 Request Timeout
  * - 413 Request Entity Too Large
  * - 431 Request Header Fields Too Large
  * @param statusCode Status code to check.
@@ -86,6 +88,8 @@ bool isCloseConnectionStatus(statusCode statusCode)
 {
 	switch (statusCode) {
 	case StatusBadRequest:
+	case StatusMethodNotAllowed:
+	case StatusRequestTimeout:
 	case StatusRequestEntityTooLarge:
 	case StatusRequestHeaderFieldsTooLarge:
 		return true;
