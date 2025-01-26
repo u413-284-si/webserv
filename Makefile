@@ -16,11 +16,11 @@
 
 NAME := webserv
 
-TEST := unittest
+UNIT := unittest
 
 NAME_SANI := $(NAME)_sani
 
-TEST_SANI := $(TEST)_sani
+UNIT_SANI := $(UNIT)_sani
 
 # ******************************
 # *     Variables              *
@@ -65,11 +65,6 @@ BLUE := \033[34m
 
 SRC_DIR := src
 
-TEST_DIR := test
-UNIT_TEST_DIR := $(TEST_DIR)/unit
-INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
-SIEGE_DIR := $(TEST_DIR)/siege
-
 # Base directory for object files
 BASE_OBJ_DIR = obj
 
@@ -79,7 +74,7 @@ BASE_OBJ_DIR = obj
 ifeq ($(SANI),1)
 	OBJ_DIR := $(BASE_OBJ_DIR)/sani
 	NAME := $(NAME_SANI)
-	TEST := $(TEST_SANI)
+	UNIT := $(UNIT_SANI)
 else
 	OBJ_DIR := $(BASE_OBJ_DIR)/default
 endif
@@ -89,6 +84,14 @@ INC_DIR := inc
 
 # Subdirectories for dependency files
 DEP_DIR := $(BASE_OBJ_DIR)/dep
+
+# Subdirectory for test related files
+TEST_DIR := test
+
+UNIT_TEST_DIR_SRC := $(TEST_DIR)/unit/src
+UNIT_TEST_DIR_INC := $(TEST_DIR)/unit/inc
+INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
+SIEGE_DIR := $(TEST_DIR)/siege
 
 # Subdirectory for log files
 LOG_DIR := log
@@ -114,8 +117,9 @@ COMPILE = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) -c
 POSTCOMPILE = @mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d && touch $@
 
 # Special variables for compiling test files
+CPPFLAGS_TEST = $(CPPFLAGS) -I $(UNIT_TEST_DIR_INC)
 CXXFLAGS_TEST = -std=c++20 $(WARNINGS) $(ASAN) $(DEBUG_FLAGS) -g
-COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS_TEST) -c
+COMPILE_TEST = $(CXX) $(DEPFLAGS) $(CPPFLAGS_TEST) $(CXXFLAGS_TEST) -c
 
 # ******************************
 # *     Source files           *
@@ -253,18 +257,21 @@ $(NAME): $(PROG_OBJS)
 # *     Special targets        *
 # ******************************
 
-# Alias for creating unittests
-.PHONY: test
-test: $(TEST)
 # Reconfigure flags for linking with gtest
-$(TEST): LDLIBS := -pthread -lgtest -lgmock -lgtest_main
-$(TEST): OBJS := $(TEST_OBJS)
+$(UNIT): LDLIBS := -pthread -lgtest -lgmock -lgtest_main
+$(UNIT): OBJS := $(TEST_OBJS)
 # Link the test binary
-$(TEST): $(TEST_OBJS)
+$(UNIT): $(TEST_OBJS)
 	@printf "$(YELLOW)$(BOLD)link binary$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@printf "$(YELLOW)$(BOLD)compilation successful$(RESET) [$(BLUE)$@$(RESET)]\n"
 	@printf "$(BOLD)$(GREEN)$@ created!$(RESET)\n"
+
+# Run unittests
+.PHONY: test
+test: $(UNIT)
+	@printf "$(YELLOW)$(BOLD)Run unittests$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)./$(UNIT)
 
 # Run integration tests
 .PHONY: test2
@@ -285,7 +292,7 @@ SIEGE_URL=http://127.0.0.1:8080/empty.html
 .PHONY: test3
 test3: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run load test with siege$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)./webserv $(CONFIGFILE) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)siege \
 		--rc=$(SIEGE_CONFIG) \
@@ -298,7 +305,7 @@ test3: $(NAME) | $(LOG_DIR)
 .PHONY: test4
 test4: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run benchmark test with siege on a single URL$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)./webserv $(CONFIGFILE) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)siege \
 		--rc=$(SIEGE_CONFIG) \
@@ -352,9 +359,9 @@ check_bear_installed:
 
 # Create coverage report to display with coverage gutter
 .PHONY: coverage
-coverage: $(TEST) | $(KCOV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)kcov $(KCOV_EXCL_PATH) $(KCOV_DIR) ./$(TEST)
+coverage: $(UNIT) | $(KCOV_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(UNIT)$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)kcov $(KCOV_EXCL_PATH) $(KCOV_DIR) ./$(UNIT)
 
 .PHONY: coverage2
 coverage2: $(NAME) | $(KCOV_DIR)
@@ -391,7 +398,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(SILENT)$(POSTCOMPILE)
 
 # Similar target for testfiles; uses different compile flags
-$(OBJ_DIR)/%.o: $(UNIT_TEST_DIR)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(UNIT_TEST_DIR_SRC)/%.cpp message $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@echo "($(CURRENT_FILE)/$(TOTAL_FILES)) Compiling $(BOLD)$< $(RESET)"
 	$(SILENT)$(COMPILE_TEST) $< -o $@
@@ -425,8 +432,8 @@ clean:
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
 fclean: clean
-	@rm -rf $(NAME) $(TEST) $(NAME_SANI) $(TEST_SANI)
-	@printf "$(RED)removed binaries $(NAME)* $(TEST)*$(RESET)\n"
+	@rm -rf $(NAME) $(UNIT) $(NAME_SANI) $(UNIT_SANI)
+	@printf "$(RED)removed binaries $(NAME)* $(UNIT)*$(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@rm -rf $(KCOV_DIR)
