@@ -18,10 +18,11 @@ var _status_code_8hpp =
       [ "StatusMethodNotImplemented", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa50bb7ddb42bb2dc87d9e13f00bb36259", null ],
       [ "StatusNonSupportedVersion", "_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaad75868e77f627eae8ce31b3414d5e949", null ]
     ] ],
-    [ "operator<<", "_status_code_8hpp.html#a39c4ed08ee151f0a8d9e17bbff2dee32", null ],
+    [ "statusCodeToString", "_status_code_8hpp.html#af5faa47fefee84e9d7647ce996a9c849", null ],
     [ "statusCodeToReasonPhrase", "_status_code_8hpp.html#a1bd32c420ee91ee65ec9e0c4dd8a12c9", null ],
-    [ "stringToStatusCode", "_status_code_8hpp.html#a8ea6114ed12d068cafadbcd8aee99abf", null ],
+    [ "stringToStatusCode", "_status_code_8hpp.html#a4d674f38dc9b3bdccfd7e25e65417ed6", null ],
     [ "extractStatusCode", "_status_code_8hpp.html#a849ef63e47980cc5b2e5d7186a09a3a4", null ],
     [ "isErrorStatus", "_status_code_8hpp.html#a9ffe20c990ee392d88c516781bda2ba2", null ],
-    [ "isRedirectionStatus", "_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96", null ]
+    [ "isRedirectionStatus", "_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96", null ],
+    [ "operator<<", "_status_code_8hpp.html#a39c4ed08ee151f0a8d9e17bbff2dee32", null ]
 ];
