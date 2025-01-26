@@ -72,6 +72,29 @@ bool isRedirectionStatus(statusCode statusCode)
 }
 
 /**
+ * @brief Check if a given status code closes connection
+ *
+ * Connection: close is sent with status:
+ * - 400 Bad Request
+ * - 413 Request Entity Too Large
+ * - 431 Request Header Fields Too Large
+ * @param statusCode Status code to check.
+ * @return true If status code closes connection
+ * @return false If status code doesn't close connection
+ */
+bool isCloseConnectionStatus(statusCode statusCode)
+{
+	switch (statusCode) {
+	case StatusBadRequest:
+	case StatusRequestEntityTooLarge:
+	case StatusRequestHeaderFieldsTooLarge:
+		return true;
+	default:
+		return false;
+	}
+}
+
+/**
  * @brief Converts a string to an HTTP status code.
  *
  * This function takes a string representation of an HTTP status code
