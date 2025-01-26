@@ -97,7 +97,7 @@ SIEGE_DIR := $(TEST_DIR)/siege
 LOG_DIR := log
 
 # Directory for coverage report
-KCOV_DIR := kcov
+KCOV_DIR := .vscode/coverage
 
 # Directory for configuration files
 CONFIG_DIR := config_files
