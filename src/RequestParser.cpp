@@ -359,8 +359,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			std::string headerValue = headerLine.substr(delimiterPos + 1);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
-			headerValue = webutils::trimLeadingWhitespaces(headerValue);
-			webutils::trimTrailingWhiteSpaces(headerValue);
+			headerValue = webutils::trimWhiteSpaces(headerValue);
 			validateContentLength(headerName, headerValue, request);
 			validateNoMultipleHostHeaders(headerName, request);
 			request.headers[headerName] = headerValue;

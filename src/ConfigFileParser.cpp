@@ -379,8 +379,7 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
 
 		m_currentLine = content.substr(startIndex, m_contentIndex - startIndex);
 
-		m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
-		webutils::trimTrailingWhiteSpaces(m_currentLine);
+		m_currentLine = webutils::trimWhiteSpaces(m_currentLine);
 
 		return false;
 	}
@@ -388,8 +387,7 @@ bool ConfigFileParser::readAndTrimLine(const std::string& content, char delimite
 	m_contentIndex++;
 	m_currentLine = content.substr(startIndex, m_contentIndex - startIndex);
 
-	m_currentLine = webutils::trimLeadingWhitespaces(m_currentLine);
-	webutils::trimTrailingWhiteSpaces(m_currentLine);
+	m_currentLine = webutils::trimWhiteSpaces(m_currentLine);
 	return true;
 }
 
@@ -1008,8 +1006,7 @@ std::string ConfigFileParser::getDirective() const
 	else
 		directive = m_currentLine.substr(0, firstWhiteSpaceIndex);
 
-	directive = webutils::trimLeadingWhitespaces(directive);
-	webutils::trimTrailingWhiteSpaces(directive);
+	directive = webutils::trimWhiteSpaces(directive);
 
 	return directive;
 }
@@ -1030,8 +1027,7 @@ std::string ConfigFileParser::getValue(void) const
 	else
 		value = m_currentLine.substr(firstWhiteSpaceIndex, semicolonIndex - firstWhiteSpaceIndex);
 
-	value = webutils::trimLeadingWhitespaces(value);
-	webutils::trimTrailingWhiteSpaces(value);
+	value = webutils::trimWhiteSpaces(value);
 
 	return value;
 }
