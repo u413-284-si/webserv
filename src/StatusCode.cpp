@@ -3,7 +3,7 @@
 std::string statusCodeToString(statusCode statusCode)
 {
 	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
-		return ("0");
+		statusCode = NoStatus;
 
 	switch (statusCode) {
 	case NoStatus:
@@ -51,7 +51,7 @@ std::string statusCodeToString(statusCode statusCode)
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
 	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
-		statusCode = StatusInternalServerError;
+		statusCode = NoStatus;
 
 	switch (statusCode) {
 	case NoStatus:
