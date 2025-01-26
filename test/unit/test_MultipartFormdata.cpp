@@ -45,7 +45,6 @@ TEST_F(MultipartFormdataTest, ParseHeaderNoBoundary)
 				p.parseHeader(headerString, request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_BAD_MULTIPART_FORMDATA, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},

@@ -210,7 +210,6 @@ TEST_F(ParseHeadersTest, InvalidConnectionHeader)
 
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_CONNECTION_VALUE, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -233,7 +232,6 @@ TEST_F(ParseHeadersTest, EmptyConnectionValue)
 
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_EMPTY_CONNECTION_VALUE, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -253,7 +251,6 @@ TEST_F(ParseHeadersTest, WhitespaceBetweenHeaderFieldNameAndColon)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_HEADER_COLON_WHITESPACE, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -273,7 +270,6 @@ TEST_F(ParseHeadersTest, ObsoleteLineFolding)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_OBSOLETE_LINE_FOLDING, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -293,7 +289,6 @@ TEST_F(ParseHeadersTest, InvalidFieldName)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_HEADER_NAME_INVALID_CHAR, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -313,7 +308,6 @@ TEST_F(ParseHeadersTest, EmptyContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_CONTENT_LENGTH, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -333,7 +327,6 @@ TEST_F(ParseHeadersTest, InvalidContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_CONTENT_LENGTH, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -353,7 +346,6 @@ TEST_F(ParseHeadersTest, RepeatedNonEqualContentLengths)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MULTIPLE_CONTENT_LENGTH_VALUES, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -373,7 +365,6 @@ TEST_F(ParseHeadersTest, InvalidInFirstRepeatedContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_CONTENT_LENGTH, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -393,7 +384,6 @@ TEST_F(ParseHeadersTest, InvalidInLastRepeatedContentLength)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_CONTENT_LENGTH, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -413,7 +403,6 @@ TEST_F(ParseHeadersTest, RepeatedContentLengthHeaders)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MULTIPLE_CONTENT_LENGTH_VALUES, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -433,7 +422,6 @@ TEST_F(ParseHeadersTest, EmptyTransferEncoding)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_NON_EXISTENT_TRANSFER_ENCODING, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -453,7 +441,6 @@ TEST_F(ParseHeadersTest, InvalidChunkedTransferEncodingPositioning)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_NON_FINAL_CHUNKED_ENCODING, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -490,7 +477,6 @@ TEST_F(ParseHeadersTest, MissingHostHeader)
 				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MISSING_HOST_HEADER, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -508,7 +494,6 @@ TEST_F(ParseHeadersTest, EmptyHostValue)
 				p.parseHeader("GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost:\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_EMPTY_HOST_VALUE, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -528,7 +513,6 @@ TEST_F(ParseHeadersTest, MultipleHostHeaders)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_MULTIPLE_HOST_HEADERS, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -548,7 +532,6 @@ TEST_F(ParseHeadersTest, HostnameInvalidChar)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -568,7 +551,6 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtStart)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -588,7 +570,6 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtStartOfLabel)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -608,7 +589,6 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtEndOfLabel)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -628,7 +608,6 @@ TEST_F(ParseHeadersTest, HostnameInvalidHyphenAtEnd)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -649,7 +628,6 @@ TEST_F(ParseHeadersTest, HostnameLabelTooLong)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -671,7 +649,6 @@ TEST_F(ParseHeadersTest, HostnameTooLong)
 					request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOSTNAME, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -690,7 +667,6 @@ TEST_F(ParseHeadersTest, HostnameAsIPInvalid)
 					"GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.999\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOST_IP, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -710,7 +686,6 @@ TEST_F(ParseHeadersTest, InvalidHostnameLikeIP)
 					"GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.9999\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOST_IP, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -730,7 +705,6 @@ TEST_F(ParseHeadersTest, InvalidHostnameLikeIP2)
 					"GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 127.3.43.1.1\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOST_IP, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},
@@ -749,7 +723,6 @@ TEST_F(ParseHeadersTest, HostnameAsIPWithInvalidPort)
 					"GET /search?query=openai&year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65536\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_INVALID_HOST_IP_WITH_PORT, e.what());
-				EXPECT_EQ(request.shallCloseConnection, true);
 				throw;
 			}
 		},

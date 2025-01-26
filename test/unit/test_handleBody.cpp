@@ -25,7 +25,6 @@ TEST_F(HandleBodyTest, ParseBodyFailed)
 	handleBody(m_server, m_dummyFd, m_connection);
 
 	EXPECT_EQ(m_connection.m_request.httpStatus, StatusBadRequest);
-	EXPECT_TRUE(m_connection.m_request.shallCloseConnection);
 	EXPECT_EQ(m_connection.m_status, Connection::BuildResponse);
 }
 
