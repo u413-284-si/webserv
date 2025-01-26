@@ -319,19 +319,18 @@ test4: $(NAME) | $(LOG_DIR)
 
 REQUESTER=$(REQUESTER_DIR)/requester.py
 REQUESTER_FILE=$(REQUESTER_DIR)/requests.txt
-VALGRIND_FLAGS=--leak-check=full --show-leak-kinds=all --track-origins=yes
+VALGRIND_FLAGS=--leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes --log-file=$(LOG_VALGRIND)
 
 .PHONY: test5
 test5: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run webserv with valgrind and requester$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)valgrind $(VALGRIND_FLAGS) ./webserv $(CONFIGFILE) >$(LOG_VALGRIND) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)valgrind $(VALGRIND_FLAGS) ./webserv $(CONFIGFILE) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)/usr/bin/python3 \
 		$(REQUESTER) \
 		$(REQUESTER_FILE)
 	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
-	$(SILENT)sleep 2
-	$(SILENT)cat $(LOG_VALGRIND)
+	$(SILENT)less $(LOG_VALGRIND)
 
 # This target uses perf for profiling.
 .PHONY: profile
