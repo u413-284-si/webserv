@@ -1383,6 +1383,7 @@ void connectionReceiveFromCGI(Server& server, Connection& connection)
 			connection.m_request.httpStatus = StatusInternalServerError;
 			return;
 		}
+		connection.m_cgiPid = -1;
 		// Check if the child exited normally with exit() or returning from main()
 		if (WIFEXITED(status)) { // NOLINT: misinterpretation by HIC++ standard
 			int exitCode = WEXITSTATUS(status); // NOLINT: misinterpretation by HIC++ standard
@@ -1512,9 +1513,15 @@ void checkForTimeout(Server& server)
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			if (iter->second.m_status != Connection::ReceiveFromCGI && iter->second.m_status != Connection::SendToCGI)
-				server.modifyEvent(iter->first, EPOLLOUT);
 			iter->second.m_status = Connection::Timeout;
+			if (iter->second.m_status == Connection::ReceiveFromCGI || iter->second.m_status == Connection::SendToCGI) {
+				server.addEvent(iter->first, EPOLLOUT);
+				if (iter->second.m_pipeToCGIWriteEnd != -1)
+					webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
+				if (iter->second.m_pipeFromCGIReadEnd != -1)
+					webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
+			} else
+				server.modifyEvent(iter->first, EPOLLOUT);
 		}
 	}
 }

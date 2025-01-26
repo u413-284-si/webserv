@@ -340,12 +340,12 @@ void CGIHandler::closePipes()
  *
  */
 void CGIHandler::closeAllFds(
-	int epollFd, std::map<int, Connection> connections, std::map<int, Connection*> cgiConnections)
+	int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections)
 {
 	closePipes();
 	close(epollFd);
-	for (std::map<int, Connection>::iterator iter = connections.begin(); iter != connections.end(); ++iter)
+	for (std::map<int, Connection>::const_iterator iter = connections.begin(); iter != connections.end(); ++iter)
 		close(iter->first);
-	for (std::map<int, Connection*>::iterator iter = cgiConnections.begin(); iter != cgiConnections.end(); ++iter)
+	for (std::map<int, Connection*>::const_iterator iter = cgiConnections.begin(); iter != cgiConnections.end(); ++iter)
 		close(iter->first);
 }
