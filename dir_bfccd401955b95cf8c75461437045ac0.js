@@ -20,10 +20,6 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "LogOutputterConsole.hpp", "_log_outputter_console_8hpp.html", "_log_outputter_console_8hpp" ],
     [ "LogOutputterFile.hpp", "_log_outputter_file_8hpp.html", "_log_outputter_file_8hpp" ],
     [ "Method.hpp", "_method_8hpp.html", "_method_8hpp" ],
-    [ "MockEpollWrapper.hpp", "_mock_epoll_wrapper_8hpp.html", "_mock_epoll_wrapper_8hpp" ],
-    [ "MockFileSystemOps.hpp", "_mock_file_system_ops_8hpp.html", "_mock_file_system_ops_8hpp" ],
-    [ "MockProcessOps.hpp", "_mock_process_ops_8hpp.html", "_mock_process_ops_8hpp" ],
-    [ "MockSocketOps.hpp", "_mock_socket_ops_8hpp.html", "_mock_socket_ops_8hpp" ],
     [ "ProcessOps.hpp", "_process_ops_8hpp.html", "_process_ops_8hpp" ],
     [ "RequestParser.hpp", "_request_parser_8hpp.html", "_request_parser_8hpp" ],
     [ "ResponseBodyHandler.hpp", "_response_body_handler_8hpp.html", "_response_body_handler_8hpp" ],
@@ -34,6 +30,5 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "SocketOps.hpp", "_socket_ops_8hpp.html", "_socket_ops_8hpp" ],
     [ "StatusCode.hpp", "_status_code_8hpp.html", "_status_code_8hpp" ],
     [ "TargetResourceHandler.hpp", "_target_resource_handler_8hpp.html", "_target_resource_handler_8hpp" ],
-    [ "test_helpers.hpp", "test__helpers_8hpp.html", "test__helpers_8hpp" ],
     [ "utilities.hpp", "utilities_8hpp.html", "utilities_8hpp" ]
 ];
