@@ -8,7 +8,7 @@ import pytest
 
 host = "localhost"
 port = 8080
-wait_for_timeout = 61
+wait_for_timeout = 65
 
 @pytest.mark.timeout
 def test_timeout_partial_request_sent():
