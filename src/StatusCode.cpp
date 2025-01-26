@@ -122,42 +122,36 @@ bool isRedirectionStatus(statusCode statusCode)
  * @param str The string representation of the HTTP status code.
  * @return The corresponding statusCode enum value.
  */
-statusCode stringToStatusCode(std::string& str)
+statusCode stringToStatusCode(const std::string& str)
 {
-	if (str == "0")
-		return NoStatus;
-	if (str == "200")
-		return StatusOK;
-	if (str == "201")
-		return StatusCreated;
-	if (str == "301")
-		return StatusMovedPermanently;
-	if (str == "302")
-		return StatusFound;
-	if (str == "308")
-		return StatusPermanentRedirect;
-	if (str == "400")
-		return StatusBadRequest;
-	if (str == "403")
-		return StatusForbidden;
-	if (str == "404")
-		return StatusNotFound;
-	if (str == "405")
-		return StatusMethodNotAllowed;
-	if (str == "408")
-		return StatusRequestTimeout;
-	if (str == "413")
-		return StatusRequestEntityTooLarge;
-	if (str == "431")
-		return StatusRequestHeaderFieldsTooLarge;
-	if (str == "500")
-		return StatusInternalServerError;
-	if (str == "501")
-		return StatusMethodNotImplemented;
-	if (str == "505")
-		return StatusNonSupportedVersion;
+	if (str.size() != 3)
+		return (NoStatus);
 
-	return NoStatus;
+	char* endptr = NULL;
+	statusCode statusCode = static_cast<enum statusCode>(std::strtol(str.c_str(), &endptr, constants::g_decimalBase));
+	if (*endptr != '\0')
+		statusCode = NoStatus;
+
+	switch (statusCode) {
+	case NoStatus:
+	case StatusOK:
+	case StatusCreated:
+	case StatusMovedPermanently:
+	case StatusFound:
+	case StatusPermanentRedirect:
+	case StatusBadRequest:
+	case StatusForbidden:
+	case StatusNotFound:
+	case StatusRequestEntityTooLarge:
+	case StatusMethodNotAllowed:
+	case StatusRequestTimeout:
+	case StatusRequestHeaderFieldsTooLarge:
+	case StatusInternalServerError:
+	case StatusMethodNotImplemented:
+	case StatusNonSupportedVersion:
+		return (statusCode);
+	}
+	return (NoStatus);
 }
 
 statusCode extractStatusCode(const std::string& statusLine)
