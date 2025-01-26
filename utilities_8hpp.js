@@ -1,7 +1,8 @@
 var utilities_8hpp =
 [
     [ "trimLeadingWhitespaces", "utilities_8hpp.html#a63365cb0853efe9bea46d8a83fe463e9", null ],
-    [ "trimTrailingWhiteSpaces", "utilities_8hpp.html#a1f12db3d349c3e715f7eee3cbb035c3c", null ],
+    [ "trimTrailingWhiteSpaces", "utilities_8hpp.html#a628cec636ef554cdba3925fa4a4a0d82", null ],
+    [ "trimWhiteSpaces", "utilities_8hpp.html#adce13f950fe70b463cbbed8175ce817c", null ],
     [ "split", "utilities_8hpp.html#ac353e83957132d4f186a74f5d29b9cda", null ],
     [ "getFileExtension", "utilities_8hpp.html#a900811a6a7865748dae9dbab442127cf", null ],
     [ "getGMTString", "utilities_8hpp.html#ae29ddfc0ffbb42f9b1bd34ed1d77b762", null ],
@@ -13,6 +14,5 @@ var utilities_8hpp =
     [ "lowercase", "utilities_8hpp.html#afee369c732ca6e732ff83a1caa16089e", null ],
     [ "capitalizeWords", "utilities_8hpp.html#abd244783e4af790f19815c07525a7ac0", null ],
     [ "replaceAlias", "utilities_8hpp.html#a7e52566fd329d782c68e2ca871ce2e62", null ],
-    [ "toString", "utilities_8hpp.html#afd1710fd588c15830d10aef146da8ddb", null ],
-    [ "timeStringBuffer", "utilities_8hpp.html#a835d10ac34a533945ccd642c629a600c", null ]
+    [ "toString", "utilities_8hpp.html#afd1710fd588c15830d10aef146da8ddb", null ]
 ];

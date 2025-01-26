@@ -40,7 +40,8 @@ var namespaces_dup =
     [ "weblog", "namespaceweblog.html", "namespaceweblog" ],
     [ "webutils", "namespacewebutils.html", [
       [ "trimLeadingWhitespaces", "namespacewebutils.html#a63365cb0853efe9bea46d8a83fe463e9", null ],
-      [ "trimTrailingWhiteSpaces", "namespacewebutils.html#a1f12db3d349c3e715f7eee3cbb035c3c", null ],
+      [ "trimTrailingWhiteSpaces", "namespacewebutils.html#a628cec636ef554cdba3925fa4a4a0d82", null ],
+      [ "trimWhiteSpaces", "namespacewebutils.html#adce13f950fe70b463cbbed8175ce817c", null ],
       [ "split", "namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda", null ],
       [ "getFileExtension", "namespacewebutils.html#a900811a6a7865748dae9dbab442127cf", null ],
       [ "getGMTString", "namespacewebutils.html#ae29ddfc0ffbb42f9b1bd34ed1d77b762", null ],
@@ -52,7 +53,6 @@ var namespaces_dup =
       [ "lowercase", "namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e", null ],
       [ "capitalizeWords", "namespacewebutils.html#abd244783e4af790f19815c07525a7ac0", null ],
       [ "replaceAlias", "namespacewebutils.html#a7e52566fd329d782c68e2ca871ce2e62", null ],
-      [ "toString", "namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb", null ],
-      [ "timeStringBuffer", "namespacewebutils.html#a835d10ac34a533945ccd642c629a600c", null ]
+      [ "toString", "namespacewebutils.html#afd1710fd588c15830d10aef146da8ddb", null ]
     ] ]
 ];
