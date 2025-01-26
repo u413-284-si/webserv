@@ -138,6 +138,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7624eba338a6df04e8076bcc14e77e96" id="r_a7624eba338a6df04e8076bcc14e77e96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_status_code_8cpp.html#a7624eba338a6df04e8076bcc14e77e96">isRedirectionStatus</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
 <tr class="memdesc:a7624eba338a6df04e8076bcc14e77e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a given status code is a redirection.  <br /></td></tr>
 <tr class="separator:a7624eba338a6df04e8076bcc14e77e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b5dc66bb074667ee6e036ec0ae0471" id="r_a52b5dc66bb074667ee6e036ec0ae0471"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_status_code_8cpp.html#a52b5dc66bb074667ee6e036ec0ae0471">isCloseConnectionStatus</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>)</td></tr>
+<tr class="memdesc:a52b5dc66bb074667ee6e036ec0ae0471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a given status code closes connection.  <br /></td></tr>
+<tr class="separator:a52b5dc66bb074667ee6e036ec0ae0471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a584f6fc19ee569a7287339fdedb1f131" name="a584f6fc19ee569a7287339fdedb1f131"></a>
@@ -477,6 +480,61 @@ false If the status code is not a redirection. </dd></dl>
 <div class="line"><span class="lineno">  177</span>    <span class="keywordflow">return</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &gt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa1c6f932779ead46cd38c8b718a712d46">StatusMovedPermanently</a> &amp;&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &lt;= <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3033d83ea3faec0dc2952f617276ef92">StatusPermanentRedirect</a>);</div>
 <div class="line"><span class="lineno">  178</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a52b5dc66bb074667ee6e036ec0ae0471" name="a52b5dc66bb074667ee6e036ec0ae0471"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b5dc66bb074667ee6e036ec0ae0471">&#9670;&#160;</a></span>isCloseConnectionStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a> isCloseConnectionStatus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>&#160;</td>
+          <td class="paramname"><em>statusCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if a given status code closes connection. </p>
+<p><a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a>: close is sent with status:</p><ul>
+<li>400 Bad Request</li>
+<li>405 Method Not Allowed</li>
+<li>408 Request Timeout</li>
+<li>413 Request Entity Too Large</li>
+<li>431 Request Header Fields Too Large <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statusCode</td><td>Status code to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true If status code closes connection </dd>
+<dd>
+false If status code doesn't close connection </dd></dl>
+</li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="_status_code_8cpp_source.html#l00193">193</a> of file <a class="el" href="_status_code_8cpp_source.html">StatusCode.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  194</span>{</div>
+<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">switch</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a>) {</div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9c4d4211ed914ad3f1ef5cbfcbd7e424">StatusBadRequest</a>:</div>
+<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa3a2f8b3e6cff3c3161d55afc45abe018">StatusMethodNotAllowed</a>:</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacffa58a18c688740c290369c8bf13a3f">StatusRequestTimeout</a>:</div>
+<div class="line"><span class="lineno">  199</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa80247b37438ce9e27971aff9469049c6">StatusRequestEntityTooLarge</a>:</div>
+<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa934528334c51781e546b5808ef678212">StatusRequestHeaderFieldsTooLarge</a>:</div>
+<div class="line"><span class="lineno">  201</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  203</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  204</span>    }</div>
+<div class="line"><span class="lineno">  205</span>}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_status_code_8cpp_a52b5dc66bb074667ee6e036ec0ae0471_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
 </div>
 </div>
 </div><!-- contents -->

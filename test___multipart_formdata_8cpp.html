@@ -234,12 +234,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>                p.parseHeader(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">headerString</a>, request);</div>
 <div class="line"><span class="lineno">   46</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
 <div class="line"><span class="lineno">   47</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">   48</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   49</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">   50</span>            }</div>
-<div class="line"><span class="lineno">   51</span>        },</div>
-<div class="line"><span class="lineno">   52</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<div class="line"><span class="lineno">   48</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">   49</span>            }</div>
+<div class="line"><span class="lineno">   50</span>        },</div>
+<div class="line"><span class="lineno">   51</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_af5f9ae4127a5006a41301ebc285062d7"><div class="ttname"><a href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a></div><div class="ttdeci">#define ERR_BAD_MULTIPART_FORMDATA</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00084">error.hpp:84</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -270,22 +269,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00055">55</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   58</span>    request.body</div>
-<div class="line"><span class="lineno">   59</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">   60</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">   61</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">   62</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">   63</span>          <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   64</span>    <span class="comment">// Act</span></div>
-<div class="line"><span class="lineno">   65</span>    p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">   68</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.targetResource, <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/darkknight.txt&quot;</span>);</div>
-<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.body, <span class="stringliteral">&quot;Some men just want to watch the world burn.&quot;</span>);</div>
-<div class="line"><span class="lineno">   70</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00054">54</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
+<div class="line"><span class="lineno">   56</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">   57</span>    request.body</div>
+<div class="line"><span class="lineno">   58</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">   59</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">   60</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">   61</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">   62</span>          <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   63</span>    <span class="comment">// Act</span></div>
+<div class="line"><span class="lineno">   64</span>    p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>    <span class="comment">// Assert</span></div>
+<div class="line"><span class="lineno">   67</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.targetResource, <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/darkknight.txt&quot;</span>);</div>
+<div class="line"><span class="lineno">   68</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.body, <span class="stringliteral">&quot;Some men just want to watch the world burn.&quot;</span>);</div>
+<div class="line"><span class="lineno">   69</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -315,27 +314,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00072">72</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{</div>
-<div class="line"><span class="lineno">   74</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   75</span>    request.body</div>
-<div class="line"><span class="lineno">   76</span>        = <span class="stringliteral">&quot;Content-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">   77</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">   78</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">   79</span>          <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">   82</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">   83</span>        {</div>
-<div class="line"><span class="lineno">   84</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">   85</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">   86</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">   87</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">   88</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">   89</span>            }</div>
-<div class="line"><span class="lineno">   90</span>        },</div>
-<div class="line"><span class="lineno">   91</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">   92</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00071">71</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
+<div class="line"><span class="lineno">   73</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">   74</span>    request.body</div>
+<div class="line"><span class="lineno">   75</span>        = <span class="stringliteral">&quot;Content-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">   76</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">   77</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">   78</span>          <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">   81</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">   82</span>        {</div>
+<div class="line"><span class="lineno">   83</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">   84</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">   85</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">   86</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">   87</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">   88</span>            }</div>
+<div class="line"><span class="lineno">   89</span>        },</div>
+<div class="line"><span class="lineno">   90</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">   91</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -365,28 +364,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00094">94</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
-<div class="line"><span class="lineno">   96</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">   97</span>    request.body</div>
-<div class="line"><span class="lineno">   98</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">   99</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  100</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">  101</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">  102</span>          <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  105</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  106</span>        {</div>
-<div class="line"><span class="lineno">  107</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  108</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">  109</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  110</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  111</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  112</span>            }</div>
-<div class="line"><span class="lineno">  113</span>        },</div>
-<div class="line"><span class="lineno">  114</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  115</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00093">93</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
+<div class="line"><span class="lineno">   95</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">   96</span>    request.body</div>
+<div class="line"><span class="lineno">   97</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">   98</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   99</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">  100</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">  101</span>          <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  104</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  105</span>        {</div>
+<div class="line"><span class="lineno">  106</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  107</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">  108</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  109</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  110</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  111</span>            }</div>
+<div class="line"><span class="lineno">  112</span>        },</div>
+<div class="line"><span class="lineno">  113</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  114</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -416,27 +415,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00117">117</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>{</div>
-<div class="line"><span class="lineno">  119</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  120</span>    request.body = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">  121</span>                   <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">  122</span>                   <span class="stringliteral">&quot;name=\&quot;file\&quot;;&quot;</span></div>
-<div class="line"><span class="lineno">  123</span>                   <span class="stringliteral">&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">  124</span>                   <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  127</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  128</span>        {</div>
-<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  130</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">  131</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  132</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  133</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  134</span>            }</div>
-<div class="line"><span class="lineno">  135</span>        },</div>
-<div class="line"><span class="lineno">  136</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  137</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00116">116</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>{</div>
+<div class="line"><span class="lineno">  118</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  119</span>    request.body = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">  120</span>                   <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">  121</span>                   <span class="stringliteral">&quot;name=\&quot;file\&quot;;&quot;</span></div>
+<div class="line"><span class="lineno">  122</span>                   <span class="stringliteral">&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">  123</span>                   <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  126</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  127</span>        {</div>
+<div class="line"><span class="lineno">  128</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  129</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">  130</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  131</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  132</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  133</span>            }</div>
+<div class="line"><span class="lineno">  134</span>        },</div>
+<div class="line"><span class="lineno">  135</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  136</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -466,27 +465,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00139">139</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
-<div class="line"><span class="lineno">  141</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  142</span>    request.body = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">  143</span>                   <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">  144</span>                   <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">  145</span>                   <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">  146</span>                   <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  149</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  150</span>        {</div>
-<div class="line"><span class="lineno">  151</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  152</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">  153</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  154</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  155</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  156</span>            }</div>
-<div class="line"><span class="lineno">  157</span>        },</div>
-<div class="line"><span class="lineno">  158</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  159</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00138">138</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>{</div>
+<div class="line"><span class="lineno">  140</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  141</span>    request.body = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">  142</span>                   <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">  143</span>                   <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">  144</span>                   <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">  145</span>                   <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  148</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  149</span>        {</div>
+<div class="line"><span class="lineno">  150</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  151</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">  152</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  153</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  154</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  155</span>            }</div>
+<div class="line"><span class="lineno">  156</span>        },</div>
+<div class="line"><span class="lineno">  157</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  158</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -516,27 +515,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00161">161</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
-<div class="line"><span class="lineno">  163</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  164</span>    request.body = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">  165</span>                   <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">  166</span>                   <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">  167</span>                   <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">  168</span>                   <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  171</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  172</span>        {</div>
-<div class="line"><span class="lineno">  173</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  174</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">  175</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  176</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  177</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  178</span>            }</div>
-<div class="line"><span class="lineno">  179</span>        },</div>
-<div class="line"><span class="lineno">  180</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  181</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00160">160</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  161</span>{</div>
+<div class="line"><span class="lineno">  162</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  163</span>    request.body = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">  164</span>                   <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">  165</span>                   <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">  166</span>                   <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">  167</span>                   <span class="stringliteral">&quot;burn.\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  170</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  171</span>        {</div>
+<div class="line"><span class="lineno">  172</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  173</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">  174</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  175</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  176</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  177</span>            }</div>
+<div class="line"><span class="lineno">  178</span>        },</div>
+<div class="line"><span class="lineno">  179</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  180</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -566,28 +565,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00183">183</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span>{</div>
-<div class="line"><span class="lineno">  185</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  186</span>    request.body</div>
-<div class="line"><span class="lineno">  187</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">  188</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">  189</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">  190</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">  191</span>          <span class="stringliteral">&quot;burn.\r\nbliblablubWebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  194</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  195</span>        {</div>
-<div class="line"><span class="lineno">  196</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  197</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">  198</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  199</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  200</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  201</span>            }</div>
-<div class="line"><span class="lineno">  202</span>        },</div>
-<div class="line"><span class="lineno">  203</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  204</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00182">182</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
+<div class="line"><span class="lineno">  184</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  185</span>    request.body</div>
+<div class="line"><span class="lineno">  186</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">  187</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">  188</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">  189</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">  190</span>          <span class="stringliteral">&quot;burn.\r\nbliblablubWebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  191</span> </div>
+<div class="line"><span class="lineno">  192</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  193</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  194</span>        {</div>
+<div class="line"><span class="lineno">  195</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  196</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">  197</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  198</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af5f9ae4127a5006a41301ebc285062d7">ERR_BAD_MULTIPART_FORMDATA</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  199</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  200</span>            }</div>
+<div class="line"><span class="lineno">  201</span>        },</div>
+<div class="line"><span class="lineno">  202</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  203</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -617,33 +616,33 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00206">206</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  207</span>{</div>
-<div class="line"><span class="lineno">  208</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  209</span>    request.body</div>
-<div class="line"><span class="lineno">  210</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">  211</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">  212</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">  213</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
-<div class="line"><span class="lineno">  214</span>          <span class="stringliteral">&quot;burn.\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  215</span>          <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
-<div class="line"><span class="lineno">  216</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nJoker\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
-<div class="line"><span class="lineno">  217</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
-<div class="line"><span class="lineno">  218</span>          <span class="stringliteral">&quot;filename=\&quot;?.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nWant me to show you a magic trick? &quot;</span></div>
-<div class="line"><span class="lineno">  219</span>          <span class="stringliteral">&quot;\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  220</span> </div>
-<div class="line"><span class="lineno">  221</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  222</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  223</span>        {</div>
-<div class="line"><span class="lineno">  224</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  225</span>                p.decodeMultipartFormdata(request);</div>
-<div class="line"><span class="lineno">  226</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  227</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a3db87370d70a5ed6bb88a81dd448624b">ERR_MULTIPLE_UPLOADS</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  228</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  229</span>            }</div>
-<div class="line"><span class="lineno">  230</span>        },</div>
-<div class="line"><span class="lineno">  231</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  232</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test___multipart_formdata_8cpp_source.html#l00205">205</a> of file <a class="el" href="test___multipart_formdata_8cpp_source.html">test_MultipartFormdata.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  206</span>{</div>
+<div class="line"><span class="lineno">  207</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  208</span>    request.body</div>
+<div class="line"><span class="lineno">  209</span>        = <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">  210</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nBatman\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">  211</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">  212</span>          <span class="stringliteral">&quot;filename=\&quot;darkknight.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nSome men just want to watch the world &quot;</span></div>
+<div class="line"><span class="lineno">  213</span>          <span class="stringliteral">&quot;burn.\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  214</span>          <span class="stringliteral">&quot;--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;username&quot;</span></div>
+<div class="line"><span class="lineno">  215</span>          <span class="stringliteral">&quot;\&quot;\r\n\r\nJoker\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; &quot;</span></div>
+<div class="line"><span class="lineno">  216</span>          <span class="stringliteral">&quot;name=\&quot;file\&quot;; &quot;</span></div>
+<div class="line"><span class="lineno">  217</span>          <span class="stringliteral">&quot;filename=\&quot;?.txt\&quot;\r\nContent-Type: text/plain\r\n\r\nWant me to show you a magic trick? &quot;</span></div>
+<div class="line"><span class="lineno">  218</span>          <span class="stringliteral">&quot;\r\n--WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  219</span> </div>
+<div class="line"><span class="lineno">  220</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  221</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  222</span>        {</div>
+<div class="line"><span class="lineno">  223</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  224</span>                p.decodeMultipartFormdata(request);</div>
+<div class="line"><span class="lineno">  225</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  226</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a3db87370d70a5ed6bb88a81dd448624b">ERR_MULTIPLE_UPLOADS</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  227</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  228</span>            }</div>
+<div class="line"><span class="lineno">  229</span>        },</div>
+<div class="line"><span class="lineno">  230</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  231</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a3db87370d70a5ed6bb88a81dd448624b"><div class="ttname"><a href="error_8hpp.html#a3db87370d70a5ed6bb88a81dd448624b">ERR_MULTIPLE_UPLOADS</a></div><div class="ttdeci">#define ERR_MULTIPLE_UPLOADS</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00101">error.hpp:101</a></div></div>
 </div><!-- fragment -->
 </div>

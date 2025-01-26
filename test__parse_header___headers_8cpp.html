@@ -793,12 +793,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  210</span> </div>
 <div class="line"><span class="lineno">  211</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
 <div class="line"><span class="lineno">  212</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#ace44ce027ed2a6d77b4bc80e7a3a6680">ERR_INVALID_CONNECTION_VALUE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  213</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  214</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  215</span>            }</div>
-<div class="line"><span class="lineno">  216</span>        },</div>
-<div class="line"><span class="lineno">  217</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  218</span>}</div>
+<div class="line"><span class="lineno">  213</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  214</span>            }</div>
+<div class="line"><span class="lineno">  215</span>        },</div>
+<div class="line"><span class="lineno">  216</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  217</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_ace44ce027ed2a6d77b4bc80e7a3a6680"><div class="ttname"><a href="error_8hpp.html#ace44ce027ed2a6d77b4bc80e7a3a6680">ERR_INVALID_CONNECTION_VALUE</a></div><div class="ttdeci">#define ERR_INVALID_CONNECTION_VALUE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00086">error.hpp:86</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -829,28 +828,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00220">220</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="comment">// Act</span></div>
-<div class="line"><span class="lineno">  225</span> </div>
-<div class="line"><span class="lineno">  226</span>    <span class="comment">// Assert</span></div>
-<div class="line"><span class="lineno">  227</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  228</span>        {</div>
-<div class="line"><span class="lineno">  229</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  230</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  231</span>                              <span class="stringliteral">&quot;127.0.0.1\r\nConnection: \r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  232</span>                    request);</div>
-<div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  235</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a6536693a496e8732f848f48df7fe866d">ERR_EMPTY_CONNECTION_VALUE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  236</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  237</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  238</span>            }</div>
-<div class="line"><span class="lineno">  239</span>        },</div>
-<div class="line"><span class="lineno">  240</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  241</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00219">219</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  220</span>{</div>
+<div class="line"><span class="lineno">  221</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>    <span class="comment">// Act</span></div>
+<div class="line"><span class="lineno">  224</span> </div>
+<div class="line"><span class="lineno">  225</span>    <span class="comment">// Assert</span></div>
+<div class="line"><span class="lineno">  226</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  227</span>        {</div>
+<div class="line"><span class="lineno">  228</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  229</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  230</span>                              <span class="stringliteral">&quot;127.0.0.1\r\nConnection: \r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  231</span>                    request);</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  234</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a6536693a496e8732f848f48df7fe866d">ERR_EMPTY_CONNECTION_VALUE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  235</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  236</span>            }</div>
+<div class="line"><span class="lineno">  237</span>        },</div>
+<div class="line"><span class="lineno">  238</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  239</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a6536693a496e8732f848f48df7fe866d"><div class="ttname"><a href="error_8hpp.html#a6536693a496e8732f848f48df7fe866d">ERR_EMPTY_CONNECTION_VALUE</a></div><div class="ttdeci">#define ERR_EMPTY_CONNECTION_VALUE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00085">error.hpp:85</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -881,25 +879,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00243">243</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  244</span>{</div>
-<div class="line"><span class="lineno">  245</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  246</span> </div>
-<div class="line"><span class="lineno">  247</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  248</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  249</span>        {</div>
-<div class="line"><span class="lineno">  250</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  251</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost :       &quot;</span></div>
-<div class="line"><span class="lineno">  252</span>                              <span class="stringliteral">&quot;www.example.com       \r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  253</span>                    request);</div>
-<div class="line"><span class="lineno">  254</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  255</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#add1c6699207e7ab0331cac67d5e4068d">ERR_HEADER_COLON_WHITESPACE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  256</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  257</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  258</span>            }</div>
-<div class="line"><span class="lineno">  259</span>        },</div>
-<div class="line"><span class="lineno">  260</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  261</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00241">241</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  242</span>{</div>
+<div class="line"><span class="lineno">  243</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  246</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  247</span>        {</div>
+<div class="line"><span class="lineno">  248</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  249</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost :       &quot;</span></div>
+<div class="line"><span class="lineno">  250</span>                              <span class="stringliteral">&quot;www.example.com       \r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  251</span>                    request);</div>
+<div class="line"><span class="lineno">  252</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  253</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#add1c6699207e7ab0331cac67d5e4068d">ERR_HEADER_COLON_WHITESPACE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  254</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  255</span>            }</div>
+<div class="line"><span class="lineno">  256</span>        },</div>
+<div class="line"><span class="lineno">  257</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  258</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_add1c6699207e7ab0331cac67d5e4068d"><div class="ttname"><a href="error_8hpp.html#add1c6699207e7ab0331cac67d5e4068d">ERR_HEADER_COLON_WHITESPACE</a></div><div class="ttdeci">#define ERR_HEADER_COLON_WHITESPACE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00072">error.hpp:72</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -930,25 +927,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00263">263</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  264</span>{</div>
-<div class="line"><span class="lineno">  265</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  268</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  269</span>        {</div>
-<div class="line"><span class="lineno">  270</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  271</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n Host:       &quot;</span></div>
-<div class="line"><span class="lineno">  272</span>                              <span class="stringliteral">&quot;www.example.com       \r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  273</span>                    request);</div>
-<div class="line"><span class="lineno">  274</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  275</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#acd2321beeb370570a6a3898a9949d936">ERR_OBSOLETE_LINE_FOLDING</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  276</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  277</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  278</span>            }</div>
-<div class="line"><span class="lineno">  279</span>        },</div>
-<div class="line"><span class="lineno">  280</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  281</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00260">260</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  261</span>{</div>
+<div class="line"><span class="lineno">  262</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  265</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  266</span>        {</div>
+<div class="line"><span class="lineno">  267</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  268</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n Host:       &quot;</span></div>
+<div class="line"><span class="lineno">  269</span>                              <span class="stringliteral">&quot;www.example.com       \r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  270</span>                    request);</div>
+<div class="line"><span class="lineno">  271</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  272</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#acd2321beeb370570a6a3898a9949d936">ERR_OBSOLETE_LINE_FOLDING</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  273</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  274</span>            }</div>
+<div class="line"><span class="lineno">  275</span>        },</div>
+<div class="line"><span class="lineno">  276</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  277</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_acd2321beeb370570a6a3898a9949d936"><div class="ttname"><a href="error_8hpp.html#acd2321beeb370570a6a3898a9949d936">ERR_OBSOLETE_LINE_FOLDING</a></div><div class="ttdeci">#define ERR_OBSOLETE_LINE_FOLDING</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00057">error.hpp:57</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -979,25 +975,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00283">283</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  284</span>{</div>
-<div class="line"><span class="lineno">  285</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  286</span> </div>
-<div class="line"><span class="lineno">  287</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  288</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  289</span>        {</div>
-<div class="line"><span class="lineno">  290</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  291</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  292</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nH&lt;ost: www.example.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  293</span>                    request);</div>
-<div class="line"><span class="lineno">  294</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  295</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a472efb775760ddac6a3a1795802f2285">ERR_HEADER_NAME_INVALID_CHAR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  296</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  297</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  298</span>            }</div>
-<div class="line"><span class="lineno">  299</span>        },</div>
-<div class="line"><span class="lineno">  300</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  301</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00279">279</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  280</span>{</div>
+<div class="line"><span class="lineno">  281</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  284</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  285</span>        {</div>
+<div class="line"><span class="lineno">  286</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  287</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  288</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nH&lt;ost: www.example.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  289</span>                    request);</div>
+<div class="line"><span class="lineno">  290</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  291</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a472efb775760ddac6a3a1795802f2285">ERR_HEADER_NAME_INVALID_CHAR</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  292</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  293</span>            }</div>
+<div class="line"><span class="lineno">  294</span>        },</div>
+<div class="line"><span class="lineno">  295</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  296</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a472efb775760ddac6a3a1795802f2285"><div class="ttname"><a href="error_8hpp.html#a472efb775760ddac6a3a1795802f2285">ERR_HEADER_NAME_INVALID_CHAR</a></div><div class="ttdeci">#define ERR_HEADER_NAME_INVALID_CHAR</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00073">error.hpp:73</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1028,25 +1023,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00303">303</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
-<div class="line"><span class="lineno">  305</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  308</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  309</span>        {</div>
-<div class="line"><span class="lineno">  310</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  311</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  312</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: \r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  313</span>                    request);</div>
-<div class="line"><span class="lineno">  314</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  315</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  316</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  317</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  318</span>            }</div>
-<div class="line"><span class="lineno">  319</span>        },</div>
-<div class="line"><span class="lineno">  320</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  321</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00298">298</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  299</span>{</div>
+<div class="line"><span class="lineno">  300</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  301</span> </div>
+<div class="line"><span class="lineno">  302</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  303</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  304</span>        {</div>
+<div class="line"><span class="lineno">  305</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  306</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  307</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: \r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  308</span>                    request);</div>
+<div class="line"><span class="lineno">  309</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  310</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  311</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  312</span>            }</div>
+<div class="line"><span class="lineno">  313</span>        },</div>
+<div class="line"><span class="lineno">  314</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  315</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a46888d82946e4b4a7279985906b33c1d"><div class="ttname"><a href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a></div><div class="ttdeci">#define ERR_INVALID_CONTENT_LENGTH</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00081">error.hpp:81</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1077,25 +1071,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00323">323</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  324</span>{</div>
-<div class="line"><span class="lineno">  325</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  328</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  329</span>        {</div>
-<div class="line"><span class="lineno">  330</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  331</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  332</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: ur\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  333</span>                    request);</div>
-<div class="line"><span class="lineno">  334</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  335</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  336</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  337</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  338</span>            }</div>
-<div class="line"><span class="lineno">  339</span>        },</div>
-<div class="line"><span class="lineno">  340</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  341</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00317">317</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  318</span>{</div>
+<div class="line"><span class="lineno">  319</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  322</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  323</span>        {</div>
+<div class="line"><span class="lineno">  324</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  325</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  326</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: ur\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  327</span>                    request);</div>
+<div class="line"><span class="lineno">  328</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  329</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  330</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  331</span>            }</div>
+<div class="line"><span class="lineno">  332</span>        },</div>
+<div class="line"><span class="lineno">  333</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  334</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1125,25 +1118,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00343">343</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  344</span>{</div>
-<div class="line"><span class="lineno">  345</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  348</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  349</span>        {</div>
-<div class="line"><span class="lineno">  350</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  351</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  352</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23, 1\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  353</span>                    request);</div>
-<div class="line"><span class="lineno">  354</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  355</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#aa8fcef1c417fe16154e4b1e5086ef2f8">ERR_MULTIPLE_CONTENT_LENGTH_VALUES</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  356</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  357</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  358</span>            }</div>
-<div class="line"><span class="lineno">  359</span>        },</div>
-<div class="line"><span class="lineno">  360</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  361</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00336">336</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  337</span>{</div>
+<div class="line"><span class="lineno">  338</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  341</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  342</span>        {</div>
+<div class="line"><span class="lineno">  343</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  344</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  345</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23, 1\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  346</span>                    request);</div>
+<div class="line"><span class="lineno">  347</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  348</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#aa8fcef1c417fe16154e4b1e5086ef2f8">ERR_MULTIPLE_CONTENT_LENGTH_VALUES</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  349</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  350</span>            }</div>
+<div class="line"><span class="lineno">  351</span>        },</div>
+<div class="line"><span class="lineno">  352</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  353</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_aa8fcef1c417fe16154e4b1e5086ef2f8"><div class="ttname"><a href="error_8hpp.html#aa8fcef1c417fe16154e4b1e5086ef2f8">ERR_MULTIPLE_CONTENT_LENGTH_VALUES</a></div><div class="ttdeci">#define ERR_MULTIPLE_CONTENT_LENGTH_VALUES</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00080">error.hpp:80</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1174,25 +1166,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00363">363</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  364</span>{</div>
-<div class="line"><span class="lineno">  365</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  366</span> </div>
-<div class="line"><span class="lineno">  367</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  368</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  369</span>        {</div>
-<div class="line"><span class="lineno">  370</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  371</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  372</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23s, 23\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  373</span>                    request);</div>
-<div class="line"><span class="lineno">  374</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  375</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  376</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  377</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  378</span>            }</div>
-<div class="line"><span class="lineno">  379</span>        },</div>
-<div class="line"><span class="lineno">  380</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  381</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00355">355</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  356</span>{</div>
+<div class="line"><span class="lineno">  357</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  360</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  361</span>        {</div>
+<div class="line"><span class="lineno">  362</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  363</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  364</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23s, 23\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  365</span>                    request);</div>
+<div class="line"><span class="lineno">  366</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  367</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  368</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  369</span>            }</div>
+<div class="line"><span class="lineno">  370</span>        },</div>
+<div class="line"><span class="lineno">  371</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  372</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1222,25 +1213,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00383">383</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  384</span>{</div>
-<div class="line"><span class="lineno">  385</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  386</span> </div>
-<div class="line"><span class="lineno">  387</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  388</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  389</span>        {</div>
-<div class="line"><span class="lineno">  390</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  391</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  392</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23, e23\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  393</span>                    request);</div>
-<div class="line"><span class="lineno">  394</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  395</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  396</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  397</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  398</span>            }</div>
-<div class="line"><span class="lineno">  399</span>        },</div>
-<div class="line"><span class="lineno">  400</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  401</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00374">374</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  375</span>{</div>
+<div class="line"><span class="lineno">  376</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  377</span> </div>
+<div class="line"><span class="lineno">  378</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  379</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  380</span>        {</div>
+<div class="line"><span class="lineno">  381</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  382</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  383</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23, e23\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  384</span>                    request);</div>
+<div class="line"><span class="lineno">  385</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  386</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a46888d82946e4b4a7279985906b33c1d">ERR_INVALID_CONTENT_LENGTH</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  387</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  388</span>            }</div>
+<div class="line"><span class="lineno">  389</span>        },</div>
+<div class="line"><span class="lineno">  390</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  391</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1270,25 +1260,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00403">403</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  404</span>{</div>
-<div class="line"><span class="lineno">  405</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  408</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  409</span>        {</div>
-<div class="line"><span class="lineno">  410</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  411</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  412</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  413</span>                    request);</div>
-<div class="line"><span class="lineno">  414</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  415</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#aa8fcef1c417fe16154e4b1e5086ef2f8">ERR_MULTIPLE_CONTENT_LENGTH_VALUES</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  416</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  417</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  418</span>            }</div>
-<div class="line"><span class="lineno">  419</span>        },</div>
-<div class="line"><span class="lineno">  420</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  421</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00393">393</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  394</span>{</div>
+<div class="line"><span class="lineno">  395</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  396</span> </div>
+<div class="line"><span class="lineno">  397</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  398</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  399</span>        {</div>
+<div class="line"><span class="lineno">  400</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  401</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  402</span>                              <span class="stringliteral">&quot;www.example.com\r\nContent-Length: 23\r\nContent-Length: 2\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  403</span>                    request);</div>
+<div class="line"><span class="lineno">  404</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  405</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#aa8fcef1c417fe16154e4b1e5086ef2f8">ERR_MULTIPLE_CONTENT_LENGTH_VALUES</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  406</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  407</span>            }</div>
+<div class="line"><span class="lineno">  408</span>        },</div>
+<div class="line"><span class="lineno">  409</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  410</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1318,25 +1307,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00423">423</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  424</span>{</div>
-<div class="line"><span class="lineno">  425</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  428</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  429</span>        {</div>
-<div class="line"><span class="lineno">  430</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  431</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  432</span>                              <span class="stringliteral">&quot;www.example.com\r\nTransfer-Encoding: \r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  433</span>                    request);</div>
-<div class="line"><span class="lineno">  434</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  435</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a9d32af3cad8071ff47072efebf7d8b36">ERR_NON_EXISTENT_TRANSFER_ENCODING</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  436</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  437</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  438</span>            }</div>
-<div class="line"><span class="lineno">  439</span>        },</div>
-<div class="line"><span class="lineno">  440</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  441</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00412">412</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  413</span>{</div>
+<div class="line"><span class="lineno">  414</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  417</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  418</span>        {</div>
+<div class="line"><span class="lineno">  419</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  420</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  421</span>                              <span class="stringliteral">&quot;www.example.com\r\nTransfer-Encoding: \r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  422</span>                    request);</div>
+<div class="line"><span class="lineno">  423</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  424</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a9d32af3cad8071ff47072efebf7d8b36">ERR_NON_EXISTENT_TRANSFER_ENCODING</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  425</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  426</span>            }</div>
+<div class="line"><span class="lineno">  427</span>        },</div>
+<div class="line"><span class="lineno">  428</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  429</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a9d32af3cad8071ff47072efebf7d8b36"><div class="ttname"><a href="error_8hpp.html#a9d32af3cad8071ff47072efebf7d8b36">ERR_NON_EXISTENT_TRANSFER_ENCODING</a></div><div class="ttdeci">#define ERR_NON_EXISTENT_TRANSFER_ENCODING</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00083">error.hpp:83</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1367,25 +1355,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00443">443</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  444</span>{</div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  446</span> </div>
-<div class="line"><span class="lineno">  447</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  448</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  449</span>        {</div>
-<div class="line"><span class="lineno">  450</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  451</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  452</span>                              <span class="stringliteral">&quot;www.example.com\r\nTransfer-Encoding: chunked, gzip\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  453</span>                    request);</div>
-<div class="line"><span class="lineno">  454</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  455</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a921d1cf264a755c9ef65a0493569011a">ERR_NON_FINAL_CHUNKED_ENCODING</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  456</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  457</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  458</span>            }</div>
-<div class="line"><span class="lineno">  459</span>        },</div>
-<div class="line"><span class="lineno">  460</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  461</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00431">431</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
+<div class="line"><span class="lineno">  433</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  436</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  437</span>        {</div>
+<div class="line"><span class="lineno">  438</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  439</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  440</span>                              <span class="stringliteral">&quot;www.example.com\r\nTransfer-Encoding: chunked, gzip\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  441</span>                    request);</div>
+<div class="line"><span class="lineno">  442</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  443</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a921d1cf264a755c9ef65a0493569011a">ERR_NON_FINAL_CHUNKED_ENCODING</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  444</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  445</span>            }</div>
+<div class="line"><span class="lineno">  446</span>        },</div>
+<div class="line"><span class="lineno">  447</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  448</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a921d1cf264a755c9ef65a0493569011a"><div class="ttname"><a href="error_8hpp.html#a921d1cf264a755c9ef65a0493569011a">ERR_NON_FINAL_CHUNKED_ENCODING</a></div><div class="ttdeci">#define ERR_NON_FINAL_CHUNKED_ENCODING</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00082">error.hpp:82</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1416,24 +1403,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00463">463</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  464</span>{</div>
-<div class="line"><span class="lineno">  465</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  466</span> </div>
-<div class="line"><span class="lineno">  467</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  468</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  469</span>        {</div>
-<div class="line"><span class="lineno">  470</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  471</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  472</span>                              <span class="stringliteral">&quot;www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n0\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  473</span>                    request);</div>
-<div class="line"><span class="lineno">  474</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  475</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#afef097336b6960957a448f3b0c632802">ERR_UNEXPECTED_BODY</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  476</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  477</span>            }</div>
-<div class="line"><span class="lineno">  478</span>        },</div>
-<div class="line"><span class="lineno">  479</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  480</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00450">450</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  451</span>{</div>
+<div class="line"><span class="lineno">  452</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  453</span> </div>
+<div class="line"><span class="lineno">  454</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  455</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  456</span>        {</div>
+<div class="line"><span class="lineno">  457</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  458</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  459</span>                              <span class="stringliteral">&quot;www.example.com\r\nTransfer-Encoding: gzip, chunked\r\n\r\n0\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  460</span>                    request);</div>
+<div class="line"><span class="lineno">  461</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  462</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#afef097336b6960957a448f3b0c632802">ERR_UNEXPECTED_BODY</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  463</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  464</span>            }</div>
+<div class="line"><span class="lineno">  465</span>        },</div>
+<div class="line"><span class="lineno">  466</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  467</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_afef097336b6960957a448f3b0c632802"><div class="ttname"><a href="error_8hpp.html#afef097336b6960957a448f3b0c632802">ERR_UNEXPECTED_BODY</a></div><div class="ttdeci">#define ERR_UNEXPECTED_BODY</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00096">error.hpp:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1464,23 +1451,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00482">482</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  483</span>{</div>
-<div class="line"><span class="lineno">  484</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  485</span> </div>
-<div class="line"><span class="lineno">  486</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  487</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  488</span>        {</div>
-<div class="line"><span class="lineno">  489</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  490</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
-<div class="line"><span class="lineno">  491</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  492</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a6be7fbe374119bd611e1a0e8080123fd">ERR_MISSING_HOST_HEADER</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  493</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  494</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  495</span>            }</div>
-<div class="line"><span class="lineno">  496</span>        },</div>
-<div class="line"><span class="lineno">  497</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  498</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00469">469</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  470</span>{</div>
+<div class="line"><span class="lineno">  471</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  472</span> </div>
+<div class="line"><span class="lineno">  473</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  474</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  475</span>        {</div>
+<div class="line"><span class="lineno">  476</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  477</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><span class="lineno">  478</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  479</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a6be7fbe374119bd611e1a0e8080123fd">ERR_MISSING_HOST_HEADER</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  480</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  481</span>            }</div>
+<div class="line"><span class="lineno">  482</span>        },</div>
+<div class="line"><span class="lineno">  483</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  484</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a6be7fbe374119bd611e1a0e8080123fd"><div class="ttname"><a href="error_8hpp.html#a6be7fbe374119bd611e1a0e8080123fd">ERR_MISSING_HOST_HEADER</a></div><div class="ttdeci">#define ERR_MISSING_HOST_HEADER</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00074">error.hpp:74</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1511,23 +1497,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00500">500</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  501</span>{</div>
-<div class="line"><span class="lineno">  502</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  505</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  506</span>        {</div>
-<div class="line"><span class="lineno">  507</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  508</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost:\r\n\r\n&quot;</span>, request);</div>
-<div class="line"><span class="lineno">  509</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  510</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a5a5987d5842c30da005db34203caeb79">ERR_EMPTY_HOST_VALUE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  511</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  512</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  513</span>            }</div>
-<div class="line"><span class="lineno">  514</span>        },</div>
-<div class="line"><span class="lineno">  515</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  516</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00486">486</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  487</span>{</div>
+<div class="line"><span class="lineno">  488</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  489</span> </div>
+<div class="line"><span class="lineno">  490</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  491</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  492</span>        {</div>
+<div class="line"><span class="lineno">  493</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  494</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost:\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><span class="lineno">  495</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  496</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a5a5987d5842c30da005db34203caeb79">ERR_EMPTY_HOST_VALUE</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  497</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  498</span>            }</div>
+<div class="line"><span class="lineno">  499</span>        },</div>
+<div class="line"><span class="lineno">  500</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  501</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a5a5987d5842c30da005db34203caeb79"><div class="ttname"><a href="error_8hpp.html#a5a5987d5842c30da005db34203caeb79">ERR_EMPTY_HOST_VALUE</a></div><div class="ttdeci">#define ERR_EMPTY_HOST_VALUE</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00075">error.hpp:75</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1558,25 +1543,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00518">518</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  519</span>{</div>
-<div class="line"><span class="lineno">  520</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  521</span> </div>
-<div class="line"><span class="lineno">  522</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  523</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  524</span>        {</div>
-<div class="line"><span class="lineno">  525</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  526</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: example.com\r\n&quot;</span></div>
-<div class="line"><span class="lineno">  527</span>                              <span class="stringliteral">&quot;SomeOtherHeader: random value\r\nHost: huhu.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  528</span>                    request);</div>
-<div class="line"><span class="lineno">  529</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  530</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a63c9fb603193fdff01efe2b681a797e3">ERR_MULTIPLE_HOST_HEADERS</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  531</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  532</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  533</span>            }</div>
-<div class="line"><span class="lineno">  534</span>        },</div>
-<div class="line"><span class="lineno">  535</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  536</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00503">503</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  504</span>{</div>
+<div class="line"><span class="lineno">  505</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  506</span> </div>
+<div class="line"><span class="lineno">  507</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  508</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  509</span>        {</div>
+<div class="line"><span class="lineno">  510</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  511</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: example.com\r\n&quot;</span></div>
+<div class="line"><span class="lineno">  512</span>                              <span class="stringliteral">&quot;SomeOtherHeader: random value\r\nHost: huhu.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  513</span>                    request);</div>
+<div class="line"><span class="lineno">  514</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  515</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a63c9fb603193fdff01efe2b681a797e3">ERR_MULTIPLE_HOST_HEADERS</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  516</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  517</span>            }</div>
+<div class="line"><span class="lineno">  518</span>        },</div>
+<div class="line"><span class="lineno">  519</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  520</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a63c9fb603193fdff01efe2b681a797e3"><div class="ttname"><a href="error_8hpp.html#a63c9fb603193fdff01efe2b681a797e3">ERR_MULTIPLE_HOST_HEADERS</a></div><div class="ttdeci">#define ERR_MULTIPLE_HOST_HEADERS</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00076">error.hpp:76</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1607,25 +1591,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00538">538</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  539</span>{</div>
-<div class="line"><span class="lineno">  540</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  541</span> </div>
-<div class="line"><span class="lineno">  542</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  543</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  544</span>        {</div>
-<div class="line"><span class="lineno">  545</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  546</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  547</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: special-n@me.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  548</span>                    request);</div>
-<div class="line"><span class="lineno">  549</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  550</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  551</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  552</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  553</span>            }</div>
-<div class="line"><span class="lineno">  554</span>        },</div>
-<div class="line"><span class="lineno">  555</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  556</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00522">522</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  523</span>{</div>
+<div class="line"><span class="lineno">  524</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  525</span> </div>
+<div class="line"><span class="lineno">  526</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  527</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  528</span>        {</div>
+<div class="line"><span class="lineno">  529</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  530</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  531</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: special-n@me.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  532</span>                    request);</div>
+<div class="line"><span class="lineno">  533</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  534</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  535</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  536</span>            }</div>
+<div class="line"><span class="lineno">  537</span>        },</div>
+<div class="line"><span class="lineno">  538</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  539</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a304edd9a4b53a3ad76b9e1e1745a17d1"><div class="ttname"><a href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a></div><div class="ttdeci">#define ERR_INVALID_HOSTNAME</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00077">error.hpp:77</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1656,25 +1639,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00558">558</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  559</span>{</div>
-<div class="line"><span class="lineno">  560</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  561</span> </div>
-<div class="line"><span class="lineno">  562</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  563</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  564</span>        {</div>
-<div class="line"><span class="lineno">  565</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  566</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  567</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: -invalid-hostname.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  568</span>                    request);</div>
-<div class="line"><span class="lineno">  569</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  570</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  571</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  572</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  573</span>            }</div>
-<div class="line"><span class="lineno">  574</span>        },</div>
-<div class="line"><span class="lineno">  575</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  576</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00541">541</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  542</span>{</div>
+<div class="line"><span class="lineno">  543</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  544</span> </div>
+<div class="line"><span class="lineno">  545</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  546</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  547</span>        {</div>
+<div class="line"><span class="lineno">  548</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  549</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  550</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: -invalid-hostname.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  551</span>                    request);</div>
+<div class="line"><span class="lineno">  552</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  553</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  554</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  555</span>            }</div>
+<div class="line"><span class="lineno">  556</span>        },</div>
+<div class="line"><span class="lineno">  557</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  558</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1704,25 +1686,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00578">578</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  579</span>{</div>
-<div class="line"><span class="lineno">  580</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  581</span> </div>
-<div class="line"><span class="lineno">  582</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  583</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  584</span>        {</div>
-<div class="line"><span class="lineno">  585</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  586</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  587</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: invalid.-hostname.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  588</span>                    request);</div>
-<div class="line"><span class="lineno">  589</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  590</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  591</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  592</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  593</span>            }</div>
-<div class="line"><span class="lineno">  594</span>        },</div>
-<div class="line"><span class="lineno">  595</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  596</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00560">560</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  561</span>{</div>
+<div class="line"><span class="lineno">  562</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  563</span> </div>
+<div class="line"><span class="lineno">  564</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  565</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  566</span>        {</div>
+<div class="line"><span class="lineno">  567</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  568</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  569</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: invalid.-hostname.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  570</span>                    request);</div>
+<div class="line"><span class="lineno">  571</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  572</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  573</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  574</span>            }</div>
+<div class="line"><span class="lineno">  575</span>        },</div>
+<div class="line"><span class="lineno">  576</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  577</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1752,25 +1733,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00598">598</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  599</span>{</div>
-<div class="line"><span class="lineno">  600</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  601</span> </div>
-<div class="line"><span class="lineno">  602</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  603</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  604</span>        {</div>
-<div class="line"><span class="lineno">  605</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  606</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  607</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: invalid-.hostname.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  608</span>                    request);</div>
-<div class="line"><span class="lineno">  609</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  610</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  611</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  612</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  613</span>            }</div>
-<div class="line"><span class="lineno">  614</span>        },</div>
-<div class="line"><span class="lineno">  615</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  616</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00579">579</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  580</span>{</div>
+<div class="line"><span class="lineno">  581</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  582</span> </div>
+<div class="line"><span class="lineno">  583</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  584</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  585</span>        {</div>
+<div class="line"><span class="lineno">  586</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  587</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  588</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: invalid-.hostname.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  589</span>                    request);</div>
+<div class="line"><span class="lineno">  590</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  591</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  592</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  593</span>            }</div>
+<div class="line"><span class="lineno">  594</span>        },</div>
+<div class="line"><span class="lineno">  595</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  596</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1800,25 +1780,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00618">618</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  619</span>{</div>
-<div class="line"><span class="lineno">  620</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  621</span> </div>
-<div class="line"><span class="lineno">  622</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  623</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  624</span>        {</div>
-<div class="line"><span class="lineno">  625</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  626</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  627</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: invalid-hostname-.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  628</span>                    request);</div>
-<div class="line"><span class="lineno">  629</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  630</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  631</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  632</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  633</span>            }</div>
-<div class="line"><span class="lineno">  634</span>        },</div>
-<div class="line"><span class="lineno">  635</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  636</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00598">598</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  599</span>{</div>
+<div class="line"><span class="lineno">  600</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  601</span> </div>
+<div class="line"><span class="lineno">  602</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  603</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  604</span>        {</div>
+<div class="line"><span class="lineno">  605</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  606</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  607</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: invalid-hostname-.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  608</span>                    request);</div>
+<div class="line"><span class="lineno">  609</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  610</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  611</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  612</span>            }</div>
+<div class="line"><span class="lineno">  613</span>        },</div>
+<div class="line"><span class="lineno">  614</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  615</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1848,26 +1827,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00638">638</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  639</span>{</div>
-<div class="line"><span class="lineno">  640</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  641</span> </div>
-<div class="line"><span class="lineno">  642</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  643</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  644</span>        {</div>
-<div class="line"><span class="lineno">  645</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  646</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  647</span>                              <span class="stringliteral">&quot;this.is.a.too-long-label-&quot;</span></div>
-<div class="line"><span class="lineno">  648</span>                              <span class="stringliteral">&quot;123456789012345678901234567890123456789012345678901234567890123.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  649</span>                    request);</div>
-<div class="line"><span class="lineno">  650</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  651</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  652</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  653</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  654</span>            }</div>
-<div class="line"><span class="lineno">  655</span>        },</div>
-<div class="line"><span class="lineno">  656</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  657</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00617">617</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  618</span>{</div>
+<div class="line"><span class="lineno">  619</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  620</span> </div>
+<div class="line"><span class="lineno">  621</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  622</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  623</span>        {</div>
+<div class="line"><span class="lineno">  624</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  625</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  626</span>                              <span class="stringliteral">&quot;this.is.a.too-long-label-&quot;</span></div>
+<div class="line"><span class="lineno">  627</span>                              <span class="stringliteral">&quot;123456789012345678901234567890123456789012345678901234567890123.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  628</span>                    request);</div>
+<div class="line"><span class="lineno">  629</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  630</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  631</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  632</span>            }</div>
+<div class="line"><span class="lineno">  633</span>        },</div>
+<div class="line"><span class="lineno">  634</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  635</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1897,27 +1875,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00659">659</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  660</span>{</div>
-<div class="line"><span class="lineno">  661</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  662</span> </div>
-<div class="line"><span class="lineno">  663</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  664</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  665</span>        {</div>
-<div class="line"><span class="lineno">  666</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  667</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
-<div class="line"><span class="lineno">  668</span>                              <span class="stringliteral">&quot;this.is.a.too-long-hostname-&quot;</span></div>
-<div class="line"><span class="lineno">  669</span>                              <span class="stringliteral">&quot;1234567890123456789012345678901234567890123456789012345678dfdfdfdfdfdfdfdfdfdferwert9012&quot;</span></div>
-<div class="line"><span class="lineno">  670</span>                              <span class="stringliteral">&quot;3.com\r\n\r\n&quot;</span>,</div>
-<div class="line"><span class="lineno">  671</span>                    request);</div>
-<div class="line"><span class="lineno">  672</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  673</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  674</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  675</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  676</span>            }</div>
-<div class="line"><span class="lineno">  677</span>        },</div>
-<div class="line"><span class="lineno">  678</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  679</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00637">637</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  638</span>{</div>
+<div class="line"><span class="lineno">  639</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  640</span> </div>
+<div class="line"><span class="lineno">  641</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  642</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  643</span>        {</div>
+<div class="line"><span class="lineno">  644</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  645</span>                p.parseHeader(<span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: &quot;</span></div>
+<div class="line"><span class="lineno">  646</span>                              <span class="stringliteral">&quot;this.is.a.too-long-hostname-&quot;</span></div>
+<div class="line"><span class="lineno">  647</span>                              <span class="stringliteral">&quot;1234567890123456789012345678901234567890123456789012345678dfdfdfdfdfdfdfdfdfdferwert9012&quot;</span></div>
+<div class="line"><span class="lineno">  648</span>                              <span class="stringliteral">&quot;3.com\r\n\r\n&quot;</span>,</div>
+<div class="line"><span class="lineno">  649</span>                    request);</div>
+<div class="line"><span class="lineno">  650</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  651</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a304edd9a4b53a3ad76b9e1e1745a17d1">ERR_INVALID_HOSTNAME</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  652</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  653</span>            }</div>
+<div class="line"><span class="lineno">  654</span>        },</div>
+<div class="line"><span class="lineno">  655</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  656</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1947,24 +1924,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00681">681</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  682</span>{</div>
-<div class="line"><span class="lineno">  683</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  684</span> </div>
-<div class="line"><span class="lineno">  685</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  686</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  687</span>        {</div>
-<div class="line"><span class="lineno">  688</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  689</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  690</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.999\r\n\r\n&quot;</span>, request);</div>
-<div class="line"><span class="lineno">  691</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  692</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  693</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  694</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  695</span>            }</div>
-<div class="line"><span class="lineno">  696</span>        },</div>
-<div class="line"><span class="lineno">  697</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  698</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00658">658</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  659</span>{</div>
+<div class="line"><span class="lineno">  660</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  661</span> </div>
+<div class="line"><span class="lineno">  662</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  663</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  664</span>        {</div>
+<div class="line"><span class="lineno">  665</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  666</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  667</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.999\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><span class="lineno">  668</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  669</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  670</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  671</span>            }</div>
+<div class="line"><span class="lineno">  672</span>        },</div>
+<div class="line"><span class="lineno">  673</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  674</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_a43cff8b12a99e27f93684e08678becfe"><div class="ttname"><a href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a></div><div class="ttdeci">#define ERR_INVALID_HOST_IP</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00078">error.hpp:78</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1995,24 +1971,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00701">701</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  702</span>{</div>
-<div class="line"><span class="lineno">  703</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  704</span> </div>
-<div class="line"><span class="lineno">  705</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  706</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  707</span>        {</div>
-<div class="line"><span class="lineno">  708</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  709</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  710</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.9999\r\n\r\n&quot;</span>, request);</div>
-<div class="line"><span class="lineno">  711</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  712</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  713</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  714</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  715</span>            }</div>
-<div class="line"><span class="lineno">  716</span>        },</div>
-<div class="line"><span class="lineno">  717</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  718</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00677">677</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  678</span>{</div>
+<div class="line"><span class="lineno">  679</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  680</span> </div>
+<div class="line"><span class="lineno">  681</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  682</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  683</span>        {</div>
+<div class="line"><span class="lineno">  684</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  685</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  686</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 377.3.1.9999\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><span class="lineno">  687</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  688</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  689</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  690</span>            }</div>
+<div class="line"><span class="lineno">  691</span>        },</div>
+<div class="line"><span class="lineno">  692</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  693</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2042,24 +2017,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00721">721</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  722</span>{</div>
-<div class="line"><span class="lineno">  723</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  724</span> </div>
-<div class="line"><span class="lineno">  725</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  726</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  727</span>        {</div>
-<div class="line"><span class="lineno">  728</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  729</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  730</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 127.3.43.1.1\r\n\r\n&quot;</span>, request);</div>
-<div class="line"><span class="lineno">  731</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  732</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  733</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  734</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  735</span>            }</div>
-<div class="line"><span class="lineno">  736</span>        },</div>
-<div class="line"><span class="lineno">  737</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  738</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00696">696</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  697</span>{</div>
+<div class="line"><span class="lineno">  698</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  699</span> </div>
+<div class="line"><span class="lineno">  700</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  701</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  702</span>        {</div>
+<div class="line"><span class="lineno">  703</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  704</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  705</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 127.3.43.1.1\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><span class="lineno">  706</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  707</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#a43cff8b12a99e27f93684e08678becfe">ERR_INVALID_HOST_IP</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  708</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  709</span>            }</div>
+<div class="line"><span class="lineno">  710</span>        },</div>
+<div class="line"><span class="lineno">  711</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  712</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2089,24 +2063,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00740">740</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  741</span>{</div>
-<div class="line"><span class="lineno">  742</span>    <span class="comment">// Arrange</span></div>
-<div class="line"><span class="lineno">  743</span> </div>
-<div class="line"><span class="lineno">  744</span>    <span class="comment">// Act &amp; Assert</span></div>
-<div class="line"><span class="lineno">  745</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
-<div class="line"><span class="lineno">  746</span>        {</div>
-<div class="line"><span class="lineno">  747</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><span class="lineno">  748</span>                p.parseHeader(</div>
-<div class="line"><span class="lineno">  749</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65536\r\n\r\n&quot;</span>, request);</div>
-<div class="line"><span class="lineno">  750</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
-<div class="line"><span class="lineno">  751</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af65bb12a5c9013a0c83312946cec7a2d">ERR_INVALID_HOST_IP_WITH_PORT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
-<div class="line"><span class="lineno">  752</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(request.shallCloseConnection, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  753</span>                <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  754</span>            }</div>
-<div class="line"><span class="lineno">  755</span>        },</div>
-<div class="line"><span class="lineno">  756</span>        std::runtime_error);</div>
-<div class="line"><span class="lineno">  757</span>}</div>
+<p class="definition">Definition at line <a class="el" href="test__parse_header___headers_8cpp_source.html#l00714">714</a> of file <a class="el" href="test__parse_header___headers_8cpp_source.html">test_parseHeader_Headers.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  715</span>{</div>
+<div class="line"><span class="lineno">  716</span>    <span class="comment">// Arrange</span></div>
+<div class="line"><span class="lineno">  717</span> </div>
+<div class="line"><span class="lineno">  718</span>    <span class="comment">// Act &amp; Assert</span></div>
+<div class="line"><span class="lineno">  719</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_THROW</a>(</div>
+<div class="line"><span class="lineno">  720</span>        {</div>
+<div class="line"><span class="lineno">  721</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><span class="lineno">  722</span>                p.parseHeader(</div>
+<div class="line"><span class="lineno">  723</span>                    <span class="stringliteral">&quot;GET /search?query=openai&amp;year=2024#conclusion HTTP/1.1\r\nHost: 177.3.1.1:65536\r\n\r\n&quot;</span>, request);</div>
+<div class="line"><span class="lineno">  724</span>            } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error&amp; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>) {</div>
+<div class="line"><span class="lineno">  725</span>                <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_STREQ</a>(<a class="code hl_define" href="error_8hpp.html#af65bb12a5c9013a0c83312946cec7a2d">ERR_INVALID_HOST_IP_WITH_PORT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">e</a>.what());</div>
+<div class="line"><span class="lineno">  726</span>                <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  727</span>            }</div>
+<div class="line"><span class="lineno">  728</span>        },</div>
+<div class="line"><span class="lineno">  729</span>        std::runtime_error);</div>
+<div class="line"><span class="lineno">  730</span>}</div>
 <div class="ttc" id="aerror_8hpp_html_af65bb12a5c9013a0c83312946cec7a2d"><div class="ttname"><a href="error_8hpp.html#af65bb12a5c9013a0c83312946cec7a2d">ERR_INVALID_HOST_IP_WITH_PORT</a></div><div class="ttdeci">#define ERR_INVALID_HOST_IP_WITH_PORT</div><div class="ttdef"><b>Definition</b> <a href="error_8hpp_source.html#l00079">error.hpp:79</a></div></div>
 </div><!-- fragment -->
 </div>

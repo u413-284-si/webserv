@@ -24,5 +24,6 @@ var _status_code_8hpp =
     [ "extractStatusCode", "_status_code_8hpp.html#a849ef63e47980cc5b2e5d7186a09a3a4", null ],
     [ "isErrorStatus", "_status_code_8hpp.html#a9ffe20c990ee392d88c516781bda2ba2", null ],
     [ "isRedirectionStatus", "_status_code_8hpp.html#a7624eba338a6df04e8076bcc14e77e96", null ],
+    [ "isCloseConnectionStatus", "_status_code_8hpp.html#a52b5dc66bb074667ee6e036ec0ae0471", null ],
     [ "operator<<", "_status_code_8hpp.html#a39c4ed08ee151f0a8d9e17bbff2dee32", null ]
 ];
