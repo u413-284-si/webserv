@@ -602,8 +602,10 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 			}
 		}
-		request.hasBody = true;
 		headerValue = strValues[0];
+		
+		if (headerValue != "0")
+			request.hasBody = true;
 	}
 }
 
