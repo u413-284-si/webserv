@@ -1519,9 +1519,9 @@ void checkForTimeout(Server& server)
 			if (iter->second.m_status == Connection::ReceiveFromCGI || iter->second.m_status == Connection::SendToCGI) {
 				server.addEvent(iter->first, EPOLLOUT);
 				if (iter->second.m_pipeToCGIWriteEnd != -1)
-					webutils::closeFd(iter->second.m_pipeToCGIWriteEnd);
+					server.removeCGIFileDescriptor(iter->second.m_pipeToCGIWriteEnd);
 				if (iter->second.m_pipeFromCGIReadEnd != -1)
-					webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
+					server.removeCGIFileDescriptor(iter->second.m_pipeFromCGIReadEnd);
 			} else
 				server.modifyEvent(iter->first, EPOLLOUT);
 			iter->second.m_status = Connection::Timeout;
