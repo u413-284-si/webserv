@@ -442,6 +442,10 @@ fclean: clean
 			$(INTEGRATION_TEST_DIR)/*/__pycache__ \
 			$(INTEGRATION_TEST_DIR)/.pytest_cache
 	@printf "$(RED)removed .pytest_cache and directories __pychache__$(RESET)\n"
+	@rm -f webserv.pid
+	@printf "$(RED)removed webserv.pid$(RESET)\n"
+	@rm -f compile_commands.json
+	@printf "$(RED)removed compile_commands.json$(RESET)\n"
 	@echo
 
 # ******************************
