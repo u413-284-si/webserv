@@ -17,10 +17,9 @@
 
 namespace webutils {
 
-const int timeStringBuffer = 80;
-
 std::string trimLeadingWhitespaces(const std::string& str);
-void trimTrailingWhiteSpaces(std::string& str);
+std::string trimTrailingWhiteSpaces(const std::string& str);
+std::string trimWhiteSpaces(const std::string& str);
 std::vector<std::string> split(const std::string& str, const std::string& delimiter);
 
 std::string getFileExtension(const std::string& path);
