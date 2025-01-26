@@ -16,15 +16,17 @@ TargetResourceHandler::TargetResourceHandler(const FileSystemOps& fileSystemOps)
  * Constructs a new LocatingInfo object with the provided Connection.
  * Recursively searches for the target resource with locateTargetResource() using the information in the LocatingInfo.
  * Uses updateConnection() to write found information into Connection.
- * @param connection Connection object.
+ * @param request Request object to update.
+ * @param location Iterator to the currently active location block, which gets updated.
+ * @param serverConfig Iterator to the currently active server configuration.
  * @throws std::runtime_error If no location block is found for the path.
  */
-void TargetResourceHandler::execute(Connection& connection)
+void TargetResourceHandler::execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, std::vector<ConfigServer>::const_iterator serverConfig)
 {
-	LocatingInfo locInfo(connection);
+	LocatingInfo locInfo(request, location);
 	const int startingDepth = 0;
-	locInfo = locateTargetResource(locInfo, startingDepth);
-	updateConnection(connection, locInfo);
+	locInfo = locateTargetResource(locInfo, startingDepth, serverConfig->locations);
+	updateRequestAndLocation(request, location, locInfo);
 }
 
 /**
@@ -46,10 +48,11 @@ void TargetResourceHandler::execute(Connection& connection)
  * - std::runtime_error: StatusInternalServerError.
  * @param locInfo Struct containing info for locating the target resource.
  * @param depth Current depth in recursion.
+ * @param locations Vector of Location objects.
  * @return TargetResourceHandler::LocatingInfo
  */
 // NOLINTNEXTLINE (misc-no-recursion): recursion is being handled
-TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth)
+TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(LocatingInfo locInfo, int depth, const std::vector<Location>& locations)
 {
 	const int currentDepth = depth + 1;
 	if (currentDepth == s_maxRecursion) {
@@ -58,7 +61,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 		return (locInfo);
 	}
 
-	locInfo.activeLocation = matchLocation(*locInfo.locations, locInfo.path);
+	locInfo.activeLocation = matchLocation(locations, locInfo.path);
 
 	LOG_DEBUG << "Active location: " << locInfo.activeLocation->path;
 
@@ -90,7 +93,7 @@ TargetResourceHandler::LocatingInfo TargetResourceHandler::locateTargetResource(
 
 		case FileSystemOps::FileDirectory:
 			LOG_DEBUG << "File type: directory";
-			handleFileDirectory(locInfo, currentDepth);
+			handleFileDirectory(locInfo, currentDepth, locations);
 			break;
 
 		case FileSystemOps::FileOther:
@@ -140,34 +143,35 @@ std::vector<Location>::const_iterator matchLocation(const std::vector<Location>&
 /**
  * @brief Construct a new LocatingInfo object
  *
- * @param connection Connection object from which to extract info.
+ * @param request Request object from which to extract info.
+ * @param location Iterator to the currently active location block.
  */
-TargetResourceHandler::LocatingInfo::LocatingInfo(const Connection& connection)
-	: statusCode(connection.m_request.httpStatus)
-	, path(connection.m_request.uri.path)
+TargetResourceHandler::LocatingInfo::LocatingInfo(const HTTPRequest& request, const std::vector<Location>::const_iterator location)
+	: statusCode(request.httpStatus)
+	, path(request.uri.path)
 	, isDirectory(false)
 	, hasAutoindex(false)
 	, hasReturn(false)
-	, locations(&connection.serverConfig->locations)
-	, activeLocation(connection.location)
+	, activeLocation(location)
 {
 }
 
 /**
  * @brief Writes info from LocatingInfo into Connection
  *
- * @param connection Connection object which is updated with info.
+ * @param request Request object which is updated with info.
+ * @param location Iterator to the currently active location block.
  * @param locInfo LocationInfo object from which to extract info.
  */
-void TargetResourceHandler::updateConnection(Connection& connection, const LocatingInfo& locInfo)
+void TargetResourceHandler::updateRequestAndLocation(HTTPRequest& request, std::vector<Location>::const_iterator& location, const LocatingInfo& locInfo)
 {
-	connection.m_request.httpStatus = locInfo.statusCode;
-	connection.m_request.uri.path = locInfo.path;
-	connection.m_request.targetResource = locInfo.targetResource;
-	connection.m_request.isDirectory = locInfo.isDirectory;
-	connection.m_request.hasAutoindex = locInfo.hasAutoindex;
-	connection.m_request.hasReturn = locInfo.hasReturn;
-	connection.location = locInfo.activeLocation;
+	request.httpStatus = locInfo.statusCode;
+	request.uri.path = locInfo.path;
+	request.targetResource = locInfo.targetResource;
+	request.isDirectory = locInfo.isDirectory;
+	request.hasAutoindex = locInfo.hasAutoindex;
+	request.hasReturn = locInfo.hasReturn;
+	location = locInfo.activeLocation;
 }
 
 /**
@@ -182,9 +186,10 @@ void TargetResourceHandler::updateConnection(Connection& connection, const Locat
  * If the file is a directory and no index is appended, isDirectory is set to true.
  * @param locInfo Reference to LocationInfo which gets overwritten.
  * @param currentDepth Current depth in recursion.
+ * @param locations Vector of Location objects.
  */
 // NOLINTNEXTLINE
-void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int currentDepth)
+void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int currentDepth, const std::vector<Location>& locations)
 {
 	if (locInfo.targetResource.at(locInfo.targetResource.length() - 1) != '/') {
 		locInfo.targetResource = locInfo.path + "/";
@@ -194,7 +199,7 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
 	}
 
 	if (!locInfo.activeLocation->indices.empty()) {
-		if (locateIndexFile(locInfo, currentDepth))
+		if (locateIndexFile(locInfo, currentDepth, locations))
 			return;
 	}
 
@@ -222,16 +227,17 @@ void TargetResourceHandler::handleFileDirectory(LocatingInfo& locInfo, int curre
  * At the end compares the saved path with the path in locInfo, which indicates if an index was found.
  * @param locInfo Reference to LocationInfo which gets overwritten.
  * @param currentDepth Current depth in recursion.
+ * @param locations Vector of Location objects.
  * @return true If an index file was found, false otherwise
  */
 // NOLINTNEXTLINE
-bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDepth)
+bool TargetResourceHandler::locateIndexFile(LocatingInfo& locInfo, int currentDepth, const std::vector<Location>& locations)
 {
 	std::string savePath = locInfo.path;
 	for (std::vector<std::string>::const_iterator iter = locInfo.activeLocation->indices.begin();
 		 iter != locInfo.activeLocation->indices.end(); ++iter) {
 		locInfo.path += *iter;
-		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth);
+		LocatingInfo tmp = locateTargetResource(locInfo, currentDepth, locations);
 		if (tmp.statusCode != StatusNotFound && !tmp.hasReturn) {
 			locInfo = tmp;
 			break;

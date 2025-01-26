@@ -11,7 +11,8 @@
  * @param server Server socket associated with connection
  * @param client Client socket associated with connection
  */
-Connection::Connection(const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs)
+Connection::Connection(
+	const Socket& server, const Socket& client, int clientFd, const std::vector<ConfigServer>& serverConfigs)
 	: m_serverSocket(server)
 	, m_clientSocket(client)
 	, m_clientFd(clientFd)
@@ -27,11 +28,57 @@ Connection::Connection(const Socket& server, const Socket& client, int clientFd,
 }
 
 /**
+ * @brief Destructor for the Connection class.
+ *
+ * This destructor ensures that any resources associated with the Connection
+ * object are properly released. Specifically, it performs the following actions:
+ * - If a CGI process is running (indicated by m_cgiPid not being -1), it sends
+ *   a SIGKILL signal to terminate the process.
+ * - If the write end of the pipe to the CGI process is open (indicated by
+ *   m_pipeToCGIWriteEnd not being -1), it closes the file descriptor.
+ * - If the read end of the pipe from the CGI process is open (indicated by
+ *   m_pipeFromCGIReadEnd not being -1), it closes the file descriptor.
+ * - Finally, it closes the client file descriptor (m_clientFd).
+ */
+Connection::~Connection()
+{
+	if (m_cgiPid != -1)
+		kill(m_cgiPid, SIGKILL);
+
+	if (m_pipeToCGIWriteEnd != -1)
+		webutils::closeFd(m_pipeToCGIWriteEnd);
+
+	if (m_pipeFromCGIReadEnd != -1)
+		webutils::closeFd(m_pipeFromCGIReadEnd);
+}
+
+/**
+ * @brief Construct a new Connection:: Connection object
+ *
+ * @param connection The Connection object to copy.
+ */
+Connection::Connection(const Connection& connection)
+	: m_serverSocket(connection.m_serverSocket)
+	, m_clientSocket(connection.m_clientSocket)
+	, m_clientFd(connection.m_clientFd)
+	, m_timeSinceLastEvent(connection.m_timeSinceLastEvent)
+	, m_status(connection.m_status)
+	, m_buffer(connection.m_buffer)
+	, m_request(connection.m_request)
+	, serverConfig(connection.serverConfig)
+	, location(connection.location)
+	, m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
+	, m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
+	, m_cgiPid(connection.m_cgiPid)
+{
+}
+
+/**
  * @brief Clears the state of a given Connection object and resets its attributes.
  *
- * This function resets the status, request, buffer, and other attributes of the 
- * provided Connection object. It also closes any open file descriptors associated 
- * with CGI communication and resets the CGI process ID. Finally, it updates the 
+ * This function resets the status, request, buffer, and other attributes of the
+ * provided Connection object. It also closes any open file descriptors associated
+ * with CGI communication and resets the CGI process ID. Finally, it updates the
  * time since the last event and checks if the connection has a valid server configuration.
  *
  * @param connection The Connection object to be cleared and reset.
@@ -43,14 +90,6 @@ bool clearConnection(Connection& connection, const std::vector<ConfigServer>& se
 	connection.m_status = Connection::Idle;
 	connection.m_request = HTTPRequest();
 	connection.m_buffer.clear();
-	if (connection.m_pipeToCGIWriteEnd != -1) {
-		webutils::closeFd(connection.m_pipeToCGIWriteEnd);
-		connection.m_pipeToCGIWriteEnd = -1;
-	}
-	if (connection.m_pipeFromCGIReadEnd != -1) {
-		webutils::closeFd(connection.m_pipeFromCGIReadEnd);
-		connection.m_pipeFromCGIReadEnd = -1;
-	}
 	connection.m_cgiPid = -1;
 	connection.m_timeSinceLastEvent = std::time(0);
 	return (hasValidServerConfig(connection, serverConfigs));
