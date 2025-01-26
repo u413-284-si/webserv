@@ -146,6 +146,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5dff3aa403f5ab67949640234868aa71" id="r_a5dff3aa403f5ab67949640234868aa71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#a5dff3aa403f5ab67949640234868aa71">Connection</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="struct_socket.html">Socket</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="struct_socket.html">Socket</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">clientFd</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::vector&lt; <a class="el" href="struct_config_server.html">ConfigServer</a> &gt; &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverConfigs</a>)</td></tr>
 <tr class="memdesc:a5dff3aa403f5ab67949640234868aa71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a>:: <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> object.  <br /></td></tr>
 <tr class="separator:a5dff3aa403f5ab67949640234868aa71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e4352edf667bea83001569e9da8a24d" id="r_a2e4352edf667bea83001569e9da8a24d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#a2e4352edf667bea83001569e9da8a24d">~Connection</a> ()</td></tr>
+<tr class="memdesc:a2e4352edf667bea83001569e9da8a24d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> class.  <br /></td></tr>
+<tr class="separator:a2e4352edf667bea83001569e9da8a24d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a543917dbba5f7633ae525bb06f66ae0b" id="r_a543917dbba5f7633ae525bb06f66ae0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connection.html#a543917dbba5f7633ae525bb06f66ae0b">Connection</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="struct_connection.html">Connection</a> &amp;connection)</td></tr>
+<tr class="memdesc:a543917dbba5f7633ae525bb06f66ae0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a>:: <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> object.  <br /></td></tr>
+<tr class="separator:a543917dbba5f7633ae525bb06f66ae0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -177,7 +183,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a connection between a server and a client. </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00017">17</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00018">18</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a482f32f94d99bd510db3eabf9a1d35b7" name="a482f32f94d99bd510db3eabf9a1d35b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a482f32f94d99bd510db3eabf9a1d35b7">&#9670;&#160;</a></span>ConnectionStatus</h2>
@@ -211,33 +217,33 @@ Public Attributes</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00021">21</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>                          {</div>
-<div class="line"><span class="lineno">   22</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Idle</a>, </div>
-<div class="line"><span class="lineno">   23</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">ReceiveHeader</a>, </div>
-<div class="line"><span class="lineno">   24</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">ReceiveBody</a>, </div>
-<div class="line"><span class="lineno">   25</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ae4dc47b21ee9ccbf06de49701c65e548">SendToCGI</a>, </div>
-<div class="line"><span class="lineno">   26</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">ReceiveFromCGI</a>, </div>
-<div class="line"><span class="lineno">   27</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">BuildResponse</a>, </div>
-<div class="line"><span class="lineno">   28</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">SendResponse</a>, </div>
-<div class="line"><span class="lineno">   29</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Timeout</a>, </div>
-<div class="line"><span class="lineno">   30</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Closed</a> </div>
-<div class="line"><span class="lineno">   31</span>    };</div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">Connection::ReceiveBody</a></div><div class="ttdeci">@ ReceiveBody</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00024">Connection.hpp:24</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00031">Connection.hpp:30</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a></div><div class="ttdeci">@ BuildResponse</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00027">Connection.hpp:27</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">Connection::ReceiveFromCGI</a></div><div class="ttdeci">@ ReceiveFromCGI</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00026">Connection.hpp:26</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00023">Connection.hpp:23</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00022">Connection.hpp:22</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a></div><div class="ttdeci">@ Timeout</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00029">Connection.hpp:29</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7ae4dc47b21ee9ccbf06de49701c65e548"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ae4dc47b21ee9ccbf06de49701c65e548">Connection::SendToCGI</a></div><div class="ttdeci">@ SendToCGI</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00025">Connection.hpp:25</a></div></div>
-<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a></div><div class="ttdeci">@ SendResponse</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00028">Connection.hpp:28</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00025">25</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>                          {</div>
+<div class="line"><span class="lineno">   26</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Idle</a>, </div>
+<div class="line"><span class="lineno">   27</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">ReceiveHeader</a>, </div>
+<div class="line"><span class="lineno">   28</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">ReceiveBody</a>, </div>
+<div class="line"><span class="lineno">   29</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ae4dc47b21ee9ccbf06de49701c65e548">SendToCGI</a>, </div>
+<div class="line"><span class="lineno">   30</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">ReceiveFromCGI</a>, </div>
+<div class="line"><span class="lineno">   31</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">BuildResponse</a>, </div>
+<div class="line"><span class="lineno">   32</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">SendResponse</a>, </div>
+<div class="line"><span class="lineno">   33</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Timeout</a>, </div>
+<div class="line"><span class="lineno">   34</span>        <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Closed</a> </div>
+<div class="line"><span class="lineno">   35</span>    };</div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a08badf2e0cb2478178b4a30242109251">Connection::ReceiveBody</a></div><div class="ttdeci">@ ReceiveBody</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00028">Connection.hpp:28</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Connection::Closed</a></div><div class="ttdeci">@ Closed</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00035">Connection.hpp:34</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a2ac033d09b30cd3cfc7b53526ae83952">Connection::BuildResponse</a></div><div class="ttdeci">@ BuildResponse</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00031">Connection.hpp:31</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a517f78d58ea061e41bb21d4afc53d638">Connection::ReceiveFromCGI</a></div><div class="ttdeci">@ ReceiveFromCGI</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00030">Connection.hpp:30</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a5aada94de3a51958f8b11699c9924fd4">Connection::ReceiveHeader</a></div><div class="ttdeci">@ ReceiveHeader</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00027">Connection.hpp:27</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Connection::Idle</a></div><div class="ttdeci">@ Idle</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00026">Connection.hpp:26</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ad5d9faed520e1cb7205bbba881940d47">Connection::Timeout</a></div><div class="ttdeci">@ Timeout</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00033">Connection.hpp:33</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7ae4dc47b21ee9ccbf06de49701c65e548"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7ae4dc47b21ee9ccbf06de49701c65e548">Connection::SendToCGI</a></div><div class="ttdeci">@ SendToCGI</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00029">Connection.hpp:29</a></div></div>
+<div class="ttc" id="astruct_connection_html_a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7"><div class="ttname"><a href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7aeba45ef49dfe5c00ed4fb83f7de6a7c7">Connection::SendResponse</a></div><div class="ttdeci">@ SendResponse</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00032">Connection.hpp:32</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5dff3aa403f5ab67949640234868aa71" name="a5dff3aa403f5ab67949640234868aa71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5dff3aa403f5ab67949640234868aa71">&#9670;&#160;</a></span>Connection()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dff3aa403f5ab67949640234868aa71">&#9670;&#160;</a></span>Connection() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,35 +291,124 @@ Public Attributes</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_connection_8cpp_source.html#l00014">14</a> of file <a class="el" href="_connection_8cpp_source.html">Connection.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span>    : <a class="code hl_variable" href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">m_serverSocket</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>)</div>
-<div class="line"><span class="lineno">   16</span>    , <a class="code hl_variable" href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">m_clientSocket</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client</a>)</div>
-<div class="line"><span class="lineno">   17</span>    , <a class="code hl_variable" href="struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd">m_clientFd</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">clientFd</a>)</div>
-<div class="line"><span class="lineno">   18</span>    , <a class="code hl_variable" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a>(std::time(0))</div>
-<div class="line"><span class="lineno">   19</span>    , <a class="code hl_variable" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a>(<a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Idle</a>)</div>
-<div class="line"><span class="lineno">   20</span>    , <a class="code hl_variable" href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">m_pipeToCGIWriteEnd</a>(-1)</div>
-<div class="line"><span class="lineno">   21</span>    , <a class="code hl_variable" href="struct_connection.html#aef664543be678acdc3121965feadc51b">m_pipeFromCGIReadEnd</a>(-1)</div>
-<div class="line"><span class="lineno">   22</span>    , <a class="code hl_variable" href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">m_cgiPid</a>(-1)</div>
-<div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>{</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a>(*<span class="keyword">this</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverConfigs</a>))</div>
-<div class="line"><span class="lineno">   26</span>        <a class="code hl_variable" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Closed</a>;</div>
-<div class="line"><span class="lineno">   27</span>}</div>
-<div class="ttc" id="a_connection_8hpp_html_a354192f8dd87ca049cf8b7e6de9000da"><div class="ttname"><a href="_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a></div><div class="ttdeci">bool hasValidServerConfig(Connection &amp;connection, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Selects the server configuration for a connection.</div><div class="ttdef"><b>Definition</b> <a href="_connection_8cpp_source.html#l00105">Connection.cpp:105</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>    : <a class="code hl_variable" href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">m_serverSocket</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">server</a>)</div>
+<div class="line"><span class="lineno">   17</span>    , <a class="code hl_variable" href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">m_clientSocket</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">client</a>)</div>
+<div class="line"><span class="lineno">   18</span>    , <a class="code hl_variable" href="struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd">m_clientFd</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">clientFd</a>)</div>
+<div class="line"><span class="lineno">   19</span>    , <a class="code hl_variable" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a>(std::time(0))</div>
+<div class="line"><span class="lineno">   20</span>    , <a class="code hl_variable" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a>(<a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a69ce01d1521944754fb16d9d2e59186c">Idle</a>)</div>
+<div class="line"><span class="lineno">   21</span>    , <a class="code hl_variable" href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">m_pipeToCGIWriteEnd</a>(-1)</div>
+<div class="line"><span class="lineno">   22</span>    , <a class="code hl_variable" href="struct_connection.html#aef664543be678acdc3121965feadc51b">m_pipeFromCGIReadEnd</a>(-1)</div>
+<div class="line"><span class="lineno">   23</span>    , <a class="code hl_variable" href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">m_cgiPid</a>(-1)</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a>(*<span class="keyword">this</span>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">serverConfigs</a>))</div>
+<div class="line"><span class="lineno">   27</span>        <a class="code hl_variable" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a> = <a class="code hl_enumvalue" href="struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614">Closed</a>;</div>
+<div class="line"><span class="lineno">   28</span>}</div>
+<div class="ttc" id="a_connection_8hpp_html_a354192f8dd87ca049cf8b7e6de9000da"><div class="ttname"><a href="_connection_8hpp.html#a354192f8dd87ca049cf8b7e6de9000da">hasValidServerConfig</a></div><div class="ttdeci">bool hasValidServerConfig(Connection &amp;connection, const std::vector&lt; ConfigServer &gt; &amp;serverConfigs)</div><div class="ttdoc">Selects the server configuration for a connection.</div><div class="ttdef"><b>Definition</b> <a href="_connection_8cpp_source.html#l00144">Connection.cpp:144</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
-<div class="ttc" id="astruct_connection_html_a07f7eaa4b84226772eb4a88c37e5c9fd"><div class="ttname"><a href="struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd">Connection::m_clientFd</a></div><div class="ttdeci">int m_clientFd</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00035">Connection.hpp:35</a></div></div>
-<div class="ttc" id="astruct_connection_html_a244c1b9870181fb1c847758d21e2c8b3"><div class="ttname"><a href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">Connection::m_clientSocket</a></div><div class="ttdeci">Socket m_clientSocket</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00034">Connection.hpp:34</a></div></div>
-<div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00036">Connection.hpp:36</a></div></div>
-<div class="ttc" id="astruct_connection_html_ac318cf734aa441020ffb03ec67564985"><div class="ttname"><a href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">Connection::m_pipeToCGIWriteEnd</a></div><div class="ttdeci">int m_pipeToCGIWriteEnd</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00042">Connection.hpp:42</a></div></div>
-<div class="ttc" id="astruct_connection_html_ac38ba2b55c7b4b96c36ae75316de2a6f"><div class="ttname"><a href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">Connection::m_cgiPid</a></div><div class="ttdeci">pid_t m_cgiPid</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00044">Connection.hpp:44</a></div></div>
-<div class="ttc" id="astruct_connection_html_ae9c64be721ccc3676197f3ebbb58fe18"><div class="ttname"><a href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">Connection::m_serverSocket</a></div><div class="ttdeci">Socket m_serverSocket</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00033">Connection.hpp:33</a></div></div>
-<div class="ttc" id="astruct_connection_html_aef664543be678acdc3121965feadc51b"><div class="ttname"><a href="struct_connection.html#aef664543be678acdc3121965feadc51b">Connection::m_pipeFromCGIReadEnd</a></div><div class="ttdeci">int m_pipeFromCGIReadEnd</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00043">Connection.hpp:43</a></div></div>
-<div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00037">Connection.hpp:37</a></div></div>
+<div class="ttc" id="astruct_connection_html_a07f7eaa4b84226772eb4a88c37e5c9fd"><div class="ttname"><a href="struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd">Connection::m_clientFd</a></div><div class="ttdeci">int m_clientFd</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00039">Connection.hpp:39</a></div></div>
+<div class="ttc" id="astruct_connection_html_a244c1b9870181fb1c847758d21e2c8b3"><div class="ttname"><a href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">Connection::m_clientSocket</a></div><div class="ttdeci">Socket m_clientSocket</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00038">Connection.hpp:38</a></div></div>
+<div class="ttc" id="astruct_connection_html_a8038f77baa0072e5aa044efa5ab47625"><div class="ttname"><a href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">Connection::m_timeSinceLastEvent</a></div><div class="ttdeci">time_t m_timeSinceLastEvent</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00040">Connection.hpp:40</a></div></div>
+<div class="ttc" id="astruct_connection_html_ac318cf734aa441020ffb03ec67564985"><div class="ttname"><a href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">Connection::m_pipeToCGIWriteEnd</a></div><div class="ttdeci">int m_pipeToCGIWriteEnd</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00046">Connection.hpp:46</a></div></div>
+<div class="ttc" id="astruct_connection_html_ac38ba2b55c7b4b96c36ae75316de2a6f"><div class="ttname"><a href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">Connection::m_cgiPid</a></div><div class="ttdeci">pid_t m_cgiPid</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00048">Connection.hpp:48</a></div></div>
+<div class="ttc" id="astruct_connection_html_ae9c64be721ccc3676197f3ebbb58fe18"><div class="ttname"><a href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">Connection::m_serverSocket</a></div><div class="ttdeci">Socket m_serverSocket</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00037">Connection.hpp:37</a></div></div>
+<div class="ttc" id="astruct_connection_html_aef664543be678acdc3121965feadc51b"><div class="ttname"><a href="struct_connection.html#aef664543be678acdc3121965feadc51b">Connection::m_pipeFromCGIReadEnd</a></div><div class="ttdeci">int m_pipeFromCGIReadEnd</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00047">Connection.hpp:47</a></div></div>
+<div class="ttc" id="astruct_connection_html_af433353beabb6990235b13b24c8b6bbe"><div class="ttname"><a href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">Connection::m_status</a></div><div class="ttdeci">ConnectionStatus m_status</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00041">Connection.hpp:41</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="struct_connection_a5dff3aa403f5ab67949640234868aa71_cgraph.svg" width="639" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
+</div>
+</div>
+<a id="a2e4352edf667bea83001569e9da8a24d" name="a2e4352edf667bea83001569e9da8a24d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e4352edf667bea83001569e9da8a24d">&#9670;&#160;</a></span>~Connection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Connection::~Connection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destructor for the <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> class. </p>
+<p>This destructor ensures that any resources associated with the <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> object are properly released. Specifically, it performs the following actions:</p><ul>
+<li>If a CGI process is running (indicated by m_cgiPid not being -1), it sends a SIGKILL signal to terminate the process.</li>
+<li>If the write end of the pipe to the CGI process is open (indicated by m_pipeToCGIWriteEnd not being -1), it closes the file descriptor.</li>
+<li>If the read end of the pipe from the CGI process is open (indicated by m_pipeFromCGIReadEnd not being -1), it closes the file descriptor.</li>
+<li>Finally, it closes the client file descriptor (m_clientFd). </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="_connection_8cpp_source.html#l00043">43</a> of file <a class="el" href="_connection_8cpp_source.html">Connection.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">m_cgiPid</a> != -1)</div>
+<div class="line"><span class="lineno">   46</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">kill</a>(<a class="code hl_variable" href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">m_cgiPid</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGKILL</a>);</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">m_pipeToCGIWriteEnd</a> != -1)</div>
+<div class="line"><span class="lineno">   49</span>        <a class="code hl_function" href="namespacewebutils.html#ad74875f464c74bd45589002fc385605e">webutils::closeFd</a>(<a class="code hl_variable" href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">m_pipeToCGIWriteEnd</a>);</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="struct_connection.html#aef664543be678acdc3121965feadc51b">m_pipeFromCGIReadEnd</a> != -1)</div>
+<div class="line"><span class="lineno">   52</span>        <a class="code hl_function" href="namespacewebutils.html#ad74875f464c74bd45589002fc385605e">webutils::closeFd</a>(<a class="code hl_variable" href="struct_connection.html#aef664543be678acdc3121965feadc51b">m_pipeFromCGIReadEnd</a>);</div>
+<div class="line"><span class="lineno">   53</span>}</div>
+<div class="ttc" id="anamespacewebutils_html_ad74875f464c74bd45589002fc385605e"><div class="ttname"><a href="namespacewebutils.html#ad74875f464c74bd45589002fc385605e">webutils::closeFd</a></div><div class="ttdeci">void closeFd(int &amp;fileDescriptor)</div><div class="ttdef"><b>Definition</b> <a href="utilities_8cpp_source.html#l00145">utilities.cpp:145</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="struct_connection_a2e4352edf667bea83001569e9da8a24d_cgraph.svg" width="380" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a543917dbba5f7633ae525bb06f66ae0b" name="a543917dbba5f7633ae525bb06f66ae0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a543917dbba5f7633ae525bb06f66ae0b">&#9670;&#160;</a></span>Connection() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Connection::Connection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="struct_connection.html">Connection</a> &amp;&#160;</td>
+          <td class="paramname"><em>connection</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Construct a new <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a>:: <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">connection</td><td>The <a class="el" href="struct_connection.html" title="Represents a connection between a server and a client.">Connection</a> object to copy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_connection_8cpp_source.html#l00060">60</a> of file <a class="el" href="_connection_8cpp_source.html">Connection.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>    : <a class="code hl_variable" href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">m_serverSocket</a>(connection.<a class="code hl_variable" href="struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18">m_serverSocket</a>)</div>
+<div class="line"><span class="lineno">   62</span>    , <a class="code hl_variable" href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">m_clientSocket</a>(connection.<a class="code hl_variable" href="struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3">m_clientSocket</a>)</div>
+<div class="line"><span class="lineno">   63</span>    , <a class="code hl_variable" href="struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd">m_clientFd</a>(connection.<a class="code hl_variable" href="struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd">m_clientFd</a>)</div>
+<div class="line"><span class="lineno">   64</span>    , <a class="code hl_variable" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a>(connection.<a class="code hl_variable" href="struct_connection.html#a8038f77baa0072e5aa044efa5ab47625">m_timeSinceLastEvent</a>)</div>
+<div class="line"><span class="lineno">   65</span>    , <a class="code hl_variable" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a>(connection.<a class="code hl_variable" href="struct_connection.html#af433353beabb6990235b13b24c8b6bbe">m_status</a>)</div>
+<div class="line"><span class="lineno">   66</span>    , <a class="code hl_variable" href="struct_connection.html#a4157497e77aed0e8b399a47eba498683">m_buffer</a>(connection.<a class="code hl_variable" href="struct_connection.html#a4157497e77aed0e8b399a47eba498683">m_buffer</a>)</div>
+<div class="line"><span class="lineno">   67</span>    , <a class="code hl_variable" href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">m_request</a>(connection.<a class="code hl_variable" href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">m_request</a>)</div>
+<div class="line"><span class="lineno">   68</span>    , <a class="code hl_variable" href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">serverConfig</a>(connection.<a class="code hl_variable" href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">serverConfig</a>)</div>
+<div class="line"><span class="lineno">   69</span>    , <a class="code hl_variable" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a>(connection.<a class="code hl_variable" href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">location</a>)</div>
+<div class="line"><span class="lineno">   70</span>    , <a class="code hl_variable" href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">m_pipeToCGIWriteEnd</a>(connection.<a class="code hl_variable" href="struct_connection.html#ac318cf734aa441020ffb03ec67564985">m_pipeToCGIWriteEnd</a>)</div>
+<div class="line"><span class="lineno">   71</span>    , <a class="code hl_variable" href="struct_connection.html#aef664543be678acdc3121965feadc51b">m_pipeFromCGIReadEnd</a>(connection.<a class="code hl_variable" href="struct_connection.html#aef664543be678acdc3121965feadc51b">m_pipeFromCGIReadEnd</a>)</div>
+<div class="line"><span class="lineno">   72</span>    , <a class="code hl_variable" href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">m_cgiPid</a>(connection.<a class="code hl_variable" href="struct_connection.html#ac38ba2b55c7b4b96c36ae75316de2a6f">m_cgiPid</a>)</div>
+<div class="line"><span class="lineno">   73</span>{</div>
+<div class="line"><span class="lineno">   74</span>}</div>
+<div class="ttc" id="astruct_connection_html_a4157497e77aed0e8b399a47eba498683"><div class="ttname"><a href="struct_connection.html#a4157497e77aed0e8b399a47eba498683">Connection::m_buffer</a></div><div class="ttdeci">std::string m_buffer</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00042">Connection.hpp:42</a></div></div>
+<div class="ttc" id="astruct_connection_html_ab46ab3763ce344bbbeb9de1fec5faf7f"><div class="ttname"><a href="struct_connection.html#ab46ab3763ce344bbbeb9de1fec5faf7f">Connection::serverConfig</a></div><div class="ttdeci">std::vector&lt; ConfigServer &gt;::const_iterator serverConfig</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00044">Connection.hpp:44</a></div></div>
+<div class="ttc" id="astruct_connection_html_ae94a8a88f07c64cf17ada17c7e670ada"><div class="ttname"><a href="struct_connection.html#ae94a8a88f07c64cf17ada17c7e670ada">Connection::m_request</a></div><div class="ttdeci">HTTPRequest m_request</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00043">Connection.hpp:43</a></div></div>
+<div class="ttc" id="astruct_connection_html_afff86c74740618d83bab5af4f34d10af"><div class="ttname"><a href="struct_connection.html#afff86c74740618d83bab5af4f34d10af">Connection::location</a></div><div class="ttdeci">std::vector&lt; Location &gt;::const_iterator location</div><div class="ttdef"><b>Definition</b> <a href="_connection_8hpp_source.html#l00045">Connection.hpp:45</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -330,7 +425,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p><a class="el" href="class_server.html" title="Main class of the HTTP server.">Server</a> socket associated with connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00033">33</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00037">37</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -347,7 +442,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Client socket associated with connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00034">34</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00038">38</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -364,7 +459,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>File descriptor of the client socket </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00035">35</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00039">39</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +476,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Time elapsed since last action on this connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00036">36</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00040">40</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -398,7 +493,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Current status of the connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00037">37</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00041">41</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -415,7 +510,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Bytes received from client </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00038">38</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00042">42</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -432,7 +527,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Request of the client </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00039">39</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00043">43</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +544,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p><a class="el" href="class_server.html" title="Main class of the HTTP server.">Server</a> configuration associated with connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00040">40</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00044">44</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -466,7 +561,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p><a class="el" href="struct_location.html">Location</a> configuration associated with connection </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00041">41</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00045">45</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -483,7 +578,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Write end of the pipe to the CGI process </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00042">42</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00046">46</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -500,7 +595,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Read end of the pipe to the CGI process </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00043">43</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00047">47</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +612,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <p>Process ID of the CGI process </p>
 
-<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00044">44</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_connection_8hpp_source.html#l00048">48</a> of file <a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>.</p>
 
 </div>
 </div>

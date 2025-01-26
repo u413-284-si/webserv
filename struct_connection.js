@@ -12,6 +12,8 @@ var struct_connection =
       [ "Closed", "struct_connection.html#a482f32f94d99bd510db3eabf9a1d35b7a297f64602a349bd3f0b3955c15e8e614", null ]
     ] ],
     [ "Connection", "struct_connection.html#a5dff3aa403f5ab67949640234868aa71", null ],
+    [ "~Connection", "struct_connection.html#a2e4352edf667bea83001569e9da8a24d", null ],
+    [ "Connection", "struct_connection.html#a543917dbba5f7633ae525bb06f66ae0b", null ],
     [ "m_serverSocket", "struct_connection.html#ae9c64be721ccc3676197f3ebbb58fe18", null ],
     [ "m_clientSocket", "struct_connection.html#a244c1b9870181fb1c847758d21e2c8b3", null ],
     [ "m_clientFd", "struct_connection.html#a07f7eaa4b84226772eb4a88c37e5c9fd", null ],
