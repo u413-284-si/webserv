@@ -29,17 +29,30 @@ std::string trimLeadingWhitespaces(const std::string& str)
  *
  * This function removes all trailing white spaces (spaces, tabs, newlines, etc.)
  * from the input string.
- *
- * @param str The string to be trimmed. The string is modified in place.
- *
+ * @param str The string to be trimmed.
+ * @return std::string The trimmed string.
  */
-void trimTrailingWhiteSpaces(std::string& str)
+std::string trimTrailingWhiteSpaces(const std::string& str)
 {
 	std::string::size_type end = str.size();
 
 	while (end > 0 && (std::isspace(str.at(end - 1)) != 0))
 		--end;
-	str.erase(end);
+	return str.substr(0, end);
+}
+
+/**
+ * @brief Trims leading and trailing white spaces from a string.
+ *
+ * This function removes all leading and trailing white spaces (spaces, tabs, newlines, etc.)
+ * from the input string.
+ *
+ * @param str The string to be trimmed.
+ * @return std::string The trimmed string.
+ */
+std::string trimWhiteSpaces(const std::string& str)
+{
+	return trimLeadingWhitespaces(trimTrailingWhiteSpaces(str));
 }
 
 /**
@@ -103,7 +116,8 @@ std::string getFileExtension(const std::string& path)
  */
 std::string getGMTString(const time_t now, const std::string& format)
 {
-	char string[webutils::timeStringBuffer];
+	const int timeStringBuffer = 80;
+	char string[timeStringBuffer];
 
 	static_cast<void>(strftime(string, sizeof(string), format.c_str(), gmtime(&now)));
 	return string;
@@ -119,7 +133,8 @@ std::string getGMTString(const time_t now, const std::string& format)
  */
 std::string getLocaltimeString(const time_t now, const std::string& format)
 {
-	char string[webutils::timeStringBuffer];
+	const int timeStringBuffer = 80;
+	char string[timeStringBuffer];
 
 	static_cast<void>(strftime(string, sizeof(string), format.c_str(), localtime(&now)));
 	return string;

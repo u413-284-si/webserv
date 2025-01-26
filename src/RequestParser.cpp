@@ -359,8 +359,7 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 			std::string headerValue = headerLine.substr(delimiterPos + 1);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
-			headerValue = webutils::trimLeadingWhitespaces(headerValue);
-			webutils::trimTrailingWhiteSpaces(headerValue);
+			headerValue = webutils::trimWhiteSpaces(headerValue);
 			validateContentLength(headerName, headerValue, request);
 			validateNoMultipleHostHeaders(headerName, request);
 			request.headers[headerName] = headerValue;
@@ -602,8 +601,10 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
 			}
 		}
-		request.hasBody = true;
 		headerValue = strValues[0];
+		
+		if (headerValue != "0")
+			request.hasBody = true;
 	}
 }
 

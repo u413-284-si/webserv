@@ -210,8 +210,7 @@ void ResponseBodyHandler::parseCGIResponseHeaders()
 		if (delimiterPos != std::string::npos) {
 			const std::string headerName = webutils::lowercase(header.substr(0, delimiterPos));
 			std::string headerValue = header.substr(delimiterPos + 1);
-			headerValue = webutils::trimLeadingWhitespaces(headerValue);
-			webutils::trimTrailingWhiteSpaces(headerValue);
+			headerValue = webutils::trimWhiteSpaces(headerValue);
 			m_responseHeaders[headerName] = headerValue;
 			LOG_DEBUG << "Parsed response header: " << headerName << " -> " << headerValue;
 		}
