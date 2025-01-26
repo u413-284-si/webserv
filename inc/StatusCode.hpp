@@ -1,5 +1,8 @@
 #pragma once
 
+#include "constants.hpp"
+
+#include <cstdlib>
 #include <iostream>
 
 enum statusCode {
@@ -21,10 +24,11 @@ enum statusCode {
 	StatusNonSupportedVersion = 505
 };
 
-std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);
-
+std::string statusCodeToString(statusCode status);
 std::string statusCodeToReasonPhrase(statusCode status);
-statusCode stringToStatusCode(std::string& str);
+statusCode stringToStatusCode(const std::string& str);
 statusCode extractStatusCode(const std::string& statusLine);
 bool isErrorStatus(statusCode statusCode);
 bool isRedirectionStatus(statusCode statusCode);
+
+std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);
