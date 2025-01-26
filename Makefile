@@ -359,9 +359,9 @@ check_bear_installed:
 
 # Create coverage report to display with coverage gutter
 .PHONY: coverage
-coverage: $(TEST) | $(KCOV_DIR)
-	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(TEST)$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)kcov $(KCOV_EXCL_PATH) $(KCOV_DIR) ./$(TEST)
+coverage: $(UNIT) | $(KCOV_DIR)
+	@printf "$(YELLOW)$(BOLD)Creating coverage report from $(UNIT)$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)kcov $(KCOV_EXCL_PATH) $(KCOV_DIR) ./$(UNIT)
 
 .PHONY: coverage2
 coverage2: $(NAME) | $(KCOV_DIR)
@@ -432,8 +432,8 @@ clean:
 # Remove all object, dependency, binaries and log files
 .PHONY: fclean
 fclean: clean
-	@rm -rf $(NAME) $(TEST) $(NAME_SANI) $(TEST_SANI)
-	@printf "$(RED)removed binaries $(NAME)* $(TEST)*$(RESET)\n"
+	@rm -rf $(NAME) $(UNIT) $(NAME_SANI) $(UNIT_SANI)
+	@printf "$(RED)removed binaries $(NAME)* $(UNIT)*$(RESET)\n"
 	@rm -rf $(LOG_DIR)
 	@printf "$(RED)removed subdir $(LOG_DIR)$(RESET)\n"
 	@rm -rf $(KCOV_DIR)
