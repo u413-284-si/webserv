@@ -1515,7 +1515,7 @@ void checkForTimeout(Server& server)
 		LOG_DEBUG << iter->second.m_clientSocket << ": Time since last event: " << timeSinceLastEvent;
 		if (timeSinceLastEvent > server.getClientTimeout()) {
 			LOG_INFO << "Connection timeout: " << iter->second.m_clientSocket;
-			iter->second.m_status = Connection::Timeout;
+			LOG_DEBUG << "Timed out with status " << iter->second.m_status;
 			if (iter->second.m_status == Connection::ReceiveFromCGI || iter->second.m_status == Connection::SendToCGI) {
 				server.addEvent(iter->first, EPOLLOUT);
 				if (iter->second.m_pipeToCGIWriteEnd != -1)
@@ -1524,6 +1524,7 @@ void checkForTimeout(Server& server)
 					webutils::closeFd(iter->second.m_pipeFromCGIReadEnd);
 			} else
 				server.modifyEvent(iter->first, EPOLLOUT);
+			iter->second.m_status = Connection::Timeout;
 		}
 	}
 }
