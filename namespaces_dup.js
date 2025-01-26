@@ -24,6 +24,13 @@ var namespaces_dup =
       [ "file_path", "namespacecreate__textfile.html#a98149725962f09c36e40bb52cd3c862b", null ],
       [ "encoding", "namespacecreate__textfile.html#add5ce0b4a803f38d48787e21764c8c1f", null ]
     ] ],
+    [ "requester", "namespacerequester.html", [
+      [ "send_request", "namespacerequester.html#a3b75b3f0c501223b2d758af884471d79", null ],
+      [ "send_requests_randomly", "namespacerequester.html#afabc46aad661d9f73a813ea3b9293eb1", null ],
+      [ "REQUEST_TIMEOUT", "namespacerequester.html#ae9623d9fb0fa5959d10c157717233bb9", null ],
+      [ "RUN_TIME", "namespacerequester.html#a8f5637d5d0b657c22a8a2c7de4ddf49c", null ],
+      [ "file_path", "namespacerequester.html#adc6ed28ba19f7a35eb64342f393b426c", null ]
+    ] ],
     [ "server_management", "namespaceserver__management.html", "namespaceserver__management" ],
     [ "server_response", "namespaceserver__response.html", "namespaceserver__response" ],
     [ "time", "namespacetime.html", [
