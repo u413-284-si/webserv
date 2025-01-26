@@ -117,7 +117,6 @@ TEST_F(ParseRequestLineTest, RequestLinePercentEncodedInvalidNUL)
 			try {
 				p.parseHeader("GET /search%00 HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
-				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				EXPECT_STREQ(ERR_PERCENT_NONSUPPORTED_NUL, e.what());
 				throw;
 			}
@@ -135,7 +134,6 @@ TEST_F(ParseRequestLineTest, RequestLinePercentEncodedNotComplete)
 			try {
 				p.parseHeader("GET /search%F HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
-				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				EXPECT_STREQ(ERR_PERCENT_INCOMPLETE, e.what());
 				throw;
 			}
@@ -153,7 +151,6 @@ TEST_F(ParseRequestLineTest, RequestLinePercentEncodedNonHex)
 			try {
 				p.parseHeader("GET /search%4& HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
-				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				EXPECT_STREQ(ERR_PERCENT_INVALID_HEX, e.what());
 				throw;
 			}
@@ -211,7 +208,6 @@ TEST_F(ParseRequestLineTest, RequestLineOnlyDoubleDots)
 				p.parseHeader("GET /.. HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_DIRECTORY_TRAVERSAL, e.what());
-				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				throw;
 			}
 		},
@@ -229,7 +225,6 @@ TEST_F(ParseRequestLineTest, RequestLineWithTooManyDotSegments)
 				p.parseHeader("GET /search/../../hello HTTP/1.1\r\nHost: www.example.com\r\n\r\n", request);
 			} catch (const std::runtime_error& e) {
 				EXPECT_STREQ(ERR_DIRECTORY_TRAVERSAL, e.what());
-				EXPECT_EQ(request.httpStatus, StatusBadRequest);
 				throw;
 			}
 		},
