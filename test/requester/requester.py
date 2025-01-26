@@ -3,9 +3,11 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from collections import Counter
 import time
+import random
 
 # Define a timeout value (in seconds)
 REQUEST_TIMEOUT = 5
+RUN_TIME = 30  # Time in seconds for GET and POST requests to run continuously
 
 def send_request(line, stats):
     try:
@@ -48,7 +50,7 @@ def send_request(line, stats):
         stats['failed'] += 1
         print(f"[ERROR] {method} {url} - {str(e)}")
 
-def send_requests_concurrently(file_path, max_workers=10):
+def send_requests_randomly(file_path, max_workers=10):
     stats = Counter(success=0, failed=0, unsupported=0, total=0)
 
     try:
@@ -60,12 +62,18 @@ def send_requests_concurrently(file_path, max_workers=10):
         get_post_lines = [line for line in lines if line.strip() and not line.startswith('#') and line.split(' ')[0].upper() in ['GET', 'POST']]
         delete_lines = [line for line in lines if line.strip() and not line.startswith('#') and line.split(' ')[0].upper() == 'DELETE']
 
-        # Process GET and POST requests concurrently
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            executor.map(lambda line: send_request(line, stats), get_post_lines)
+        # Start time to run the GET and POST requests randomly
+        start_time = time.time()
+        print(f"Running GET and POST requests randomly for {RUN_TIME} seconds...")
 
-        # Wait for 2 seconds before processing DELETE requests
-        print("\nWaiting for 1 second before processing DELETE requests...")
+        # Send random GET and POST requests for the specified time (RUN_TIME)
+        while time.time() - start_time < RUN_TIME:
+            line = random.choice(get_post_lines)
+            send_request(line, stats)
+            time.sleep(random.uniform(0.1, 1))  # Random delay between requests (0.1s to 1s)
+
+        # Wait for 1 second before sending DELETE requests
+        print("\nWaiting for 1 second before sending DELETE requests...")
         time.sleep(1)
 
         # Process DELETE requests concurrently
@@ -89,4 +97,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     file_path = sys.argv[1]
-    send_requests_concurrently(file_path)
+    send_requests_randomly(file_path)
