@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('class_delete_handler.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a65ebf142a92c3baaa296c388696e3a66" id="r_a65ebf142a92c3baaa296c388696e3a66"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler.html#a65ebf142a92c3baaa296c388696e3a66">DeleteHandler</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>)</td></tr>
+<tr class="memitem:a65ebf142a92c3baaa296c388696e3a66" id="r_a65ebf142a92c3baaa296c388696e3a66"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler.html#a65ebf142a92c3baaa296c388696e3a66">DeleteHandler</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;fileSystemOps)</td></tr>
 <tr class="memdesc:a65ebf142a92c3baaa296c388696e3a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_delete_handler.html" title="Class to delete files and directories.">DeleteHandler</a> object.  <br /></td></tr>
 <tr class="separator:a65ebf142a92c3baaa296c388696e3a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af57c89c025cd0def3d16bad186a7f3e8" id="r_af57c89c025cd0def3d16bad186a7f3e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_delete_handler.html#af57c89c025cd0def3d16bad186a7f3e8">execute</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;path, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a> &amp;httpStatus)</td></tr>
@@ -163,10 +163,9 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_delete_handler_8cpp_source.html#l00008">8</a> of file <a class="el" href="_delete_handler_8cpp_source.html">DeleteHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span>    : m_fileSystemOps(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>)</div>
+<div class="fragment"><div class="line"><span class="lineno">    9</span>    : m_fileSystemOps(fileSystemOps)</div>
 <div class="line"><span class="lineno">   10</span>{</div>
 <div class="line"><span class="lineno">   11</span>}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -258,6 +257,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> m_response.str();</div>
 <div class="line"><span class="lineno">   69</span>}</div>
 <div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00018">Log.hpp:18</a></div></div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa6d2a8bfcc1a80267da418ab4224a1345">StatusForbidden</a></div><div class="ttdeci">@ StatusForbidden</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00013">StatusCode.hpp:13</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaa9a10085fda0665e4093f44aff66484bc">StatusInternalServerError</a></div><div class="ttdeci">@ StatusInternalServerError</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00019">StatusCode.hpp:19</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85eaacc2d46317d90488f241e11a10a531415">StatusNotFound</a></div><div class="ttdeci">@ StatusNotFound</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00014">StatusCode.hpp:14</a></div></div>

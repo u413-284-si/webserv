@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"namespaceserver__response_1_1test___p_o_s_t.html":[1,0,4,6],
 "namespaceserver__response_1_1test___p_o_s_t.html#a00158e8a0712fac3bdf8561c56b75e0e":[1,0,4,6,6],
 "namespaceserver__response_1_1test___p_o_s_t.html#a3f87e188fb39546111887533e959eb77":[1,0,4,6,2],
 "namespaceserver__response_1_1test___p_o_s_t.html#a5cab4ddc4446342963330c3d4030e49e":[1,0,4,6,1],
@@ -181,14 +180,13 @@ var NAVTREEINDEX4 =
 "struct_socket.html#af75711bf9c0f0788d7767f836a97c5e6":[2,0,56,1],
 "struct_target_resource_handler_1_1_locating_info.html":[2,0,58,0],
 "struct_target_resource_handler_1_1_locating_info.html#a0940335ccf6876d35969d119fec1df90":[2,0,58,0,2],
+"struct_target_resource_handler_1_1_locating_info.html#a23f7912196ad036fd91f088a76d1d565":[2,0,58,0,0],
 "struct_target_resource_handler_1_1_locating_info.html#a5f0e56b4d33b596b63dcc94522082705":[2,0,58,0,1],
-"struct_target_resource_handler_1_1_locating_info.html#a7146f441d9e8acc50906e379a7e63f4a":[2,0,58,0,7],
-"struct_target_resource_handler_1_1_locating_info.html#a76ec6a33b0d392907b2da26ebaa2cb68":[2,0,58,0,8],
+"struct_target_resource_handler_1_1_locating_info.html#a76ec6a33b0d392907b2da26ebaa2cb68":[2,0,58,0,7],
 "struct_target_resource_handler_1_1_locating_info.html#a7ca3af7da6dac38b352d71f8a8c8ad10":[2,0,58,0,4],
 "struct_target_resource_handler_1_1_locating_info.html#aaf3a18f0f98882b42cf4b60cb14155b3":[2,0,58,0,5],
 "struct_target_resource_handler_1_1_locating_info.html#aba38f60e761dee0e06ade0530329edb8":[2,0,58,0,6],
 "struct_target_resource_handler_1_1_locating_info.html#ace79fdfaa029e6a89736d23fd3d64967":[2,0,58,0,3],
-"struct_target_resource_handler_1_1_locating_info.html#ae6e0c096a31a9de8b2da7df7d823d5eb":[2,0,58,0,0],
 "struct_u_r_i.html":[2,0,60],
 "struct_u_r_i.html#a146c27ea8ef0e7887872df7a8181761a":[2,0,60,1],
 "struct_u_r_i.html#a18b7b6f3328197824e58dc4cf46301df":[2,0,60,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX4 =
 "test___config_file_parser_8cpp.html#a4625caaa662d0952fdbf603b105d985d":[3,0,3,1,4,99],
 "test___config_file_parser_8cpp.html#a4ef754dd6e19cf1afdcaa6daad4dd25e":[3,0,3,1,4,98],
 "test___config_file_parser_8cpp.html#a4f04ba71bf904594a00f599de800f274":[3,0,3,1,4,45],
-"test___config_file_parser_8cpp.html#a4ff035fbd352950724e62ac307ffd616":[3,0,3,1,4,74]
+"test___config_file_parser_8cpp.html#a4ff035fbd352950724e62ac307ffd616":[3,0,3,1,4,74],
+"test___config_file_parser_8cpp.html#a51c011b7d0b3935ce4d92b9586a993d3":[3,0,3,1,4,15],
+"test___config_file_parser_8cpp.html#a52a9fced1c4d7a65ec658fc4893dc8d6":[3,0,3,1,4,57]
 };

@@ -7,6 +7,7 @@ var class_server =
     [ "getServerConfigs", "class_server.html#a54745950beb9e321d9a56084501c18e9", null ],
     [ "getClientTimeout", "class_server.html#af8184a299847cca0789696048893bc48", null ],
     [ "getProcessOps", "class_server.html#a4924c70b384f0eca6b0c2bb79fb3cbe5", null ],
+    [ "getFileSystemOps", "class_server.html#ad32ff01d9a4d17205c398cde93482b22", null ],
     [ "getVirtualServers", "class_server.html#ad5228a2a917b01adff3b89007c036ec4", null ],
     [ "getConnections", "class_server.html#aab1a7e57f49a0c7b7f1cea147d8bf9aa", null ],
     [ "getCGIConnections", "class_server.html#aad2be3b48155c6eb508bca4b1af3db97", null ],

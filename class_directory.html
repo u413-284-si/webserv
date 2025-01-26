@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('class_directory.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac444d75f8fbced127ad2c45d9a18f8f0" id="r_ac444d75f8fbced127ad2c45d9a18f8f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_directory.html#ac444d75f8fbced127ad2c45d9a18f8f0">Directory</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;path)</td></tr>
+<tr class="memitem:ac444d75f8fbced127ad2c45d9a18f8f0" id="r_ac444d75f8fbced127ad2c45d9a18f8f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_directory.html#ac444d75f8fbced127ad2c45d9a18f8f0">Directory</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> <a class="el" href="class_file_system_ops.html">FileSystemOps</a> &amp;fileSystemOps, <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;path)</td></tr>
 <tr class="memdesc:ac444d75f8fbced127ad2c45d9a18f8f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_directory.html" title="Wrapper class for DIR pointer.">Directory</a> object.  <br /></td></tr>
 <tr class="separator:ac444d75f8fbced127ad2c45d9a18f8f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affbde8714685c61601421097d621341d" id="r_affbde8714685c61601421097d621341d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_directory.html#affbde8714685c61601421097d621341d">~Directory</a> ()</td></tr>
@@ -170,11 +170,11 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_directory_8cpp_source.html#l00009">9</a> of file <a class="el" href="_directory_8cpp_source.html">Directory.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   10</span>    : m_fileSystemOps(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>)</div>
-<div class="line"><span class="lineno">   11</span>    , m_directory(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">fileSystemOps</a>.openDirectory(path))</div>
+<div class="fragment"><div class="line"><span class="lineno">   10</span>    : m_fileSystemOps(fileSystemOps)</div>
+<div class="line"><span class="lineno">   11</span>    , m_directory(fileSystemOps.<a class="code hl_function" href="class_file_system_ops.html#a7765c059434f99caf444dda2f9793fe4">openDirectory</a>(path))</div>
 <div class="line"><span class="lineno">   12</span>{</div>
 <div class="line"><span class="lineno">   13</span>}</div>
-<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
+<div class="ttc" id="aclass_file_system_ops_html_a7765c059434f99caf444dda2f9793fe4"><div class="ttname"><a href="class_file_system_ops.html#a7765c059434f99caf444dda2f9793fe4">FileSystemOps::openDirectory</a></div><div class="ttdeci">virtual DIR * openDirectory(const std::string &amp;path) const</div><div class="ttdoc">Opens a directory.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00124">FileSystemOps.cpp:124</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -237,6 +237,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   36</span>    std::sort(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>.end());</div>
 <div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">files</a>;</div>
 <div class="line"><span class="lineno">   38</span>}</div>
+<div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00005">StatusCode.hpp:5</a></div></div>
 <div class="ttc" id="aclass_file_system_ops_html_ad19698e2d78a7489c1a2d3e69b35e434"><div class="ttname"><a href="class_file_system_ops.html#ad19698e2d78a7489c1a2d3e69b35e434">FileSystemOps::readDirectory</a></div><div class="ttdeci">virtual struct dirent * readDirectory(DIR *dir) const</div><div class="ttdoc">Reads a directory.</div><div class="ttdef"><b>Definition</b> <a href="_file_system_ops_8cpp_source.html#l00140">FileSystemOps.cpp:140</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
