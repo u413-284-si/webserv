@@ -92,6 +92,7 @@ UNIT_TEST_DIR_SRC := $(TEST_DIR)/unit/src
 UNIT_TEST_DIR_INC := $(TEST_DIR)/unit/inc
 INTEGRATION_TEST_DIR := $(TEST_DIR)/integration
 SIEGE_DIR := $(TEST_DIR)/siege
+REQUESTER_DIR := $(TEST_DIR)/requester
 
 # Subdirectory for log files
 LOG_DIR := log
@@ -316,6 +317,21 @@ test4: $(NAME) | $(LOG_DIR)
 		$(SIEGE_URL)
 	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
 
+REQUESTER=$(REQUESTER_DIR)/requester.py
+REQUESTER_FILE=$(REQUESTER_DIR)/requests.txt
+
+.PHONY: test5
+test5: $(NAME) | $(LOG_DIR)
+	@printf "$(YELLOW)$(BOLD)Run webserv with valgrind and requester$(RESET) [$(BLUE)$@$(RESET)]\n"
+	$(SILENT)valgrind ./webserv $(CONFIGFILE) >$(LOG_VALGRIND) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)sleep 1
+	$(SILENT)/usr/bin/python3 \
+		$(REQUESTER) \
+		$(REQUESTER_FILE)
+	$(SILENT)kill `cat webserv.pid` && rm -f webserv.pid
+	$(SILENT)sleep 2
+	$(SILENT)cat $(LOG_VALGRIND)
+
 # This target uses perf for profiling.
 .PHONY: profile
 profile: check_perf_installed $(NAME) | $(LOG_DIR)
@@ -333,16 +349,6 @@ check_perf_installed:
 	@command -v perf >/dev/null 2>&1 || { \
 		echo >&2 "perf is not installed. Please install perf to continue."; exit 1; \
 	}
-
-# Perform memory check on NAME.
-.PHONY: valgr
-valgr: $(NAME) | $(LOG_DIR)
-	$(SILENT)valgrind	--leak-check=full\
-						--show-leak-kinds=all\
-						--track-fds=yes\
-						--log-file=$(LOG_VALGRIND)\
-						./$(NAME)
-	$(SILENT)ls -dt1 $(LOG_DIR)/* | head -n 1 | xargs less
 
 # This target creates compile_commands.json for clangd.
 .PHONY: comp
