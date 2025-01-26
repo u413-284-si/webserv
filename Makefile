@@ -292,7 +292,7 @@ SIEGE_URL=http://127.0.0.1:8080/empty.html
 .PHONY: test3
 test3: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run load test with siege$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)./webserv $(CONFIGFILE) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)siege \
 		--rc=$(SIEGE_CONFIG) \
@@ -305,7 +305,7 @@ test3: $(NAME) | $(LOG_DIR)
 .PHONY: test4
 test4: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run benchmark test with siege on a single URL$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)./webserv $(CONFIGFILE_INTEGRATION) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)./webserv $(CONFIGFILE) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)siege \
 		--rc=$(SIEGE_CONFIG) \
