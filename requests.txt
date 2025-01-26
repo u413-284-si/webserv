@@ -1,0 +1,22 @@
+# GET requests
+GET http://127.0.0.1:8080
+GET http://127.0.0.1:8080/content.html
+GET http://127.0.0.1:8080/styled.html
+GET http://127.0.0.1:8080/images/cat.jpg
+GET http://127.0.0.1:8080/images.html
+GET http://127.0.0.1:8080/run_cgi.html
+GET http://127.0.0.1:8080/directory/
+GET http://127.0.0.1:8080/broken_link
+GET http://127.0.0.1:8080/secret
+GET http://127.0.0.1:8080/alias/cat.jpg
+GET http://127.0.0.1:8080/cgi-bin/helloWorld.sh
+GET http://127.0.0.1:8080/cgi-bin/upperCase.sh?text=hello+my+honey
+GET http://127.0.0.1:8080/cgi-bin/badBoi.sh
+GET http://127.0.0.1:8081/cgi-bin/time.py
+
+# POST requests
+POST http://127.0.0.1:8080/cgi-bin/upperCase.sh text=hello+my+baby
+POST http://127.0.0.1:8081/cgi-bin/create_textfile.py filename=mybaby.txt&content=Hello+my+ragtime+gal
+
+# DELETE requests
+DELETE http://127.0.0.1:8080/uploads/mybaby.txt
