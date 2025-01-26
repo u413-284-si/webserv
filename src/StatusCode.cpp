@@ -1,16 +1,65 @@
 #include "StatusCode.hpp"
 
 /**
+ * @brief Converts a status code to a string.
+ *
+ * If the status code is not a known status code, it returns "0".
+ * @param statusCode Status code.
+ * @return std::string String representation of the status code.
+ */
+std::string statusCodeToString(statusCode statusCode)
+{
+	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
+		statusCode = NoStatus;
+
+	switch (statusCode) {
+	case NoStatus:
+		return ("0");
+	case StatusOK:
+		return ("200");
+	case StatusCreated:
+		return ("201");
+	case StatusMovedPermanently:
+		return ("301");
+	case StatusFound:
+		return ("302");
+	case StatusPermanentRedirect:
+		return ("308");
+	case StatusBadRequest:
+		return ("400");
+	case StatusForbidden:
+		return ("403");
+	case StatusNotFound:
+		return ("404");
+	case StatusMethodNotAllowed:
+		return ("405");
+	case StatusRequestTimeout:
+		return ("408");
+	case StatusRequestEntityTooLarge:
+		return ("413");
+	case StatusRequestHeaderFieldsTooLarge:
+		return ("431");
+	case StatusInternalServerError:
+		return ("500");
+	case StatusMethodNotImplemented:
+		return ("501");
+	case StatusNonSupportedVersion:
+		return ("505");
+	}
+	return ("0");
+}
+
+/**
  * @brief Returns reason phrase for a given status code.
  *
- * In case of NoStatus returns the string "NO STATUS CODE".
+ * If the status code is not known returns the string "NO STATUS CODE".
  * @param statusCode Status code.
  * @return std::string Reason phrase.
  */
 std::string statusCodeToReasonPhrase(statusCode statusCode)
 {
 	if (statusCode < NoStatus || statusCode > StatusNonSupportedVersion)
-		statusCode = StatusInternalServerError;
+		statusCode = NoStatus;
 
 	switch (statusCode) {
 	case NoStatus:
@@ -46,6 +95,63 @@ std::string statusCodeToReasonPhrase(statusCode statusCode)
 	case StatusNonSupportedVersion:
 		return "HTTP Version Not Supported";
 	}
+	return "NO STATUS CODE";
+}
+
+/**
+ * @brief Converts a string to an HTTP status code.
+ *
+ * Expects the string to be exactly 3 numbers long. If the string is not a valid status code, it returns NoStatus.
+ * @param str The string representation of the HTTP status code.
+ * @return The corresponding statusCode enum value.
+ */
+statusCode stringToStatusCode(const std::string& str)
+{
+	if (str.size() != 3)
+		return (NoStatus);
+
+	char* endptr = NULL;
+	statusCode statusCode = static_cast<enum statusCode>(std::strtol(str.c_str(), &endptr, constants::g_decimalBase));
+	if (*endptr != '\0')
+		statusCode = NoStatus;
+
+	switch (statusCode) {
+	case NoStatus:
+	case StatusOK:
+	case StatusCreated:
+	case StatusMovedPermanently:
+	case StatusFound:
+	case StatusPermanentRedirect:
+	case StatusBadRequest:
+	case StatusForbidden:
+	case StatusNotFound:
+	case StatusRequestEntityTooLarge:
+	case StatusMethodNotAllowed:
+	case StatusRequestTimeout:
+	case StatusRequestHeaderFieldsTooLarge:
+	case StatusInternalServerError:
+	case StatusMethodNotImplemented:
+	case StatusNonSupportedVersion:
+		return (statusCode);
+	}
+	return (NoStatus);
+}
+
+/**
+ * @brief Extracts the status code from a status line.
+ *
+ * Extratcs from the first number found till the last number.
+ * @param statusLine The status line.
+ * @return The status code.
+ */
+statusCode extractStatusCode(const std::string& statusLine)
+{
+	size_t pos = statusLine.find_first_of("0123456789");
+	if (pos != std::string::npos) {
+		std::string statusCodeString = statusLine.substr(pos, statusLine.find_first_not_of("0123456789", pos) - pos);
+		return stringToStatusCode(statusCodeString);
+	}
+	return NoStatus;
 }
 
 /**
@@ -96,62 +202,4 @@ bool isCloseConnectionStatus(statusCode statusCode)
 	default:
 		return false;
 	}
-}
-
-/**
- * @brief Converts a string to an HTTP status code.
- *
- * This function takes a string representation of an HTTP status code
- * and returns the corresponding statusCode enum value. If the string
- * does not match any known status code, it returns StatusBadRequest.
- *
- * @param str The string representation of the HTTP status code.
- * @return The corresponding statusCode enum value.
- */
-statusCode stringToStatusCode(std::string& str)
-{
-	if (str == "0")
-		return NoStatus;
-	if (str == "200")
-		return StatusOK;
-	if (str == "201")
-		return StatusCreated;
-	if (str == "301")
-		return StatusMovedPermanently;
-	if (str == "302")
-		return StatusFound;
-	if (str == "308")
-		return StatusPermanentRedirect;
-	if (str == "400")
-		return StatusBadRequest;
-	if (str == "403")
-		return StatusForbidden;
-	if (str == "404")
-		return StatusNotFound;
-	if (str == "405")
-		return StatusMethodNotAllowed;
-	if (str == "408")
-		return StatusRequestTimeout;
-	if (str == "413")
-		return StatusRequestEntityTooLarge;
-	if (str == "431")
-		return StatusRequestHeaderFieldsTooLarge;
-	if (str == "500")
-		return StatusInternalServerError;
-	if (str == "501")
-		return StatusMethodNotImplemented;
-	if (str == "505")
-		return StatusNonSupportedVersion;
-
-	return NoStatus;
-}
-
-statusCode extractStatusCode(const std::string& statusLine)
-{
-	size_t pos = statusLine.find_first_of("0123456789");
-	if (pos != std::string::npos) {
-		std::string statusCodeString = statusLine.substr(pos, statusLine.find_first_not_of("0123456789", pos) - pos);
-		return stringToStatusCode(statusCodeString);
-	}
-	return NoStatus;
 }

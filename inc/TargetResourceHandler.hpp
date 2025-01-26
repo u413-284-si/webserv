@@ -22,15 +22,15 @@ public:
 	static const int s_maxRecursion = 10; /**< Max recursion depth for locating a resource */
 
 	explicit TargetResourceHandler(const FileSystemOps& fileSystemOps);
-	void execute(Connection& connection);
+	void execute(HTTPRequest& request, std::vector<Location>::const_iterator& location, std::vector<ConfigServer>::const_iterator serverConfig);
 
 private:
 	struct LocatingInfo;
 
-	LocatingInfo locateTargetResource(LocatingInfo locInfo, int depth);
-	void handleFileDirectory(LocatingInfo& locInfo, int currentDepth);
-	bool locateIndexFile(LocatingInfo& locInfo, int currentDepth);
-	static void updateConnection(Connection& connection, const LocatingInfo& locInfo);
+	LocatingInfo locateTargetResource(LocatingInfo locInfo, int depth, const std::vector<Location>& locations);
+	void handleFileDirectory(LocatingInfo& locInfo, int currentDepth, const std::vector<Location>& locations);
+	bool locateIndexFile(LocatingInfo& locInfo, int currentDepth, const std::vector<Location>& locations);
+	static void updateRequestAndLocation(HTTPRequest& request, std::vector<Location>::const_iterator& location, const LocatingInfo& locInfo);
 
 	const FileSystemOps& m_fileSystemOps;
 };
@@ -42,7 +42,7 @@ private:
  * around and copied.
  */
 struct TargetResourceHandler::LocatingInfo {
-	explicit LocatingInfo(const Connection& connection);
+	explicit LocatingInfo(const HTTPRequest& request, std::vector<Location>::const_iterator location);
 
 	statusCode statusCode;
 	std::string path;
@@ -50,7 +50,6 @@ struct TargetResourceHandler::LocatingInfo {
 	bool isDirectory;
 	bool hasAutoindex;
 	bool hasReturn;
-	const std::vector<Location>* locations;
 	std::vector<Location>::const_iterator activeLocation;
 };
 

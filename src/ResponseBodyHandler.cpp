@@ -299,7 +299,7 @@ void ResponseBodyHandler::handleErrorBody()
 	m_request.httpStatus = StatusOK;
 	m_request.uri.path = iter->second;
 	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
-	targetResourceHandler.execute(m_connection);
+	targetResourceHandler.execute(m_connection.m_request, m_connection.location, m_connection.serverConfig);
 
 	if (m_request.hasReturn) {
 		m_request.httpStatus = oldStatus;
