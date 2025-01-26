@@ -15,7 +15,10 @@ def test_GET_simple():
     response = make_request(url)
     file_path = "/workspaces/webserv/html/index.html"
     file_size = os.path.getsize(file_path)
+    assert response.headers["content-type"] == "text/html"
     assert int(response.headers["content-length"]) == file_size
+    assert response.headers["Server"] == "TriHard"
+    assert response.headers["connection"] == "keep-alive"
     assert response.status_code == 200
 
 def test_GET_index_file():
