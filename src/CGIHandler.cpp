@@ -42,18 +42,20 @@
  * The constructor also calls setEnvp() to set the environment variables and setArgv() to set the
  * arguments for the execve system call.
  */
-CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
+CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps, const FileSystemOps& fileSystemOps)
 	: m_processOps(processOps)
+	, m_fileSystemOps(fileSystemOps)
 	, m_cgiPath(connection.location->cgiPath)
 	, m_cgiExt(connection.location->cgiExt)
+	, m_cgiScriptPath(extractPreScriptPath(connection.m_request.targetResource))
 	, m_pipeIn()
 	, m_pipeOut()
-    , m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
-    , m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
+	, m_pipeToCGIWriteEnd(connection.m_pipeToCGIWriteEnd)
+	, m_pipeFromCGIReadEnd(connection.m_pipeFromCGIReadEnd)
 	, m_cgiPid(connection.m_cgiPid)
-    , m_request(connection.m_request)
-    , m_location(connection.location)
-
+	, m_request(connection.m_request)
+	, m_location(connection.location)
+	, m_serverConfig(connection.serverConfig)
 {
 
 	/* ========= Set up environment for CGI script ========= */
@@ -65,27 +67,32 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	m_env.push_back("GATEWAY_INTERFACE=CGI/1.1");
 	const std::string pathInfo = extractPathInfo(connection.m_request.uri.path);
 	m_env.push_back("PATH_INFO=" + pathInfo);
-	m_env.push_back("PATH_TRANSLATED=" + connection.location->root + pathInfo);
+	if (pathInfo.empty())
+		m_env.push_back("PATH_TRANSLATED=");
+	else {
+		const std::string pathTranslated = mapPathInfoToFileSystem(pathInfo);
+		m_env.push_back("PATH_TRANSLATED=" + pathTranslated);
+	}
 	m_env.push_back("QUERY_STRING=" + connection.m_request.uri.query);
 	m_env.push_back("REDIRECT_STATUS=200");
 	m_env.push_back("REMOTE_ADDR=" + connection.m_clientSocket.host);
 	m_env.push_back("REMOTE_PORT=" + connection.m_clientSocket.port);
 	m_env.push_back("REQUEST_METHOD=" + webutils::methodToString(connection.m_request.method));
 	m_env.push_back("REQUEST_URI=" + connection.m_request.uri.path + '?' + connection.m_request.uri.query);
-	const std::string scriptPath = extractScriptPath(connection.m_request.uri.path);
-	m_env.push_back("SCRIPT_NAME=" + scriptPath);
-	m_env.push_back("SCRIPT_FILENAME=" + connection.location->root + scriptPath);
+	const std::string relScriptPath = extractScriptPath(connection.m_request.uri.path);
+	m_env.push_back("SCRIPT_NAME=" + relScriptPath);
+	const std::string absScriptPath = extractScriptPath(connection.m_request.targetResource);
+	m_env.push_back("SCRIPT_FILENAME=" + absScriptPath);
 	m_env.push_back("SERVER_ADDR=" + connection.m_serverSocket.host);
 	m_env.push_back("SERVER_NAME=" + connection.m_serverSocket.host);
 	m_env.push_back("SERVER_PORT=" + connection.m_serverSocket.port);
 	m_env.push_back("SERVER_PROTOCOL=HTTP/1.1");
 	m_env.push_back("SERVER_SOFTWARE=Trihard/1.0.0");
-	m_env.push_back("SYSTEM_ROOT=" + connection.location->root);
 
 	/* ========= Set up arguments for CGI script ========= */
 
 	m_argv.push_back(m_cgiPath);
-	m_argv.push_back(connection.location->root + scriptPath);
+	m_argv.push_back(absScriptPath);
 
 	/* ========= Create pipes for inter-process communication ========= */
 
@@ -97,7 +104,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 	if (connection.m_request.method == MethodPost) {
 		if (m_processOps.pipeProcess(m_pipeIn) == -1)
 			connection.m_request.httpStatus = StatusInternalServerError;
-        m_pipeToCGIWriteEnd = m_pipeIn[1];
+		m_pipeToCGIWriteEnd = m_pipeIn[1];
 	}
 
 	if (m_processOps.pipeProcess(m_pipeOut) == -1) {
@@ -105,7 +112,7 @@ CGIHandler::CGIHandler(Connection& connection, const ProcessOps& processOps)
 		webutils::closeFd(m_pipeIn[1]);
 		connection.m_request.httpStatus = StatusInternalServerError;
 	}
-    m_pipeFromCGIReadEnd = m_pipeOut[0];
+	m_pipeFromCGIReadEnd = m_pipeOut[0];
 
 	/* ========= Create input parameters for execve ========= */
 	setEnvp();
@@ -203,7 +210,7 @@ void CGIHandler::execute(
 		}
 		closeAllFds(epollFd, connections, cgiConnections);
 
-		std::string workingDir = m_location->root + m_location->path;
+		std::string workingDir = m_cgiScriptPath;
 		if (m_processOps.chdirProcess(workingDir.c_str()) == -1)
 			std::exit(EXIT_FAILURE);
 
@@ -289,6 +296,47 @@ std::string CGIHandler::extractScriptPath(const std::string& path)
 	if (extensionStart == std::string::npos)
 		return "";
 	return path.substr(0, extensionStart + m_cgiExt.size());
+}
+
+/**
+ * @brief Extracts the path before the CGI script extension.
+ *
+ * This function finds the position of the CGI script extension in the given path and returns
+ * the substring of the path before the extension.
+ * The extension should be in the path since this function is called only when a CGI script is requested.
+ *
+ * @param path The full path containing the CGI script extension.
+ * @return The substring of the path before the CGI script extension
+ */
+std::string CGIHandler::extractPreScriptPath(const std::string& path)
+{
+	const size_t extensionStart = path.find(m_cgiExt);
+	const size_t scriptStart = path.rfind('/', extensionStart);
+	const std::string preScriptPath = path.substr(0, scriptStart);
+	LOG_DEBUG << "Pre-script path: " << preScriptPath;
+	return preScriptPath;
+}
+
+/**
+ * @brief Maps the path info to the server file system based on the location configuration.
+ *
+ * @param pathInfo The path info value passed to the script.
+ * @return std::string The file system path corresponding to the path info.
+ */
+std::string CGIHandler::mapPathInfoToFileSystem(const std::string& pathInfo)
+{
+
+	TargetResourceHandler targetResourceHandler(m_fileSystemOps);
+
+	HTTPRequest tempRequest;
+	tempRequest.uri.path = pathInfo;
+
+	targetResourceHandler.execute(tempRequest, m_location, m_serverConfig);
+
+	if (tempRequest.httpStatus != StatusOK)
+		return "";
+
+	return (tempRequest.targetResource);
 }
 
 /**

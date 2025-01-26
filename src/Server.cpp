@@ -125,6 +125,13 @@ time_t Server::getClientTimeout() const { return m_clientTimeout; }
 const ProcessOps& Server::getProcessOps() const { return m_processOps; }
 
 /**
+ * @brief Const Getter for FileSystemOps.
+ *
+ * @return const FileSystemOps& Registered FileSystemOps object.
+ */
+const FileSystemOps& Server::getFileSystemOps() const { return m_fileSystemOps; }
+
+/**
  * @brief Getter for internal buffer.
  *
  * @return std::vector<char>& buffer.
@@ -532,7 +539,10 @@ std::string Server::getResponse() { return m_responseBuilder.getResponse(); }
  *
  * @param connection The Connection object to handle the target resource for.
  */
-void Server::findTargetResource(Connection& connection) { m_targetResourceHandler.execute(connection); }
+void Server::findTargetResource(Connection& connection)
+{
+	m_targetResourceHandler.execute(connection.m_request, connection.location, connection.serverConfig);
+}
 
 /* ====== INITIALIZATION ====== */
 
@@ -1058,7 +1068,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	if (isCGIRequested(connection)) {
 		connection.m_request.hasCGI = true;
-		CGIHandler cgiHandler(connection, server.getProcessOps());
+		CGIHandler cgiHandler(connection, server.getProcessOps(), server.getFileSystemOps());
 		if (connection.m_request.httpStatus == StatusInternalServerError) {
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(clientFd, EPOLLOUT);
@@ -1122,7 +1132,7 @@ bool isCGIRequested(Connection& connection)
 	if (connection.location->cgiPath.empty() || connection.location->cgiExt.empty())
 		return false;
 
-	size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
+	const size_t extPos = connection.m_request.uri.path.find(connection.location->cgiExt);
 
 	// If extension is found and is at the end of the path or followed by a slash
 	return (extPos != std::string::npos

@@ -68,6 +68,7 @@ public:
 	const std::vector<ConfigServer>& getServerConfigs() const;
 	time_t getClientTimeout() const;
 	const ProcessOps& getProcessOps() const;
+	const FileSystemOps& getFileSystemOps() const;
 
 	std::map<int, Socket>& getVirtualServers();
 	std::map<int, Connection>& getConnections();
