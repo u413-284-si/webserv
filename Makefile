@@ -319,11 +319,12 @@ test4: $(NAME) | $(LOG_DIR)
 
 REQUESTER=$(REQUESTER_DIR)/requester.py
 REQUESTER_FILE=$(REQUESTER_DIR)/requests.txt
+VALGRIND_FLAGS=--leak-check=full --show-leak-kinds=all --track-origins=yes
 
 .PHONY: test5
 test5: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run webserv with valgrind and requester$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)valgrind ./webserv $(CONFIGFILE) >$(LOG_VALGRIND) 2>&1 & echo $$! > webserv.pid
+	$(SILENT)valgrind $(VALGRIND_FLAGS) ./webserv $(CONFIGFILE) >$(LOG_VALGRIND) 2>&1 & echo $$! > webserv.pid
 	$(SILENT)sleep 1
 	$(SILENT)/usr/bin/python3 \
 		$(REQUESTER) \
