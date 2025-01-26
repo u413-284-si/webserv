@@ -47,7 +47,7 @@ int main(const int argc, const char* argv[])
 		return 1;
 
 	try {
-		EpollWrapper epollWrapper(Server::s_maxEvents, Server::s_maxEvents);
+		EpollWrapper epollWrapper(Server::s_maxEvents, Server::s_epollTimeout);
 		FileSystemOps fileSystemOps;
 		SocketOps socketOps;
 		ProcessOps processOps;
