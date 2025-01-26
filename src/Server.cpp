@@ -1012,8 +1012,33 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	try {
 		server.parseHeader(connection.m_buffer, connection.m_request);
+	} catch (RequestParser::MethodNotImplementedException& e) {
+		LOG_ERROR << e.what();
+		connection.m_request.httpStatus = StatusMethodNotImplemented;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	} catch (RequestParser::MethodNotAllowedException& e) {
+		LOG_ERROR << e.what();
+		connection.m_request.httpStatus = StatusMethodNotAllowed;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	} catch (RequestParser::HTTPVersionNotSupportedException& e) {
+		LOG_ERROR << e.what();
+		connection.m_request.httpStatus = StatusNonSupportedVersion;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	} catch (RequestParser::RequestEntityTooLargeException& e) {
+		LOG_ERROR << e.what();
+		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
+		connection.m_request.httpStatus = StatusBadRequest;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 		return;
@@ -1214,8 +1239,15 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (connection.m_request.isChunked) {
 		try {
 			server.parseChunkedBody(connection.m_buffer, connection.m_request);
+		} catch (RequestParser::RequestEntityTooLargeException& e) {
+			LOG_ERROR << e.what();
+			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+			connection.m_status = Connection::BuildResponse;
+			server.modifyEvent(activeFd, EPOLLOUT);
+			return;
 		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
+			connection.m_request.httpStatus = StatusBadRequest;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 			return;
@@ -1254,7 +1286,7 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (connection.m_request.hasMultipartFormdata) {
 		try {
 			server.decodeMultipartFormdata(connection.m_request);
-		} catch (std::runtime_error& e) {
+		} catch (std::exception& e) {
 			LOG_ERROR << e.what();
 			connection.m_request.httpStatus = StatusBadRequest;
 			connection.m_status = Connection::BuildResponse;

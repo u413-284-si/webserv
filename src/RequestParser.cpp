@@ -8,6 +8,46 @@
  */
 RequestParser::RequestParser() { }
 
+/**
+ * @brief Construct a new RequestParser::MethodNotImplementedException::MethodNotImplementedException object
+ *
+ * @param msg Error message.
+ */
+RequestParser::MethodNotImplementedException::MethodNotImplementedException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
+
+/**
+ * @brief Construct a new RequestParser::MethodNotAllowedException::MethodNotAllowedException object
+ *
+ * @param msg Error message.
+ */
+RequestParser::MethodNotAllowedException::MethodNotAllowedException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
+
+/**
+ * @brief Construct a new RequestParser::HTTPVersionNotSupportedException::HTTPVersionNotSupportedException object
+ *
+ * @param msg Error message.
+ */
+RequestParser::HTTPVersionNotSupportedException::HTTPVersionNotSupportedException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
+
+/**
+ * @brief Construct a new RequestParser::RequestEntityTooLargeException::RequestEntityTooLargeException object
+ *
+ * @param msg Error message.
+ */
+RequestParser::RequestEntityTooLargeException::RequestEntityTooLargeException(const std::string& msg)
+	: std::runtime_error(msg)
+{
+}
+
 /* ====== GETTERS/SETTERS ====== */
 
 /**
@@ -56,10 +96,8 @@ void RequestParser::extractBoundary(HTTPRequest& request)
 	std::string temp = request.headers.at("content-type");
 	const size_t posBoundary = temp.find(denominator);
 
-	if (posBoundary == std::string::npos) {
-		request.httpStatus = StatusBadRequest;
+	if (posBoundary == std::string::npos)
 		throw std::runtime_error(ERR_BAD_MULTIPART_FORMDATA);
-	}
 
 	request.boundary = temp.substr(posBoundary + denominator.size());
 
@@ -104,16 +142,14 @@ void RequestParser::resetRequestStream()
 void RequestParser::parseRequestLine(HTTPRequest& request)
 {
 	std::string requestLine;
-	if (!std::getline(m_requestStream, requestLine) || requestLine.empty()) {
-		request.httpStatus = StatusBadRequest;
+	if (!std::getline(m_requestStream, requestLine) || requestLine.empty())
 		throw std::runtime_error(ERR_MISS_REQUEST_LINE);
-	}
 	requestLine = parseMethod(requestLine, request);
-	requestLine = checkForSpace(requestLine, request);
+	requestLine = checkForSpace(requestLine);
 	requestLine = parseUri(requestLine, request);
-	requestLine = checkForSpace(requestLine, request);
+	requestLine = checkForSpace(requestLine);
 	requestLine = parseVersion(requestLine, request);
-	checkForCRLF(requestLine, request);
+	checkForCRLF(requestLine);
 
 	LOG_DEBUG << "Parsed method: " << request.method;
 	LOG_DEBUG << "Parsed URI: " << request.uri.path << request.uri.query << request.uri.fragment;
@@ -150,10 +186,9 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
 	} else if (requestLine.compare(0, deleteLength, "DELETE") == 0) {
 		request.method = MethodDelete;
 		index = deleteLength;
-	} else {
-		request.httpStatus = StatusMethodNotImplemented;
-		throw std::runtime_error(ERR_METHOD_NOT_IMPLEMENTED);
-	}
+	} else
+		throw MethodNotImplementedException(ERR_METHOD_NOT_IMPLEMENTED);
+
 	return (requestLine.substr(index));
 }
 
@@ -178,17 +213,13 @@ std::string RequestParser::parseMethod(const std::string& requestLine, HTTPReque
 std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest& request)
 {
 	int index = 0;
-	if (requestLine.at(index) != '/') {
-		request.httpStatus = StatusBadRequest;
+	if (requestLine.at(index) != '/')
 		throw std::runtime_error(ERR_URI_MISS_SLASH);
-	}
 
 	// Check URI string for invalid chars
 	const std::string::const_iterator delimiterPos = find(requestLine.begin(), requestLine.end(), ' ');
-	if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos) {
-		request.httpStatus = StatusBadRequest;
+	if (std::find_if(requestLine.begin(), delimiterPos, isNotValidURIChar) != delimiterPos)
 		throw std::runtime_error(ERR_URI_INVALID_CHAR);
-	}
 
 	request.uri.path.push_back(requestLine[index]);
 	while (requestLine.at(++index) != 0) {
@@ -201,11 +232,11 @@ std::string RequestParser::parseUri(const std::string& requestLine, HTTPRequest&
 		else
 			request.uri.path.push_back(requestLine.at(index));
 	}
-	request.uri.path = decodePercentEncoding(request.uri.path, request);
-	request.uri.fragment = decodePercentEncoding(request.uri.fragment, request);
-	request.uri.query = decodePercentEncoding(request.uri.query, request);
+	request.uri.path = decodePercentEncoding(request.uri.path);
+	request.uri.fragment = decodePercentEncoding(request.uri.fragment);
+	request.uri.query = decodePercentEncoding(request.uri.query);
 
-	request.uri.path = removeDotSegments(request.uri.path, request);
+	request.uri.path = removeDotSegments(request.uri.path);
 	return (requestLine.substr(index));
 }
 
@@ -233,10 +264,8 @@ void RequestParser::parseUriQuery(const std::string& requestLine, int& index, HT
 			index--;
 			break;
 		}
-		if (requestLine.at(index) == '?') {
-			request.httpStatus = StatusBadRequest;
+		if (requestLine.at(index) == '?')
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		}
 		request.uri.query.push_back(requestLine.at(index));
 	}
 }
@@ -264,10 +293,8 @@ void RequestParser::parseUriFragment(const std::string& requestLine, int& index,
 			index--;
 			break;
 		}
-		if (requestLine.at(index) == '#') {
-			request.httpStatus = StatusBadRequest;
+		if (requestLine.at(index) == '#')
 			throw std::runtime_error(ERR_URI_INVALID_CHAR);
-		}
 		request.uri.fragment.push_back(requestLine.at(index));
 	}
 }
@@ -291,33 +318,23 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 {
 	const int versionPrefixLength = 5; // HTTP/ -> 5 chars
 
-	if (requestLine.substr(0, versionPrefixLength) != "HTTP/") {
-		request.httpStatus = StatusBadRequest;
+	if (requestLine.substr(0, versionPrefixLength) != "HTTP/")
 		throw std::runtime_error(ERR_INVALID_VERSION_FORMAT);
-	}
+
 	int index = versionPrefixLength;
-	if (isdigit(requestLine[index]) == 0) {
-		request.httpStatus = StatusBadRequest;
+	if (isdigit(requestLine[index]) == 0)
 		throw std::runtime_error(ERR_INVALID_VERSION_MAJOR);
-	}
-	if (requestLine[index] != '1') {
-		request.httpStatus = StatusNonSupportedVersion;
-		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
-	}
+	if (requestLine[index] != '1')
+		throw HTTPVersionNotSupportedException(ERR_NONSUPPORTED_VERSION);
 	request.version.push_back(requestLine[index]);
-	if (requestLine[++index] != '.') {
-		request.httpStatus = StatusBadRequest;
+	if (requestLine[++index] != '.')
 		throw std::runtime_error(ERR_INVALID_VERSION_DELIM);
-	}
 	request.version.push_back(requestLine[index]);
-	if (isdigit(requestLine[++index]) == 0) {
-		request.httpStatus = StatusBadRequest;
+	if (isdigit(requestLine[++index]) == 0)
 		throw std::runtime_error(ERR_INVALID_VERSION_MINOR);
-	}
-	if (requestLine[index] != '1' && requestLine[index] != '0') {
-		request.httpStatus = StatusNonSupportedVersion;
-		throw std::runtime_error(ERR_NONSUPPORTED_VERSION);
-	}
+	if (requestLine[index] != '1' && requestLine[index] != '0')
+		throw HTTPVersionNotSupportedException(ERR_NONSUPPORTED_VERSION);
+	
 	request.version.push_back(requestLine[index]);
 	return (requestLine.substr(++index));
 }
@@ -348,14 +365,13 @@ void RequestParser::parseHeaders(HTTPRequest& request)
 
 	// The end of the headers section is marked by an empty line (\r\n\r\n).
 	while (!std::getline(m_requestStream, headerLine).fail() && headerLine != "\r" && !headerLine.empty()) {
-		if (headerLine[0] == ' ' || headerLine[0] == '\t') {
-			request.httpStatus = StatusBadRequest;
+		if (headerLine[0] == ' ' || headerLine[0] == '\t')
 			throw std::runtime_error(ERR_OBSOLETE_LINE_FOLDING);
-		}
+		
 		const std::size_t delimiterPos = headerLine.find_first_of(':');
 		if (delimiterPos != std::string::npos) {
 			const std::string headerName = webutils::lowercase(headerLine.substr(0, delimiterPos));
-			validateHeaderName(headerName, request);
+			validateHeaderName(headerName);
 			std::string headerValue = headerLine.substr(delimiterPos + 1);
 			if (headerValue[headerValue.size() - 1] == '\r')
 				headerValue.erase(headerValue.size() - 1);
@@ -402,18 +418,14 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
 			std::string strChunkSize = bodyBuffer.substr(0, newlinePos);
 			bodyBuffer.erase(0, newlinePos + 2); // Remove the parsed chunk size and \r\n
 
-			request.chunkSize = convertHex(strChunkSize, request);
-			if (request.chunkSize > s_maxChunkSize) {
-				request.httpStatus = StatusRequestEntityTooLarge;
-				throw std::runtime_error(ERR_TOO_LARGE_CHUNKSIZE);
-			}
+			request.chunkSize = convertHex(strChunkSize);
+			if (request.chunkSize > s_maxChunkSize)
+				throw RequestEntityTooLargeException(ERR_TOO_LARGE_CHUNKSIZE);
 
 			if (request.chunkSize == 0) { // Zero chunk size indicates the end of the body
 				if (bodyBuffer.size() != 2 || bodyBuffer.at(0) != '\r'
-					|| bodyBuffer.at(1) != '\n') { // Check for final CRLF
-					request.httpStatus = StatusBadRequest;
+					|| bodyBuffer.at(1) != '\n') // Check for final CRLF
 					throw std::runtime_error(ERR_MISS_CRLF);
-				}
 				request.isCompleteBody = true;
 				request.headers["content-length"] = webutils::toString(request.body.size());
 				LOG_DEBUG << "Successfully parsed chunked body";
@@ -428,10 +440,8 @@ void RequestParser::parseChunkedBody(std::string& bodyBuffer, HTTPRequest& reque
 		if (remainingData < requiredData) // Incomplete chunk data, wait for more data
 			return;
 
-		if (bodyBuffer.at(request.chunkSize) != '\r' || bodyBuffer.at(request.chunkSize + 1) != '\n') {
-			request.httpStatus = StatusBadRequest;
+		if (bodyBuffer.at(request.chunkSize) != '\r' || bodyBuffer.at(request.chunkSize + 1) != '\n')
 			throw std::runtime_error(ERR_MISS_CRLF);
-		}
 
 		request.body.append(bodyBuffer, 0, request.chunkSize);
 		bodyBuffer.erase(0, requiredData);
@@ -538,21 +548,17 @@ size_t RequestParser::checkForString(const std::string& string, size_t startPos,
  * characters in the header name are valid according to `isValidHeaderFieldNameChar`.
  *
  * @param headerName The HTTP header field name to be validated.
- * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If the header name contains invalid characters or
  *         ends with whitespace, an error is thrown and the error code is set to StatusBadRequest.
  */
-void RequestParser::validateHeaderName(const std::string& headerName, HTTPRequest& request)
+void RequestParser::validateHeaderName(const std::string& headerName)
 {
-	if (isspace(headerName[headerName.size() - 1]) != 0) {
-		request.httpStatus = StatusBadRequest;
+	if (isspace(headerName[headerName.size() - 1]) != 0)
 		throw std::runtime_error(ERR_HEADER_COLON_WHITESPACE);
-	}
+
 	for (size_t i = 0; i < headerName.size(); i++) {
-		if (!isValidHeaderFieldNameChar(headerName[i])) {
-			request.httpStatus = StatusBadRequest;
+		if (!isValidHeaderFieldNameChar(headerName[i]))
 			throw std::runtime_error(ERR_HEADER_NAME_INVALID_CHAR);
-		}
 	}
 }
 
@@ -576,15 +582,13 @@ void RequestParser::validateHeaderName(const std::string& headerName, HTTPReques
 void RequestParser::validateContentLength(const std::string& headerName, std::string& headerValue, HTTPRequest& request)
 {
 	if (headerName == "content-length") {
-		if (headerValue.empty()) {
-			request.httpStatus = StatusBadRequest;
+		if (headerValue.empty())
 			throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
-		}
+		
 		if (request.headers.find("content-length") != request.headers.end()
-			&& request.headers["content-length"] != headerValue) {
-			request.httpStatus = StatusBadRequest;
+			&& request.headers["content-length"] != headerValue)
 			throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
-		}
+		
 
 		std::vector<std::string> strValues = webutils::split(headerValue, ", ");
 		std::vector<unsigned long> numValues;
@@ -592,18 +596,15 @@ void RequestParser::validateContentLength(const std::string& headerName, std::st
 			char* endptr = NULL;
 			errno = 0;
 			request.contentLength = std::strtoul(strValues[i].c_str(), &endptr, constants::g_decimalBase);
-			if (errno == ERANGE || *endptr != '\0') {
-				request.httpStatus = StatusBadRequest;
+			if (errno == ERANGE || *endptr != '\0')
 				throw std::runtime_error(ERR_INVALID_CONTENT_LENGTH);
-			}
+			
 			numValues.push_back(request.contentLength);
-			if (i != 0 && request.contentLength != numValues[i - 1]) {
-				request.httpStatus = StatusBadRequest;
+			if (i != 0 && request.contentLength != numValues[i - 1])
 				throw std::runtime_error(ERR_MULTIPLE_CONTENT_LENGTH_VALUES);
-			}
 		}
 		headerValue = strValues[0];
-		
+
 		if (headerValue != "0")
 			request.hasBody = true;
 	}
@@ -629,20 +630,18 @@ void RequestParser::validateTransferEncoding(HTTPRequest& request)
 	LOG_DEBUG << "Validating Transfer-Encoding header...";
 
 	if (request.headers.find("transfer-encoding") != request.headers.end()) {
-		if (request.headers.at("transfer-encoding").empty()) {
-			request.httpStatus = StatusBadRequest;
+		if (request.headers.at("transfer-encoding").empty())
 			throw std::runtime_error(ERR_NON_EXISTENT_TRANSFER_ENCODING);
-		}
+		
 		if (request.headers.find("content-length") != request.headers.end())
 			request.shallCloseConnection = true;
 
 		request.headers.at("transfer-encoding") = webutils::lowercase(request.headers.at("transfer-encoding"));
 		if (request.headers.at("transfer-encoding").find("chunked") != std::string::npos) {
 			std::vector<std::string> encodings = webutils::split(request.headers.at("transfer-encoding"), ", ");
-			if (encodings[encodings.size() - 1] != "chunked") {
-				request.httpStatus = StatusBadRequest;
+			if (encodings[encodings.size() - 1] != "chunked")
 				throw std::runtime_error(ERR_NON_FINAL_CHUNKED_ENCODING);
-			}
+			
 			request.isChunked = true;
 			request.hasBody = true;
 		}
@@ -668,10 +667,8 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
 {
 	LOG_DEBUG << "Validating method with body...";
 
-	if (request.hasBody && !isMethodAllowedToHaveBody(request)) {
-		request.httpStatus = StatusMethodNotAllowed;
-		throw std::runtime_error(ERR_UNEXPECTED_BODY);
-	}
+	if (request.hasBody && !isMethodAllowedToHaveBody(request))
+		throw MethodNotAllowedException(ERR_UNEXPECTED_BODY);
 
 	LOG_DEBUG << "Method with body is valid.";
 }
@@ -698,32 +695,22 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 	LOG_DEBUG << "Validating Host header...";
 
 	std::map<std::string, std::string>::const_iterator iter = request.headers.find("host");
-	if (iter == request.headers.end()) {
-		request.httpStatus = StatusBadRequest;
+	if (iter == request.headers.end())
 		throw std::runtime_error(ERR_MISSING_HOST_HEADER);
-	}
 
-	if (iter->second.empty()) {
-		request.httpStatus = StatusBadRequest;
+	if (iter->second.empty())
 		throw std::runtime_error(ERR_EMPTY_HOST_VALUE);
-	}
 
 	if (iter->second.find(':') != std::string::npos) {
 		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))
-			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1))) {
-			request.httpStatus = StatusBadRequest;
+			|| !webutils::isPortValid(iter->second.substr(iter->second.find(':') + 1)))
 			throw std::runtime_error(ERR_INVALID_HOST_IP_WITH_PORT);
-		}
 	} else if (iter->second.find_first_not_of("0123456789.") == std::string::npos) {
-		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':')))) {
-			request.httpStatus = StatusBadRequest;
+		if (!webutils::isIpAddressValid(iter->second.substr(0, iter->second.find(':'))))
 			throw std::runtime_error(ERR_INVALID_HOST_IP);
-		}
 	} else {
-		if (!isValidHostname(iter->second)) {
-			request.httpStatus = StatusBadRequest;
+		if (!isValidHostname(iter->second))
 			throw std::runtime_error(ERR_INVALID_HOSTNAME);
-		}
 	}
 
 	LOG_DEBUG << "Valid host header: " << iter->second;
@@ -744,10 +731,8 @@ void RequestParser::validateHostHeader(HTTPRequest& request)
 void RequestParser::validateNoMultipleHostHeaders(const std::string& headerName, HTTPRequest& request)
 {
 	if (headerName == "host") {
-		if (request.headers.find("host") != request.headers.end()) {
-			request.httpStatus = StatusBadRequest;
+		if (request.headers.find("host") != request.headers.end())
 			throw std::runtime_error(ERR_MULTIPLE_HOST_HEADERS);
-		}
 	}
 }
 
@@ -775,19 +760,15 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
 		return;
 	}
 
-	if (iter->second.empty()) {
-		request.httpStatus = StatusBadRequest;
+	if (iter->second.empty())
 		throw std::runtime_error(ERR_EMPTY_CONNECTION_VALUE);
-	}
 
 	iter->second = webutils::lowercase(iter->second);
 	if (iter->second == "close") {
 		request.shallCloseConnection = true;
 	} else if (iter->second == "keep-alive") {
-	} else {
-		request.httpStatus = StatusBadRequest;
+	} else
 		throw std::runtime_error(ERR_INVALID_CONNECTION_VALUE);
-	}
 
 	LOG_DEBUG << "Valid Connection header: " << iter->second;
 }
@@ -803,17 +784,15 @@ void RequestParser::validateConnectionHeader(HTTPRequest& request)
  * `std::runtime_error` with an appropriate error message.
  *
  * @param str The input string to be checked.
- * @param request The HTTP request object to be filled.
  * @return A substring of `str` starting from the second character if the input string starts with
  *         a single space followed by a non-space character.
  * @throws std::runtime_error If the input string does not start with a single space followed by a
  *         non-space character, an error is thrown and the error code is set to StatusBadRequest.
  */
-std::string RequestParser::checkForSpace(const std::string& str, HTTPRequest& request)
+std::string RequestParser::checkForSpace(const std::string& str)
 {
 	if (str.length() > 1 && str[0] == ' ' && str[1] != ' ')
 		return (str.substr(1));
-	request.httpStatus = StatusBadRequest;
 	throw std::runtime_error(ERR_MISS_SINGLE_SPACE);
 }
 
@@ -823,16 +802,13 @@ std::string RequestParser::checkForSpace(const std::string& str, HTTPRequest& re
  * Only checks for the carriage return \r, as the linefeed \\n is discarded
  * by std::getline
  * @param str	Input string to be checked.
- * @param request The HTTP request object to be filled.
  * @throws std::runtime_error If the input string does not contain a single
  *         carriage return, an error is thrown and the error code is set to StatusBadRequest.
  */
-void RequestParser::checkForCRLF(const std::string& str, HTTPRequest& request)
+void RequestParser::checkForCRLF(const std::string& str)
 {
-	if (str.length() != 1 || str[0] != '\r') {
-		request.httpStatus = StatusBadRequest;
+	if (str.length() != 1 || str[0] != '\r')
 		throw std::runtime_error(ERR_MISS_CRLF);
-	}
 }
 
 /**
@@ -968,28 +944,21 @@ bool RequestParser::isValidHeaderFieldNameChar(uint8_t chr)
  * @throws std::invalid_argument if the chunkSize string is empty or contains invalid hexadecimal characters.
  * @throws std::runtime_error if the conversion from string to size_t fails.
  */
-long RequestParser::convertHex(const std::string& chunkSize, HTTPRequest& request)
+long RequestParser::convertHex(const std::string& chunkSize)
 {
-	if (chunkSize.empty()) {
-		request.httpStatus = StatusBadRequest;
+	if (chunkSize.empty())
 		throw std::invalid_argument(ERR_NON_EXISTENT_CHUNKSIZE);
-	}
 
-	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it) {
-		if (std::isxdigit(*it) == 0) {
-			request.httpStatus = StatusBadRequest;
+	for (std::string::const_iterator it = chunkSize.begin(); it != chunkSize.end(); ++it)
+		if (std::isxdigit(*it) == 0)
 			throw std::invalid_argument(ERR_INVALID_HEX_CHAR);
-		}
-	}
 
 	std::istringstream iss(chunkSize);
 	long value = 0;
 
 	iss >> std::hex >> value;
-	if (iss.fail()) {
-		request.httpStatus = StatusBadRequest;
+	if (iss.fail())
 		throw std::runtime_error(ERR_CONVERSION_STRING_TO_HEX);
-	}
 
 	LOG_DEBUG << "Converted hex value: " << value;
 	return value;
@@ -1116,33 +1085,29 @@ bool RequestParser::isValidHostname(const std::string& hostname)
  * This could either be a unicode character like 'ö' or a reserved char with special meaning. Char is encoded with a
  * triplet consisting of percent char '%' followed by the two hexadecimal digits representing the chars numeric value.
  * @param encoded The percent encoded string.
- * @param request The HTTP request object to be filled.
  * @return std::string The decoded string.
  * @throws std::runtime_error if invalid "%00" is encountered or '%' is not followed by two chars.
  * @sa https://datatracker.ietf.org/doc/html/rfc3986#section-2.1
  */
-std::string RequestParser::decodePercentEncoding(const std::string& encoded, HTTPRequest& request)
+std::string RequestParser::decodePercentEncoding(const std::string& encoded)
 {
 	std::string decoded;
 	std::string::const_iterator iter = encoded.begin();
 
 	while (iter != encoded.end()) {
 		if (*iter == '%') {
-			if (std::distance(iter, encoded.end()) < 3) {
-				request.httpStatus = StatusBadRequest;
+			if (std::distance(iter, encoded.end()) < 3)
 				throw std::runtime_error(ERR_PERCENT_INCOMPLETE);
-			}
-			if ((std::isxdigit(*(iter + 1)) == 0) || (std::isxdigit(*(iter + 2)) == 0)) {
-				request.httpStatus = StatusBadRequest;
+			
+			if ((std::isxdigit(*(iter + 1)) == 0) || (std::isxdigit(*(iter + 2)) == 0))
 				throw std::runtime_error(ERR_PERCENT_INVALID_HEX);
-			}
+			
 			std::string hex = std::string(iter + 1, iter + 3);
 			unsigned int value = 0;
 			std::istringstream(hex) >> std::hex >> value;
-			if (value == 0) {
-				request.httpStatus = StatusBadRequest;
+			if (value == 0)
 				throw std::runtime_error(ERR_PERCENT_NONSUPPORTED_NUL);
-			}
+			
 			decoded += static_cast<char>(value);
 			iter += 3;
 		} else {
@@ -1221,7 +1186,7 @@ static void removeLastSegment(std::string& output)
  * @return std::string String with dot segments removed.
  * @throws std::runtime_error If double dot segment is encountered while output is empty.
  */
-std::string RequestParser::removeDotSegments(const std::string& path, HTTPRequest& request)
+std::string RequestParser::removeDotSegments(const std::string& path)
 {
 	std::string output;
 	std::string::const_iterator iter = path.begin();
@@ -1236,10 +1201,9 @@ std::string RequestParser::removeDotSegments(const std::string& path, HTTPReques
 			}
 
 			if (isDoubleDot(iter, path.end())) {
-				if (output.empty()) {
-					request.httpStatus = StatusBadRequest;
+				if (output.empty())
 					throw std::runtime_error(ERR_DIRECTORY_TRAVERSAL);
-				}
+				
 				iter += 2;
 				removeLastSegment(output);
 				continue;
