@@ -962,7 +962,6 @@ void connectionReceiveHeader(Server& server, int activeFd, Connection& connectio
 		if (connection.m_buffer.size() >= Server::s_clientHeaderBufferSize) {
 			LOG_ERROR << "Buffer full, didn't receive complete request header from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestHeaderFieldsTooLarge;
-			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
@@ -1022,7 +1021,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	if (connection.m_request.contentLength > connection.location->maxBodySize) {
 		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-		connection.m_request.shallCloseConnection = true;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 		return;
@@ -1063,7 +1061,6 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 	if (!connection.location->allowMethods[connection.m_request.method]) {
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
-		connection.m_request.shallCloseConnection = true;
 	}
 
 	if (isCGIRequested(connection)) {
@@ -1231,12 +1228,10 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		// LOG_DEBUG << connection.m_buffer;
 		if (connection.m_request.httpStatus != StatusOK) {
 			connection.m_status = Connection::BuildResponse;
-			connection.m_request.shallCloseConnection = true;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		} else if (connection.m_buffer.size() >= connection.location->maxBodySize) {
 			LOG_ERROR << "Maximum allowed client request body size reached from " << connection.m_clientSocket;
 			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		} else if (!connection.m_request.isChunked && connection.m_request.contentLength < connection.m_buffer.size()) {
@@ -1244,7 +1239,6 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 			LOG_ERROR << "Content-Length: " << connection.m_request.contentLength
 					  << ", Buffer size: " << connection.m_buffer.size();
 			connection.m_request.httpStatus = StatusBadRequest;
-			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 		}
@@ -1263,7 +1257,6 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 		} catch (std::runtime_error& e) {
 			LOG_ERROR << e.what();
 			connection.m_request.httpStatus = StatusBadRequest;
-			connection.m_request.shallCloseConnection = true;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 			return;
@@ -1498,7 +1491,6 @@ void connectionHandleTimeout(Server& server, int activeFd, Connection& connectio
 
 	LOG_DEBUG << "Timeout for: " << connection.m_clientSocket;
 
-	connection.m_request.shallCloseConnection = true;
 	connection.m_request.httpStatus = StatusRequestTimeout;
 
 	connectionBuildResponse(server, activeFd, connection);

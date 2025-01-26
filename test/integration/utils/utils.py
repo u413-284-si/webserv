@@ -3,7 +3,7 @@ import os
 import time
 import requests
 import pytest
-from typing import Optional, Dict
+from typing import Optional, Dict, Union
 import socket
 
 def start_server(
@@ -133,7 +133,7 @@ def make_request(
     except requests.exceptions.RequestException as e:
         pytest.fail(f"Failed to make request to {url} with method {method}: {e}", pytrace=False)
 
-def parse_http_response(sock: socket.socket) -> Dict[str, str]:
+def parse_http_response(sock: socket.socket) -> Dict[str, Union[int, Dict[str, str], str]]:
     """
     Parse the HTTP response from a socket object and return the status code, headers, and body.
 
@@ -165,7 +165,7 @@ def parse_http_response(sock: socket.socket) -> Dict[str, str]:
         if line.strip() == "":  # An empty line indicates the end of headers
             break
         key, value = line.split(":", 1)  # Split header line into key and value
-        headers[key.strip()] = value.strip()  # Store header in dictionary, stripping whitespace
+        headers[key.strip().lower()] = value.strip()  # Store header in dictionary, stripping whitespace
 
     # Extract the body, which comes after a double CRLF sequence (\r\n\r\n)
     body = response_str.split('\r\n\r\n', 1)[1] if '\r\n\r\n' in response_str else ""

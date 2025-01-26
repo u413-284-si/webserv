@@ -176,3 +176,30 @@ bool isRedirectionStatus(statusCode statusCode)
 {
 	return (statusCode >= StatusMovedPermanently && statusCode <= StatusPermanentRedirect);
 }
+
+/**
+ * @brief Check if a given status code closes connection
+ *
+ * Connection: close is sent with status:
+ * - 400 Bad Request
+ * - 405 Method Not Allowed
+ * - 408 Request Timeout
+ * - 413 Request Entity Too Large
+ * - 431 Request Header Fields Too Large
+ * @param statusCode Status code to check.
+ * @return true If status code closes connection
+ * @return false If status code doesn't close connection
+ */
+bool isCloseConnectionStatus(statusCode statusCode)
+{
+	switch (statusCode) {
+	case StatusBadRequest:
+	case StatusMethodNotAllowed:
+	case StatusRequestTimeout:
+	case StatusRequestEntityTooLarge:
+	case StatusRequestHeaderFieldsTooLarge:
+		return true;
+	default:
+		return false;
+	}
+}

@@ -73,6 +73,7 @@ def test_4xx_missing_host_header():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_percent_encoding_invalid_char():
     with socket.create_connection((host, port)) as sock:
@@ -81,6 +82,7 @@ def test_4xx_percent_encoding_invalid_char():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_percent_encoding_incomplete():
     with socket.create_connection((host, port)) as sock:
@@ -89,6 +91,7 @@ def test_4xx_percent_encoding_incomplete():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_percent_encoding_non_hex():
     with socket.create_connection((host, port)) as sock:
@@ -97,6 +100,7 @@ def test_4xx_percent_encoding_non_hex():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_directory_traversal():
     with socket.create_connection((host, port)) as sock:
@@ -105,6 +109,7 @@ def test_4xx_directory_traversal():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 # Does not work, gets misinterpreted as method not implemented > a empty line can't enter RequestParser
 # def test_4xx_no_request_line():
@@ -122,6 +127,7 @@ def test_4xx_request_line_does_not_start_with_slash():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_not_allowed_char():
     with socket.create_connection((host, port)) as sock:
@@ -130,6 +136,7 @@ def test_4xx_not_allowed_char():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_not_allowed_char():
     with socket.create_connection((host, port)) as sock:
@@ -138,6 +145,7 @@ def test_4xx_not_allowed_char():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_header_name_ends_in_space():
     with socket.create_connection((host, port)) as sock:
@@ -146,6 +154,7 @@ def test_4xx_header_name_ends_in_space():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_char_in_header_name():
     with socket.create_connection((host, port)) as sock:
@@ -154,6 +163,7 @@ def test_4xx_char_in_header_name():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 400
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_request_too_long():
     with socket.create_connection((host, port)) as sock:
@@ -162,6 +172,7 @@ def test_4xx_request_too_long():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 431
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_chunk_size_too_big():
     with socket.create_connection((host, port)) as sock:
@@ -170,6 +181,7 @@ def test_4xx_chunk_size_too_big():
 
         response = parse_http_response(sock)
         assert response["status_code"] == 413
+        assert response["headers"].get("connection") == "close"
 
 def test_4xx_epoll_partial_and_complete_requests():
     # Create two sockets
@@ -195,7 +207,9 @@ def test_4xx_epoll_partial_and_complete_requests():
     response2 = parse_http_response(client2)
 
     assert response1["status_code"] == 400
+    assert response1["headers"].get("connection") == "close"
     assert response2["status_code"] == 200
+    assert response2["headers"].get("connection") == "keep-alive"
 
     client1.close()
     client2.close()
@@ -243,6 +257,7 @@ def test_4xx_file_too_big():
     response = make_request(url, method="POST", data=binary_data)
 
     assert response.status_code == 413
+    assert response.headers["connection"] == "close"
     # Check that file does not exist
     assert os.path.isfile(dst_file_path) == False
 
@@ -255,3 +270,4 @@ def test_method_not_allowed():
 
     assert response.status_code == 405
     assert response.headers["allow"] == "GET"
+    assert response.headers["connection"] == "close"

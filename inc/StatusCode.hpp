@@ -30,5 +30,6 @@ statusCode stringToStatusCode(const std::string& str);
 statusCode extractStatusCode(const std::string& statusLine);
 bool isErrorStatus(statusCode statusCode);
 bool isRedirectionStatus(statusCode statusCode);
+bool isCloseConnectionStatus(statusCode statusCode);
 
 std::ostream& operator<<(std::ostream& ostream, statusCode statusCode);

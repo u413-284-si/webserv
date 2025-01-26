@@ -348,7 +348,7 @@ valgr: $(NAME) | $(LOG_DIR)
 .PHONY: comp
 comp: check_bear_installed clean
 	@printf "$(YELLOW)$(BOLD)Creating compile_commands.json$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)bear -- make -j --no-print-directory test
+	$(SILENT)bear -- make -j4 --no-print-directory $(UNIT)
 
 # Check if bear is installed. If not exit with error.
 .PHONY: check_bear_installed
@@ -442,6 +442,10 @@ fclean: clean
 			$(INTEGRATION_TEST_DIR)/*/__pycache__ \
 			$(INTEGRATION_TEST_DIR)/.pytest_cache
 	@printf "$(RED)removed .pytest_cache and directories __pychache__$(RESET)\n"
+	@rm -f webserv.pid
+	@printf "$(RED)removed webserv.pid$(RESET)\n"
+	@rm -f compile_commands.json
+	@printf "$(RED)removed compile_commands.json$(RESET)\n"
 	@echo
 
 # ******************************

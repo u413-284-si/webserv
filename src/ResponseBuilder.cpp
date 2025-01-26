@@ -44,6 +44,9 @@ void ResponseBuilder::buildResponse(Connection& connection)
 
 	LOG_DEBUG << "Building response for request: " << request.method << " " << request.uri.path;
 
+	if (isCloseConnectionStatus(request.httpStatus))
+		request.shallCloseConnection = true;
+
 	ResponseBodyHandler responseBodyHandler(connection, m_responseBody, m_responseHeaders, m_fileSystemOps);
 	responseBodyHandler.execute();
 
