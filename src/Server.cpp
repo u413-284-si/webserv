@@ -568,21 +568,23 @@ bool initVirtualServers(Server& server, int backlog, const std::vector<ConfigSer
 	const std::string wildcard = "0.0.0.0";
 
 	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
-		if (iter->host == wildcard) {
+		if (iter->host != wildcard)
+			continue;
 
-			LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
+		LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
 
-			if (isDuplicateServer(server, iter->host, iter->port))
-				continue;
+		if (isDuplicateServer(server, iter->host, iter->port))
+			continue;
 
-			if (!createVirtualServer(server, iter->host, backlog, iter->port))
-				LOG_DEBUG << "Failed to add virtual server: " << iter->host << ":" << iter->port;
-		}
+		if (!createVirtualServer(server, iter->host, backlog, iter->port))
+			LOG_DEBUG << "Failed to add virtual server: " << iter->host << ":" << iter->port;
 	}
 
 	LOG_DEBUG << "Add remaining virtual servers";
 
 	for (std::vector<ConfigServer>::const_iterator iter = serverConfigs.begin(); iter != serverConfigs.end(); ++iter) {
+		if (iter->host == wildcard)
+			continue;
 
 		LOG_DEBUG << "Adding virtual server: " << iter->host << ":" << iter->port;
 
