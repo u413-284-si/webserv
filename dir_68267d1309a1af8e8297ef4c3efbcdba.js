@@ -3,7 +3,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ALogOutputter.cpp", "_a_log_outputter_8cpp.html", null ],
     [ "AutoindexHandler.cpp", "_autoindex_handler_8cpp.html", null ],
     [ "CGIHandler.cpp", "_c_g_i_handler_8cpp.html", "_c_g_i_handler_8cpp" ],
-    [ "ConfigFile.cpp", "_config_file_8cpp.html", "_config_file_8cpp" ],
+    [ "ConfigFile.cpp", "_config_file_8cpp.html", null ],
     [ "ConfigFileParser.cpp", "_config_file_parser_8cpp.html", null ],
     [ "Connection.cpp", "_connection_8cpp.html", "_connection_8cpp" ],
     [ "constants.cpp", "constants_8cpp.html", null ],

@@ -20,5 +20,6 @@ var test___response_body_handler_8cpp =
     [ "TEST_F", "test___response_body_handler_8cpp.html#aff531558974dde9333d6125761873d5e", null ],
     [ "TEST_F", "test___response_body_handler_8cpp.html#a2029559df59f91008f28ae36f738b83e", null ],
     [ "TEST_F", "test___response_body_handler_8cpp.html#ab1833be8546a8c5f5675f388928b4dcc", null ],
-    [ "TEST", "test___response_body_handler_8cpp.html#a6fb5c61eff992bb676d6ca60222f4c70", null ]
+    [ "TEST_F", "test___response_body_handler_8cpp.html#ac383f37220ba2da59ea8fd6d0276b141", null ],
+    [ "TEST_F", "test___response_body_handler_8cpp.html#afbea1c2c5687dad501860948f8369a2a", null ]
 ];

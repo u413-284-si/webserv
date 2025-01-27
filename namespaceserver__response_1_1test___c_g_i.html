@@ -120,8 +120,8 @@ Functions</h2></td></tr>
 <tr class="separator:af698a9c3bcb40354c6d4bacfa15eb39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9c13e2ca08cd15a5b5e181c5cc5867e" id="r_ad9c13e2ca08cd15a5b5e181c5cc5867e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#ad9c13e2ca08cd15a5b5e181c5cc5867e">test_CGI_time</a> ()</td></tr>
 <tr class="separator:ad9c13e2ca08cd15a5b5e181c5cc5867e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41c79f5cd31c34b2134463bec93fe03b" id="r_a41c79f5cd31c34b2134463bec93fe03b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#a41c79f5cd31c34b2134463bec93fe03b">test_CGI_create_textfile</a> (test_file_cleanup)</td></tr>
-<tr class="separator:a41c79f5cd31c34b2134463bec93fe03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b9aadefbfe433c442bfde142a45ec80" id="r_a8b9aadefbfe433c442bfde142a45ec80"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#a8b9aadefbfe433c442bfde142a45ec80">test_CGI_create_textfile</a> (test_path_cleanup)</td></tr>
+<tr class="separator:a8b9aadefbfe433c442bfde142a45ec80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04d1430b6a29101c2c0e50074c131c61" id="r_a04d1430b6a29101c2c0e50074c131c61"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#a04d1430b6a29101c2c0e50074c131c61">test_CGI_upperCase_GET</a> ()</td></tr>
 <tr class="separator:a04d1430b6a29101c2c0e50074c131c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f82b03e7cfc4531f7ff0813f3466089" id="r_a5f82b03e7cfc4531f7ff0813f3466089"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#a5f82b03e7cfc4531f7ff0813f3466089">test_CGI_upperCase_POST</a> ()</td></tr>
@@ -231,8 +231,8 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a41c79f5cd31c34b2134463bec93fe03b" name="a41c79f5cd31c34b2134463bec93fe03b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41c79f5cd31c34b2134463bec93fe03b">&#9670;&#160;</a></span>test_CGI_create_textfile()</h2>
+<a id="a8b9aadefbfe433c442bfde142a45ec80" name="a8b9aadefbfe433c442bfde142a45ec80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b9aadefbfe433c442bfde142a45ec80">&#9670;&#160;</a></span>test_CGI_create_textfile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,14 +241,14 @@ Functions</h2></td></tr>
           <td class="memname">server_response.test_CGI.test_CGI_create_textfile </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>test_file_cleanup</em></td><td>)</td>
+          <td class="paramname"><em>test_path_cleanup</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00031">31</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>test_CGI_create_textfile(test_file_cleanup):</div>
+<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>test_CGI_create_textfile(test_path_cleanup):</div>
 <div class="line"><span class="lineno">   32</span>   print(<span class="stringliteral">&quot;Upload file with /cgi-bin/create_textfile.py&quot;</span>)</div>
 <div class="line"><span class="lineno">   33</span> </div>
 <div class="line"><span class="lineno">   34</span>   form_data = {</div>
@@ -259,7 +259,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   39</span>   dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/documents/myfile.txt&quot;</span></div>
 <div class="line"><span class="lineno">   40</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8081/cgi-bin/create_textfile.py&quot;</span></div>
 <div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>   <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">test_file_cleanup.append</a>(dst_file_path)</div>
+<div class="line"><span class="lineno">   42</span>   <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">test_path_cleanup.append</a>(dst_file_path)</div>
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>   response = make_request(url, method = <span class="stringliteral">&quot;POST&quot;</span>, data=form_data)</div>
 <div class="line"><span class="lineno">   45</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>

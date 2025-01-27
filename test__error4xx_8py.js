@@ -20,10 +20,13 @@ var test__error4xx_8py =
     [ "test_4xx_request_too_long", "test__error4xx_8py.html#a1a214ae38200770cabe419f651cc5b7c", null ],
     [ "test_4xx_chunk_size_too_big", "test__error4xx_8py.html#ad5c8bfceeed3a366673a1a165db923a8", null ],
     [ "test_4xx_epoll_partial_and_complete_requests", "test__error4xx_8py.html#a384c282966a2da0825f234c0589a73cc", null ],
-    [ "test_4xx_no_permission_to_append", "test__error4xx_8py.html#a60cb1647428f9a9e86aa498ad0ebc1c4", null ],
+    [ "test_4xx_no_permission_to_append", "test__error4xx_8py.html#a8010833913237167b9e3b49a31b46538", null ],
     [ "test_4xx_missing_dir_in_path", "test__error4xx_8py.html#afe211f07b87f5bfc1fe755491aabb979", null ],
     [ "test_4xx_file_too_big", "test__error4xx_8py.html#af8df9a027970c1c5c233be7a2be17b2e", null ],
     [ "test_4xx_method_not_allowed", "test__error4xx_8py.html#a7146b1d3532717a59e14ff468f5d89e0", null ],
+    [ "test_4xx_method_not_allowed_two", "test__error4xx_8py.html#aa9a22e7e8fa24a58f5ea46b957b154c3", null ],
+    [ "test_4xx_missing_error_page", "test__error4xx_8py.html#afeef66e0940b85c8fecbd294253a3780", null ],
+    [ "test_4xx_custom_error_page_no_permission", "test__error4xx_8py.html#a2ba2ab1f49217c47098f3617336c0fab", null ],
     [ "host", "test__error4xx_8py.html#a56e8d1327f96e69f5f3463c185ff40f8", null ],
     [ "port", "test__error4xx_8py.html#ab0c5e25ff76df1788e722527ace4ccc5", null ]
 ];

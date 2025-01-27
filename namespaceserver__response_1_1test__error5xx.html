@@ -117,6 +117,16 @@ Functions</h2></td></tr>
 <tr class="separator:ac61b6c05590c5c82754f996cfd0d9f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55794776370ea97d572dddff5e5870be" id="r_a55794776370ea97d572dddff5e5870be"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error5xx.html#a55794776370ea97d572dddff5e5870be">test_5xx_method_not_implemented</a> ()</td></tr>
 <tr class="separator:a55794776370ea97d572dddff5e5870be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776777988e52b5e065b7e6cd5d399fda" id="r_a776777988e52b5e065b7e6cd5d399fda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error5xx.html#a776777988e52b5e065b7e6cd5d399fda">test_5xx_cgi_with_no_header</a> ()</td></tr>
+<tr class="separator:a776777988e52b5e065b7e6cd5d399fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69835a5f1269c847dc7a75551d8a1171" id="r_a69835a5f1269c847dc7a75551d8a1171"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error5xx.html#a69835a5f1269c847dc7a75551d8a1171">test_5xx_cgi_with_no_cgi_field</a> ()</td></tr>
+<tr class="separator:a69835a5f1269c847dc7a75551d8a1171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa815f65d2d6a27edc2f6a86ccfceafb3" id="r_aa815f65d2d6a27edc2f6a86ccfceafb3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error5xx.html#aa815f65d2d6a27edc2f6a86ccfceafb3">test_5xx_cgi_with_invalid_header_status</a> ()</td></tr>
+<tr class="separator:aa815f65d2d6a27edc2f6a86ccfceafb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893abaaa882773491bff7c7ad4ca5209" id="r_a893abaaa882773491bff7c7ad4ca5209"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error5xx.html#a893abaaa882773491bff7c7ad4ca5209">test_5xx_cgi_with_invalid_header_connection</a> ()</td></tr>
+<tr class="separator:a893abaaa882773491bff7c7ad4ca5209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d4f6e61af02e4ea2b7440360a025f6e" id="r_a9d4f6e61af02e4ea2b7440360a025f6e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test__error5xx.html#a9d4f6e61af02e4ea2b7440360a025f6e">test_5xx_http_version_0_9</a> ()</td></tr>
+<tr class="separator:a9d4f6e61af02e4ea2b7440360a025f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -178,8 +188,130 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   23</span> </div>
 <div class="line"><span class="lineno">   24</span>        <span class="comment"># Receive the response</span></div>
 <div class="line"><span class="lineno">   25</span>        response = parse_http_response(sock)</div>
-<div class="line"><span class="lineno">   26</span>        print(response[<span class="stringliteral">&quot;status_code&quot;</span>])</div>
-<div class="line"><span class="lineno">   27</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 501</div>
+<div class="line"><span class="lineno">   26</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 501</div>
+<div class="line"><span class="lineno">   27</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a776777988e52b5e065b7e6cd5d399fda" name="a776777988e52b5e065b7e6cd5d399fda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a776777988e52b5e065b7e6cd5d399fda">&#9670;&#160;</a></span>test_5xx_cgi_with_no_header()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_error5xx.test_5xx_cgi_with_no_header </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__error5xx_8py_source.html#l00028">28</a> of file <a class="el" href="test__error5xx_8py_source.html">test_error5xx.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>test_5xx_cgi_with_no_header():</div>
+<div class="line"><span class="lineno">   29</span>    url = <span class="stringliteral">&quot;http://localhost:8080/cgi-bin/no_header.sh&quot;</span></div>
+<div class="line"><span class="lineno">   30</span>    response = make_request(url)</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 500</div>
+<div class="line"><span class="lineno">   32</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a69835a5f1269c847dc7a75551d8a1171" name="a69835a5f1269c847dc7a75551d8a1171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69835a5f1269c847dc7a75551d8a1171">&#9670;&#160;</a></span>test_5xx_cgi_with_no_cgi_field()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_error5xx.test_5xx_cgi_with_no_cgi_field </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__error5xx_8py_source.html#l00033">33</a> of file <a class="el" href="test__error5xx_8py_source.html">test_error5xx.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span><span class="keyword">def </span>test_5xx_cgi_with_no_cgi_field():</div>
+<div class="line"><span class="lineno">   34</span>    url = <span class="stringliteral">&quot;http://localhost:8080/cgi-bin/no_cgi_field.sh&quot;</span></div>
+<div class="line"><span class="lineno">   35</span>    response = make_request(url)</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 500</div>
+<div class="line"><span class="lineno">   37</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa815f65d2d6a27edc2f6a86ccfceafb3" name="aa815f65d2d6a27edc2f6a86ccfceafb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa815f65d2d6a27edc2f6a86ccfceafb3">&#9670;&#160;</a></span>test_5xx_cgi_with_invalid_header_status()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_error5xx.test_5xx_cgi_with_invalid_header_status </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__error5xx_8py_source.html#l00038">38</a> of file <a class="el" href="test__error5xx_8py_source.html">test_error5xx.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span><span class="keyword">def </span>test_5xx_cgi_with_invalid_header_status():</div>
+<div class="line"><span class="lineno">   39</span>    url = <span class="stringliteral">&quot;http://localhost:8080/cgi-bin/invalid_header_status.sh&quot;</span></div>
+<div class="line"><span class="lineno">   40</span>    response = make_request(url)</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 500</div>
+<div class="line"><span class="lineno">   42</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a893abaaa882773491bff7c7ad4ca5209" name="a893abaaa882773491bff7c7ad4ca5209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893abaaa882773491bff7c7ad4ca5209">&#9670;&#160;</a></span>test_5xx_cgi_with_invalid_header_connection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_error5xx.test_5xx_cgi_with_invalid_header_connection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__error5xx_8py_source.html#l00043">43</a> of file <a class="el" href="test__error5xx_8py_source.html">test_error5xx.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span><span class="keyword">def </span>test_5xx_cgi_with_invalid_header_connection():</div>
+<div class="line"><span class="lineno">   44</span>    url = <span class="stringliteral">&quot;http://localhost:8080/cgi-bin/invalid_header_connection.sh&quot;</span></div>
+<div class="line"><span class="lineno">   45</span>    response = make_request(url)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 500</div>
+<div class="line"><span class="lineno">   47</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a9d4f6e61af02e4ea2b7440360a025f6e" name="a9d4f6e61af02e4ea2b7440360a025f6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d4f6e61af02e4ea2b7440360a025f6e">&#9670;&#160;</a></span>test_5xx_http_version_0_9()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">server_response.test_error5xx.test_5xx_http_version_0_9 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="test__error5xx_8py_source.html#l00048">48</a> of file <a class="el" href="test__error5xx_8py_source.html">test_error5xx.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span><span class="keyword">def </span>test_5xx_http_version_0_9():</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keyword">with</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">socket.create_connection</a>((host, port)) <span class="keyword">as</span> sock:</div>
+<div class="line"><span class="lineno">   50</span>        request = b<span class="stringliteral">&quot;GET / HTTP/0.9\r\nHost: localhost\r\n\r\n&quot;</span></div>
+<div class="line"><span class="lineno">   51</span>        <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">sock.sendall</a>(request)</div>
+<div class="line"><span class="lineno">   52</span>        response = parse_http_response(sock)</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;status_code&quot;</span>] == 505</div>
+<div class="line"><span class="lineno">   54</span>        <span class="keyword">assert</span> response[<span class="stringliteral">&quot;headers&quot;</span>].get(<span class="stringliteral">&quot;connection&quot;</span>) == <span class="stringliteral">&quot;keep-alive&quot;</span></div>
 </div><!-- fragment -->
 </div>
 </div>
