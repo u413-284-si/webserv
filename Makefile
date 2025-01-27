@@ -327,7 +327,7 @@ VALGRIND_FLAGS=--leak-check=full --show-leak-kinds=all --track-fds=yes --track-o
 test5: $(NAME) | $(LOG_DIR)
 	@printf "$(YELLOW)$(BOLD)Run webserv with valgrind and requester$(RESET) [$(BLUE)$@$(RESET)]\n"
 	$(SILENT)valgrind $(VALGRIND_FLAGS) ./webserv $(CONFIGFILE) >$(LOG_WEBSERV) 2>&1 & echo $$! > webserv.pid
-	$(SILENT)sleep 1
+	$(SILENT)sleep 2
 	$(SILENT)/usr/bin/python3 \
 		$(REQUESTER) \
 		$(REQUESTER_FILE)
