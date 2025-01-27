@@ -94,7 +94,7 @@ bool EpollWrapper::addEvent(int newfd, uint32_t eventMask) const
 	event.data.fd = newfd;
 
 	if (-1 == epoll_ctl(m_epfd, EPOLL_CTL_ADD, newfd, &event)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno);
+		LOG_ERROR << "epoll_ctl: EPOLL_CTL_ADD: " << strerror(errno) << " fd: " << newfd;
 		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Added new fd: " << newfd;
@@ -121,7 +121,7 @@ bool EpollWrapper::modifyEvent(int modfd, uint32_t eventMask) const
 	event.data.fd = modfd;
 
 	if (-1 == epoll_ctl(m_epfd, EPOLL_CTL_MOD, modfd, &event)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno);
+		LOG_ERROR << "epoll_ctl: EPOLL_CTL_MOD: " << strerror(errno) << " fd: " << modfd;
 		return false;
 	}
 	LOG_DEBUG << "epoll_ctl: Modified fd: " << modfd;
@@ -139,7 +139,7 @@ bool EpollWrapper::modifyEvent(int modfd, uint32_t eventMask) const
 void EpollWrapper::removeEvent(int delfd) const
 {
 	if (-1 == epoll_ctl(m_epfd, EPOLL_CTL_DEL, delfd, NULL)) {
-		LOG_ERROR << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno);
+		LOG_WARN << "epoll_ctl: EPOLL_CTL_DEL: " << strerror(errno) << " fd: " << delfd;
 		return;
 	}
 	LOG_DEBUG << "epoll_ctl: Removed fd: " << delfd;

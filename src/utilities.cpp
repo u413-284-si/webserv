@@ -50,10 +50,7 @@ std::string trimTrailingWhiteSpaces(const std::string& str)
  * @param str The string to be trimmed.
  * @return std::string The trimmed string.
  */
-std::string trimWhiteSpaces(const std::string& str)
-{
-	return trimLeadingWhitespaces(trimTrailingWhiteSpaces(str));
-}
+std::string trimWhiteSpaces(const std::string& str) { return trimLeadingWhitespaces(trimTrailingWhiteSpaces(str)); }
 
 /**
  * @brief Splits a given string into substrings based on a specified delimiter.
@@ -117,7 +114,7 @@ std::string getFileExtension(const std::string& path)
 std::string getGMTString(const time_t now, const std::string& format)
 {
 	const int timeStringBuffer = 80;
-	char string[timeStringBuffer];
+	char string[timeStringBuffer] = { 0 };
 
 	static_cast<void>(strftime(string, sizeof(string), format.c_str(), gmtime(&now)));
 	return string;
@@ -134,7 +131,7 @@ std::string getGMTString(const time_t now, const std::string& format)
 std::string getLocaltimeString(const time_t now, const std::string& format)
 {
 	const int timeStringBuffer = 80;
-	char string[timeStringBuffer];
+	char string[timeStringBuffer] = { 0 };
 
 	static_cast<void>(strftime(string, sizeof(string), format.c_str(), localtime(&now)));
 	return string;

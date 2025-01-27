@@ -261,7 +261,7 @@ def test_4xx_file_too_big():
     # Check that file does not exist
     assert os.path.isfile(dst_file_path) == False
 
-def test_method_not_allowed():
+def test_4xx_method_not_allowed():
     print("Request to /")
     url = "http://localhost:8080/"
     payload = "Hello World!"

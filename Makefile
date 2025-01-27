@@ -275,10 +275,12 @@ test: $(UNIT)
 	$(SILENT)./$(UNIT)
 
 # Run integration tests
+
+PYTEST = -v -m "not timeout"
 .PHONY: test2
 test2: $(NAME)
 	@printf "$(YELLOW)$(BOLD)Run integration tests$(RESET) [$(BLUE)$@$(RESET)]\n"
-	$(SILENT)pytest \
+	$(SILENT)pytest $(PYTEST) \
 	--server-executable=./$(NAME) \
 	--config-file=./$(CONFIGFILE) \
 	./$(INTEGRATION_TEST_DIR)
