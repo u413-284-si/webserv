@@ -86,5 +86,6 @@ var error_8hpp =
     [ "ERR_UNEXPECTED_BODY", "error_8hpp.html#afef097336b6960957a448f3b0c632802", null ],
     [ "ERR_MISSING_CGI_HEADER", "error_8hpp.html#a132aad672a97dc4b7a4019058691189d", null ],
     [ "ERR_MISSING_CGI_FIELD", "error_8hpp.html#a752581368c25db0b2e8fe90bb61e4268", null ],
-    [ "ERR_MULTIPLE_UPLOADS", "error_8hpp.html#a3db87370d70a5ed6bb88a81dd448624b", null ]
+    [ "ERR_MULTIPLE_UPLOADS", "error_8hpp.html#a3db87370d70a5ed6bb88a81dd448624b", null ],
+    [ "ERR_CGI_FAILURE", "error_8hpp.html#a76233664037d476b0d8fafb40dcb331b", null ]
 ];

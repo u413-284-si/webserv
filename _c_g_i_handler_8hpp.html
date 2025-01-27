@@ -112,6 +112,7 @@ $(document).ready(function(){initNavTree('_c_g_i_handler_8hpp.html',''); initRes
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_config_file_8hpp_source.html">ConfigFile.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_connection_8hpp_source.html">Connection.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="error_8hpp_source.html">error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_file_system_ops_8hpp_source.html">FileSystemOps.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_h_t_t_p_request_8hpp_source.html">HTTPRequest.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_log_8hpp_source.html">Log.hpp</a>&quot;</code><br />
@@ -125,6 +126,7 @@ $(document).ready(function(){initNavTree('_c_g_i_handler_8hpp.html',''); initRes
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -171,15 +173,15 @@ Functions</h2></td></tr>
 <p>This function attempts to register signal handlers for specific signals that are relevant to child processes. Currently, it registers the handler for SIGQUIT to be ignored.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the signal handlers were successfully registered, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_g_i_handler_8cpp_source.html#l00351">351</a> of file <a class="el" href="_c_g_i_handler_8cpp_source.html">CGIHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  352</span>{</div>
-<div class="line"><span class="lineno">  353</span>    <span class="comment">// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)</span></div>
-<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">if</span> (std::signal(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGQUIT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIG_IGN</a>) == <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIG_ERR</a>) {</div>
-<div class="line"><span class="lineno">  355</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;failed to register &quot;</span> &lt;&lt; <a class="code hl_function" href="signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7">signalNumToName</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGQUIT</a>) &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; std::strerror(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a>);</div>
-<div class="line"><span class="lineno">  356</span>        <span class="keywordflow">return</span> (<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  357</span>    }</div>
-<div class="line"><span class="lineno">  358</span>    <span class="keywordflow">return</span> (<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  359</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_g_i_handler_8cpp_source.html#l00353">353</a> of file <a class="el" href="_c_g_i_handler_8cpp_source.html">CGIHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  354</span>{</div>
+<div class="line"><span class="lineno">  355</span>    <span class="comment">// NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast, performance-no-int-to-ptr)</span></div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span> (std::signal(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGQUIT</a>, <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIG_IGN</a>) == <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIG_ERR</a>) {</div>
+<div class="line"><span class="lineno">  357</span>        <a class="code hl_define" href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a> &lt;&lt; <span class="stringliteral">&quot;failed to register &quot;</span> &lt;&lt; <a class="code hl_function" href="signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7">signalNumToName</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">SIGQUIT</a>) &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; std::strerror(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">errno</a>);</div>
+<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">return</span> (<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  359</span>    }</div>
+<div class="line"><span class="lineno">  360</span>    <span class="keywordflow">return</span> (<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  361</span>}</div>
 <div class="ttc" id="a_log_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="_log_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition</b> <a href="_log_8hpp_source.html#l00018">Log.hpp:18</a></div></div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
 <div class="ttc" id="asignal_handler_8hpp_html_adc4193659d5893030190dca46c276ac7"><div class="ttname"><a href="signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7">signalNumToName</a></div><div class="ttdeci">std::string signalNumToName(int signum)</div><div class="ttdoc">Converts a signal number to its name.</div><div class="ttdef"><b>Definition</b> <a href="signal_handler_8cpp_source.html#l00020">signalHandler.cpp:20</a></div></div>
