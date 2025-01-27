@@ -150,7 +150,6 @@ TEST_F(InitVirtualServersTest, WildcardServerInitAndNormalServerInitFail)
 	EXPECT_CALL(m_socketOps, resolveListeningAddresses)
 		.WillOnce(Return(nullptr))
 		.WillOnce(Return(addrinfo))
-		.WillOnce(Return(nullptr))
 		.WillOnce(Return(nullptr));
 	EXPECT_CALL(m_socketOps, createListeningSocket).WillOnce(Return(dummyFd));
 	EXPECT_CALL(m_socketOps, retrieveSocketInfo).WillOnce(Return(serverSock1));
