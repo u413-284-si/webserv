@@ -7,7 +7,7 @@ var searchData=
   ['levelwarn_4',['LevelWarn',['../namespaceweblog.html#aabee30de1ca17a713be80eb23ab2770ea10ddceac1c9b5f3c9a58962e09999157',1,'weblog']]],
   ['list_5',['Todo List',['../todo.html',1,'']]],
   ['locatinginfo_6',['locatinginfo',['../struct_target_resource_handler_1_1_locating_info.html',1,'TargetResourceHandler::LocatingInfo'],['../struct_target_resource_handler_1_1_locating_info.html#a23f7912196ad036fd91f088a76d1d565',1,'TargetResourceHandler::LocatingInfo::LocatingInfo()']]],
-  ['location_7',['location',['../struct_location.html',1,'Location'],['../struct_connection.html#afff86c74740618d83bab5af4f34d10af',1,'Connection::location'],['../struct_location.html#a064442837da5e610eff182194d3988c7',1,'Location::Location()']]],
+  ['location_7',['location',['../struct_location.html',1,'Location'],['../struct_location.html#a064442837da5e610eff182194d3988c7',1,'Location::Location()'],['../struct_connection.html#afff86c74740618d83bab5af4f34d10af',1,'Connection::location']]],
   ['locationblock_8',['LocationBlock',['../_config_file_parser_8hpp.html#ae91cb3afd79e6de887cf19fcca7a8c4aa39897e65a8861af5fa6f7e662d3eda38',1,'ConfigFileParser.hpp']]],
   ['locationblockscontent_9',['locationBlocksContent',['../struct_server_block_config.html#a6be7883b1b3c9f09892e0633f1d8030e',1,'ServerBlockConfig']]],
   ['locations_10',['locations',['../struct_config_server.html#a9c626837f653a5e8d6e38842553009fd',1,'ConfigServer']]],
