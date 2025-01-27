@@ -144,6 +144,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a2abb972ac583db43b6bad84e0e37c22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the port number of the listen directive is valid.  <br /></td></tr>
 <tr class="separator:a2abb972ac583db43b6bad84e0e37c22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff6b877cddbbec27f3971bde0f9fac13" id="r_aff6b877cddbbec27f3971bde0f9fac13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#aff6b877cddbbec27f3971bde0f9fac13">specialTolower</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">c</a>)</td></tr>
+<tr class="memdesc:aff6b877cddbbec27f3971bde0f9fac13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert input character to lowercase.  <br /></td></tr>
 <tr class="separator:aff6b877cddbbec27f3971bde0f9fac13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afee369c732ca6e732ff83a1caa16089e" id="r_afee369c732ca6e732ff83a1caa16089e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e">lowercase</a> (std::string <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>)</td></tr>
 <tr class="memdesc:afee369c732ca6e732ff83a1caa16089e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts all characters in a string to lowercase.  <br /></td></tr>
@@ -433,7 +434,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  116</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">timeStringBuffer</a> = 80;</div>
 <div class="line"><span class="lineno">  117</span>    <span class="keywordtype">char</span> <span class="keywordtype">string</span>[<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">timeStringBuffer</a>] = { 0 };</div>
 <div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span><span class="keyword">&gt;</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">strftime</a>(<span class="keywordtype">string</span>, <span class="keyword">sizeof</span>(<span class="keywordtype">string</span>), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">format</a>.c_str(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">gmtime</a>(&amp;<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">now</a>)));</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span><span class="keyword">&gt;</span>(std::strftime(<span class="keywordtype">string</span>, <span class="keyword">sizeof</span>(<span class="keywordtype">string</span>), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">format</a>.c_str(), std::gmtime(&amp;<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">now</a>)));</div>
 <div class="line"><span class="lineno">  120</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">string</a>;</div>
 <div class="line"><span class="lineno">  121</span>}</div>
 </div><!-- fragment -->
@@ -480,7 +481,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  133</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">timeStringBuffer</a> = 80;</div>
 <div class="line"><span class="lineno">  134</span>    <span class="keywordtype">char</span> <span class="keywordtype">string</span>[<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">timeStringBuffer</a>] = { 0 };</div>
 <div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>    <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span><span class="keyword">&gt;</span>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">strftime</a>(<span class="keywordtype">string</span>, <span class="keyword">sizeof</span>(<span class="keywordtype">string</span>), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">format</a>.c_str(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">localtime</a>(&amp;<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">now</a>)));</div>
+<div class="line"><span class="lineno">  136</span>    <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span><span class="keyword">&gt;</span>(std::strftime(<span class="keywordtype">string</span>, <span class="keyword">sizeof</span>(<span class="keywordtype">string</span>), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">format</a>.c_str(), std::localtime(&amp;<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">now</a>)));</div>
 <div class="line"><span class="lineno">  137</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">string</a>;</div>
 <div class="line"><span class="lineno">  138</span>}</div>
 </div><!-- fragment --><div class="dynheader">
@@ -686,6 +687,26 @@ false If the port is invalid </dd></dl>
       </table>
 </div><div class="memdoc">
 
+<p>Convert input character to lowercase. </p>
+<p>This function converts the given character c to lower case and returns it.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>The character to be converted to lowercase. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int The character converted to lowercase. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00230">230</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  231</span>{</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">return</span> std::tolower(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">c</a>);</div>
+<div class="line"><span class="lineno">  233</span>}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacewebutils_aff6b877cddbbec27f3971bde0f9fac13_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
 </div>
 </div>
 <a id="afee369c732ca6e732ff83a1caa16089e" name="afee369c732ca6e732ff83a1caa16089e"></a>
@@ -705,7 +726,7 @@ false If the port is invalid </dd></dl>
 </div><div class="memdoc">
 
 <p>Converts all characters in a string to lowercase. </p>
-<p>This function takes a reference to a std::string and transforms all of its characters to lowercase using the std::transform algorithm and the <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">tolower</a> function.</p>
+<p>This function takes a reference to a std::string and transforms all of its characters to lowercase using the std::transform algorithm and the specialTolower function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>The string to be converted to lowercase. </td></tr>
@@ -714,12 +735,17 @@ false If the port is invalid </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string The string with all characters converted to lowercase. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00231">231</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
-<div class="line"><span class="lineno">  233</span>    std::transform(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.end(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">::tolower</a>);</div>
-<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>;</div>
-<div class="line"><span class="lineno">  235</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00244">244</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  245</span>{</div>
+<div class="line"><span class="lineno">  246</span>    std::transform(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.end(), <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>.begin(), specialTolower);</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>;</div>
+<div class="line"><span class="lineno">  248</span>}</div>
 </div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacewebutils_afee369c732ca6e732ff83a1caa16089e_cgraph.svg" width="391" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacewebutils_afee369c732ca6e732ff83a1caa16089e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
@@ -753,23 +779,23 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A new string with the first letter of each word capitalized. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00247">247</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  248</span>{</div>
-<div class="line"><span class="lineno">  249</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>;</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keywordtype">bool</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a> = 0; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a> &lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.size(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) {</div>
-<div class="line"><span class="lineno">  253</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) == <span class="charliteral">&#39; &#39;</span> || <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) == <span class="charliteral">&#39;-&#39;</span>) {</div>
-<div class="line"><span class="lineno">  254</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  255</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a>) {</div>
-<div class="line"><span class="lineno">  256</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">signed</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(std::toupper(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>)));</div>
-<div class="line"><span class="lineno">  257</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  258</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  259</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">signed</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(std::tolower(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>)));</div>
-<div class="line"><span class="lineno">  260</span>        }</div>
-<div class="line"><span class="lineno">  261</span>    }</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>;</div>
-<div class="line"><span class="lineno">  263</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00260">260</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  261</span>{</div>
+<div class="line"><span class="lineno">  262</span>    std::string <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a> = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>;</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordtype">bool</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a> = 0; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a> &lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.size(); ++<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) {</div>
+<div class="line"><span class="lineno">  266</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) == <span class="charliteral">&#39; &#39;</span> || <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) == <span class="charliteral">&#39;-&#39;</span>) {</div>
+<div class="line"><span class="lineno">  267</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a> = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  268</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a>) {</div>
+<div class="line"><span class="lineno">  269</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">signed</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(std::toupper(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>)));</div>
+<div class="line"><span class="lineno">  270</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">capitalizeNext</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  271</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  272</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">signed</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(std::tolower(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>.at(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">i</a>)));</div>
+<div class="line"><span class="lineno">  273</span>        }</div>
+<div class="line"><span class="lineno">  274</span>    }</div>
+<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">result</a>;</div>
+<div class="line"><span class="lineno">  276</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -816,12 +842,12 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::string String with alias replaced </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00274">274</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span>{</div>
-<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>.find(alias) == 0)</div>
-<div class="line"><span class="lineno">  277</span>        <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">replacement</a> + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>.substr(alias.length());</div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><span class="lineno">  279</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8cpp_source.html#l00287">287</a> of file <a class="el" href="utilities_8cpp_source.html">utilities.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  288</span>{</div>
+<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>.find(alias) == 0)</div>
+<div class="line"><span class="lineno">  290</span>        <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">replacement</a> + <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">input</a>.substr(alias.length());</div>
+<div class="line"><span class="lineno">  291</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="lineno">  292</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
