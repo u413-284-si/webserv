@@ -347,7 +347,7 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 	ConfigServer& server = m_configFile.servers[m_serverIndex];
 	Location& location = server.locations[m_locationIndex];
 
-	if (location.root != "html" && !location.alias.empty())
+	if (m_hasLocationRoot && !location.alias.empty())
 		throw std::runtime_error(ERR_ROOT_AND_ALIAS_DEFINED);
 	if (!m_hasLocationRoot)
 		location.root = server.root;
