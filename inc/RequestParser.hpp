@@ -90,7 +90,7 @@ private:
 	static bool isNotValidURIChar(uint8_t chr);
 	static bool isValidHeaderFieldNameChar(uint8_t chr);
 	static long convertHex(const std::string& chunkSize);
-	static bool isMethodAllowedToHaveBody(HTTPRequest& request);
+	static bool isMethodAllowedToHaveBody(Method method);
 	static bool isValidHostnameChar(char character, bool& hasAlpha);
 	static bool isValidLabel(const std::string& label, bool& hasAlpha);
 	static bool isValidHostname(const std::string& hostname);

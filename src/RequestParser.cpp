@@ -667,7 +667,7 @@ void RequestParser::validateMethodWithBody(HTTPRequest& request)
 {
 	LOG_DEBUG << "Validating method with body...";
 
-	if (request.hasBody && !isMethodAllowedToHaveBody(request))
+	if (request.hasBody && !isMethodAllowedToHaveBody(request.method))
 		throw MethodNotAllowedException(ERR_UNEXPECTED_BODY);
 
 	LOG_DEBUG << "Method with body is valid.";
@@ -970,7 +970,7 @@ long RequestParser::convertHex(const std::string& chunkSize)
  * This function determines whether the specified HTTP request method can have
  * a body. The methods POST and DELETE allow bodies, while method GET does not.
  *
- * @param request The HTTP request object containing the method to check.
+ * @param method The HTTP method to check.
  *
  * @return true If the method allows a body (e.g., POST, DELETE).
  * @return false If the method does not allow a body (e.g., GET).
@@ -978,11 +978,11 @@ long RequestParser::convertHex(const std::string& chunkSize)
  * @note The function asserts that the method in the request is within the
  *       expected range (from MethodGet to MethodCount).
  */
-bool RequestParser::isMethodAllowedToHaveBody(HTTPRequest& request)
+bool RequestParser::isMethodAllowedToHaveBody(Method method)
 {
-	assert(request.method >= MethodGet && request.method <= MethodCount);
+	assert(method >= MethodGet && method <= MethodCount);
 
-	switch (request.method) {
+	switch (method) {
 	case MethodGet:
 	case MethodCount:
 		return false;
