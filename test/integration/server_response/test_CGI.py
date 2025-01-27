@@ -1,9 +1,8 @@
 # This module is for succesful CGI requests
 
-import os
 from utils.utils import make_request
 
-def test_no_CGI_defined():
+def test_CGI_not_defined():
     print("Try to access CGI without it defined")
     url = "http://127.0.0.1:8080/cgi-bin/time.py"
     response = make_request(url)
