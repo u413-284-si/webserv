@@ -56,7 +56,8 @@ int main(const int argc, const char* argv[])
 		ConfigFile configFile = parser.parseConfigFile(configFilePath);
 
 		Server server(configFile, epollWrapper, fileSystemOps, socketOps, processOps);
-		initVirtualServers(server, Server::s_backlog, server.getServerConfigs());
+		if (!initVirtualServers(server, Server::s_backlog, server.getServerConfigs()))
+			return 1;
 		runServer(server);
 	} catch (std::exception& e) {
 		LOG_ERROR << e.what();
