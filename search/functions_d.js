@@ -9,5 +9,6 @@ var searchData=
   ['parserequestlinetest_6',['ParseRequestLineTest',['../class_parse_request_line_test.html#aaae0cdb749eb05532b41b3d810226cf1',1,'ParseRequestLineTest']]],
   ['pipeprocess_7',['pipeProcess',['../class_process_ops.html#ab0eb7fe523ca1f8d49c62a8a9a0e6991',1,'ProcessOps']]],
   ['processops_8',['ProcessOps',['../class_process_ops.html#a97df0258fd00af3bbff2b175d814ea41',1,'ProcessOps']]],
-  ['pytest_5faddoption_9',['pytest_addoption',['../namespaceconftest.html#a6f3d18943083f7c1cf563414a6cc6ecd',1,'conftest']]]
+  ['pytest_5faddoption_9',['pytest_addoption',['../namespaceconftest.html#a6f3d18943083f7c1cf563414a6cc6ecd',1,'conftest']]],
+  ['pytest_5fcollection_5fmodifyitems_10',['pytest_collection_modifyitems',['../namespaceconftest.html#a8177bf66fea506f3395ed8f883227087',1,'conftest']]]
 ];

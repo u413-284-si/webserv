@@ -114,6 +114,8 @@ $(document).ready(function(){initNavTree('namespaceconftest.html',''); initResiz
 Functions</h2></td></tr>
 <tr class="memitem:a6f3d18943083f7c1cf563414a6cc6ecd" id="r_a6f3d18943083f7c1cf563414a6cc6ecd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconftest.html#a6f3d18943083f7c1cf563414a6cc6ecd">pytest_addoption</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser</a>)</td></tr>
 <tr class="separator:a6f3d18943083f7c1cf563414a6cc6ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8177bf66fea506f3395ed8f883227087" id="r_a8177bf66fea506f3395ed8f883227087"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconftest.html#a8177bf66fea506f3395ed8f883227087">pytest_collection_modifyitems</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">items</a>)</td></tr>
+<tr class="separator:a8177bf66fea506f3395ed8f883227087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a6f3d18943083f7c1cf563414a6cc6ecd" name="a6f3d18943083f7c1cf563414a6cc6ecd"></a>
@@ -132,15 +134,54 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="conftest_8py_source.html#l00002">2</a> of file <a class="el" href="conftest_8py_source.html">conftest.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    2</span><span class="keyword">def </span>pytest_addoption(parser):</div>
-<div class="line"><span class="lineno">    3</span>    print(<span class="stringliteral">&quot;Registering custom pytest options&quot;</span>)</div>
-<div class="line"><span class="lineno">    4</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--server-executable&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;/workspaces/webserv/webserv&quot;</span>, help=<span class="stringliteral">&quot;Path to the server executable&quot;</span>)</div>
-<div class="line"><span class="lineno">    5</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--config-file&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;/workspaces/webserv/config_files/example.conf&quot;</span>, help=<span class="stringliteral">&quot;Path to the server config file&quot;</span>)</div>
-<div class="line"><span class="lineno">    6</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--with-coverage&quot;</span>, action=<span class="stringliteral">&quot;store_true&quot;</span>, help=<span class="stringliteral">&quot;Run server with kcov for coverage&quot;</span>)</div>
-<div class="line"><span class="lineno">    7</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;/workspaces/webserv/.vscode/coverage&quot;</span>, help=<span class="stringliteral">&quot;Path to the kcov output directory&quot;</span>)</div>
-<div class="line"><span class="lineno">    8</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;--exclude-path=/usr/include,/usr/lib,/usr/local&quot;</span>, help=<span class="stringliteral">&quot;Path to exclude from kcov coverage&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="conftest_8py_source.html#l00003">3</a> of file <a class="el" href="conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    3</span><span class="keyword">def </span>pytest_addoption(parser):</div>
+<div class="line"><span class="lineno">    4</span>    print(<span class="stringliteral">&quot;Registering custom pytest options&quot;</span>)</div>
+<div class="line"><span class="lineno">    5</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--server-executable&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;/workspaces/webserv/webserv&quot;</span>, help=<span class="stringliteral">&quot;Path to the server executable&quot;</span>)</div>
+<div class="line"><span class="lineno">    6</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--config-file&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;/workspaces/webserv/config_files/example.conf&quot;</span>, help=<span class="stringliteral">&quot;Path to the server config file&quot;</span>)</div>
+<div class="line"><span class="lineno">    7</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--with-coverage&quot;</span>, action=<span class="stringliteral">&quot;store_true&quot;</span>, help=<span class="stringliteral">&quot;Run server with kcov for coverage&quot;</span>)</div>
+<div class="line"><span class="lineno">    8</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--kcov-output-dir&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;/workspaces/webserv/.vscode/coverage&quot;</span>, help=<span class="stringliteral">&quot;Path to the kcov output directory&quot;</span>)</div>
+<div class="line"><span class="lineno">    9</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">parser.addoption</a>(<span class="stringliteral">&quot;--kcov-excl-path&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, default=<span class="stringliteral">&quot;--exclude-path=/usr/include,/usr/lib,/usr/local&quot;</span>, help=<span class="stringliteral">&quot;Path to exclude from kcov coverage&quot;</span>)</div>
+<div class="line"><span class="lineno">   10</span> </div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8177bf66fea506f3395ed8f883227087" name="a8177bf66fea506f3395ed8f883227087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8177bf66fea506f3395ed8f883227087">&#9670;&#160;</a></span>pytest_collection_modifyitems()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">conftest.pytest_collection_modifyitems </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>items</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="conftest_8py_source.html#l00011">11</a> of file <a class="el" href="conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>pytest_collection_modifyitems(items):</div>
+<div class="line"><span class="lineno">   12</span>    <span class="keywordflow">for</span> item <span class="keywordflow">in</span> items:</div>
+<div class="line"><span class="lineno">   13</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;signal&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   14</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.signal</a>)</div>
+<div class="line"><span class="lineno">   15</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;CGI&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   16</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.cgi</a>)</div>
+<div class="line"><span class="lineno">   17</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;3xx&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   18</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.redirect</a>)</div>
+<div class="line"><span class="lineno">   19</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;4xx&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   20</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.error</a>)</div>
+<div class="line"><span class="lineno">   21</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;5xx&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   22</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.error</a>)</div>
+<div class="line"><span class="lineno">   23</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;GET&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   24</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.get</a>)</div>
+<div class="line"><span class="lineno">   25</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;POST&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   26</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.post</a>)</div>
+<div class="line"><span class="lineno">   27</span>        <span class="keywordflow">elif</span> <span class="stringliteral">&quot;timeout&quot;</span> <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.nodeid</a>:</div>
+<div class="line"><span class="lineno">   28</span>            <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">item.add_marker</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">pytest.mark.timeout</a>)</div>
 </div><!-- fragment -->
 </div>
 </div>

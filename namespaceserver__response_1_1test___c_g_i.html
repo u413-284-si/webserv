@@ -112,8 +112,8 @@ $(document).ready(function(){initNavTree('namespaceserver__response_1_1test___c_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab57a66ba29b67648e4f616992df8dc49" id="r_ab57a66ba29b67648e4f616992df8dc49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49">test_no_CGI_defined</a> ()</td></tr>
-<tr class="separator:ab57a66ba29b67648e4f616992df8dc49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2d01d12a0d3fdcad15f5a6c6a1ffba5" id="r_ab2d01d12a0d3fdcad15f5a6c6a1ffba5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#ab2d01d12a0d3fdcad15f5a6c6a1ffba5">test_CGI_not_defined</a> ()</td></tr>
+<tr class="separator:ab2d01d12a0d3fdcad15f5a6c6a1ffba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af757353c2eb08068bf5916e7cd60ea6e" id="r_af757353c2eb08068bf5916e7cd60ea6e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#af757353c2eb08068bf5916e7cd60ea6e">test_CGI_helloWorld</a> ()</td></tr>
 <tr class="separator:af757353c2eb08068bf5916e7cd60ea6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af698a9c3bcb40354c6d4bacfa15eb39a" id="r_af698a9c3bcb40354c6d4bacfa15eb39a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver__response_1_1test___c_g_i.html#af698a9c3bcb40354c6d4bacfa15eb39a">test_CGI_badBoi</a> ()</td></tr>
@@ -128,14 +128,14 @@ Functions</h2></td></tr>
 <tr class="separator:a5f82b03e7cfc4531f7ff0813f3466089"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab57a66ba29b67648e4f616992df8dc49" name="ab57a66ba29b67648e4f616992df8dc49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab57a66ba29b67648e4f616992df8dc49">&#9670;&#160;</a></span>test_no_CGI_defined()</h2>
+<a id="ab2d01d12a0d3fdcad15f5a6c6a1ffba5" name="ab2d01d12a0d3fdcad15f5a6c6a1ffba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2d01d12a0d3fdcad15f5a6c6a1ffba5">&#9670;&#160;</a></span>test_CGI_not_defined()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">server_response.test_CGI.test_no_CGI_defined </td>
+          <td class="memname">server_response.test_CGI.test_CGI_not_defined </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -143,13 +143,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00006">6</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span><span class="keyword">def </span>test_no_CGI_defined():</div>
-<div class="line"><span class="lineno">    7</span>    print(<span class="stringliteral">&quot;Try to access CGI without it defined&quot;</span>)</div>
-<div class="line"><span class="lineno">    8</span>    url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/time.py&quot;</span></div>
-<div class="line"><span class="lineno">    9</span>    response = make_request(url)</div>
-<div class="line"><span class="lineno">   10</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
-<div class="line"><span class="lineno">   11</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00005">5</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span>test_CGI_not_defined():</div>
+<div class="line"><span class="lineno">    6</span>    print(<span class="stringliteral">&quot;Try to access CGI without it defined&quot;</span>)</div>
+<div class="line"><span class="lineno">    7</span>    url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/time.py&quot;</span></div>
+<div class="line"><span class="lineno">    8</span>    response = make_request(url)</div>
+<div class="line"><span class="lineno">    9</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   10</span> </div>
 <div class="ttc" id="a_status_code_8hpp_html_a0506d82d6e3d6758981ff5eac9ca85ea"><div class="ttname"><a href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">statusCode</a></div><div class="ttdeci">statusCode</div><div class="ttdef"><b>Definition</b> <a href="_status_code_8hpp_source.html#l00008">StatusCode.hpp:8</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -169,13 +169,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00012">12</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>test_CGI_helloWorld():</div>
-<div class="line"><span class="lineno">   13</span>   print(<span class="stringliteral">&quot;Request for /cgi-bin/helloWorld.sh&quot;</span>)</div>
-<div class="line"><span class="lineno">   14</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/helloWorld.sh&quot;</span></div>
-<div class="line"><span class="lineno">   15</span>   response = make_request(url)</div>
-<div class="line"><span class="lineno">   16</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
-<div class="line"><span class="lineno">   17</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00011">11</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>test_CGI_helloWorld():</div>
+<div class="line"><span class="lineno">   12</span>   print(<span class="stringliteral">&quot;Request for /cgi-bin/helloWorld.sh&quot;</span>)</div>
+<div class="line"><span class="lineno">   13</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/helloWorld.sh&quot;</span></div>
+<div class="line"><span class="lineno">   14</span>   response = make_request(url)</div>
+<div class="line"><span class="lineno">   15</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   16</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -194,15 +194,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00018">18</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   18</span><span class="keyword">def </span>test_CGI_badBoi():</div>
-<div class="line"><span class="lineno">   19</span>   print(<span class="stringliteral">&quot;Request for /cgi-bin/badBoi.sh&quot;</span>)</div>
-<div class="line"><span class="lineno">   20</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/badBoi.sh&quot;</span></div>
-<div class="line"><span class="lineno">   21</span>   response = make_request(url)</div>
-<div class="line"><span class="lineno">   22</span>   <span class="comment"># badBoi returns custom 400 status</span></div>
-<div class="line"><span class="lineno">   23</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 400</div>
-<div class="line"><span class="lineno">   24</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;BB&quot;</span>] == <span class="stringliteral">&quot;4Life&quot;</span></div>
-<div class="line"><span class="lineno">   25</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00017">17</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   17</span><span class="keyword">def </span>test_CGI_badBoi():</div>
+<div class="line"><span class="lineno">   18</span>   print(<span class="stringliteral">&quot;Request for /cgi-bin/badBoi.sh&quot;</span>)</div>
+<div class="line"><span class="lineno">   19</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/badBoi.sh&quot;</span></div>
+<div class="line"><span class="lineno">   20</span>   response = make_request(url)</div>
+<div class="line"><span class="lineno">   21</span>   <span class="comment"># badBoi returns custom 400 status</span></div>
+<div class="line"><span class="lineno">   22</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 400</div>
+<div class="line"><span class="lineno">   23</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;BB&quot;</span>] == <span class="stringliteral">&quot;4Life&quot;</span></div>
+<div class="line"><span class="lineno">   24</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -221,13 +221,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00026">26</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span><span class="keyword">def </span>test_CGI_time():</div>
-<div class="line"><span class="lineno">   27</span>   print(<span class="stringliteral">&quot;Request for /cgi-bin/time.py&quot;</span>)</div>
-<div class="line"><span class="lineno">   28</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8081/cgi-bin/time.py&quot;</span></div>
-<div class="line"><span class="lineno">   29</span>   response = make_request(url)</div>
-<div class="line"><span class="lineno">   30</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
-<div class="line"><span class="lineno">   31</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00025">25</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span><span class="keyword">def </span>test_CGI_time():</div>
+<div class="line"><span class="lineno">   26</span>   print(<span class="stringliteral">&quot;Request for /cgi-bin/time.py&quot;</span>)</div>
+<div class="line"><span class="lineno">   27</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8081/cgi-bin/time.py&quot;</span></div>
+<div class="line"><span class="lineno">   28</span>   response = make_request(url)</div>
+<div class="line"><span class="lineno">   29</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   30</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -247,27 +247,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00032">32</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span><span class="keyword">def </span>test_CGI_create_textfile(test_file_cleanup):</div>
-<div class="line"><span class="lineno">   33</span>   print(<span class="stringliteral">&quot;Upload file with /cgi-bin/create_textfile.py&quot;</span>)</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>   form_data = {</div>
-<div class="line"><span class="lineno">   36</span>      <span class="stringliteral">&quot;filename&quot;</span>: <span class="stringliteral">&quot;myfile.txt&quot;</span>,</div>
-<div class="line"><span class="lineno">   37</span>      <span class="stringliteral">&quot;content&quot;</span>: <span class="stringliteral">&quot;This is the content of the dudu.&quot;</span>,</div>
-<div class="line"><span class="lineno">   38</span>      <span class="stringliteral">&quot;directory&quot;</span>: <span class="stringliteral">&quot;documents&quot;</span></div>
-<div class="line"><span class="lineno">   39</span>   }</div>
-<div class="line"><span class="lineno">   40</span>   dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/documents/myfile.txt&quot;</span></div>
-<div class="line"><span class="lineno">   41</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8081/cgi-bin/create_textfile.py&quot;</span></div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>   <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">test_file_cleanup.append</a>(dst_file_path)</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>   response = make_request(url, method = <span class="stringliteral">&quot;POST&quot;</span>, data=form_data)</div>
-<div class="line"><span class="lineno">   46</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
-<div class="line"><span class="lineno">   47</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;location&quot;</span>] == <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/documents/myfile.txt&quot;</span></div>
-<div class="line"><span class="lineno">   48</span>   <span class="keyword">with</span> open(dst_file_path, <span class="stringliteral">&quot;r&quot;</span>) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">   49</span>    content = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">file.read</a>()</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keyword">assert</span> content == form_data[<span class="stringliteral">&quot;content&quot;</span>]</div>
-<div class="line"><span class="lineno">   51</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00031">31</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span><span class="keyword">def </span>test_CGI_create_textfile(test_file_cleanup):</div>
+<div class="line"><span class="lineno">   32</span>   print(<span class="stringliteral">&quot;Upload file with /cgi-bin/create_textfile.py&quot;</span>)</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>   form_data = {</div>
+<div class="line"><span class="lineno">   35</span>      <span class="stringliteral">&quot;filename&quot;</span>: <span class="stringliteral">&quot;myfile.txt&quot;</span>,</div>
+<div class="line"><span class="lineno">   36</span>      <span class="stringliteral">&quot;content&quot;</span>: <span class="stringliteral">&quot;This is the content of the dudu.&quot;</span>,</div>
+<div class="line"><span class="lineno">   37</span>      <span class="stringliteral">&quot;directory&quot;</span>: <span class="stringliteral">&quot;documents&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>   }</div>
+<div class="line"><span class="lineno">   39</span>   dst_file_path = <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/documents/myfile.txt&quot;</span></div>
+<div class="line"><span class="lineno">   40</span>   url = <span class="stringliteral">&quot;http://127.0.0.1:8081/cgi-bin/create_textfile.py&quot;</span></div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>   <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">test_file_cleanup.append</a>(dst_file_path)</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>   response = make_request(url, method = <span class="stringliteral">&quot;POST&quot;</span>, data=form_data)</div>
+<div class="line"><span class="lineno">   45</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   46</span>   <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.headers</a>[<span class="stringliteral">&quot;location&quot;</span>] == <span class="stringliteral">&quot;/workspaces/webserv/html/uploads/documents/myfile.txt&quot;</span></div>
+<div class="line"><span class="lineno">   47</span>   <span class="keyword">with</span> open(dst_file_path, <span class="stringliteral">&quot;r&quot;</span>) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   48</span>    content = <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">file.read</a>()</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keyword">assert</span> content == form_data[<span class="stringliteral">&quot;content&quot;</span>]</div>
+<div class="line"><span class="lineno">   50</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -286,18 +286,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00052">52</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span><span class="keyword">def </span>test_CGI_upperCase_GET():</div>
-<div class="line"><span class="lineno">   53</span>    print(<span class="stringliteral">&quot;Change to upper case with /cgi-bin/upperCase.sh and GET&quot;</span>)</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>    form_data = {</div>
-<div class="line"><span class="lineno">   56</span>       <span class="stringliteral">&quot;text&quot;</span>: <span class="stringliteral">&quot;please capitalize&quot;</span></div>
-<div class="line"><span class="lineno">   57</span>    }</div>
-<div class="line"><span class="lineno">   58</span>    url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/upperCase.sh&quot;</span></div>
-<div class="line"><span class="lineno">   59</span>    response = make_request(url, params=form_data)</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keyword">assert</span> form_data[<span class="stringliteral">&quot;text&quot;</span>].upper() <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.text</a></div>
-<div class="line"><span class="lineno">   62</span> </div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00051">51</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span><span class="keyword">def </span>test_CGI_upperCase_GET():</div>
+<div class="line"><span class="lineno">   52</span>    print(<span class="stringliteral">&quot;Change to upper case with /cgi-bin/upperCase.sh and GET&quot;</span>)</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>    form_data = {</div>
+<div class="line"><span class="lineno">   55</span>       <span class="stringliteral">&quot;text&quot;</span>: <span class="stringliteral">&quot;please capitalize&quot;</span></div>
+<div class="line"><span class="lineno">   56</span>    }</div>
+<div class="line"><span class="lineno">   57</span>    url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/upperCase.sh&quot;</span></div>
+<div class="line"><span class="lineno">   58</span>    response = make_request(url, params=form_data)</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">assert</span> form_data[<span class="stringliteral">&quot;text&quot;</span>].upper() <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.text</a></div>
+<div class="line"><span class="lineno">   61</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,26 +316,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00063">63</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span><span class="keyword">def </span>test_CGI_upperCase_POST():</div>
-<div class="line"><span class="lineno">   64</span>    print(<span class="stringliteral">&quot;Change to upper case with /cgi-bin/upperCase.sh and POST&quot;</span>)</div>
-<div class="line"><span class="lineno">   65</span>    long_string = (</div>
-<div class="line"><span class="lineno">   66</span>        <span class="stringliteral">&quot;The old clock tower stood at the center of the village, its hands frozen at midnight for as long &quot;</span></div>
-<div class="line"><span class="lineno">   67</span>        <span class="stringliteral">&quot;as anyone could remember. Stories swirled among the villagers about why it had stopped-some claimed &quot;</span></div>
-<div class="line"><span class="lineno">   68</span>          <span class="stringliteral">&quot;it was cursed, while others whispered of forgotten rituals. At the base of the tower, ivy crept up the &quot;</span></div>
-<div class="line"><span class="lineno">   69</span>          <span class="stringliteral">&quot;stone walls, winding itself around the door that hadn&#39;t been opened in generations. One day, a stranger &quot;</span></div>
-<div class="line"><span class="lineno">   70</span>          <span class="stringliteral">&quot;arrived. She was dressed in black, with eyes that gleamed like stars. Without a word, she walked straight &quot;</span></div>
-<div class="line"><span class="lineno">   71</span>          <span class="stringliteral">&quot;to the door and knocked three times. The air seemed to grow still as if time itself had paused to watch. &quot;</span></div>
-<div class="line"><span class="lineno">   72</span>          <span class="stringliteral">&quot;When the door creaked open, the villagers held their breath. No one knew what lay beyond that threshold, &quot;</span></div>
-<div class="line"><span class="lineno">   73</span>          <span class="stringliteral">&quot;but they would soon find out.&quot;</span></div>
-<div class="line"><span class="lineno">   74</span>    )</div>
-<div class="line"><span class="lineno">   75</span>    form_data = {</div>
-<div class="line"><span class="lineno">   76</span>       <span class="stringliteral">&quot;text&quot;</span>: long_string</div>
-<div class="line"><span class="lineno">   77</span>    }</div>
-<div class="line"><span class="lineno">   78</span>    url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/upperCase.sh&quot;</span></div>
-<div class="line"><span class="lineno">   79</span>    response = make_request(url, method = <span class="stringliteral">&quot;POST&quot;</span>, data=form_data)</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keyword">assert</span> form_data[<span class="stringliteral">&quot;text&quot;</span>].upper() <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.text</a></div>
+<p class="definition">Definition at line <a class="el" href="test___c_g_i_8py_source.html#l00062">62</a> of file <a class="el" href="test___c_g_i_8py_source.html">test_CGI.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span><span class="keyword">def </span>test_CGI_upperCase_POST():</div>
+<div class="line"><span class="lineno">   63</span>    print(<span class="stringliteral">&quot;Change to upper case with /cgi-bin/upperCase.sh and POST&quot;</span>)</div>
+<div class="line"><span class="lineno">   64</span>    long_string = (</div>
+<div class="line"><span class="lineno">   65</span>        <span class="stringliteral">&quot;The old clock tower stood at the center of the village, its hands frozen at midnight for as long &quot;</span></div>
+<div class="line"><span class="lineno">   66</span>        <span class="stringliteral">&quot;as anyone could remember. Stories swirled among the villagers about why it had stopped-some claimed &quot;</span></div>
+<div class="line"><span class="lineno">   67</span>          <span class="stringliteral">&quot;it was cursed, while others whispered of forgotten rituals. At the base of the tower, ivy crept up the &quot;</span></div>
+<div class="line"><span class="lineno">   68</span>          <span class="stringliteral">&quot;stone walls, winding itself around the door that hadn&#39;t been opened in generations. One day, a stranger &quot;</span></div>
+<div class="line"><span class="lineno">   69</span>          <span class="stringliteral">&quot;arrived. She was dressed in black, with eyes that gleamed like stars. Without a word, she walked straight &quot;</span></div>
+<div class="line"><span class="lineno">   70</span>          <span class="stringliteral">&quot;to the door and knocked three times. The air seemed to grow still as if time itself had paused to watch. &quot;</span></div>
+<div class="line"><span class="lineno">   71</span>          <span class="stringliteral">&quot;When the door creaked open, the villagers held their breath. No one knew what lay beyond that threshold, &quot;</span></div>
+<div class="line"><span class="lineno">   72</span>          <span class="stringliteral">&quot;but they would soon find out.&quot;</span></div>
+<div class="line"><span class="lineno">   73</span>    )</div>
+<div class="line"><span class="lineno">   74</span>    form_data = {</div>
+<div class="line"><span class="lineno">   75</span>       <span class="stringliteral">&quot;text&quot;</span>: long_string</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span>    url = <span class="stringliteral">&quot;http://127.0.0.1:8080/cgi-bin/upperCase.sh&quot;</span></div>
+<div class="line"><span class="lineno">   78</span>    response = make_request(url, method = <span class="stringliteral">&quot;POST&quot;</span>, data=form_data)</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keyword">assert</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.status_code</a> == 200</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keyword">assert</span> form_data[<span class="stringliteral">&quot;text&quot;</span>].upper() <span class="keywordflow">in</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">response.text</a></div>
 </div><!-- fragment -->
 </div>
 </div>

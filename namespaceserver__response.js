@@ -6,7 +6,7 @@ var namespaceserver__response =
       [ "temp_permission_change", "namespaceserver__response_1_1conftest.html#ad8787e9394a9bae9d4970758ed62af73", null ]
     ] ],
     [ "test_CGI", "namespaceserver__response_1_1test___c_g_i.html", [
-      [ "test_no_CGI_defined", "namespaceserver__response_1_1test___c_g_i.html#ab57a66ba29b67648e4f616992df8dc49", null ],
+      [ "test_CGI_not_defined", "namespaceserver__response_1_1test___c_g_i.html#ab2d01d12a0d3fdcad15f5a6c6a1ffba5", null ],
       [ "test_CGI_helloWorld", "namespaceserver__response_1_1test___c_g_i.html#af757353c2eb08068bf5916e7cd60ea6e", null ],
       [ "test_CGI_badBoi", "namespaceserver__response_1_1test___c_g_i.html#af698a9c3bcb40354c6d4bacfa15eb39a", null ],
       [ "test_CGI_time", "namespaceserver__response_1_1test___c_g_i.html#ad9c13e2ca08cd15a5b5e181c5cc5867e", null ],
@@ -42,7 +42,7 @@ var namespaceserver__response =
       [ "test_4xx_no_permission_to_append", "namespaceserver__response_1_1test__error4xx.html#a60cb1647428f9a9e86aa498ad0ebc1c4", null ],
       [ "test_4xx_missing_dir_in_path", "namespaceserver__response_1_1test__error4xx.html#afe211f07b87f5bfc1fe755491aabb979", null ],
       [ "test_4xx_file_too_big", "namespaceserver__response_1_1test__error4xx.html#af8df9a027970c1c5c233be7a2be17b2e", null ],
-      [ "test_method_not_allowed", "namespaceserver__response_1_1test__error4xx.html#a1212fd3b6ef0cb4ba8acb733f8a44f99", null ],
+      [ "test_4xx_method_not_allowed", "namespaceserver__response_1_1test__error4xx.html#a7146b1d3532717a59e14ff468f5d89e0", null ],
       [ "host", "namespaceserver__response_1_1test__error4xx.html#a56e8d1327f96e69f5f3463c185ff40f8", null ],
       [ "port", "namespaceserver__response_1_1test__error4xx.html#ab0c5e25ff76df1788e722527ace4ccc5", null ]
     ] ],
@@ -72,5 +72,14 @@ var namespaceserver__response =
       [ "generate_chunks_with_zero_chunk", "namespaceserver__response_1_1test___p_o_s_t.html#a6e14d366cb3aadb392e976837c851d70", null ],
       [ "test_POST_chunked_encoding_with_zero_chunk", "namespaceserver__response_1_1test___p_o_s_t.html#ac6e446152b4eaf4627bb0d22ba0536eb", null ],
       [ "test_POST_bigger_file", "namespaceserver__response_1_1test___p_o_s_t.html#a00158e8a0712fac3bdf8561c56b75e0e", null ]
+    ] ],
+    [ "test_timeout", "namespaceserver__response_1_1test__timeout.html", [
+      [ "test_timeout_partial_request_sent", "namespaceserver__response_1_1test__timeout.html#a6bdcb906b04368e317e606cad31c0a92", null ],
+      [ "test_timeout_full_request_partial_body", "namespaceserver__response_1_1test__timeout.html#ae70ebb526bb26d656a74558dae709263", null ],
+      [ "test_timeout_full_request_then_nothing", "namespaceserver__response_1_1test__timeout.html#a2c965aeb858ab4ee83f3c2687ea181e3", null ],
+      [ "test_timeout_infinite_cgi", "namespaceserver__response_1_1test__timeout.html#a5c0f81db1dac8d7a3aa939e9eb0f6470", null ],
+      [ "host", "namespaceserver__response_1_1test__timeout.html#a17124efa7fcedfb35a8a6c999de850d0", null ],
+      [ "port", "namespaceserver__response_1_1test__timeout.html#ab12787790e4989bcb88c79886b539488", null ],
+      [ "wait_for_timeout", "namespaceserver__response_1_1test__timeout.html#a7deea74280f6d48130285f9579dc8a2b", null ]
     ] ]
 ];

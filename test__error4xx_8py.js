@@ -23,7 +23,7 @@ var test__error4xx_8py =
     [ "test_4xx_no_permission_to_append", "test__error4xx_8py.html#a60cb1647428f9a9e86aa498ad0ebc1c4", null ],
     [ "test_4xx_missing_dir_in_path", "test__error4xx_8py.html#afe211f07b87f5bfc1fe755491aabb979", null ],
     [ "test_4xx_file_too_big", "test__error4xx_8py.html#af8df9a027970c1c5c233be7a2be17b2e", null ],
-    [ "test_method_not_allowed", "test__error4xx_8py.html#a1212fd3b6ef0cb4ba8acb733f8a44f99", null ],
+    [ "test_4xx_method_not_allowed", "test__error4xx_8py.html#a7146b1d3532717a59e14ff468f5d89e0", null ],
     [ "host", "test__error4xx_8py.html#a56e8d1327f96e69f5f3463c185ff40f8", null ],
     [ "port", "test__error4xx_8py.html#ab0c5e25ff76df1788e722527ace4ccc5", null ]
 ];

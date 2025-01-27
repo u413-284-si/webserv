@@ -9,5 +9,6 @@ var searchData=
   ['server_5fresponse_3a_3atest_5ferror4xx_6',['test_error4xx',['../namespaceserver__response_1_1test__error4xx.html',1,'server_response']]],
   ['server_5fresponse_3a_3atest_5ferror5xx_7',['test_error5xx',['../namespaceserver__response_1_1test__error5xx.html',1,'server_response']]],
   ['server_5fresponse_3a_3atest_5fget_8',['test_GET',['../namespaceserver__response_1_1test___g_e_t.html',1,'server_response']]],
-  ['server_5fresponse_3a_3atest_5fpost_9',['test_POST',['../namespaceserver__response_1_1test___p_o_s_t.html',1,'server_response']]]
+  ['server_5fresponse_3a_3atest_5fpost_9',['test_POST',['../namespaceserver__response_1_1test___p_o_s_t.html',1,'server_response']]],
+  ['server_5fresponse_3a_3atest_5ftimeout_10',['test_timeout',['../namespaceserver__response_1_1test__timeout.html',1,'server_response']]]
 ];
