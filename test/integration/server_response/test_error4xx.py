@@ -271,3 +271,27 @@ def test_method_not_allowed():
     assert response.status_code == 405
     assert response.headers["allow"] == "GET"
     assert response.headers["connection"] == "close"
+
+def test_4xx_method_not_allowed_two():
+    url = "http://localhost:8080/onlyPostAndDelete"
+    response = make_request(url)
+    assert response.status_code == 405
+    assert response.headers["allow"] == "POST, DELETE"
+    assert response.headers["connection"] == "close"
+
+def test_4xx_missing_error_page():
+    url = "http://localhost:8080/missingErrorPage"
+    response = make_request(url)
+    assert response.status_code == 404
+    assert response.headers["content-type"] == "text/html"
+    assert "404 Not Found" in response.text
+
+def test_4xx_custom_error_page_no_permission(temp_permission_change):
+    file_path = "/workspaces/webserv/html/error/error403.html"
+    temp_permission_change(file_path, 0o000)
+
+    url = "http://localhost:8080/secret/"
+    response = make_request(url)
+    assert response.status_code == 403
+    assert response.headers["content-type"] == "text/html"
+    assert "403 Forbidden" in response.text
