@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"test__accept_connections_8cpp.html#aa2bdfce89a8f2540cc790305d84758cc":[3,0,3,2,1,0,6],
 "test__accept_connections_8cpp.html#acdd50ab57241500f8d264a71e640923d":[3,0,3,2,1,0,8],
 "test__accept_connections_8cpp.html#ae76ec85fb2cbe0d8ac24c2f1b47344c0":[3,0,3,2,1,0,7],
 "test__accept_connections_8cpp_source.html":[3,0,3,2,1,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "test__register_virtual_server_8cpp.html#a286a5d9c9355a4dcb00f5efdfc1ef498":[3,0,3,2,1,28,1],
 "test__register_virtual_server_8cpp.html#a6a114e2ae95ab048e5a3b2e62ec51e12":[3,0,3,2,1,28,2],
 "test__register_virtual_server_8cpp.html#af955937a11d7416da0af6ec6e319878c":[3,0,3,2,1,28,3],
-"test__register_virtual_server_8cpp_source.html":[3,0,3,2,1,28],
-"test__select_server_config_8cpp.html":[3,0,3,2,1,31]
+"test__register_virtual_server_8cpp_source.html":[3,0,3,2,1,28]
 };

@@ -12,10 +12,11 @@ var searchData=
   ['signalhandler_9',['signalhandler',['../signal_handler_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7',1,'signalHandler(int signal):&#160;signalHandler.cpp'],['../signal_handler_8hpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7',1,'signalHandler(int signal):&#160;signalHandler.cpp']]],
   ['signalnumtoname_10',['signalnumtoname',['../signal_handler_8hpp.html#adc4193659d5893030190dca46c276ac7',1,'signalNumToName(int signum):&#160;signalHandler.cpp'],['../signal_handler_8cpp.html#adc4193659d5893030190dca46c276ac7',1,'signalNumToName(int signum):&#160;signalHandler.cpp']]],
   ['socketops_11',['SocketOps',['../class_socket_ops.html#a3a399ff6d523a907d58e4d096881ca35',1,'SocketOps']]],
-  ['split_12',['split',['../namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda',1,'webutils']]],
-  ['start_5fserver_13',['start_server',['../namespaceutils_1_1utils.html#ad958e9c03f86e7be9b4807b13f46e47b',1,'utils::utils']]],
-  ['statuscodetoreasonphrase_14',['statuscodetoreasonphrase',['../_status_code_8hpp.html#a1bd32c420ee91ee65ec9e0c4dd8a12c9',1,'statusCodeToReasonPhrase(statusCode status):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#aeb630f7ad1d705f76733ac9353036287',1,'statusCodeToReasonPhrase(statusCode statusCode):&#160;StatusCode.cpp']]],
-  ['statuscodetostring_15',['statuscodetostring',['../_status_code_8hpp.html#af5faa47fefee84e9d7647ce996a9c849',1,'statusCodeToString(statusCode status):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a584f6fc19ee569a7287339fdedb1f131',1,'statusCodeToString(statusCode statusCode):&#160;StatusCode.cpp']]],
-  ['stop_5fserver_16',['stop_server',['../namespaceutils_1_1utils.html#a1ec2d820bd35a25bcf0c3cfcfc9b57c7',1,'utils::utils']]],
-  ['stringtostatuscode_17',['stringtostatuscode',['../_status_code_8hpp.html#a4d674f38dc9b3bdccfd7e25e65417ed6',1,'stringToStatusCode(const std::string &amp;str):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a4d674f38dc9b3bdccfd7e25e65417ed6',1,'stringToStatusCode(const std::string &amp;str):&#160;StatusCode.cpp']]]
+  ['specialtolower_12',['specialTolower',['../namespacewebutils.html#aff6b877cddbbec27f3971bde0f9fac13',1,'webutils']]],
+  ['split_13',['split',['../namespacewebutils.html#ac353e83957132d4f186a74f5d29b9cda',1,'webutils']]],
+  ['start_5fserver_14',['start_server',['../namespaceutils_1_1utils.html#ad958e9c03f86e7be9b4807b13f46e47b',1,'utils::utils']]],
+  ['statuscodetoreasonphrase_15',['statuscodetoreasonphrase',['../_status_code_8hpp.html#a1bd32c420ee91ee65ec9e0c4dd8a12c9',1,'statusCodeToReasonPhrase(statusCode status):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#aeb630f7ad1d705f76733ac9353036287',1,'statusCodeToReasonPhrase(statusCode statusCode):&#160;StatusCode.cpp']]],
+  ['statuscodetostring_16',['statuscodetostring',['../_status_code_8hpp.html#af5faa47fefee84e9d7647ce996a9c849',1,'statusCodeToString(statusCode status):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a584f6fc19ee569a7287339fdedb1f131',1,'statusCodeToString(statusCode statusCode):&#160;StatusCode.cpp']]],
+  ['stop_5fserver_17',['stop_server',['../namespaceutils_1_1utils.html#a1ec2d820bd35a25bcf0c3cfcfc9b57c7',1,'utils::utils']]],
+  ['stringtostatuscode_18',['stringtostatuscode',['../_status_code_8hpp.html#a4d674f38dc9b3bdccfd7e25e65417ed6',1,'stringToStatusCode(const std::string &amp;str):&#160;StatusCode.cpp'],['../_status_code_8cpp.html#a4d674f38dc9b3bdccfd7e25e65417ed6',1,'stringToStatusCode(const std::string &amp;str):&#160;StatusCode.cpp']]]
 ];

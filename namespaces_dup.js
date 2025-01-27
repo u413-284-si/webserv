@@ -51,6 +51,7 @@ var namespaces_dup =
       [ "closeFd", "namespacewebutils.html#ad74875f464c74bd45589002fc385605e", null ],
       [ "isIpAddressValid", "namespacewebutils.html#a6748cf6b6dd81b72c9e46ed8b800ffed", null ],
       [ "isPortValid", "namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d", null ],
+      [ "specialTolower", "namespacewebutils.html#aff6b877cddbbec27f3971bde0f9fac13", null ],
       [ "lowercase", "namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e", null ],
       [ "capitalizeWords", "namespacewebutils.html#abd244783e4af790f19815c07525a7ac0", null ],
       [ "replaceAlias", "namespacewebutils.html#a7e52566fd329d782c68e2ca871ce2e62", null ],

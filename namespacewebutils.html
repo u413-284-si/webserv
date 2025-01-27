@@ -143,6 +143,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a2abb972ac583db43b6bad84e0e37c22d" id="r_a2abb972ac583db43b6bad84e0e37c22d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#a2abb972ac583db43b6bad84e0e37c22d">isPortValid</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">const</a> std::string &amp;port)</td></tr>
 <tr class="memdesc:a2abb972ac583db43b6bad84e0e37c22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the port number of the listen directive is valid.  <br /></td></tr>
 <tr class="separator:a2abb972ac583db43b6bad84e0e37c22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff6b877cddbbec27f3971bde0f9fac13" id="r_aff6b877cddbbec27f3971bde0f9fac13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#aff6b877cddbbec27f3971bde0f9fac13">specialTolower</a> (<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a> <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">c</a>)</td></tr>
+<tr class="separator:aff6b877cddbbec27f3971bde0f9fac13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afee369c732ca6e732ff83a1caa16089e" id="r_afee369c732ca6e732ff83a1caa16089e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebutils.html#afee369c732ca6e732ff83a1caa16089e">lowercase</a> (std::string <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">str</a>)</td></tr>
 <tr class="memdesc:afee369c732ca6e732ff83a1caa16089e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts all characters in a string to lowercase.  <br /></td></tr>
 <tr class="separator:afee369c732ca6e732ff83a1caa16089e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -668,6 +670,24 @@ false If the port is invalid </dd></dl>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="aff6b877cddbbec27f3971bde0f9fac13" name="aff6b877cddbbec27f3971bde0f9fac13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff6b877cddbbec27f3971bde0f9fac13">&#9670;&#160;</a></span>specialTolower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a> webutils::specialTolower </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">int</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="afee369c732ca6e732ff83a1caa16089e" name="afee369c732ca6e732ff83a1caa16089e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afee369c732ca6e732ff83a1caa16089e">&#9670;&#160;</a></span>lowercase()</h2>
 
@@ -844,12 +864,12 @@ template&lt;<a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5ea
 <dl class="section return"><dt>Returns</dt><dd>std::string The string representation of the type </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Delete if not needed anymore </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utilities_8hpp_source.html#l00048">48</a> of file <a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>;</div>
-<div class="line"><span class="lineno">   51</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>;</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>.str();</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="utilities_8hpp_source.html#l00049">49</a> of file <a class="el" href="utilities_8hpp_source.html">utilities.hpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
+<div class="line"><span class="lineno">   51</span>    std::stringstream <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>;</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a> &lt;&lt; <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">type</a>;</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">stream</a>.str();</div>
+<div class="line"><span class="lineno">   54</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
