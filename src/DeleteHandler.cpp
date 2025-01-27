@@ -48,7 +48,7 @@ std::string DeleteHandler::execute(const std::string& path, statusCode& httpStat
 			// 		   << "\"message\": \"Directory deleted successfully\",\n"
 			// 		   << "\"directory\": \"" << path << "\"\n"
 			// 		   << "}\n";
-			// break;
+			break;
 
 		case FileSystemOps::FileNotFound:
 			httpStatus = StatusNotFound;
