@@ -14,6 +14,7 @@ ConfigFileParser::ConfigFileParser(void)
 	, m_locationIndex(0)
 	, m_hasServerRoot(false)
 	, m_hasLocationRoot(false)
+	, m_hasLocationMaxBodySize(false)
 	, m_isDefaultLocationDefined(false)
 {
 	const char* validServerDirectiveNames[]
@@ -306,6 +307,7 @@ void ConfigFileParser::processServerContent(const ServerBlockConfig& serverBlock
 	for (std::vector<std::string>::const_iterator it = serverBlockConfig.locationBlocksContent.begin();
 		 it != serverBlockConfig.locationBlocksContent.end(); ++it) {
 		m_hasLocationRoot = false;
+		m_hasLocationMaxBodySize = false;
 		processLocationContent(*it);
 	}
 }
@@ -347,11 +349,11 @@ void ConfigFileParser::processLocationContent(const std::string& locationBlockCo
 
 	if (location.root != "html" && !location.alias.empty())
 		throw std::runtime_error(ERR_ROOT_AND_ALIAS_DEFINED);
-	if (location.root == "html")
+	if (!m_hasLocationRoot)
 		location.root = server.root;
-	else if (location.maxBodySize == constants::g_oneMegabyte)
+	if (!m_hasLocationMaxBodySize)
 		location.maxBodySize = server.maxBodySize;
-	else if (location.errorPage.empty())
+	if (location.errorPage.empty())
 		location.errorPage = server.errorPage;
 
 	if (m_locationIndex == 0)
@@ -646,8 +648,10 @@ void ConfigFileParser::readMaxBodySize(const Block& block, const std::string& ma
 
 	if (block == ServerBlock)
 		m_configFile.servers[m_serverIndex].maxBodySize = size;
-	else if (block == LocationBlock)
+	else if (block == LocationBlock) {
 		m_configFile.servers[m_serverIndex].locations[m_locationIndex].maxBodySize = size;
+		m_hasLocationMaxBodySize = true;
+	}
 }
 
 /**
@@ -697,7 +701,8 @@ void ConfigFileParser::readAllowMethods(const std::string& allowMethods)
 		size_t methodStartIndex = index;
 		size_t methodEndIndex = allowMethods.find_first_of(s_whitespace, index);
 
-		const std::string method = webutils::lowercase(allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex));
+		const std::string method
+			= webutils::lowercase(allowMethods.substr(methodStartIndex, methodEndIndex - methodStartIndex));
 
 		if (method == "get")
 			m_configFile.servers[m_serverIndex].locations[m_locationIndex].allowMethods[0] = true;

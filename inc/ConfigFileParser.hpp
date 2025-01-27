@@ -46,6 +46,7 @@ private:
 	size_t m_locationIndex;
 	bool m_hasServerRoot;
 	bool m_hasLocationRoot;
+	bool m_hasLocationMaxBodySize;
 	std::vector<std::string> m_validLocationDirectives;
 	bool m_isDefaultLocationDefined;
 	static const char* const s_whitespace;
