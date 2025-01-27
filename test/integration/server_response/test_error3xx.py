@@ -15,3 +15,9 @@ def test_3xx_return_redirect():
     response = make_request(url, allow_redirects=False)
     assert response.status_code == 301
     assert response.headers["Location"] == "/secret"
+
+def test_3xx_permanent_redirect():
+    url = "http://localhost:8080/nevergonna"
+    response = make_request(url, allow_redirects=False)
+    assert response.status_code == 308
+    assert response.headers["Location"] == "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
