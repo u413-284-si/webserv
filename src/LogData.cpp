@@ -93,12 +93,12 @@ const char* LogData::getFile() const { return m_file; }
 void LogData::formatTime()
 {
 	// Get current time
-	time_t now = time(0);
+	time_t now = std::time(0);
 
 	// Use ctime to convert time_t to a human-readable string (not thread-safe)
 	const int maxTimeString = 80;
 	char buffer[maxTimeString];
-	(void)strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S ", localtime(&now));
+	(void)std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S ", std::localtime(&now));
 	m_formattedTime = buffer;
 }
 

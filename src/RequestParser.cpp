@@ -293,7 +293,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 		throw HTTPErrorException(StatusBadRequest, ERR_INVALID_VERSION_FORMAT);
 
 	int index = versionPrefixLength;
-	if (isdigit(requestLine[index]) == 0)
+	if (std::isdigit(requestLine[index]) == 0)
 		throw HTTPErrorException(StatusBadRequest, ERR_INVALID_VERSION_MAJOR);
 	if (requestLine[index] != '1')
 		throw HTTPErrorException(StatusNonSupportedVersion, ERR_NONSUPPORTED_VERSION);
@@ -301,7 +301,7 @@ std::string RequestParser::parseVersion(const std::string& requestLine, HTTPRequ
 	if (requestLine[++index] != '.')
 		throw HTTPErrorException(StatusBadRequest, ERR_INVALID_VERSION_DELIM);
 	request.version.push_back(requestLine[index]);
-	if (isdigit(requestLine[++index]) == 0)
+	if (std::isdigit(requestLine[++index]) == 0)
 		throw HTTPErrorException(StatusBadRequest, ERR_INVALID_VERSION_MINOR);
 	if (requestLine[index] != '1' && requestLine[index] != '0')
 		throw HTTPErrorException(StatusNonSupportedVersion, ERR_NONSUPPORTED_VERSION);
@@ -523,7 +523,7 @@ size_t RequestParser::checkForString(const std::string& string, size_t startPos,
  */
 void RequestParser::validateHeaderName(const std::string& headerName)
 {
-	if (isspace(headerName[headerName.size() - 1]) != 0)
+	if (std::isspace(headerName[headerName.size() - 1]) != 0)
 		throw HTTPErrorException(StatusBadRequest, ERR_HEADER_COLON_WHITESPACE);
 
 	for (size_t i = 0; i < headerName.size(); i++) {

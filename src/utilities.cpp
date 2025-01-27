@@ -116,7 +116,7 @@ std::string getGMTString(const time_t now, const std::string& format)
 	const int timeStringBuffer = 80;
 	char string[timeStringBuffer] = { 0 };
 
-	static_cast<void>(strftime(string, sizeof(string), format.c_str(), gmtime(&now)));
+	static_cast<void>(std::strftime(string, sizeof(string), format.c_str(), std::gmtime(&now)));
 	return string;
 }
 
@@ -133,7 +133,7 @@ std::string getLocaltimeString(const time_t now, const std::string& format)
 	const int timeStringBuffer = 80;
 	char string[timeStringBuffer] = { 0 };
 
-	static_cast<void>(strftime(string, sizeof(string), format.c_str(), localtime(&now)));
+	static_cast<void>(std::strftime(string, sizeof(string), format.c_str(), std::localtime(&now)));
 	return string;
 }
 
@@ -220,17 +220,30 @@ bool isPortValid(const std::string& port)
 }
 
 /**
+ * @brief Convert input character to lowercase.
+ *
+ * This function converts the given character c to lower case and returns it.
+ *
+ * @param c The character to be converted to lowercase.
+ * @return int The character converted to lowercase.
+ */
+int specialTolower(int c)
+{
+	return std::tolower(c);
+}
+
+/**
  * @brief Converts all characters in a string to lowercase.
  *
  * This function takes a reference to a std::string and transforms all of its characters to lowercase using the
- * std::transform algorithm and the ::tolower function.
+ * std::transform algorithm and the specialTolower function.
  *
  * @param str The string to be converted to lowercase.
  * @return std::string The string with all characters converted to lowercase.
  */
 std::string lowercase(std::string str)
 {
-	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+	std::transform(str.begin(), str.end(), str.begin(), specialTolower);
 	return str;
 }
 
