@@ -4,6 +4,7 @@
 
 #include "ConfigFile.hpp"
 #include "Connection.hpp"
+#include "error.hpp"
 #include "FileSystemOps.hpp"
 #include "HTTPRequest.hpp"
 #include "Log.hpp"
@@ -18,6 +19,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -30,7 +32,7 @@ public:
 	explicit CGIHandler(Connection& connection, const ProcessOps& processOps, const FileSystemOps& fileSystemOps);
 
 	void execute(
-		int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections, const std::map<int, Socket>& virtualServers);
+		int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
 
 	// Getter functions
 	const std::string& getCGIPath() const;
@@ -66,7 +68,7 @@ private:
 	std::string extractPreScriptPath(const std::string& path);
 	std::string mapPathInfoToFileSystem(const std::string& path);
 	void closePipes();
-	void closeAllFds(int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections, const std::map<int, Socket>& virtualServers);
+	void closeAllFds(int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
 };
 
 bool registerChildSignals();

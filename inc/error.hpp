@@ -99,3 +99,6 @@
 #define ERR_MISSING_CGI_HEADER "Invalid CGI response: No header section found in CGI output"
 #define ERR_MISSING_CGI_FIELD "Invalid CGI response: No CGI field (Content-type | Status | Location) found"
 #define ERR_MULTIPLE_UPLOADS "Invalid HTTP request: Multiple file uploads not supported"
+
+// CGI ERRORS
+#define ERR_CGI_FAILURE "CGI: child process failed"

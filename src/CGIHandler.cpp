@@ -184,7 +184,7 @@ const std::vector<std::string>& CGIHandler::getArgv() const { return m_argv; }
  *       and exits.
  */
 void CGIHandler::execute(
-	int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections, const std::map<int, Socket>& virtualServers)
+	int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections)
 {
 	if (m_processOps.forkProcess(m_cgiPid) == -1) {
 		closePipes();
@@ -193,29 +193,31 @@ void CGIHandler::execute(
 	}
 
 	if (m_cgiPid == 0) {
+		m_cgiPid = -1;
+		
 		if (!registerChildSignals()) {
-			closeAllFds(epollFd, connections, cgiConnections, virtualServers);
-			std::exit(EXIT_FAILURE);
+			closeAllFds(epollFd, connections, cgiConnections);
+			throw std::runtime_error(ERR_CGI_FAILURE);
 		}
 
 		// Replace child stdin with read end of input pipe
 		if (m_request.method == MethodPost && m_processOps.dup2Process(m_pipeIn[0], STDIN_FILENO) == -1) {
-			closeAllFds(epollFd, connections, cgiConnections, virtualServers);
-			std::exit(EXIT_FAILURE);
+			closeAllFds(epollFd, connections, cgiConnections);
+			throw std::runtime_error(ERR_CGI_FAILURE);
 		}
 		// Replace child stdout with write end of output pipe
 		if (m_processOps.dup2Process(m_pipeOut[1], STDOUT_FILENO) == -1) {
-			closeAllFds(epollFd, connections, cgiConnections, virtualServers);
-			std::exit(EXIT_FAILURE);
+			closeAllFds(epollFd, connections, cgiConnections);
+			throw std::runtime_error(ERR_CGI_FAILURE);
 		}
-		closeAllFds(epollFd, connections, cgiConnections, virtualServers);
+		closeAllFds(epollFd, connections, cgiConnections);
 
 		std::string workingDir = m_cgiScriptPath;
 		if (m_processOps.chdirProcess(workingDir.c_str()) == -1)
-			std::exit(EXIT_FAILURE);
+			throw std::runtime_error(ERR_CGI_FAILURE);
 
 		if (m_processOps.execProcess(m_argvp[0], m_argvp.data(), m_envp.data()) == -1)
-			std::exit(EXIT_FAILURE);
+			throw std::runtime_error(ERR_CGI_FAILURE);
 	}
 
 	// Close read end of input pipe in parent process
@@ -385,16 +387,12 @@ void CGIHandler::closePipes()
  *        corresponding `Connection` objects as values. All connection file descriptors will be closed.
  * @param cgiConnections A map containing file descriptors for CGI connections as keys and corresponding
  *        `Connection` pointers as values. All CGI connection file descriptors will be closed.
- * @param virtualServers A map containing all server sockets. All sockets will be closed.
- *
  */
 void CGIHandler::closeAllFds(
-	int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections, const std::map<int, Socket>& virtualServers)
+	int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections)
 {
 	closePipes();
 	close(epollFd);
-	for (std::map<int, Socket>::const_iterator iter = virtualServers.begin(); iter != virtualServers.end(); ++iter)
-		close(iter->first);
 	for (std::map<int, Connection>::const_iterator iter = connections.begin(); iter != connections.end(); ++iter)
 		close(iter->first);
 	for (std::map<int, Connection*>::const_iterator iter = cgiConnections.begin(); iter != cgiConnections.end(); ++iter)
