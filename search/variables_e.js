@@ -23,5 +23,5 @@ var searchData=
   ['shallcloseconnection_20',['shallCloseConnection',['../struct_h_t_t_p_request.html#afc0f4c6d53b455a67ea264dbfc3be0e4',1,'HTTPRequest']]],
   ['socket_21',['socket',['../class_register_virtual_server_test.html#a4d31c9584f19c12db0427ce25f230176',1,'RegisterVirtualServerTest']]],
   ['socket2_22',['socket2',['../class_register_virtual_server_test.html#a2f433a0306f250191243551df3002017',1,'RegisterVirtualServerTest']]],
-  ['statuscode_23',['statusCode',['../struct_target_resource_handler_1_1_locating_info.html#a5f0e56b4d33b596b63dcc94522082705',1,'TargetResourceHandler::LocatingInfo']]]
+  ['statuscode_23',['statuscode',['../struct_request_parser_1_1_h_t_t_p_error_exception.html#a0627a1378da3e18dc77e1843b22deca4',1,'RequestParser::HTTPErrorException::statusCode'],['../struct_target_resource_handler_1_1_locating_info.html#a5f0e56b4d33b596b63dcc94522082705',1,'TargetResourceHandler::LocatingInfo::statusCode']]]
 ];

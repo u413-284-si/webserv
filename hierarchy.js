@@ -32,7 +32,8 @@ var hierarchy =
     [ "ResponseBuilder", "class_response_builder.html", null ],
     [ "std::runtime_error", null, [
       [ "FileSystemOps::FileNotFoundException", "struct_file_system_ops_1_1_file_not_found_exception.html", null ],
-      [ "FileSystemOps::NoPermissionException", "struct_file_system_ops_1_1_no_permission_exception.html", null ]
+      [ "FileSystemOps::NoPermissionException", "struct_file_system_ops_1_1_no_permission_exception.html", null ],
+      [ "RequestParser::HTTPErrorException", "struct_request_parser_1_1_h_t_t_p_error_exception.html", null ]
     ] ],
     [ "Server", "class_server.html", null ],
     [ "ServerBlockConfig", "struct_server_block_config.html", null ],
