@@ -33,6 +33,7 @@ void closeFd(int& fileDescriptor);
 bool isIpAddressValid(const std::string& ipAddress);
 bool isPortValid(const std::string& port);
 
+int specialTolower(int c);
 std::string lowercase(std::string str);
 std::string capitalizeWords(const std::string& input);
 std::string replaceAlias(const std::string& input, const std::string& alias, const std::string& replacement);
