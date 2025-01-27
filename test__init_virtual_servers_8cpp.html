@@ -455,17 +455,16 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  150</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_socketOps, resolveListeningAddresses)</div>
 <div class="line"><span class="lineno">  151</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">nullptr</span>))</div>
 <div class="line"><span class="lineno">  152</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addrinfo</a>))</div>
-<div class="line"><span class="lineno">  153</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">nullptr</span>))</div>
-<div class="line"><span class="lineno">  154</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">nullptr</span>));</div>
-<div class="line"><span class="lineno">  155</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_socketOps, createListeningSocket).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(dummyFd));</div>
-<div class="line"><span class="lineno">  156</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_socketOps, retrieveSocketInfo).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(serverSock1));</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_TRUE</a>(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(m_server, backlog, m_server.getServerConfigs()));</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getVirtualServers().size(), 1);</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">free</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>);</div>
-<div class="line"><span class="lineno">  163</span>}</div>
+<div class="line"><span class="lineno">  153</span>        .WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(<span class="keyword">nullptr</span>));</div>
+<div class="line"><span class="lineno">  154</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_socketOps, createListeningSocket).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(dummyFd));</div>
+<div class="line"><span class="lineno">  155</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_CALL</a>(m_socketOps, retrieveSocketInfo).WillOnce(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">Return</a>(serverSock1));</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_TRUE</a>(<a class="code hl_function" href="_server_8hpp.html#a35359f61d42dbd6561a07c12009ca45a">initVirtualServers</a>(m_server, backlog, m_server.getServerConfigs()));</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">EXPECT_EQ</a>(m_server.getVirtualServers().size(), 1);</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>    <a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">free</a>(<a class="code hl_enumeration" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">addr</a>);</div>
+<div class="line"><span class="lineno">  162</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
