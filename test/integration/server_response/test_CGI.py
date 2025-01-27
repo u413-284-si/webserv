@@ -29,7 +29,7 @@ def test_CGI_time():
    response = make_request(url)
    assert response.status_code == 200
 
-def test_CGI_create_textfile(test_file_cleanup):
+def test_CGI_create_textfile(test_path_cleanup):
    print("Upload file with /cgi-bin/create_textfile.py")
 
    form_data = {
@@ -40,7 +40,7 @@ def test_CGI_create_textfile(test_file_cleanup):
    dst_file_path = "/workspaces/webserv/html/uploads/documents/myfile.txt"
    url = "http://127.0.0.1:8081/cgi-bin/create_textfile.py"
 
-   test_file_cleanup.append(dst_file_path)
+   test_path_cleanup.append(dst_file_path)
 
    response = make_request(url, method = "POST", data=form_data)
    assert response.status_code == 200

@@ -214,7 +214,7 @@ def test_4xx_epoll_partial_and_complete_requests():
     client1.close()
     client2.close()
 
-def test_4xx_no_permission_to_append(temp_permission_change, test_file_cleanup):
+def test_4xx_no_permission_to_append(temp_permission_change, test_path_cleanup):
     print("Chmod 000 existing_file and try to append")
     # Body to send
     existing_content = "Hello, World!\n"
@@ -224,7 +224,7 @@ def test_4xx_no_permission_to_append(temp_permission_change, test_file_cleanup):
 
     # Make file readonly
     temp_permission_change(dst_file_path, 0o444)
-    test_file_cleanup.append(dst_file_path)
+    test_path_cleanup.append(dst_file_path)
 
     url = "http://localhost:8080/uploads/existing_file.txt"
     payload = "It is me!"

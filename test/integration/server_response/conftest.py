@@ -44,23 +44,33 @@ def init_server_instance(request: FixtureRequest) -> Generator[subprocess.Popen,
     stop_server(server_process)
 
 @pytest.fixture
-def test_file_cleanup() -> Generator[List[str], None, None]:
-    """Fixture to clean up test files after a test.
+def test_path_cleanup() -> Generator[List[str], None, None]:
+    """Fixture to clean up test files and directories after a test.
 
     Yields:
-        List[str]: A list of file paths to be cleaned up after the test.
+        List[str]: A list of paths (files or directories) to be cleaned up after the test.
     """
-    files_to_cleanup: List[str] = []
+    paths_to_cleanup: List[str] = []
 
-    yield files_to_cleanup
+    yield paths_to_cleanup
 
     # Restore permissions and clean up
-    for file_path in files_to_cleanup:
+    for path in paths_to_cleanup:
         try:
-            os.chmod(file_path, 0o666)  # Default to read/write for deletion
-            os.remove(file_path)
+            if os.path.isfile(path):
+                os.chmod(path, 0o666)  # Default to read/write for file deletion
+                os.remove(path)
+            elif os.path.isdir(path):
+                for root, _, files in os.walk(path, topdown=False):
+                    for file in files:
+                        file_path = os.path.join(root, file)
+                        os.chmod(file_path, 0o666)
+                        os.remove(file_path)
+                os.rmdir(path)  # Remove the directory itself
         except FileNotFoundError:
             pass
+        except Exception as e:
+            print(f"Error while cleaning up '{path}': {e}")
 
 @pytest.fixture
 def temp_permission_change() -> Generator[None, None, None]:
