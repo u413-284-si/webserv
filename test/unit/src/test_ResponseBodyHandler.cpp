@@ -280,19 +280,23 @@ TEST_F(ResponseBodyHandlerTest, CustomErrorPageNoPermission)
 	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusForbidden));
 }
 
-TEST(ResponseBodyHandler, getDefaultErrorPage)
+TEST_F(ResponseBodyHandlerTest, MethodNotDefined)
 {
-	getDefaultErrorPage(StatusOK);
-	getDefaultErrorPage(StatusMovedPermanently);
-	getDefaultErrorPage(StatusPermanentRedirect);
-	getDefaultErrorPage(StatusBadRequest);
-	getDefaultErrorPage(StatusForbidden);
-	getDefaultErrorPage(StatusNotFound);
-	getDefaultErrorPage(StatusRequestEntityTooLarge);
-	getDefaultErrorPage(StatusMethodNotAllowed);
-	getDefaultErrorPage(StatusRequestTimeout);
-	getDefaultErrorPage(StatusRequestHeaderFieldsTooLarge);
-	getDefaultErrorPage(StatusInternalServerError);
-	getDefaultErrorPage(StatusMethodNotImplemented);
-	getDefaultErrorPage(StatusNonSupportedVersion);
+	m_request.method = MethodCount;
+	m_request.httpStatus = StatusOK;
+	m_request.targetResource = "/how_did_this_happen";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
+}
+
+TEST_F(ResponseBodyHandlerTest, AbnormalStatusCode)
+{
+	m_request.httpStatus = static_cast<enum statusCode>(-1);
+	m_request.targetResource = "/how_did_this_happen";
+
+	m_responseBodyHandler.execute();
+	EXPECT_EQ(m_request.httpStatus, StatusInternalServerError);
+	EXPECT_EQ(m_responseBody, getDefaultErrorPage(StatusInternalServerError));
 }
