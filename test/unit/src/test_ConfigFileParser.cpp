@@ -1582,5 +1582,16 @@ TEST_F(ValidConfigFileTests, DirectiveInheritance)
 {
 	ConfigFile configFile;
 	EXPECT_NO_THROW(configFile = m_configFileParser.parseConfigFile("test/config_files/directive_inheritance.conf"));
-	EXPECT_EQ("/var/www/html", configFile.servers[0].locations[0].root);
+
+	// location '/upload_videos'
+	EXPECT_EQ("/var/www/html", configFile.servers[0].locations[1].root);
+	EXPECT_EQ(constants::g_oneMegabyte * 2, configFile.servers[0].locations[1].maxBodySize);
+	EXPECT_EQ("/403.html", configFile.servers[0].locations[1].errorPage[StatusForbidden]);
+	EXPECT_EQ("/404.html", configFile.servers[0].locations[1].errorPage[StatusNotFound]);
+
+	// location '/upload_images'
+	EXPECT_EQ("/var/www/html", configFile.servers[0].locations[2].root);
+	EXPECT_EQ(constants::g_oneMegabyte, configFile.servers[0].locations[2].maxBodySize);
+	EXPECT_EQ("/403.html", configFile.servers[0].locations[2].errorPage[StatusForbidden]);
+	EXPECT_EQ("/404.html", configFile.servers[0].locations[2].errorPage[StatusNotFound]);
 }
