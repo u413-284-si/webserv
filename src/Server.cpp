@@ -1012,40 +1012,9 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 
 	try {
 		server.parseHeader(connection.m_buffer, connection.m_request);
-	} catch (RequestParser::MethodNotImplementedException& e) {
+	} catch (const RequestParser::HTTPErrorException& e) {
 		LOG_ERROR << e.what();
-		connection.m_request.httpStatus = StatusMethodNotImplemented;
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-		return;
-	} catch (RequestParser::MethodNotAllowedException& e) {
-		LOG_ERROR << e.what();
-		connection.m_request.httpStatus = StatusMethodNotAllowed;
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-		return;
-	} catch (RequestParser::HTTPVersionNotSupportedException& e) {
-		LOG_ERROR << e.what();
-		connection.m_request.httpStatus = StatusNonSupportedVersion;
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-		return;
-	} catch (RequestParser::RequestEntityTooLargeException& e) {
-		LOG_ERROR << e.what();
-		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-		return;
-	} catch (std::exception& e) {
-		LOG_ERROR << e.what();
-		connection.m_request.httpStatus = StatusBadRequest;
-		connection.m_status = Connection::BuildResponse;
-		server.modifyEvent(clientFd, EPOLLOUT);
-		return;
-	}
-
-	if (connection.m_request.contentLength > connection.location->maxBodySize) {
-		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		connection.m_request.httpStatus = e.statusCode;
 		connection.m_status = Connection::BuildResponse;
 		server.modifyEvent(clientFd, EPOLLOUT);
 		return;
@@ -1062,6 +1031,13 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	LOG_DEBUG << "Active server: " << connection.m_serverSocket;
 
 	server.findTargetResource(connection);
+
+	if (connection.m_request.contentLength > connection.location->maxBodySize) {
+		connection.m_request.httpStatus = StatusRequestEntityTooLarge;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
+	}
 
 	if (connection.m_request.hasReturn) {
 		connection.m_status = Connection::BuildResponse;
@@ -1086,6 +1062,9 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
 	if (!connection.location->allowMethods[connection.m_request.method]) {
 		connection.m_request.httpStatus = StatusMethodNotAllowed;
+		connection.m_status = Connection::BuildResponse;
+		server.modifyEvent(clientFd, EPOLLOUT);
+		return;
 	}
 
 	if (isCGIRequested(connection)) {
@@ -1239,15 +1218,9 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (connection.m_request.isChunked) {
 		try {
 			server.parseChunkedBody(connection.m_buffer, connection.m_request);
-		} catch (RequestParser::RequestEntityTooLargeException& e) {
+		} catch (const RequestParser::HTTPErrorException& e) {
 			LOG_ERROR << e.what();
-			connection.m_request.httpStatus = StatusRequestEntityTooLarge;
-			connection.m_status = Connection::BuildResponse;
-			server.modifyEvent(activeFd, EPOLLOUT);
-			return;
-		} catch (std::exception& e) {
-			LOG_ERROR << e.what();
-			connection.m_request.httpStatus = StatusBadRequest;
+			connection.m_request.httpStatus = e.statusCode;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 			return;
@@ -1286,9 +1259,9 @@ void handleBody(Server& server, int activeFd, Connection& connection)
 	if (connection.m_request.hasMultipartFormdata) {
 		try {
 			server.decodeMultipartFormdata(connection.m_request);
-		} catch (std::exception& e) {
+		} catch (const RequestParser::HTTPErrorException& e) {
 			LOG_ERROR << e.what();
-			connection.m_request.httpStatus = StatusBadRequest;
+			connection.m_request.httpStatus = e.statusCode;
 			connection.m_status = Connection::BuildResponse;
 			server.modifyEvent(activeFd, EPOLLOUT);
 			return;

@@ -38,20 +38,9 @@ public:
 	RequestParser();
 
 	// custom exceptions
-	struct MethodNotImplementedException : public std::runtime_error {
-		explicit MethodNotImplementedException(const std::string& msg);
-	};
-
-	struct MethodNotAllowedException : public std::runtime_error {
-		explicit MethodNotAllowedException(const std::string& msg);
-	};
-
-	struct HTTPVersionNotSupportedException : public std::runtime_error {
-		explicit HTTPVersionNotSupportedException(const std::string& msg);
-	};
-
-	struct RequestEntityTooLargeException : public std::runtime_error {
-		explicit RequestEntityTooLargeException(const std::string& msg);
+	struct HTTPErrorException : public std::runtime_error {
+		explicit HTTPErrorException(statusCode statusCode, const std::string& msg);
+		statusCode statusCode;
 	};
 
 	void parseHeader(const std::string& headerString, HTTPRequest& request);
