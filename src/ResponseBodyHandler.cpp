@@ -147,7 +147,8 @@ void ResponseBodyHandler::handlePostRequest()
 		m_responseHeaders["location"] = m_request.uri.path;
 	if (m_responseBody.empty())
 		handleErrorBody();
-	m_request.targetResource = "posted.json";
+	else
+		m_request.targetResource = "posted.json";
 }
 
 /**
@@ -164,7 +165,8 @@ void ResponseBodyHandler::handleDeleteRequest()
 	m_responseBody = deleteHandler.execute(m_request.targetResource, m_request.httpStatus);
 	if (m_responseBody.empty())
 		handleErrorBody();
-	m_request.targetResource = "deleted.json";
+	else
+		m_request.targetResource = "deleted.json";
 }
 
 /**

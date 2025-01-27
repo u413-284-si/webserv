@@ -3,14 +3,14 @@
 from utils.utils import make_request
 import os
 
-def test_POST_create_file(test_file_cleanup):
+def test_POST_create_file(test_path_cleanup):
     print("Request for /uploads/testfile.txt")
     # Body to send
     payload = "Beam me up, Scotty!"
     dst_file_path = "/workspaces/webserv/html/uploads/testfile.txt"
     url = "http://localhost:8080/uploads/testfile.txt"
 
-    test_file_cleanup.append(dst_file_path)
+    test_path_cleanup.append(dst_file_path)
 
     response = make_request(url, method="POST", data=payload)
 
@@ -18,7 +18,7 @@ def test_POST_create_file(test_file_cleanup):
     assert response.headers["location"] == "/uploads/testfile.txt"
     assert os.path.isfile(dst_file_path)
 
-def test_POST_append(test_file_cleanup):
+def test_POST_append(test_path_cleanup):
     print("Request for /uploads/existing_file.txt")
     # Body to send
     existing_content = "Hello, World!\n"
@@ -29,7 +29,7 @@ def test_POST_append(test_file_cleanup):
     url = "http://localhost:8080/uploads/existing_file.txt"
     payload = "It is me!"
 
-    test_file_cleanup.append(dst_file_path)
+    test_path_cleanup.append(dst_file_path)
 
     response = make_request(url, method="POST", data=payload)
 
@@ -47,13 +47,13 @@ def generate_chunks():
     yield "Second chunk of\n data".encode("utf-8")
     yield "Third chunk of data".encode("utf-8")
 
-def test_POST_chunked_encoding(test_file_cleanup):
+def test_POST_chunked_encoding(test_path_cleanup):
     print("Chunked Request for /uploads/testfile_chunked.txt")
 
     dst_file_path = "/workspaces/webserv/html/uploads/testfile_chunked.txt"
     url = "http://localhost:8080/uploads/testfile_chunked.txt"
 
-    test_file_cleanup.append(dst_file_path)
+    test_path_cleanup.append(dst_file_path)
 
     response = make_request(url, method="POST", data=generate_chunks())
 
@@ -67,14 +67,14 @@ def generate_chunks_with_zero_chunk():
     yield ("A"*8000).encode("utf-8") # ensure clientBody buffer size is reached
     yield ("A"*8000).encode("utf-8")
 
-def test_POST_chunked_encoding_with_zero_chunk(test_file_cleanup):
+def test_POST_chunked_encoding_with_zero_chunk(test_path_cleanup):
     print("Chunked Request with zero chunk for /uploads/testfile_chunked.txt")
 
     dst_file_path = "/workspaces/webserv/html/uploads/testfile_chunked.txt"
     url = "http://localhost:8080/uploads/testfile_chunked.txt"
 
-    test_file_cleanup.append(dst_file_path)
-    
+    test_path_cleanup.append(dst_file_path)
+
     response = make_request(url, method="POST", data=generate_chunks_with_zero_chunk())
 
     assert response.status_code == 201
@@ -82,7 +82,7 @@ def test_POST_chunked_encoding_with_zero_chunk(test_file_cleanup):
     # Check if file exists
     assert os.path.isfile(dst_file_path)
 
-def test_POST_bigger_file(test_file_cleanup):
+def test_POST_bigger_file(test_path_cleanup):
     print("Request for /uploads/butterfly.jpg")
 
     src_file_path = "/workspaces/webserv/html/images/butterfly.jpg"
@@ -91,7 +91,7 @@ def test_POST_bigger_file(test_file_cleanup):
     dst_file_path = "/workspaces/webserv/html/uploads/butterfly.jpg"
     url = "http://localhost:8080/uploads/butterfly.jpg"
 
-    test_file_cleanup.append(dst_file_path)
+    test_path_cleanup.append(dst_file_path)
 
     response = make_request(url, method="POST", data=binary_data)
 
