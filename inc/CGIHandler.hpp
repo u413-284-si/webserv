@@ -30,7 +30,7 @@ public:
 	explicit CGIHandler(Connection& connection, const ProcessOps& processOps, const FileSystemOps& fileSystemOps);
 
 	void execute(
-		int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
+		int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections, const std::map<int, Socket>& virtualServers);
 
 	// Getter functions
 	const std::string& getCGIPath() const;
@@ -66,7 +66,7 @@ private:
 	std::string extractPreScriptPath(const std::string& path);
 	std::string mapPathInfoToFileSystem(const std::string& path);
 	void closePipes();
-	void closeAllFds(int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections);
+	void closeAllFds(int epollFd, const std::map<int, Connection>& connections, const std::map<int, Connection*>& cgiConnections, const std::map<int, Socket>& virtualServers);
 };
 
 bool registerChildSignals();

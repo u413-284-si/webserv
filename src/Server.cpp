@@ -1075,7 +1075,7 @@ void handleCompleteRequestHeader(Server& server, int clientFd, Connection& conne
 			server.modifyEvent(clientFd, EPOLLOUT);
 			return;
 		}
-		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections());
+		cgiHandler.execute(server.getEpollFd(), server.getConnections(), server.getCGIConnections(), server.getVirtualServers());
 	}
 
 	LOG_DEBUG << "HTTP Status: " << connection.m_request.httpStatus;
