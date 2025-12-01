@@ -28,7 +28,9 @@
 				"coverage-gutters.coverageBaseDir": "kcov_report/*"
 			}
 		}
-	}
+	},
+	// Ensure uploads directory is owned by vscode user
+	"postCreateCommand": "chown -R vscode:vscode /workspaces/webserv/html/uploads"
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

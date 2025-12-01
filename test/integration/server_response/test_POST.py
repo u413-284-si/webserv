@@ -25,6 +25,8 @@ def test_POST_append(test_path_cleanup):
     dst_file_path = "/workspaces/webserv/html/uploads/existing_file.txt"
     with open(dst_file_path, "w") as file:
         file.write(existing_content)
+    # Ensure correct permissions to allow appending
+    os.chmod(dst_file_path, 0o666)
 
     url = "http://localhost:8080/uploads/existing_file.txt"
     payload = "It is me!"
