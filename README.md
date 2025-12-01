@@ -110,6 +110,27 @@ The server follows a modular architecture built around four main responsibilitie
 
 ### Prerequisites
 
+#### Using the Dev Container (Recommended)
+
+This repository includes a dev container configuration (`.devcontainer/devcontainer.json`) that provides a complete development environment with all necessary dependencies pre-installed:
+
+- C++ compiler (`gcc`, `g++`, `clang`)
+- `make`, `cmake`
+- Google Test (libgtest, libgmock)
+- `bear` for generating compile commands
+- `kcov` for code coverage
+- `valgrind` for memory checking
+- `perf` for profiling
+- Python 3 with `pytest` for integration tests
+- Build tools: `cppcheck`, `lldb`, `llvm`, `gdb`
+- Git and standard utilities
+
+To use the dev container, open the repository in VS Code with the "Dev Containers" extension installed, and it will automatically set up the environment.
+
+#### Manual Setup
+
+If not using the dev container, ensure the following are installed:
+
 - A C++ compiler supporting at least C++98 and C++20 (tests use C++20). Typical: `g++`/`clang++`
 - `make`
 - Google Test (libgtest, libgmock) for unit tests and headers installed for linking
