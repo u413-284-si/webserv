@@ -177,15 +177,15 @@ The `Makefile` includes many convenience targets. Below is a summary of the most
 
 - `make all` (default): compile the server binary (`webserv`).
 - `make test`: compile and run the unit tests (links with `gtest`/`gmock`).
-- `make test2`: build the server and run integration tests with `pytest`. This runs pytest with `-v -m "not timeout"` and passes `--server-executable` and `--config-file` to the test runner.
-- `make test3`: run a load test using `siege`. Starts the server, runs siege using settings in `test/siege`, then kills the server.
+- `make test2`: build the server and run integration tests with `pytest`.
+- `make test3`: run a load test using `siege`.
 - `make test4`: a benchmark-style siege run for a single URL.
 - `make test5`: run the server under `valgrind` and drive requests using `test/requester/requester.py` (useful for leak checking); opens the valgrind log with `less` at the end.
-- `make coverage`: generate a coverage report for unit tests using `kcov` (requires `kcov`). Output directory is `.vscode/coverage` by default.
-- `make coverage2`: generate coverage from integration tests using `pytest` with kcov output (requires pytest kcov support and `kcov`).
-- `make comp`: uses `bear` to create a `compile_commands.json` for language servers (runs `bear -- make -j4 --no-print-directory $(UNIT)`). Requires `bear`.
-- `make profile`: run the program with `perf` and produce a perf.data file (requires `perf`).
-- `make clean`: remove object and dependency files (cleans `obj/`).
+- `make coverage`: generate a coverage report for unit tests using `kcov`. Output directory is `kcov_report` by default.
+- `make coverage2`: generate coverage from integration tests using `pytest` with kcov output.
+- `make comp`: uses `bear` to create a `compile_commands.json` for language servers.
+- `make profile`: run the program with `perf` and produce a perf.data file.
+- `make clean`: remove object and dependency files.
 - `make fclean`: performs `clean` and also removes binaries, logs, coverage directory, and other temporary files.
 - `make re`: perform `fclean` then `all`.
 - `make help`: print a short help summary (targets and variables).
@@ -269,14 +269,14 @@ Note: Python dependencies for the integration tests are not installed by the Mak
 
 The Makefile includes two coverage helpers:
 
-- `make coverage` — run `kcov` against the unit test binary and write results to `.vscode/coverage`.
+- `make coverage` — run `kcov` against the unit test binary and write results to `kcov_report`.
 - `make coverage2` — run integration tests under pytest and produce kcov-compatible output.
 
 Example:
 
 ```bash
 make coverage
-# open .vscode/coverage/index.html in a browser to view report
+# open kcov_report/index.html in a browser to view report
 ```
 
 `kcov` is required for these targets.
