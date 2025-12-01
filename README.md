@@ -54,7 +54,7 @@ Made with ❤️ by
 
 **CGI Support**
 
-- Execution based on file extension (e.g., .php, .py)
+- Execution based on file extension (.sh, .py etc)
 - Proper environment variable setup
 - Unchunked request body passed to CGI
 - CGI output handled according to HTTP rules
@@ -92,7 +92,7 @@ The server follows a modular architecture built around four main responsibilitie
 - Serving files via non-blocking reads
 - Generating directory listings
 - Dynamic response building for CGI output
-- Accurate Content-Length or chunked encoding (based on implementation)
+- Accurate Content-Length header
 
 ### 4. Configuration Layer
 
@@ -114,15 +114,14 @@ The server follows a modular architecture built around four main responsibilitie
 
 This repository includes a dev container configuration (`.devcontainer/devcontainer.json`) that provides a complete development environment with all necessary dependencies pre-installed:
 
-- C++ compiler (`gcc`, `g++`, `clang`)
-- `make`, `cmake`
+- C++ compiler (`clang`)
+- `make`
 - Google Test (libgtest, libgmock)
 - `bear` for generating compile commands
 - `kcov` for code coverage
 - `valgrind` for memory checking
 - `perf` for profiling
 - Python 3 with `pytest` for integration tests
-- Build tools: `cppcheck`, `lldb`, `llvm`, `gdb`
 - Git and standard utilities
 
 To use the dev container, open the repository in VS Code with the "Dev Containers" extension installed, and it will automatically set up the environment.
@@ -169,7 +168,7 @@ To stop the server when started this way:
 kill `cat webserv.pid` && rm -f webserv.pid
 ```
 
-Configuration: The default config file used by multiple Makefile targets is `config_files/example.conf`.
+Configuration: If server is started without a config file param it will use `config_files/trihard.conf`.
 
 ### Makefile Targets
 
