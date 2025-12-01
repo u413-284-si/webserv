@@ -203,6 +203,34 @@ make all SANI=1
 # binary will be named `webserv_sani`
 ```
 
+## Documentation
+
+### Doxygen
+
+This project maintains comprehensive API documentation using Doxygen. The documentation is automatically generated and deployed via GitHub Actions.
+
+**Viewing the documentation:**
+- View the documentation online: [https://u413-284-si.github.io/webserv](https://u413-284-si.github.io/webserv)
+- The Doxygen HTML output is also available in the `doc/` directory and can be built locally.
+
+**Building documentation locally:**
+
+Ensure Doxygen is installed, then run:
+
+```bash
+doxygen doc/Doxyfile
+```
+
+This generates HTML documentation in the `doc/html/` directory. Open `doc/html/index.html` in a browser to view it.
+
+**Configuration:**
+- The Doxygen configuration file is `doc/Doxyfile`.
+- Custom styling is provided via `doc/doxygen-awesome-css/` for a modern appearance.
+
+**CI/CD:**
+- Documentation is automatically rebuilt and deployed on every push to the main branch via GitHub Actions.
+- See `.github/workflows/` for the automation configuration.
+
 ## Testing
 
 ### Unit Tests
@@ -290,4 +318,3 @@ make fclean
 - Logs are written under `log/` by default when some targets create them.
 - The server serves files from the `html/` directory in integration-test scenarios; example content and directories are provided.
 - The `cgi-bin/` folder contains several helper scripts used by integration tests (Python and shell scripts).
-
