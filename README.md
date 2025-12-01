@@ -277,10 +277,3 @@ make fclean
 - The server serves files from the `html/` directory in integration-test scenarios; example content and directories are provided.
 - The `cgi-bin/` folder contains several helper scripts used by integration tests (Python and shell scripts).
 
----
-
-**Troubleshooting & tips**
-- If `make test` fails to link due to missing gtest/gmock libraries, install the distribution packages (e.g., `libgtest-dev` / build Google Test and install) or adjust linker flags to point to your gtest installation.
-- If `make comp` complains about `bear` not found, install `bear` or create `compile_commands.json` via other tooling.
-- If `kcov` is missing, skip `make coverage` and run unit tests directly.
-
