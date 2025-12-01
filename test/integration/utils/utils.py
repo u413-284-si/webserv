@@ -3,11 +3,8 @@ import os
 import time
 import requests
 import pytest
-from typing import Optional, Dict, Union, List
+from typing import Optional, Dict, Union
 import socket
-
-# Defines the user to run the server as
-TARGET_USER = "vscode"
 
 def start_server(
     server_executable: str,
@@ -29,31 +26,14 @@ def start_server(
     Returns:
         subprocess.Popen: The process object that represents the running server.
     """
-    # 1. Base command (executable and config file)
-    server_cmd: List[str] = [server_executable, config_file]
-
     if with_coverage:
-        # 2. Command wrapper for coverage (kcov)
+    # Create the kcov output directory if it doesn't exist
         os.makedirs(kcov_output_dir, exist_ok=True)
-        # Note: kcov itself must be run as root to collect all data, but it launches the server
-        # We will apply the user change to the server executable inside the kcov command
-        server_cmd = [
-            "kcov",
-            kcov_excl_path,
-            kcov_output_dir,
-            # The execution part below is what kcov runs
-            "gosu", TARGET_USER, server_executable, config_file
-        ]
-        print("Running server with coverage (kcov) and execution as unprivileged user...")
+        server_process = subprocess.Popen(["kcov", kcov_excl_path, kcov_output_dir, server_executable, config_file])
+        print("Running server with coverage (kcov)...")
     else:
-        # 3. Apply the user change wrapper for the direct execution
-        # Prepend the user switch command
-        server_cmd = ["gosu", TARGET_USER] + server_cmd
-        print(f"Running server without coverage, as user {TARGET_USER}...")
-
-    # Execute the final command
-    server_process = subprocess.Popen(server_cmd)
-
+        server_process = subprocess.Popen([server_executable, config_file])
+        print("Running server without coverage...")
     return server_process
 
 def stop_server(server_process: subprocess.Popen) -> None:

@@ -34,8 +34,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 	# Dependencies for tests with python
 		python3-requests \
 		python3-pytest \
-	# Used for testing when container running as root
-		gosu \
 	# Remove valgrind because we build newer version
 	&& apt-get remove -y \
 		valgrind \
