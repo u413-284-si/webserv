@@ -9,6 +9,14 @@ It mirrors the core behavior of real servers such as NGINX, following the constr
 
 Although inspired by HTTP/1.0–1.1, it implements only the subset of features required by the 42 subject.
 
+✅ Completed with 110/100
+
+Made with ❤️ by
+
+- [u413-284-si](https://github.com/u413-284-si)
+- [QCHR1581](https://github.com/QCHR1581)
+- [gwolf-011235](https://github.com/gwolf-011235)
+
 ## Objectives
 
 - Understand how HTTP works on a low level
