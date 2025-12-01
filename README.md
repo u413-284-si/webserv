@@ -108,7 +108,8 @@ The server follows a modular architecture built around four main responsibilitie
 
 ## Building the Project
 
-**Prerequisites**
+### Prerequisites
+
 - A C++ compiler supporting at least C++98 and C++20 (tests use C++20). Typical: `g++`/`clang++`
 - `make`
 - Google Test (libgtest, libgmock) for unit tests and headers installed for linking
@@ -117,7 +118,9 @@ The server follows a modular architecture built around four main responsibilitie
 
 If you're missing optional tools, the Makefile checks for some of them and prints instructions when required.
 
-**Quick start — build and run**
+### Quick Start
+
+**Build and run the server**
 
 1. Build the default server binary:
 
@@ -147,9 +150,7 @@ kill `cat webserv.pid` && rm -f webserv.pid
 
 Configuration: The default config file used by multiple Makefile targets is `config_files/example.conf`.
 
----
-
-**Makefile targets**
+### Makefile Targets
 
 The `Makefile` includes many convenience targets. Below is a summary of the most-used targets and how to use them.
 
@@ -168,7 +169,8 @@ The `Makefile` includes many convenience targets. Below is a summary of the most
 - `make re`: perform `fclean` then `all`.
 - `make help`: print a short help summary (targets and variables).
 
-Special build variables:
+### Build Variables
+
 - `VERBOSE=1` — show all commands during the build
 - `SANI=1` — enable Address/Undefined behavior sanitizers; builds alternate binary `webserv_sani`
 - `NODEBUG=1` — compile without debug messages
@@ -180,9 +182,9 @@ make all SANI=1
 # binary will be named `webserv_sani`
 ```
 
----
+## Testing
 
-**Running unit tests**
+### Unit Tests
 
 Build and run the unit tests with:
 
@@ -198,9 +200,7 @@ If you prefer to run tests manually from the generated binary:
 ./unittest
 ```
 
----
-
-**Integration tests**
+### Integration Tests
 
 Integration tests are driven by `pytest` under `test/integration/`. The Makefile target `test2` will build the server and run the tests, passing the server executable and configuration file to the pytest suite.
 
@@ -216,9 +216,7 @@ pytest -v ./test/integration --server-executable=./webserv --config-file=./confi
 
 Note: Python dependencies for the integration tests are not installed by the Makefile. Ensure `pytest` is available in your environment.
 
----
-
-**Coverage**
+### Code Coverage
 
 The Makefile includes two coverage helpers:
 
@@ -234,16 +232,12 @@ make coverage
 
 `kcov` is required for these targets.
 
----
-
-**Profiling and memory checking**
+### Profiling and Memory Checking
 
 - `make profile` — runs the server with `perf` to record samples; `perf` must be installed.
 - `make test5` — runs the server under `valgrind` and executes `test/requester/requester.py` for workload; requires `valgrind`.
 
----
-
-**Load testing**
+### Load Testing
 
 Load testing uses `siege` with configuration files under `test/siege/`. To run the included siege scenarios:
 
@@ -253,9 +247,7 @@ make test3   # or `make test4` for a single-URL benchmark
 
 `test3` and `test4` start the server for you, run `siege`, then stop the server.
 
----
-
-**Useful developer tasks**
+## Development Tasks
 
 - Generate `compile_commands.json` for editor tooling:
 
@@ -270,9 +262,10 @@ make clean
 make fclean
 ```
 
----
+## Project Structure and Notes
 
-**Notes about behavior and files**
+### File Organization
+
 - Logs are written under `log/` by default when some targets create them.
 - The server serves files from the `html/` directory in integration-test scenarios; example content and directories are provided.
 - The `cgi-bin/` folder contains several helper scripts used by integration tests (Python and shell scripts).
