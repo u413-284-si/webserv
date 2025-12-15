@@ -107,7 +107,277 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">webserv </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a>This project is about setting up a http web server, providing a static website. </p>
+<div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a> A lightweight HTTP server written in C++98.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Overview</h1>
+<p>This project consists of building a functional HTTP server from scratch using C++98. It mirrors the core behavior of real servers such as NGINX, following the constraints of non-blocking I/O, a single multiplexing mechanism, and accurate HTTP request/response handling.</p>
+<p>Although inspired by HTTP/1.0–1.1, it implements only the subset of features required by the 42 subject.</p>
+<p>✅ Completed with 110/100</p>
+<p>Made with ❤️ by</p>
+<ul>
+<li><a href="https://github.com/u413-284-si">u413-284-si</a></li>
+<li><a href="https://github.com/QCHR1581">QCHR1581</a></li>
+<li><a href="https://github.com/gwolf-011235">gwolf-011235</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Objectives</h1>
+<ul>
+<li>Understand how HTTP works on a low level</li>
+<li>Implement a fully functional web server</li>
+<li>Handle multiple simultaneous clients using a single event loop</li>
+<li>Parse and serve dynamic configurations</li>
+<li>Support CGI execution</li>
+<li>Build robust, fault-tolerant backend systems</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Features</h1>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Mandatory</h2>
+<p><b>Core HTTP Handling</b></p>
+<ul>
+<li>Full support for GET, POST, and DELETE</li>
+<li>Serving static files efficiently</li>
+<li><a class="el" href="class_directory.html" title="Wrapper class for DIR pointer.">Directory</a> handling:<ul>
+<li>Custom index files</li>
+<li>Optional directory listing</li>
+</ul>
+</li>
+<li>Custom error pages (with fallback defaults)</li>
+<li>Upload handling for POST requests</li>
+<li>Correct HTTP status codes</li>
+<li>Chunked request body decoding</li>
+<li>Simultaneous monitoring of read/write events</li>
+<li>Immediate handling of client disconnections</li>
+<li>Built-in protection against infinite waits or hanging requests</li>
+</ul>
+<p><b>Networking</b></p>
+<ul>
+<li>Single <a class="el" href="_status_code_8hpp.html#a0506d82d6e3d6758981ff5eac9ca85ea">epoll()</a> loop for all sockets</li>
+<li>Strict non-blocking behavior</li>
+<li>Multiple listening ports defined by configuration</li>
+<li>Configurable request body size limit</li>
+</ul>
+<p><b>CGI Support</b></p>
+<ul>
+<li>Execution based on file extension (.sh, .py etc)</li>
+<li>Proper environment variable setup</li>
+<li>Unchunked request body passed to CGI</li>
+<li>CGI output handled according to HTTP rules</li>
+<li>EOF detection in absence of Content-Length</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Bonus Features</h2>
+<ul>
+<li>Handle multiple CGI types</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Architecture Overview</h1>
+<p>The server follows a modular architecture built around four main responsibilities:</p>
+<h2><a class="anchor" id="autotoc_md7"></a>
+1. Event Loop</h2>
+<ul>
+<li>A single non-blocking I/O loop manages:<ul>
+<li>Listening sockets</li>
+<li>Client connections</li>
+<li>CGI pipes</li>
+</ul>
+</li>
+<li>Ensures the server never blocks and remains responsive under heavy load.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md8"></a>
+2. Request Parsing</h2>
+<ul>
+<li>Incremental parsing based on readiness notifications</li>
+<li>Handles:<ul>
+<li>Request line</li>
+<li>Headers</li>
+<li>Chunked bodies</li>
+<li>Body size limits</li>
+</ul>
+</li>
+<li>Detects malformed requests and returns appropriate responses.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md9"></a>
+3. Response Generation</h2>
+<ul>
+<li>Mapping URL → Route configuration</li>
+<li>Serving files via non-blocking reads</li>
+<li>Generating directory listings</li>
+<li>Dynamic response building for CGI output</li>
+<li>Accurate Content-Length header</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md10"></a>
+4. Configuration Layer</h2>
+<ul>
+<li>Parses a configuration file inspired by NGINX</li>
+<li>Applies route-level rules including:<ul>
+<li>Redirections</li>
+<li>Method limits</li>
+<li>Root paths</li>
+<li>Index files</li>
+<li>Upload directories</li>
+<li><a class="el" href="class_directory.html" title="Wrapper class for DIR pointer.">Directory</a> listing rules</li>
+<li>CGI settings</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md11"></a>
+Building the Project</h1>
+<h2><a class="anchor" id="autotoc_md12"></a>
+Prerequisites</h2>
+<h3><a class="anchor" id="autotoc_md13"></a>
+Using the Dev Container (Recommended)</h3>
+<p>This repository includes a dev container configuration (<code>.devcontainer/devcontainer.json</code>) that provides a complete development environment with all necessary dependencies pre-installed:</p>
+<ul>
+<li>C++ compiler (<code>clang</code>)</li>
+<li><code>make</code></li>
+<li>Google Test (libgtest, libgmock)</li>
+<li><code>bear</code> for generating compile commands</li>
+<li><code>kcov</code> for code coverage</li>
+<li><code>valgrind</code> for memory checking</li>
+<li><code>perf</code> for profiling</li>
+<li>Python 3 with <code>pytest</code> for integration tests</li>
+<li>Git and standard utilities</li>
+</ul>
+<p>To use the dev container, open the repository in VS Code with the "Dev Containers" extension installed, and it will automatically set up the environment.</p>
+<h3><a class="anchor" id="autotoc_md14"></a>
+Manual Setup</h3>
+<p>If not using the dev container, ensure the following are installed:</p>
+<ul>
+<li>A C++ compiler supporting at least C++98 and C++20 (tests use C++20). Typical: <code>g++</code>/<code>clang++</code></li>
+<li><code>make</code></li>
+<li>Google Test (libgtest, libgmock) for unit tests and headers installed for linking</li>
+<li><code>pytest</code> and Python dependencies used by integration tests</li>
+<li>Optional tools (used by Makefile targets): <code>kcov</code>, <code>bear</code>, <code>perf</code>, <code>valgrind</code>, <code>siege</code></li>
+</ul>
+<p>If you're missing optional tools, the Makefile checks for some of them and prints instructions when required.</p>
+<h2><a class="anchor" id="autotoc_md15"></a>
+Quick Start</h2>
+<p><b>Build and run the server</b></p>
+<ol type="1">
+<li>Build the default server binary:</li>
+</ol>
+<div class="fragment"><div class="line">make all</div>
+</div><!-- fragment --><p>This produces a binary named <code>webserv</code> in the repository root (unless <code>SANI=1</code> is set, see below).</p>
+<ol type="1">
+<li>Start the server (foreground):</li>
+</ol>
+<div class="fragment"><div class="line">./webserv config_files/example.conf</div>
+</div><!-- fragment --><ol type="1">
+<li>Start the server in background and capture PID:</li>
+</ol>
+<div class="fragment"><div class="line">./webserv config_files/example.conf &gt; webserv.log 2&gt;&amp;1 &amp; echo $! &gt; webserv.pid</div>
+</div><!-- fragment --><p>To stop the server when started this way:</p>
+<div class="fragment"><div class="line">kill `cat webserv.pid` &amp;&amp; rm -f webserv.pid</div>
+</div><!-- fragment --><p>Configuration: If server is started without a config file param it will use <code>config_files/trihard.conf</code>.</p>
+<h2><a class="anchor" id="autotoc_md16"></a>
+Makefile Targets</h2>
+<p>The <code>Makefile</code> includes many convenience targets. Below is a summary of the most-used targets and how to use them.</p>
+<ul>
+<li><code>make all</code> (default): compile the server binary (<code>webserv</code>).</li>
+<li><code>make test</code>: compile and run the unit tests (links with <code>gtest</code>/<code>gmock</code>).</li>
+<li><code>make test2</code>: build the server and run integration tests with <code>pytest</code>.</li>
+<li><code>make test3</code>: run a load test using <code>siege</code>.</li>
+<li><code>make test4</code>: a benchmark-style siege run for a single URL.</li>
+<li><code>make test5</code>: run the server under <code>valgrind</code> and drive requests using <code><a class="el" href="requester_8py.html">test/requester/requester.py</a></code> (useful for leak checking); opens the valgrind log with <code>less</code> at the end.</li>
+<li><code>make coverage</code>: generate a coverage report for unit tests using <code>kcov</code>. Output directory is <code>kcov_report</code> by default.</li>
+<li><code>make coverage2</code>: generate coverage from integration tests using <code>pytest</code> with kcov output.</li>
+<li><code>make comp</code>: uses <code>bear</code> to create a <code>compile_commands.json</code> for language servers.</li>
+<li><code>make profile</code>: run the program with <code>perf</code> and produce a perf.data file.</li>
+<li><code>make clean</code>: remove object and dependency files.</li>
+<li><code>make fclean</code>: performs <code>clean</code> and also removes binaries, logs, coverage directory, and other temporary files.</li>
+<li><code>make re</code>: perform <code>fclean</code> then <code>all</code>.</li>
+<li><code>make help</code>: print a short help summary (targets and variables).</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md17"></a>
+Build Variables</h2>
+<ul>
+<li><code>VERBOSE=1</code> — show all commands during the build</li>
+<li><code>SANI=1</code> — enable Address/Undefined behavior sanitizers; builds alternate binary <code>webserv_sani</code></li>
+<li><code>NODEBUG=1</code> — compile without debug messages</li>
+</ul>
+<p>Example build with sanitizers enabled:</p>
+<div class="fragment"><div class="line">make all SANI=1</div>
+<div class="line"># binary will be named `webserv_sani`</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md18"></a>
+Documentation</h1>
+<h2><a class="anchor" id="autotoc_md19"></a>
+Doxygen</h2>
+<p>This project maintains comprehensive API documentation using Doxygen. The documentation is automatically generated and deployed via GitHub Actions.</p>
+<p><b>Viewing the documentation:</b></p><ul>
+<li>View the documentation online: <a href="https://u413-284-si.github.io/webserv">https://u413-284-si.github.io/webserv</a></li>
+<li>The Doxygen HTML output is also available in the <code>doc/</code> directory and can be built locally.</li>
+</ul>
+<p><b>Building documentation locally:</b></p>
+<p>Ensure Doxygen is installed, then run:</p>
+<div class="fragment"><div class="line">doxygen doc/Doxyfile</div>
+</div><!-- fragment --><p>This generates HTML documentation in the <code>doc/html/</code> directory. Open <code>doc/html/index.html</code> in a browser to view it.</p>
+<p><b>Configuration:</b></p><ul>
+<li>The Doxygen configuration file is <code>doc/Doxyfile</code>.</li>
+<li>Custom styling is provided via <code>doc/doxygen-awesome-css/</code> for a modern appearance.</li>
+</ul>
+<p><b>CI/CD:</b></p><ul>
+<li>Documentation is automatically rebuilt and deployed on every push to the main branch via GitHub Actions.</li>
+<li>See <code>.github/workflows/</code> for the automation configuration.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md20"></a>
+Testing</h1>
+<h2><a class="anchor" id="autotoc_md21"></a>
+Unit Tests</h2>
+<p>Build and run the unit tests with:</p>
+<div class="fragment"><div class="line">make test</div>
+</div><!-- fragment --><p>This target builds a test binary (named <code>unittest</code> by default) linked against <code>gtest</code>/<code>gmock</code> and runs it.</p>
+<p>If you prefer to run tests manually from the generated binary:</p>
+<div class="fragment"><div class="line">./unittest</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md22"></a>
+Integration Tests</h2>
+<p>Integration tests are driven by <code>pytest</code> under <code>test/integration/</code>. The Makefile target <code>test2</code> will build the server and run the tests, passing the server executable and configuration file to the pytest suite.</p>
+<div class="fragment"><div class="line">make test2</div>
+</div><!-- fragment --><p>You can also run pytest directly and point it to the server binary and config file used in the Makefile, for example:</p>
+<div class="fragment"><div class="line">pytest -v ./test/integration --server-executable=./webserv --config-file=./config_files/example.conf</div>
+</div><!-- fragment --><p>Note: Python dependencies for the integration tests are not installed by the Makefile. Ensure <code>pytest</code> is available in your environment.</p>
+<h2><a class="anchor" id="autotoc_md23"></a>
+Code Coverage</h2>
+<p>The Makefile includes two coverage helpers:</p>
+<ul>
+<li><code>make coverage</code> — run <code>kcov</code> against the unit test binary and write results to <code>kcov_report</code>.</li>
+<li><code>make coverage2</code> — run integration tests under pytest and produce kcov-compatible output.</li>
+</ul>
+<p>Example:</p>
+<div class="fragment"><div class="line">make coverage</div>
+<div class="line"># open kcov_report/index.html in a browser to view report</div>
+</div><!-- fragment --><p><code>kcov</code> is required for these targets.</p>
+<h2><a class="anchor" id="autotoc_md24"></a>
+Profiling and Memory Checking</h2>
+<ul>
+<li><code>make profile</code> — runs the server with <code>perf</code> to record samples; <code>perf</code> must be installed.</li>
+<li><code>make test5</code> — runs the server under <code>valgrind</code> and executes <code><a class="el" href="requester_8py.html">test/requester/requester.py</a></code> for workload; requires <code>valgrind</code>.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md25"></a>
+Load Testing</h2>
+<p>Load testing uses <code>siege</code> with configuration files under <code>test/siege/</code>. To run the included siege scenarios:</p>
+<div class="fragment"><div class="line">make test3   # or `make test4` for a single-URL benchmark</div>
+</div><!-- fragment --><p><code>test3</code> and <code>test4</code> start the server for you, run <code>siege</code>, then stop the server.</p>
+<h1><a class="anchor" id="autotoc_md26"></a>
+Development Tasks</h1>
+<ul>
+<li>Generate <code>compile_commands.json</code> for editor tooling:</li>
+</ul>
+<div class="fragment"><div class="line">make comp</div>
+</div><!-- fragment --><ul>
+<li>Clean build artifacts:</li>
+</ul>
+<div class="fragment"><div class="line">make clean</div>
+<div class="line">make fclean</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
+Project Structure and Notes</h1>
+<h2><a class="anchor" id="autotoc_md28"></a>
+File Organization</h2>
+<ul>
+<li>Logs are written under <code>log/</code> by default when some targets create them.</li>
+<li>The server serves files from the <code>html/</code> directory in integration-test scenarios; example content and directories are provided.</li>
+<li>The <code>cgi-bin/</code> folder contains several helper scripts used by integration tests (Python and shell scripts). </li>
+</ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

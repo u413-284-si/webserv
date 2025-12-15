@@ -25,6 +25,41 @@
 var NAVTREE =
 [
   [ "webserv", "index.html", [
+    [ "Overview", "index.html#autotoc_md1", null ],
+    [ "Objectives", "index.html#autotoc_md2", null ],
+    [ "Features", "index.html#autotoc_md3", [
+      [ "Mandatory", "index.html#autotoc_md4", null ],
+      [ "Bonus Features", "index.html#autotoc_md5", null ]
+    ] ],
+    [ "Architecture Overview", "index.html#autotoc_md6", [
+      [ "1. Event Loop", "index.html#autotoc_md7", null ],
+      [ "2. Request Parsing", "index.html#autotoc_md8", null ],
+      [ "3. Response Generation", "index.html#autotoc_md9", null ],
+      [ "4. Configuration Layer", "index.html#autotoc_md10", null ]
+    ] ],
+    [ "Building the Project", "index.html#autotoc_md11", [
+      [ "Prerequisites", "index.html#autotoc_md12", [
+        [ "Using the Dev Container (Recommended)", "index.html#autotoc_md13", null ],
+        [ "Manual Setup", "index.html#autotoc_md14", null ]
+      ] ],
+      [ "Quick Start", "index.html#autotoc_md15", null ],
+      [ "Makefile Targets", "index.html#autotoc_md16", null ],
+      [ "Build Variables", "index.html#autotoc_md17", null ]
+    ] ],
+    [ "Documentation", "index.html#autotoc_md18", [
+      [ "Doxygen", "index.html#autotoc_md19", null ]
+    ] ],
+    [ "Testing", "index.html#autotoc_md20", [
+      [ "Unit Tests", "index.html#autotoc_md21", null ],
+      [ "Integration Tests", "index.html#autotoc_md22", null ],
+      [ "Code Coverage", "index.html#autotoc_md23", null ],
+      [ "Profiling and Memory Checking", "index.html#autotoc_md24", null ],
+      [ "Load Testing", "index.html#autotoc_md25", null ]
+    ] ],
+    [ "Development Tasks", "index.html#autotoc_md26", null ],
+    [ "Project Structure and Notes", "index.html#autotoc_md27", [
+      [ "File Organization", "index.html#autotoc_md28", null ]
+    ] ],
     [ "Todo List", "todo.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -67,10 +102,10 @@ var NAVTREEINDEX =
 "class_accept_connections_test.html#a6449bd6955e18c2b4ea751f9ae535acc",
 "class_process_ops.html#abc683607d42b4daab6b710a214c968eb",
 "dir_bfccd401955b95cf8c75461437045ac0.html",
-"namespaceserver__response_1_1test___c_g_i.html#ad9c13e2ca08cd15a5b5e181c5cc5867e",
-"test___c_g_i_8py.html#af757353c2eb08068bf5916e7cd60ea6e",
-"test__accept_connections_8cpp.html#aa2bdfce89a8f2540cc790305d84758cc",
-"test__select_server_config_8cpp.html"
+"namespacecreate__textfile.html#add5ce0b4a803f38d48787e21764c8c1f",
+"struct_server_block_config.html#aced5420a92f016b35e87a44fecdcc176",
+"test___socket_ops__retrieve_socket_info_8cpp.html#aa7f556d7dd1ef8164972b8d0406522f5",
+"test__parse_header___request_line_8cpp.html#aac882ef52152acf971ec7e86ebc819a3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
