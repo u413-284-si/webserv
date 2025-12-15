@@ -97,8 +97,8 @@ REQUESTER_DIR := $(TEST_DIR)/requester
 # Subdirectory for log files
 LOG_DIR := log
 
-# Directory for coverage report
-KCOV_DIR := .vscode/coverage
+# Directory for kcov coverage report
+KCOV_DIR := kcov_report
 
 # Directory for configuration files
 CONFIG_DIR := config_files
